@@ -66,6 +66,10 @@ $TESTFILES_ROOT = "/var/www/html/tests/$DATE" ;
 		  "$MCS_ROOT/tests/mcs-v2.log"
 		  );
 
+@MBAS_TESTFILES = (
+		   "$MCS_ROOT/btests/mbastests"
+		   );
+
 @MCS_ERRORFILES = (
 		   "$MCS_ROOT/errors/mcserrortests"		    
 		   );
@@ -120,14 +124,28 @@ for ( @MONO_RUNTIME_TESTFILES )
     $docRoot->appendChild ( $$testsuite ) ;
 }
 
+# mbas tests
+for( @MBAS_TESTFILES )
+{
+    my $tsresults = get_runtime_test_results ( $_ , "OK", "FAILED" ) ;
+    
+    # create testsuite element, with current time and date 
+    my $testsuite = create_testsuite_element ( $tsresults, $MCSTESTS, 0 ) ;
+    
+    my $log = create_log_element ( @$tsresults[0] ) ;
+    
+    $$testsuite->appendChild ( $$log );
+    $docRoot->appendChild ( $$testsuite ) ;
+} 
+
 for ( @MCS_NUNIT_TESTDIRS )
 {
 
     next if(open(FILE, $_."/TestResult.xml" ) != 1) ;
-
+    		
+    print $_."/TestResult.xml\n" ;
     my $parser = new XML::DOM::Parser;
     my $doc = $parser->parsefile ( $_."/TestResult.xml" );
-    
     # get nunit testsuite results
     my $tsresults = get_nunit_testsuite_results ( $doc );
     
