@@ -78,22 +78,18 @@ for my $otherelement (@OTHER_DIRS){
 }
 
 # Execute C# Compiler tests
-chdir "$TEST_ROOT/mcs" ;
-for (@PROFILES){
-		system "make -k compiler-tests 2>&1" ;
-		sleep 5;
-}
+chdir "$TEST_ROOT/mono/runtime" ;
+		system "make -k mcs-do-compiler-tests 2>&1" ;
 
 # Execute VB Compiler tests
 chdir "$TEST_ROOT/mcs/mbas/Test" ;
 system "make MBAS_FLAGS= RUNTIME=$TEST_ROOT/mono/runtime/mono-wrapper run-test" ;
-sleep 5;
 
 # Execute runtime tests
 chdir "$TEST_ROOT/mono/mono/tests" ;
-system "make -k test 2>&1 > monotests" ;
-sleep 5;
+system "make -k check 2>&1 > monotests" ;
+
 chdir "$TEST_ROOT/mono/mono/mini" ;
-system "make -k rcheck 2>&1 > minitests"
+system "make -k check 2>&1 > minitests"
 												                                                                                                        
 																									

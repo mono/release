@@ -1,4 +1,8 @@
 
+2005-02-04  Ritvik Mayank  <mritvik@novell.com> 
+	
+	* make-snapshot.sh: Updated.     	
+	
 2005-01-30  Ritvik Mayank  <mritvik@novell.com> 
 	
 	* build-packages.sh: Submit a mono tarball to repoman,update module version in conf file,
