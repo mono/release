@@ -118,6 +118,12 @@
 			print "<br><b>" . $new_table_caption . "</b><br><br>".$new_table;
 
 			$regressed_count = 0;
+			$total_passes = array();
+			$total_failures = array();
+			$total_notrun = array();
+			$total_exec = array();
+			$total_regresses = 0;
+
 			while($testsuites_1_count < count($testsuites_1) || $testsuites_2_count < count($testsuites_2)) {
 				//Calculating pass percentage
 				if ($testsuites_1[$testsuites_1_count]["name"]==null)
@@ -134,11 +140,25 @@
 				        $color = "lightgreen";
                 		else if($percent > 60)
 				        $color = "yellow";
+				if ($percent == 100)
+					$color = "30b323";
 				//Displaying result
 				if ($testsuites_1[$testsuites_1_count]["name"] == $testsuites_2[$testsuites_2_count]["name"])
 				{	
 					//Testsuites that contain entries for both the recent and the previous run
 					$regressed_count = 1;
+					$total_passes[0] += $testsuites_1[$testsuites_1_count]["pass"];
+					$total_passes[1] += $testsuites_2[$testsuites_2_count]["pass"];
+
+					$total_failures[0] += $testsuites_1[$testsuites_1_count]["fail"];
+                                        $total_failures[1] += $testsuites_2[$testsuites_2_count]["fail"];
+
+					$total_notrun[0] += $testsuites_1[$testsuites_1_count]["notrun"];
+                                        $total_notrun[1] += $testsuites_2[$testsuites_2_count]["notrun"];
+
+					$total_exec[0] += $testsuites_1[$testsuites_1_count]["exectime"];
+                                        $total_exec[1] += $testsuites_2[$testsuites_2_count]["exectime"];
+
 					print "<tr><td>$s_no</td>";
 	
 					print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
@@ -182,6 +202,12 @@
 				else if($testsuites_1[$testsuites_1_count]["name"] != null && (($testsuites_1[$testsuites_1_count]["name"] < $testsuites_2[$testsuites_2_count]["name"]) || ($testsuites_2[$testsuites_2_count]["name"]==null))) {	
 					#testsuites that contain an entry for recent run and no entry for previous run
 					$regressed_count = 0;
+
+					$total_passes[0] += $testsuites_1[$testsuites_1_count]["pass"];
+                                        $total_failures[0] += $testsuites_1[$testsuites_1_count]["fail"];
+                                        $total_notrun[0] += $testsuites_1[$testsuites_1_count]["notrun"];
+					$total_exec[0] += $testsuites_1[$testsuites_1_count]["exectime"];
+
 					print "<tr><td>$s_no</td>";
                 	        	print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
 
@@ -212,6 +238,12 @@
 				else if($testsuites_2[$testsuites_2_count]["name"] != null && (($testsuites_1[$testsuites_1_count]["name"] > $testsuites_2[$testsuites_2_count]["name"]) || ($testsuites_1[$testsuites_1_count]["name"]==null))) {
 					#testsuites that contain an entry for previous run and no entry for the recent run
 					$regressed_count = 0;
+
+                                        $total_passes[1] += $testsuites_2[$testsuites_2_count]["pass"];
+                                        $total_failures[1] += $testsuites_2[$testsuites_2_count]["fail"];
+                                        $total_notrun[1] += $testsuites_2[$testsuites_2_count]["notrun"];
+                                        $total_exec[1] += $testsuites_2[$testsuites_2_count]["exectime"];
+
                 		        print "<tr><td>$s_no</td>";
 					print "<td bgcolor=$color>" . $testsuites_2[$testsuites_2_count]["name"]. "</td>";
 					print "<td>&nbsp;</td>";
@@ -253,7 +285,10 @@
 				else
 					print "<td>".$regressed_count."</td></tr>";
 				print "</tr>";
+				$total_regresses += $regressed_count;
 			}
+			print "<tr><td>".$s_no."</td><td>Total</td><td>".$total_passes[0]."</td><td>".$total_failures[0]."</td><td>".$total_notrun[0]."</td><td>".$total_exec[0]."</td>";
+			print "<td>".$total_passes[1]."</td><td>".$total_failures[1]."</td><td>".$total_notrun[1]."</td><td>".$total_exec[1]."</td><td>".$total_regresses."</td>";
 			print "</table>";
 		}
 
@@ -282,6 +317,7 @@
          print "<p>";
          print "<br><br><b>Color Description</b><br><br>";
          print "<table border=1>";
+	 print "<tr><td bgcolor=30b323>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </td> <td>Pass percentage exactly 100</td></tr>";
          print "<tr><td bgcolor=lightgreen>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </td> <td>Pass percentage greater that 90</td></tr>";
          print "<tr><td bgcolor=yellow>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </td> <td>Pass percentage between 60 and 90</td></tr>";
          print "<tr><td bgcolor=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td> <td>Pass percentage less that 60</td></tr>";
