@@ -17,94 +17,11 @@ createFramework()
 	ln -sf $2 Current
 	echo "Creating framework links"
 	cd $BASEPREFIX/$1
-	if [ $FRAMEWORKNAME != "PkgConfig.framework" ]; then
-		ln -sf Versions/Current/lib Libraries
-		ln -sf Versions/Current/include Headers
-	fi
+
+        ln -sf Versions/Current/Resources Resources
+	ln -sf Versions/Current/lib Libraries
+	ln -sf Versions/Current/include Headers
 	ln -sf Versions/Current/bin Commands
-}
-
-icuSpecificBuild()
-{
-    PREFIX=$1
-    DEPNAME=$3
-	if [ ! -d $BUILDROOT/Dependancies/icu ]; then
-		echo "Downloading icu-2.8"
-		curl -L -Z 5 -s -O --disable-epsv ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz
-		gnutar xzf $3
-	fi
-	if [ $REMOVE == "YES" ]; then rm $3; fi
-
-    cd icu/source
-	if [ ${CONFIGURE} == "YES" ]; then
-	    #echo "Configuring ICU"
-	    #exit
-		echo ""
-		echo "=================================================="
-		echo "Configuring $DEPNAME"
-		echo "=================================================="
-		echo ""
-	    ./runConfigureICU MacOSX --with-data-packaging=library --quiet --prefix=$PREFIX --libdir=$PREFIX/lib/ 
-   	gnumake
-	fi
-	echo $PWD
-	if [ $CLEAN == "YES" ]; then 
-		echo ""
-		echo "=================================================="
-		echo "Cleaning $DEPNAME"
-		echo "=================================================="
-		echo ""
-		make clean
-	fi
-		echo ""
-		echo "=================================================="
-		echo "Building $DEPNAME"
-		echo "=================================================="
-		echo ""
-    make install
-    #make clean
-    
-    cd $PREFIX/lib
-    
-		echo ""
-		echo "=================================================="
-		echo "Installing $DEPNAME"
-		echo "=================================================="
-		echo ""
-    # libicudata
-    install_name_tool -id $PREFIX/lib/libicudata.dylib.28 libicudata.dylib.28.0
-    
-    # libicui18n
-    install_name_tool -id $PREFIX/lib/libicui18n.dylib.28 libicui18n.dylib.28.0
-    install_name_tool -change libicuuc.dylib.28 $PREFIX/lib/libicuuc.dylib.28 libicui18n.dylib.28.0
-    install_name_tool -change libicudata.dylib.28 $PREFIX/lib/libicudata.dylib.28 libicui18n.dylib.28.0
-    
-    # libicuio
-    install_name_tool -id $PREFIX/lib/libicuio.dylib.28 libicuio.dylib.28.0
-    install_name_tool -change libicuuc.dylib.28 $PREFIX/lib/libicuuc.dylib.28 libicuio.dylib.28.0
-    install_name_tool -change libicudata.dylib.28 $PREFIX/lib/libicudata.dylib.28 libicuio.dylib.28.0
-    install_name_tool -change libicui18n.dylib.28 $PREFIX/lib/libicui18n.dylib.28 libicuio.dylib.28.0
-    
-    # libicule
-    install_name_tool -id $PREFIX/lib/libicule.dylib.28 libicule.dylib.28.0
-    install_name_tool -change libicuuc.dylib.28 $PREFIX/lib/libicuuc.dylib.28 libicule.dylib.28.0
-    install_name_tool -change libicudata.dylib.28 $PREFIX/lib/libicudata.dylib.28 libicule.dylib.28.0
-
-    # libiculx
-    install_name_tool -id $PREFIX/lib/libiculx.dylib.28 libiculx.dylib.28.0
-    install_name_tool -change libicuuc.dylib.28 $PREFIX/lib/libicuuc.dylib.28 libiculx.dylib.28.0
-    install_name_tool -change libicudata.dylib.28 $PREFIX/lib/libicudata.dylib.28 libiculx.dylib.28.0
-    install_name_tool -change libicule.dylib.28 $PREFIX/lib/libicule.dylib.28 libiculx.dylib.28.0
-
-    # libicutoolutil
-    install_name_tool -id $PREFIX/lib/libicutoolutil.dylib.28 libicutoolutil.dylib.28.0
-    install_name_tool -change libicuuc.dylib.28 $PREFIX/lib/libicuuc.dylib.28 libicutoolutil.dylib.28.0
-    install_name_tool -change libicudata.dylib.28 $PREFIX/lib/libicudata.dylib.28 libicutoolutil.dylib.28.0
-
-    # libicuuc
-    install_name_tool -id $PREFIX/lib/libicuuc.dylib.28 libicuuc.dylib.28.0
-    install_name_tool -change libicudata.dylib.28 $PREFIX/lib/libicudata.dylib.28 libicuuc.dylib.28.0
-
 }
 
 createConfigFiles()
@@ -170,7 +87,7 @@ build()
 		else
 			if [ ! -d $BUILDROOT/Dependancies/$DIR ]; then
 				echo "Downloading $DIR"
-				curl -L -Z 5 -s -O $URL
+				curl -L --max-redirs 5 -s -O $URL
 				gnutar xzf $TARBALL
 				CLEAN=NO
 			fi

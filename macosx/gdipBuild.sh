@@ -33,8 +33,9 @@ export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/1.1.4/share
 #################################################
 cd ${DEPS}    
 if [ ! -e ${DEPS}/${WORKSRCDIR} ];then
-    curl -L -Z 5 -s -O ${URL}
+    curl -L --max-redirs 5 -s -O ${URL}
     gnutar -xzf ${DISTNAME}
+fi
     cd ${WORKSRCDIR}
     patch config.guess ${PATCHDIR}/patch-config.guess
     patch config.sub ${PATCHDIR}/patch-config.sub
@@ -47,7 +48,7 @@ if [ ! -e ${DEPS}/${WORKSRCDIR} ];then
     ./configure --enable-shared --enable-static --prefix=${MONOPREFIX}
     make
 make install
-fi
+
 
 ################################
 PATCHDIR=${MONOBUILDFILES}/libgdiplus/tiff/files
@@ -60,16 +61,16 @@ WORKSRCDIR=${NAME}-${VERSION}
 
 cd ${DEPS}
 if [ ! -e ${DEPS}/${WORKSRCDIR} ];then
-    curl -L -Z 5 -s -O ${URL}
+    curl -L --max-redirs 5 -s -O ${URL}
     gnutar -xzf ${DISTNAME}
     cd ${WORKSRCDIR}
-
+fi
     ./configure --prefix=${MONOPREFIX} --mandir=${MONOPREFIX}/share/man \
 	--with-jpeg-include-dir=${MONOPREFIX}/include \
 	--with-jpeg-lib-dir=${MONOPREFIX}/lib
     make 
     make install
-fi
+
 
 ###############################################
 #PATCHDIR=${MONOBUILDFILES}/libgdiplus/tiff/files
@@ -77,15 +78,15 @@ NAME=libpng
 VERSION=1.2.8
 DISTNAME=${NAME}-${VERSION}-config.tar.gz
 
-URL=http://umn.dl.sourceforge.net/sourceforge/libpng/${DISTNAME}
+URL=http://easynews.dl.sourceforge.net/sourceforge/libpng/${DISTNAME}
 WORKSRCDIR=${NAME}-${VERSION}-config
 #MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/Current
 cd ${DEPS}
 if [ ! -e ${DEPS}/${WORKSRCDIR} ];then
-    curl -L -Z 5 -s -O ${URL}
+    curl -L --max-redirs 5 -s -O ${URL}
     gnutar -xzf ${DISTNAME}
     cd ${WORKSRCDIR}
-
+fi
     #cp scripts/makefile.darwin Makefile
     ./configure --prefix=${MONOPREFIX}
     #sed -e "s/\/usr\/local/\${MONOPREFIX}/g" Makefile > Makefile.patched
@@ -94,32 +95,32 @@ if [ ! -e ${DEPS}/${WORKSRCDIR} ];then
 
     make
     make install
-fi
+
 
 ###############################################
 #PATCHDIR=${MONOBUILDFILES}/libgdiplus/tiff/files
 NAME=libungif
 VERSION=4.1.3
 DISTNAME=${NAME}-${VERSION}.tar.gz
-URL=http://umn.dl.sourceforge.net/sourceforge/libungif/${DISTNAME}
+URL=http://easynews.dl.sourceforge.net/sourceforge/libungif/libungif-4.1.3.tar.gz
 WORKSRCDIR=${NAME}-${VERSION}
 #MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/Current                                       
 cd ${DEPS}
 if [ ! -e ${DEPS}/${WORKSRCDIR} ];then
-    curl -L -Z 5 -s -O ${URL}
+    curl -L --max-redirs 5 -s -O ${URL}
     gnutar -xzf ${DISTNAME}
     cd ${WORKSRCDIR}
-
+fi
     ./configure --prefix=${MONOPREFIX}
     make
     make install
-fi
+
 
 ###############################################
 NAME=libgdiplus
-VERSION=1.1.4
+VERSION=1.1.5
 DISTNAME=${NAME}-${VERSION}.tar.gz
-URL=http://www.go-mono.com/archive/1.1.4/${DISTNAME}
+URL=http://www.go-mono.com/archive/1.1.5/${DISTNAME}
 WORKSRCDIR=${NAME}-${VERSION}
 #MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/Current
 
@@ -127,8 +128,8 @@ echo "building libgdiplus"
 
 cd ${DEPS}
 if [ ! -e ${DEPS}/${WORKSRCDIR} ];then
-    if [ ! -e ${DISTNAME} ];then
-	curl -L -Z 5 -s -O ${URL}
+    if [ ! -e ${DEPS}/${DISTNAME} ];then
+	curl -L --max-redirs 5 -s -O ${URL}
 	gnutar -xzf ${DISTNAME}
     fi
 
@@ -138,4 +139,4 @@ fi
     make
     make install
 
-#http://www.go-mono.com/archive/1.1.4/libgdiplus-1.1.4.tar.gz
+#http://www.go-mono.com/archive/1.1.5/libgdiplus-1.1.5.tar.gz

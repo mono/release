@@ -107,7 +107,7 @@ cat <<EOF > ${BUILDROOT}/resources/version.plist
 	<key>BuildVersion</key>
 	<string>${VERSION}</string>
 	<key>CFBundleShortVersionString</key>
-	<string${VERSION}</string>
+	<string>${VERSION}</string>
 	<key>CFBundleVersion</key>
 	<string>${VERSION}</string>
 	<key>ProjectName</key>
@@ -145,7 +145,8 @@ if [ -d /Library/Frameworks/Mono.framework ]; then
 	ln -sf Versions/Current/lib Libraries
 	ln -sf Versions/Current/include Headers
 	ln -sf Versions/Current/bin Commands
-	
+	ln -sf Versions/Current/Resources Resources
+
         if [ ! -d /Library/Frameworks/Mono.framework/Versions/Current/Resources ]; then
             mkdir -p /Library/Frameworks/Mono.framework/Versions/Current/Resources
         fi
@@ -179,7 +180,6 @@ EOF
 	fi
 	cp ${BUILDROOT}/plists/Info.plist ${BUILDROOT}/PKGROOT/Library/Frameworks/${FRAMEWORKNAME}.framework/Versions/${VERSION}/Resources/
 	cp ${BUILDROOT}/resources/version.plist ${BUILDROOT}/PKGROOT/Library/Frameworks/${FRAMEWORKNAME}.framework/Versions/${VERSION}/Resources/
-
 
 # PackageMaker will package everything in the PKGROOT directory.  We really don't want
 # that because then we would be creating packages that have duplicate information thus 
