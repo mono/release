@@ -1,3 +1,7 @@
+2004-05-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.Xml-review.xls : Added.
+
 2004-05-13  Ravindra <rkumar@novell.com>
 
 	* missing-gdiplus-calls: Marked some of them, which I'm working on.
