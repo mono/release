@@ -6,12 +6,17 @@ use strict;
 use Getopt::Std;
 
 my $hdiutil = "/usr/bin/hdiutil";
-my $infoString = "0.96";
-my $versionString = "beta3";
+my $infoString = "0.97";
+my $versionString = "RC1";
 my $cp = "/bin/cp -R";
 my $packageMaker="/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker";
 my $workDir = "/usr/local/mono.build";
-my $monoBuild = "$workDir/buildMono.sh";
+
+if (! -d $workDir) {
+    mkdir($workDir);
+}
+
+my $monoBuild = "./buildMono.sh";
 my $packageResources="$workDir/MonoFramework";
 
 #set the default size for the image.  Get a better one later.
@@ -64,7 +69,7 @@ sub createPackage
 {
     print("Creating Package\n") if ( $verbose );
     print("$packageMaker -build -p $packageName -f $workDir/PKGROOT -r $workDir/Resources -i $workDir/Info.plist\n") if ( $verbose );
-    system("$packageMaker -build -p $packageName -f $workDir/PKGROOT -r $workDir/Resources -i $workDir/Info.plist -d $workDir/Description.plist\n");
+    system("$packageMaker -build -p $packageName -f $workDir/PKGROOT -r $workDir/Resources -i $workDir/Info.plist -d ./Description.plist\n");
     my @dmgOutput = split(/\t/, `du -sk $workDir/MonoFramework-$infoString.pkg`);
     #give dmg size a bump so that everything fits with formatting.
     $dmgOutput[0] += 1000;
@@ -116,5 +121,5 @@ sub createInfoPlist
 		</dict>
 	</plist>
 EOF
-close(INFO);
+#close(INFO);
 }

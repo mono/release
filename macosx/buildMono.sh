@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 
 # this horrid little script updates a mono revision
 # Author: Andy Satori <dru@satori-assoc.com>
@@ -15,7 +15,10 @@ set -e
 INITIALDIR=$1
 VERSION=$2
 PREFIX=$INITIALDIR/PKGROOT/Library/Frameworks/Mono.framework/Versions/$VERSION
-MONOURL="http://www.go-mono.com/archive/beta3/mono-$VERSION.tar.gz -O"
+MONOURL="http://www.go-mono.com/archive/rc/mono-$VERSION.tar.gz"
+#http://www.go-mono.com/archive/rc/mono-/usr/local/mono.build.tar.gz -O
+
+echo $MONOURL
 
 export C_INCLUDE_PATH=$C_INCLUDE_PATH:$PREFIX/include
 export LDFLAGS=-L$PREFIX/lib
@@ -51,7 +54,6 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig
 cd $INITIALDIR/Dependancies
 
 # pkg-config
-
 
 if test ! -f "$PREFIX/bin/pkg-config"; then
     if test ! -d "pkgconfig-0.15.0"; then
@@ -127,10 +129,10 @@ fi
 if test ! -f "$PREFIX/lib/libicuuc.dylib.28.0"; then
     if test ! -d "icu"; then
 		echo "Downloading icu"
-		curl ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz -O --disable-epsv
+		curl -s ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz -O --disable-epsv
 		tar xzf icu-2.8.tgz
 		rm icu-2.8.tgz
-	fi
+    fi
     
     cd icu/source
 	echo "Building icu"
@@ -190,10 +192,10 @@ if test ! -f "$PREFIX/bin/mono"; then
 		mkdir $INITIALDIR/Bootstrap
 	fi
 
-	echo "Downloading Mono $VERSION"
+    echo "Downloading Mono $VERSION"
     cd $INITIALDIR/Bootstrap    
     if test ! -d "mono-$VERSION"; then
-		curl -s $MONOURL
+		curl -s -O $MONOURL
 		tar xzf mono-$VERSION.tar.gz
 		rm mono-$VERSION.tar.gz
 	fi
@@ -216,16 +218,10 @@ cd /Library/Frameworks/Mono.framework/Versions
 if test -e "/Library/Frameworks/Mono.framework/Versions/Current"; then
     rm Current
 fi
+
 ln -s $VERSION Current
 echo +++ Setup the rest of the framework
 cd /Library/Frameworks/Mono.framework
 ln -s Versions/Current/lib Libraries
 ln -s Versions/Current/include Headers
 ln -s Versions/Current/bin Commands
-
-#Don't want to this when building Mono for packaging
-#This is done by postflight.
-#for binfile in Commands/*; do
-#    sudo rm -f /usr/bin/`echo $binfile | perl -pe 's/\.exe//' | perl -pe 's/Commands\///'`
-#    sudo ln -s /Library/Frameworks/Mono.framework/`echo $binfile | perl -pe 's/\.exe//'` /usr/bin/`echo $binfile | perl -pe 's/\.exe//' | perl -pe 's/Commands\///'`
-#done
