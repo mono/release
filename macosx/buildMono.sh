@@ -21,12 +21,33 @@
 #  - Updated to glib-2.4.1
 
 set -e 
+usage()
+{
+echo "Proper usage is as follows"
+cat <<EOF
+	buildMono.sh <monoversion>
+		-R remove gz files (default no)
+		-C make clean (default no)
+		-c run configure (default no)
+		-p create packages in $BUILDROOT/MonoBuild
+		-o when used with -p will only create packages will not build
+		-h this message
+        example:
+        buildMono.sh 1.1.3 -p
+EOF
+exit
+}
+
+if [ $# != 1 ]; then
+    usage
+fi
+
 
 BUILDROOT="/Users/Shared/MonoBuild"
-MONOVERSION="1.1.3"
+MONOVERSION=$1
 BASEPREFIX="/Library/Frameworks"
 PREFIX=""
-MONOURL="http://www.go-mono.com/archive/1.1.3/mono-1.1.3.tar.gz"
+MONOURL="http://www.go-mono.com/archive/$1/mono-$1.tar.gz"
 BUILD="YES"	
 REMOVE="NO"
 CLEAN="NO"
@@ -41,26 +62,14 @@ CVSMONO="/tmp/mono"
 #This is the default to make my life easier!
 CVSUSER="adhamh"
 
+echo $MONOURL
+exit
+
 #the buildLibrary file contains functions to build mono
 . ./buildLibrary.sh
 #the packageLibrary contains the fuctions to package mono and create any 
 #needed resource files
 . ./packageLibrary.sh
-
-usage()
-{
-echo "Proper usage is as follows"
-cat <<EOF
-	buildNew.sh
-		-R remove gz files (default no)
-		-C make clean (default no)
-		-c run configure (default yes)
-		-p create packages in $BUILDROOT/MonoBuild
-		-o when used with -p will only create packages will not build
-		-h this message
-EOF
-exit
-}
 
 cleanup()
 {
