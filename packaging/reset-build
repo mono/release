@@ -1,0 +1,3 @@
+#!/bin/sh
+rm logs/*
+rm status/*
