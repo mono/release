@@ -2,7 +2,7 @@
 
 CHECKDIR=/tmp/co
 PREFIX=/tmp/prefix
-VERSION=0.30.99.2
+VERSION=0.31
 
 rm -rf $CHECKDIR $PREFIX
 
