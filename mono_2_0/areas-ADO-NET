@@ -31,5 +31,36 @@ When data returned from the command changes in the database, a message is sent t
 
 12. Enhancement of Dataadapter :Easy loading of datareader to view data.
 
+13. Run with Partial Trust
+
+14. Server Enumeration
+
+15. Connection String Builder
+
+16. MetaDataSchemas
+
+17. Provider Specific Types
+
+18. Conflict Detection
+
+19. Tracing Support
+
+20. Pooling Enhancements
+
+21. Sql Dependency - Yukon Specific
+
+22. Isolation Level Snapshot -Yukon Specific
+
+23. Client Failover - Yukon Specific
+
+24. Password Change API -  Yukon Specific
+
+25. Statistics - 
+
+26. Promotable Tx - Yukon
+
+27. AttachDbFileName - Yukon.
+
+
 
 
