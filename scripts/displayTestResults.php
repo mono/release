@@ -1,0 +1,291 @@
+<!--
+  This script retrieves data from XML files and displays it on the web
+-->
+<html>
+<head>
+	<title>Mono TestSuites Results</title>
+	<?php
+		function get_sorted_filenames ($dir) 
+		{
+			$dir_handle = opendir($dir);
+			$files_count = 0;
+			$files = array();
+			
+			while (($filename = readdir($dir_handle)) != false) {
+				if ($filename == "." || $filename == ".." || substr($filename,0,12) != "testresults-" || substr($filename,-3,3) != "xml")
+					continue;
+				$files[$files_count] = $dir.$filename;
+				$files_count++;
+			}
+			rsort($files);
+			return $files;
+		}
+		function fetch_sorted_testsuites ($file,$type_key) 
+		{
+			$doc = xmldocfile ($file);
+			$root = $doc->root ();
+			$testsuites = $root->get_elements_by_tagname("testsuite");
+			$sorted_testsuites = array ();
+			$testsuite_count = 0;
+			foreach ($testsuites as $testsuite) {
+				if ($testsuite->get_attribute("type") != $type_key)
+					continue;
+				$sorted_testsuites[$testsuite_count]["name"] = $testsuite->get_attribute ("name");
+				$sorted_testsuites[$testsuite_count]["pass"] = $testsuite->get_attribute ("pass");
+				$sorted_testsuites[$testsuite_count]["fail"] = $testsuite->get_attribute ("fail");
+				$sorted_testsuites[$testsuite_count]["notrun"] = $testsuite->get_attribute ("notrun");
+				$sorted_testsuites[$testsuite_count]["exectime"] = $testsuite->get_attribute ("exectime");
+				$sorted_testsuites[$testsuite_count]["date"] = $testsuite->get_attribute("date");
+				$sorted_testsuites[$testsuite_count]["type"] = $testsuite->get_attribute("type");
+				$testsuite_count++;
+			}
+			if (count($sorted_testsuites) != 0) {
+				foreach ($sorted_testsuites as $key => $row) { 
+					//Order by testsuite name
+                	                $name[$key] = $row["name"];
+                        	}
+	                        array_multisort($name, SORT_ASC, $sorted_testsuites);
+			}
+			return $sorted_testsuites;
+		}
+		function get_date_from_filename ($filename) 
+		{
+			$basename = basename($filename,".xml");
+			$datetime = split ("-",$basename,-1);
+			//Formatting date to yyyy-mm-dd
+			$date = substr($datetime[1],0,4) ."-". substr($datetime[1],4,2) ."-". substr ($datetime[1],6);
+			return $date;
+		}
+		function fetch_regressed_testcases ($testsuite_name,$file_1,$file_2)
+		{
+			$doc_1 = xmldocfile ($file_1);
+			$doc_2 = xmldocfile ($file_2);
+			$root_1 = $doc_1->root ();
+			$root_2 = $doc_2->root ();
+
+			$testsuites_1 = $root_1->get_elements_by_tagname("testsuite");
+			$testsuites_2 = $root_2->get_elements_by_tagname("testsuite");
+			$testcases_1 = array ();
+			$testcases_2 = array ();
+			
+			$regressed_testcases = array ();
+			$testflag = 0;
+			$testcases_1_count = 0;
+			foreach ($testsuites_1 as $testsuite_1) {
+				if ($testsuite_1->get_attribute("name") == $testsuite_name) {
+					$testcases = array();
+					$testcases = $testsuite_1->get_elements_by_tagname ("testcase");
+					foreach ($testcases as $testcase) {	
+						if ($testcase->get_attribute ("status") == "1") {
+							$testcases_1[$testcases_1_count] = $testcase->get_attribute("name");
+							$testcases_1_count++;
+						}
+					}
+					$testflag = 1;	
+					break;
+				}
+			}
+			if ($testflag == 0)
+				return $regressed_testcases; //return empty array
+			$testflag = 0;
+			$testcases_2_count = 0;
+			foreach ($testsuites_2 as $testsuite_2) {
+				if ($testsuite_2->get_attribute("name") == $testsuite_name) {
+					$testcases = array ();
+					$testcases = $testsuite_2->get_elements_by_tagname("testcase");
+					foreach ($testcases as $testcase) {
+						if ($testcase->get_attribute ("status") == "0") {
+							$testcases_2[$testcases_2_count] = $testcase->get_attribute("name");
+							$testcases_2_count++;
+						}
+					}
+					$testflag = 1;
+					break;
+				}
+			}
+			if ($testflag == 0)
+				return $regressed_testcases; //return empty array
+
+			//Check for regression
+			$regression_count = 0;
+			foreach ($testcases_1 as $testcase_1) {
+				foreach ($testcases_2 as $testcase_2) {
+					if ($testcase_1 == $testcase_2) {
+						$regressed_testcases[$regression_count] = $testcase_2;
+						$regression_count++;
+					}
+				}
+			}
+			return $regressed_testcases;
+			
+		}
+		function display_testsuites($new_table_caption,$testsuites_1,$testsuites_2,$files,$date_1,$date_2) 
+		{
+			$new_table = "<table border=2>" .  "<tr><b>" . "<th rowspan=2> S.No </th><th rowspan=2> Test Suite </th>";
+			$new_table = $new_table . "<th colspan=4>$date_1 </th><th colspan=4>$date_2</th><th rowspan=2>Regression</th>" . "<tr><th>Pass</th><th>Fail</th><th>Not Run</th><th>Execution Time</th><th>Pass</th><th>Fail</th><th>Not Run</th><th>Execution Time</th>";
+			print "<br>\n";
+			$testsuites_1_count = 0;
+			$testsuites_2_count = 0;
+			$s_no = 1;
+			print "<br><b>" . $new_table_caption . "</b><br><br>".$new_table;
+
+			while($testsuites_1_count < count($testsuites_1) || $testsuites_2_count < count($testsuites_2)) {
+				//Calculating pass percentage
+				if ($testsuites_1[$testsuites_1_count]["name"]==null)
+					$recentsuite = $testsuites_2[$testsuites_2_count];
+				else
+					$recentsuite = $testsuites_1[$testsuites_1_count];
+				$total_tests = $recentsuite["pass"] + $recentsuite["fail"] + $recentsuite["notrun"];
+				if ($total_tests != 0)
+					$percent = ($recentsuite["pass"] * 100)/$total_tests;
+				else
+				        $percent = 100;
+	        		$color = "ff3300";
+				if ($percent > 90)
+				        $color = "lightgreen";
+                		else if($percent > 60)
+				        $color = "yellow";
+				//Displaying result
+				if ($testsuites_1[$testsuites_1_count]["name"] == $testsuites_2[$testsuites_2_count]["name"])
+				{	
+					print "<tr><td>$s_no</td>";
+	
+					print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
+					if ($testsuites_1[$testsuites_1_count]["pass"] != 0)
+						print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=0>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
+					else
+						print "<td>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
+
+					 if ($testsuites_1[$testsuites_1_count]["fail"] != 0)
+                	        	        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=1>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
+	        	                else
+        		                        print "<td>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
+
+					 if ($testsuites_1[$testsuites_1_count]["notrun"] != 0)
+                	        	        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=2>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
+	        	                else
+        		                        print "<td>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
+					print "<td>" . $testsuites_1[$testsuites_1_count]["exectime"]. "</td>";
+					$testsuites_1_count++;
+
+					if ($testsuites_2[$testsuites_2_count]["pass"] != 0)
+						print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=0>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
+					else
+						print "<td>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
+			
+					 if ($testsuites_2[$testsuites_2_count]["fail"] != 0)
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=1>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
+                		        else
+                	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
+
+					 if ($testsuites_2[$testsuites_2_count]["notrun"] != 0)
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=2>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
+                		        else
+                	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
+					print "<td>" . $testsuites_2[$testsuites_2_count]["exectime"]. "</td>";
+					
+					$testsuite_name = $testsuites_2[$testsuites_2_count]["name"];
+					$testsuites_2_count++;		
+				}
+
+				else if($testsuites_1[$testsuites_1_count]["name"] != null && (($testsuites_1[$testsuites_1_count]["name"] < $testsuites_2[$testsuites_2_count]["name"]) || ($testsuites_2[$testsuites_2_count]["name"]==null))) {	
+					print "<tr><td>$s_no</td>";
+                	        	print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
+
+					if ($testsuites_1[$testsuites_1_count]["pass"] != 0)
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=0>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
+                		        else
+                	        	        print "<td>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
+                                                                                                                             
+	        	                 if ($testsuites_1[$testsuites_1_count]["fail"] != 0)
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=1>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
+                		        else
+                	        	        print "<td>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
+                                                                                                                             
+	        	                 if ($testsuites_1[$testsuites_1_count]["notrun"] != 0)
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=2>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
+                		        else
+                	        	        print "<td>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
+	        	                print "<td>" . $testsuites_1[$testsuites_1_count]["exectime"]. "</td>";
+					$testsuite_name = $testsuites_1[$testsuites_1_count]["name"];
+                		        $testsuites_1_count++;
+
+                	        	print "<td>&nbsp;</td>";
+	        	                print "<td>&nbsp;</td>";
+        		                print "<td>&nbsp</td>";
+                		        print "<td>&nbsp;</td>";
+				}
+
+				else if($testsuites_2[$testsuites_2_count]["name"] != null && (($testsuites_1[$testsuites_1_count]["name"] > $testsuites_2[$testsuites_2_count]["name"]) || ($testsuites_1[$testsuites_1_count]["name"]==null))) {
+                		        print "<tr><td>$s_no</td>";
+					print "<td bgcolor=$color>" . $testsuites_2[$testsuites_2_count]["name"]. "</td>";
+					print "<td>&nbsp;</td>";
+        		                print "<td>&nbsp;</td>";
+                		        print "<td>&nbsp</td>";
+                	        	print "<td>&nbsp;</td>";
+
+					if ($testsuites_2[$testsuites_2_count]["pass"] != 0)
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=0>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
+                		        else
+                	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
+                	                                                                                                             
+	        	                 if ($testsuites_2[$testsuites_2_count]["fail"] != 0)
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=1>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
+                		        else
+                	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
+                                                                                                                             
+	        	                 if ($testsuites_2[$testsuites_2_count]["notrun"] != 0)
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=2>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
+                		        else
+                	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
+
+	        	                print "<td>" . $testsuites_2[$testsuites_2_count]["exectime"]. "</td>";
+					$testsuite_name = $testsuites_2[$testsuites_2_count]["name"];
+                		        $testsuites_2_count++;
+                		}
+				$s_no++;
+				$regressed_testcases = array ();
+				$regressed_testcases = fetch_regressed_testcases($testsuite_name,$files[0],$files[1]);
+				if (count ($regressed_testcases) != 0) 
+					print "<td><a href=displayDetails.php?&testsuite=" . $testsuite_name. "&file=" .$files [0]. "&file1=".$files[1]."&regression=1&status=4>".count($regressed_testcases)."</td></tr>";
+				else
+					print "<td>".count($regressed_testcases)."</td></tr>";
+			}
+			print "</table>";
+		}
+
+	?>
+</head>
+<body>
+<h2>MONO TESTSUITE RESULTS</h2>
+<?php
+	$files = get_sorted_filenames ("TestResults/");
+	$date_1 = get_date_from_filename ($files[0]); 
+	$date_2 = get_date_from_filename ($files[1]);
+	
+	$new_table_type[0] = "NUnit TestSuites";
+        $new_table_type[1] = "Compiler TestSuites";
+        $new_table_type[2] = "Runtime Testsuites";
+	
+	for($i=0; $i<3;$i++) { //foreach type of testsuites
+		$testsuites_1 = array();
+		$testsuites_2 = array();
+		$testsuites_1 = fetch_sorted_testsuites ($files[0],$i);
+	        $testsuites_2 = fetch_sorted_testsuites ($files[1],$i);
+		display_testsuites($new_table_type[$i],$testsuites_1,$testsuites_2,$files,$date_1,$date_2);
+	}
+	//Displaying Legend
+         print "<p>";
+         print "<br><br><b>Color Description</b><br><br>";
+         print "<table border=1>";
+         print "<tr><td bgcolor=lightgreen>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </td> <td>Pass percentage greater that 90</td></tr>";
+         print "<tr><td bgcolor=yellow>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </td> <td>Pass percentage between 60 and 90</td></tr>";
+         print "<tr><td bgcolor=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td> <td>Pass percentage less that 60</td></tr>";
+         print "</table>";
+         print "<br><font size=2> NOTE: Color displayed for test suite is based on the most recent test result</font>";
+         print "</p>";
+
+?>
+</body>
+</html>
+
