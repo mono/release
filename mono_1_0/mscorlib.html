@@ -1,0 +1,45 @@
+<html>
+<title>mscorlib Assembly Mono 1.0 Release Notes</title>
+<body>
+<h1>mscorlib Assembly Mono 1.0 Release Notes</h1>
+
+<h2>msorlib missing functionality</h2>
+
+	Read the mscorlib-status.xsl spreadsheet prepared by Lluis.
+
+<h2>COM</h2>
+
+	<p>Mono 1.0 does not support COM integration of any kind.
+	This is due to the fact that COM is not a standard part of the
+	operating system on Unix.
+
+	<p>There are various custom implementations of COM available:
+	XPCOM (Mozilla) and UNO (OpenOffice) which we might support in
+	the future through some dynamic extension to the runtime. 
+
+	<p>The following API calls do nothing, or are not supported:
+	
+<h2>Code Access Security</h2>
+
+	<p>Mono 1.0 does not ship with a Code Access Security layer,
+	which means that it can not be used as a host to run code in a
+	sandbox.  We intend to ship this in an upcoming version.
+
+	<p>The following API calls do nothing, or are not supported:
+	
+<h2>Security features</h2>
+	
+	<p><b>Namespace:</b> System.Security.Principal
+
+	<p><span id="method">WindowsIdentity</span>
+	
+        <p>Fx 1.1 add special support for a Windows 2003 Server "client"
+        in a Windows 2003 Server based domain. I don't have the
+        environment to test this. I doubt this is really being much used
+        (since most clients aren't W2K3 based).
+        
+        <p>Recommendation: Keep TODO for a future version of Mono. Throw a
+        ArgumentException on Windows (like it's done for Windows
+        versions previous to W2K3 Server). Add a special note in
+        monodoc.
+
