@@ -1,0 +1,45 @@
+#!/bin/sh
+
+CHECKDIR=/tmp/co
+PREFIX=/tmp/prefix
+VERSION=0.23
+BUILDHOST=tirania.boston.ximian.com
+BUILDHOSTDIR=/tmp/work
+
+rm -rf $CHECKDIR $PREFIX
+
+mkdir $CHECKDIR
+cd $CHECKDIR
+echo > log
+cvs co mcs mono 2>&1 >> log
+cp -a mcs mcs-$VERSION
+
+#
+# Build MCS
+#
+echo Building MCS
+(cd $CHECKDIR/mcs; make -f makefile.gnu || exit 1) 2>&1 >> log
+
+#
+# Build Mono
+#
+echo Building Mono
+(cd $CHECKDIR/mono; ./autogen.sh --prefix=$PREFIX; make && make install) 2>&1 >> log
+
+echo Running make distcheck
+(cd $CHECKDIR/mono && make distcheck || exit 1) 2>&1 >> log
+
+echo Packaging MCS
+tar czf mcs-$VERSION.tar.gz mcs-$VERSION 2>&1 >> log
+
+#
+# Copy the results to the build machine.
+# 
+echo Copying software to build machine.
+ssh $BUILDHOST "rm $BUILDHOSTDIR/*gz"
+
+scp mcs-$VERSION.tar.gz mono/mono-$VERSION.tar.gz $BUILDHOST:/tmp/work
+
+echo -------------------------------
+echo - DO NOT FORGET TO TAG THE TREE
+echo -------------------------------
