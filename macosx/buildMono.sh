@@ -32,6 +32,8 @@ CLEAN="NO"
 PACKAGE="NO"
 CONFIGURE="YES"
 
+
+
 usage()
 {
 # 		-p <prefix for builds> #default is /Library/Frameworks/Mono.framework/Versions/\$VERSION
@@ -208,6 +210,8 @@ createPackage()
 	DESCRIPTION=$4
 	RFILES="/usr/local/mono/release/macosx/resources"
 	TIGER="/Volumes/tiger"
+	PM="$TIGER/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
+
 	if [ ! -d $TIGER ]; then
 		echo "This script uses the PackageMaker from Tiger because the"
 		echo "The Panther version always exits with a 2"
@@ -216,7 +220,7 @@ createPackage()
 		exit 2
 	fi
 	
-	PM="$TIGER/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
+
 	
 	if [ ! -d ${BUILDROOT}/PKGROOT/Library/Frameworks ]; then
 		mkdir -p ${BUILDROOT}/PKGROOT/Library/Frameworks
@@ -225,6 +229,10 @@ createPackage()
 	if [ ! -d ${BUILDROOT}/Packages ]; then
 		mkdir -p ${BUILDROOT}/Packages
 	fi
+
+        if [ ! -d ${BUILDROOT}/finished ]; then
+                mkdir -p ${BUILDROOT}/finished
+        fi
 
 	if [ ! -d ${BUILDROOT}/${FRAMWORKNAME}/PKGRES/Resources ]; then
 		mkdir -p ${BUILDROOT}/${FRAMWORKNAME}/PKGRES/Resources
@@ -294,8 +302,16 @@ cat <<EOF > ${BUILDROOT}/PKGRES/Description.plist
 	</plist>
 EOF
 
-	if [ ! -d ${BUILDROOT}/${FRAMEWORKNAME}-${VERSION}.pkg ]; then
+# PackageMaker will package everything in the PKGROOT directory.  We really don't want
+# that because then we would be creating packages that have duplicate information thus 
+# defeating the purpose of have individual packages.  So once the package has been created
+# we move the framework to the finished directory and test for its location there.
+	if [ ! -d ${BUILDROOT}/finish/${FRAMEWORKNAME}-${VERSION}.pkg ]; then
     	${PM} -build -p ${BUILDROOT}/Packages/${FRAMEWORKNAME}-${VERSION}.pkg -f ${BUILDROOT}/PKGROOT -r ${BUILDROOT}/PKGRES/Resources -i ${BUILDROOT}/PKGRES/Info.plist -d ${BUILDROOT}/PKGRES/Description.plist
+	if [ ! -d ${BUILDROOT}/finished ]; then
+	    mkdir -p ${BUILDROOT}/finished
+	    mv ${BUILDROOT}/${FRAMEWORKNAME}-${VERSION}.pkg ${BUILDROOT}/finished
+	fi
 	fi
 }
 
