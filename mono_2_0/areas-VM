@@ -1,0 +1,189 @@
+From Paolo Molaro:
+
+Code generation quality improvements.
+
+	* register alloc rewrite (large task)
+
+		Timing:
+			1 month for first architecture.
+			1 month to port to make portable architectures
+			1 week per architecture.
+
+		Needs:
+			Probably would not be done by 1.2, but 2.0
+			Paolo to write a doc.
+
+		A rewrite of global and local register allocation.
+
+		Global is hopefully pluggable today.
+			Possible to add register coloring today.
+			Coloring would benefit more from running in linear form, instead of trees.
+
+		Incremental work possibility:
+			Running reg-alloc after tree->list could be done in a few weeks.
+
+		Floating point register file considerations.
+
+	* copy propagation med-small task
+		Hacker: Massimiliano .
+
+		Today we do many copies of variables to preserve semantics.
+		We make copies of variables when calling methods.
+	
+		Example:
+			int a;
+			int b;
+
+			copy a to b
+			use b
+
+			since a and b are the same, we can eliminate b, and 
+			share its definition if there are no changes in the middle
+
+		Today:
+			Only partially implemented, practically its not being used.
+		
+	* SSAPRE large task
+		Hacker: Massimiliano
+
+	* add some more optimizing burg rules
+		Ben: provide some input here with ideas.
+
+		Must create this list as we go.
+
+	* tune inlining code
+
+		Currently it might over-inline, might be slower sometimes.
+
+		Make sure we fix issues with it.
+
+		Steps:
+			Run benchmarks and regression tests
+			Make sure we do not regress on benchmarks.
+			Make sure we do not introduce breaking code.
+
+* Small code generation improvements:
+
+	* small hacks (like direct execution of delegates)
+		Architecture specific.
+		We could tail call into the delegate, so we do not need to 
+		copy arguments.
+
+		Note: A couple more things like that are available to do 
+		elsewhere as well.
+
+	* ldftn/ldvirtftn speedups (part of the work to get profiler-guided opts)
+		Today we use an icall.
+
+		In some cases it requires us to patch the method
+		trampoline, and some calls will incur in an additional jump
+
+	* Marshal-by-ref speedups (access to instance fields)
+
+	* some ppc-specific speedups
+
+Ahead of Time Compilation improvements:
+
+	* Reuse AOT code on multiple domains.
+
+	* ELF-like PLT/GOT relocations.
+
+Speed of code generation:
+
+	* try to speedup jit compilation times
+		Current register allocator might not be linear in time.
+
+	* check and fix some quadratic/exponential behaviours in the jit
+		Do we have test cases?  
+
+VM changes:
+	
+	* do something for the io-layer slowness
+		Paolo to fill in some thoughts.
+
+	* string methods speedups (remove icu dependency)
+		C and C# code are too large/slow.
+
+		In C# code we do things like
+		`CurrentX.CurrentDomain.CurrentThread.CurrentSomething' to pull the
+		current Locale.
+
+	* eliminate the need of the main useless thread
+		Dick checked in the test cases that must be handled.
+		Research needs to happen about a solution.
+		Paolo to propose an alternative setup/api/process for this.
+
+	* direct TLS access (__thread use in the runtime + access from jitted code)
+		A lot of code calls this (mono_domain_set ())
+
+		Hackers: Ben or Zoltan.
+
+		Paolo to fill in with some thoughts.
+
+	* moving most string and array methods to managed code
+		Incorporate some of Andrea's code.
+		Paolo to get his code into CVS ASAP.
+
+	* move jit helpers and other icalls to managed code when possible
+		Lookup the Bugzilla number.
+		
+Sanity:
+
+	* Come up with a naming convention for icalls that is not horrible.
+
+Generics:
+
+	* Need a lot of work, will be worked on by Martin.
+		Hacker: Martin.
+		Some of the support today needs to be redesigned.
+		Revisit the design.
+		Uses a lot more memory than required.
+		Many new common fields were added.
+
+		Paolo to review the code and comment.
+
+Garbage Collection:
+
+	* start work for the precise GC (runtime data-structures first)
+		Miguel to cut and paste the exact details from the email thread.
+
+Code Access Security
+	
+	* CAS-related work (access controls, type loader checks, etc)
+		Sebastien.
+
+Ports:
+	AMD64
+		Zoltan
+
+	Arm
+		
+	Itanium
+
+Other:
+
+	* make sync blocks non-gc objects
+		 Paolo to comment on this entr.
+
+	* reduce memory usage in the runtime
+
+	* MonoThread handling
+		Not big, but complicated.
+		Causes random crashes today on ASP.NET
+		Paolo to find the bug#
+		Major bug.
+
+		We create it in one domain, and we keep it on a TL-var.
+
+		When switching appdomains, we dont switch, the thread
+		points to an object points to something else
+
+	* implement agile objects
+		
+	* implement some of the support for safer Abort() (needed also for the new GC)
+		Signals in the middle of the prolog.
+
+	* better support for DynamicMethod
+		Does not GC the native code.
+		Small improvements.
+
