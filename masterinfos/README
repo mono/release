@@ -1,0 +1,16 @@
+How to build all masterinfos
+===============================
+The Makefile in this directory is intended to help building the masterinfos on
+windows under cygwin. To build them:
+
+1. Edit the Makefile and update it to your paths.
+
+2. Copy assemblies-list.txt, createinfos.sh, Makefile to a directory, say,
+'lalala'. Ensure createinfos.sh has +x permissions.
+
+3. Copy mono-api-info.cs from SVN (mcs/tools/corcompare) to 'lalala'.
+
+4. make infos
+
+You'll get a 1.1 and a 2.0 directory with the .xml files.
+
