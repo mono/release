@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#Create the links in the framework to have it fit the normal Framework structure.
+cd /Library/Frameworks/Mono.framework
+ln -s Versions/Current/lib Libraries
+ln -s Versions/Current/include Headers
+ln -s Versions/Current/bin Commands
+
+#Create the links to /usr/bin if the file doesn't end in .exe
+
+cd /Library/Frameworks/Mono.framework/Commands
+for i in `ls -al  | grep Mono.framework | awk '{print $9}'`; do
+    ln -s $PWD/${i} /usr/bin/${i}
+    chown root:wheel /usr/bin/${i}
+done
+
+
+cd /Library/Frameworks/Mono.framework/Commands
+for i in `ls -al | grep -v .exe`; do 
+    ln -s $PWD/${i} /usr/bin/${i}
+done;
+
+ln -s /Library/Frameworks/Mono.framework/Libraries/libmono.dylib /Library/Frameworks/Mono.framework/Mono
+
+
+for file in `ls -al /usr/bin | grep Mono.framework | awk -F" " '{print $9}'`; do rm -f /usr/bin/$file; done
