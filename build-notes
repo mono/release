@@ -1,0 +1,52 @@
+ How to do a Mono release
+==========================
+
+1) Checkout 'mcs' and 'mono' to /tmp
+
+2) Build mcs
+
+3) Build mono, with 'make distcheck'
+
+4) Commit fixes from distcheck; if needed, go to 1
+
+5) Check out a pristine mcs tree again
+
+   * Rename to mcs-RELEASE
+   
+   * Tar it up (excluding CVS dir)
+
+
+ How to upload packages to RC
+==============================
+
+1) ssh into distro@pipeline
+
+2) Upload new packages to /nfs/user/duncan
+
+3) rel-add-packages -s -c mono -t <target name> -d  "mono release" </path/to/package/file>
+
+4) rel-stage-to-real mono
+
+5) rel-push
+
+**** DO NOT PUSH SOURCE RPMS!!! ****
+
+
+How to use the build system
+============================
+
+1) Upload tarball to /nfs
+
+2) bb_submit the tarball
+
+3) Optionally, edit the conf file to bump version count, etc.
+
+4) bb_redo
+
+[[prefix]] -- prefix on distro
+
+bb_unpack -c -- cleans the tree
+
+bb_redo == bb_unpack -c; bb_unpack; bb_do (builds)
+
+export BB_REPODIR=/nfs/release/source_repository/
