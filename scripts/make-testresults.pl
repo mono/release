@@ -1,9 +1,13 @@
+
 #!/usr/bin/perl -w
 
 # Script to run tests in given list of directories and 
 # create test result files.
 #
 # Author: Sachin Kumar <skumar1@novell.com>
+#         Satya Sudha K (ksathyasudha@novell.com)
+#         Ritvik Mayank (mritvik@novell.com)
+#
 
 $DATE = `date +'%Y%m%d'`;
 chomp $DATE ;
@@ -34,43 +38,62 @@ $DOCROOT = "/var/www/html/tests/$DATE" ;
 	       "$TEST_ROOT/mcs/class/corlib"
 	       );
 
-@COMPILER_DIRS = (
-		  "$TEST_ROOT/mcs/tests",
-		  "$TEST_ROOT/mcs/errors"
-		  );
+@OTHER_DIRS = (
+	       "$TEST_ROOT/mcs/class/System.Web.Services/Test/standalone"
+                  );
+#@COMPILER_DIRS = (
+#		  "$TEST_ROOT/mcs/tests",
+#                  "$TEST_ROOT/mcs/errors"
+#                  );
 
-@RUNTIME_DIRS = (
-		 "$TEST_ROOT/mono/mono/tests",
-		 "$TEST_ROOT/mono/mono/mini"
-		 );
+#@RUNTIME_DIRS = (
+#                 "$TEST_ROOT/mono/mono/tests",
+#                 "$TEST_ROOT/mono/mono/mini"
+#                 );
 
-# Scan all dirs and run make to get test resultsfile
+# Run the script for the following two profiles
+@PROFILES= (
+	    "default",
+	    "net_2_0"
+	    );
 
-# FIXME: make run-test hangs in one dir itself, 
-# so does not execute tests in other dir
-for ( @NUNIT_DIRS )
-{
-    chdir $_ ;
-    print $_ ;
-    system "make run-test &" ;
+# Scan all dirs and run make to get test results file
+for my $element (@NUNIT_DIRS){
+    			      chdir $element ;
+    			      print $element ;
+   			      for (@PROFILES) {
+        	     			       system "make PROFILE=$_ RUNTIME=$TEST_ROOT/mono/runtime/mono-wrapper run-test &" ;
+		     			       sleep 5;
+    			      }
+}
+
+# Execute Standalone tests
+for my $otherelement (@OTHER_DIRS){
+    				   chdir $otherelement ;
+    				   print $otherelement ;
+    				   for (@PROFILES) {	
+ 	             				    system "make PROFILE=$_ RUNTIME=$TEST_ROOT/mono/runtime/mono-wrapper test &" ;
+                     				    sleep 5;
+    				   }   
 }
 
 # Execute C# Compiler tests
-chdir "$TEST_ROOT/mcs/tests" ;
-system "make run-test 2>&1" ;
+chdir "$TEST_ROOT/mcs" ;
+for (@PROFILES){
+		system "make -k compiler-tests 2>&1" ;
+		sleep 5;
+}
 
-chdir "$TEST_ROOT/mcs/errors" ;
-system "make run-test 2>&1 > mcserrortests" ;
-
-# Execute VB.NET tests
-chdir "$TEST_ROOT/mcs/btests" ;
-system "make run-test" ;
-system "cp results.out mbastests" ;
+# Execute VB Compiler tests
+chdir "$TEST_ROOT/mcs/mbas/Test" ;
+system "make MBAS_FLAGS= RUNTIME=$TEST_ROOT/mono/runtime/mono-wrapper run-test" ;
+sleep 5;
 
 # Execute runtime tests
 chdir "$TEST_ROOT/mono/mono/tests" ;
-system "make test 2>&1 > monotests" ;
-
+system "make -k test 2>&1 > monotests" ;
+sleep 5;
 chdir "$TEST_ROOT/mono/mono/mini" ;
-system "make rcheck 2>&1 > minitests" ;
-
+system "make -k rcheck 2>&1 > minitests"
+												                                                                                                        
+																									

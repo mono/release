@@ -1,0 +1,28 @@
+
+2005-01-30  Ritvik Mayank  <mritvik@novell.com> 
+	
+	* build-packages.sh: Submit a mono tarball to repoman,update module version in conf file,
+	                     and submit a build request to the BB daemon. 
+  
+	* make-snapshot.sh: Shell script for making daily release-style mono tarballs.
+	
+	* mono-snapshot.sh: Shell script for checking out and building mono/mcs and making daily 				release-style mono tarballs. 
+	
+	* make-testresults.pl: Script to run tests in given list of directories and create test
+      			       result files.
+  
+	* store-testresults.pl: Script to read test results stored in files from a given list of                                    files and save results in a single xml file
+	
+	* generate-charts.pl: Script generates the charts coresponding to the test results. 
+	
+	* displayDetails.php: This script displays testcase results for a particular testsuite
+
+	* displayTestResulus.php: It retrieves data from XML files and displays it on the web
+	
+	* latest-packages.pl: Script to generate html page with latest rpm packages
+                               files and save results in a single xml file
+
+	* update-versions: Script for updating the version number.
+	
+	* prepare-release: Script for release
+   

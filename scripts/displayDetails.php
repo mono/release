@@ -1,6 +1,10 @@
 <!--
   This script displays testcase results for a particular testsuite
+ Author: Sachin Kumar <skumar1@novell.com>
+         Satya Sudha K (ksathyasudha@novell.com)
+         Ritvik Mayank (mritvik@novell.com)
 -->
+
 <html>
 <head>
 	<title>Mono TestCase Results</title>
@@ -158,20 +162,46 @@
 	<?php 
 		$testsuite_key = $_GET['testsuite'];
 		$distro = $_GET['distro'];
-		if ($distro == 0 ) # redhat-9-i386
-			$root = "./testresults/redhat-9-i386/";	
-		else if ($distro == 1 ) # fedora-1-i386
-			$root = "./testresults/fedora-1-i386/";
-		else if ($distro == 2 ) # suse-90-i586
-			$root = "./testresults/suse-90-i586/";
+         	$profile = $_GET['profile'];
+		$distroPath = "suse-90-i586";
+		$profilePath = "default";
+		if ($distro == 0 && $profile == 0){ # suse and default
+			$root = "/var/www/mono-website/go-mono/tests/testresults/suse-90-i586/default/";
+			}
+		else if ($distro == 1 && $profile == 0){ # fedora-1-i386 and default
+			$distroPath = "fedora-1-i386";
+			$profilePath = "default";
+			$root = "/var/www/mono-website/go-mono/tests/testresults/fedora-1-i386/default/";
+			}
+		else if ($distro == 2 && $profile == 0){ # redhat default 
+			$distroPath = "redhat-9-i386";
+			$profilePath = "default";
+			$root = "/var/www/mono-website/go-mono/tests/testresults/redhat-9-i386/default/";	
+			}
+        	else if ($distro == 0 && $profile == 1){ # suse-90-i586 net 2
+			$distroPath = "suse-90-i586";
+			$profilePath = "net_2_0";
+			$root = "/var/www/mono-website/go-mono/tests/testresults/suse-90-i586/net_2_0/";
+			}
+         	else if ($distro == 1 && $profile == 1){ # fedora net 2  
+			$distroPath = "fedora-1-i386";
+			$profilePath = "net_2_0";
+			$root = "/var/www/mono-website/go-mono/tests/testresults/fedora-1-i386/net_2_0/";
+			}
+        	else if ($distro == 2 && $profile == 1){ # redhat net 2  
+			$distroPath = "redhat-9-i386";
+			$profilePath = "net_2_0";
+			$root = "/var/www/mono-website/go-mono/tests/testresults/redhat-9-i386/net_2_0/";
+			}
 
-                $dir = $root."xml/";
-		$chart_location_1 = $root."charts/".$testsuite_key."_percent.png";
-		$chart_location_2 = $root."charts/".$testsuite_key."_pass.png";
-		$chart_location_3 = $root."charts/".$testsuite_key."_fail.png";
+         $dir = $root."xml/";
+		$chart_location_1 = "testresults/$distroPath/$profilePath/charts/".$testsuite_key."_percent.png";
+		$chart_location_2 = "testresults/$distroPath/$profilePath/charts/".$testsuite_key."_pass.png";
+		$chart_location_3 = "testresults/$distroPath/$profilePath/charts/".$testsuite_key."_fail.png";
 
 		#Displaying Charts
 		if($_GET['image']==1) {
+#			print "$chart_location_1;";
 			print "<h1>Progress Charts</h1>";
 			print "<p><h4> Pass and Fail Percentages</h4><img src=\"$chart_location_1\"></p>";
 			print "<p><h4>Number of Passes</h4><img src=\"$chart_location_2\"></p>";
@@ -181,26 +211,31 @@
 		
 		$status_key = $_GET['status'];
 		$file = $_GET['file'];
-	
+		if ($profile==0)
+		$profilePath="default";
+		else
+		$profilePath="net_2_0";
+			
 		#Checking whether the input file is correct
 		sanitize ($file);
 
 		#Prepending the base directory and appending .xml to the input filename
-		$file = $dir . "testresults-" .$file . ".xml";
+		$file = $dir . "testresults-$profilePath-" .$file . ".xml";
 
 		#Obtaining location of the recent chart for the particular testsuite
-		$chart_url = "displayDetails.php?image=1&testsuite=$testsuite_key&distro=$distro";
+		$chart_url = "displayDetails.php?image=1&testsuite=$testsuite_key&profile=$profile&distro=$distro";
 
 		#Displaying regressed testcases
 		if ($_GET['regression'] == 1) {
 
 			$file_1 = $_GET['file1'];
 			sanitize ($file_1);//Checking whether input file1 is correct
-			$file_1 = $dir ."testresults-". $file_1 . ".xml";
+			
+			$file_1 = $dir ."testresults-". $profilePath."-".$file_1 . ".xml";
 
-			print "<h1>Regressed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"white\">&lt;View Progress Charts></font></a></h1>";
+			print "<h1>Regressed testcases for " .  $_GET['testsuite'] . "</h1>";
 			$testcases = fetch_regressed_testcases($testsuite_key,$file,$file_1);
-			print "<table border=1><tr><th>S.No.</th><th>Test Case Name</th><th>Message</th></tr>";	
+			print "<br><a href=\"$chart_url\"><b><font size=\"2\">&lt;View Progress Charts></b></font></a><br><br><table border=1><tr><th><center>Sl.No.</center></th><th><center>Test Case Name</center></th><th><center>Message</center></th></tr>";	
 			$count = 1;
 			foreach ($testcases as $testcase) {
 				 print "<tr><td>$count </td><td bgcolor=$color><a href=#".$count.">" . $testcase["name"]. "</a></td><td><pre>".$testcase["message"]."</pre></td><tr>";
@@ -226,7 +261,7 @@
 		if ($testcases[0] == "0") {
 
 			#Displaying log message
-			print "<h1>Testcase results for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"white\">&lt;View Progress Charts></font></a></h1>";
+			print "<h1>Testcase results for " .  $_GET['testsuite'] . "</h1><br>&nbsp;<a href=\"$chart_url\"><font size=\"2\"><b>&lt;View Progress Charts></b></font></a><br><br>";
 			print "<pre>".$testcases[1]."</pre>";
 			return;
 		}
@@ -234,8 +269,8 @@
 		#Displaying passed testcases
 		if ($status_key == 0)
 		{
-			print "<h1>Passed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"white\">&lt;View Progress Charts></font></a></h1>";
-			print "<table border=1><tr><th>S.No.</th><th>Test Case Name</th><th>Execution Time</th></tr>";
+			print "<h1>Passed testcases for " .  $_GET['testsuite'] . "</h1><br>&nbsp;<a href=\"$chart_url\"><font size=\"2\" ><b>&lt;View Progress Charts></b></font></a><br><br>";
+			print "<table border=1><tr><th><center>Sl.No.</center></th><th><center>Test Case Name</center></th><th><center>Execution Time</center></th></tr>";
 			$count = 1;
 			foreach ($testcases as $testcase) {
 				print "<tr><td>$count</td><td>" . $testcase["name"] . "</td><td>" . $testcase["exectime"] . "</td></tr>";	
@@ -247,8 +282,8 @@
 		#Displaying not run testcases
 		else if ($status_key == 2) 
 		{
-			print "<h1>Not run testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"white\">&lt;View Progress Charts></font></a></h1>";
-			print "<table border=1><tr><th>S.No.</th><th>Test Case Name</th><th>Message</th></tr>";
+			print "<h1>Not run testcases for " .  $_GET['testsuite'] . "</h1><br>&nbsp;<a href=\"$chart_url\"><font size=\"2\" ><b>&lt;View Progress Charts></b></font></a><br><br>";
+			print "<table border=1><tr><th><center>Sl.No.</center></th><th><center>Test Case Name</center></th><th><center>Message</center></th></tr>";
 			$count = 1;
                         foreach ($testcases as $testcase) {
                                 print "<tr><td>$count</td><td>" . $testcase["name"] . "</td><td><pre>" . $testcase["message"] . "</pre></td></tr>";
@@ -260,8 +295,8 @@
 		#Displaying failed testcases
 		else if ($status_key == 1) 
 		{
-			print "<h1>Failed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"white\">&lt;View Progress Charts></font></a></h1>";
-			print "<table border =1><tr><th><b>S.No.</th></b><th><b>Test Case Name</b></th><th><b>Message</b></th></tr>";
+			print "<h1>Failed testcases for " .  $_GET['testsuite'] . "</h1><br>&nbsp;<a href=\"$chart_url\"><font size=\"2\" ><b>&lt;View Progress Charts></b></font></a><br><br>";
+			print "<table border =1><tr><th><b><center>Sl.No.</center></th></b><th><b><center>Test Case Name</center></b></th><th><b><center>Message</center></b></th></tr>";
 			$count = 1;
 			foreach ($testcases as $testcase) {
 				print "<tr><td>$count </td><td bgcolor=$color><a href=#".$count.">" . $testcase["name"]. "</a></td><td><pre>".$testcase["message"]."</pre></td><tr>";
@@ -287,3 +322,4 @@
 	?>
 </body>
 </html>
+

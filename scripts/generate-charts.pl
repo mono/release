@@ -1,195 +1,348 @@
 #!/usr/bin/perl
+
+# This script generates the charts coresponding to the test results 
+# Author: Sachin Kumar <skumar1@novell.com>
+#         Roopa Wilson <wroopa@novell.com>
+#         Satya Sudha K <ksathyasudha@novell.com>
+#         Ritvik Mayank <mritvik@novell.com>
+#
+
+
+use Getopt::Std;
+use File::Basename;
 use XML::DOM;
 use POSIX;
 use Switch;
+use Getopt::Long;
+use strict;
 
-$max = 10;
-$root_dir = "./";
-if (scalar(@ARGV) == 0) {
-	print "\nUsage:\n perl generate-charts.pl <distro_number>\n\n";
-	exit;
+
+my $usage =<< "END";
+Usage : perl generate_charts_consolidated.pl --distro <distro_name> 
+                          --profile <profile>
+                          --start <start date>
+                          [--root <dest dir>]
+                          --help 
+END
+
+my ($distro_name, $profile, $start_date, $root_dir, $help);
+
+my $result = GetOptions("distro:s"=>\$distro_name,
+                        "profile:s"=> \$profile,
+                        "start:s"=>\$start_date,
+                        "root:s"=>\$root_dir,
+                        "help!"=>\$help);
+if (!$result || $help) {
+  print $usage;
+  exit;
 }
-switch($ARGV[0]) {
-	case 1 {
-		$root_dir = $root_dir."testresults/redhat-9-i386/";
-	}
-	case 2 {
-		$root_dir = $root_dir."testresults/fedora-1-i386/";
-	}
-	case 3 {
-		$root_dir = $root_dir."testresults/suse-90-i586/";
-	}
-	default {
-		print "\nWrong distro number!\n\n";
-		print "1 - redhat-9-i386\n2 - fedora-1-i386\n3 - suse-90-i586\n\n";	
-	        exit;
-	}
+if (!defined $distro_name || !defined($profile)) {
+  print $usage;
+  exit;
 }
-$dir = $root_dir."xml/";
-$chart_dir = $root_dir."charts/";
 
-system("mkdir ". $chart_dir);
-
-@files = get_sorted_filenames ($dir); 
-$percent_count = 1;
-foreach $file(@files) {
-	print "\nProcessing file ".$file."...\n";
-	get_percent_values($file);
-	if($percent_count >= $max) {
-	    last ;
-	}
-	$percent_count++;
+if (!defined $start_date) {
+  $start_date = "0";
 }
-@testsuite_names = keys(%testsuites_status);
-
-$current_date = `date +'%Y%m%d'`;
-chomp $current_date;
-
-@testsuite_keys = keys(%percent);
-foreach $testsuite_key(@testsuite_keys) {
-	
-#	system("mkdir ".$chart_dir.$testsuite_key);
-
-	open (FILE,">temp.dat");
-	open (FILE1,">temp1.dat");
-	open (FILE2,">temp2.dat");
-	@date_keys = keys(%{$percent{$testsuite_key}});
-	@date_keys = sort(@date_keys);
-	$max_pass = 0;
-	$max_fail = 0;
-	foreach $date_key(@date_keys) {
-		print FILE $date_key . "\t".$percent{$testsuite_key}{$date_key}{0}."\t".$percent{$testsuite_key}{$date_key}{1}."\n";
-		print FILE1 $date_key . "\t".$percent{$testsuite_key}{$date_key}{2}."\n";
-		print FILE2 $date_key . "\t".$percent{$testsuite_key}{$date_key}{3}."\n";
-		if ($max_pass < $percent{$testsuite_key}{$date_key}{2}){
-			$max_pass =  $percent{$testsuite_key}{$date_key}{2};
-		}
-		if ($max_fail < $percent{$testsuite_key}{$date_key}{3}) {
-                        $max_fail =  $percent{$testsuite_key}{$date_key}{3};
-		}
-	}
-	close (FILE);
-	close (FILE1);
-	close (FILE2);
-
-	$first_date = $date_keys[0];
-	$last_date = $date_keys[scalar(@date_keys)-1];
-	print $max_pass . "\t" . $max_fail."\n";
-#	$output_file = $chart_dir.$testsuite_key ."/".$current_date. ".png";
-#	$output_file = $chart_dir.$testsuite_key . ".png";
-
-#	plot_current_data ($output_file,$testsuite_key,$first_date,$last_date,$plot_file,$type,$max);
-	plot_current_data ($chart_dir.$testsuite_key . "_percent.png",$testsuite_key,$first_date,$last_date,0,120); # percent chart
-	plot_current_data ($chart_dir.$testsuite_key . "_pass.png",$testsuite_key,$first_date,$last_date,1,$max_pass); # pass number chart
-	plot_current_data ($chart_dir.$testsuite_key . "_fail.png",$testsuite_key,$first_date,$last_date,2,$max_fail); # fail number chart
-
+if (!defined $root_dir) {
+  $root_dir = "/var/www/html/testresults";
 }
-unlink("temp.dat");
 
-sub plot_current_data
+my @dates = ();
+my %test_suite_names = ();
+my ($xml_dir, $chart_dir);
+
+$root_dir .= "/$distro_name/$profile";
+if ( !(-e $root_dir) || !(-d $root_dir)) {
+   print "Invalid distro name\n";
+   exit;
+}
+
+$xml_dir = $root_dir."/xml/";
+$chart_dir = $root_dir."/charts/";
+#$chart_dir = "/var/www/html/new_charts/$distro_name/$profile";
+
+my @filenames = get_sorted_filenames($xml_dir, $start_date,$profile);
+my %pass_fail_stats = ();
+my %perc_stats = ();
+my %total_stats = ();
+foreach my $file (@filenames) {
+  print "Processing file : $file...\n";
+  get_stats ($file, \%pass_fail_stats, \%perc_stats, \%total_stats, \@dates, \%test_suite_names);
+}
+
+my $output_file = "$root_dir/testresults.dat";
+write_data_to_file(\%pass_fail_stats, \@dates, \%test_suite_names, $output_file, 1 );
+generate_charts($output_file, $chart_dir, "individual" );
+$output_file = "$root_dir/testresults_perc.dat";
+write_data_to_file(\%perc_stats, \@dates, \%test_suite_names, $output_file, 1 );
+generate_charts($output_file, $chart_dir, "consolidated" );
+
+$output_file = "$root_dir/total.dat";
+write_data_to_file(\%total_stats, $output_file, 0, 0, 0 );
+generate_charts($output_file, $chart_dir, "total" );
+
+sub get_sorted_filenames
 {
-	print "\nPlotting to file ".$_[0]."...\n";
-	my $output_file = $_[0];
-	my $testsuite_name = $_[1];
-	my $first_date = $_[2];
-	my $last_date = $_[3];
-	my $type = $_[4];
-	my $max = $_[5];
-	switch ($type) {
-		case 0 {
-			$title = "Progress Chart(%) For $testsuite_name";
-			$ylabel = "Percentage %";
-			$yrange = "set yrange [0:120]";
-			$plot = "\"temp.dat\" using 1:2 title 'Pass Percent' with linespoints lt 2 lw 1 pt 1 ps 2, \"temp.dat\" using 1:3 title 'Fail Percent' with linespoints lt 1 lw 1 pt 1 ps 2";
-		}
-		case 1 {
-			$title = "Progress Chart For $testsuite_name";
-                        $ylabel = "Number of passes";
-			$yrange = "";
-                        $plot = "\"temp1.dat\" using 1:2 title 'Number of passes' with linespoints lt 2 lw 1 pt 1 ps 2";
-		}
-		case 2	{
-			$title = "Progress Chart For $testsuite_name";
-                        $ylabel = "Number of failures";
-			$yrange = "";
-                        $plot = "\"temp2.dat\" using 1:2 title 'Number of failures' with linespoints lt 1 lw 1 pt 1 ps 2";
-		}
-	}
-	my $GNUPlot = '/usr/bin/gnuplot';
-        open ( GNUPLOT, "|$GNUPlot");
+        my ($dir, $start_date, $profile) = (@_);
+        opendir(DIR,$dir);
+        my $files_count = 0;
+        my @files =  readdir(DIR);
+        my @sorted_files = ();
+        my $file_count = 0;
 
-print GNUPLOT << "gnuplot_Commands";
+        foreach my $file(@files) {
+            if ($file =~/^testresults\-$profile\-(\d{8}).xml$/) {
+            #if ($file =~/^testresults\-(\d{8}).xml$/) {
+              my $file_date = $1;
+              # Since dates are of teh YYYYMMDD format, we can 
+              # safely compare them as numbers
+              if ($file_date >= $start_date) {
+                $sorted_files[$file_count] = $dir . $file;
+                $file_count++;
+              }
+            }
+        }
+
+        @sorted_files = sort(@sorted_files);
+        return @sorted_files;
+}
+
+sub get_stats {
+
+  my ($filename, $pass_fail_hash, $perc_hash, $total_hash, $dates, $keys) = (@_);
+  my $xmlParser = new XML::DOM::Parser();
+  my $doc = $xmlParser->parsefile($filename);
+  my @testsuites = $doc->getElementsByTagName("testsuite");
+  my $date = get_date_from_filename($filename);
+  push (@$dates, $date);
+  my $num_passes = 0;
+  my $num_failures = 0;
+
+  foreach my $testsuite (@testsuites) {
+    my $testsuite_name = $testsuite->getAttribute("name");
+    $keys->{$testsuite_name}= 1;
+    my $testsuite_failures = $testsuite->getAttribute("fail");
+    $num_failures += $testsuite_failures;
+    $pass_fail_hash->{$testsuite_name}{$date}{"fail"} = $testsuite_failures;
+    my $testsuite_passes = $testsuite->getAttribute("pass");
+    $num_passes += $testsuite_passes;
+    $pass_fail_hash->{$testsuite_name}{$date}{"pass"} = $testsuite_passes;
+    my $total = $testsuite_passes + $testsuite_failures ;
+    if ($total == 0) {
+      next;
+    }
+    $perc_hash->{$testsuite_name}{$date}{"pass"} = $testsuite_passes/$total * 100;
+    $perc_hash->{$testsuite_name}{$date}{"fail"} = $testsuite_failures/$total * 100;
+    $total_hash->{$date}{"fail"} = $num_failures;
+    $total_hash->{$date}{"pass"} = $num_passes;
+    $total_hash->{$date}{"fail_perc"} = $num_failures / ($num_passes + $num_failures) * 100;
+    $total_hash->{$date}{"pass_perc"} = $num_passes / ($num_passes + $num_failures) * 100;
+  }
+}
+
+sub get_date_from_filename {
+  my $fullPath = shift;
+  my $filename = basename($fullPath);
+  my $date = "";
+  if ($filename =~ /(\d{8})\.xml$/) {
+     $date = $1; 
+  } else {
+    print "Invalid file name : $filename";
+  }
+  return $date;
+}
+
+sub write_data_to_file {
+  my ($hash, $dates, $keys, $file, $flag) = (@_);
+  if ( $flag == 1 )
+  {
+	  open (INFILE, "<$file"); #|| die ("Cannot open file:$file for reading!! \n");
+	  my @lines = <INFILE>;
+	  close(INFILE); 
+	  open (OUTFILE, ">$file") || die ("Cant open file:$file for writing!! \n");
+
+	  my @existing_testsuites_list = split(/\s/,$lines[0]);
+	  if ($existing_testsuites_list[0] eq "#") {
+	    undef $existing_testsuites_list[0];
+	  }
+	  for my $test_suite (@existing_testsuites_list) {
+	    $keys->{$test_suite} = 0;
+	  }
+
+	  my $num_existing_elements = $#existing_testsuites_list;
+	  for my $key (keys %$keys) {
+	    if ($keys->{$key} == 1) {
+	        push (@existing_testsuites_list, $key);
+	    }
+	  }
+	  my $num_new_elements = $#existing_testsuites_list;
+	  my $append_string= "";
+	  for (my $i = 0; $i < $num_new_elements- $num_existing_elements; $i++) {
+	    $append_string .= ";;";
+	  }
+	                                                                                                    
+	  print OUTFILE "# ";
+	  foreach my $key (@existing_testsuites_list) {
+	    if ($key eq "") {
+	      next;
+	    }
+	    print OUTFILE "$key ";
+	  }
+	
+	  print OUTFILE "\n";
+	  for(my $line=1; $line<=$#lines;$line++){
+	    chomp ($lines[$line]);
+	    print OUTFILE "$lines[$line]$append_string\n";
+	  }
+	
+	  foreach my $date ( sort @$dates) {
+	    print OUTFILE "$date;";
+	    foreach my $key (@existing_testsuites_list) {
+	      if ($key eq "") {
+	        next;
+	      }
+	      if (defined ($hash->{$key}{$date}{"pass"})) {
+	        print OUTFILE $hash->{$key}{$date}{"pass"}.";";	
+	      } else {
+	        print OUTFILE ";";
+	      } 
+	      if (defined ($hash->{$key}{$date}{"fail"})) {
+	        print OUTFILE $hash->{$key}{$date}{"fail"}.";";
+	      } else {
+	        print OUTFILE ";";
+	      } 
+	    }
+	    print OUTFILE "\n";
+	  }
+      close OUTFILE;
+
+   }
+ 
+  if ( $flag == 0 )
+  {
+  	 my $file_exists = 0;
+	   if ( -e $output_file) {
+	        $file_exists = 1;
+	   }
+	                                                                                                               
+	   open(OUTPUT, ">>$output_file") || die ("Cannot open file for reading");
+	   if (!$file_exists) {
+	        print OUTPUT "# Passes Fail Pass% Fail%\n";
+	   }
+	                                                                                                               
+	   foreach my $date (sort keys %$hash) {
+	     print OUTPUT "$date;";
+	     print OUTPUT $hash->{$date}{"pass"} .";";
+	     print OUTPUT $hash->{$date}{"fail"} .";";
+	     print OUTPUT $hash->{$date}{"pass_perc"} .";";
+	     print OUTPUT $hash->{$date}{"fail_perc"} .";";
+	     print OUTPUT "\n";
+	   }
+	   close(OUTPUT);
+   }
+}   
+
+sub generate_charts {
+  my ($filename, $root_dir, $type) = (@_);
+  open (INFILE, "<$filename") || die("Cannot open file :$filename for reading");
+  my $line = "";
+  my @fields = ();
+  print "$root_dir";
+  if (defined ($line = <INFILE>)) {
+    if (substr($line,0,1) != '#') {
+      print "Invalid file format\n";
+      close(INFILE);
+      return;
+    } else {
+      @fields = split(/\s/, substr($line,1));
+    }
+  }
+  close(INFILE);
+
+  if ($type eq "individual") {
+    for (my $i = 1; $i<=$#fields; $i++) {
+       my $outfile = "$root_dir/$fields[$i]_pass.png";
+       my $title = "Progress Charts for $fields[$i]";
+       my $ylabel = "Number Of Passes";
+       my $plot_cmd = "plot \"$filename\" using 1:2*$i title \"$title\"  with linespoints lt 2 lw 1 pt 5 ps 1;";
+       plot_graph($outfile, $title, $ylabel, $plot_cmd);
+       $ylabel = "Number Of Failures";
+       $outfile = "$root_dir/$fields[$i]_fail.png";
+       $plot_cmd = "plot \"$filename\" using 1:2*$i+1 title \"$title\"  with linespoints lt 1 lw 1 pt 5 ps 1;";
+       plot_graph($outfile, $title, $ylabel, $plot_cmd);
+    }
+  } elsif ($type eq "consolidated") {
+    for (my $i = 1; $i<=$#fields; $i++) {
+       my $outfile = "$root_dir/$fields[$i]_percent.png";
+       my $title = "Progress Charts for $fields[$i]";
+       my $ylabel = "Percentage (%)";
+       my $plot_cmd = "plot \"$filename\" using 1:2*$i title \"$title - Pass %\"  with linespoints lt 1 lw 1 pt 5 ps 1, \"$filename\" using 1:2*$i+1 title \"$title - Fail %\"  with linespoints lt 2 lw 1 pt 5 ps 1;";
+       plot_graph($outfile, $title, $ylabel, $plot_cmd);
+    }
+  } elsif ($type eq "total") {
+    my $outfile = "";
+    my $title = "";
+    my $ylabel = "";
+    my $linetype = "";
+    for (my $i = 2; $i <= 3; $i++) {
+       if ($i == 2) {
+       	 $outfile = "$root_dir/Total_pass.png";
+	 $title = "Total number of Passes";
+	 $ylabel = "Passes";
+	 $linetype = 2;
+       } else {
+       	 $outfile = "$root_dir/Total_fail.png";
+	 $title = "Total number of Failures";
+	 $ylabel = "Failures";
+	 $linetype = 1;
+       }
+
+       my $plot_cmd = "plot \"$filename\" using 1:$i title \"$title\"  with linespoints lt $linetype lw 1 pt 5 ps 1;";
+
+       plot_graph($outfile, $title, $ylabel, $plot_cmd);
+    }
+
+    $outfile = "$root_dir/Total_percent.png";
+    $title = "Total";
+    $ylabel = "Percentage (%)";
+    $linetype = 1;
+    my $plot_cmd = "plot \"$filename\" using 1:4 title \"$title - Pass %\"  with linespoints lt 2 lw 1 pt 5 ps 1, \"$filename\" using 1:5 title \"$title - Fail %\"  with linespoints lt 1 lw 1 pt 5 ps 1;";
+    plot_graph($outfile, $title, $ylabel, $plot_cmd);
+  }
+  close INFILE;
+}
+
+sub plot_graph {
+  my ($output_file, $title, $ylabel, $plot_cmd) = (@_);
+  
+  my $GNUPlot = '/usr/local/bin/gnuplot';
+  open ( GNUPLOT, "|$GNUPlot");
+
+  my $cmds = "";
+  #print "$plot_cmd\n";
+
+$cmds =<< "gnuplot_Commands";
 set terminal png;
 set output "$output_file";
 set time;
 set title "$title";
+set datafile separator ";"
 set xlabel "Dates" 7,-3;
-set ylabel "$ylabel" -2,5;
+set ylabel "$ylabel"
 set xdata time;
-$yrange;
-set timefmt "%Y-%m-%d";
-set format x "%Y-%m-%d";
+set timefmt "%Y%m%d";
+set format x "%Y%m%d";
 set key box lw 0.5;
-set xtics rotate;
-set nomxtics;
-set xtics "$first_date",86400,"$last_date";
-plot $plot;
+set style line;
+set size ratio .50;
+set autoscale;
+set size ratio 0.55;
+$plot_cmd
 gnuplot_Commands
-    close(GNUPLOT);
-}
 
-sub get_percent_values 
-{
-	my $file = $_[0];
-	my $parser = new XML::DOM::Parser;
-	my $doc = $parser->parsefile ($file);
-	my @testsuites = $doc->getElementsByTagName("testsuite");
-	$date = get_date_from_filename($file);
-	foreach $testsuite(@testsuites) {
-		if ($testsuites_status{$testsuite->getAttribute("name")} != 1) {
-			$testsuites_status{$testsuite->getAttribute("name")} = 1;
-		}
-		$total_tests = $testsuite->getAttribute("pass") + $testsuite->getAttribute("fail");
-		if ($total_tests == 0) {
-		    next;
-		}
-		else {
-			$pass_percent_value = ceil(($testsuite->getAttribute("pass")*100)/$total_tests);
-			$fail_percent_value = floor(($testsuite->getAttribute("fail")*100)/$total_tests);
-			
-		}
-		$percent{$testsuite->getAttribute("name")}{$date}{"0"} = $pass_percent_value;
-		$percent{$testsuite->getAttribute("name")}{$date}{"1"} = $fail_percent_value;
-		$percent{$testsuite->getAttribute("name")}{$date}{"2"} = $testsuite->getAttribute("pass");
-                $percent{$testsuite->getAttribute("name")}{$date}{"3"} = $testsuite->getAttribute("fail");
-	}
-}
-sub get_sorted_filenames
-{
-	opendir($dir_handle,$_[0]);
-	my $files_count = 0;
-	my @files =  readdir($dir_handle);
-	my @sorted_files = ();
-	my $file_count = 0;
+print $cmds."\n";
+print GNUPLOT $cmds;
+close(GNUPLOT);
 
-	foreach $file(@files) {
-		if((substr($file,0,12) eq "testresults-") && (substr($file,-3,3) eq "xml")) {
-			$sorted_files[$file_count] = $dir . $file;
-			$file_count++;
-		}
-	}
- 	 
-	@sorted_files = sort(@sorted_files);
-	@sorted_files = reverse @sorted_files;
-	return @sorted_files;
-}
-sub get_date_from_filename
-{
-	my $date = $_[0];
-	$strip_str = $dir."testresults-";
-	$date =~ s/$strip_str//i;	
-	$date =~ s/.xml//i;
-
-	$date = substr($date,0,4) ."-". substr($date,4,2) ."-". substr ($date,6);
-	return $date;
 }

@@ -6,9 +6,15 @@
 # 
 #
 # Author: Sachin Kumar <skumar1@novell.com>
+#         Roopa Wilson <wroopa@novell.com>
+#         Satya Sudha K <ksathyasudha@novell.com>
+#         Ritvik Mayank <mritvik@novell.com>
+#
 
 use XML::DOM;
+use File::Basename;
 
+#$DATE=20050106;
 $DATE = `date +'%Y%m%d'`;
 chomp $DATE ;
 
@@ -26,35 +32,27 @@ $TESTNOTRUN = 2;
 $MCS_ROOT = "/tmp/snapshot/$DATE/mcs";
 $MONO_ROOT = "/tmp/snapshot/$DATE/mono";
 
-# Create a DOM doc root
-$root = new XML::DOM::Document;
-
-#$root->setXMLDecl ($root->createXMLDecl("1.0", "iso8859-1", undef));
-$root->setXMLDecl ($root->createXMLDecl("1.0", "iso-8859-1")); 
-$docRoot = $root->createElement("test-results");
-
 
 @MCS_NUNIT_TESTDIRS = (
-		       "$MCS_ROOT/class/Commons.Xml.Relaxng",
-		       "$MCS_ROOT/class/Cscompmgd",
-		       "$MCS_ROOT/class/Microsoft.JScript",
-		       "$MCS_ROOT/class/Microsoft.VisualBasic",
-		       "$MCS_ROOT/class/Mono.Directory.LDAP",
-		       "$MCS_ROOT/class/Mono.Security",
-		       "$MCS_ROOT/class/Npgsql",
-		       "$MCS_ROOT/class/System",
-		       "$MCS_ROOT/class/System.Configuration.Install",
-		       "$MCS_ROOT/class/System.Data",
-		       "$MCS_ROOT/class/System.Drawing",
-		       "$MCS_ROOT/class/System.Runtime.Remoting",
-		       "$MCS_ROOT/class/System.Runtime.Serialization.Formatters.Soap",
-		       "$MCS_ROOT/class/System.Security",
-		       "$MCS_ROOT/class/System.Web.Services",
-		       "$MCS_ROOT/class/System.XML",
-		       "$MCS_ROOT/class/corlib",
-		       "$MCS_ROOT/class/System.Web.Services/Test/standalone"
-		       );
-
+                       "$MCS_ROOT/class/Commons.Xml.Relaxng",
+                       "$MCS_ROOT/class/Cscompmgd",
+                       "$MCS_ROOT/class/Microsoft.JScript",
+                       "$MCS_ROOT/class/Microsoft.VisualBasic",
+                       "$MCS_ROOT/class/Mono.Directory.LDAP",
+                       "$MCS_ROOT/class/Mono.Security",
+                       "$MCS_ROOT/class/Npgsql",
+                       "$MCS_ROOT/class/System",
+                       "$MCS_ROOT/class/System.Configuration.Install",
+                       "$MCS_ROOT/class/System.Data",
+                       "$MCS_ROOT/class/System.Drawing",
+                       "$MCS_ROOT/class/System.Runtime.Remoting",
+                       "$MCS_ROOT/class/System.Runtime.Serialization.Formatters.Soap",
+                       "$MCS_ROOT/class/System.Security",
+                       "$MCS_ROOT/class/System.Web.Services",
+                       "$MCS_ROOT/class/System.XML",
+                       "$MCS_ROOT/class/corlib",
+                       "$MCS_ROOT/class/System.Web.Services/Test/standalone",
+                       );
 
 $TESTFILES_ROOT = "/var/www/html/tests/$DATE" ;
 
@@ -64,90 +62,137 @@ $TESTFILES_ROOT = "/var/www/html/tests/$DATE" ;
 			   );
 
 @MCS_TESTFILES = (
-		  "$MCS_ROOT/tests/mcs.log",
-		  "$MCS_ROOT/tests/mcs-unsafe.log",
-		  "$MCS_ROOT/tests/mcs-v2.log"
+		  "$MCS_ROOT/tests"
 		  );
 
-@MBAS_TESTFILES = (
-		   "$MCS_ROOT/btests/mbastests"
+
+@NEW_MBAS_TESTFILES = (
+		   "$MCS_ROOT/mbas/Test/errors/mbas-errors.results",
+		   "$MCS_ROOT/mbas/Test/tests/mbas-tests.results",
+#		   "$MCS_ROOT/mbas/Tests/dlls/mbas-dlls.results",
 		   );
 
-@MCS_ERRORFILES = (
-		   "$MCS_ROOT/errors/mcserrortests"		    
+@RERRORS_MBAS = (
+		"$MCS_ROOT/mbas/Test/rerrors",
+		);
+
+@MCS_ERRORDIR = (
+		   "$MCS_ROOT/errors"
 		   );
 
 @OTHER_TESTFILES = (
 		    "$MCS_ROOT/class/System.Web.Services/Test/standalone"
 		    );
 
+@PROFILES = ( "default",
+              "net_2_0"
+            );      
+		
 
-# wsdl tests
-for ( @OTHER_TESTFILES )
-{
-    next if( open(FILE, $_."/WsdlTestResult.xml" ) != 1 ) ;
-    print $_."/WsdlTestResult.xml\n" ;
-    nunit_results ( $_."/WsdlTestResult.xml", $OTHERTESTS ) ;
-}
+for my $profile (@PROFILES)
+{ 
 
-# mcs  error tests
-for ( @MCS_ERRORFILES )
-{
-    my ($tsresults, $tcresults) = get_mcserror_test_results ( $_ , "SUCCESS", "ERROR" ) ;
-    append_testsuite ( $tsresults, $tcresults, $MCSTESTS, 0 ) ;
-}
+  # Create a DOM doc root
+  $root = new XML::DOM::Document;
+  
+  #$root->setXMLDecl ($root->createXMLDecl("1.0", "iso8859-1", undef));
+  $root->setXMLDecl ($root->createXMLDecl("1.0", "iso-8859-1")); 
+  $docRoot = $root->createElement("test-results");
+
+  # wsdl tests
+  if ($profile eq "default") {
+    for my $element ( @OTHER_TESTFILES )
+    { 
+      open(FILE, $element."/WsdlTestResult.xml" )|| print "can't open file :$element/WsdlTestResult.xml for reading",next  ;
+      print $element."/WsdlTestResult.xml\n" ;
+      nunit_results ( $element."/WsdlTestResult.xml", $OTHERTESTS, $profile ) ;
+     }
+      
+    for my $nunitfile( @OTHER_TESTFILES )
+    { 
+      my $file=$nunitfile ;
+    open(FILE, $nunitfile."/TestResult.xml") || print "can't open file:$nunitfile/TestResult.xml for reading",next  ;
+    print $nunitfile."/TestResult.xml\n" ;
+    nunit_results ( $nunitfile."/TestResult.xml", $NUNITTESTS , $profile) ;
+    }
  
-for ( @MCS_TESTFILES )
-{
-    my ($tsresults, $tcresults )  = get_mcs_tests_results ($_, "PASS", "FAIL") ;
-    append_testsuite ( $tsresults, $tcresults, $MCSTESTS, 0 ) ;
+
+
+# Scan all mono runtime test files 
+   for my $runtime( @MONO_RUNTIME_TESTFILES )
+   {
+     my $tsresults = get_runtime_test_results ( $runtime , "pass", "failed" ) ;
+    #create testsuite element, with current time and date 
+     my $testsuite = create_testsuite_element ( $tsresults, $RUNTIMETESTS, 0 , $profile ) ;
+     my $log = create_log_element ( @$tsresults[0] ) ;
+     $$testsuite->appendChild ( $$log );
+     $docRoot->appendChild ( $$testsuite ) ;
+   }
+ 
+  # New mbas tests 
+   for my $newmbastest( @NEW_MBAS_TESTFILES )
+   {
+     my ($tsresults, $tcresults) = get_new_mbastest_results ( $newmbastest , "OK", "FAILED" ) ;
+
+   # create testsuite element, with current time and date
+     append_testsuite ( $tsresults, $tcresults, $MCSTESTS, 0, $profile ) ;
+   }
+
 }
 
-# Scan all mono runtime test files
-for ( @MONO_RUNTIME_TESTFILES )
-{
-    my $tsresults = get_runtime_test_results ( $_ , "pass", "failed" ) ;
-    
-    # create testsuite element, with current time and date 
-    my $testsuite = create_testsuite_element ( $tsresults, $RUNTIMETESTS, 0 ) ;
-    
-    my $log = create_log_element ( @$tsresults[0] ) ;
-    
-    $$testsuite->appendChild ( $$log );
-    $docRoot->appendChild ( $$testsuite ) ;
+ #mcs  error tests
+
+  for my $dir (@MCS_ERRORDIR)
+  {
+    my $file=$dir;
+    if($profile eq "default") {
+    $file.="/mcserrortests";
+    } else {
+    $file.="/gmcserrortests";
+    }
+    print $file."\n";
+    my ($tsresults, $tcresults) = get_mcserror_test_results ( $file , "OK", "KNOWN" ) ;
+    append_testsuite ( $tsresults, $tcresults, $MCSTESTS, 0, $profile ) ;
+  }
+  
+# Mcs test
+    for my $testfile ( @MCS_TESTFILES )
+   {
+     my $file=$testfile;
+     if ($profile eq "default") {
+        $file.="/mcs.log";
+     } else {
+        $file.="/gmcs.log";
+     }
+     print $file."\n";
+     my ($tsresults, $tcresults )  = get_mcs_tests_results ($file, "PASS", "FAIL") ;
+     append_testsuite ( $tsresults, $tcresults, $MCSTESTS, 0, $profile ) ;
+   }
+   
+    for my $nunitfile( @MCS_NUNIT_TESTDIRS )
+    { my $file=$nunitfile ;
+    open(FILE, $nunitfile."/TestResult-$profile.xml") || print "can't open file:$nunitfile/TestResult-$profile.xml for reading",next  ;
+    print $nunitfile."/TestResult-$profile.xml\n" ;
+    nunit_results ( $nunitfile."/TestResult-$profile.xml", $NUNITTESTS , $profile) ;
+    }
+
+#for mcs/mbas/Test/rerrors
+for my $rerrors ( @RERRORS_MBAS )
+    {
+      open(FILE, $rerrors."/TestResult-$profile.xml" )|| print "can't open file :$rerrors/TestResult-$profile.xml for reading",next  ;
+      print $rerrors."/TestResult-$profile.xml\n" ;
+      nunit_results ( $rerrors."/TestResult-$profile.xml", $MCSTESTS, $profile ) ;
+     }
+
+  $root->appendChild ( $docRoot ) ; 
+  $root->printToFile("testresults-$profile-".$DATE.".xml") ;
+
 }
 
-# mbas tests
-for( @MBAS_TESTFILES )
-{
-    my $tsresults = get_runtime_test_results ( $_ , "OK", "FAILED" ) ;
-    
-    # create testsuite element, with current time and date 
-    my $testsuite = create_testsuite_element ( $tsresults, $MCSTESTS, 0 ) ;
-    
-    my $log = create_log_element ( @$tsresults[0] ) ;
-    
-    $$testsuite->appendChild ( $$log );
-    $docRoot->appendChild ( $$testsuite ) ;
-} 
-
-for ( @MCS_NUNIT_TESTDIRS )
-{
-
-    next if(open(FILE, $_."/TestResult.xml" ) != 1) ;
-    		
-    print $_."/TestResult.xml\n" ;
-    nunit_results ( $_."/TestResult.xml", $NUNITTESTS ) ;
-}
-
-
-$root->appendChild ( $docRoot ) ; 
-$root->printToFile("testresults-".$DATE.".xml") ;
-
+#
 sub nunit_results
 {
-    my ( $file, $type ) = @_ ;
-    
+    my ( $file, $type, $profile ) = @_ ;
     my $parser = new XML::DOM::Parser;
     my $doc = $parser->parsefile ( $file );
 
@@ -163,16 +208,17 @@ sub nunit_results
 
     $tsexectime = sprintf("%.3f", $tsexectime);
 
-    append_testsuite ( $tsresults, $tcresults, $type, $tsexectime ) ;
+    append_testsuite ( $tsresults, $tcresults, $type, $tsexectime, $profile, $file ) ;
 }
 
 sub append_testsuite
 {
-    my ( $tsresults, $tcresults, $type, $tsexectime ) = @_ ;
+#    my ( $tsresults, $tcresults, $type, $tsexectime ) = @_ ;
+    my ( $tsresults, $tcresults, $type, $tsexectime, $profile, $file ) = @_ ;
 
     # create testsuite element, with current time and date 
-    my $testsuite = create_testsuite_element ( $tsresults, $type, $tsexectime ) ;
-    
+#    my $testsuite = create_testsuite_element ( $tsresults, $type, $tsexectime ) ;
+    my $testsuite = create_testsuite_element ( $tsresults, $type, $tsexectime, $profile, $file ) ;
     foreach (@$tcresults )
     {
 	my $testcase = create_testcase_element ( $_ ) ;
@@ -181,8 +227,8 @@ sub append_testsuite
     $docRoot->appendChild ( $$testsuite ) ;
 }
 
-sub get_mcserror_test_results
-{
+sub get_mcserror_test_results {
+
     my ( $testresult, $PASS, $FAIL ) = @_ ;
     my @tsresults = ($testresult, 0, 0, 0) ;
     my @tcresults = () ;
@@ -257,6 +303,67 @@ sub get_mcs_tests_results
     }
     return (\@tsresults, \@tcresults ) ;
 }
+sub get_new_mbastest_results {
+
+    my ( $testresult, $PASS, $FAIL ) = @_ ;
+#    print ("\n LOOKING FOR ". $testresult. "\n" );
+    my @tsresults = ($testresult, 0, 0, 0) ;
+    my @tcresults = () ;
+	
+    my @arr = split ('/', $testresult);
+    my $dirname = dirname($testresult);
+    my $filename = basename($testresult);
+                                                                                                                            
+    # Removing _test.dll from the testsuite name
+    $arr[$#arr] =~ s/_test.dll$//g ;
+    #$filename =~ s/_test.dll$//g ;
+                                                                                                                            
+    # Removing .results from the testsuite name
+    $arr[$#arr] =~ s/.results$//g ;
+   # $filename =~ s/.results$//g ;
+
+    my $testsuite_name = $arr[$#arr -1 ];
+#	print ("\n TESTSUIT ". $testsuite_name . "\n" );
+    open (FILEHANDLE, $testresult);
+    
+    # cs-12.cs...INCORRECT ERROR 
+    # cs0017.cs...SUCCESS
+    while (<FILEHANDLE>) 
+    {	
+	my $testcase = $_ ;
+#	my @arr = split ('\: ', $testcase);	
+	my @arr = split ('\: ', $testcase);	
+#	print($testcase."test.................................... \n" );
+	if ( $testcase =~ /$FAIL/ )
+	{
+	    $tsresults[2]++ ; # increment count 
+            $arr[0] =~ s/[ \t]+$//g;
+	    my $file =  "$arr[0]" ;
+	    my $file =  "$MCS_ROOT/mbas/Test/$testsuite_name/$arr[0]" ;
+#	    my $file =  "$MCS_ROOT/btests/logs/$testsuite_name-$arr[0]" ;
+	    $file .= ".log";
+#		print ("\nLooking for " . $file ."\n");
+	    if (open (FILE, $file) != 1) {
+		push @tcresults, [ $arr[0], $TESTFAIL, "", 0];
+#		push @tcresults, [ $arr[0], $TESTFAIL, $arr[1], "", 0];
+	    }
+	    else {
+		my $stacktrace = "" ;
+		$stacktrace = $stacktrace.$_ foreach (<FILE>);
+		push @tcresults, [ $arr[0], $TESTFAIL, $stacktrace, 0] ;  
+#		push @tcresults, [ $arr[0], $TESTFAIL, $arr[1], $stacktrace, 0] ;  
+	    }
+	}
+
+	if ( $testcase =~ /$PASS/ )
+	{
+	    $tsresults[1]++ ; # increment count 
+	    push @tcresults, [ $arr[0], $TESTPASS, "", "", 0] ;  
+	}
+    }
+    return (\@tsresults, \@tcresults ) ;
+}   
+
 
 sub get_runtime_test_results
 {
@@ -381,17 +488,27 @@ sub get_nunit_testcase_results
 
 sub create_testsuite_element
 {
-    my ( $tsresults, $type, $tsexectime ) = @_;
+    my ( $tsresults, $type, $tsexectime, $profile, $file ) = @_;
 
     my @arr = split ('/', @$tsresults[0]);
      
     # Removing _test.dll from the testsuite name
-    $arr[$#arr] =~ s/_test.dll$//g ;
-
+    if ( $file =~ /rerrors\/TestResult\-default\.xml/ ) 	   
+    	{
+	   $arr[$#arr] =~ s/_btest.dll$//g ;
+	   $arr[$#arr] =~ s/_btest_default.dll$//g ;
+	}
+    else
+    	{
+	   $arr[$#arr] =~ s/_test.dll$//g ;
+	   $arr[$#arr] =~ s/_test_$profile.dll$//g ;
+	}   
     # Removing .log from the testsuite name
     $arr[$#arr] =~ s/.log$//g ;
 
-    # create testsuite element and set it's attributes
+    # Removing .results from the testsuite name
+    $arr[$#arr] =~ s/.results$//g ;
+
     my $testsuite = $root->createElement("testsuite");
     
     $testsuite->setAttribute("name" , $arr[$#arr] ) ;
