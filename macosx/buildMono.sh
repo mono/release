@@ -1,10 +1,10 @@
 #!/bin/sh -x
 
-#Complete rewrite by Adhamh Findlay <mono@adhamh.com> 7-14-04
-#now compiles gettext, pkgconfig, icu, glib, and mono into frameworks
-#more extensible so that other projects can be built into frameworks as well.
-#this script can't build from CVS because it uses curl to download releases
-#possible improvements
+# Complete rewrite by Adhamh Findlay <mono@adhamh.com> 7-14-04
+# now compiles gettext, pkgconfig, icu, glib, and mono into frameworks
+# more extensible so that other projects can be built into frameworks as well.
+# this script can't build from CVS because it uses curl to download releases
+# possible improvements
 #	add function to get source from cvs
 #	add some real functionality to the cleanup function
 #	improve the initial directory creation and add option to remove framework directories
@@ -26,7 +26,7 @@ BUILDROOT="/Users/Shared/MonoBuild"
 VERSION="1.0"
 BASEPREFIX="/Library/Frameworks"
 PREFIX=""
-MONOURL="http://www.go-mono.com/archive/1.0/mono-1.0.tar.gz"
+MONOURL="http://mono.ximian.com/archive/1.0/mono-1.0.tar.gz"
 REMOVE="NO"
 CLEAN="NO"
 PACKAGE="NO"
@@ -61,7 +61,7 @@ creatDirs()
 {
 
 	if [ ! -d "$BUILDROOT/Dependancies" ]; then
-		mkdir $BUILDROOT/Dependancies
+		mkdir -p $BUILDROOT/Dependancies
 	fi
 	
 }
@@ -89,7 +89,7 @@ icuSpecificBuild()
     
 	if [ ! -d $BUILDROOT/Dependancies/icu ]; then
 		echo "Downloading icu-2.8"
-		curl -s -O $2 $3
+		curl -L -Z 5 -s -O $2 $3
 		gnutar xzf $4
 	fi
 	if [ $REMOVE == "YES" ]; then rm $3; fi
@@ -173,7 +173,7 @@ build()
 		else
 			if [ ! -d $BUILDROOT/Dependancies/$DIR ]; then
 				echo "Downloading $DIR"
-				curl -s -O $URL
+				curl -L -Z 5 -s -O $URL
 				gnutar xzf $TARBALL
 			fi
 			if [ $REMOVE == "YES" ]; then rm $TARBALL; fi
@@ -302,7 +302,7 @@ EOF
 trap cleanup 2
 
 #get the options passed in on the command line.  doing this instead
-#of a case because these are optional args.
+#of a case -because these are optional args.
 while getopts hvpimcg option
 	do
 # 		if [ $option == "v" ]; then
@@ -355,6 +355,8 @@ build Gnome.framework/Frameworks/Glib2.framework 2.4.1 \
 build Mono.framework/Frameworks/Icu.framework 2.8 \
 	"--disable-epsv ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz" \
 	icu-2.8.tgz icu 
+
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/Library/Frameworks/Gnome.framework/Frameworks/Glib2.framework/Libraries/pkgconfig
 
 build Mono.framework 1.0 \
 	http://www.go-mono.com/archive/1.0/mono-1.0.tar.gz \

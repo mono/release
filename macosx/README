@@ -7,3 +7,25 @@ There are several options that can be used with this script:
 		-c run configure (defaults to yes)
 		-p create packages in $BUILDROOT/MonoBuild/Packages, defaults to no
 		-h this message
+
+NOTE:  By default the script uses Tiger's PackageMaker because of a bug fix in Tiger.
+
+Normally when building you will launch the script with the -p option.  This will create packages in $BUILDROOT/Packages.  $BUILDROOT is set to /Users/Shared/MonoBuild by default.  
+
+NOTE:  This script doesn't currently use chrooting so it DOES build the packages in /Library/Frameworks.
+
+Once the script is done running with the -p option you will have to do the following steps to finish creating a mpkg and dmg.  This is because PackageMaker can't script mpkg creation.  :-(
+
+Open the MFMPKG.pmsm file.  This is meta package file that works with the defaults.  If you have changed the location that the Packages are created in via the buildMono.sh script then this file won't work for you.
+
+Once the file is open, create the mpkg with the command-k key combo.
+
+Once this is done you will need to edit the Mono.mpkg/Contents/Info.plist file.  Update the IFPkgFlagComponeyDirectory to this:
+
+        <key>IFPkgFlagComponentDirectory</key>
+        <string>../Packages</string>
+
+
+When this is done, run the createDmg.sh script to build the disk image in the current working directory.  
+
+NOTE:  if you change $BUILDROOT in buildMono.sh then you will have to change it in createDmg.sh too.
