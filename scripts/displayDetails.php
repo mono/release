@@ -20,7 +20,8 @@
 	                                if (count($logfile) > 0) {
 						//If testsuite contains logfile details, return the log message
 						$sorted_testcases[0] = "0";
-						$sorted_testcases[1] = $logfile[0]->get_content();
+						$log_content = preg_replace('"<"','&lt;',$logfile[0]->get_content());
+						$sorted_testcases[1] = $log_content;
 						return $sorted_testcases;
 					}
 					$testcases = $testsuite->get_elements_by_tagname("testcase");
@@ -130,13 +131,13 @@
 				print "<tr><td>$count</td><td>" . $testcase . "</td></tr>";
 				$count++;
 			}
+			return;
 		}
-		else
-			$testcases = fetch_testcases($testsuite_key,$status_key,$file);
+		$testcases = fetch_testcases($testsuite_key,$status_key,$file);
 		if ($testcases[0] == "0") {
 			//Displaying log message
 			print "<h3>TESTCASE RESULTS FOR " .  $_GET['testsuite'] . "</h3>";
-			print $testcases[1];
+			print "<pre>".$testcases[1]."</pre>";
 			return;
 		}
 		if ($status_key == 0) //Pass Tests
@@ -179,9 +180,9 @@
 				print "<p>" . $count . ".";
 				print "<b id=$count><font size=4>&nbsp;&nbsp;&nbsp;&nbsp;Test Case Name: "  . $testcase["name"] . "</font></b><br><br>";
 				if ($testcase ["message"] != null)
-                                          print "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Message:</b><br>&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . $testcase["message"] . "<br><br>";
+                                          print "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Message:</b>&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<pre>" . $testcase["message"] . "</pre><br>";
 				if ($testcase ["stacktrace"] != null)
-					print "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Stack Trace:</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . $testcase["stacktrace"] . "<br></p>";
+					print "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Stack Trace:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<pre>" . $testcase["stacktrace"] . "</pre></p>";
 				$count++;
 			}
 		}
