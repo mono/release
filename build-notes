@@ -50,3 +50,13 @@ bb_unpack -c -- cleans the tree
 bb_redo == bb_unpack -c; bb_unpack; bb_do (builds)
 
 export BB_REPODIR=/nfs/release/source_repository/
+
+
+How to create a StrongName key pair
+====================================
+
+[20:38] <spouliot> creating a strongname key pair is easy
+[20:38] <spouliot> sn -k keypair.snk
+[20:38] <spouliot> then extract the public key
+[20:38] <spouliot> sn -p keypair.snk keypair.pub
+
