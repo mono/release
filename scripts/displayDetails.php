@@ -32,7 +32,6 @@
 							$sorted_testcases [$testcases_count]["exectime"] = $testcase->get_attribute("exectime");
 							$sorted_testcases [$testcases_count]["regression"] = $testcase->get_attribute("regression");
 							$message = $testcase->get_elements_by_tagname("message");
-							print $temp;
 							if (count ($message) > 0) {
 								$message_content = preg_replace('"<"','&lt;',$message[0]->get_content());
 								$sorted_testcases [$testcases_count]["message"] = $message_content;
@@ -74,7 +73,15 @@
 					#Store those testcases that failed in the recent run
                                         foreach ($testcases as $testcase) {
                                                 if ($testcase->get_attribute ("status") == "1") {
-                                                        $testcases_1[$testcases_1_count] = $testcase->get_attribute("name");
+                                                        $testcases_1[$testcases_1_count]["name"] = $testcase->get_attribute("name");
+							$message = $testcase->get_elements_by_tagname("message");
+                                                        if (count ($message) > 0) {
+                                                                $message_content = preg_replace('"<"','&lt;',$message[0]->get_content());
+                                                                $testcases_1[$testcases_1_count]["message"] = $message_content;
+                                                        }
+                                                        $stacktrace = $testcase->get_elements_by_tagname("stacktrace");
+                                                        if (count ($stacktrace) > 0)
+                                                                $testcases_1[$testcases_1_count]["stacktrace"] = $stacktrace[0]->get_content ();
                                                         $testcases_1_count++;
                                                 }
                                         }
@@ -93,7 +100,7 @@
 					#Store those testcases that passed in the previous run
                                         foreach ($testcases as $testcase) {
                                                 if ($testcase->get_attribute ("status") == "0") {
-                                                        $testcases_2[$testcases_2_count] = $testcase->get_attribute("name");
+                                                        $testcases_2[$testcases_2_count]["name"] = $testcase->get_attribute("name");
                                                         $testcases_2_count++;
                                                 }
                                         }
@@ -107,7 +114,6 @@
 			if (count($testcases_1) == 0 || count($testcases_2) == 0)
                                 return $regresses_testcases; #return empty array
 
-
                         sort($testcases_1);
                         sort($testcases_2);
 
@@ -118,15 +124,17 @@
                         
 			#Checking for regression
                         while ($testcases_1_count < count($testcases_1) && $testcases_2_count < count($testcases_2)) {
-                                if ($testcases_1[$testcases_1_count] == $testcases_2[$testcases_2_count]) {
-                                        $regressed_testcases[$regression_count] = $testcases_1[$testcases_1_count];
+                                if ($testcases_1[$testcases_1_count]["name"] == $testcases_2[$testcases_2_count]["name"]) {
+                                        $regressed_testcases[$regression_count]["name"] = $testcases_1[$testcases_1_count]["name"];
+					$regressed_testcases[$regression_count]["message"] = $testcases_1[$testcases_1_count]["message"];
+					$regressed_testcases[$regression_count]["stacktrace"] = $testcases_1[$testcases_1_count]["stacktrace"];
                                         $regression_count++;
                                         $testcases_1_count++;
                                         $testcases_2_count++;
                                 }
-                                else if($testcases_1[$testcases_1_count] < $testcases_2[$testcases_2_count])
+                                else if($testcases_1[$testcases_1_count]["name"] < $testcases_2[$testcases_2_count]["name"])
                                         $testcases_1_count++;
-                                else if($testcases_1[$testcases_1_count] > $testcases_2[$testcases_2_count])
+                                else if($testcases_1[$testcases_1_count]["name"] > $testcases_2[$testcases_2_count]["name"])
                                         $testcases_2_count++;
                                                                                                                              
                         }
@@ -170,13 +178,26 @@
 			sanitize ($file_1);//Checking whether input file1 is correct
 			$file_1 = $dir ."testresults-". $file_1 . ".xml";
 
-			print "<h3>REGRESSED TESTCASES FOR " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
+			print "<h3>Regressed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
 			$testcases = fetch_regressed_testcases($testsuite_key,$file,$file_1);
-			print "<table border=1><tr><th>S.No.</th><th>Test Case Name</th><th></tr>";	
+			print "<table border=1><tr><th>S.No.</th><th>Test Case Name</th><th>Message</th></tr>";	
 			$count = 1;
 			foreach ($testcases as $testcase) {
-				print "<tr><td>$count</td><td>" . $testcase . "</td></tr>";
-				$count++;
+				 print "<tr><td>$count </td><td bgcolor=$color><a href=#".$count.">" . $testcase["name"]. "</a></td><td>".$testcase["message"]."</td><tr>";
+                                $count++;
+			}
+
+			print "</table>";
+                                                                                                                             
+                        $count = 1;
+                        foreach ($testcases as $testcase) {
+                                print "<p>" . $count . ".";
+                                print "<b id=$count><font size=4>&nbsp;&nbsp;&nbsp;&nbsp;Test Case Name: "  . $testcase["name"] . "</font></b><br><br>";
+                                if ($testcase ["message"] != null)
+                                          print "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Message:</b>&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<pre>" . $testcase["message"] . "</pre><br>";
+                                if ($testcase ["stacktrace"] != null)
+                                        print "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Stack Trace:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<pre>" . $testcase["stacktrace"] . "</pre></p>";
+                                $count++;
 			}
 			return;
 		}
@@ -185,7 +206,7 @@
 		if ($testcases[0] == "0") {
 
 			#Displaying log message
-			print "<h3>TESTCASE RESULTS FOR " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
+			print "<h3>Testcase results for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
 			print "<pre>".$testcases[1]."</pre>";
 			return;
 		}
@@ -193,7 +214,7 @@
 		#Displaying passed testcases
 		if ($status_key == 0)
 		{
-			print "<h3>PASSED TESTCASES FOR " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
+			print "<h3>Passed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
 			print "<table border=1><tr><th>S.No.</th><th>Test Case Name</th><th>Execution Time</th></tr>";
 			$count = 1;
 			foreach ($testcases as $testcase) {
@@ -206,7 +227,7 @@
 		#Displaying not run testcases
 		else if ($status_key == 2) 
 		{
-			print "<h3>NOT RUN TESTCASES FOR " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
+			print "<h3>Not run testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
 			print "<table border=1><tr><th>S.No.</th><th>Test Case Name</th><th>Message</th></tr>";
 			$count = 1;
                         foreach ($testcases as $testcase) {
@@ -219,7 +240,7 @@
 		#Displaying failed testcases
 		else if ($status_key == 1) 
 		{
-			print "<h3>FAILED TESTCASES FOR " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
+			print "<h3>Failed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
 			print "<table border =1><tr><th><b>S.No.</th></b><th><b>Test Case Name</b></th><th><b>Message</b></th></tr>";
 			$count = 1;
 			foreach ($testcases as $testcase) {

@@ -3,7 +3,7 @@
 -->
 <html>
 <head>
-	<title>Mono TestSuites Results</title>
+	<title>Mono Test Suite Results</title>
 	<?php
 		#This function returns the sorted filenames that are of the required format 'testresults-<date>.xml'
 		function get_sorted_filenames ($dir) 
@@ -260,15 +260,15 @@
 	?>
 </head>
 <body>
-<h2>MONO TESTSUITE RESULTS</h2>
+<h2>Mono Test Suite Results</h2>
 <?php
 	$files = get_sorted_filenames ("testresults/xml/");
 	$date_1 = get_date_from_filename ($files[0]); 
 	$date_2 = get_date_from_filename ($files[1]);
 	
-	$new_table_type[0] = "NUnit TestSuites";
-        $new_table_type[1] = "Compiler TestSuites";
-        $new_table_type[2] = "Runtime Testsuites";
+	$new_table_type[0] = "NUnit Test Suite";
+        $new_table_type[1] = "Compiler Test Suite";
+        $new_table_type[2] = "Runtime Test Suite";
 	
 	for($i=0; $i<3;$i++) { //foreach type of testsuites, fetching the testsuites and displaying the details
 		$testsuites_1 = array();
