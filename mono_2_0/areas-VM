@@ -62,6 +62,8 @@ Code generation quality improvements.
 			Make sure we do not regress on benchmarks.
 			Make sure we do not introduce breaking code.
 
+		Ben: could do this as well.
+
 * Small code generation improvements:
 
 	* small hacks (like direct execution of delegates)
