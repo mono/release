@@ -1,1 +1,9 @@
-This file is going to contain instructions for building on OS X.
+To build Mono.framework using this script all you need to do is run buildMono.sh.
+
+There are several options that can be used with this script:
+
+		-g remove gz files (defaults to  no)
+		-m make clean (defaults to no)
+		-c run configure (defaults to yes)
+		-p create packages in $BUILDROOT/MonoBuild/Packages, defaults to no
+		-h this message

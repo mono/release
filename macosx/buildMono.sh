@@ -1,5 +1,15 @@
 #!/bin/sh -x
 
+#Complete rewrite by Adhamh Findlay <mono@adhamh.com> 7-14-04
+#now compiles gettext, pkgconfig, icu, glib, and mono into frameworks
+#more extensible so that other projects can be built into frameworks as well.
+#this script can't build from CVS because it uses curl to download releases
+#possible improvements
+#	add function to get source from cvs
+#	add some real functionality to the cleanup function
+#	improve the initial directory creation and add option to remove framework directories
+#		that will force a rebuild of the frameworks
+
 # this horrid little script updates a mono revision
 # Author: Andy Satori <dru@satori-assoc.com>
 # Modifications: kangaroo
@@ -12,135 +22,87 @@
 
 set -e 
 
-INITIALDIR=$1
-VERSION=$2
-PREFIX=$INITIALDIR/PKGROOT/Library/Frameworks/Mono.framework/Versions/$VERSION
-MONOURL="http://www.go-mono.com/archive/rc/mono-$VERSION.tar.gz"
-#http://www.go-mono.com/archive/rc/mono-/usr/local/mono.build.tar.gz -O
+BUILDROOT="/Users/Shared/MonoBuild"
+VERSION="1.0"
+BASEPREFIX="/Library/Frameworks"
+PREFIX=""
+MONOURL="http://www.go-mono.com/archive/1.0/mono-1.0.tar.gz"
+REMOVE="NO"
+CLEAN="NO"
+PACKAGE="NO"
+CONFIGURE="YES"
 
-echo $MONOURL
+usage()
+{
+# 		-p <prefix for builds> #default is /Library/Frameworks/Mono.framework/Versions/\$VERSION
+# 		-v <version of Mono>
+# 		-i <dependencies dir> #location for mono deps
+# 		-m <mono url> #url to use for Mono source
+echo "Proper usage is as follows"
+cat <<EOF
+	buildNew.sh
+		-g remove gz files (default no)
+		-m make clean (default no)
+		-c run configure (default yes)
+		-p create packages in $BUILDROOT/MonoBuild
+		-h this message
+EOF
+exit
+}
 
-export C_INCLUDE_PATH=$C_INCLUDE_PATH:$PREFIX/include
-export LDFLAGS=-L$PREFIX/lib
-export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/X11R6/lib:$PREFIX/lib
+cleanup()
+{
+	#Cleans up if the script is interupted.
+	echo
+	echo "Interupted cleaning"
+}
 
-if test ! -d "$INITIALDIR/Dependancies"; then
-    mkdir $INITIALDIR/Dependancies
-fi
+creatDirs()
+{
 
-# make the directories as need for the Framework (which isn't really 
-# a framework, but it looks like one and makes a nice placeholder until 
-# someone smarter than I am can come in and make it better)
-
-if test ! -d "/Library/Frameworks/Mono.framework"; then
-    mkdir -p /Library/Frameworks/Mono.framework/Versions
-fi
-
-if test ! -d "/Library/Frameworks/Mono.framework/Versions/$VERSION"; then
-    mkdir /Library/Frameworks/Mono.framework/Versions/$VERSION
-fi
-
-if test ! -d "$INITIALDIR/PKGROOT"; then
-	mkdir $INITIALDIR/PKGROOT
-fi
-
-# set up the environment for the build
-export PATH=$PATH:$PREFIX/bin:/usr/X11R6/bin
-echo "The new path is ${PATH}"
-export ACLOCAL_FLAGS="-I $PREFIX/share/aclocal/"
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig
-
-
-cd $INITIALDIR/Dependancies
-
-# pkg-config
-
-if test ! -f "$PREFIX/bin/pkg-config"; then
-    if test ! -d "pkgconfig-0.15.0"; then
-		echo "Downloading pkg-config"
-		curl -s http://www.freedesktop.org/software/pkgconfig/releases/pkgconfig-0.15.0.tar.gz -O
-		tar xzf pkgconfig-0.15.0.tar.gz
-		rm pkgconfig-0.15.0.tar.gz
+	if [ ! -d "$BUILDROOT/Dependancies" ]; then
+		mkdir $BUILDROOT/Dependancies
 	fi
-    
-    cd pkgconfig-0.15.0
-	echo "Building pkg-config"
-    
-    ./configure -quiet --prefix=$PREFIX
-    make
-    make install
-    make clean
-    
-    cd ..
-fi
+	
+}
 
-# gettext
-
-echo +++ processing gettext
-
-if test ! -f "$PREFIX/bin/gettext"; then
-
-    if test ! -d "gettext-0.14.1"; then
-		echo "Downloading gettext"
-		curl -s http://ftp.gnu.org/pub/gnu/gettext/gettext-0.14.1.tar.gz -O
-		tar xzf gettext-0.14.1.tar.gz
-		rm gettext-0.14.1.tar.gz
+createFramework()
+{	
+	cd $BASEPREFIX/$1/Versions
+	if [ -e "$BASEPREFIX/$FRAMEWORKNAME/Versions/Current" ]; then
+		rm Current
 	fi
-    
-    cd gettext-0.14.1
-    
-	echo "Building gettext"
-    ./configure -quiet --prefix=$PREFIX
-    make
-    make install
-    make clean
-    
-    cd ..
-fi
-
-# glib2
-
-echo +++ processing glib2
-
-if test ! -f "$PREFIX/lib/libgobject-2.0.la"; then
-    if test ! -d "glib-2.4.1"; then
-		echo "Downloading libgobject"
-		curl -s ftp://ftp.gtk.org/pub/gtk/v2.4/glib-2.4.1.tar.gz -O
-		tar xzf glib-2.4.1.tar.gz
-		rm glib-2.4.1.tar.gz
+	
+	ln -sf $2 Current
+	echo "Creating framework links"
+	cd $BASEPREFIX/$1
+	if [ $FRAMEWORKNAME != "PkgConfig.framework" ]; then
+		ln -sf Versions/Current/lib Libraries
+		ln -sf Versions/Current/include Headers
 	fi
-    
-    cd glib-2.4.1
-    
-	echo "Building libgobject"
-    ./configure -quiet --prefix=$PREFIX 
-    make
-    make install
-    make clean
-    
-    cd ..
-fi
+	ln -sf Versions/Current/bin Commands
+}
 
-# boehm gc, is now built-in (since 0.95)
-
-# icu ( http://oss.software.ibm.com/icu/index.html )
-
-
-if test ! -f "$PREFIX/lib/libicuuc.dylib.28.0"; then
-    if test ! -d "icu"; then
-		echo "Downloading icu"
-		curl -s ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz -O --disable-epsv
-		tar xzf icu-2.8.tgz
-		rm icu-2.8.tgz
-    fi
+icuSpecificBuild()
+{
+    PREFIX=$1
     
+	if [ ! -d $BUILDROOT/Dependancies/icu ]; then
+		echo "Downloading icu-2.8"
+		curl -s -O $2 $3
+		gnutar xzf $4
+	fi
+	if [ $REMOVE == "YES" ]; then rm $3; fi
+
     cd icu/source
-	echo "Building icu"
-    
-    ./runConfigureICU MacOSX --with-data-packaging=library --prefix=$PREFIX --libdir=$PREFIX/lib/ 
+	if [ ! -f ./Makefile ]; then
+		./runConfigureICU MacOSX --with-data-packaging=library --prefix=$PREFIX --libdir=$PREFIX/lib/ 
+	fi
+	echo $PWD
+	if [ $CLEAN == "YES" ]; then make clean; fi
     gnumake
     make install
-    make clean
+    #make clean
     
     cd $PREFIX/lib
     
@@ -177,51 +139,234 @@ if test ! -f "$PREFIX/lib/libicuuc.dylib.28.0"; then
     # libicuuc
     install_name_tool -id $PREFIX/lib/libicuuc.dylib.28 libicuuc.dylib.28.0
     install_name_tool -change libicudata.dylib.28 $PREFIX/lib/libicudata.dylib.28 libicuuc.dylib.28.0
-    
-    cd $INITIALDIR
-fi
 
-# mono
+}
 
-echo "patching libintl to not be statically linked"
-perl -pi -e "s/old_library='libintl.a'/old_library=''/" $PREFIX/lib/libintl.la
-echo "processing mono run-time libraries"
+build()
+{
+	#buildDepNew FRAMEWORKNAME FRAMEWORKVERSION URL TARBALL DIR
+	#FRAMEWORKNAME = PkgConfig.Framework | Gnome.framework/Framewoks/Glib2.framework
+	cd $BUILDROOT/Dependancies
+	FRAMEWORKNAME=$1
+	FRAMEWORKVERSION=$2
+	URL=$3
+	TARBALL=$4
+	DIR=$5
+	PREFIX="$BASEPREFIX/$FRAMEWORKNAME/Versions/$FRAMEWORKVERSION"
 
-if test ! -f "$PREFIX/bin/mono"; then
-    if test ! -d "$INITIALDIR/Bootstrap"; then
-		mkdir $INITIALDIR/Bootstrap
+	#sets the build env.  
+	export PATH=$PREFIX/bin:/usr/X11R6/bin:$PATH
+	export ACLOCAL_FLAGS="-I $PREFIX/share/aclocal/"
+	export C_INCLUDE_PATH=$C_INCLUDE_PATH:$PREFIX/include
+	export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
+	export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/X11R6/lib:$PREFIX/lib
+
+	# Check to see if pkg-config is present, needs to be dled, and/or installed
+	if [ ! -d "$BASEPREFIX/$FRAMEWORKNAME/Versions/$FRAMEWORKVERSION" ]; then
+	
+		echo "Creating $BASEPREFIX/$FRAMEWORKNAME"
+		
+		mkdir -p $PREFIX
+		
+		if [ $FRAMEWORKNAME = "Mono.framework/Frameworks/Icu.framework" ]; then
+			icuSpecificBuild $PREFIX $URL $TARBALL
+		else
+			if [ ! -d $BUILDROOT/Dependancies/$DIR ]; then
+				echo "Downloading $DIR"
+				curl -s -O $URL
+				gnutar xzf $TARBALL
+			fi
+			if [ $REMOVE == "YES" ]; then rm $TARBALL; fi
+			
+			cd $DIR
+			echo "Building $FRAMEWORKNAME"
+			#CLEAN must be YES if the --prefix has changed
+			if [ $CLEAN == "YES" ]; then 
+				make clean
+			fi
+			if [ $CONFIGURE == "YES" ]; then
+				./configure --prefix=$PREFIX
+			fi
+			make
+			make install
+		fi
+		#if we aren't going to create a package then we need to 
+		#go ahead and set this up as a framework.
+		if [ $PACKAGE == "NO" ]; then
+			createFramework $FRAMEWORKNAME $FRAMEWORKVERSION
+		fi
+		cd $BUILDROOT/Dependancies	
+	fi
+}
+
+
+createPackage()
+{
+	FRAMEWORKNAME=$1
+	VERSION=$2
+	IDENTIFIER=$3
+	DESCRIPTION=$4
+	RFILES="/usr/local/mono/release/macosx/resources"
+	TIGER="/Volumes/tiger"
+	if [ ! -d $TIGER ]; then
+		echo "This script uses the PackageMaker from Tiger because the"
+		echo "The Panther version always exits with a 2"
+		echo "If you have Tiger installed the you need to modifiy"
+		echo "the TIGER variable in this script"
+		exit 2
+	fi
+	
+	PM="$TIGER/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
+	
+	if [ ! -d ${BUILDROOT}/PKGROOT/Library/Frameworks ]; then
+		mkdir -p ${BUILDROOT}/PKGROOT/Library/Frameworks
 	fi
 
-    echo "Downloading Mono $VERSION"
-    cd $INITIALDIR/Bootstrap    
-    if test ! -d "mono-$VERSION"; then
-		curl -s -O $MONOURL
-		tar xzf mono-$VERSION.tar.gz
-		rm mono-$VERSION.tar.gz
+	if [ ! -d ${BUILDROOT}/Packages ]; then
+		mkdir -p ${BUILDROOT}/Packages
 	fi
-    
-    cd mono-$VERSION
-    
-	echo "Building Mono $VERSION"
-    ./configure -quiet --prefix=$PREFIX
-    make
-    make install
-    make clean
-    
-    cd ..
+
+	if [ ! -d ${BUILDROOT}/${FRAMWORKNAME}/PKGRES/Resources ]; then
+		mkdir -p ${BUILDROOT}/${FRAMWORKNAME}/PKGRES/Resources
+	fi
+	
+	if [ ! -d ${BUILDROOT}/PKGROOT/Library/Frameworks/${FRAMEWORKNAME}.framework ]; then
+		cp -r /Library/Frameworks/${FRAMEWORKNAME}.framework ${BUILDROOT}/PKGROOT/Library/Frameworks
+	fi
+	
+	#cp -r ${RFILES}/* ${BUILDROOT}/${FRAMWORKNAME}/PKGRES/Resources
+	
+cat <<EOF > ${BUILDROOT}/PKGRES/Info.plist
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+                <dict>
+                <key>CFBundleGetInfoString</key>
+                <string>${VERSION}</string>
+                <key>CFBundleIdentifier</key>
+                <string>${IDENTIFIER}</string>
+                <key>CFBundleName</key>
+                <string>${FRAMEWORKNAME}.framework</string>
+                <key>CFBundleShortVersionString</key>
+                <string>${VERSION}</string>
+                <key>IFMajorVersion</key>
+                <integer>0</integer>
+                <key>IFMinorVersion</key>
+                <integer>0</integer>
+                <key>IFPkgFlagAllowBackRev</key>
+                <false/>
+                <key>IFPkgFlagAuthorizationAction</key>
+                <string>AdminAuthorization</string>
+                <key>IFPkgFlagDefaultLocation</key>
+                <string>/</string>
+                <key>IFPkgFlagInstallFat</key>
+                <false/>
+                <key>IFPkgFlagIsRequired</key>
+                <false/>
+                <key>IFPkgFlagRelocatable</key>
+                <false/>
+                <key>IFPkgFlagRestartAction</key>
+                <string>NoRestart</string>
+                <key>IFPkgFlagRootVolumeOnly</key>
+                <true/>
+                <key>IFPkgFlagUpdateInstalledLanguages</key>
+                <false/>
+                <key>IFPkgFormatVersion</key>
+                <real>0.10000000149011612</real>
+                </dict>
+        </plist>
+EOF
+
+cat <<EOF > ${BUILDROOT}/PKGRES/Description.plist 
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+	<plist version="1.0">
+	<dict>
+			<key>IFPkgDescriptionDeleteWarning</key>
+			<string></string>
+			<key>IFPkgDescriptionDescription</key>
+			<string>${DESCRIPTION}</string>
+			<key>IFPkgDescriptionTitle</key>
+			<string>${FRAMEWORKNAME} Framework</string>
+			<key>IFPkgDescriptionVersion</key>
+			<string>${VERSION}</string>
+	</dict>
+	</plist>
+EOF
+
+	if [ ! -d ${BUILDROOT}/${FRAMEWORKNAME}-${VERSION}.pkg ]; then
+    	${PM} -build -p ${BUILDROOT}/Packages/${FRAMEWORKNAME}-${VERSION}.pkg -f ${BUILDROOT}/PKGROOT -r ${BUILDROOT}/PKGRES/Resources -i ${BUILDROOT}/PKGRES/Info.plist -d ${BUILDROOT}/PKGRES/Description.plist
+	fi
+}
+
+trap cleanup 2
+
+#get the options passed in on the command line.  doing this instead
+#of a case because these are optional args.
+while getopts hvpimcg option
+	do
+# 		if [ $option == "v" ]; then
+# 			VERSION=$OPTARG	
+# 		fi
+# 		if [ $option == "p" ]; then
+# 			PREFIX=$OPTARG	
+# 		fi
+# 		if [ $option == "i" ]; then
+# 			DEPSDIR=$OPTARG	
+# 		fi
+ 		if [ $option == "m" ]; then
+ 			CLEAN="YES"	
+ 		fi
+		if [ $option == "c" ]; then
+			CONFIGURE="YES"	
+		fi
+		if [ $option == "g" ]; then
+			REMOVE="YES"	
+		fi
+		if [ $option == "h" ]; then
+			usage
+		fi
+		if [ $option == "p" ]; then
+			PACKAGE="YES"	
+		fi
+done
+
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig
+
+creatDirs
+
+#Build the /Library/Frameworks/PkgConfig.framework
+build PkgConfig.framework 0.15 \
+	http://www.freedesktop.org/software/pkgconfig/releases/pkgconfig-0.15.0.tar.gz \
+	pkgconfig-0.15.0.tar.gz pkgconfig-0.15.0
+#Build the /Library/Frameworks/GetText.framework
+build GetText.framework 0.14.1 \
+	http://ftp.gnu.org/pub/gnu/gettext/gettext-0.14.1.tar.gz \
+	gettext-0.14.1.tar.gz gettext-0.14.1
+#Build the /Library/Frameworks/Gnome.framework/Frameworks/Glib2.framework
+#this is don to provide a means to add more Gnome code later
+
+build Gnome.framework/Frameworks/Glib2.framework 2.4.1 \
+	ftp://ftp.gtk.org/pub/gtk/v2.4/glib-2.4.1.tar.gz \
+	glib-2.4.1.tar.gz glib-2.4.1
+#Build the /Library/Frameworks/Mono.framwork/Frameworks/Icu.framework
+#icu is only used by mono so it should be placed inside the mono framework
+
+build Mono.framework/Frameworks/Icu.framework 2.8 \
+	"--disable-epsv ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz" \
+	icu-2.8.tgz icu 
+
+build Mono.framework 1.0 \
+	http://www.go-mono.com/archive/1.0/mono-1.0.tar.gz \
+	mono-1.0.tar.gz mono-1.0 
+
+echo "build completed"
+
+
+if [ $PACKAGE == "YES" ]; then
+	echo "starting packaging"
+	createPackage PkgConfig 0.15 org.freedesktop.pkgconfig "PkgConfig Framework 0.15"
+	createPackage GetText 0.14.1 org.gnu.gettext "GetText Framework 0.14.1"
+	createPackage Gnome 0.1 org.gnome "Gnome Framework 0.1"
+	createPackage Mono 1.0 com.ximian.mono "Mono Framework 1.0"
 fi
-
-# setup the Current symlink
-
-cd /Library/Frameworks/Mono.framework/Versions
-
-if test -e "/Library/Frameworks/Mono.framework/Versions/Current"; then
-    rm Current
-fi
-
-ln -s $VERSION Current
-echo +++ Setup the rest of the framework
-cd /Library/Frameworks/Mono.framework
-ln -s Versions/Current/lib Libraries
-ln -s Versions/Current/include Headers
-ln -s Versions/Current/bin Commands
