@@ -3,9 +3,10 @@ use XML::DOM;
 use POSIX;
 
 $max = 10;
-$dir = "TestResults/Xml/";
+$root_dir = "./";
+$dir = $root_dir."TestResults/Xml/";
 
-$chart_dir = "TestResults/Charts/";
+$chart_dir = $root_dir."TestResults/Charts/";
 
 system("mkdir ". $chart_dir);
 
@@ -36,9 +37,10 @@ foreach $testsuite_key(@testsuite_keys) {
 		print FILE $date_key . "\t".$percent{$testsuite_key}{$date_key}{0}."\t".$percent{$testsuite_key}{$date_key}{1}."\n";
 	}
 	close (FILE);
-
+	$first_date = $date_keys[0];
+	$last_date = $date_keys[scalar(@date_keys)-1];
 	$output_file = $chart_dir.$testsuite_key ."/".$current_date. ".png";
-	plot_current_data ($output_file,$testsuite_key,$xtics);
+	plot_current_data ($output_file,$testsuite_key,$first_date,$last_date);
 
 }
 unlink("temp.dat");
@@ -48,7 +50,8 @@ sub plot_current_data
 	print "\nPlotting to file ".$_[0]."...\n";
 	my $output_file = $_[0];
 	my $testsuite_name = $_[1];
-	my $xtics = $_[2];
+	my $first_date = $_[2];
+	my $last_date = $_[3];
 	my $GNUPlot = '/usr/bin/gnuplot';
         open ( GNUPLOT, "|$GNUPlot");
 
@@ -65,10 +68,9 @@ set timefmt "%Y-%m-%d";
 set format x "%Y-%m-%d";
 set key box lw 0.5;
 set xtics rotate;
-set xtics 86400;
-set noxmtics ;
+set nomxtics;
+set xtics "$first_date",86400,"$last_date";
 plot "temp.dat" using 1:2 title 'Pass Percent' with linespoints lt 2 lw 1 pt 1 ps 2, "temp.dat" using 1:3 title 'Fail Percent' with linespoints lt 1 lw 1 pt 1 ps 2;
-
 gnuplot_Commands
     close(GNUPLOT);
 }
