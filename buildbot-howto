@@ -1,23 +1,26 @@
 Hosts:
 
-Architecture	Hostname	Responsible for
+Architecture	Hostname	Responsible for		User / Pass
 ============    ========        ===============
 
 x86		hardhat		Packaging
-		x86-mono	intel-1.0 and intel-head lanes
-		cygwin-mono	cygwin-head lane
+		x86-mono	intel-1.0		builder / builder
+				intel-head		builder2 / builder
+		cygwin-mono	cygwin-head lane	
 
-PPC		g5-mono		ppc-1.0 and ppc-head lanes
+PPC		g5-mono		ppc-1.0			builder / builder
+				ppc-head		builder / builder	 
 		macmono		
 
-Sparc		sparcmono	sparc-1.0 and sparc-head lanes
+Sparc		sparcmono	sparc-1.0		builder / builder
+				sparc-head		builder / builder
 
-AMD64		amd-mono	amd-head lane
+AMD64		amd-mono	amd-head lane		builder / builder
 
 
 Q.  How to reconnect a build node?
 
-A.  First, ssh into the node as builder / builder. 
+A.  First, ssh into the node using the corresponding username and password.
 
     On each of the build nodes, there is a ongoing screen session for
 each lane the node is responsible for: i.e. on x86-mono, the
