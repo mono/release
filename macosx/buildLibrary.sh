@@ -8,9 +8,10 @@ createFramework()
 	echo "=================================================="
 	echo ""
 	
-	cd $BASEPREFIX/$1/Versions
+	FRAMEWORKNAME=$1
+	cd $BASEPREFIX/$FRAMEWORKNAME/Versions
 	if [ -e "$BASEPREFIX/$FRAMEWORKNAME/Versions/Current" ]; then
-		rm Current
+		rm -r Current
 	fi
 	
 	ln -sf $2 Current
@@ -193,4 +194,23 @@ build()
 	echo "=================================================="
 	echo ""
 
+}
+
+svnbuild() {
+    clear
+    
+    export PREFIX=/Library/Frameworks/Mono.framework/Versions/Current
+    export NEW_PREFIX=/Library/Frameworks/Mono.framework/Versions/nightly
+
+    export PKG_CONFIG_PATH=/Library/Frameworks/Mono.framework/Library/pkgconfig
+    export PATH=${PREFIX}/bin:/usr/X11R6/bin:$PATH
+        export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/Current/share/aclocal/"
+        export C_INCLUDE_PATH=${C_INCLUDE_PATH}:${PREFIX}/include
+        export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
+        export DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}:/usr/X11R6/lib:${PREFIX}/lib
+
+    cd ${SVNDIR}
+    ./autogen.sh --prefix=${NEW_PREFIX}
+    make
+    make install
 }

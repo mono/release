@@ -25,7 +25,9 @@ usage()
 {
 echo "Proper usage is as follows"
 cat <<EOF
-	buildMono.sh <monoversion>
+	buildMono.sh
+                -v <mono version> specifies version of mono to build
+                -s <svn directory> build from svn checked out sources
 		-R remove gz files (default no)
 		-C make clean (default no)
 		-c run configure (default no)
@@ -38,16 +40,20 @@ EOF
 exit
 }
 
-if [ $# != 1 ]; then
+if [ $# == 0 ]; then
     usage
 fi
 
+if [ $1 != "-v" ]; then
+    echo "For safety sake, -v must be the first option"
+    usage
+fi
 
 BUILDROOT="/Users/Shared/MonoBuild"
-MONOVERSION=$1
+#MONOVERSION=$1
 BASEPREFIX="/Library/Frameworks"
 PREFIX=""
-MONOURL="http://www.go-mono.com/archive/$1/mono-$1.tar.gz"
+#MONOURL="http://www.go-mono.com/archive/$1/mono-$1.tar.gz"
 BUILD="YES"	
 REMOVE="NO"
 CLEAN="NO"
@@ -57,13 +63,11 @@ PKGCONFIG="http://www.freedesktop.org/software/pkgconfig/releases/pkgconfig-0.15
 GETTEXT="http://ftp.gnu.org/pub/gnu/gettext/gettext-0.14.1.tar.gz"
 GLIB="ftp://ftp.gtk.org/pub/gtk/v2.4/glib-2.4.1.tar.gz"
 ICU="ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz"
-CVS="NO"
-CVSMONO="/tmp/mono"
+SVN="NO"
+MONOBUILDFILES=${PWD}
+#CVSMONO="/tmp/mono"
 #This is the default to make my life easier!
-CVSUSER="adhamh"
-
-echo $MONOURL
-exit
+#CVSUSER="adhamh"
 
 #the buildLibrary file contains functions to build mono
 . ./buildLibrary.sh
@@ -91,12 +95,13 @@ trap cleanup 2
 
 #get the options passed in on the command line.  doing this instead
 #of a case -because these are optional args.
-while getopts hvpiCcRsuo option
+while getopts hv:piCcRs:uo option
 	do
 		echo $option
-# 		if [ $option == "v" ]; then
-# 			VERSION=$OPTARG	
-# 		fi
+ 		if [ $option == "v" ]; then
+ 			MONOVERSION=$OPTARG	
+			MONOURL="http://www.go-mono.com/archive/${MONOVERSION}/mono-${MONOVERSION}.tar.gz"
+ 		fi
 # 		if [ $option == "p" ]; then
 # 			PREFIX=$OPTARG	
 # 		fi
@@ -127,12 +132,11 @@ while getopts hvpiCcRsuo option
 				echo "You can dl this from http://mono-project.com/downloads/"
 				exit
 			else
-				CVS="YES"
+				SVN="YES"
+				SVNDIR=$OPTARG
 			fi
 		fi
-		if [ $option == "u" ]; then
-				CVSUSER=$OPTARG
-		fi
+
 done
 
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig
@@ -140,7 +144,7 @@ export PATH=/usr/local/bin:/bin:/sbin:/usr/bin:/usr/sbin
 
 creatDirs
 
-# if [ $CVS == "YES" ]; then
+# if [ $SVN == "YES" ]; then
 # 	#This will build mono from the mono ximain repository.
 # 	#It bypasses building Mono's deps because you must already have then installed
 # 	#in order to build mono.  The -s option doesn't work if you don't have a 
@@ -160,12 +164,12 @@ creatDirs
 # 	MONOVERSION="CVS"
 # 	
 # 	echo "Building Mono"
-# 	cd ${CVSMONO}
+# 	cd ${SVNDIR}
 # 	./autogen.sh --prefix=/Library/Frameworks/Mono.framework/Versions/CVS
 # 	make
 # 	cd /Library/Frameworks/Mono.framework/Versions
 # 	ln -sf ${MONOVERSION} Current
-# 	
+#fi 	
 # else
 	#This is the "normal" build used mainly to create a framework that can be used
 	#to create a package that can be distributed.
@@ -192,8 +196,11 @@ creatDirs
 		if [ ! -d "/Library/Framework/Mono.framework/Version/${MONOVERSION}/lib/icu" ];then 
 			build Mono.framework ${ICU} icu icu-2.8.tgz icu 
 		fi
-	 
-		build Mono.framework ${MONOURL} mono mono-${MONOVERSION}.tar.gz mono-${MONOVERSION}
+		if [ $SVN == "YES" ]; then
+		    svnbuild Mono.framework
+		else
+		    build Mono.framework ${MONOURL} mono mono-${MONOVERSION}.tar.gz mono-${MONOVERSION}
+		fi
    	fi 
 #fi
 

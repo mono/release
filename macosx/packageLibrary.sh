@@ -7,10 +7,9 @@ createPackage()
 	IDENTIFIER=$3
 	DESCRIPTION=$4
 	RFILES="mono/resources"
-	TIGER=""
-	PM="$TIGER/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
+	PM="/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
 
-	if [ ! -d $TIGER ]; then
+	if [ ! -d "/Developer/Applications/Utilities/PackageMaker.app" ]; then
 		echo "This script uses the PackageMaker from Tiger because the"
 		echo "The Panther version always exits with a 2"
 		echo "If you have Tiger installed the you need to modifiy"
@@ -48,7 +47,7 @@ createPackage()
 	fi
 	
 	#EVIL HACK
-	cd /Users/adhamh/Developer/release/macosx
+	cd ${MONOBUILDFILES}
 	for i in `ls ${RFILES}`; do
 		if [ ! ${i} == "CVS" ]; then
 			cp -R ${RFILES}/${i} ${BUILDROOT}/resources
@@ -144,10 +143,10 @@ if [ -d /Library/Frameworks/Mono.framework ]; then
 	ln -sf Versions/Current/bin Commands
 	
         if [ ! -d /Library/Frameworks/Mono.framework/Versions/Current/Resources ]; then
-            mkdir /Library/Frameworks/Mono.framework/Versions/Current/Resources
+            mkdir -p /Library/Frameworks/Mono.framework/Versions/Current/Resources
         fi
-        cp ../Info.plist /Library/Frameworks/Mono.framework/Versions/Current/Resources/
-        cp ./version.plist /Library/Frameworks/Mono.framework/Versions/Current/Resources/
+        #cp ../Info.plist /Library/Frameworks/Mono.framework/Versions/Current/Resources/
+        #cp ./version.plist /Library/Frameworks/Mono.framework/Versions/Current/Resources/
 
 
 else 
@@ -172,7 +171,7 @@ fi
 EOF
 
 	if [ ! -d ${BUILDROOT}/PKGROOT/Library/Frameworks/${FRAMEWORKNAME}.framework/Versions/${VERSION}/Resources ]; then
-		mkdir ${BUILDROOT}/PKGROOT/Library/Frameworks/${FRAMEWORKNAME}.framework/Versions/${VERSION}/Resources
+		mkdir -p ${BUILDROOT}/PKGROOT/Library/Frameworks/${FRAMEWORKNAME}.framework/Versions/${VERSION}/Resources
 	fi
 	cp ${BUILDROOT}/plists/Info.plist ${BUILDROOT}/PKGROOT/Library/Frameworks/${FRAMEWORKNAME}.framework/Versions/${VERSION}/Resources/
 	cp ${BUILDROOT}/resources/version.plist ${BUILDROOT}/PKGROOT/Library/Frameworks/${FRAMEWORKNAME}.framework/Versions/${VERSION}/Resources/
