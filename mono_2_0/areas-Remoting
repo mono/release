@@ -1,0 +1,9 @@
+Remoting
+by Lluis Sánchez (lluis@ximian.com)
+
+Remoting
+--------
+
+- There is a new IPC channel, which is based on named pipes on Windows.
+We'll need to chose an equivalent technology in Linux.
+

@@ -1,0 +1,30 @@
+XML Serialization
+by Lluis Sánchez (lluis@ximian.com)
+
+Here is a summary of changes in my areas of work for MS.NET 2.0. My
+overall feeling is that it should not be too difficult to implement the
+new features, since there aren't architectural changes, only small
+changes and additions.
+
+XmlSerializer
+-------------
+
+* New tool for generating serializers. It generates an assembly that
+implements serializers for a set of client web service proxies, thus
+avoiding the startup time that MS.NET has when using those proxies
+(avoids having to generate and compile those on the fly). There are new
+methods in XmlSerializer to support this. Since we already support
+serializer generation, whis will be easy to implement.
+
+* The schema importer (used to generate classes from xml schemas) is now
+extensible, through the use of SchemaImporterExtension. Extensions can
+be added by code or by configuration files. Together with the
+IXmlSerializable (now officially supported) it is possible to generate
+schemas from types, and types for schemas for custom classes.
+
+* Soap 1.2 encoding: There are some small changes that affect the
+encoded format.
+
+This is the same serializer used in MS.NET 1.1, the new serializer comes
+with Indigo.
+

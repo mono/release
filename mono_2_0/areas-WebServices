@@ -1,0 +1,19 @@
+Web Services assembly.
+by Lluis Sánchez (lluis@ximian.com)
+
+Web Services
+------------
+
+* Added support for Soap 1.2.
+
+* New way of doing async calls in client proxies, based on events
+instead of the BeginInvoke/EndInvoke pattern.
+
+* Basic Profile conformance checker. The Soap Basic Profile is a subset
+of Soap, which simplifies the protocol and makes interoperability
+easier. There is a new class that can check if a WSDL conforms the Basic
+Profile.
+
+* The WSDL tool has new code generation options, and allows the sharing
+of data types between several web services.
+

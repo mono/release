@@ -1,0 +1,89 @@
+XML 2.0 study
+by Atsushi Enomoto (atsushi@ximian.com)
+
+Here I summarize XML 2.0 stuff.
+
+** New feature survey
+
+        * XmlReaderSettins/XmlWriterSettings support
+          They now supports some options such as schema specification,
+          DTD rejection, schema conformance level, tokenization changes.
+
+        * W3C compliant Schema support
+          such as XmlSchemaSet, ConformanceLevel, XmlSchemaValidity.
+          They means now MS schema validator is almost the same as
+          what W3C expects
+
+        * Editable XPathNavigator support
+          Current XPathDocument is (by design) read-only and we might
+          have to implement another (simplified) DOM.
+
+        * XQuery support
+          It is totally new in 2.0. Almost all things are internal or
+          MS.Internal.* namespaces: XQuery parser, AST, XPath 2.0
+          iterator, XQuery runtime, "Rqil" generation (it looks like
+          expression -> IL)
+
+        * XmlSerializer additions
+          many small changes such as importer extension (fully
+          CodeDom oriented design required?) and import context etc.
+
+        * XsdInference
+          Infers XML schema from document (different from DataSet one)
+
+** Required Improvements (1.0 legacy stuff)
+
+        * NameTable optimization
+        * more W3C-spec conformant DTD parser (entity parse)
+        * XmlTextReader optimization
+        * XmlSchema optimization
+        * DTD validation optimization
+
+** Mono 1.2 TODO and non-TODO
+
+        o major part of XmlReaderSettings may be done in a week or two
+          (our XmlValidatingReader is already pluggable)
+        x We can leave other part of those classes as post-1.2 matters.
+
+        o minimum XmlSchema improvements
+          XmlSchemaSet support, hopefully in a week or two.
+          Implement some new schema feature for XQuery stuff.
+        x Rest of the fixes are trivial or ignorable (post-1.2 matters).
+        x Once XmlSchemaSet support is done, XsdInference is totally
+          detached and optional; we can ask others to challenge.
+
+        o editable XPathNavigator
+          First, modify XmlDocumentNavigator to be editable
+          Hopefully done in a week or two.
+        x editable XPathDocument is later optional work (can be done
+          after 1.2) XPathChangeNavigator is now obsolete and might
+          disappear in the RTM.
+
+        o XQuery/XPath2.0 parser and AST (abstract syntax tree)
+          jay-based parser is halfly written (far from complete).
+        o XPath 2.0 (and XQuery) iterator & expression evaluator
+        o XQuery function library based on XPath 2.0 iterator & AST
+        x Compilation into XQuery IL (Qil) is not mandatory right now.
+
+        x new addition to XmlSerializer looks aggregation of small
+          changes and my feeling is that it can be done as post-1.2
+          matter. But not sure.
+
+** Some notes
+
+The tasks are mostly XQuery stuff. Some of other works would be
+difficult for other hackers (such as XmlSchema improvements), while
+some tasks can be done by anyone (such as new editable XPathDocument
+and XsdInference).
+
+XQuery tasks looks so big. Some tasks can be done separately (such
+as XQuery datatype conversion aka XQueryConvert), but as a whole
+it will be like XPath/XSLT development.
+
+As long as Gonzalo's API corcomparison, ASP.NET is at least 5x
+harder than XML 2.0.
+
+I also remember that Mainsoft guys said that they would like to
+"take an active role in System.Xml". Whatever I was asked was about
+optimization matters, but they might be going to do more.
+
