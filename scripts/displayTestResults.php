@@ -20,7 +20,7 @@
 			rsort($files);
 			return $files;
 		}
-		function fetch_sorted_testsuites ($file,$type_key) 
+		function fetch_sorted_testsuites ($file,$type_key,$status_key) 
 		{
 			$doc = xmldocfile ($file);
 			$root = $doc->root ();
@@ -37,6 +37,17 @@
 				$sorted_testsuites[$testsuite_count]["exectime"] = $testsuite->get_attribute ("exectime");
 				$sorted_testsuites[$testsuite_count]["date"] = $testsuite->get_attribute("date");
 				$sorted_testsuites[$testsuite_count]["type"] = $testsuite->get_attribute("type");
+				
+				$testcases = array();
+				$testcases = $testsuite->get_elements_by_tagname ("testcase");
+				$testcase_count = 0;
+                                foreach ($testcases as $testcase) {
+                                	if ($testcase->get_attribute ("status") == $status_key) {
+	                                	$sorted_testsuites[$testsuite_count]["testcases"][$testcase_count] = $testcase->get_attribute("name");
+ 	                                	$testcase_count++;
+	                                }
+                                }				
+		
 				$testsuite_count++;
 			}
 			if (count($sorted_testsuites) != 0) {
@@ -56,65 +67,32 @@
 			$date = substr($datetime[1],0,4) ."-". substr($datetime[1],4,2) ."-". substr ($datetime[1],6);
 			return $date;
 		}
-		function fetch_regressed_testcases ($testsuite_name,$file_1,$file_2)
+		function fetch_regressed_testcases ($testcases_1,$testcases_2)
 		{
-			$doc_1 = xmldocfile ($file_1);
-			$doc_2 = xmldocfile ($file_2);
-			$root_1 = $doc_1->root ();
-			$root_2 = $doc_2->root ();
-
-			$testsuites_1 = $root_1->get_elements_by_tagname("testsuite");
-			$testsuites_2 = $root_2->get_elements_by_tagname("testsuite");
-			$testcases_1 = array ();
-			$testcases_2 = array ();
-			
-			$regressed_testcases = array ();
-			$testflag = 0;
-			$testcases_1_count = 0;
-			foreach ($testsuites_1 as $testsuite_1) {
-				if ($testsuite_1->get_attribute("name") == $testsuite_name) {
-					$testcases = array();
-					$testcases = $testsuite_1->get_elements_by_tagname ("testcase");
-					foreach ($testcases as $testcase) {	
-						if ($testcase->get_attribute ("status") == "1") {
-							$testcases_1[$testcases_1_count] = $testcase->get_attribute("name");
-							$testcases_1_count++;
-						}
-					}
-					$testflag = 1;	
-					break;
-				}
-			}
-			if ($testflag == 0)
-				return $regressed_testcases; //return empty array
-			$testflag = 0;
-			$testcases_2_count = 0;
-			foreach ($testsuites_2 as $testsuite_2) {
-				if ($testsuite_2->get_attribute("name") == $testsuite_name) {
-					$testcases = array ();
-					$testcases = $testsuite_2->get_elements_by_tagname("testcase");
-					foreach ($testcases as $testcase) {
-						if ($testcase->get_attribute ("status") == "0") {
-							$testcases_2[$testcases_2_count] = $testcase->get_attribute("name");
-							$testcases_2_count++;
-						}
-					}
-					$testflag = 1;
-					break;
-				}
-			}
-			if ($testflag == 0)
-				return $regressed_testcases; //return empty array
-
-			//Check for regression
+	
+			$regressed_testcases = array();
 			$regression_count = 0;
-			foreach ($testcases_1 as $testcase_1) {
-				foreach ($testcases_2 as $testcase_2) {
-					if ($testcase_1 == $testcase_2) {
-						$regressed_testcases[$regression_count] = $testcase_2;
-						$regression_count++;
-					}
+			//No regression if there are 0 failures for the recent date or 0 passes for the previous date
+			if (count($testcases_1) == 0 || count($testcases_2) == 0)	 
+				return $regresses_testcases;
+
+			sort($testcases_1);
+			sort($testcases_2);
+			$testcases_1_count = 0;
+			$testcases_2_count = 0;
+			
+			while ($testcases_1_count < count($testcases_1) && $testcases_2_count < count($testcases_2)) {
+				if ($testcases_1[$testcases_1_count] == $testcases_2[$testcases_2_count]) {
+					$regressed_testcases[$regression_count] = $testcases_1[$testcases_1_count];
+					$regression_count++;
+					$testcases_1_count++;
+					$testcases_2_count++;
 				}
+				else if($testcases_1[$testcases_1_count] < $testcases_2[$testcases_2_count])
+					$testcases_1_count++;
+				else if($testcases_1[$testcases_1_count] > $testcases_2[$testcases_2_count])
+					$testcases_2_count++;
+					
 			}
 			return $regressed_testcases;
 			
@@ -129,6 +107,7 @@
 			$s_no = 1;
 			print "<br><b>" . $new_table_caption . "</b><br><br>".$new_table;
 
+			$regressed_count = 0;
 			while($testsuites_1_count < count($testsuites_1) || $testsuites_2_count < count($testsuites_2)) {
 				//Calculating pass percentage
 				if ($testsuites_1[$testsuites_1_count]["name"]==null)
@@ -148,6 +127,7 @@
 				//Displaying result
 				if ($testsuites_1[$testsuites_1_count]["name"] == $testsuites_2[$testsuites_2_count]["name"])
 				{	
+					$regressed_count = 1;
 					print "<tr><td>$s_no</td>";
 	
 					print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
@@ -189,6 +169,7 @@
 				}
 
 				else if($testsuites_1[$testsuites_1_count]["name"] != null && (($testsuites_1[$testsuites_1_count]["name"] < $testsuites_2[$testsuites_2_count]["name"]) || ($testsuites_2[$testsuites_2_count]["name"]==null))) {	
+					$regressed_count = 0;
 					print "<tr><td>$s_no</td>";
                 	        	print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
 
@@ -217,6 +198,7 @@
 				}
 
 				else if($testsuites_2[$testsuites_2_count]["name"] != null && (($testsuites_1[$testsuites_1_count]["name"] > $testsuites_2[$testsuites_2_count]["name"]) || ($testsuites_1[$testsuites_1_count]["name"]==null))) {
+					$regressed_count = 0;
                 		        print "<tr><td>$s_no</td>";
 					print "<td bgcolor=$color>" . $testsuites_2[$testsuites_2_count]["name"]. "</td>";
 					print "<td>&nbsp;</td>";
@@ -245,11 +227,16 @@
                 		}
 				$s_no++;
 				$regressed_testcases = array ();
-				$regressed_testcases = fetch_regressed_testcases($testsuite_name,$files[0],$files[1]);
-				if (count ($regressed_testcases) != 0) 
-					print "<td><a href=displayDetails.php?&testsuite=" . $testsuite_name. "&file=" .$files [0]. "&file1=".$files[1]."&regression=1&status=4>".count($regressed_testcases)."</td></tr>";
+				if ($regressed_count != 0) {
+					$regressed_testcases = fetch_regressed_testcases($testsuites_1[$testsuites_1_count-1]["testcases"],$testsuites_2[$testsuites_2_count-1]["testcases"]);
+					$regressed_count = count ($regressed_testcases);
+				}
+				
+				if ($regressed_count != 0) 
+					print "<td><a href=displayDetails.php?&testsuite=" . $testsuite_name. "&file=" .$files [0]. "&file1=".$files[1]."&regression=1&status=4>".$regressed_count."</td></tr>";
 				else
-					print "<td>".count($regressed_testcases)."</td></tr>";
+					print "<td>".$regressed_count."</td></tr>";
+				print "</tr>";
 			}
 			print "</table>";
 		}
@@ -259,7 +246,7 @@
 <body>
 <h2>MONO TESTSUITE RESULTS</h2>
 <?php
-	$files = get_sorted_filenames ("TestResults/");
+	$files = get_sorted_filenames ("TestResults/Xml/");
 	$date_1 = get_date_from_filename ($files[0]); 
 	$date_2 = get_date_from_filename ($files[1]);
 	
@@ -270,8 +257,8 @@
 	for($i=0; $i<3;$i++) { //foreach type of testsuites
 		$testsuites_1 = array();
 		$testsuites_2 = array();
-		$testsuites_1 = fetch_sorted_testsuites ($files[0],$i);
-	        $testsuites_2 = fetch_sorted_testsuites ($files[1],$i);
+		$testsuites_1 = fetch_sorted_testsuites ($files[0],$i,1);
+	        $testsuites_2 = fetch_sorted_testsuites ($files[1],$i,0);
 		display_testsuites($new_table_type[$i],$testsuites_1,$testsuites_2,$files,$date_1,$date_2);
 	}
 	//Displaying Legend
