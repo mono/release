@@ -1,3 +1,4 @@
+
 #!/usr/bin/perl -w
 
 # Script to read test results stored in files from a given list of 
@@ -198,8 +199,18 @@ sub get_mcserror_test_results
 	if ( $testcase =~ /$FAIL/ )
 	{
 	    $tsresults[2]++ ; # increment count 
-	    push @tcresults, [ $arr[0], $TESTFAIL, $arr[1], "", 0] ;  
+
+	    my $file =  "$MCS_ROOT/errors/$arr[0].log" ;
+	    if (open (FILE, $file) != 1) {
+		push @tcresults, [ $arr[0], $TESTFAIL, $arr[1], "", 0];
+	    }
+	    else {
+		my $stacktrace = "" ;
+		$stacktrace = $stacktrace.$_ foreach (<FILE>);
+		push @tcresults, [ $arr[0], $TESTFAIL, $arr[1], $stacktrace, 0] ;  
+	    }
 	}
+
 	if ( $testcase =~ /$PASS/ )
 	{
 	    $tsresults[1]++ ; # increment count 
@@ -345,7 +356,11 @@ sub get_nunit_testcase_results
 		{
 		    $tcstacktrace = ($st->getFirstChild)->getNodeValue ;
 		}
-		push @tcresults, [ $tcname, $TESTFAIL, ($msg->getFirstChild)->getNodeValue, $tcstacktrace, $tcexectime ];
+		if ( $msg->hasChildNodes == 1)
+		{
+			$msg_value = ($msg->getFirstChild)->getNodeValue;
+		}
+		push @tcresults, [ $tcname, $TESTFAIL, $msg_value, $tcstacktrace, $tcexectime ];
 	    }
 	    
 	    else
