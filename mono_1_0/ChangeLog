@@ -1,3 +1,10 @@
+2004-06-16  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* mscorlib-review.xls: Updated bugzilla entries and the changes I did
+	in the last month.
+	* System.Security-review.xls: Updated with last month efforts.
+	* System.Security: Updated status.
+
 2004-05-24  Jackson Harper  <jackson@ximian.com>
 
 	* mscorlib-review.xls: Update, CultureInfo::Calender is
