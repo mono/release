@@ -25,11 +25,9 @@
 
 3) rel-add-packages -s -c mono -t [target] -d  "mono release" [path to files]
 
-4) rel-proof-to-rcx --targets [target1,target2] --channels [channels]
+4) rel-stage-to-real mono
 
-5) rel-stage-to-real mono
-
-6) rel-push
+5) rel-push
 
 **** DO NOT PUSH SOURCE RPMS!!! ****
 
