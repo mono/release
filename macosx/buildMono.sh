@@ -210,8 +210,8 @@ creatDirs
 		else
 		    build Mono.framework ${MONOURL} mono mono-${MONOVERSION}.tar.gz mono-${MONOVERSION}
 		fi
-		if [${GDIPLUS} == "YES" ];then
-		    ./gdipBuild.sh
+		if [ ${GDIPLUS} == "YES" ];then
+		    ${MONOBUILDFILES}/gdipBuild.sh ${BUILDROOT}/Dependancies
 		fi
 	   fi
    	fi 

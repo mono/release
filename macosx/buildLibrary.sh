@@ -107,6 +107,25 @@ icuSpecificBuild()
 
 }
 
+createConfigFiles()
+{
+    #Create gacutil config files specific to OS X
+    cat <<EOF > ${BUILDROOT}/Dependancies/mono-${MONOVERSION}/mcs/class/lib/default/System.Drawing.dll.config
+<configuration>
+        <dllmap dll="gdiplus.dll" target="/Library/Frameworks/Mono.framework/Versions/${MONOVERSION}/lib/libgdiplus.dylib" />
+</configuration>
+
+EOF
+
+    cat <<EOF > ${BUILDROOT}/Dependancies/mono-${MONOVERSION}/mcs/class/lib/default/System.Windows.Forms.dll.config
+<configuration>
+        <dllmap dll="gdiplus" target="/Library/Frameworks/Mono.framework/Versions/${MONOVERSION}/lib/libgdiplus.dylib" />
+        <dllmap dll="libX11" target="/usr/X11R6/lib/libX11.dylib" />
+</configuration>
+
+EOF
+}
+
 build()
 {
 	#buildDepNew FRAMEWORKNAME FRAMEWORKVERSION URL TARBALL DIR
@@ -181,6 +200,9 @@ build()
 			    if [ $DIR == mono-${MONOVERSION} ]; then
 			    	./configure --quiet --prefix=$PREFIX --with-preview=yes
 			    	make
+				if [ ${SVN} == NO ];then
+				    createConfigFiles
+				fi
     			    else
     			    	./configure --quiet --prefix=$PREFIX
 			    fi
