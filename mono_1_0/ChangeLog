@@ -1,3 +1,8 @@
+2004-05-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* mscorlib-review.xls: Updated status for System.IO.IsolatedStorage
+	and System.Security.Cryptography namespaces.
+
 2004-05-07  Gonzalo Paniagua Javier <gonzalo@ximian.com>
 
 	* System.Web-review.xls: added System.Web review.
