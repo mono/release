@@ -6,7 +6,7 @@ else
 	if test "$1" = "2.0" ; then
 		INFO=./mono-api-info2.exe
 	else
-		echo "Need 1.0 or 2.0"
+		echo "Need 1.1 or 2.0"
 		exit 1
 	fi
 fi
