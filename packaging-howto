@@ -34,10 +34,11 @@ Part C: Build packages
    sure that it's building from the newly updated tarball, and not the
    old one.
 
-3) Copy the resulting RPMs to a directory on NFS for deployment. In
-   general, I put them in "/nfs/$USER/deploy/$RELEASE/$DISTRIBUTION/"
-   in my NFS dir. $DISTRIBUTION should be the same as the name used by
-   RC, this makes uploading the files much easier.
+3) Copy the resulting RPMs (in /tmp/$user/built-packages) to a
+   directory on NFS for deployment. In general, I put them in
+   "/nfs/$USER/deploy/$RELEASE/$DISTRIBUTION/" in my NFS
+   dir. $DISTRIBUTION should be the same as the name used by RC, this
+   makes uploading the files much easier.
 
    Remember: DO NOT COPY SOURCE RPMS AND DEBUGINFO RPMS.
 
@@ -53,7 +54,7 @@ Part D: How to make a patch
 
 2) Apply the changes to the "src" directory.
 
-3) With the changed made, go back to the root module directory (parent
+3) With the changes made, go back to the root module directory (parent
    of src and BUILD), and call "bb_regenerate <name of patch>".
 
 4) A "foo.patch.new" will be created, read it and make sure it
