@@ -1,7 +1,7 @@
 #!/bin/sh -x
 
 DEPS=/Users/Shared/MonoBuild/Dependancies
-MONORELEASE=/Users/Shared/mono/release/macosx
+MONORELEASE=${PWD}
 PATCHDIR=${MONORELEASE}/libgdiplus/jpeg/files
 NAME=jpeg
 VERSION=6b 
@@ -10,8 +10,12 @@ URL=ftp://ftp.uu.net/graphics/jpeg/${DISTNAME}
 WORKSRCDIR=${NAME}-${VERSION}
 MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/Current
 
-CFLAGS="-I/Library/Frameworks/Mono.framework/Versions/Current/include/ -L/Library/Frameworks/Mono.framework/Versions/Current/lib/" 
-export PATH=/usr/X11R6/bin/:/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH 
+export CFLAGS="-I/Library/Frameworks/Mono.framework/Versions/Current/include" 
+export C_INCLUDE_FLAGS="-I/Library/Frameworks/Mono.framework/Versions/Current/include"
+export CPATH="/Library/Frameworks/Mono.framework/Versions/Current/include"
+export DYLD_LIBRARY_PATH="/Library/Frameworks/Mono.framework/Versions/Current/lib"
+export LDFLAGS="-L/Library/Frameworks/Mono.framework/Versions/Current/lib"
+export PATH="/usr/X11R6/bin/:/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH"
 export PKG_CONFIG_PATH=/usr/X11R6/lib/pkgconfig/:$PKG_CONFIG_PATH
 export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/1.1.4/share/aclocal/"
 #./autogen.sh 
@@ -51,7 +55,7 @@ if [ ! -e ${DEPS}/${WORKSRCDIR} ];then
     gnutar -xzf ${DISTNAME}
     cd ${WORKSRCDIR}
 
-    ./configure --mandir=${MONOPREFIX}/share/man \
+    ./configure --prefix=${MONOPREFIX} --mandir=${MONOPREFIX}/share/man \
 	--with-jpeg-include-dir=${MONOPREFIX}/include \
 	--with-jpeg-lib-dir=${MONOPREFIX}/lib
     make 
@@ -62,9 +66,10 @@ fi
 #PATCHDIR=${MONORELEASE}/libgdiplus/tiff/files
 NAME=libpng
 VERSION=1.2.8
-DISTNAME=${NAME}-${VERSION}.tar.gz
+DISTNAME=${NAME}-${VERSION}-config.tar.gz
+
 URL=http://umn.dl.sourceforge.net/sourceforge/libpng/${DISTNAME}
-WORKSRCDIR=${NAME}-${VERSION}
+WORKSRCDIR=${NAME}-${VERSION}-config
 #MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/Current
 cd ${DEPS}
 if [ ! -e ${DEPS}/${WORKSRCDIR} ];then
@@ -72,15 +77,15 @@ if [ ! -e ${DEPS}/${WORKSRCDIR} ];then
     gnutar -xzf ${DISTNAME}
     cd ${WORKSRCDIR}
 
-    cp scripts/makefile.darwin Makefile
+    #cp scripts/makefile.darwin Makefile
     ./configure --prefix=${MONOPREFIX}
+    #sed -e "s/\/usr\/local/\${MONOPREFIX}/g" Makefile > Makefile.patched
     #sed -e 's/(prefix)\/man/(prefix)\/share\/man/g' makefile.cfg > makefile.cfg.patched
-    #mv makefile.cfg.patched makefile.cfg
+    #mv Makefile.patched Makefile
 
     make
     make install
 fi
-
 
 ###############################################
 #PATCHDIR=${MONORELEASE}/libgdiplus/tiff/files
@@ -109,12 +114,17 @@ URL=http://www.go-mono.com/archive/1.1.4/${DISTNAME}
 WORKSRCDIR=${NAME}-${VERSION}
 #MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/Current
 
+echo "building libgdiplus"
+
 cd ${DEPS}
-if [ ! -e ${DEPS}/${WORKSRCDIR} ];then
-    curl -L -Z 5 -s -O ${URL}
-    gnutar -xzf ${DISTNAME}
+if [ -e ${DEPS}/${WORKSRCDIR} ];then
+    if [ ! -e ${DISTNAME} ];then
+	curl -L -Z 5 -s -O ${URL}
+	gnutar -xzf ${DISTNAME}
+    fi
+
     cd ${WORKSRCDIR}
-    ./configure --prefix=${MONOPREFIX}
+    ./configure --prefix=${MONOPREFIX} --with-libjpeg --includedir=${MONOPREFIX}/include
     make
     make install
 fi
