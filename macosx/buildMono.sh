@@ -64,6 +64,7 @@ GETTEXT="http://ftp.gnu.org/pub/gnu/gettext/gettext-0.14.1.tar.gz"
 GLIB="ftp://ftp.gtk.org/pub/gtk/v2.4/glib-2.4.1.tar.gz"
 ICU="ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz"
 SVN="NO"
+PACKAGEONLY="NO"
 MONOBUILDFILES=${PWD}
 #CVSMONO="/tmp/mono"
 #This is the default to make my life easier!
@@ -95,7 +96,7 @@ trap cleanup 2
 
 #get the options passed in on the command line.  doing this instead
 #of a case -because these are optional args.
-while getopts hv:piCcRs:uo option
+while getopts hv:piCcRs:uoO option
 	do
 		echo $option
  		if [ $option == "v" ]; then
@@ -111,6 +112,9 @@ while getopts hv:piCcRs:uo option
  		if [ $option == "o" ]; then
  			BUILD="NO"	
  		fi
+		if [ $option == "O" ]; then
+		    PACKAGEONLY="YES"
+		fi
  		if [ $option == "C" ]; then
  			CLEAN="YES"	
  		fi
@@ -175,6 +179,7 @@ creatDirs
 	#to create a package that can be distributed.
 	
 	if [ ${BUILD} == "YES" ]; then
+	   if [ ${PACKAGEONLY} == "NO" ]; then
 		#Build PkgConfig
 		if [ ! -f "/Library/Framework/Mono.framework/Version/${MONOVERSION}/bin/pkg-config" ];then 
 			build Mono.framework ${PKGCONFIG} pkgconfig pkgconfig-0.15.0.tar.gz pkgconfig-0.15.0
@@ -201,6 +206,7 @@ creatDirs
 		else
 		    build Mono.framework ${MONOURL} mono mono-${MONOVERSION}.tar.gz mono-${MONOVERSION}
 		fi
+	   fi
    	fi 
 #fi
 

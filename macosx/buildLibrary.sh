@@ -153,6 +153,7 @@ build()
 				echo "Downloading $DIR"
 				curl -L -Z 5 -s -O $URL
 				gnutar xzf $TARBALL
+				CLEAN=NO
 			fi
 			if [ $REMOVE == "YES" ]; then rm $TARBALL; fi
 			
@@ -165,7 +166,9 @@ build()
 				echo "Cleaning $TARBALL"
 				echo "=================================================="
 				echo ""
-				make clean
+				if [ -e ./config.log ]; then
+				    make clean
+				fi
 			fi
 			if [ $CONFIGURE == "YES" ]; then
 			    #echo "Configuring $DIR"

@@ -7,9 +7,13 @@ createPackage()
 	IDENTIFIER=$3
 	DESCRIPTION=$4
 	RFILES="mono/resources"
+	#TIGER="/Volumes/Tiger"
 	PM="/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
+	#if [ -d ${TIGER} ]; then
+	  #  PM="${TIGER}/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
+	#fi
 
-	if [ ! -d "/Developer/Applications/Utilities/PackageMaker.app" ]; then
+	if [ ! -e ${PM} ]; then
 		echo "This script uses the PackageMaker from Tiger because the"
 		echo "The Panther version always exits with a 2"
 		echo "If you have Tiger installed the you need to modifiy"
@@ -34,7 +38,7 @@ createPackage()
 	fi
 	
 	if [ ! -d ${BUILDROOT}/PKGROOT/Library/Frameworks/${FRAMEWORKNAME}.framework ]; then
-		cp -RP /Library/Frameworks/${FRAMEWORKNAME}.framework ${BUILDROOT}/PKGROOT/Library/Frameworks
+		ditto -V /Library/Frameworks/${FRAMEWORKNAME}.framework ${BUILDROOT}/PKGROOT/Library/Frameworks/${FRAMEWORKNAME}.framework/
 	fi
 	
 # 	if [ ! -d ${BUILDROOT}/PKGROOT/Library/Frameworks/${FRAMEWORKNAME}.framework/Versions/${VERSION}/Resources ]; then
