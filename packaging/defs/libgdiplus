@@ -1,0 +1,13 @@
+# 
+# Build Buddy Package: mono-1.1
+#
+nld-9-x86_64
+fedora-3-i386
+sles-9-x86_64
+redhat-9-i386
+sles-9-i586
+rhel-3-i386
+suse-90-i586
+rhel-4-i386
+suse-91-i586
+suse-92-i586

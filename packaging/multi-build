@@ -1,0 +1,18 @@
+#!/bin/sh
+
+rm -f bscripts/*
+for i in $*; do
+	for def in `cat defs/$i | grep -v '^#'`; do
+		. conf/$def
+		echo sh build $def $i >> bscripts/$target_host
+		if echo $hosts | grep -v $target_host > /dev/null;  then
+			hosts="$hosts $target_host";
+		fi
+	done
+done
+echo Hosts to run on: 
+count=0
+for i in `echo $hosts`; do
+	mv bscripts/$i bscripts/$count
+	count=$[$count+1]
+done
