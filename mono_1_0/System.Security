@@ -1,0 +1,53 @@
+System.Security.dll Assembly Status
+
+General
+* 100% corcompare compliant
+* Never received community feedback on assembly - so it's probably not much 
+used.
+
+
+Problems
+
+* Undocumented (or badly documented)
+
+KeyInfoX509Data
+	* MS returns an internal class IssuerSerial. Our class may not be 100%
+	compatible with it - but there's not much we can do about this (and 
+	it's probably not much used).
+Reference
+	* One constructor is badly documented (never seen used anywhere). Not
+	sure we are 100% compatible with MS on that one.
+
+
+* Incomplete
+
+SignedXml
+	* check signature.SignedInfo.Id in SignedInfoTransformed
+	* Evidence support (CAS) is required for correct Resolver support
+
+XmlDsigXPathTransform
+	* GetOutput
+		- Evaluation of extension function here() results in different
+		from MS.NET (is MS.NET really correct ??)
+
+
+* Unit tests
+
+SignedXml
+	* Some parts aren't well tested (using the resolver)
+
+XmlDsigC14NTransform
+	* Two failures (LoadInputAsXmlDocument, LoadInputAsXmlNodeList2)
+	MS may not be right on them!
+
+
+* XML related comments
+
+Note: I don't think they will affect compatibility (sp).
+
+DataObject
+	* some (4) XML related FIXME
+KeyInfoX509Data
+	* GetXml - "hack to match MS implementation"
+SignedXml
+	* incomplete - use of XmlResolver *
