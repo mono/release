@@ -30,7 +30,7 @@
       1	GdipGetCustomLineCapWidthScale		#Implemented
       1	GdipGetEncoderParameterList
       1	GdipGetEncoderParameterListSize
-      1	GdipGetImageAttributesAdjustedPalette
+      1	GdipGetImageAttributesAdjustedPalette	#Function added, retuns NotImplemented
       1	GdipGetImageThumbnail
       1	GdipGetLogFontA
       1	GdipGetNearestColor
@@ -66,11 +66,11 @@
       1	GdipSetCustomLineCapBaseInset		#Implemented
       1	GdipSetCustomLineCapStrokeCaps		#Implemented
       1	GdipSetCustomLineCapStrokeJoin		#Implemented
-      1	GdipSetCustomLineCapWidthScale		#Implemented
-      1	GdipSetImageAttributesColorMatrix
-      1	GdipSetImageAttributesOutputChannel
-      1	GdipSetImageAttributesRemapTable
-      1	GdipSetImageAttributesWrapMode
+      1	GdipSetCustomLineCapWidthScale		#Implemented	
+      1	GdipSetImageAttributesColorMatrix	#Function added, retuns NotImplemented
+      1	GdipSetImageAttributesOutputChannel #Function added, retuns NotImplemented
+      1	GdipSetImageAttributesRemapTable	#Implemented
+      1	GdipSetImageAttributesWrapMode		#Function added, retuns NotImplemented
       1	GdipSetInterpolationMode
       1	GdipSetPageScale
       1	GdipSetPageUnit
