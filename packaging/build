@@ -30,7 +30,7 @@ fi
 package=$2
 
 scp do-build $target_host:$jaildir/tmp >& logs/$1
-remote_cmd="$chroot /jails/suse-92-i586-root-0/jail sh -x /tmp/do-build $package"
+remote_cmd="$chroot $jaildir sh -x /tmp/do-build $package"
 (echo > status/$1; ssh $target_host "sudo $remote_cmd" >& logs/$1; rm status/$1)
 scp $target_host:/tmp/status /tmp/status-$1-$2
 if grep -q failure /tmp/status-$1-$2; then
