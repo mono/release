@@ -42,14 +42,75 @@ Code generation quality improvements.
 
 		Today:
 			Only partially implemented, practically its not being used.
+			
+			Problems:
+				* The local copy prop does not kill dead variables. We
+				could do a simplistic deadce type optimization without
+				SSA. There are two ways to try this
+					- Do a simple scan in each BB. If for all BBs
+					in which a variable is used it is defined before
+					its first use, than we know the variable is not
+					alive across basic blocks. This is O(1) wrt code
+					size.
+					
+					- Do the copyprop *after* the liveness scan. This
+					takes advantage of the dataflow information that
+					liveness gives us. This might also help get rid
+					of the assignments due to initlocals.
+				
+				* We have challenges on expressions with pre/post increment.
+				Benchmarks with a [x ++] == b [y ++] will show problems.
 		
 	* SSAPRE large task
 		Hacker: Massimiliano
 
 	* add some more optimizing burg rules
-		Ben: provide some input here with ideas.
-
-		Must create this list as we go.
+		In general, we need burg rules so we can collapse
+		verbose forms of assembly into the most tuned form.
+		
+		Some examples:
+		
+		- if ((x & 1) != 0) is a common idiom. right now we say:
+		mov eax, [x]
+		and eax, 1
+		test eax, eax
+		
+		We could just say
+		test [x], 1
+		
+		A burg rule is needed for this
+		
+		- On x86, we should harness instructions with memory operands
+		consider, x |= 8; (assume x is on the stack). today, we do:
+		mov eax, [x]
+		or eax, 8
+		mov [x], eax
+		
+		it is beneficial to do
+		or [x], 8
+		
+		Again, more rules needed here.
+		
+		- for x86, we should create a `index' target like we have a `base'
+		target. so if you have:
+		(stind regvar [esi], (add (ldind regvar [esi]), ldind (ldelema (array, index))))
+		
+		you can translate that into
+		<ABC>
+		add esi, [array+index*4+12]
+		
+		rather than having an extra lea
+		
+		- Lots of rules are needed to optimize how we handle regvars. Most of the
+		problem happens with ALU operations, we should look there first. Then, we can
+		see if the regvar problem shows up elsewhere.
+		
+		- Make sure rules apply equally to all ldind/stind versions. Today, there are
+		seperate rules for I, REF, I4 and U4. We need to make sure all versions get
+		equal treatment.
+		
+		Various other problems also exist. Browsing through -v -v -v output, it should
+		not take long to find other idioms to support.
 
 	* tune inlining code
 
@@ -63,6 +124,16 @@ Code generation quality improvements.
 			Make sure we do not introduce breaking code.
 
 		Ben: could do this as well.
+	
+	* Make SSA work for more methods
+		Today, we do not even attempt SSA if either 1) a method has EH regions or 2) one
+		or more of the variables in the method have their address taken. What the Jikes
+		VM does is to call some variables `non ssa' variables. They are treated as if
+		they were a store to a random location in memory. This has the benefit that the
+		rest of the variables can be subject to SSA optimizations.
+		
+		As more and more optimizations use the SSA framework, this will have a greater impact.
+		
 
 * Small code generation improvements:
 
