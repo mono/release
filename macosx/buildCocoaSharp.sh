@@ -1,6 +1,6 @@
 #!/bin/sh -x
 
-# This is the build script for Cocoa Sharp.
+# This is the release script for Cocoa Sharp.
 
 BUILDROOT="/Users/Shared/CSBuild"
 BASEPREFIX="/Applications"
@@ -8,7 +8,9 @@ CSPATH=""
 IPATH=""
 MONODOC="YES"
 TESTS="YES"
-RFILES="/usr/local/mono/release/osx/cocoasharp/"
+RFILES="/usr/local/mono/release/macosx/cocoasharp/resources"
+FRAMEWORK="/Library/Frameworks/CocoaSharp.framework"
+VERSION="0.1"
 
 usage()
 {
@@ -27,14 +29,15 @@ createPackage()
 	VERSION=$2
 	IDENTIFIER=$3
 	DESCRIPTION=$4
-	RFILES="/usr/local/mono/release/macosx/cocoasharp/resources"
+	#RFILES="./cocoasharp/resources"
 	TIGER="/Volumes/tiger"
 	if [ ! -d $TIGER ]; then
 		echo "This script uses the PackageMaker from Tiger because the"
 		echo "The Panther version always exits with a 2"
 		echo "If you have Tiger installed the you need to modifiy"
 		echo "the TIGER variable in this script"
-		exit 2
+		#exit 2
+		TIGER=""
 	fi
 	
 	PM="$TIGER/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
@@ -121,6 +124,9 @@ EOF
 	if [ ! -d ${BUILDROOT}/finished ]; then
 	    mkdir -p ${BUILDROOT}/finished
 	fi
+	if [ -d ${BUILDROOT}/finished/${FRAMEWORKNAME}-${VERSION}.pkg ]; then
+	    rm -r ${BUILDROOT}/finished/${FRAMEWORKNAME}-${VERSION}.pkg
+	fi
 	mv ${BUILDROOT}/Packages/${FRAMEWORKNAME}-${VERSION}.pkg ${BUILDROOT}/finished
 	fi
 
@@ -135,7 +141,7 @@ do
   case "$option"
       in
       p) CSPATH="${OPTARG}/cocoa-sharp";;
-      i) IPATH=$OPTARG;;
+      i) IPATH=${OPTARG};;
       h) usage;;
       esac
 done
@@ -163,17 +169,20 @@ echo "Building Cocoa# example/test applications"
 cd $CSPATH/test
 make
 
-        if [ ! -d ${BUILDROOT}/PKGROOT/Library/Frameworks/Mono.framework/Versions/1.0 ]; then
-            mkdir -p ${BUILDROOT}/PKGROOT/Library/Frameworks/Mono.framework/Versions/1.0
+        if [ ! -d ${BUILDROOT}/PKGROOT${FRAMEWORK}/Versions/${VERSION} ]; then
+            mkdir -p ${BUILDROOT}/PKGROOT${FRAMEWORK}/Versions/${VERSION}
         fi
 
-cp -r ${IPATH}/* ${BUILDROOT}/PKGROOT/Library/Frameworks/Mono.framework/Versions/1.0
+cp -r ${IPATH}/* ${BUILDROOT}/PKGROOT${FRAMEWORK}/Versions/${VERSION}
+
+cd ${BUILDROOT}/PKGROOT${FRAMEWORK}/Versions
+ln -sf ${VERSION} Current
 
 if [ -e ${BUILDROOT}/finished/CocoaSharp.dmg ];then
     rm ${BUILDROOT}/finished/CocoaSharp.dmg
 fi
 
-createPackage CocoaSharp 0.1 com.ximian.mono "Cocoa-Sharp 0.1"
+createPackage CocoaSharp ${VERSION} com.ximian.mono "Cocoa-Sharp ${VERSION}"
 
 if [ ! -d {BUILDROOT}/finished/examples ]; then
     mkdir -p ${BUILDROOT}/finished/examples
