@@ -5,6 +5,7 @@
 <head>
 	<title>Mono TestSuites Results</title>
 	<?php
+		#This function returns the sorted filenames that are of the required format 'testresults-<date>.xml'
 		function get_sorted_filenames ($dir) 
 		{
 			$dir_handle = opendir($dir);
@@ -20,6 +21,8 @@
 			rsort($files);
 			return $files;
 		}
+		#This function returns the set of testsuties from the given file based on the given type. 
+		#It also stores the testcases of the given status (this is needed to check for regression)
 		function fetch_sorted_testsuites ($file,$type_key,$status_key) 
 		{
 			$doc = xmldocfile ($file);
@@ -59,6 +62,8 @@
 			}
 			return $sorted_testsuites;
 		}
+
+		#This function returns the formatted date from the filename
 		function get_date_from_filename ($filename) 
 		{
 			$basename = basename($filename,".xml");
@@ -67,6 +72,8 @@
 			$date = substr($datetime[1],0,4) ."-". substr($datetime[1],4,2) ."-". substr ($datetime[1],6);
 			return $date;
 		}
+
+		#This function checks two arrays of testcase names for a match and returns the matching testcases
 		function fetch_regressed_testcases ($testcases_1,$testcases_2)
 		{
 	
@@ -80,7 +87,8 @@
 			sort($testcases_2);
 			$testcases_1_count = 0;
 			$testcases_2_count = 0;
-			
+
+			//Checking for a match			
 			while ($testcases_1_count < count($testcases_1) && $testcases_2_count < count($testcases_2)) {
 				if ($testcases_1[$testcases_1_count] == $testcases_2[$testcases_2_count]) {
 					$regressed_testcases[$regression_count] = $testcases_1[$testcases_1_count];
@@ -97,6 +105,8 @@
 			return $regressed_testcases;
 			
 		}
+	
+		//This function displays the given testsuite details onto the web page
 		function display_testsuites($new_table_caption,$testsuites_1,$testsuites_2,$files,$date_1,$date_2) 
 		{
 			$new_table = "<table border=2>" .  "<tr><b>" . "<th rowspan=2> S.No </th><th rowspan=2> Test Suite </th>";
@@ -127,39 +137,40 @@
 				//Displaying result
 				if ($testsuites_1[$testsuites_1_count]["name"] == $testsuites_2[$testsuites_2_count]["name"])
 				{	
+					//Testsuites that contain entries for both the recent and the previous run
 					$regressed_count = 1;
 					print "<tr><td>$s_no</td>";
 	
 					print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
 					if ($testsuites_1[$testsuites_1_count]["pass"] != 0)
-						print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=0>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
+						print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=0>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
 					else
 						print "<td>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
 
 					 if ($testsuites_1[$testsuites_1_count]["fail"] != 0)
-                	        	        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=1>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
+                	        	        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=1>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
 	        	                else
         		                        print "<td>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
 
 					 if ($testsuites_1[$testsuites_1_count]["notrun"] != 0)
-                	        	        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=2>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
+                	        	        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=2>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
 	        	                else
         		                        print "<td>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
 					print "<td>" . $testsuites_1[$testsuites_1_count]["exectime"]. "</td>";
 					$testsuites_1_count++;
 
 					if ($testsuites_2[$testsuites_2_count]["pass"] != 0)
-						print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=0>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
+						print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=0>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
 					else
 						print "<td>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
 			
 					 if ($testsuites_2[$testsuites_2_count]["fail"] != 0)
-        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=1>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=1>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
 
 					 if ($testsuites_2[$testsuites_2_count]["notrun"] != 0)
-        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=2>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=2>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
 					print "<td>" . $testsuites_2[$testsuites_2_count]["exectime"]. "</td>";
@@ -169,22 +180,23 @@
 				}
 
 				else if($testsuites_1[$testsuites_1_count]["name"] != null && (($testsuites_1[$testsuites_1_count]["name"] < $testsuites_2[$testsuites_2_count]["name"]) || ($testsuites_2[$testsuites_2_count]["name"]==null))) {	
+					#testsuites that contain an entry for recent run and no entry for previous run
 					$regressed_count = 0;
 					print "<tr><td>$s_no</td>";
                 	        	print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
 
 					if ($testsuites_1[$testsuites_1_count]["pass"] != 0)
-        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=0>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=0>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
                                                                                                                              
 	        	                 if ($testsuites_1[$testsuites_1_count]["fail"] != 0)
-        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=1>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=1>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
                                                                                                                              
 	        	                 if ($testsuites_1[$testsuites_1_count]["notrun"] != 0)
-        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .$files [0]. "&status=2>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=2>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
 	        	                print "<td>" . $testsuites_1[$testsuites_1_count]["exectime"]. "</td>";
@@ -198,6 +210,7 @@
 				}
 
 				else if($testsuites_2[$testsuites_2_count]["name"] != null && (($testsuites_1[$testsuites_1_count]["name"] > $testsuites_2[$testsuites_2_count]["name"]) || ($testsuites_1[$testsuites_1_count]["name"]==null))) {
+					#testsuites that contain an entry for previous run and no entry for the recent run
 					$regressed_count = 0;
                 		        print "<tr><td>$s_no</td>";
 					print "<td bgcolor=$color>" . $testsuites_2[$testsuites_2_count]["name"]. "</td>";
@@ -207,17 +220,17 @@
                 	        	print "<td>&nbsp;</td>";
 
 					if ($testsuites_2[$testsuites_2_count]["pass"] != 0)
-        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=0>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=0>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
                 	                                                                                                             
 	        	                 if ($testsuites_2[$testsuites_2_count]["fail"] != 0)
-        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=1>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=1>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
                                                                                                                              
 	        	                 if ($testsuites_2[$testsuites_2_count]["notrun"] != 0)
-        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .$files [1]. "&status=2>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=2>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
 
@@ -226,14 +239,17 @@
                 		        $testsuites_2_count++;
                 		}
 				$s_no++;
+
+				//Displaying number of regressed testcases
 				$regressed_testcases = array ();
 				if ($regressed_count != 0) {
+					//Checking for number of matches between the testcases that failed in the recent run and passed in the previous run
 					$regressed_testcases = fetch_regressed_testcases($testsuites_1[$testsuites_1_count-1]["testcases"],$testsuites_2[$testsuites_2_count-1]["testcases"]);
 					$regressed_count = count ($regressed_testcases);
 				}
 				
 				if ($regressed_count != 0) 
-					print "<td><a href=displayDetails.php?&testsuite=" . $testsuite_name. "&file=" .$files [0]. "&file1=".$files[1]."&regression=1&status=4>".$regressed_count."</td></tr>";
+					print "<td><a href=displayDetails.php?&testsuite=" . $testsuite_name. "&file=" .substr($files[0],-12,8). "&file1=".substr($files[1],-12,8)."&regression=1&status=4>".$regressed_count."</td></tr>";
 				else
 					print "<td>".$regressed_count."</td></tr>";
 				print "</tr>";
@@ -246,7 +262,7 @@
 <body>
 <h2>MONO TESTSUITE RESULTS</h2>
 <?php
-	$files = get_sorted_filenames ("TestResults/Xml/");
+	$files = get_sorted_filenames ("testresults/xml/");
 	$date_1 = get_date_from_filename ($files[0]); 
 	$date_2 = get_date_from_filename ($files[1]);
 	
@@ -254,13 +270,14 @@
         $new_table_type[1] = "Compiler TestSuites";
         $new_table_type[2] = "Runtime Testsuites";
 	
-	for($i=0; $i<3;$i++) { //foreach type of testsuites
+	for($i=0; $i<3;$i++) { //foreach type of testsuites, fetching the testsuites and displaying the details
 		$testsuites_1 = array();
 		$testsuites_2 = array();
 		$testsuites_1 = fetch_sorted_testsuites ($files[0],$i,1);
 	        $testsuites_2 = fetch_sorted_testsuites ($files[1],$i,0);
 		display_testsuites($new_table_type[$i],$testsuites_1,$testsuites_2,$files,$date_1,$date_2);
 	}
+
 	//Displaying Legend
          print "<p>";
          print "<br><br><b>Color Description</b><br><br>";

@@ -4,9 +4,9 @@ use POSIX;
 
 $max = 10;
 $root_dir = "./";
-$dir = $root_dir."TestResults/Xml/";
+$dir = $root_dir."testresults/xml/";
 
-$chart_dir = $root_dir."TestResults/Charts/";
+$chart_dir = $root_dir."testresults/charts/";
 
 system("mkdir ". $chart_dir);
 
@@ -28,7 +28,7 @@ chomp $current_date;
 @testsuite_keys = keys(%percent);
 foreach $testsuite_key(@testsuite_keys) {
 	
-	system("mkdir ".$chart_dir.$testsuite_key);
+#	system("mkdir ".$chart_dir.$testsuite_key);
 
 	open (FILE,">temp.dat");
 	@date_keys = keys(%{$percent{$testsuite_key}});
@@ -39,7 +39,8 @@ foreach $testsuite_key(@testsuite_keys) {
 	close (FILE);
 	$first_date = $date_keys[0];
 	$last_date = $date_keys[scalar(@date_keys)-1];
-	$output_file = $chart_dir.$testsuite_key ."/".$current_date. ".png";
+#	$output_file = $chart_dir.$testsuite_key ."/".$current_date. ".png";
+	$output_file = $chart_dir.$testsuite_key . ".png";
 	plot_current_data ($output_file,$testsuite_key,$first_date,$last_date);
 
 }
