@@ -1,0 +1,7 @@
+2004-05-07  Gonzalo Paniagua Javier <gonzalo@ximian.com>
+
+	* System.Web-review.xls: added System.Web review.
+	* mscorlib-review.xls: 1 bug less in Environment,
+	Directory.GetLogicalDrives is implemented now and SearchPattern not
+	used any more.
+
