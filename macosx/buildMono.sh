@@ -23,10 +23,10 @@
 set -e 
 
 BUILDROOT="/Users/Shared/MonoBuild"
-MONOVERSION="1.0.1"
+MONOVERSION="1.1.1"
 BASEPREFIX="/Library/Frameworks"
 PREFIX=""
-MONOURL="http://www.go-mono.com/archive/1.0.1/mono-1.0.1.tar.gz"
+MONOURL="http://www.go-mono.com/archive/1.1.1/mono-1.1.1.tar.gz"
 REMOVE="NO"
 CLEAN="NO"
 PACKAGE="NO"
@@ -35,6 +35,10 @@ PKGCONFIG="http://www.freedesktop.org/software/pkgconfig/releases/pkgconfig-0.15
 GETTEXT="http://ftp.gnu.org/pub/gnu/gettext/gettext-0.14.1.tar.gz"
 GLIB="ftp://ftp.gtk.org/pub/gtk/v2.4/glib-2.4.1.tar.gz"
 ICU="ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz"
+CVS="NO"
+CVSMONO="/tmp/mono"
+#This is the default to make my life easier!
+CVSUSER="adhamh"
 
 usage()
 {
@@ -102,13 +106,15 @@ icuSpecificBuild()
     cd icu/source
 	if [ ${CONFIGURE} == "YES" ]; then
 	    echo "Configuring ICU"
-	    exit
+	    #exit
 	    ./runConfigureICU MacOSX --with-data-packaging=library --prefix=$PREFIX --libdir=$PREFIX/lib/ 
 	fi
 	echo $PWD
 	if [ $CLEAN == "YES" ]; then make clean; fi
-    gnumake
-    make install
+	if [ ${CONFIGURE} == "YES" ]; then
+    	gnumake
+    	make install
+    fi
     #make clean
     
     cd $PREFIX/lib
@@ -179,9 +185,11 @@ build()
 	
 		echo "Creating $BASEPREFIX/$FRAMEWORKNAME"
 		
-		mkdir -p $PREFIX/lib
-                mkdir -p $PREFIX/man
-                mkdir -p $PREFIX/bin
+		if [ ! -d $PREFIX/lib ]; then
+			mkdir -p $PREFIX/lib
+            mkdir -p $PREFIX/man
+			mkdir -p $PREFIX/bin
+        fi
 		
 		if [ $DIR = "icu" ]; then
 			icuSpecificBuild $PREFIX $URL $TARBALL
@@ -200,8 +208,12 @@ build()
 				make clean
 			fi
 			if [ $CONFIGURE == "YES" ]; then
+				if [ $CVS == "YES" && $FRAMEWORKNAME == "Mono.framework" ];  then
+					echo foo
+					exit
+				fi
 			    echo "Configuring $DIR"
-			    exit
+			    #exit
 			    ./configure --prefix=$PREFIX
 			fi
 			make
@@ -218,7 +230,6 @@ build()
 
 }
 
-
 createPackage()
 {
 	FRAMEWORKNAME=$1
@@ -226,7 +237,7 @@ createPackage()
 	IDENTIFIER=$3
 	DESCRIPTION=$4
 	RFILES="/usr/local/mono/release/macosx/resources"
-	TIGER="/Volumes/Tiger"
+	TIGER=""
 	PM="$TIGER/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
 
 	if [ ! -d $TIGER ]; then
@@ -236,8 +247,6 @@ createPackage()
 		echo "the TIGER variable in this script"
 		exit 2
 	fi
-	
-
 	
 	if [ ! -d ${BUILDROOT}/PKGROOT/Library/Frameworks ]; then
 		mkdir -p ${BUILDROOT}/PKGROOT/Library/Frameworks
@@ -323,7 +332,7 @@ EOF
 # that because then we would be creating packages that have duplicate information thus 
 # defeating the purpose of have individual packages.  So once the package has been created
 # we move the framework to the finished directory and test for its location there.
-	if [ ! -d ${BUILDROOT}/finish/${FRAMEWORKNAME}-${VERSION}.pkg ]; then
+	if [ ! -d ${BUILDROOT}/finished/${FRAMEWORKNAME}-${VERSION}.pkg ]; then
     	${PM} -build -p ${BUILDROOT}/Packages/${FRAMEWORKNAME}-${VERSION}.pkg -f ${BUILDROOT}/PKGROOT -r ${BUILDROOT}/PKGRES/Resources -i ${BUILDROOT}/PKGRES/Info.plist -d ${BUILDROOT}/PKGRES/Description.plist
 	if [ ! -d ${BUILDROOT}/finished ]; then
 	    mkdir -p ${BUILDROOT}/finished
@@ -336,8 +345,9 @@ trap cleanup 2
 
 #get the options passed in on the command line.  doing this instead
 #of a case -because these are optional args.
-while getopts hvpimcg option
+while getopts hvpimcgsu option
 	do
+		echo $option
 # 		if [ $option == "v" ]; then
 # 			VERSION=$OPTARG	
 # 		fi
@@ -362,30 +372,78 @@ while getopts hvpimcg option
 		if [ $option == "p" ]; then
 			PACKAGE="YES"	
 		fi
+		if [ $option == "s" ]; then
+			if [ ! -d "/Library/Frameworks/Mono.framework/Versions/Current" ]; then
+				echo "To do this you MUST have the current version of Mono.framework installed"
+				echo "You can dl this from http://mono-project.com/downloads/"
+				exit
+			else
+				CVS="YES"
+			fi
+		fi
+		if [ $option == "u" ]; then
+				CVSUSER=$OPTARG
+		fi
 done
 
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig
 
 creatDirs
 
-#Build the /Library/Frameworks/PkgConfig.framework
-build Mono.framework ${PKGCONFIG} pkgconfig pkgconfig-0.15.0.tar.gz pkgconfig-0.15.0
-
-#Build the /Library/Frameworks/GetText.framework
-build Mono.framework ${GETTEXT} gettext gettext-0.14.1.tar.gz gettext-0.14.1
+if [ $CVS == "YES" ]; then
+	#This will build mono from the mono ximain repository.
+	#It bypasses building Mono's deps because you must already have then installed
+	#in order to build mono.  The -s option doesn't work if you don't have a 
+	#previous version of Mono.framework installed.
 	
-#Build the /Library/Frameworks/Gnome.framework/Frameworks/Glib2.framework
-#this is don to provide a means to add more Gnome code later
+	echo "Getting Mono from CVS"
+	export CVS_RSH=ssh
+	export CVSROOT=${CVSUSER}@mono-cvs.ximian.com:/cvs/public
+	cd `dirname ${CVSMONO}`
+	cvs -z3 co mono
 
-build Mono.framework ${GLIB} glib glib-2.4.1.tar.gz glib-2.4.1
-#Build the /Library/Frameworks/Mono.framwork/Frameworks/Icu.framework
-#icu is only used by mono so it should be placed inside the mono framework
+	echo "Setting up build env"	
+	export PREFIX=/Library/Frameworks/Mono.framework/Versions/Current
+	export PKG_CONFIG_PATH=/Library/Frameworks/Mono.framework/Libraries/pkgconfig
+	export PATH=$PREFIX/bin:/usr/X11R6/bin:$PATH
+	export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/Current/share/aclocal"
+	MONOVERSION="CVS"
+	
+	echo "Building Mono"
+	cd ${CVSMONO}
+	./autogen.sh --prefix=/Library/Frameworks/Mono.framework/Versions/CVS
+	make
+	cd /Library/Frameworks/Mono.framework/Versions
+	ln -sf ${MONOVERSION} Current
+	
+else
+	#This is the "normal" build used mainly to create a framework that can be used
+	#to create a package that can be distributed.
+	
+	#Build PkgConfig
+	if [ ! -f "/Library/Framework/Mono.framework/Version/${MONOVERSION}/bin/pkg-config" ];then 
+		build Mono.framework ${PKGCONFIG} pkgconfig pkgconfig-0.15.0.tar.gz pkgconfig-0.15.0
+	fi
+	
+	#Build the /Library/Frameworks/GetText.framework
+	if [ ! -f "/Library/Framework/Mono.framework/Version/${MONOVERSION}/bin/gettext" ];then 
+		build Mono.framework ${GETTEXT} gettext gettext-0.14.1.tar.gz gettext-0.14.1
+	fi
+	
+	#Build the /Library/Frameworks/Gnome.framework/Frameworks/Glib2.framework
+	#this is don to provide a means to add more Gnome code later
+	if [ ! -d "/Library/Framework/Mono.framework/Version/${MONOVERSION}/lib/glib-2.0" ];then 
+		build Mono.framework ${GLIB} glib glib-2.4.1.tar.gz glib-2.4.1
+	fi
+	
+	#Build the /Library/Frameworks/Mono.framwork/Frameworks/Icu.framework
+	#icu is only used by mono so it should be placed inside the mono framework
+	if [ ! -d "/Library/Framework/Mono.framework/Version/${MONOVERSION}/lib/icu" ];then 
+		build Mono.framework ${ICU} icu icu-2.8.tgz icu 
+	fi
 
-build Mono.framework ${ICU} icu icu-2.8.tgz icu 
-
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/Library/Frameworks/Gnome.framework/Frameworks/Glib2.framework/Libraries/pkgconfig
-
-build Mono.framework ${MONOURL} mono mono-1.0.1.tar.gz mono-1.0.1 
+	build Mono.framework ${MONOURL} mono mono-${MONOVERSION}.tar.gz mono-${MONOVERSION} 
+fi
 
 echo "build completed"
 
@@ -397,7 +455,7 @@ else
 	#go ahead and set this up as a framework.
 	createFramework $FRAMEWORKNAME $MONOVERSION
 	for i in \
-	  `ls -al | grep -v total | grep -v .exe | grep -vw "\." |awk '{print $9}'`; do
+	  `ls -al /Library/Frameworks/Mono.framework/Versions/Current/bin | grep -v total | grep -v .exe | grep -vw "\." |awk '{print $9}'`; do
 	  echo ${i}
 	  ln -sf $PWD/${i} /usr/bin/${i}
 	done
