@@ -39,7 +39,6 @@ $docRoot = $root->createElement("test-results");
 		       "$MCS_ROOT/class/Microsoft.VisualBasic",
 		       "$MCS_ROOT/class/Mono.Directory.LDAP",
 		       "$MCS_ROOT/class/Mono.Security",
-		       "$MCS_ROOT/class/Mono.Security.Win32",
 		       "$MCS_ROOT/class/Npgsql",
 		       "$MCS_ROOT/class/System",
 		       "$MCS_ROOT/class/System.Configuration.Install",
@@ -138,6 +137,8 @@ for ( @MCS_NUNIT_TESTDIRS )
     my $tsexectime = 0 ;
     $tsexectime += $_->[4]
 	foreach @$tcresults;
+
+    $tsexectime = sprintf("%.3f", $tsexectime);
 
     # create testsuite element, with current time and date 
     my $testsuite = create_testsuite_element ( $tsresults, $NUNITTESTS, $tsexectime ) ;
@@ -302,6 +303,7 @@ sub get_nunit_testcase_results
 	$tcstacktrace = "" ;
 	
 	$tcname = ($node->getAttributeNode($attrs[0]))->getValue ;
+	$tcname =~ s/\w*\.// ;
 	if(($node->getAttributeNode($attrs[1]))->getValue ne "False")
 	{
 	    if(($node->getAttributeNode($attrs[2]))->getValue eq "False")
