@@ -1,10 +1,6 @@
 <!--
   This script displays testcase results for a particular testsuite
- Author: Sachin Kumar <skumar1@novell.com>
-         Satya Sudha K (ksathyasudha@novell.com)
-         Ritvik Mayank (mritvik@novell.com)
 -->
-
 <html>
 <head>
 	<title>Mono TestCase Results</title>
@@ -17,7 +13,7 @@
                         $root = $doc->root ();
 			$testsuites = $root->get_elements_by_tagname("testsuite");
                         $sorted_testsuites = array ();
-                        $testsuite_count = 0;
+                        $testsuite_count = 0;                                  
 			$sorted_testcases = array ();
 			$testcases_count = 0;
                         foreach ($testsuites as $testsuite) {
@@ -176,7 +172,12 @@
 		else if ($distro == 2 && $profile == 0){ # redhat default 
 			$distroPath = "redhat-9-i386";
 			$profilePath = "default";
-			$root = "/var/www/mono-website/go-mono/tests/testresults/redhat-9-i386/default/";	
+		        $root = "/var/www/mono-website/go-mono/tests/testresults/redhat-9-i386/default/";
+			}
+		else if ($distro == 3 && $profile == 0){ # Windows Xp default
+			$distroPath = "windowsXP";
+			$profilePath = "default";
+			$root = "/var/www/mono-website/go-mono/tests/testresults/windowsXP/default/";	
 			}
         	else if ($distro == 0 && $profile == 1){ # suse-90-i586 net 2
 			$distroPath = "suse-90-i586";
@@ -192,7 +193,14 @@
 			$distroPath = "redhat-9-i386";
 			$profilePath = "net_2_0";
 			$root = "/var/www/mono-website/go-mono/tests/testresults/redhat-9-i386/net_2_0/";
+			} 
+		else if ($distro == 3 && $profile == 1){ # Windows Xp  net 2  
+			$distroPath = "windowsXP";
+			$profilePath = "net_2_0";
+			$root = "/var/www/mono-website/go-mono/tests/testresults/windowsXP/net_2_0/";
 			}
+
+
 
          $dir = $root."xml/";
 		$chart_location_1 = "testresults/$distroPath/$profilePath/charts/".$testsuite_key."_percent.png";
@@ -230,7 +238,6 @@
 
 			$file_1 = $_GET['file1'];
 			sanitize ($file_1);//Checking whether input file1 is correct
-			
 			$file_1 = $dir ."testresults-". $profilePath."-".$file_1 . ".xml";
 
 			print "<h1>Regressed testcases for " .  $_GET['testsuite'] . "</h1>";

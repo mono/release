@@ -1,3 +1,8 @@
+												    2005-03-08  Ritvik Mayank  <mritvik@novell.com>
+	* displayDetails.php: Added WindowsXP distro
+	* displayTestResulus.php : Added WindowsXP distro
+	* generate-html.php: for generating html pages
+	* generate-charts.pl: modified genetate-charts.pl
 
 2005-02-04  Ritvik Mayank  <mritvik@novell.com> 
 	

@@ -91,5 +91,3 @@ system "make -k check 2>&1 > monotests" ;
 
 chdir "$TEST_ROOT/mono/mono/mini" ;
 system "make -k check 2>&1 > minitests"
-												                                                                                                        
-																									

@@ -1,13 +1,4 @@
 #!/usr/bin/perl
-
-# This script generates the charts coresponding to the test results 
-# Author: Sachin Kumar <skumar1@novell.com>
-#         Roopa Wilson <wroopa@novell.com>
-#         Satya Sudha K <ksathyasudha@novell.com>
-#         Ritvik Mayank <mritvik@novell.com>
-#
-
-
 use Getopt::Std;
 use File::Basename;
 use XML::DOM;
@@ -277,7 +268,7 @@ sub generate_charts {
        my $outfile = "$root_dir/$fields[$i]_percent.png";
        my $title = "Progress Charts for $fields[$i]";
        my $ylabel = "Percentage (%)";
-       my $plot_cmd = "plot \"$filename\" using 1:2*$i title \"$title - Pass %\"  with linespoints lt 1 lw 1 pt 5 ps 1, \"$filename\" using 1:2*$i+1 title \"$title - Fail %\"  with linespoints lt 2 lw 1 pt 5 ps 1;";
+       my $plot_cmd = "plot \"$filename\" using 1:2*$i title \"$title - Pass %\"  with linespoints lt 2 lw 1 pt 5 ps 1, \"$filename\" using 1:2*$i+1 title \"$title - Fail %\"  with linespoints lt 1 lw 1 pt 5 ps 1;";
        plot_graph($outfile, $title, $ylabel, $plot_cmd);
     }
   } elsif ($type eq "total") {
