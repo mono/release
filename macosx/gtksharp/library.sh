@@ -99,7 +99,7 @@ build()
 	export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$PREFIX/lib/pkgconfig
 
 	# Check to see if $FRAMEWORKNAME is present, needs to be dled, and/or installed
-	if [ ! -d "$BASEPREFIX/$FRAMEWORKNAME/Versions/$FRAMEWORKVERSION" ] || [ $FRAMEWORKNAME = "Gnome.framework/Frameworks/Gnome-icon-theme.framework" ] || [ $FRAMEWORKNAME = "Mono.framework" ]; then
+	if [ ! -e "$BASEPREFIX/$FRAMEWORKNAME/Versions/$FRAMEWORKVERSION/.gtkbscomplete" ] || [ $FRAMEWORKNAME = "Gnome.framework/Frameworks/Gnome-icon-theme.framework" ] || [ $FRAMEWORKNAME = "Mono.framework" ]; then
 	    
 	echo ""
         echo ==================================================================================
@@ -295,6 +295,7 @@ build()
 			#fi
 			cd $BUILDROOT/Dependancies	
 		fi
+		touch "$BASEPREFIX/$FRAMEWORKNAME/Versions/$FRAMEWORKVERSION/.gtkbscomplete"
 	fi
 }
 

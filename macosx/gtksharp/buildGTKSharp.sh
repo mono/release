@@ -289,13 +289,13 @@ build Gnome.framework/Frameworks/Gtksourceview.framework 1.0.1 \
 
 #You should already have Mono.framework installed.
 
-build Icu.framework 2.8 \
-	"--disable-epsv ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz" \
-	icu-2.8.tgz icu 
+#build Icu.framework 2.8 \
+#	"--disable-epsv ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz" \
+#	icu-2.8.tgz icu 
 
-build Mono.framework 1.0.1 \
-	http://www.go-mono.com/archive/1.0.1/mono-1.0.1.tar.gz \
-	mono-1.0.1.tar.gz mono-1.0.1 
+#build Mono.framework 1.0.1 \
+#	http://www.go-mono.com/archive/1.0.1/mono-1.0.1.tar.gz \
+#	mono-1.0.1.tar.gz mono-1.0.1 
 
 build GTKSharp.framework 1.0 \
 	http://mono.ximian.com/archive/1.0/gtk-sharp-1.0.tar.gz \
