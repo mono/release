@@ -1,0 +1,194 @@
+Security enhancement in Framework 2.0
+by Sebastien Pouliot (sebastien@ximian.com)
+
+
+* What's missing in Mono 1.0
+
+        * Code Access Security (CAS)
+
+	A separate plan is available for the implementation of CAS in
+        Mono.
+
+
+        * Declarative permissions
+
+        Role Based Access Control (RBAC) cannot be used with declarative
+        permissions (attributes). This will be solved for CAS, as this
+        mechanism is heavily used for CAS permissions.
+
+
+	* X.509 Certification Path Building and Validation
+
+	This wasn't part of the Fx 1.0 API but was indirectly used
+        (CryptoAPI) for Authenticode and SSL support. Fx 2.0 is exposing
+        this publicly so we'll implement it.
+
+
+* Goals
+
+        The major security enhancement to the next release of Mono (1.2)
+        will be CAS. This will somewhat limit the efforts that can be
+        put to implement newer security features. Thankfully a lot of
+        the new 2.0 functionalities were either:
+
+        * contributed after the release of the Fx 1.2 preview (PDC2003);
+
+        * already part of Mono 1.0 in Mono.Security (like SSL\TLS
+        support and Pkcs structures).
+
+        So most of the new features should also be "preview-able" in
+        Mono 1.2.
+
+        As for Mono.Security, it should continue it's evolution based on
+        the same principle as the 1.0 release - "Expose internal code
+        required to build the Mono framework".
+
+
+* Main Work Items
+
+1.      mscorlib.dll
+
+        1.1.    System.Security
+
+	Targets:
+
+        * Mono 1.2:     CAS related stuff (see CAS plan for details).
+        * Mono 2.0:     SecurityContexts (Thread related [1])
+                        HostProtection (server related [1])
+
+
+	1.2.    System.Security.AccessControl
+
+	This namespace implements class to represent low-level Win32
+        access control mechanisms. As this is (mostly) not portable,
+        this has a low priority for Mono.
+
+	Contributors are welcomed to:
+
+        * stubs (for binary compatibility) the classes and structures
+        (which could be part of Mono 1.2 release).
+
+        * provide a Windows-only implementation. This may be a very good
+        project for someone interested in Win32 security involving
+        [S|D]ACL/ACE...
+
+
+	1.3.    System.Security.Cryptography
+
+	The namespace was mostly updated to Fx 2.0 (using the Fx 1.2
+        documentation). There are two new padding mode to support,
+        additional key containers informations and Data Protection
+        (DPAPI).
+
+	Targets:
+        * Mono 1.2:     Complete 2.0 beta API support (except DPAPI).
+        * Mono 2.0:     Complete 2.0 final API support (DPAPI ?).
+
+	* DPAPI: AFAIK Linux doesn't have a DPAPI-like service (Data
+        Protection API). That could be a very cool project (but outside
+        Mono ;-).
+
+
+	1.4     System.Security.Cryptography.X509Certificates
+
+	X.509 certificates can now be imported from other formats (PKCS
+        #12 being the most important). Other formats may (or may not) be
+        supported due to lack of documentation.
+
+	Targets:
+        * Mono 1.2:     Complete 2.0 beta API support.
+        * Mono 2.0:     Complete 2.0 final API support.
+
+
+	1.5.    System.Security.Permissions
+
+	Mostly CAS related (see CAS plan for details).
+
+
+	1.6.    System.Security.Policy
+
+	Mostly CAS related (see CAS plan for details).
+
+
+	1.7.    System.Security.Principal
+
+	Targets:
+        * Mono 1.2:     Ajust API for existing classes
+                        Stubs for new classes (contributions welcomed)
+        * Mono 2.0:     Windows/POSIX implementation (when possible)
+
+
+	1.8.    System.IO.IsolatedStorage
+
+	Targets:
+        * Mono 1.2:     Ajust API for existing classes
+        * Mono 2.0:     Use evidences
+
+        Notes:
+        * To be useful some CUI/GUI tools for managing storage are
+	required.
+
+        * Contributors welcomed.
+
+
+2.      System.Security.dll
+
+        2.1.    System.Security.Cryptography
+
+	Basic structures required for Pkcs and X509Certificates
+        namespaces. Mostly implemented (from Fx 1.2 documentation).
+        Additionnal unit tests required.
+
+
+	2.2.    System.Security.Cryptography.Pkcs
+	
+	Parts are already implemented (from Fx 1.2 documentation) using
+        Mono.Security ASN.1 support.
+
+
+	2.3.    System.Security.Cryptography.X509Certificates
+        
+        Targets:
+        * Mono 1.2:     with (very) limited X509Chain.
+        * Mono 2.0:     with RFC3280 compliant X509Chain.
+        
+        Notes:
+        * Building a managed RFC3280-compliant certification path
+        building and verification could be a very interesting project
+        for a contributor interested in PKI.
+
+        
+        2.4.    System.Security.Cryptography.Xml
+
+        XML Encryption has mostly implemented (from Fx 1.2
+        documentation). New XML transforms are also required (new
+        ex-C14N). Additional unit tests are also required.
+
+
+	2.5.    System.Security.Permissions
+
+        Mostly CAS related (see CAS plan for details).
+        
+
+3.      System.dll
+
+        3.1     System.Net.Security
+
+        New authenticated streams (SslStream, NegociateStream) which can
+        be build from the pieces available from Mono.Security.
+
+
+* Contributors
+
+        Some people have expressed interest in helping to implement the
+        new security features added in Fx 2.0.
+
+        * Tim Coleman (XML encryption, System.Security.dll)
+        * Carlos Guzman Alvarez (SSL/TLS support, System.dll)
+        Other contributors are welcomed.
+
+
+* Notes
+
+[1] Final support depends on the related functionalities being
+implemented in Mono 1.2/2.0.
