@@ -5,9 +5,28 @@ use Switch;
 
 $max = 10;
 $root_dir = "./";
-$dir = $root_dir."testresults/xml/";
-
-$chart_dir = $root_dir."testresults/charts/";
+if (scalar(@ARGV) == 0) {
+	print "\nUsage:\n perl generate-charts.pl <distro_number>\n\n";
+	exit;
+}
+switch($ARGV[0]) {
+	case 1 {
+		$root_dir = $root_dir."testresults/redhat-9-i386/";
+	}
+	case 2 {
+		$root_dir = $root_dir."testresults/fedora-1-i386/";
+	}
+	case 3 {
+		$root_dir = $root_dir."testresults/suse-90-i586/";
+	}
+	default {
+		print "\nWrong distro number!\n\n";
+		print "1 - redhat-9-i386\n2 - fedora-1-i386\n3 - suse-90-i586\n\n";	
+	        exit;
+	}
+}
+$dir = $root_dir."xml/";
+$chart_dir = $root_dir."charts/";
 
 system("mkdir ". $chart_dir);
 
