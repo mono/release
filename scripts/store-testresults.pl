@@ -146,7 +146,7 @@ $root->printToFile("testresults-".$DATE.".xml") ;
 sub nunit_results
 {
     my ( $file, $type ) = @_ ;
-
+    
     my $parser = new XML::DOM::Parser;
     my $doc = $parser->parsefile ( $file );
 
@@ -154,7 +154,7 @@ sub nunit_results
     my $tsresults = get_nunit_testsuite_results ( $doc );
     
     # get data for each test case run
-    my $tcresults = get_nunit_testcase_results ( $doc );
+    my $tcresults = get_nunit_testcase_results ( $doc ,$type);
 
     my $tsexectime = 0 ;
     $tsexectime += $_->[4]
@@ -309,7 +309,7 @@ sub get_nunit_testsuite_results
 
 sub get_nunit_testcase_results
 {
-    my $doc = shift ;
+    my ($doc, $type) = @_ ;
     my @attrs = ( 'name', 'executed', 'success', 'time' ) ;
     my @tcresults = () ;
     
@@ -327,7 +327,9 @@ sub get_nunit_testcase_results
 	$tcstacktrace = "" ;
 	
 	$tcname = ($node->getAttributeNode($attrs[0]))->getValue ;
-	$tcname =~ s/\w*\.// ;
+	if ($type != $OTHERTESTS) {
+		$tcname =~ s/\w*\.// ;
+	}
 	if(($node->getAttributeNode($attrs[1]))->getValue ne "False")
 	{
 	    if(($node->getAttributeNode($attrs[2]))->getValue eq "False")
