@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if test x$1 = x; then
+	echo usage is: update-versions root-dir VERSION
+	exit 1
+fi
+
+if test x$1 = x; then
+	echo usage is: update-versions root-dir VERSION
+	exit 1
+fi
+
+root=$1
+version=$2
+if test ! -d $root/mono; then
+	echo $root does not contain the directory mono
+fi
+if test ! -d $root/mcs; then
+	echo $root does not contain the directory cs
+fi
+
+echo Updating versions in $root/mono and $root/mcs
+
+perl -pi -e "s/AM_INIT_AUTOMAKE.*(mono,.*)/AM_INIT_AUTOMAKE(mono,$version)/" $root/mono/configure.in
+
+for i in mcs/AssemblyInfo.cs; do
+	perl -pi -e "s/\[assembly: AssemblyVersion(".*")\]/\[assembly: AssemblyVersion(\"$version\")\]/" $root/mcs/$i
+done
