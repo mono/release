@@ -76,9 +76,14 @@ fi
 
 cp ${INSTALLPATH}/lib/libCocoaSharpGlue.0.dylib ${PKGROOT}/lib/
 cp ${INSTALLPATH}/lib/mono/cocoa-sharp/Apple.AppKit.dll ${PKGROOT}/lib/mono/cocoa-sharp/
+
 cp ${INSTALLPATH}/lib/mono/cocoa-sharp/Apple.Foundation.dll ${PKGROOT}/lib/mono/cocoa-sharp/
 cp ${INSTALLPATH}/lib/mono/cocoa-sharp/Apple.WebKit.dll ${PKGROOT}/lib/mono/cocoa-sharp/
 cp ${INSTALLPATH}/lib/pkgconfig/cocoa-sharp.pc ${PKGROOT}/lib/pkgconfig/
+
+cp ${1}/src/Apple.AppKit/Apple.AppKit.dll.config ${PKGROOT}/lib/mono/cocoa-sharp/
+cp ${1}/src/Apple.Foundation/Apple.Foundation.dll.config ${PKGROOT}/lib/mono/cocoa-sharp/
+cp ${1}/src/Apple.WebKit/Apple.WebKit.dll.config ${PKGROOT}/lib/mono/cocoa-sharp/
 
 cp ${INSTALLPATH}/bin/CocoaSharpLoader ${PKGROOT}/bin/
 
@@ -86,29 +91,6 @@ cp ${INSTALLPATH}/bin/CocoaSharpLoader ${PKGROOT}/bin/
 
 echo ${INSROOT}
 
-# cat <<EOF > ${PKGROOT}/installCocoaSharp.command
-# #!/bin/sh -x
-# #this is to run gacutil and install the cocoa sharp files into gac.
-# 
-# cp ${INSROOT}/lib/libCocoaSharpGlue.0.dylib ${PREFIX}/lib/
-# cp ${INSROOT}/lib/mono/cocoa-sharp/Apple.AppKit.dll ${PREFIX}/lib/mono/cocoa-sharp/
-# cp ${INSROOT}/lib/mono/cocoa-sharp/Apple.Foundation.dll ${PREFIX}/lib/mono/cocoa-sharp/
-# cp ${INSROOT}/lib/mono/cocoa-sharp/Apple.WebKit.dll ${PREFIX}/lib/mono/cocoa-sharp/
-# cp ${INSROOT}/lib/pkgconfig/cocoa-sharp.pc ${PREFIX}/lib/pkgconfig
-# 
-# cp ${INSROOT}/bin/CocoaSharpLoader ${PREFIX}/bin/
-# 
-# cd /Library/Frameworks/Mono.framework/Versions/Current/lib
-# ln -sf libCocoaSharpGlue.0.dylib libCocoaSharpGlue.0.0.0.dylib
-# ln -sf libCocoaSharpGlue.0.dylib libCocoaSharpGlue.dylib
-#  
-# /usr/bin/gacutil /i Apple.Foundation.dll /f /package cocoa-sharp /gacdir /Library/Frameworks/Mono.framework/Versions/Current/lib
-# /usr/bin/gacutil /i Apple.AppKit.dll /f /package cocoa-sharp /gacdir /Library/Frameworks/Mono.framework/Versions/Current/lib
-# /usr/bin/gacutil /i Apple.WebKit.dll /f /package cocoa-sharp /gacdir /Library/Frameworks/Mono.framework/Versions/Current/lib
-# 
-# cd /
-# rm -r /tmp/cocoasharp
-# EOF
 
 cat <<EOF > ${PKGROOT}/uninstallCocoaSharp.sh
 #!/bin/sh -x
@@ -214,7 +196,9 @@ cp ${INSROOT}/lib/mono/cocoa-sharp/Apple.Foundation.dll ${PREFIX}/lib/mono/cocoa
 cp ${INSROOT}/lib/mono/cocoa-sharp/Apple.WebKit.dll ${PREFIX}/lib/mono/cocoa-sharp/
 cp ${INSROOT}/lib/pkgconfig/cocoa-sharp.pc ${PREFIX}/lib/pkgconfig
 
-cp ${INSROOT}/bin/CocoaSharpLoader ${PREFIX}/bin/
+cp ${INSROOT}/lib/mono/cocoa-sharp/Apple.AppKit.dll.config ${PREFIX}/lib/mono/cocoa-sharp/
+cp ${INSROOT}/lib/mono/cocoa-sharp/Apple.Foundation.dll.config ${PREFIX}/lib/mono/cocoa-sharp/
+cp ${INSROOT}/lib/mono/cocoa-sharp/Apple.WebKit.dll.config ${PREFIX}/lib/mono/cocoa-sharp/ 
 
 cd /Library/Frameworks/Mono.framework/Versions/Current/lib
 ln -sf libCocoaSharpGlue.0.dylib libCocoaSharpGlue.0.0.0.dylib

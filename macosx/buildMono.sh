@@ -213,6 +213,7 @@ if [ $PACKAGE == "YES" ]; then
 	echo "=================================================="
 	echo ""
 	createPackage Mono ${MONOVERSION} com.ximian.mono "Mono Framework ${MONOVERSION}"
+
 	hdiutil create -ov -srcfolder ${BUILDROOT}/Packages/MonoFramework-${MONOVERSION}.pkg -volname MonoFramework-${MONOVERSION} ${BUILDROOT}/finished/MonoFramework-${MONOVERSION}
 else
 	#if we aren't going to create a package then we need to 
