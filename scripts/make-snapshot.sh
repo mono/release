@@ -42,7 +42,12 @@ make
 
 # copy new mcs assemblies to the mono runtime dir.
 cd $SNAPSHOT/mono/runtime
-rm *.dll *.exe # remove existing assemblies
+
+# remove existing assemblies
+rm net_1_1/*.dll
+rm net_2_0/*.dll
+rm *.exe
+
 make prefix=/usr
 
 # do a make dist
@@ -54,7 +59,7 @@ cd $SNAPSHOT/mono
 cp *.tar.gz /tmp/snapshot/$DATE/
 
 # make monolite tarball
-LIBSDIR=$SNAPSHOT/mcs/class/lib
+LIBSDIR=$SNAPSHOT/mcs/class/lib/default
 mkdir $SNAPSHOT/monolite-$DATE
 cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/System.Xml.dll $LIBSDIR/Mono.CSharp.Debugger.dll $SNAPSHOT/mcs/mcs/mcs.exe $SNAPSHOT/monolite-$DATE
 cd $SNAPSHOT
@@ -62,7 +67,18 @@ tar zcvpf monolite-$DATE.tar.gz monolite-$DATE/
 
 # make monocharge tarball
 mkdir $SNAPSHOT/monocharge-$DATE
-cp $SNAPSHOT/mono/runtime/*.dll $SNAPSHOT/mono/runtime/*.exe $SNAPSHOT/monocharge-$DATE
+
+# exe
+cp $SNAPSHOT/mono/runtime/*.exe $SNAPSHOT/monocharge-$DATE
+
+# NET_1_1
+mkdir $SNAPSHOT/monocharge-$DATE/net_1_1
+cp $SNAPSHOT/mono/runtime/net_1_1/*.dll $SNAPSHOT/monocharge-$DATE/net_1_1
+
+# NET_2_0
+mkdir $SNAPSHOT/monocharge-$DATE/net_2_0
+cp $SNAPSHOT/mono/runtime/net_2_0/*.dll  $SNAPSHOT/monocharge-$DATE/net_2_0
+
 tar zcvpf monocharge-$DATE.tar.gz monocharge-$DATE/
 
 # upload the new tarball
