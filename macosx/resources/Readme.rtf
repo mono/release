@@ -1,28 +1,33 @@
 {\rtf1\mac\ansicpg10000\cocoartf102
 {\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;\f1\fswiss\fcharset77 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
-\margl1440\margr1440\vieww9800\viewh10860\viewkind0
+\margl1440\margr1440\vieww11880\viewh12380\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural
 
-\f0\b\fs24 \cf0 Mono.framework 1.0
+\f0\b\fs24 \cf0 Mono.framework 1.0.1
 \f1\b0  and its dependancies.\
 \
 This is a repackaging of Mono environment from http://www.mono-project.com/about/index.html.  The idea of this repackaging is to provide a native Mac OS X framework for doing Mono development.\
 \
-This package installs multiple frameworks each which are required by Mono.  Here is the basic structure of the installed directories.\
+This package installs Mono and all of its dependencies inside of /Library/Frameworks/Mono.framework.  This behavior is likely to change with a future release so that depencancies will get their own frameworks.\
 \
-/Library/Frameworks/\
-	Gnome.framework/Frameworks/Glib2.framework\
-	PkgConfig.framework\
-	GetText.framework\
-	Mono.framework\
-	Mono.framework/Frameworks/Icu.framework\
+What gets installed inside Mono.framework?\
 \
-The idea behind this structure is to gradually buildup more frameworks so that other projects like GTK# can be used.\
+	pkgconfig-0.15.0\
+	gettext-0.14.1\
+	glib-2.4.1\
+	icu-2.8\
+	mono-1.0.1\
 \
-Links to /usr/bin are created for binaries installed into the various Commands directories.  This is done to prevent requiring modifications to the $PATH environmental variable.  Yes, we know that this is not typical for *NIX, but this is Mac OS X. \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf0 If you'd like to access the mono manpages you'll have to add /Library/Framework/Mono/Versions/Current/man to your manpath\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural
+\cf0 \
+During the postinstall phase of the installation, links to /usr/bin are created for binaries installed into the Commands directory.  This is done to prevent requiring modifications to the $PATH environmental variable.  Yes, we know that this is not typical for *NIX, but this is Mac OS X. \
 \
-This package was created by the Cocoa# team.  Major contributors to this team include (in alphabetical order): \
+A simple uninstallMono.sh script is included in the disk image.  This is shell script that must be run as root, and it will remove the Mono.framework and the links in /usr/bin.\
+\
+This package was created by the CocoaSharp team.  Major contributors to this team include (in alphabetical order): \
 \
 Adhamh Findlay\
 Urs Muff\
