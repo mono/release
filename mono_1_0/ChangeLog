@@ -1,3 +1,7 @@
+2004-05-13  Ravindra <rkumar@novell.com>
+
+	* missing-gdiplus-calls: Marked some of them, which I'm working on.
+
 2004-05-12  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* mscorlib-review.xls: Updated status for System.IO.IsolatedStorage
