@@ -1,7 +1,7 @@
       1	DC_GetDCPtr_gdip
-      1	GdipAddPathLine2
-      1	GdipAddPathLine2I
-      1	GdipAddPathPieI
+      1	GdipAddPathLine2 	# Implemented, not from C# side
+      1	GdipAddPathLine2I       # Implemented, not from C# side
+      1	GdipAddPathPieI         # Implemented, not from C# side
       1	GdipBeginContainer
       1	GdipBeginContainer2
       1	GdipBeginContainerI
@@ -13,7 +13,7 @@
       1	GdipCreateFontFromDC
       1	GdipCreateHBITMAPFromBitmap
       1	GdipCreateHICONFromBitmap
-      1	GdipCreatePath2I
+      1	GdipCreatePath2I         # Implemented, not from C# side
       1	GdipDeleteCustomLineCap
       1	GdipDrawBeziers
       1	GdipDrawBeziersI
@@ -54,7 +54,7 @@
       1	GdipRemovePropertyItem
       1	GdipResetClip
       1	GdipSaveAdd
-      1	GdipScaleWorldTransform
+      1	GdipScaleWorldTransform			# Implemented
       1	GdipSetClipGraphics
       1	GdipSetClipPath
       1	GdipSetClipRect
@@ -82,7 +82,7 @@
       1	GdipSetPenLineCap197819
       1	GdipSetPenStartCap
       1	GdipSetPropertyItem
-      1	GdipTransformPoints
-      1	GdipTransformPointsI
+      1	GdipTransformPoints			# Duncan - 
+      1	GdipTransformPointsI                    # Working on these two now
       1	GdipTranslateClip
       1	GdipTranslateClipI
