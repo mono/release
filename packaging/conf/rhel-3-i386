@@ -1,3 +1,3 @@
 target_host=builder@monobuild1
-jaildir=/jails/XXXXX/jail
+jaildir=/jails/rhel-3as-i386-duncan-0
 chroot=/usr/sbin/chroot
