@@ -155,8 +155,22 @@
                                                                                                                           
 <body>
 	<?php 
-
 		$testsuite_key = $_GET['testsuite'];
+		$root = "./";
+                $dir = $root."testresults/xml/";
+		$chart_location_1 = $root."testresults/charts/".$testsuite_key."_percent.png";
+		$chart_location_2 = $root."testresults/charts/".$testsuite_key."_pass.png";
+		$chart_location_3 = $root."testresults/charts/".$testsuite_key."_fail.png";
+
+		#Displaying Charts
+		if($_GET['image']==1) {
+			print "<h3>Progress Charts</h3>";
+			print "<p><h4> Pass and Fail Percentages</h4><img src=\"$chart_location_1\"></p>";
+			print "<p><h4>Number of Passes</h4><img src=\"$chart_location_2\"></p>";
+			print "<p><h4>Number of Failures</h4><img src=\"$chart_location_3\"></p>";
+			return;
+		}
+		
 		$status_key = $_GET['status'];
 		$file = $_GET['file'];
 	
@@ -164,12 +178,10 @@
 		sanitize ($file);
 
 		#Prepending the base directory and appending .xml to the input filename
-		$root = "./";
-		$dir = $root."testresults/xml/";
 		$file = $dir . "testresults-" .$file . ".xml";
 
 		#Obtaining location of the recent chart for the particular testsuite
-		$chart_url = $root."testresults/charts/$testsuite_key".".png";
+		$chart_url = "displayDetails.php?image=1&testsuite=$testsuite_key";
 
 		#Displaying regressed testcases
 		if ($_GET['regression'] == 1) {
@@ -178,12 +190,12 @@
 			sanitize ($file_1);//Checking whether input file1 is correct
 			$file_1 = $dir ."testresults-". $file_1 . ".xml";
 
-			print "<h3>Regressed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
+			print "<h3>Regressed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Charts></font></a></h3>";
 			$testcases = fetch_regressed_testcases($testsuite_key,$file,$file_1);
 			print "<table border=1><tr><th>S.No.</th><th>Test Case Name</th><th>Message</th></tr>";	
 			$count = 1;
 			foreach ($testcases as $testcase) {
-				 print "<tr><td>$count </td><td bgcolor=$color><a href=#".$count.">" . $testcase["name"]. "</a></td><td>".$testcase["message"]."</td><tr>";
+				 print "<tr><td>$count </td><td bgcolor=$color><a href=#".$count.">" . $testcase["name"]. "</a></td><td><pre>".$testcase["message"]."</pre></td><tr>";
                                 $count++;
 			}
 
@@ -206,7 +218,7 @@
 		if ($testcases[0] == "0") {
 
 			#Displaying log message
-			print "<h3>Testcase results for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
+			print "<h3>Testcase results for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Charts></font></a></h3>";
 			print "<pre>".$testcases[1]."</pre>";
 			return;
 		}
@@ -214,7 +226,7 @@
 		#Displaying passed testcases
 		if ($status_key == 0)
 		{
-			print "<h3>Passed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
+			print "<h3>Passed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Charts></font></a></h3>";
 			print "<table border=1><tr><th>S.No.</th><th>Test Case Name</th><th>Execution Time</th></tr>";
 			$count = 1;
 			foreach ($testcases as $testcase) {
@@ -227,11 +239,11 @@
 		#Displaying not run testcases
 		else if ($status_key == 2) 
 		{
-			print "<h3>Not run testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
+			print "<h3>Not run testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Charts></font></a></h3>";
 			print "<table border=1><tr><th>S.No.</th><th>Test Case Name</th><th>Message</th></tr>";
 			$count = 1;
                         foreach ($testcases as $testcase) {
-                                print "<tr><td>$count</td><td>" . $testcase["name"] . "</td><td>" . $testcase["message"] . "</td></tr>";
+                                print "<tr><td>$count</td><td>" . $testcase["name"] . "</td><td><pre>" . $testcase["message"] . "</pre></td></tr>";
                                 $count++;
                         }
 			print "</table>";
@@ -240,11 +252,11 @@
 		#Displaying failed testcases
 		else if ($status_key == 1) 
 		{
-			print "<h3>Failed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Chart></font></a></h3>";
+			print "<h3>Failed testcases for " .  $_GET['testsuite'] . "&nbsp;<a href=\"$chart_url\"><font size=\"2\" color=\"blue\">&lt;View Progress Charts></font></a></h3>";
 			print "<table border =1><tr><th><b>S.No.</th></b><th><b>Test Case Name</b></th><th><b>Message</b></th></tr>";
 			$count = 1;
 			foreach ($testcases as $testcase) {
-				print "<tr><td>$count </td><td bgcolor=$color><a href=#".$count.">" . $testcase["name"]. "</a></td><td>".$testcase["message"]."</td><tr>";
+				print "<tr><td>$count </td><td bgcolor=$color><a href=#".$count.">" . $testcase["name"]. "</a></td><td><pre>".$testcase["message"]."</pre></td><tr>";
 				$count++;
 			}
 			print "</table>";
