@@ -29,9 +29,9 @@ fi
 . conf/$1
 package=$2
 
-scp do-build $target_host:$jaildir/tmp >& logs/$1
+scp do-build $target_host:$jaildir/tmp 
 remote_cmd="$chroot $jaildir sh -x /tmp/do-build $package"
-(echo > status/$1; ssh $target_host "sudo $remote_cmd" >& logs/$1; rm status/$1)
+(echo > status/$1; ssh $target_host "sudo $remote_cmd" >& logs/$package-$1; rm status/$1)
 scp $target_host:$jaildir/tmp/status /tmp/status-$1-$2
 if grep -q failure /tmp/status-$1-$2; then
    echo Build failed, see log in logs/$1 for details
