@@ -9,12 +9,12 @@
       1	GdipCreateBitmapFromHBITMAP
       1	GdipCreateBitmapFromHICON
       1	GdipCreateBitmapFromResource
-      1	GdipCreateCustomLineCap			#Ravindra
+      1	GdipCreateCustomLineCap			#Implemented
       1	GdipCreateFontFromDC
       1	GdipCreateHBITMAPFromBitmap
       1	GdipCreateHICONFromBitmap
       1	GdipCreatePath2I         # Implemented, not from C# side
-      1	GdipDeleteCustomLineCap			#Ravindra
+      1	GdipDeleteCustomLineCap			#Implemented
       1	GdipDrawBeziers
       1	GdipDrawBeziersI
       1	GdipEndContainer
@@ -23,11 +23,11 @@
       1	GdipGetClipBounds
       1	GdipGetCompositingMode
       1	GdipGetCompositingQuality
-      1	GdipGetCustomLineCapBaseCap		#Ravindra
-      1	GdipGetCustomLineCapBaseInset		#Ravindra
-      1	GdipGetCustomLineCapStrokeCaps		#Ravindra
-      1	GdipGetCustomLineCapStrokeJoin		#Ravindra
-      1	GdipGetCustomLineCapWidthScale		#Ravindra
+      1	GdipGetCustomLineCapBaseCap		#Implemented
+      1	GdipGetCustomLineCapBaseInset		#Implemented
+      1	GdipGetCustomLineCapStrokeCaps		#Implemented
+      1	GdipGetCustomLineCapStrokeJoin		#Implemented
+      1	GdipGetCustomLineCapWidthScale		#Implemented
       1	GdipGetEncoderParameterList
       1	GdipGetEncoderParameterListSize
       1	GdipGetImageAttributesAdjustedPalette
@@ -36,12 +36,12 @@
       1	GdipGetNearestColor
       1	GdipGetPageScale
       1	GdipGetPageUnit
-      1	GdipGetPenCustomEndCap			#Ravindra
-      1	GdipGetPenCustomStartCap		#Ravindra
+      1	GdipGetPenCustomEndCap			#Ravindra, we need cairo to support something like cairo_stroke_path API to get this working.
+      1	GdipGetPenCustomStartCap		#Ravindra, same
       1	GdipGetPenDashCap197819			#Ravindra
-      1	GdipGetPenEndCap			#Ravindra
-      1	GdipGetPenFillType			#Ravindra
-      1	GdipGetPenStartCap			#Ravindra
+      1	GdipGetPenEndCap			#Ravindra, cairo supports only one type of cap for both the ends of a line
+      1	GdipGetPenFillType			#Implemented
+      1	GdipGetPenStartCap			#Implemented, using startcap as the cap for both the line ends
       1	GdipGetVisibleClipBounds
       1	GdipIsClipEmpty
       1	GdipIsVisibleClipEmpty
@@ -62,11 +62,11 @@
       1	GdipSetClipRegion
       1	GdipSetCompositingMode
       1	GdipSetCompositingQuality
-      1	GdipSetCustomLineCapBaseCap		#Ravindra
-      1	GdipSetCustomLineCapBaseInset		#Ravindra
-      1	GdipSetCustomLineCapStrokeCaps		#Ravindra
-      1	GdipSetCustomLineCapStrokeJoin		#Ravindra
-      1	GdipSetCustomLineCapWidthScale		#Ravindra
+      1	GdipSetCustomLineCapBaseCap		#Implemented
+      1	GdipSetCustomLineCapBaseInset		#Implemented
+      1	GdipSetCustomLineCapStrokeCaps		#Implemented
+      1	GdipSetCustomLineCapStrokeJoin		#Implemented
+      1	GdipSetCustomLineCapWidthScale		#Implemented
       1	GdipSetImageAttributesColorMatrix
       1	GdipSetImageAttributesOutputChannel
       1	GdipSetImageAttributesRemapTable
@@ -75,14 +75,20 @@
       1	GdipSetPageScale
       1	GdipSetPageUnit
       1	GdipSetPathGradientCenterPointI
-      1	GdipSetPenCustomEndCap			#Ravindra
-      1	GdipSetPenCustomStartCap		#Ravindra
+      1	GdipSetPenCustomEndCap			#Ravindra, custom cap needs more from cairo
+      1	GdipSetPenCustomStartCap		#Ravindra, same
       1	GdipSetPenDashCap197819			#Ravindra
       1	GdipSetPenEndCap			#Ravindra
-      1	GdipSetPenLineCap197819			#Ravindra
-      1	GdipSetPenStartCap			#Ravindra
+      1	GdipSetPenLineCap197819			#Implemented, needs more work
+      1	GdipSetPenStartCap			#Implemented, using start cap as the linecap for both the ends of a line
       1	GdipSetPropertyItem
       1	GdipTransformPoints			# Duncan - 
       1	GdipTransformPointsI                    # Working on these two now
       1	GdipTranslateClip
       1	GdipTranslateClipI
+
+
+NOTES:
+ There are couple of Pen APIs related to custom line cap and end caps,
+which can't be implemented right now. There seems to be some work in 
+progress in cairo, and I hope we would be able to implement these soon.

@@ -1,3 +1,7 @@
+2004-05-14  Ravindra <rkumar@novell.com>
+
+	* missing-gdiplus-calls: Updated and added a note.
+
 2004-05-13  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* System.Security-review.xls: Updated (less TODO but more details).
