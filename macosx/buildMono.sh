@@ -62,8 +62,7 @@ PACKAGE="NO"
 CONFIGURE="NO"
 PKGCONFIG="http://www.freedesktop.org/software/pkgconfig/releases/pkgconfig-0.15.0.tar.gz"
 GETTEXT="http://ftp.gnu.org/pub/gnu/gettext/gettext-0.14.1.tar.gz"
-GLIB="ftp://ftp.gtk.org/pub/gtk/v2.4/glib-2.4.1.tar.gz"
-ICU="ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz"
+GLIB="ftp://ftp.gtk.org/pub/gtk/v2.6/glib-2.6.3.tar.gz"
 SVN="NO"
 PACKAGEONLY="NO"
 MONOBUILDFILES=${PWD}
@@ -84,6 +83,13 @@ cleanup()
 	echo "Interupted cleaning"
 }
 
+checkExitStatus() 
+{
+    if [ $# != 0 ]; then
+            exit
+    fi
+    clear
+}
 creatDirs()
 {
 
@@ -95,11 +101,12 @@ creatDirs()
 
 trap cleanup 2
 
+
+
 #get the options passed in on the command line.  doing this instead
 #of a case -because these are optional args.
 while getopts hv:piCcRs:uoOg option
 	do
-		echo $option
  		if [ $option == "v" ]; then
  			MONOVERSION=$OPTARG	
 			MONOURL="http://www.go-mono.com/archive/${MONOVERSION}/mono-${MONOVERSION}.tar.gz"
@@ -189,30 +196,42 @@ creatDirs
 			build Mono.framework ${PKGCONFIG} pkgconfig pkgconfig-0.15.0.tar.gz pkgconfig-0.15.0
 		fi
 		
+                checkExitStatus
+
 		#Build the /Library/Frameworks/GetText.framework
 		if [ ! -f "/Library/Framework/Mono.framework/Version/${MONOVERSION}/bin/gettext" ];then 
 			build Mono.framework ${GETTEXT} gettext gettext-0.14.1.tar.gz gettext-0.14.1
 		fi
+
+                checkExitStatus
 		
 		#Build the /Library/Frameworks/Gnome.framework/Frameworks/Glib2.framework
 		#this is don to provide a means to add more Gnome code later
 		if [ ! -d "/Library/Framework/Mono.framework/Version/${MONOVERSION}/lib/glib-2.0" ];then 
-			build Mono.framework ${GLIB} glib glib-2.4.1.tar.gz glib-2.4.1
+			build Mono.framework ${GLIB} glib glib-2.6.3.tar.gz glib-2.6.3
 		fi
 		
-		#Build the /Library/Frameworks/Mono.framwork/Frameworks/Icu.framework
-		#icu is only used by mono so it should be placed inside the mono framework
-		if [ ! -d "/Library/Framework/Mono.framework/Version/${MONOVERSION}/lib/icu" ];then 
-			build Mono.framework ${ICU} icu icu-2.8.tgz icu 
-		fi
+                checkExitStatus 
+
 		if [ $SVN == "YES" ]; then
 		    svnbuild Mono.framework
 		else
 		    build Mono.framework ${MONOURL} mono mono-${MONOVERSION}.tar.gz mono-${MONOVERSION}
 		fi
+
+                checkExitStatus 
+
+                echo GDIPLUS == ${GDIPLUS}
 		if [ ${GDIPLUS} == "YES" ];then
-		    ${MONOBUILDFILES}/gdipBuild.sh ${BUILDROOT}/Dependancies
+                    if [ -d /Users/Shared/mono/release/macosx ]; then
+                        ${MONOBUILDFILES}/gdipBuild.sh ${BUILDROOT}/Dependancies /Users/Shared/mono/release/macosx
+                    else
+                        echo "This is very bad. Someone hardcoded the path to the Mac OS X release directory.  Yell at someone to fix this, but in the meantime make sure the release module is in /Users/Shared/mono/release/macosx."
+                    fi
 		fi
+                
+                checkExitStatus 
+
 	   fi
    	fi 
 #fi
