@@ -1,0 +1,141 @@
+System.Web changes
+Gonzalo Paniagua
+
+While most of the ASP.NET runtime core classes remain almost
+untouched, there are lots of improvements and additions in ASP.NET 2.0
+
+
+* Templates
+
+	The so-called master pagesprovide the ability to have
+	templated pages. Templates can be nested. have placeholders
+	whose content, if any, can be overriden by the page and also
+	define properties. The page have access to the master page
+	through its Master property, that returns a Page derived
+	object. The syntax is the same as for 1.1 pages.
+	
+
+
+* Themes 
+
+	A theme is an aggregation of skins and a skin is a set of
+	visual properties to be applied to a control. All themes are stored
+	under the Themes directory, one directory per each. MS provides a few
+	default themes. Themes are compiled if referenced. The syntax is the
+	same as control syntax.
+
+
+
+* Personalization
+
+	Personalization makes it easy to store and retrieve data based on the
+	user. We could do this using Session, but personalization
+	provides strongly typed access and the backend that stores the
+	data is given through a provider model by implementing an
+	interface (IProvider). The properties, available through the
+	Profile property of Page, are configured in web.config.
+
+	Anonymous users can also use personalization. If the anonymous
+	user registers afterwards, all the profile data is transferred
+	to the new user.
+
+
+* Configuration and management API
+
+	Configuration can be updated programatically now. There's also
+	a set of classes that has event producers for auditable
+	events.
+
+
+* Controls
+
+	Updated controls, site and page counters for a few of them.
+
+
+* New Controls
+
+	Login, LoginName, LoginStatus, LoginView, PasswordRecovery,
+	BulletedList, FileUpload, HiddenField, DynamicImage,
+	MultiView, View, Wizard, SqlDataSource, XmlDataSource,
+	AccessDataSource, ObjectDataSource, XmlDataSource, GridView,
+	DetailsView, ImageGenerator, ImageMap, DataSetDataSource,
+	SiteMap*
+
+
+* WebParts
+
+	Webpart, webpartzone, webpartmanager.
+
+WebParts are containers that can be moved/hidden/resized on the client.
+
+
+* Data controls
+	
+	GridView and DetailsView.
+
+	Databinding has been simplified with some syntactic sugar and
+	the ability to use Xpath. *DataSource controls handle
+	establishing the connection to the data backend declaratively
+	(code-free databinding).
+
+
+* Compilation/deployment API and tools
+
+	System.Web.Compilation namespace has public classes an
+	interfaces now. The Types that actually do the code generation
+	and compilation are given in the configuration files. This API
+	can also be used to precompile a whole site. There's also a
+	new handler that precompiles a whole site when it receives a
+	request.
+
+
+
+* More dynamic compilation
+	
+	There are new directories handled by the ASP.NET compilation
+	system: Code, Resources and Themes. Their contents are
+	compiled and the resulting assemblies referenced as the ones
+	in the bin directory, but are kept elsewhere. They are
+	recompiled if their dependencies change.
+
+
+* Caching improvements
+
+	Data in the cache can depend now on a database to be
+	invalidated (SqlCacheDependency + new attributes).
+
+
+* Other new features
+
+	Cross-page posting 
+	      * Validators grouping 
+	      * URL-mapping: mapping one url to another by configuration settings. No redirects. 
+	      * Client-side events 
+	      * Client callbacks (no POST)
+
+* Tasks
+
+	Some new features depend on the code generation/compilation
+	system (templates, themes, personalization) and this is not a
+	task suitable for a contributor. 
+
+	This is what I should do first (note: partial classes support
+	needed after the work on this is started, but other
+	implementation details can keep someone busy for a while
+	without supporting partial).
+
+	Almost all the new controls or the updates to existing ones
+	and all of the new configuration handlers for the new sections
+	can be easilly developed by contributors. 
+
+	Some of the new controls are already in place (thanks
+	Ben). 
+
+	Testing for these can be done using the 1.1 server in most of
+	the cases (for controls) and the configuration stuff is just
+	reading from a XmlDocument and passing that data onto a
+	(almost always) internal class.
+
+-Gonzalo
+
+
