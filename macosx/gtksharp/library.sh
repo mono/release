@@ -175,21 +175,21 @@ build()
  							cp ${SHPATH}/patch/gnome-vfs/${i} ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1
  						done
 						#cp "${SHPATH}/patch/gnome-vfs/*.diff" /Users/Shared/MonoBuild/Dependancies/gnome-vfs-2.6.1.1
-						patch -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_bzip2-method.diff
-						patch -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_extfs-method.diff
-						patch -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_file-metod.diff
-						patch -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_gnome-vfs-cdrom.diff
-						patch -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_gnome-vfs-utils.diff
-						patch -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_pty-open.diff
-						patch -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_sftp-method.diff
+						patch -b -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_bzip2-method.diff
+						patch -b -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_extfs-method.diff
+						patch -b -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_file-metod.diff
+						patch -b -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_gnome-vfs-cdrom.diff
+						patch -b -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_gnome-vfs-utils.diff
+						patch -b -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_pty-open.diff
+						patch -b -p0 -d ${BUILDROOT}/Dependancies/gnome-vfs-2.6.1.1 < patch_sftp-method.diff
 						export CFLAGS="-no-cpp-precomp -flat_namespace -undefined suppress"
 						export CPPFLAGS="-L$PREFIX/lib -I$PREFIX/include"
 						./configure --prefix=$PREFIX; 
 						;; 
  					"Gnome.framework/Frameworks/Libgnome.framework") 
 						cp $SHPATH/patch/libgnome/*.diff ${BUILDROOT}/Dependancies/libgnome-2.4.0
-						patch -p0 -d ${BUILDROOT}/Dependancies/libgnome-2.4.0 < patch_gnome-score.diff
-						patch -p0 -d ${BUILDROOT}/Dependancies/libgnome-2.4.0 < patch_gnome-util.diff
+						patch -b -p0 -d ${BUILDROOT}/Dependancies/libgnome-2.4.0 < patch_gnome-score.diff
+						patch -b -p0 -d ${BUILDROOT}/Dependancies/libgnome-2.4.0 < patch_gnome-util.diff
 						export CFLAGS="-flat_namespace -undefined suppress"
 						export CPPFLAGS="-L$PREFIX/lib -I$PREFIX/include"
 						./configure --prefix=$PREFIX; 
@@ -214,7 +214,7 @@ build()
 						echo "replacing dumpkeys.c"	
 						rm ${BUILDROOT}/Dependancies/vte-0.11.10/src/dumpkeys.c
 						cp -f $SHPATH/patch/vte/*.c ${BUILDROOT}/Dependancies/vte-0.11.10/src/dumpkeys.c
-						#patch -p0 -d ${BUILDROOT}/Dependancies/vte-0.11.10 < patch_dumpkeys.diff
+						#patch -b -p0 -d ${BUILDROOT}/Dependancies/vte-0.11.10 < patch_dumpkeys.diff
 						export CFLAGS="-fstrict-aliasing -funroll-loops"
 						export CPPFLAGS="-L/usr/X11R6/lib -I/usr/X11R6/include/ -I/usr/X11R6/include/freetype2/":$CPPFLAGS
 						./configure --with-ft-prefix=/usr/X11R6/ --disable-freetypetest --with-ft-include-prefix=/usr/X11R6/include/freetype2/ --prefix=$PREFIX; 
