@@ -4,8 +4,8 @@ Architecture	Hostname	Responsible for		User / Pass
 ============    ========        ===============
 
 x86		hardhat		Packaging
-		x86-mono	intel-1.0		builder / builder
-				intel-head		builder2 / builder
+		x86-mono	intel-1.0		builder2 / builder
+				intel-head		builder / builder
 		cygwin-mono	cygwin-head lane	
 
 PPC		g5-mono		ppc-1.0			builder / builder
