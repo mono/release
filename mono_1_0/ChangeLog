@@ -1,3 +1,8 @@
+2004-05-24  Jackson Harper  <jackson@ximian.com>
+
+	* mscorlib-review.xls: Update, CultureInfo::Calender is
+	implemented now.
+
 2004-05-19  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* System.Data.xls: Reflected the latest DataSet and SqlTypes status
