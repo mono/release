@@ -1,0 +1,3 @@
+target_host=builder@monobuild1
+jaildir=/jails/XXXXX/jail
+chroot=/usr/sbin/chroot
