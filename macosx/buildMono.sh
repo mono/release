@@ -33,6 +33,7 @@ cat <<EOF
 		-c run configure (default no)
 		-p create packages in $BUILDROOT/MonoBuild
 		-o when used with -p will only create packages will not build
+                -g do not build libgdiplus
 		-h this message
         example:
         buildMono.sh 1.1.3 -p
@@ -66,9 +67,9 @@ ICU="ftp://www-126.ibm.com/pub/icu/2.8/icu-2.8.tgz"
 SVN="NO"
 PACKAGEONLY="NO"
 MONOBUILDFILES=${PWD}
-#CVSMONO="/tmp/mono"
-#This is the default to make my life easier!
-#CVSUSER="adhamh"
+#build libgdiplus?  default is yes
+GDIPLUS="YES" 
+
 
 #the buildLibrary file contains functions to build mono
 . ./buildLibrary.sh
@@ -96,7 +97,7 @@ trap cleanup 2
 
 #get the options passed in on the command line.  doing this instead
 #of a case -because these are optional args.
-while getopts hv:piCcRs:uoO option
+while getopts hv:piCcRs:uoOg option
 	do
 		echo $option
  		if [ $option == "v" ]; then
@@ -129,6 +130,9 @@ while getopts hv:piCcRs:uoO option
 		fi
 		if [ $option == "p" ]; then
 			PACKAGE="YES"	
+		fi
+		if [ $option == "g" ]; then
+		    GDIPLUS="NO"
 		fi
 		if [ $option == "s" ]; then
 			if [ ! -d "/Library/Frameworks/Mono.framework/Versions/Current" ]; then
@@ -205,6 +209,9 @@ creatDirs
 		    svnbuild Mono.framework
 		else
 		    build Mono.framework ${MONOURL} mono mono-${MONOVERSION}.tar.gz mono-${MONOVERSION}
+		fi
+		if [${GDIPLUS} == "YES" ];then
+		    ./gdipBuild.sh
 		fi
 	   fi
    	fi 

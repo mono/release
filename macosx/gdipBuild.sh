@@ -1,6 +1,17 @@
 #!/bin/sh -x
 
-DEPS=/Users/Shared/MonoBuild/Dependancies
+if [ $# != 1 ]; then
+    echo "This script is normally called from the buildMono.sh script"
+    echo "If you want to run this standalone you must specify the"
+    echo "path to your dependencies build directory."
+    echo "Normally this is /Users/Shared/MonoBuild/Dependancies"
+    echo "Example:"
+    echo "\t./gdipBuild.sh /Users/Shared/MonoBuild/Dependancies"
+    exit
+fi
+
+
+DEPS=$1
 MONORELEASE=${PWD}
 PATCHDIR=${MONORELEASE}/libgdiplus/jpeg/files
 NAME=jpeg

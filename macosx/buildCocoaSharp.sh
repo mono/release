@@ -23,12 +23,9 @@ PKGROOT=${BUILDROOT}/PKGROOT/private/tmp/cocoasharp
 PKGPATH=${BUILDROOT}/PKGROOT/${PREFIX}
 INSROOT="/private/tmp/cocoasharp"
 
-
-./autogen.sh --prefix=/Library/Frameworks/Mono.framework/Versions/Current --with-preview=yes
+./autogen.sh --prefix=${PREFIX} --with-preview=yes
 make
 make install
-
-
 
 if [ ! -d ${BUILDROOT} ]; then
     mkdir -p ${BUILDROOT}
@@ -85,7 +82,7 @@ cp ${1}/src/Apple.AppKit/Apple.AppKit.dll.config ${PKGROOT}/lib/mono/cocoa-sharp
 cp ${1}/src/Apple.Foundation/Apple.Foundation.dll.config ${PKGROOT}/lib/mono/cocoa-sharp/
 cp ${1}/src/Apple.WebKit/Apple.WebKit.dll.config ${PKGROOT}/lib/mono/cocoa-sharp/
 
-cp ${INSTALLPATH}/bin/CocoaSharpLoader ${PKGROOT}/bin/
+#cp ${INSTALLPATH}/bin/CocoaSharpLoader ${PKGROOT}/bin/
 
 #createPackage Mono ${MONOVERSION} com.ximian.mono "Mono Framework ${MONOVERSION}"
 
@@ -98,7 +95,7 @@ cat <<EOF > ${PKGROOT}/uninstallCocoaSharp.sh
 
 rm -r /Library/Frameworks/Mono.framework/Versions/Current/lib/libCocoaSharpGlue*
 rm -r /Library/Frameworks/Mono.framework/Versions/Current/lib/mono/cocoa-sharp
-rm -r /Library/Frameworks/Mono.framework/Versions/Current/bin/CocoaSharpLoader
+#rm -r /Library/Frameworks/Mono.framework/Versions/Current/bin/CocoaSharpLoader
 rm -r /Library/Frameworks/Mono.framework/Versions/nightly/lib/pkgconfig/cocoa-sharp.pc
 rm -r /Library/Receipts/CocoaSharp0.2.pkg
 
