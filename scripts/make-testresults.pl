@@ -20,7 +20,7 @@ $DOCROOT = "/var/www/html/tests/$DATE" ;
 	       "$TEST_ROOT/mcs/class/Microsoft.VisualBasic",
 	       "$TEST_ROOT/mcs/class/Mono.Directory.LDAP",
 	       "$TEST_ROOT/mcs/class/Mono.Security",
-	       "$TEST_ROOT/mcs/class/Mono.Security.Win32",
+#	       "$TEST_ROOT/mcs/class/Mono.Security.Win32",
 	       "$TEST_ROOT/mcs/class/Npgsql",
 	       "$TEST_ROOT/mcs/class/System",
 	       "$TEST_ROOT/mcs/class/System.Configuration.Install",
@@ -44,16 +44,6 @@ $DOCROOT = "/var/www/html/tests/$DATE" ;
 		 "$TEST_ROOT/mono/mono/mini"
 		 );
 
-# create directory in doc root, for date when tests were executed
-$res = mkdir "$DOCROOT" ;
-
-=head
-
-if (!$res)
-{
-    print $! ;
-    exit;
-}
 # Scan all dirs and run make to get test resultsfile
 
 # FIXME: make run-test hangs in one dir itself, 
@@ -61,26 +51,26 @@ if (!$res)
 for ( @NUNIT_DIRS )
 {
     chdir $_ ;
-    system "make run-test-local" ;
+    print $_ ;
+    system "make run-test &" ;
 }
-
-=cut
 
 # Execute C# Compiler tests
 chdir "$TEST_ROOT/mcs/tests" ;
-system "make run-test 2>&1 > $DOCROOT/mcstests" ;
+system "make run-test 2>&1" ;
 
 chdir "$TEST_ROOT/mcs/errors" ;
-system "make run-test 2>&1 > $DOCROOT/mcserrortests" ;
+system "make run-test 2>&1 > mcserrortests" ;
 
 # Execute VB.NET tests
 chdir "$TEST_ROOT/mcs/btests" ;
 system "make run-test" ;
-system "cp results.out $DOCROOT/mbastests" ;
+system "cp results.out mbastests" ;
 
 # Execute runtime tests
 chdir "$TEST_ROOT/mono/mono/tests" ;
-system "make test 2>&1 > $DOCROOT/monotests" ;
+system "make test 2>&1 > monotests" ;
 
 chdir "$TEST_ROOT/mono/mono/mini" ;
-system "make rcheck 2>&1 > $DOCROOT/minitests" ;
+system "make rcheck 2>&1 > minitests" ;
+
