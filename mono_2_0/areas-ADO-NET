@@ -1,0 +1,35 @@
+ADO.NET (Work in progress doc!)
+Umadevi S
+
+Summary of Work to be done for Mono 1.2 and beyond.
+
+ New features:
+*************
+
+1. Asynchronous Data Access : The connection calls will no longer be blocking. It has a BeginOpen and EndOpen methods. To be available with SqlClient and other dataproviders. 
+
+2. Batch Updates: Irrespective of the number of updates to a datatable, there will be only one  database server trip. Using updatebatchsize propert, the size of the batch for updates can also be specified. This is supported for SqlClient and OracleClient.
+
+3. Remote DataSet : Dataset has been remoted using Binary rather than XML for better performance.
+
+4. Paging : ExecutePageReader is similar to ExecuteReader except that it takes starting row to be returned, number of rows to be fetched. Avoids any stored procedure required at the database. Available with SqlClient. 
+
+5. Multiple Active Result-set : is built over Yukon. Allows to have more than one request per connection. Basically we dont need to close the previous query.
+
+6. Native XML Support: Specific to Yukon. Allows column, varaible or a parameterto have datatype as XML. Validation checks also supported for schema enforcements
+
+7. Bulk Copy Support : to bulk load data to Sql servers (faster than  multiple inserts)
+
+8. Change Notification :ADO.NET v2.0 includes programmatic support for this feature by including a SqlNotificationRequest object that can be bound to a SqlCommand.
+When data returned from the command changes in the database, a message is sent to the specified notification queue. Yukon Specific
+
+9. Integrated DataTypes : Can pass user defined datatypes to stored procedures
+
+10. Server Side Cursors: The SqlResultset class offers a fully scrollable and updateable cursor that can be useful for applications that need to traverse a large amount of data and update only a few rows. Useful with ASP.NET applications accessing large tables. Yukon Specific.
+
+11. Provider Factory : Factory classes inherited from System.Data.Common.DbProviderFactory to create the standard connection, command, data reader, table, data adapter etc classes. These help you write code that targets multiple databases.Helps write polymorphic dataaccess code for databases.
+
+12. Enhancement of Dataadapter :Easy loading of datareader to view data.
+
+
+
