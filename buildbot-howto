@@ -33,6 +33,11 @@ session>). End the running `connect' process and start a new one again
 from the screen session. When you're done, disconnect from the screen
 session (C-a d).
 
+    If the machine had to be rebooted / was rebooted, then ssh into
+the node as the appropriate user (see table above) and start a new
+screen session again (screen -S <name of session>, etc etc), make sure
+you're in the correct directory (HEAD vs. 1.0), and run "sh connect".
+
 The scripts used in the nodes:
 
 On each machine, you'll find two directories, `1.0' and `HEAD' (except
