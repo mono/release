@@ -11,7 +11,10 @@ use XML::DOM;
 $DATE = `date +'%Y%m%d'`;
 chomp $DATE ;
 
+# Types of tests
 $NUNITTESTS = 0 ;
+$MCSTESTS = 1 ;
+$RUNTIMETESTS = 2 ;
 
 $TESTPASS = 0;
 $TESTFAIL = 1;
@@ -22,7 +25,11 @@ $MCS_ROOT = "/home/skumar/monobuild/working/mcs";
 # Create a DOM doc root
 
 $root = new XML::DOM::Document;
+
+$root->setXMLDecl ($root->createXMLDecl("1.0", "utf-8", undef));
+
 $docRoot = $root->createElement("test-results");
+
 
 @MCS_NUNIT_TESTDIRS = (
 		       "$MCS_ROOT/class/Commons.Xml.Relaxng",
@@ -44,6 +51,62 @@ $docRoot = $root->createElement("test-results");
 		       "$MCS_ROOT/class/System.XML",
 		       "$MCS_ROOT/class/corlib"
 		       );
+
+
+$TESTFILES_ROOT = "/var/www/html/tests/$DATE" ;
+
+@MONO_RUNTIME_TESTFILES = (
+			   "$TESTFILES_ROOT/monotests",
+			   "$TESTFILES_ROOT/minitests"
+			   );
+
+# Scan all mono runtime test files
+for ( @MONO_RUNTIME_TESTFILES )
+{
+    my $tsresults = get_runtime_test_results ( $_ , "pass", "failed" ) ;
+
+    # create testsuite element, with current time and date 
+    my $testsuite = create_testsuite_element ( $tsresults, $RUNTIMETESTS, 0 ) ;
+        
+    my $log = create_log_element ( @$tsresults[0] ) ;
+
+    $$testsuite->appendChild ( $$log );
+    $docRoot->appendChild ( $$testsuite ) ;
+}
+
+
+sub get_runtime_test_results
+{
+    my ( $testresult, $PASS, $FAIL ) = @_ ;
+    my @tsresults = ($testresult, 0, 0, 0) ;
+    
+    open (FILEHANDLE, $testresult);
+    if ( $testresult =~ /minitests/ )
+    {
+	while (<FILEHANDLE>) 
+	{
+	    if( /^Results/ ) 
+	    {
+		my @arr = split (' ', $_);
+		$arr[3] = substr ($arr[3], 0, -1);
+		$arr[5] = substr ($arr[5], 0, -1);
+		$tsresults[1] += ($arr[3] - $arr[5]) ;
+		$tsresults[2] += $arr[5] ;
+	    }
+	}
+    }
+    else
+    {
+	while (<FILEHANDLE>) 
+	{
+	    $tsresults[1]++ if /$PASS/ ;
+	    $tsresults[2]++ if /$FAIL/ ;
+	}
+    }
+    
+    return \@tsresults ;
+    
+}
 
 for ( @MCS_NUNIT_TESTDIRS )
 {
@@ -177,6 +240,21 @@ sub create_testsuite_element
     return \$testsuite ;
 }
 
+sub create_log_element
+{
+    $logfile = shift ;
+    open (FILEHANDLE, $logfile);
+    my $str = "";
+    $str = $str.$_ foreach (<FILEHANDLE>) ;
+
+   # my $str = <FILEHANDLE> ;
+    print $str ;
+
+    my $log = $root->createElement("testsuite-log");
+    my $logdata = $root->createCDATASection($str);
+    $log->appendChild ( $logdata ) ;
+    return \$log ;
+}
 
 sub create_testcase_element
 {
