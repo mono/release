@@ -41,7 +41,7 @@ How to use the build system
 
 3) Optionally, edit the conf file to bump version count, etc.
 
-4) bb_redo
+4) bb_redo or bb_client
 
 [[prefix]] -- prefix on distro
 
