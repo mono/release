@@ -15,6 +15,7 @@ chomp $DATE ;
 $NUNITTESTS = 0 ;
 $MCSTESTS = 1 ;
 $RUNTIMETESTS = 2 ;
+$OTHERTESTS = 3 ;
 
 $TESTPASS = 0;
 $TESTFAIL = 1;
@@ -49,7 +50,8 @@ $docRoot = $root->createElement("test-results");
 		       "$MCS_ROOT/class/System.Security",
 		       "$MCS_ROOT/class/System.Web.Services",
 		       "$MCS_ROOT/class/System.XML",
-		       "$MCS_ROOT/class/corlib"
+		       "$MCS_ROOT/class/corlib",
+		       "$MCS_ROOT/class/System.Web.Services/Test/standalone"
 		       );
 
 
@@ -74,40 +76,30 @@ $TESTFILES_ROOT = "/var/www/html/tests/$DATE" ;
 		   "$MCS_ROOT/errors/mcserrortests"		    
 		   );
 
+@OTHER_TESTFILES = (
+		    "$MCS_ROOT/class/System.Web.Services/Test/standalone"
+		    );
+
+
+# wsdl tests
+for ( @OTHER_TESTFILES )
+{
+    next if( open(FILE, $_."/WsdlTestResult.xml" ) != 1 ) ;
+    print $_."/WsdlTestResult.xml\n" ;
+    nunit_results ( $_."/WsdlTestResult.xml", $OTHERTESTS ) ;
+}
 
 # mcs  error tests
 for ( @MCS_ERRORFILES )
 {
     my ($tsresults, $tcresults) = get_mcserror_test_results ( $_ , "SUCCESS", "ERROR" ) ;
-   
-    # create testsuite element, with current time and date 
-    my $testsuite = create_testsuite_element ( $tsresults, $MCSTESTS, 0 ) ;
-    
-    foreach (@$tcresults )
-    {
-	my $testcase = create_testcase_element ( $_ ) ;
-	$$testsuite->appendChild ( $$testcase );
-    }
-
-    $docRoot->appendChild ( $$testsuite ) ;
-    
+    append_testsuite ( $tsresults, $tcresults, $MCSTESTS, 0 ) ;
 }
  
-
 for ( @MCS_TESTFILES )
 {
     my ($tsresults, $tcresults )  = get_mcs_tests_results ($_, "PASS", "FAIL") ;
-    
-    # create testsuite element, with current time and date 
-    my $testsuite = create_testsuite_element ( $tsresults, $MCSTESTS, 0 ) ;
-    
-    foreach (@$tcresults )
-    {
-	my $testcase = create_testcase_element ( $_ ) ;
-	$$testsuite->appendChild ( $$testcase );
-    }
-
-    $docRoot->appendChild ( $$testsuite ) ;
+    append_testsuite ( $tsresults, $tcresults, $MCSTESTS, 0 ) ;
 }
 
 # Scan all mono runtime test files
@@ -144,8 +136,20 @@ for ( @MCS_NUNIT_TESTDIRS )
     next if(open(FILE, $_."/TestResult.xml" ) != 1) ;
     		
     print $_."/TestResult.xml\n" ;
+    nunit_results ( $_."/TestResult.xml", $NUNITTESTS ) ;
+}
+
+
+$root->appendChild ( $docRoot ) ; 
+$root->printToFile("testresults-".$DATE.".xml") ;
+
+sub nunit_results
+{
+    my ( $file, $type ) = @_ ;
+
     my $parser = new XML::DOM::Parser;
-    my $doc = $parser->parsefile ( $_."/TestResult.xml" );
+    my $doc = $parser->parsefile ( $file );
+
     # get nunit testsuite results
     my $tsresults = get_nunit_testsuite_results ( $doc );
     
@@ -158,8 +162,15 @@ for ( @MCS_NUNIT_TESTDIRS )
 
     $tsexectime = sprintf("%.3f", $tsexectime);
 
+    append_testsuite ( $tsresults, $tcresults, $type, $tsexectime ) ;
+}
+
+sub append_testsuite
+{
+    my ( $tsresults, $tcresults, $type, $tsexectime ) = @_ ;
+
     # create testsuite element, with current time and date 
-    my $testsuite = create_testsuite_element ( $tsresults, $NUNITTESTS, $tsexectime ) ;
+    my $testsuite = create_testsuite_element ( $tsresults, $type, $tsexectime ) ;
     
     foreach (@$tcresults )
     {
@@ -167,12 +178,7 @@ for ( @MCS_NUNIT_TESTDIRS )
 	$$testsuite->appendChild ( $$testcase );
     }
     $docRoot->appendChild ( $$testsuite ) ;
-
 }
-
-$root->appendChild ( $docRoot ) ; 
-$root->printToFile("testresults-".$DATE.".xml") ;
-
 
 sub get_mcserror_test_results
 {
