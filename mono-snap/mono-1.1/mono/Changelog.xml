@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<!DOCTYPE changelog SYSTEM "changelog.dtd">
+
+<changelog>
+  <entry>
+    <email>distribution@ximian.com</email>
+    <changes>
+      <p>New automated build.</p>
+      <h>New build.</h>
+    </changes>
+    <date>Sun Mar 20 03:57:58 UTC 2005</date>
+    <version>1.1.5</version>
+    <author>Ximian, Inc.</author>
+    <release>1.ximian.10.1</release>
+    <module>mono</module>
+  </entry>
+</changelog>
+
+<!--
+Local Variables:
+mode: xml
+End:
+-->

@@ -1,0 +1,14 @@
+<?xml version = "1.0" ?>
+ 
+<!DOCTYPE product SYSTEM "product.dtd">
+ 
+<product>
+	<modules>
+		<module>
+			<name>mono</name>
+			<location>mono-1.1</location>
+			<platforms>all</platforms>
+			<snapshot value="1"/>
+		</module>
+	</modules>
+</product>

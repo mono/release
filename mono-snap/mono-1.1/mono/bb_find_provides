@@ -1,0 +1,13 @@
+
+
+#!/bin/sh
+
+filelist=`sed "s/['\"]/\\\&/g"`
+ 
+{
+    echo $filelist | tr [:blank:] \\n | /usr/lib/rpm/find-provides
+    echo $filelist | tr [:blank:] \\n | MONO_GAC_PREFIX=dest/usr LD_LIBRARY_PATH=dest/usr/lib/ MONO_PATH=dest/usr/lib dest/usr/bin/mono dest/usr/lib/mono/1.0/mono-find-provides.exe
+} | sort | uniq
+
+
+           
