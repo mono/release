@@ -20,14 +20,15 @@ $TESTPASS = 0;
 $TESTFAIL = 1;
 $TESTNOTRUN = 2; 
 
-$MCS_ROOT = "/home/skumar/monobuild/working/mcs";
+#$MCS_ROOT = "/home/skumar/monobuild/working/mcs";
+$MCS_ROOT = "/tmp/snapshot/$DATE/mcs";
+$MONO_ROOT = "/tmp/snapshot/$DATE/mono";
 
 # Create a DOM doc root
-
 $root = new XML::DOM::Document;
 
-$root->setXMLDecl ($root->createXMLDecl("1.0", "utf-8", undef));
-
+#$root->setXMLDecl ($root->createXMLDecl("1.0", "iso8859-1", undef));
+$root->setXMLDecl ($root->createXMLDecl("1.0", "iso-8859-1")); 
 $docRoot = $root->createElement("test-results");
 
 
@@ -56,24 +57,170 @@ $docRoot = $root->createElement("test-results");
 $TESTFILES_ROOT = "/var/www/html/tests/$DATE" ;
 
 @MONO_RUNTIME_TESTFILES = (
-			   "$TESTFILES_ROOT/monotests",
-			   "$TESTFILES_ROOT/minitests"
+			   "$MONO_ROOT/mono/tests/monotests",
+			   "$MONO_ROOT/mono/mini/minitests"
 			   );
+
+@MCS_TESTFILES = (
+		  "$MCS_ROOT/tests/mcs.log",
+		  "$MCS_ROOT/tests/mcs-unsafe.log",
+		  "$MCS_ROOT/tests/mcs-v2.log"
+		  );
+
+@MCS_ERRORFILES = (
+		   "$MCS_ROOT/errors/mcserrortests"		    
+		   );
+
+
+# mcs  error tests
+for ( @MCS_ERRORFILES )
+{
+    my ($tsresults, $tcresults) = get_mcserror_test_results ( $_ , "SUCCESS", "ERROR" ) ;
+   
+    # create testsuite element, with current time and date 
+    my $testsuite = create_testsuite_element ( $tsresults, $MCSTESTS, 0 ) ;
+    
+    foreach (@$tcresults )
+    {
+	my $testcase = create_testcase_element ( $_ ) ;
+	$$testsuite->appendChild ( $$testcase );
+    }
+
+    $docRoot->appendChild ( $$testsuite ) ;
+    
+}
+ 
+
+for ( @MCS_TESTFILES )
+{
+    my ($tsresults, $tcresults )  = get_mcs_tests_results ($_, "PASS", "FAIL") ;
+    
+    # create testsuite element, with current time and date 
+    my $testsuite = create_testsuite_element ( $tsresults, $MCSTESTS, 0 ) ;
+    
+    foreach (@$tcresults )
+    {
+	my $testcase = create_testcase_element ( $_ ) ;
+	$$testsuite->appendChild ( $$testcase );
+    }
+
+    $docRoot->appendChild ( $$testsuite ) ;
+}
 
 # Scan all mono runtime test files
 for ( @MONO_RUNTIME_TESTFILES )
 {
     my $tsresults = get_runtime_test_results ( $_ , "pass", "failed" ) ;
-
+    
     # create testsuite element, with current time and date 
     my $testsuite = create_testsuite_element ( $tsresults, $RUNTIMETESTS, 0 ) ;
-        
+    
     my $log = create_log_element ( @$tsresults[0] ) ;
-
+    
     $$testsuite->appendChild ( $$log );
     $docRoot->appendChild ( $$testsuite ) ;
 }
 
+for ( @MCS_NUNIT_TESTDIRS )
+{
+
+    next if(open(FILE, $_."/TestResult.xml" ) != 1) ;
+
+    my $parser = new XML::DOM::Parser;
+    my $doc = $parser->parsefile ( $_."/TestResult.xml" );
+    
+    # get nunit testsuite results
+    my $tsresults = get_nunit_testsuite_results ( $doc );
+    
+    # get data for each test case run
+    my $tcresults = get_nunit_testcase_results ( $doc );
+
+    my $tsexectime = 0 ;
+    $tsexectime += $_->[4]
+	foreach @$tcresults;
+
+    # create testsuite element, with current time and date 
+    my $testsuite = create_testsuite_element ( $tsresults, $NUNITTESTS, $tsexectime ) ;
+    
+    foreach (@$tcresults )
+    {
+	my $testcase = create_testcase_element ( $_ ) ;
+	$$testsuite->appendChild ( $$testcase );
+    }
+    $docRoot->appendChild ( $$testsuite ) ;
+
+}
+
+$root->appendChild ( $docRoot ) ; 
+$root->printToFile("testresults-".$DATE.".xml") ;
+
+
+sub get_mcserror_test_results
+{
+    my ( $testresult, $PASS, $FAIL ) = @_ ;
+    my @tsresults = ($testresult, 0, 0, 0) ;
+    my @tcresults = () ;
+
+    open (FILEHANDLE, $testresult);
+    
+    # cs-12.cs...INCORRECT ERROR 
+    # cs0017.cs...SUCCESS
+    while (<FILEHANDLE>) 
+    {	
+	my $testcase = $_ ;
+	my @arr = split ('\.\.\.', $testcase);	
+
+	if ( $testcase =~ /$FAIL/ )
+	{
+	    $tsresults[2]++ ; # increment count 
+	    push @tcresults, [ $arr[0], $TESTFAIL, $arr[1], "", 0] ;  
+	}
+	if ( $testcase =~ /$PASS/ )
+	{
+	    $tsresults[1]++ ; # increment count 
+	    push @tcresults, [ $arr[0], $TESTPASS, "", "", 0] ;  
+	}
+    }
+    return (\@tsresults, \@tcresults ) ;
+}   
+
+
+sub get_mcs_tests_results
+{
+    my ( $testresult, $PASS, $FAIL ) = @_ ;
+    my @tsresults = ($testresult, 0, 0, 0) ;
+    my @tcresults = () ;
+    my $i = 0;     
+
+    open (FILEHANDLE, $testresult);
+#    Results: total tests: 95, failed: 0, cfailed: 0 (pass: 100.00%)
+#    FAIL: test-1: compilation
+
+    while (<FILEHANDLE>) 
+    {
+	my $testcase = $_ ;
+	my @arr = split (' ', $testcase);
+	
+	$arr[1] = substr ($arr[1], 0, -1) if ( $#arr == 2 ) ; # test name	
+	
+	if ( $testcase =~ /$FAIL/ )
+	{
+	    ($tmp = $testresult) =~ s/.log/-$arr[1].log/ ;
+	    $tsresults[2]++ ; # increment count 
+	    open (FILE, $tmp);
+	    my $stacktrace = "" ;
+	    $stacktrace = $stacktrace.$_ foreach (<FILE>);
+	    
+	    push @tcresults, [ $arr[1], $TESTFAIL, "", $stacktrace, 0] ;  
+	}
+	if ( $testcase =~ /$PASS/ )
+	{
+	    $tsresults[1]++ ; # increment count 
+	    push @tcresults, [ $arr[1], $TESTPASS, "", "", 0] ;  
+	}
+    }
+    return (\@tsresults, \@tcresults ) ;
+}
 
 sub get_runtime_test_results
 {
@@ -107,35 +254,6 @@ sub get_runtime_test_results
     return \@tsresults ;
     
 }
-
-for ( @MCS_NUNIT_TESTDIRS )
-{
-    my $parser = new XML::DOM::Parser;
-    my $doc = $parser->parsefile ( $_."/TestResult.xml" );
-    
-    # get nunit testsuite results
-    my $tsresults = get_nunit_testsuite_results ( $doc );
-    
-    # get data for each test case run
-    my $tcresults = get_nunit_testcase_results ( $doc );
-
-    my $tsexectime = 0 ;
-    $tsexectime += $_->[4]
-	foreach @$tcresults;
-
-    # create testsuite element, with current time and date 
-    my $testsuite = create_testsuite_element ( $tsresults, $NUNITTESTS, $tsexectime ) ;
-    
-    foreach (@$tcresults )
-    {
-	my $testcase = create_testcase_element ( $_ ) ;
-	$$testsuite->appendChild ( $$testcase );
-    }
-    $docRoot->appendChild ( $$testsuite ) ;
-}
-
-$root->appendChild ( $docRoot ) ; 
-$root->printToFile("testresults-".$DATE.".xml") ;
 
 sub get_nunit_testsuite_results
 {
@@ -226,7 +344,10 @@ sub create_testsuite_element
      
     # Removing _test.dll from the testsuite name
     $arr[$#arr] =~ s/_test.dll$//g ;
-    
+
+    # Removing .log from the testsuite name
+    $arr[$#arr] =~ s/.log$//g ;
+
     # create testsuite element and set it's attributes
     my $testsuite = $root->createElement("testsuite");
     
@@ -248,7 +369,7 @@ sub create_log_element
     $str = $str.$_ foreach (<FILEHANDLE>) ;
 
    # my $str = <FILEHANDLE> ;
-    print $str ;
+   # print $str ;
 
     my $log = $root->createElement("testsuite-log");
     my $logdata = $root->createCDATASection($str);
