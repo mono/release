@@ -1,27 +1,27 @@
 #!/bin/sh -x
 
 #Create the links in the framework to have it fit the normal Framework structure.
-cd /Library/Frameworks/CocoaSharp.framework
-ln -sf Versions/Current/lib Libraries
-#ln -s Versions/Current/include Headers
-ln -sf Versions/Current/bin Commands
+if [ -d /Library/Frameworks/Mono.framework ]; then
+    cd /Library/Frameworks/Mono.framework
+    ln -sf Versions/Current/lib Libraries
+    ln -sf Versions/Current/include Headers
+    ln -sf Versions/Current/bin Commands
+else 
+    echo "/Library/Frameworks/Mono.framework does not exist"
+fi
 
-#Create the links to /usr/bin if the file doesn't end in .exe
-
-cd /Library/Frameworks/CocoaSharp.framework/Commands
-for i in `ls -al | grep -v "\." | awk '{print $9}'`; do
-    #echo ${i}
+if [ -d /Library/Frameworks/Mono.framework/Commands ]; then
+cd /Library/Frameworks/Mono.framework/Commands
+for i in `ls -al | grep -v .exe | awk '{print $9}'`; do 
+    echo ${i}
     ln -sf $PWD/${i} /usr/bin/${i}
-    chown root:wheel /usr/bin/${i}
-done
+done;
+else 
+    echo "/Library/Frameworks/Mono.framework/Commands does not exist"
+fi
 
-
-#cd /Library/Frameworks/CocoaSharp.framework/Commands
-#for i in `ls -al | grep -v .exe`; do 
-#    ln -sf $PWD/${i} /usr/bin/${i}
-#done;
-
-ln -sf /Library/Frameworks/CocoaSharp.framework/Libraries/libCocoaSharpGlue.dylib /Library/Frameworks/CocoaSharp.framework/CocoaSharp
-
-#this is for uninstalling.
-#for file in `ls -al /usr/bin | grep CocoaSharp.framework | awk -F" " '{print $9}'`; do rm -f /usr/bin/$file; done
+if [ -e /Library/Frameworks/Mono.framework/Libraries/libmono.dylib ];then
+    ln -sf /Library/Frameworks/Mono.framework/Libraries/libmono.dylib /Library/Frameworks/Mono.framework/Mono
+else
+    echo "/Library/Frameworks/Mono.framework/Libraries/libmono.dylib does not exist"
+fi
