@@ -3,6 +3,22 @@
 -->
 <html>
 <head>
+	<link rel="stylesheet" href="http://go-mono.com/monologue/monologue.css" type="text/css" />
+	<style type=text/css>
+		body { margin-top: 5px; margin-left: 12px; background: White;}
+		body, p, table, th, tr, td, ol,  ul, li, textarea, option, input { font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular;}
+		p, ol,  ul, textarea, option, input {font-size: 0.9em;}
+		th {font-size: 1em; margin-bottom: 0.1em;   padding: 1px; color: black; font-weight: bold; letter-spacing: 0.1em; text-align:left; text-indent: 0.5em; background-color: #DFDDDD;}
+		body a {color: #039;}
+		small {font-size: 0.75em;}
+
+		/* Tab styles */
+		.tabblue  {  font-size:  0.8em; color: white; background-color: #6B8899; font-weight: bold; text-align: center; white-space: nowrap; }
+        	.tabblue a { text-decoration: none; color: white; }
+		.tabputty  {  font-size: 0.8em; color: black; background-color:#DFDDD5; font-weight:bold; text-align:center; white-space: nowrap; }
+	        .tabputty a { text-decoration: none;  color: black;}
+		                                                                                                                             
+	</style>
 	<title>Mono Test Suite Results</title>
 	<?php
 		#This function returns the sorted filenames that are of the required format 'testresults-<date>.xml'
@@ -107,11 +123,10 @@
 		}
 	
 		//This function displays the given testsuite details onto the web page
-		function display_testsuites($new_table_caption,$testsuites_1,$testsuites_2,$files,$date_1,$date_2) 
+		function display_testsuites($distro_name,$new_table_caption,$testsuites_1,$testsuites_2,$files,$date_1,$date_2,$distro) 
 		{
 			$new_table = "<table border=2>" .  "<tr><b>" . "<th rowspan=2> S.No </th><th rowspan=2> Test Suite </th>";
 			$new_table = $new_table . "<th colspan=4>$date_1 </th><th colspan=4>$date_2</th><th rowspan=2>Regression</th>" . "<tr><th>Pass</th><th>Fail</th><th>Not Run</th><th>Execution Time</th><th>Pass</th><th>Fail</th><th>Not Run</th><th>Execution Time</th>";
-			print "<br>\n";
 			$testsuites_1_count = 0;
 			$testsuites_2_count = 0;
 			$s_no = 1;
@@ -163,34 +178,34 @@
 	
 					print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
 					if ($testsuites_1[$testsuites_1_count]["pass"] != 0)
-						print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=0>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
+						print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=0&distro=$distro>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
 					else
 						print "<td>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
 
 					 if ($testsuites_1[$testsuites_1_count]["fail"] != 0)
-                	        	        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=1>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
+                	        	        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=1&distro=$distro>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
 	        	                else
         		                        print "<td>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
 
 					 if ($testsuites_1[$testsuites_1_count]["notrun"] != 0)
-                	        	        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=2>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
+                	        	        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=2&distro=$distro>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
 	        	                else
         		                        print "<td>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
 					print "<td>" . $testsuites_1[$testsuites_1_count]["exectime"]. "</td>";
 					$testsuites_1_count++;
 
 					if ($testsuites_2[$testsuites_2_count]["pass"] != 0)
-						print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=0>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
+						print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=0&distro=$distro>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
 					else
 						print "<td>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
 			
 					 if ($testsuites_2[$testsuites_2_count]["fail"] != 0)
-        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=1>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=1&distro=$distro>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
 
 					 if ($testsuites_2[$testsuites_2_count]["notrun"] != 0)
-        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=2>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=2&distro=$distro>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
 					print "<td>" . $testsuites_2[$testsuites_2_count]["exectime"]. "</td>";
@@ -212,17 +227,17 @@
                 	        	print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
 
 					if ($testsuites_1[$testsuites_1_count]["pass"] != 0)
-        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=0>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=0&distro=$distro>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
                                                                                                                              
 	        	                 if ($testsuites_1[$testsuites_1_count]["fail"] != 0)
-        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=1>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=1&distro=$distro>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_1[$testsuites_1_count]["fail"].  "</td>";
                                                                                                                              
 	        	                 if ($testsuites_1[$testsuites_1_count]["notrun"] != 0)
-        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=2>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=2&distro=$distro>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_1[$testsuites_1_count]["notrun"].  "</td>";
 	        	                print "<td>" . $testsuites_1[$testsuites_1_count]["exectime"]. "</td>";
@@ -252,17 +267,17 @@
                 	        	print "<td>&nbsp;</td>";
 
 					if ($testsuites_2[$testsuites_2_count]["pass"] != 0)
-        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=0>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
+        		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=0&distro=$distro>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["pass"]. "</td>";
                 	                                                                                                             
 	        	                 if ($testsuites_2[$testsuites_2_count]["fail"] != 0)
-        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=1>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=1&distro=$distro>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["fail"]. "</td>";
                                                                                                                              
 	        	                 if ($testsuites_2[$testsuites_2_count]["notrun"] != 0)
-        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=2>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
+        		                         print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_2[$testsuites_2_count]["name"]. "&file=" .substr($files[1],-12,8). "&status=2&distro=$distro>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
                 		        else
                 	        	        print "<td>" . $testsuites_2[$testsuites_2_count]["notrun"]. "</td>";
 
@@ -281,7 +296,7 @@
 				}
 				
 				if ($regressed_count != 0) 
-					print "<td><a href=displayDetails.php?&testsuite=" . $testsuite_name. "&file=" .substr($files[0],-12,8). "&file1=".substr($files[1],-12,8)."&regression=1&status=4>".$regressed_count."</td></tr>";
+					print "<td><a href=displayDetails.php?&testsuite=" . $testsuite_name. "&file=" .substr($files[0],-12,8). "&file1=".substr($files[1],-12,8)."&regression=1&status=4&distro=$distro>".$regressed_count."</td></tr>";
 				else
 					print "<td>".$regressed_count."</td></tr>";
 				print "</tr>";
@@ -295,9 +310,51 @@
 	?>
 </head>
 <body>
-<h2>Mono Test Suite Results</h2>
+<h1>Mono Test Suite Results</h1>
 <?php
-	$files = get_sorted_filenames ("testresults/xml/");
+	$distro = $_GET['distro'];
+	//If more distros are added, add more case blocks and add more tabs
+	switch ($distro) {
+		//Default is RH9
+		case 0:
+		        $distro = 0 ;
+			$xml_dir = "testresults/redhat-9-i386/xml/";
+			$distro_name = "RedHat Linux 9";
+			print "<p><br><div id=1tab>";
+			print "<table border=0 cellspacing=0  cellpadding=0><tr><td><img height=1 src=\"spacer.gif\" width=5 border=0></td>";
+			print "<td><img src=\"first_left_on.gif\" border=0 height=20 width=18></td><td class=tabblue noWrap> <font size=2px>Red Hat Linux9</td>";
+		print "<td><img src=\"overlap_on_off.gif\" border=0 height=20 width=18></td><td class=tabputty noWrap><a href=\"?&distro=1\"><font size=2px>Fedora Core 1</td><td><img src=\"overlap_off_off.gif\" border=0 border=0 height=20 width=18></td>";
+			print "<td class=tabputty noWrap height=20><a href=\"?&distro=2\"><font size=2px>Suse 9</td><td><img src=\"last_right_off.gif\" border=0 height=20 width=18></td></tr>";
+			print "<tr><td class=tabblue colSpan=40 height=5><IMG height=5 src=\"spacer.gif\" width=1 border=0></td>";
+			print "</tr></table><table border=1><tr><td colspan=3>";
+			print "<h3>Mono Test Suite Results for $distro_name</h3>";
+		break;	
+		case 1:
+			$xml_dir = "testresults/fedora-1-i386/xml/";
+			$distro_name = "Fedora Core 1";
+			print "<p><br><div id=1tab>";
+                        print "<table border=0 cellspacing=0  cellpadding=0><tr><td><img height=1 src=\"spacer.gif\" width=5 border=0></td>";
+                        print "<td><img src=\"first_left_off.gif\" border=0 height=20 width=18></td><td class=tabputty noWrap><a href=\"?&distro=0\"><font size=2px>Red Hat Linux9</a></td>";
+                        print "<td><img src=\"overlap_off_on.gif\" border=0 height=20 width=18></td><td class=tabblue noWrap><font size=2px>Fedora Core 1</td><td><img src=\"overlap_on_off.gif\" border=0 border=0 height=20 width=18></td>";
+                        print "<td class=tabputty noWrap height=20><a href=\"?&distro=2\"><font size=2px>Suse 9</td><td><img src=\"last_right_off.gif\" border=0 height=20 width=18></td></tr>";
+                        print "<tr><td class=tabblue colSpan=40 height=5><IMG height=5 src=\"spacer.gif\" width=1 border=0></td>";
+                        print "</tr></table><table border=1><tr><td colspan=3>";
+			print "<h3>Mono Test Suite Results for $distro_name</h3>";
+		break;	
+		case 2:
+			$xml_dir = "testresults/suse-90-i586/xml/";
+			$distro_name = "Suse";
+			print "<p><br><div id=1tab>";
+			print "<table border=0 cellspacing=0  cellpadding=0><tr><td><img height=1 src=\"spacer.gif\" width=5 border=0></td>";
+                        print "<td><img src=\"first_left_off.gif\" border=0 height=20 width=18></td><td class=tabputty noWrap><a href=\"?&distro=0\"><font size=2px>Red Hat Linux9</a></td>";
+                        print "<td><img src=\"overlap_off_off.gif\" border=0 height=20 width=18></td><td class=tabputty noWrap><a href=\"?&distro=1\"><font size=2px>Fedora Core 1</a></td>";
+                        print "<td><img src=\"overlap_off_on.gif\" border=0 height=20 width=18></td><td class=tabblue noWrap height=20><font size=2px>Suse 9</td><td><img src=\"last_right_on.gif\" border=0 height=20 width=18></td></tr>";
+                         print "<tr><td class=tabblue colSpan=40 height=5><IMG height=5 src=\"spacer.gif\" width=1 border=0></td>";
+                        print "</tr></table><table border=1><tr><td colspan=3>";
+			print "<h3>Mono Test Suite Results for $distro_name</h3>";
+		break;	
+	}
+	$files = get_sorted_filenames ($xml_dir);
 	$date_1 = get_date_from_filename ($files[0]); 
 	$date_2 = get_date_from_filename ($files[1]);
 	
@@ -310,9 +367,9 @@
 		$testsuites_2 = array();
 		$testsuites_1 = fetch_sorted_testsuites ($files[0],$i,1);
 	        $testsuites_2 = fetch_sorted_testsuites ($files[1],$i,0);
-		display_testsuites($new_table_type[$i],$testsuites_1,$testsuites_2,$files,$date_1,$date_2);
+		display_testsuites($distro_name,$new_table_type[$i],$testsuites_1,$testsuites_2,$files,$date_1,$date_2,$distro);
 	}
-
+	print "</td></tr></table></div>";
 	//Displaying Legend
          print "<p>";
          print "<br><br><b>Color Description</b><br><br>";
