@@ -1,4 +1,4 @@
-<?xml version = "1.0" ?>
+ <?xml version = "1.0" ?>
  
 <!DOCTYPE product SYSTEM "product.dtd">
  
@@ -9,6 +9,33 @@
 			<location>mono-1.1</location>
 			<platforms>all</platforms>
 			<snapshot value="1"/>
+		</module>
+		
+		<module>
+			<name>libgdiplus</name>
+			<location>mono-1.1</location>
+			<platforms>all</platforms>
+			<snapshot value="1"/>
+		</module>
+		
+		<module>
+			<name>gtk-sharp2</name>
+			<location>gtk-sharp-2.0</location>
+			<platforms>all</platforms>
+			<snapshot value="1"/>
+			<deps>
+				<i>mono</i>
+			</deps>
+		</module>
+		
+		<module>
+			<name>gtk-sharp</name>
+			<location>gtk-sharp-1.0</location>
+			<platforms>all</platforms>
+			<snapshot value="1"/>
+			<deps>
+				<i>mono</i>
+			</deps>
 		</module>
 	</modules>
 </product>
