@@ -125,7 +125,8 @@
 		//This function displays the given testsuite details onto the web page
 		function display_testsuites($distro_name,$new_table_caption,$testsuites_1,$testsuites_2,$files,$date_1,$date_2,$distro) 
 		{
-			$new_table = "<table border=2>" .  "<tr><b>" . "<th rowspan=2> S.No </th><th rowspan=2> Test Suite </th>";
+			
+			$new_table = "<table border=2>" .  "<tr><b>" . "<th rowspan=2> S.No </th><th rowspan=2> Test Suite (Pass %) </th>";
 			$new_table = $new_table . "<th colspan=4>$date_1 </th><th colspan=4>$date_2</th><th rowspan=2>Regression</th>" . "<tr><th>Pass</th><th>Fail</th><th>Not Run</th><th>Execution Time</th><th>Pass</th><th>Fail</th><th>Not Run</th><th>Execution Time</th>";
 			$testsuites_1_count = 0;
 			$testsuites_2_count = 0;
@@ -176,7 +177,7 @@
 
 					print "<tr><td>$s_no</td>";
 	
-					print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
+					print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]." (".ceil ($percent) ." %)". "</td>";
 					if ($testsuites_1[$testsuites_1_count]["pass"] != 0)
 						print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=0&distro=$distro>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
 					else
@@ -224,7 +225,7 @@
 					$total_exec[0] += $testsuites_1[$testsuites_1_count]["exectime"];
 
 					print "<tr><td>$s_no</td>";
-                	        	print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. "</td>";
+                	        	print "<td bgcolor=$color>" . $testsuites_1[$testsuites_1_count]["name"]. " (".ceil ($percent) ." %)". "</td>";
 
 					if ($testsuites_1[$testsuites_1_count]["pass"] != 0)
         		                        print "<td><a href=displayDetails.php?&testsuite=" . $testsuites_1[$testsuites_1_count]["name"]. "&file=" .substr($files[0],-12,8). "&status=0&distro=$distro>" . $testsuites_1[$testsuites_1_count]["pass"].  "</td>";
@@ -361,8 +362,9 @@
 	$new_table_type[0] = "NUnit Test Suite";
         $new_table_type[1] = "Compiler Test Suite";
         $new_table_type[2] = "Runtime Test Suite";
+        $new_table_type[3] = "Other Test Suite";
 	
-	for($i=0; $i<3;$i++) { //foreach type of testsuites, fetching the testsuites and displaying the details
+	for($i=0; $i<4;$i++) { //foreach type of testsuites, fetching the testsuites and displaying the details
 		$testsuites_1 = array();
 		$testsuites_2 = array();
 		$testsuites_1 = fetch_sorted_testsuites ($files[0],$i,1);
