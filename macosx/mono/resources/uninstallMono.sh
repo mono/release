@@ -4,9 +4,9 @@
 
 rm -r /Library/Frameworks/Mono.framework
 
-rm -r /Library/Receipts/MonoFramework-1.0.1.pkg
+rm -r /Library/Receipts/MonoFramework-1.1.3.pkg
 
 cd /usr/bin
-for i in `ls -al | grep Mono`; do
-    echo ${i}
+for i in `ls -al | grep Mono | awk '{print $9}'`; do
+    rm ${i}
 done

@@ -1,0 +1,1 @@
+There are various scripts and rtf files used by Installer.app.  Ideally this would be generated on the file by the script that creates the pkg as version information in the files may change.
