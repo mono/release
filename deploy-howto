@@ -34,9 +34,10 @@ Part A: Uploading to the web site
    (i.e. you didn't copy packages for the FOO distribution to the BAR
    directory)
 
-   For Fedora packages, run "yum-arch ." from the subdirectory with
+   For Fedora packages, run "yum-arch -l ." from the subdirectory with
    all the RPMs to generate the headers directory and other
-   YUM-related stuff.
+   YUM-related stuff. The "-l" flag is necessary for having YUM use
+   the symbolic links (those from make-directories).
 
 6) Run "update-all" from the "1.x" directory. It's call "update-zip"
    to create the "mono-all.zip" files, and call "update-page" to
