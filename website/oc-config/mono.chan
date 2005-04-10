@@ -1,0 +1,9 @@
+ChannelID   "mono-1.0"
+Name        "Mono 1.0.x"
+Alias       "mono-1.0"
+Description "This channel has mono 1.0.x. For increased stability and performance, we recommend mono 1.1.x."
+Priority     100
+IconPath     http://www.ximian.com/foo.png
+
+! mono
+! libgdiplus
