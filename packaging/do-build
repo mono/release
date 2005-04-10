@@ -16,4 +16,7 @@ cd /tmp && rm -rf scratch && mkdir scratch && cd scratch || exit 1
 cvs co mono-conf || exit 1
 cd mono-conf/$1 || exit 1
 bb_redo || exit 1
+
+rpm -rf /tmp/root/built-packages/*.src.rpm
+
 echo success > /tmp/status

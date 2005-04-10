@@ -11,32 +11,43 @@
 #
 #
 
+distro=$1
+package=$2
+
 usage()
 {
 	echo "Usage is: build configuration package"
 }
 
-if test x$2 = x; then
+if test x$package = x; then
     usage
     exit 1;
 fi
 
-if test -f status/$1; then
+if test -f status/$distro; then
    echo There is already a build in progress on $1
    exit 1
 fi
 
 . conf/$1
-package=$2
 
 scp do-build $target_host:$jaildir/tmp 
 remote_cmd="$chroot $jaildir sh -x /tmp/do-build $package"
-(echo > status/$1; ssh $target_host "sudo $remote_cmd" >& logs/$package-$1; rm status/$1)
-scp $target_host:$jaildir/tmp/status /tmp/status-$1-$2
-if grep -q failure /tmp/status-$1-$2; then
-   echo Build failed, see log in logs/$1 for details
+(echo > status/$distro; ssh $target_host "sudo $remote_cmd" >& logs/$package-$distro; rm status/$distro)
+scp $target_host:$jaildir/tmp/status /tmp/status-$distro-$package
+if grep -q failure /tmp/status-$distro-$package; then
+   echo Build failed, see log in logs/$package-$distro for details
    exit 1;
 fi
 
-mkdir -p packages/$1/$2
-scp $target_host:$jaildir/tmp/root/built-packages/* packages/$1/$2
+. defs/$package
+
+get_destroot $distro
+
+mkdir -p packages/$DEST_ROOT/$package
+scp $target_host:$jaildir/tmp/root/built-packages/* packages/$DEST_ROOT/$package
+
+one_rpm=`ls -1 packages/$DEST_ROOT/$package/*.rpm | head -n1`
+ver=`rpm -qp --queryformat '%{VERSION}' $one_rpm 2>/dev/null`
+mkdir -p packages/$DEST_ROOT/$package/$ver
+mv packages/$DEST_ROOT/$package/*.rpm packages/$DEST_ROOT/$package/$ver

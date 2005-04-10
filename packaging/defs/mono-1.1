@@ -1,14 +1,11 @@
-# 
-# Build Buddy Package: mono-1.1
-#
-nld-9-x86_64
-fedora-3-i386
-sles-8-i386
-sles-9-x86_64
-redhat-9-i386
-sles-9-i586
-rhel-3-i386
-suse-90-i586
-rhel-4-i386
-suse-91-i586
-suse-92-i586
+BUILD_HOSTS=(
+        redhat-9-i386
+        sles-9-x86_64
+)
+
+get_destroot () {
+	case "$1" in
+		*-i[35]86) DEST_ROOT=x86 ;;
+		 *-x86_64) DEST_ROOT=x86_64 ;;
+	esac
+}
