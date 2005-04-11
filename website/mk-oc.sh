@@ -23,7 +23,7 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 	
 	cat $confdir/oc-config/$chan.chan | while read lline; do
 		if [ "x${lline:0:1}" != "x!" ]; then
-			echo ${lline//[[name]]/replacement} >> $chan.conf
+			echo ${lline//\\[\\[name\\]\\]/$serverconf} >> $chan.conf
 			continue
 		fi
 		
