@@ -49,3 +49,5 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 		
 	done
 done
+
+open-carpet
