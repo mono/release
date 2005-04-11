@@ -17,7 +17,7 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 	fi
 	#trim whitespace
 	chan=$(echo ${line:1})
-	echo "AddChannel channels/$chan" >> server.conf
+	echo "AddChannel $chan.conf" >> server.conf
 	
 	rm -rf $chan.conf
 	
