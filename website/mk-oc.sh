@@ -12,7 +12,7 @@ rm -rf server.conf
 
 cat $confdir/oc-config/$serverconf.conf | while read line; do
 	if [ "x${line:0:1}" != "x!" ]; then
-		echo ${string//[[name]]/$serverconf} >> server.conf
+		echo $line >> server.conf
 		continue
 	fi
 	#trim whitespace
@@ -23,7 +23,7 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 	
 	cat $confdir/oc-config/$chan.chan | while read lline; do
 		if [ "x${lline:0:1}" != "x!" ]; then
-			echo $lline >> $chan.conf
+			echo ${lline//[[name]]/replacement} >> $chan.conf
 			continue
 		fi
 		
