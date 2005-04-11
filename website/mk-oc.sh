@@ -12,7 +12,7 @@ rm -rf server.conf
 
 cat $confdir/oc-config/$serverconf.conf | while read line; do
 	if [ "x${line:0:1}" != "x!" ]; then
-		echo $line >> server.conf
+		echo ${string//[[name]]/$serverconf} >> server.conf
 		continue
 	fi
 	#trim whitespace

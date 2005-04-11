@@ -1,6 +1,6 @@
-ChannelID   "mono-1.1"
+ChannelID   "mono-1.1-[[name]]"
 Name        "Mono 1.1.x"
-Alias       "mono-official-1.1"
+Alias       "mono-1.1-[[name]]"
 Description "This channel has previews of mono 1.1.x. Though it is an odd numbered version, we currently recommend it over 1.0.x."
 Priority     100
 IconPath     http://www.ximian.com/foo.png
