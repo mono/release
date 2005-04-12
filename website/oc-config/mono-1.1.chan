@@ -7,3 +7,5 @@ IconPath     http://www.ximian.com/foo.png
 
 ! mono-1.1
 ! libgdiplus-1.1
+! xsp
+! mod_mono

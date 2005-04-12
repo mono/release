@@ -6,4 +6,11 @@ function distro_info () {
 		 *-x86_64) ARCH=x86_64 ;;
 	esac
 	
+	case "$DISTRO" in
+		fedora-*)
+		redhat-*) DISTRO_TYPE=redhat;;
+		suse-*  )
+		nld-*   )
+		sles-*  ) DISTRO_TYPE=suse;;
+	esac
 }
