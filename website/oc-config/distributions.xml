@@ -454,6 +454,30 @@
                         <file source="/etc/fedora-release" substring="Fedora Core release 2 (Tettnang)"/>
                 </detect>
         </distro>
+	
+        <distro>
+                <name>Fedora Core</name>
+                <version>2</version>
+                <arch>i386</arch>
+                <type>rpm</type>
+                <target>fedora-2-i386</target>
+                <status>supported</status>
+                <detect>
+                        <file source="/etc/fedora-release" substring="Fedora Core release 2 (Tettnang)"/>
+                </detect>
+        </distro>
+
+        <distro>
+                <name>Fedora Core</name>
+                <version>3</version>
+                <arch>i386</arch>
+                <type>rpm</type>
+                <target>fedora-3-i386</target>
+                <status>supported</status>
+                <detect>
+                        <file source="/etc/fedora-release" substring="Fedora Core release 3"/>
+                </detect>
+        </distro>
 
 	<distro>
 		<name>TurboLinux</name>
