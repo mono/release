@@ -10,6 +10,8 @@ cd $WEB_DIR
 rm -rf server.conf
 
 
+cp $confdir/oc-config/distributions.xml .
+
 cat $confdir/oc-config/$serverconf.conf | while read line; do
 	if [ "x${line:0:1}" != "x!" ]; then
 		echo $line >> server.conf
