@@ -1,0 +1,18 @@
+#!/bin/sh
+
+PACKAGES="$*"
+
+if [ ! -f /usr/sbin/rcd ]; then
+	echo "No red carpet!!"
+	exit 1;
+fi
+
+/usr/sbin/rcd -r
+
+rug ping
+
+while ! rug ping; do echo waiting; done
+
+rug solvedeps -yr $PACKAGES
+
+/etc/init.d/rcd stop &> /dev/null

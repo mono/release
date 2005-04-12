@@ -1,0 +1,13 @@
+BUILD_HOSTS=(
+	nld-9-i586
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+MONO_DEPS=(
+	mono-core
+	mono-devel
+	mono-web
+)

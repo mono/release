@@ -1,0 +1,20 @@
+BUILD_HOSTS=(
+	fedora-3-i386
+	nld-9-i586
+	redhat-9-i386
+	rhel-3-i386
+	rhel-4-i386
+	sles-9-i586
+	sles-9-x86_64
+	suse-91-i586
+	suse-92-i586
+)
+
+MONO_DEPS=(
+	mono-core
+	mono-devel
+)
+
+get_destroot () {
+	DEST_ROOT=$1
+}

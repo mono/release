@@ -14,6 +14,8 @@
 distro=$1
 package=$2
 
+LOGFILE=logs/$package-$distro
+
 usage()
 {
 	echo "Usage is: build configuration package"
@@ -29,18 +31,27 @@ if test -f status/$distro; then
    exit 1
 fi
 
-. conf/$1
+. conf/$distro
+. defs/$package
 
-scp do-build $target_host:$jaildir/tmp 
-remote_cmd="$chroot $jaildir sh -x /tmp/do-build $package"
-(echo > status/$distro; ssh $target_host "sudo $remote_cmd" >& logs/$package-$distro; rm status/$distro)
+
+if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
+	if ! ./install-deps $distro ${MONO_DEPS[@]} &> $LOGFILE; then
+		echo Dependency installation, see log in $LOGFILE for details
+		exit 1
+	fi
+fi
+
+scp do-build ../conf/$package/ximian-build.conf $target_host:$jaildir/tmp 
+
+(echo > status/$distro; ./jail-do $distro sh -x /tmp/do-build $package >> $LOGFILE 2>&1; rm status/$distro)
+
 scp $target_host:$jaildir/tmp/status /tmp/status-$distro-$package
 if grep -q failure /tmp/status-$distro-$package; then
-   echo Build failed, see log in logs/$package-$distro for details
+   echo Build failed, see log in $LOGFILE for details
    exit 1;
 fi
 
-. defs/$package
 
 get_destroot $distro
 

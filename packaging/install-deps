@@ -1,0 +1,13 @@
+#!/bin/sh
+
+TARGET=$1
+
+shift
+
+PACKAGES="$*"
+
+. conf/$TARGET
+
+scp do-install-deps $target_host:$jaildir/tmp
+
+./jail-do $TARGET sh -x /tmp/do-install-deps "$PACKAGES"

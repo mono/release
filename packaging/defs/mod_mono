@@ -1,0 +1,27 @@
+BUILD_HOSTS=(
+	sles-9-i586
+	redhat-9-i386
+	
+	sles-9-x86_64
+	# need redhat x86 distro
+)
+
+get_destroot () {
+	case "$1" in
+		*-i[35]86) ARCH=x86 ;;
+		 *-x86_64) ARCH=x86_64 ;;
+	esac
+	case "$1" in
+		fedora-* | redhat-*        ) DISTRO_TYPE=redhat;;
+		suse-*   | nld-* | sles-*  ) DISTRO_TYPE=suse;;
+	esac
+	
+	DEST_ROOT=$DISTRO_TYPE-$ARCH
+}
+
+MONO_DEPS=(
+	xsp
+	mono-core
+	mono-devel
+	mono-web
+)
