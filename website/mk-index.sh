@@ -38,6 +38,11 @@ for distro_conf in $confdir/sources/*; do
 					VERSION=`dirname $VERSION`/`basename $VERSION`
 					
 					for i in $VERSION/*.rpm; do
+					
+						if [[ $i == *.src.rpm ]]; then
+							continue;
+						fi
+						
 						base=`basename $i`
 						
 						echo "<ul><a href='../$i'>$base</a></ul>" >> $OUT
