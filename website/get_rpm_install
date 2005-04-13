@@ -1,3 +1,21 @@
 #!/bin/sh
 
-echo blah
+USE_REDCARPET="
+	The best way to install Mono on your system is to use Novell's Red Carpet.
+	Red Carpet can be downloaded <a href="">here</a> for your distrobution. To use
+	Red Carpet, execute these commands:
+	
+	rug sa http://go-mono.com/download
+	rug sub mono-1.1
+	rug sub gtk-sharp
+	rug in mono-core gtk-sharp"
+
+USE_YUM="
+	The best way to install Mono on your system is so use YUM.... FIXME"
+	
+
+if [[ x$DISTRO == xfedora-* ]]; then
+	echo $USE_YUM;
+else
+	echo $USE_REDCARPET;
+fi
