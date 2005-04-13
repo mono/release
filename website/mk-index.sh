@@ -50,7 +50,7 @@ for distro_conf in $confdir/sources/*; do
 			sh $confdir/$line >> $OUT
 			
 		else
-			echo ${lline//\\[\\[arch\\]\\]/$(basename $distroconf)} >> $OUT
+			echo ${line//\\[\\[arch\\]\\]/$(basename $distroconf)} >> $OUT
 		fi
 	done
 done
