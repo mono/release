@@ -1,12 +1,18 @@
 #!/bin/sh
 
-USE_REDCARPET="
+if [[ x$DISTRO == xfedora-* ]]; then
+	cat <<EOF
+		The best way to install Mono on your system is so use YUM.... FIXME
+EOF
+
+else
+	cat <<EOF
 	<p>
 	The best way to install Mono on your system is to use Novell's Red Carpet.
-	Red Carpet can be downloaded <a href="ftp://ftp.novell.com/pub/ximian/redcarpet2/$DISTRO">here</a>
+	Red Carpet can be downloaded <a href='ftp://ftp.novell.com/pub/ximian/redcarpet2/$DISTRO'>here</a>
 	for your distrobution. To use Red Carpet, execute these commands:
 	
-	<xmp class="shell">
+	<xmp class='shell'>
 		rug sa http://go-mono.com/download
 		rug sub mono-1.1
 		rug sub gtk-sharp
@@ -14,14 +20,6 @@ USE_REDCARPET="
 	</xmp>
 	
 	</p>
-	"
+EOF
 
-USE_YUM="
-	The best way to install Mono on your system is so use YUM.... FIXME"
-	
-
-if [[ x$DISTRO == xfedora-* ]]; then
-	echo $USE_YUM;
-else
-	echo $USE_REDCARPET;
 fi
