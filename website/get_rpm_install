@@ -6,7 +6,7 @@ USE_REDCARPET="
 	Red Carpet can be downloaded <a href="ftp://ftp.novell.com/pub/ximian/redcarpet2/$DISTRO">here</a>
 	for your distrobution. To use Red Carpet, execute these commands:
 	
-	<pre style="shell">
+	<pre class="shell">
 		rug sa http://go-mono.com/download
 		rug sub mono-1.1
 		rug sub gtk-sharp
