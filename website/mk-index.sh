@@ -44,10 +44,10 @@ for distro_conf in $confdir/sources/*; do
 					done
 				fi
 			done
-		elif [ "x${line:0:1}" == "x." ]; then
+		elif [ "x${line:0:1}" == "x\." ]; then
 			line=$(echo ${line:1})
 			
-			$confdir/$line >> $OUT
+			sh $confdir/$line >> $OUT
 			
 		else
 			echo ${lline//\\[\\[arch\\]\\]/$(basename $distroconf)} >> $OUT
