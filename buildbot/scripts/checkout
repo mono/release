@@ -1,0 +1,25 @@
+#!/bin/sh
+
+. shared-vars
+
+if [ ! -d last-checkout/mono ]
+then
+        echo "Running \"svn checkout mono mcs\""
+        rm -rf mono mcs
+        svn co $base/$branch/mono
+        svn co $base/$branch/mcs
+        mkdir -p last-checkout
+        date
+        rsync -a ./mono ./mcs ./last-checkout
+        date
+else
+        cd last-checkout
+        echo "Updating mono and mcs"
+        svn up mono mcs
+        cd ..
+        date
+        rsync -a --delete --exclude '.svn/' ./last-checkout/* .
+        date
+fi
+
+echo "Checkout done."

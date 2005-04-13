@@ -1,0 +1,9 @@
+#!/bin/sh
+if test '!' -f /tmp/buildflag-$USER-`hostname`; then
+	echo Build failed, skipping extras
+	exit 1
+fi
+
+$extra_script
+
+exit 0

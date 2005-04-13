@@ -1,0 +1,18 @@
+#!/bin/sh
+
+. ~/buildbot-config
+. shared-vars
+
+rm -f /tmp/buildflag-$USER-`hostname`
+cd mono
+echo "Calling autogen.sh --with-preview=yes --prefix=/mono"
+sh autogen.sh --with-preview=yes --prefix=$prefix || { echo "errors"; exit 1; }
+
+echo "Calling make"
+make MCS_FLAGS='-debug -v' || { echo "errors"; exit 1; }
+
+echo "Calling make install"
+make install || { echo "error"; exit 1; }
+
+touch /tmp/buildflag-$USER-`hostname`
+

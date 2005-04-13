@@ -1,0 +1,14 @@
+#!/bin/sh
+. shared-vars
+
+echo "Making tap file for $MASTER... "
+mktap buildbot slave \
+    --name $lane_name \
+    --passwd "foobar" \
+    --basedir $xbasedir \
+    --master $MASTER:8007 \
+    --keepalive 120
+echo "done."
+
+echo "Connected to server... "
+twistd -n -d $PWD -l $PWD/buildbotclient.log -f buildbot.tap

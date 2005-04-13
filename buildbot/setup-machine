@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Usage: setup-machine host login branch
+# 
+# sample: setup-machine amd-mono nbuilder trunk
+#
+login=$2
+host=$1
+branch=$3
+
+if test x$branch = x; then
+	echo Usage is: setup-machine host login trunk
+	exit 1
+fi
+
+if test '!' -f config/$host; then
+	echo No config file for host $host
+	exit 1
+fi
+
+branch=`echo $branch | sed 's#/#-#g'`
+ssh $login@$host "echo $branch > BRANCH; mkdir $branch"
+scp -pr scripts/* $login@$host:$branch
+scp ~/.ssh/builder-id-dsa $login@$host:.ssh/id_dsa
+scp config/$host $login@$host:buildbot-config
+ssh $login@$host "chmod 700 ~/.ssh; chmod 600 ~/.ssh/*"
