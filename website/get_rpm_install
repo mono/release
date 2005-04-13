@@ -16,9 +16,10 @@ cat <<EOF
 	<p>To use Red Carpet, execute these commands:</p>
 	
 	<xmp class='shell'>
-		rug sa http://go-mono.com/download
-		rug sub mono-1.1
-		rug sub gtk-sharp
-		rug in mono-core gtk-sharp
+rug sa http://go-mono.com/download
+rug sub mono-1.1
+rug sub gtk-sharp
+rug in mono-core gtk-sharp
 	</xmp>
 EOF
+	
