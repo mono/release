@@ -52,7 +52,7 @@ for distro_conf in $confdir/sources/*; do
 		elif [ "x${line:0:1}" == "x!" ]; then
 			line=$(echo ${line:1})
 			
-			sh $confdir/$line >> $OUT
+			. $confdir/$line >> $OUT
 			
 		else
 			echo ${line//\\[\\[arch\\]\\]/$(basename $distro_conf)} >> $OUT
