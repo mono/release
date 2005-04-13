@@ -22,5 +22,3 @@ cat <<EOF
 		rug in mono-core gtk-sharp
 	</xmp>
 EOF
-
-fi
