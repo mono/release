@@ -84,7 +84,7 @@ vertical-align: top;
 <body>
 <h1>Mono Downloads -- [[arch]]</h1>
 
-.	get_rpm_install
+!	get_rpm_install
 
 	<h3>Mono 1.1</h3> 
 	<ul>

@@ -44,7 +44,7 @@ for distro_conf in $confdir/sources/*; do
 					done
 				fi
 			done
-		elif [ "x${line:0:1}" == "x\." ]; then
+		elif [ "x${line:0:1}" == "x!" ]; then
 			line=$(echo ${line:1})
 			
 			sh $confdir/$line >> $OUT
