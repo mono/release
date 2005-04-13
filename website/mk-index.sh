@@ -22,10 +22,8 @@ for distro_conf in $confdir/sources/*; do
 	
 	cat $confdir/groups | while read line
 	do
-		if echo "$line" | grep -q -v '^#';  then
-			echo $line >> $OUT
-		else
-			line=`echo $line | sed "s/^# //"`
+		if [ "x${line:0:1}" == "x#" ]; then
+			line=$(echo ${line:1})
 			
 			grep -v "^#" $distro_conf | while read mod mloc
 			do
@@ -46,6 +44,13 @@ for distro_conf in $confdir/sources/*; do
 					done
 				fi
 			done
+		elif [ "x${line:0:1}" == "x." ]; then
+			line=$(echo ${line:1})
+			
+			$confdir/$line >> $OUT
+			
+		else
+			echo ${lline//\\[\\[arch\\]\\]/$(basename $distroconf)} >> $OUT
 		fi
 	done
 done

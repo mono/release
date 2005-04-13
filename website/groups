@@ -78,13 +78,18 @@ vertical-align: top;
 }
 
 </style>
+
+	<title>Mono Downloads -- [[arch]]</title>
 </head>
 <body>
-<h1>Mono Downloads</h1>
+<h1>Mono Downloads -- [[arch]]</h1>
+
+.	get_rpm_install
+
 	<h3>Mono 1.1</h3> 
 	<ul>
-# mono-1.1
-# libgdiplus-1.1
+# 		mono-1.1
+# 		libgdiplus-1.1
 	</ul>
 	
 	<h3>XSP/mod_mono</h3>
