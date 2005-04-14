@@ -112,7 +112,15 @@ vertical-align: top;
 	<ul>
 #	gtk-sharp-2.0
 	</ul>
-
+	
+	<h3>Gtk# GAPI Perl Deps</h3>
+	<ul>
+#	XML-LibXML
+#	XML-LibXML-Common
+#	XML-NamespaceSupport
+#	XML-NodeFilter
+#	XML-SAX
+	</ul>
 
 </body>
 </html>
