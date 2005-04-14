@@ -9,3 +9,8 @@ XML-LibXML-Common	$DISTRO
 XML-NamespaceSupport	$DISTRO
 XML-NodeFilter		$DISTRO
 XML-SAX			$DISTRO
+
+gtksourceview-sharp	$DISTRO
+gecko-sharp		$DISTRO
+monodevelop		$DISTRO
+

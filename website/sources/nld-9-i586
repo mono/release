@@ -5,3 +5,8 @@ xsp		noarch
 mod_mono	$DISTRO_TYPE-$ARCH
 libgdiplus-1.1	$DISTRO
 monodoc		noarch
+
+gtksourceview-sharp	$DISTRO
+gecko-sharp		$DISTRO
+monodevelop		$DISTRO
+
