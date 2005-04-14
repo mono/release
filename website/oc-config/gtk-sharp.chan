@@ -7,3 +7,9 @@ IconPath     http://www.ximian.com/foo.png
 
 ! gtk-sharp
 ! monodoc
+! XML-LibXML
+! XML-LibXML-Common
+! XML-NamespaceSupport
+! XML-NodeFilter
+! XML-SAX
+
