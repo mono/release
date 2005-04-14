@@ -10,4 +10,22 @@ function distro_info () {
 		fedora-* | redhat-*        ) DISTRO_TYPE=redhat;;
 		suse-*   | nld-* | sles-*  ) DISTRO_TYPE=suse;;
 	esac
+	
+	case "$DISTRO" in
+		rhel-3-i386 )
+			DISTRO_ALIASES=(
+				rhel-3as-i386
+				rhel-3ws-i386
+				rhel-3es-i386
+			)
+		;;
+		
+		rhel-4-i386 )
+			DISTRO_ALIASES=(
+				rhel-4as-i386
+				rhel-4ws-i386
+				rhel-4es-i386
+			)
+		;;
+	esac
 }

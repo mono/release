@@ -45,6 +45,10 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 					VERSION=`ls -d $mloc/$mod/*/ -t -1 | head -n1`
 					
 					echo "AddDistro $DISTRO $VERSION" >> $chan.conf
+					
+					for a in ${#DISTRO_ALIASES[@]}; do
+						echo "AddDistro $a $VERSION" >> $chan.conf
+					done
 				fi
 			done
 		done
