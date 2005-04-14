@@ -4,8 +4,3 @@ xsp		noarch
 mod_mono	$DISTRO_TYPE-$ARCH
 libgdiplus-1.1	$DISTRO
 monodoc		noarch
-XML-LibXML		$DISTRO
-XML-LibXML-Common	$DISTRO
-XML-NamespaceSupport	$DISTRO
-XML-NodeFilter		$DISTRO
-XML-SAX			$DISTRO
