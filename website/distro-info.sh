@@ -27,5 +27,9 @@ function distro_info () {
 				rhel-4es-i386
 			)
 		;;
+		
+		* )
+			DISTRO_ALIASES=()
+		;;
 	esac
 }
