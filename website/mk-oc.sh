@@ -63,7 +63,7 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 			DISTRO_STRING="$DISTRO_STRING:$a"
 		done
 		
-		echo $DISTRO_STRING $DISTRO >> $chan/channel.conf 
+		echo "AddDistro $DISTRO_STRING $DISTRO" >> $chan/channel.conf 
 	done
 done
 
