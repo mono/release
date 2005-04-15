@@ -1,0 +1,15 @@
+#!/usr/bin/python
+
+"""Usage: python make-final-html.py template content output"""
+    
+import sys, time
+    
+try:
+    excname, template, contentname, outputname = sys.argv
+except ValueError:
+    print __doc__
+                
+template = file(template, 'rb').read()
+content = file(contentname, 'rb').read()
+output = template.replace('#DATE#', time.strftime('%c')).replace('#CONTENT#', content)
+file(outputname, 'wb').write(output)

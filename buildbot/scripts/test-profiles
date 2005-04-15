@@ -1,0 +1,11 @@
+#!/bin/sh
+export PATH=$prefix/bin:$PATH
+if test '!' -f /tmp/buildflag-$USER-`hostname`; then
+	echo Build failed, skipping tests
+	exit 1
+fi
+
+echo Testing Mono Profiles with NUnit
+cd mono/runtime
+exec make -k check
+

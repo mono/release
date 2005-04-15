@@ -1,12 +1,13 @@
 #!/bin/sh -x
 #
-# USAGE: update-status <version>
+# USAGE: update-status VERSION NAME
 #
-export VERSION="1.1"
-export NAME="mono-HEAD-vs-fx-1-1"
+export VERSION=$1
+export NAME=$2
 export SECTIONS="mscorlib cscompmgd System System.Xml System.Configuration.Install System.Data System.Data.OracleClient System.Design System.Drawing System.Drawing.Design System.DirectoryServices System.Management System.Messaging System.Web System.Web.Services Microsoft.VisualBasic System.EnterpriseServices System.Runtime.Remoting System.Windows.Forms System.Runtime.Serialization.Formatters.Soap System.Security"
 export DEST="mono-web@mono.ximian.com:go-mono/class-status/$NAME/"
 export PATH=/mono/bin:$PATH
+cur=`pwd`
 cd ./mono/web/web
 
 #
@@ -34,14 +35,13 @@ done
 #
 # Apply the template to the src files to form the final HTML file
 #
-~/apply-template ~/index.src ~/index.html
+python $cur/apply-template $cur/template.html $cur/index.src index.html
 for file in src/*.src; do
-
     f=src/`basename $file .src`
-    ~/apply-template $f.src $f.html
+    python $cur/apply-template $f.src $f.html
 done
 
 #
 # Upload the templates and files
 #
-scp -C -q src/*.html ~/index.html $DEST
+scp -C -q src/*.html index.html $DEST
