@@ -12,6 +12,7 @@ rm -rf server.conf
 
 cp $confdir/oc-config/distributions.xml .
 
+
 cat $confdir/oc-config/$serverconf.conf | while read line; do
 	if [ "x${line:0:1}" != "x!" ]; then
 		echo $line >> server.conf
@@ -19,13 +20,14 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 	fi
 	#trim whitespace
 	chan=$(echo ${line:1})
-	echo "AddChannel $chan.conf" >> server.conf
+	echo "AddChannel $chan" >> server.conf
 	
-	rm -rf $chan.conf
+	rm -rf $chan
+	mkdir $chan
 	
 	cat $confdir/oc-config/$chan.chan | while read lline; do
 		if [ "x${lline:0:1}" != "x!" ]; then
-			echo ${lline//\\[\\[name\\]\\]/$serverconf} >> $chan.conf
+			echo ${lline//\\[\\[name\\]\\]/$serverconf} >> $chan/channel.conf
 			continue
 		fi
 		
@@ -44,15 +46,24 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 					
 					VERSION=`ls -d $mloc/$mod/*/ -t -1 | head -n1`
 					
-					echo "AddDistro $DISTRO $VERSION" >> $chan.conf
-					
-					for a in ${DISTRO_ALIASES[@]}; do
-						echo "AddDistro $a $VERSION" >> $chan.conf
-					done
+					mkdir $chan/$DISTRO
+					ln $VERSION/*.rpm $chan/$DISTRO
 				fi
 			done
+		done		
+	done
+	
+	
+	for i in $chan/*-*-*; do
+		distro_info `basename $i`
+		
+		DISTRO_STRING=$DISTRO
+		
+		for a in ${DISTRO_ALIASES[@]}; do
+			DISTRO_STRING="$DISTRO_STRING:$a"
 		done
 		
+		echo $DISTRO_STRING $DISTRO >> $chan/channel.conf 
 	done
 done
 
