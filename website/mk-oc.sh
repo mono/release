@@ -46,7 +46,7 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 					
 					VERSION=`ls -d $mloc/$mod/*/ -t -1 | head -n1`
 					
-					mkdir $chan/$DISTRO
+					mkdir -p $chan/$DISTRO
 					ln $VERSION/*.rpm $chan/$DISTRO
 				fi
 			done
