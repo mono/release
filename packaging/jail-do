@@ -6,4 +6,4 @@ shift
 
 . conf/$TARGET
 
-ssh -t $target_host "sudo $chroot $jaildir $*"
+ssh -qt $target_host "sudo $chroot $jaildir $*"

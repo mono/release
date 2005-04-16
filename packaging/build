@@ -15,6 +15,8 @@ distro=$1
 package=$2
 
 LOGFILE=logs/$package-$distro
+rm -rf $LOGFILE
+
 
 usage()
 {
@@ -36,7 +38,7 @@ fi
 
 
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
-	if ! ./install-deps $distro ${MONO_DEPS[@]} &> $LOGFILE; then
+	if ! ./install-deps $distro ${MONO_DEPS[@]} >> $LOGFILE 2>&1; then
 		echo Dependency installation, see log in $LOGFILE for details
 		exit 1
 	fi

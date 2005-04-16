@@ -1,3 +1,0 @@
-target_host=builder@hardhat
-jaildir=/jails/suse-91-i586-duncan-0
-chroot=/usr/sbin/chroot
