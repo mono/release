@@ -106,9 +106,8 @@ img {
 	<h3>Development Tools</h3>
 	<ul>
 #	monodoc
-#	gecko-sharp
-#	gtksourceview-sharp
-#	monodevelop
+#	gecko-sharp-2.0
+#	gtksourceview-sharp-2.0
 	</ul>
 
 	<h3>Gtk# 2</h3>
