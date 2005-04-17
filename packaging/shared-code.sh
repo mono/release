@@ -37,7 +37,7 @@ function distro_info () {
 function ships_package ()
 {
 	for i in USE_HOSTS; do
-		[[ $i == $DISTRO]] && exit 1
+		[[ $i == $DISTRO ]] && exit 1
 	done
 	
 	exit 0

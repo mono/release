@@ -17,8 +17,5 @@ USE_HOSTS=(
 )
 
 get_destroot () {
-	case "$1" in
-		*-i[35]86) DEST_ROOT=x86 ;;
-		 *-x86_64) DEST_ROOT=x86_64 ;;
-	esac
+	DEST_ROOT=$ARCH
 }

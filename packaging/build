@@ -55,7 +55,7 @@ if grep -q failure /tmp/status-$distro-$package; then
    exit 1;
 fi
 
-
+distro_info $distro
 get_destroot $distro
 
 mkdir -p packages/$DEST_ROOT/$package
