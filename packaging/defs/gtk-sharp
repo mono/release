@@ -17,5 +17,5 @@ MONO_DEPS=(
 )
 
 get_destroot () {
-	DEST_ROOT=$1
+	DEST_ROOT=$DISTRO
 }
