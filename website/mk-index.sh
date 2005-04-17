@@ -25,6 +25,7 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 	do
 		if [ "x${line:0:1}" == "x#" ]; then
 			package=$(echo ${line:1})
+			echo $package
 			. $packagingdir/defs/$package
 
 			
