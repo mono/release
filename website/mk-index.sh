@@ -28,23 +28,21 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 
 			. $packagingdir/defs/$package
 			
-			if ships_package; then
-				get_destroot
+			ships_package || continue
+			get_destroot
 		
-				if [ -d $DEST_ROOT/$package/*/ ]; then 
+			[ -d $DEST_ROOT/$mod/*/ ] || continue
 							
-					VERSION=`ls -d $DEST_ROOT/$package/*/ -t -1 | head -n1`
-						
-					for i in $VERSION/*.rpm; do
-					
-						[[ $i == *.src.rpm ]] && continue
-						
-						base=`basename $i`
-						
-						echo "<ul><a href='../$i'>$base</a></ul>" >> $OUT
-					done
-				fi
-			fi
+			VERSION=`ls -d $DEST_ROOT/$mod/*/ -t -1 | head -n1`
+				
+			for i in $VERSION/*.rpm; do
+			
+				[[ $i == *.src.rpm ]] && continue
+				
+				base=`basename $i`
+				
+				echo "<ul><a href='../$i'>$base</a></ul>" >> $OUT
+			done
 			
 		elif [ "x${line:0:1}" == "x!" ]; then
 			line=$(echo ${line:1})
