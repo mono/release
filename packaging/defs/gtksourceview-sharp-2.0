@@ -13,9 +13,7 @@ get_destroot () {
 }
 
 MONO_DEPS=(
-	gtk-sharp2
-	gtk-sharp2-gapi
-	mono-core
-	mono-devel
+	mono-1.1
+	gtk-sharp-2.0
 	monodoc
 )

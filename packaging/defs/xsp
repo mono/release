@@ -20,7 +20,5 @@ get_destroot () {
 }
 
 MONO_DEPS=(
-	mono-core
-	mono-devel
-	mono-web
+	mono-1.1
 )

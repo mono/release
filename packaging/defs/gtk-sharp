@@ -12,8 +12,7 @@ BUILD_HOSTS=(
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
-	mono-core
-	mono-devel
+	mono-1.1
 )
 
 get_destroot () {

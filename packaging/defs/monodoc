@@ -20,8 +20,6 @@ get_destroot () {
 }
 
 MONO_DEPS=(
+	mono-1.1
 	gtk-sharp
-	mono-core
-	mono-devel
-	mono-web
 )
