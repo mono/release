@@ -17,6 +17,7 @@ package=$2
 LOGFILE=logs/$package-$distro
 rm -rf $LOGFILE
 
+mkdir -p `dirname $LOGFILE`
 
 usage()
 {

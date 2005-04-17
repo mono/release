@@ -1,7 +1,8 @@
 #!/bin/bash
 
 confdir=$(dirname $(pwd)/$0)
-. $confdir/distro-info.sh
+packagingdir= $confdir/../packaging
+. $packagingdir/shared-code.sh
 
 WEB_DIR=$1
 serverconf=$2
@@ -9,9 +10,7 @@ cd $WEB_DIR
 
 rm -rf server.conf
 
-
 cp $confdir/oc-config/distributions.xml .
-
 
 cat $confdir/oc-config/$serverconf.conf | while read line; do
 	if [ "x${line:0:1}" != "x!" ]; then
@@ -31,25 +30,22 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 			continue
 		fi
 		
+		
 		package=$(echo ${lline:1})
 
-		for distro_conf in $confdir/sources/*; do 
+		. $packagingdir/defs/$package
+
+		for distro_conf in $packagingdir/conf/*-*-*; do 
 			distro_info `basename $distro_conf`
-		
-			grep -v "^#" $distro_conf | while read mod mloc
-			do				
-				if [ "x$package" = "x$mod" ]; then
-					eval mloc=$mloc
-					if [ ! -d $mloc/$mod/*/ ]; then
-						continue
-					fi
+			ships_package || continue
+			get_destroot
+
+			[ -d $DEST_ROOT/$mod/*/ ] || continue
 					
-					VERSION=`ls -d $mloc/$mod/*/ -t -1 | head -n1`
+			VERSION=`ls -d $DEST_ROOT/$mod/*/ -t -1 | head -n1`
 					
-					mkdir -p $chan/$DISTRO
-					ln $VERSION/*.rpm $chan/$DISTRO
-				fi
-			done
+			mkdir -p $chan/$DISTRO
+			ln $VERSION/*.rpm $chan/$DISTRO
 		done		
 	done
 	

@@ -1,7 +1,8 @@
 #!/bin/sh
 
 confdir=$(dirname $(pwd)/$0)
-. $confdir/distro-info.sh
+packagingdir= $confdir/../packaging
+. $packagingdir/shared-code.sh
 
 
 
@@ -9,7 +10,7 @@ WEB_DIR=$1
 
 cd $WEB_DIR
 
-for distro_conf in $confdir/sources/*; do 
+for distro_conf in $packagingdir/conf/*-*-*; do
 	
 	distro_info `basename $distro_conf`
 	
@@ -23,31 +24,25 @@ for distro_conf in $confdir/sources/*; do
 	cat $confdir/groups | while read line
 	do
 		if [ "x${line:0:1}" == "x#" ]; then
-			line=$(echo ${line:1})
+			package=$(echo ${line:1})
+			. $packagingdir/defs/$package
+
 			
-			grep -v "^#" $distro_conf | while read mod mloc
-			do
-				if [[ x$line = x$mod ]]; then
+			distro_info `basename $distro_conf`
+			ships_package || continue
+			get_destroot
+	
+			[ -d $DEST_ROOT/$mod/*/ ] || continue
 					
-					eval mloc=$mloc
-					if [ ! -d $mloc/$mod/*/ ]; then
-						continue
-					fi
-					
-					VERSION=`ls -d $mloc/$mod/*/ -t -1 | head -n1`
-					VERSION=`dirname $VERSION`/`basename $VERSION`
-					
-					for i in $VERSION/*.rpm; do
-					
-						if [[ $i == *.src.rpm ]]; then
-							continue;
-						fi
-						
-						base=`basename $i`
-						
-						echo "<ul><a href='../$i'>$base</a></ul>" >> $OUT
-					done
-				fi
+			VERSION=`ls -d $DEST_ROOT/$mod/*/ -t -1 | head -n1`
+				
+			for i in $VERSION/*.rpm; do
+			
+				[[ $i == *.src.rpm ]] && continue
+				
+				base=`basename $i`
+				
+				echo "<ul><a href='../$i'>$base</a></ul>" >> $OUT
 			done
 		elif [ "x${line:0:1}" == "x!" ]; then
 			line=$(echo ${line:1})

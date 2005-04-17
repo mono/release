@@ -33,3 +33,12 @@ function distro_info () {
 		;;
 	esac
 }
+
+function ships_package ()
+{
+	for i in USE_HOSTS; do
+		[[ $i == $DISTRO]] && exit 1
+	done
+	
+	exit 0
+}

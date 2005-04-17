@@ -6,6 +6,19 @@ BUILD_HOSTS=(
 	# need redhat x86 distro
 )
 
+USE_HOSTS=(
+	fedora-3-i386
+	nld-9-i586
+	nld-9-x86_64
+	redhat-9-i386
+	rhel-3-i386
+	rhel-4-i386
+	sles-9-i586
+	sles-9-x86_64
+	suse-92-i586
+	suse-93-i586
+)
+
 get_destroot () {
 	case "$1" in
 		*-i[35]86) ARCH=x86 ;;
