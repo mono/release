@@ -9,7 +9,7 @@ BUILD_HOSTS=(
 	suse-93-i586
 )
 
-USE_HOSTS=BUILD_HOSTS
+USE_HOSTS=$BUILD_HOSTS
 
 MONO_DEPS=(
 	mono-core
@@ -17,5 +17,5 @@ MONO_DEPS=(
 )
 
 get_destroot () {
-	DEST_ROOT=$DISTRO
+	DEST_ROOT=$1
 }
