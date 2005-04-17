@@ -1,7 +1,7 @@
 #!/bin/sh
 
 confdir=$(dirname $(pwd)/$0)
-packagingdir= $confdir/../packaging
+packagingdir=$confdir/../packaging
 . $packagingdir/shared-code.sh
 
 
