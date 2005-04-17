@@ -31,9 +31,9 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 			ships_package || continue
 			get_destroot
 		
-			[ -d $DEST_ROOT/$mod/*/ ] || continue
-							
-			VERSION=`ls -d $DEST_ROOT/$mod/*/ -t -1 | head -n1`
+			[ -d $DEST_ROOT/$package/*/ ] || continue
+					
+			VERSION=`ls -d $DEST_ROOT/$package/*/ -t -1 | head -n1`
 				
 			for i in $VERSION/*.rpm; do
 			
