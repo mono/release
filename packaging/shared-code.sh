@@ -38,7 +38,7 @@ function ships_package ()
 {
 
 	echo $DISTRO
-	for i in USE_HOSTS; do
+	for i in ${USE_HOSTS[@]}; do
 		[[ $i == $DISTRO ]] && exit 1
 	done
 	
