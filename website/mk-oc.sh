@@ -40,9 +40,9 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 			ships_package || continue
 			get_destroot
 
-			[ -d $DEST_ROOT/$mod/*/ ] || continue
+			[ -d $DEST_ROOT/$package/*/ ] || continue
 					
-			VERSION=`ls -d $DEST_ROOT/$mod/*/ -t -1 | head -n1`
+			VERSION=`ls -d $DEST_ROOT/$package/*/ -t -1 | head -n1`
 					
 			mkdir -p $chan/$DISTRO
 			ln $VERSION/*.rpm $chan/$DISTRO
