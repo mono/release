@@ -61,7 +61,12 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 		
 		echo "AddDistro $DISTRO_STRING $DISTRO" >> $chan/channel.conf
 		
-		createrepo $i
+		case $DISTRO in
+			fedora-* )
+				createrepo $i
+			;;
+		esac
+		
 	done
 done
 
