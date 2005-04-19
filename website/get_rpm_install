@@ -27,7 +27,7 @@ case $DISTRO in
     fedora-*)
 	cat <<EOF
 <p>
-Another way to install updates on your operating system is to use "yum". Putting the
+Another way to install updates on your operating system is to use <tt>yum</tt>. Putting the
 <a href="mono.repo">mono.repo</a> file in <tt>/etc/yum.repos.d</tt> will allow you to
 install mono and related packages.
 </p>

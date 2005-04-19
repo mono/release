@@ -53,12 +53,13 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 			# rpms are compressed anyways -- doing any compression is a waste of time
 			zip -j -0 $DISTRO/$zipname.zip ${RPMS[@]}
 			
-			echo "<p>All these files in a <a href='$zipname.zip'>.zip file</a></p>" >> $OUT
+			echo "<p><a href='$zipname.zip'><img src='/zip-icon.png' />All of these files in a ZIP file</a></p>" >> $OUT
 			echo "<ul>" >> $OUT
 			
 			for i in ${RPMS[@]}; do
 				NAME=$(rpm -qp --queryformat '%{NAME}' $i 2>/dev/null)
-				echo "<li><a href='../$i'>$NAME</a></li>" >> $OUT
+				DESC=$(rpm -qp --queryformat '%{SUMMARY}' $i 2>/dev/null)
+				echo "<li><a href='../$i'>$NAME</a> -- $DESC</li>" >> $OUT
 			done
 			
 			echo "</ul>" >> $OUT
