@@ -33,7 +33,7 @@ install mono and related packages.
 </p>
 EOF
 
-	cat > $DISTRO/mono.repo <<EOF
+	cat > $DISTRO/mono.repo <<"EOF"
 [mono-1.1]
 name=Mono 1.1 for fedora-$releasever-$basearch
 baseurl=http://go-mono.com/download/mono-1.1/fedora-$releasever-$basearch/
