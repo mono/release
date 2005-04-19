@@ -17,9 +17,9 @@ cat <<EOF
 	
 	<xmp class='shell'>
 rug sa http://go-mono.com/download
-rug sub mono-1.1
-rug sub gtk-sharp
-rug in mono-core gtk-sharp
+rug sub mono-1.1-official
+rug sub gtk-sharp-official
+rug in mono-complete gtk-sharp
 	</xmp>
 EOF
 
