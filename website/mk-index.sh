@@ -50,14 +50,15 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 			zipname=${ARGS[0]}
 			
 			rm -rf $DISTRO/$zipname.zip
-			zip -j $DISTRO/$zipname.zip ${RPMS[@]}
+			# rpms are compressed anyways -- doing any compression is a waste of time
+			zip -j -0 $DISTRO/$zipname.zip ${RPMS[@]}
 			
 			echo "<p>All these files in a <a href='$zipname.zip'>.zip file</a></p>" >> $OUT
 			echo "<ul>" >> $OUT
 			
 			for i in ${RPMS[@]}; do
 				NAME=$(rpm -qp --queryformat '%{VERSION}' $one_rpm 2>/dev/null)
-				echo "<ul><a href='../$i'>$NAME</a></ul>" >> $OUT
+				echo "<li><a href='../$i'>$NAME</a></li>" >> $OUT
 			done
 			
 			echo "</ul>" >> $OUT
