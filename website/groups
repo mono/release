@@ -50,7 +50,7 @@ body {
 
 td, p,lu,li {
 
-font-size: 12px;
+	font-size: 12px;
 	margin-left: 2em;
 	margin-right: 2em;
 }
@@ -59,22 +59,17 @@ img {
 	border: 0;
 	vertical-align: top;
 }
-.code-xml, .code-csharp
+.shell  .code-xml, .code-csharp
 {
-	margin:15px;
-	padding:15px;
+	margin-left: 3em;
+	margin-right: 3em;
+	padding-left: 1em;
+	padding-right: 1em;
 	font-size: small;
 	font-family: "Courier New", Courier;
 	background:whitesmoke;
 	border: solid 1px silver;
 	line-height:110%;
-}
-
-.shell {
-	border-style: solid; background: #000000; color: #bbbbbb; #777777;
-	border-width: 1px; padding: 2pt; 
-	margin-left: 4em;
-	margin-right: 4em;
 }
 
 </style>
