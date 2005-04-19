@@ -22,4 +22,32 @@ rug sub gtk-sharp
 rug in mono-core gtk-sharp
 	</xmp>
 EOF
-	
+
+case $DISTRO in
+    fedora-*)
+	cat <<EOF
+<p>
+Another way to install updates on your operating system is to use "yum". Putting the
+<a href="mono.repo">mono.repo</a> file in <tt>/etc/yum.repos.d</tt> will allow you to
+install mono and related packages.
+</p>
+EOF
+
+	cat > $DISTRO/mono.repo <<EOF
+[mono-1.1]
+name=Mono 1.1 for fedora-$releasever-$basearch
+baseurl=http://go-mono.com/download/mono-1.1/fedora-$releasever-$basearch/
+enabled=1
+
+[gtk-sharp-1.0]
+name=Gtk# 1.0 for fedora-$releasever-$basearch
+baseurl=http://go-mono.com/download/gtk-sharp/fedora-$releasever-$basearch/
+enabled=1
+
+[gtk-sharp-2.0]
+name=Gtk# 2.0 for fedora-$releasever-$basearch
+baseurl=http://go-mono.com/download/gtk-sharp-2.0/fedora-$releasever-$basearch/
+enabled=1
+EOF
+    ;;
+esac
