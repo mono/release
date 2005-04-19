@@ -50,7 +50,7 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 			zipname=${ARGS[0]}
 			
 			rm -rf $DISTRO/$zipname.zip
-			zip $DISTRO/$zipname ${RPMS[@]}
+			zip -j $DISTRO/$zipname.zip ${RPMS[@]}
 			
 			echo "<p>All these files in a <a href='$zipname.zip'>.zip file</a></p>" >> $OUT
 			echo "<ul>" >> $OUT
