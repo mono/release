@@ -59,7 +59,7 @@ img {
 	border: 0;
 	vertical-align: top;
 }
-.shell  .code-xml, .code-csharp
+.shell, .code-xml, .code-csharp
 {
 	margin-left: 3em;
 	margin-right: 3em;
