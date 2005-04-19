@@ -82,33 +82,19 @@ img {
 !	get_rpm_install
 
 	<h3>Mono 1.1</h3> 
-	<ul>
-# 		mono-1.1
-# 		libgdiplus-1.1
-	</ul>
+#	mono-1.1 mono-1.1 libgdiplus-1.1
 	
 	<h3>XSP/mod_mono</h3>
-	<ul>
-#	xsp
-#	mod_mono
-	</ul>
+#	webserver xsp mod_mono
      
 	<h3>Gtk# 1</h3>
-	<ul>
-#	gtk-sharp
-	</ul>
+#	gtk-sharp-1.0 gtk-sharp
 	
 	<h3>Development Tools</h3>
-	<ul>
-#	monodoc
-#	gecko-sharp-2.0
-#	gtksourceview-sharp-2.0
-	</ul>
+#	devtools monodoc
 
 	<h3>Gtk# 2</h3>
-	<ul>
-#	gtk-sharp-2.0
-	</ul>
+#	gtk-sharp-2.0 gtk-sharp-2.0
 
 </body>
 </html>

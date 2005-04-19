@@ -24,25 +24,43 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 	cat $confdir/groups | while read line
 	do
 		if [ "x${line:0:1}" == "x#" ]; then
-			package=$(echo ${line:1})
-
-			. $packagingdir/defs/$package
+			ARGS=(${line:1})
+			RPMS=()
+			for package in ${ARGS[@]:1}; do 
+				. $packagingdir/defs/$package
+				
+				ships_package || continue
+				get_destroot
 			
-			ships_package || continue
-			get_destroot
-		
-			[ -d $DEST_ROOT/$package/*/ ] || continue
-					
-			VERSION=`ls -d $DEST_ROOT/$package/*/ -t -1 | head -n1`
+				[ -d $DEST_ROOT/$package/*/ ] || continue
+						
+				VERSION=`ls -d $DEST_ROOT/$package/*/ -t -1 | head -n1`
 				
-			for i in $VERSION/*.rpm; do
-			
-				[[ $i == *.src.rpm ]] && continue
-				
-				base=`basename $i`
-				
-				echo "<ul><a href='../$i'>$base</a></ul>" >> $OUT
+				for i in $VERSION/*.rpm; do
+					[[ $i == *.src.rpm ]] && continue
+					RPMS=(${RPMS[@]} $i)
+				done
 			done
+			
+			if [ ${#RPMS[@]} -eq 0 ]; then
+				echo "<p>Not available for this platform</p>" >> $OUT
+				continue
+			fi
+			
+			zipname=${ARGS[0]}
+			
+			rm -rf $DISTRO/$zipname.zip
+			zip $DISTRO/$zipname ${RPMS[@]}
+			
+			echo "<p>All these files in a <a href='$zipname.zip'>.zip file</a></p>" >> $OUT
+			echo "<ul>" >> $OUT
+			
+			for i in ${RPMS[@]}; do
+				NAME=$(rpm -qp --queryformat '%{VERSION}' $one_rpm 2>/dev/null)
+				echo "<ul><a href='../$i'>$NAME</a></ul>" >> $OUT
+			done
+			
+			echo "</ul>" >> $OUT
 			
 		elif [ "x${line:0:1}" == "x!" ]; then
 			line=$(echo ${line:1})
