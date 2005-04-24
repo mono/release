@@ -16,15 +16,15 @@ case $package in
 	# we need to check out both mono and mcs in this case. The svn path we
 	# get is just below where the modules live.
 	
-	svn co svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path/mono
-	svn co svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path/mcs
+	svn export -q svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path/mono
+	svn export -q svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path/mcs
 	
 	BUILD_DIR=mono
 
 	;;
     * )
 	
-	svn co svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path
+	svn export -q svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path
 	
 	BUILD_DIR=$(basename $svn_path)
 	;;
