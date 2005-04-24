@@ -1,0 +1,38 @@
+#!/bin/sh
+
+msvn_tar () {
+    get_svn_path
+    scp do-msvn-tar $target_host:$jaildir/tmp
+    ./jail-do $distro sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_version
+}
+
+get_svn_path () {
+    case "$version" in
+	snap )
+	    snapshot_version=$(date +'%Y%m%d')
+	    svn_path=$HEAD_PATH
+	    ;;
+	*)
+	    unset snapshot_version
+	    versiondash=${version//\\./-}
+	    svn_path=${RELEASE_PATH//\\[\\[version\\]\\]/${versiondash}}
+	    svn_path=${svn_path//\\[\\[versiondot\\]\\]/${version}}
+	    ;;
+    esac
+}
+
+
+
+distro=$1
+package=$2
+version=$3
+
+. shared-code.sh
+. conf/$distro
+. defs/$package
+
+get_tarball
+
+mkdir -p sources/$package
+
+scp $target_host:$jaildir/tmp/built-tarball/*.tar.gz sources/$package 

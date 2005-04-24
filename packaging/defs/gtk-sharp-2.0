@@ -13,3 +13,10 @@ MONO_DEPS=(
 get_destroot () {
 	DEST_ROOT=$DISTRO
 }
+
+HEAD_PATH="trunk/gtk-sharp"
+RELEASE_PATH="tags/gtk-sharp/[[versiondot]]"
+
+get_tarball () {
+	msvn_tar $1
+}

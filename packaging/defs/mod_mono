@@ -19,11 +19,18 @@ USE_HOSTS=(
 	suse-93-i586
 )
 
-get_destroot () {
-	DEST_ROOT=$DISTRO_TYPE-$ARCH
-}
-
 MONO_DEPS=(
 	mono-1.1
 	xsp
 )
+
+get_destroot () {
+	DEST_ROOT=$DISTRO_TYPE-$ARCH
+}
+
+HEAD_PATH="trunk/mod_mono"
+RELEASE_PATH="tags/mono-[[version]]/mod_mono"
+
+get_tarball () {
+	msvn_tar $1
+}

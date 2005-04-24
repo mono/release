@@ -19,3 +19,10 @@ USE_HOSTS=(
 get_destroot () {
 	DEST_ROOT=$ARCH
 }
+
+HEAD_PATH="trunk"
+RELEASE_PATH="tags/mono-[[version]]"
+
+get_tarball () {
+	msvn_tar $1
+}

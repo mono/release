@@ -1,0 +1,47 @@
+#!/bin/sh
+
+package=$1
+svn_path=$2
+snapshot_version=$3
+
+cd /tmp
+rm -rf package-builder
+mkdir package-builder
+cd package-builder
+
+export SVN_SSH=/usr/bin/bb_ssh
+
+case $package in
+    mono-1.1 )
+	# we need to check out both mono and mcs in this case. The svn path we
+	# get is just below where the modules live.
+	
+	svn co svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path/mono
+	svn co svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path/mcs
+	
+	BUILD_DIR=mono
+
+	;;
+    * )
+	
+	svn co svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path
+	
+	BUILD_DIR=$(basename $svn_path)
+	;;
+esac
+
+cd $BUILD_DIR
+
+if [ ! x$snapshot_version == x ]; then
+	sed -i "s/\(AM_INIT_AUTOMAKE.*\))/\1.$snapshot_version)/" configure.in 
+fi
+
+./autogen.sh || exit 1
+make dist || exit 1
+rm -rf /tmp/built-tarball
+mkdir -p /tmp/built-tarball
+mv *.tar.gz /tmp/built-tarball
+
+cd /tmp
+
+rm -rf package-builder

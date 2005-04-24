@@ -15,11 +15,18 @@ USE_HOSTS=(
 	suse-93-i586
 )
 
-get_destroot () {
-	DEST_ROOT=noarch
-}
-
 MONO_DEPS=(
 	mono-1.1
 	gtk-sharp
 )
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH="trunk/monodoc"
+RELEASE_PATH="tags/mono-[[version]]/monodoc"
+
+get_tarball () {
+	msvn_tar $1
+}

@@ -9,12 +9,20 @@ USE_HOSTS=(
 	suse-93-i586
 )
 
+MONO_DEPS=(
+	mono-1.1
+	gtk-sharp
+	gtk-sharp-2.0
+	monodoc
+)
+
 get_destroot () {
 	DEST_ROOT=noarch
 }
 
-MONO_DEPS=(
-	mono-1.1
-	gtk-sharp-2.0
-	monodoc
-)
+HEAD_PATH="trunk/gtkmozembed-sharp"
+RELEASE_PATH="tags/gecko-sharp-[[version]]"
+
+get_tarball () {
+	msvn_tar $1
+}

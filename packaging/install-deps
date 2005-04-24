@@ -12,7 +12,7 @@ distro_info $TARGET
 DEPS=${MONO_DEPS[@]}
 
 
-RPMS=$i
+RPMS=()
 
 for i in $DEPS; do
 	. defs/$i
@@ -36,9 +36,9 @@ done
 [ ${#RPMS[@]} -eq 0 ] && exit 0
 
 
-./jail-do $TARGET "sh -x -c 'rm -rf /tmp/install-packages; mkdir -p /tmp/install-packages -m777'"
+./jail-do $TARGET "sh -x -c \"rm -rf /tmp/install-packages; mkdir -p /tmp/install-packages -m777\""
 
 scp ${RPMS[@]} $target_host:$jaildir/tmp/install-packages
 
-./jail-do $TARGET "sh -x -c 'rpm -Uhv /tmp/install-packages/*.rpm'"
-./jail-do $TARGET "sh -x -c 'rm -rf /tmp/install-packages'"
+./jail-do $TARGET "sh -x -c \"rpm -Uhv /tmp/install-packages/*.rpm\""
+./jail-do $TARGET "sh -x -c \"rm -rf /tmp/install-packages\""

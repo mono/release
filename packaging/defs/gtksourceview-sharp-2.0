@@ -15,5 +15,13 @@ get_destroot () {
 MONO_DEPS=(
 	mono-1.1
 	gtk-sharp-2.0
+	gtk-sharp
 	monodoc
 )
+
+HEAD_PATH="trunk/gtksourceview-sharp"
+RELEASE_PATH="tags/gtksourceview-sharp-[[version]]"
+
+get_tarball () {
+	msvn_tar $1
+}

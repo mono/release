@@ -6,4 +6,10 @@ shift
 
 . conf/$TARGET
 
-ssh -qt $target_host "sudo $chroot $jaildir $*"
+if [ "x$*" == x ] ; then
+	CMD="bash -l"
+else
+	CMD="bash -lc '$*'"
+fi
+
+ssh -qt $target_host "sudo $chroot $jaildir $CMD"

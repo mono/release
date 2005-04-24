@@ -15,10 +15,17 @@ USE_HOSTS=(
 	suse-93-i586
 )
 
+MONO_DEPS=(
+	mono-1.1
+)
+
 get_destroot () {
 	DEST_ROOT=noarch
 }
 
-MONO_DEPS=(
-	mono-1.1
-)
+HEAD_PATH="trunk/xsp"
+RELEASE_PATH="tags/mono-[[version]]/xsp"
+
+get_tarball () {
+	msvn_tar $1
+}
