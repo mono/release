@@ -46,8 +46,6 @@ function ships_package ()
 
 function latest_version ()
 {
-	[ "x$1" == x ] && return 1
-	
-	LATEST_VERSION=`ls -d -t -1  $* | head -n1`
-	return 0
+	LATEST_VERSION=`ls -d -t -1  $* | head -n1 &> /dev/null`
+	return [ ! "x$LATEST_VERSION" == x ]
 }
