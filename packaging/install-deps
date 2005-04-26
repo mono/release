@@ -18,14 +18,12 @@ for i in $DEPS; do
 	
 	get_destroot
 	
-	[ -d packages/$DEST_ROOT/$i/*/ ] || (
+	latest_version packages/$DEST_ROOT/$i/*/ || (
 		echo "Could not find $i for $DISTRO (looking in $DEST_ROOT)"
 		exit 1;
 	)
 	
-	VERSION=`ls -d packages/$DEST_ROOT/$i/*/ -t -1 | head -n1`
-	
-	for i in $VERSION/*.rpm; do
+	for i in $LATEST_VERSION/*.rpm; do
 		[[ $i == *.src.rpm ]] && continue
 		
 		RPMS=(${RPMS[@]} $i)

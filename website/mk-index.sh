@@ -32,11 +32,9 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 				ships_package || continue
 				get_destroot
 			
-				[ -d $DEST_ROOT/$package/*/ ] || continue
+				latest_version $DEST_ROOT/$package/*/ || continue
 						
-				VERSION=`ls -d $DEST_ROOT/$package/*/ -t -1 | head -n1`
-				
-				for i in $VERSION/*.rpm; do
+				for i in $LATEST_VERSION/*.rpm; do
 					[[ $i == *.src.rpm ]] && continue
 					RPMS=(${RPMS[@]} $i)
 				done
