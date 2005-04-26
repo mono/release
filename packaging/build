@@ -5,10 +5,10 @@
 # Where:
 #    os-target is the OS target that we are building for
 #    package is the name of the BB XML configuration file on the repository
+#    version is the version you want to build
 #
 # Example:
-#    build suse-92-i386 mono-1.1
-#
+#    build suse-92-i386 mono-1.1 1.1.6
 #
 
 distro=$1
@@ -17,17 +17,17 @@ version=$3
 
 . shared-code.sh
 
-LOGFILE=logs/$package-$distro
+LOGFILE=logs/$package-$version-$distro
 rm -rf $LOGFILE
 
 mkdir -p `dirname $LOGFILE`
 
 usage()
 {
-	echo "Usage is: build configuration package"
+	echo "Usage is: build configuration package version"
 }
 
-if test x$package = x; then
+if test x$version = x; then
     usage
     exit 1;
 fi

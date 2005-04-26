@@ -1,10 +1,21 @@
 #!/bin/sh
+#
+# Executes either a command or an interactive shell on a jail
+# ./jail-do suse-93-i586
+# ./jail-do suse-93-i586 rug in my-package
+#
 
 TARGET=$1
-
 shift
 
 . conf/$TARGET
+
+#
+# FIXME
+#
+# There are weird things happening with quoting here. You can't
+# pass a command with single quotes. We need to fix this somewhow
+#
 
 if [ "x$*" == x ] ; then
 	CMD="bash -l"

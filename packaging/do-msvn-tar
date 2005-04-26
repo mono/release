@@ -1,4 +1,7 @@
 #!/bin/sh
+#
+# The driver script to make a tarball
+#
 
 package=$1
 svn_path=$2
@@ -9,6 +12,7 @@ rm -rf package-builder
 mkdir package-builder
 cd package-builder
 
+# use the key in /usr/share/ximian-build-system/conf/ssh
 export SVN_SSH=/usr/bin/bb_ssh
 
 if [ ! x$snapshot_rev == x ]; then
@@ -19,6 +23,10 @@ SVNEXPORT="svn export -q $ref_arg"
 MONO_ROOT="svn+ssh://distro@mono-cvs.ximian.com/source"
 MD_ROOT="svn+ssh://distro@mono-cvs.ximian.com/svn/monodevelop"
 
+#
+# These scripts change the version in configure.in to have the svn
+# rev number after it.
+#
 normal_change_ver ()
 {
 	sed -i "s/\(AM_INIT_AUTOMAKE.*\))/\1.$snapshot_rev)/" configure.in
@@ -30,6 +38,8 @@ md_change_ver ()
 }
 
 DO_CHANGE_AUTOMAKE='normal_change_ver'
+
+# Special case package configurations
 case $package in
     mono-1.1 )
 	# we need to check out both mono and mcs in this case. The svn path we
@@ -40,26 +50,24 @@ case $package in
 	
 	BUILD_DIR=mono
 	
+	# needed so that we don't need to build the mono in the tarball
 	DIST_FLAGS="MCS=mcs RESGEN=resgen"
 	
 	;;
 
     monodevelop )
-	
+	# md has its own svn repo
 	$SVNEXPORT $MD_ROOT/$svn_path
-	
-	BUILD_DIR=$(basename $svn_path)
 	
 	DO_CHANGE_AUTOMAKE='md_change_ver'
 	
 	;;
     * )
 	$SVNEXPORT $MONO_ROOT/$svn_path
-	
-	BUILD_DIR=$(basename $svn_path)
-	
 	;;
 esac
+
+: ${BUILD_DIR=$(basename $svn_path)}
 
 cd $BUILD_DIR
 

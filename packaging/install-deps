@@ -1,15 +1,17 @@
 #!/bin/sh
+#
+# Usage: install-deps TARGET monopackages
+#    ex: install-deps suse-93-i586 mono-1.1 gtk-sharp-2.0
+#
 
 . shared-code.sh
 
 TARGET=$1
 shift
+DEPS=$*
 
 . conf/$TARGET
 distro_info $TARGET
-
-DEPS=$*
-
 
 RPMS=()
 
