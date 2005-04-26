@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Usage: build [os-target] [package]
+# Usage: build [os-target] [package] [version]
 #
 # Where:
 #    os-target is the OS target that we are building for
@@ -13,6 +13,7 @@
 
 distro=$1
 package=$2
+version=$3
 
 . shared-code.sh
 
@@ -47,9 +48,9 @@ if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
 	fi
 fi
 
-scp do-build ../conf/$package/ximian-build.conf $target_host:$jaildir/tmp 
+scp do-build ../conf/$package/ximian-build.conf sources/$package/*-$version.tar.gz $target_host:$jaildir/tmp 
 
-(echo > status/$distro; ./jail-do $distro sh -x /tmp/do-build $package >> $LOGFILE 2>&1; rm status/$distro)
+(echo > status/$distro; ./jail-do $distro sh -x /tmp/do-build $version >> $LOGFILE 2>&1; rm status/$distro)
 
 scp $target_host:$jaildir/tmp/status /tmp/status-$distro-$package
 if grep -q failure /tmp/status-$distro-$package; then

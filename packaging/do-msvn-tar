@@ -2,7 +2,7 @@
 
 package=$1
 svn_path=$2
-snapshot_version=$3
+snapshot_rev=$3
 
 cd /tmp
 rm -rf package-builder
@@ -11,37 +11,68 @@ cd package-builder
 
 export SVN_SSH=/usr/bin/bb_ssh
 
+if [ ! x$snapshot_rev == x ]; then
+	rev_arg="-r $snapshot_rev"
+fi
+
+SVNEXPORT="svn export -q $ref_arg"
+MONO_ROOT="svn+ssh://distro@mono-cvs.ximian.com/source"
+MD_ROOT="svn+ssh://distro@mono-cvs.ximian.com/svn/monodevelop"
+
+normal_change_ver ()
+{
+	sed -i "s/\(AM_INIT_AUTOMAKE.*\))/\1.$snapshot_rev)/" configure.in
+}
+
+md_change_ver ()
+{
+	sed -i "s/\(AC_INIT.*\)\(0\.[0-9]*\)/\1\2.$snapshot_rev/" configure.in
+}
+
+DO_CHANGE_AUTOMAKE='normal_change_ver'
 case $package in
     mono-1.1 )
 	# we need to check out both mono and mcs in this case. The svn path we
 	# get is just below where the modules live.
 	
-	svn export -q svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path/mono
-	svn export -q svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path/mcs
+	$SVNEXPORT $MONO_ROOT/$svn_path/mono
+	$SVNEXPORT $MONO_ROOT/$svn_path/mcs
 	
 	BUILD_DIR=mono
-
-	;;
-    * )
 	
-	svn export -q svn+ssh://distro@mono-cvs.ximian.com/source/$svn_path
+	DIST_FLAGS="MCS=mcs RESGEN=resgen"
+	
+	;;
+
+    monodevelop )
+	
+	$SVNEXPORT $MD_ROOT/$svn_path
 	
 	BUILD_DIR=$(basename $svn_path)
+	
+	DO_CHANGE_AUTOMAKE='md_change_ver'
+	
+	;;
+    * )
+	$SVNEXPORT $MONO_ROOT/$svn_path
+	
+	BUILD_DIR=$(basename $svn_path)
+	
 	;;
 esac
 
 cd $BUILD_DIR
 
-if [ ! x$snapshot_version == x ]; then
-	sed -i "s/\(AM_INIT_AUTOMAKE.*\))/\1.$snapshot_version)/" configure.in 
+if [ ! x$snapshot_rev == x ]; then
+	$DO_CHANGE_AUTOMAKE
 fi
 
 ./autogen.sh || exit 1
-make dist || exit 1
+make dist $DIST_FLAGS || exit 1
 rm -rf /tmp/built-tarball
 mkdir -p /tmp/built-tarball
 mv *.tar.gz /tmp/built-tarball
 
 cd /tmp
 
-rm -rf package-builder
+rm -rf package-builder	

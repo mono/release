@@ -3,13 +3,13 @@
 msvn_tar () {
     get_svn_path
     scp do-msvn-tar $target_host:$jaildir/tmp
-    ./jail-do $distro sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_version
+    ./jail-do $distro sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_rev
 }
 
 get_svn_path () {
     case "$version" in
 	snap )
-	    snapshot_version=$(date +'%Y%m%d')
+	    [ x$snapshot_rev == x ] && ( echo "You need to specify a revision"; exit 1 )
 	    svn_path=$HEAD_PATH
 	    ;;
 	*)
@@ -26,6 +26,7 @@ get_svn_path () {
 distro=$1
 package=$2
 version=$3
+snapshot_rev=$4
 
 . shared-code.sh
 . conf/$distro
