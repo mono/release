@@ -1,0 +1,27 @@
+BUILD_HOSTS=(
+	fedora-3-i386
+	nld-9-i586
+	suse-93-i586
+)
+
+USE_HOSTS=(${BUILD_HOSTS[@]})
+
+MONO_DEPS=(
+	mono-1.1
+	gtk-sharp
+	gtk-sharp-2.0
+	monodoc
+	gecko-sharp-2.0
+	gtksourceview-sharp-2.0
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH="trunk/MonoDevelop"
+RELEASE_PATH="branches/MonoDevelop-[[versiondot]]"
+
+get_tarball () {
+	msvn_tar $1
+}

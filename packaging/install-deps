@@ -3,13 +3,12 @@
 . shared-code.sh
 
 TARGET=$1
-PACKAGE=$2
-. conf/$TARGET
-. defs/$PACKAGE
+shift
 
+. conf/$TARGET
 distro_info $TARGET
 
-DEPS=${MONO_DEPS[@]}
+DEPS=$*
 
 
 RPMS=()
