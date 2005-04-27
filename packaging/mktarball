@@ -32,6 +32,13 @@ snapshot_rev=$4
 . conf/$distro
 . defs/$package
 
+if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
+	if ! ./install-deps $distro ${MONO_DEPS[@]}; then
+		echo Dependency installation failed, see log in $LOGFILE for details
+		exit 1
+	fi
+fi
+
 get_tarball
 
 mkdir -p sources/$package
