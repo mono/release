@@ -1,3 +1,2 @@
-target_host=builder@hardhat
+target_host=builder@hardhat.boston.ximian.com
 jaildir=/jails/sles-9-i586-duncan-0
-chroot=/usr/sbin/chroot

@@ -1,3 +1,2 @@
-target_host=builder@amd-mono
+target_host=builder@amd-mono.boston.ximian.com
 jaildir=/jails/nld-9-x86_64-root-0/jail
-chroot=chroot

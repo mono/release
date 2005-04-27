@@ -1,3 +1,2 @@
-target_host=builder@monobuild1
+target_host=builder@monobuild1.boston.ximian.com
 jaildir=/jails/fedora-3-i386-root-0
-chroot=/usr/sbin/chroot

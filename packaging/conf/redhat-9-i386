@@ -1,3 +1,2 @@
-target_host=builder@monobuild1
+target_host=builder@monobuild1.boston.ximian.com
 jaildir=/jails/redhat-9-i386-duncan-1
-chroot=/usr/sbin/chroot

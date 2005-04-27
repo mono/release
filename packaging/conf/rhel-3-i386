@@ -1,3 +1,2 @@
-target_host=builder@monobuild1
+target_host=builder@monobuild1.boston.ximian.com
 jaildir=/jails/rhel-3as-i386-duncan-0
-chroot=/usr/sbin/chroot

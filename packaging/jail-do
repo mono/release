@@ -23,4 +23,10 @@ else
 	CMD="bash -lc '$*'"
 fi
 
-ssh -qt $target_host "sudo $chroot $jaildir $CMD"
+#
+# redhat systems have chroot in sbin, so we need to add that to
+# the path while we ssh in.
+#
+ADD_SBIN='PATH=/sbin:/usr/sbin:$PATH'
+
+ssh -qt $target_host "$ADD_SBIN sudo chroot $jaildir $CMD"
