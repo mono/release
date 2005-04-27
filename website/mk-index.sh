@@ -55,8 +55,8 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 			echo "<ul>" >> $OUT
 			
 			for i in ${RPMS[@]}; do
-				NAME=$(rpm -qp --queryformat '%{NAME}' $i 2>/dev/null)
-				DESC=$(rpm -qp --queryformat '%{SUMMARY}' $i 2>/dev/null)
+				NAME=$(rpm_query NAME $i)
+				DESC=$(rpm_query SUMMARY $i)
 				echo "<li><a href='../$i'>$NAME</a> -- $DESC</li>" >> $OUT
 			done
 			

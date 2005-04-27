@@ -43,20 +43,21 @@ fi
 
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
 	if ! ./install-deps $distro ${MONO_DEPS[@]} >> $LOGFILE 2>&1; then
-		echo Dependency installation, see log in $LOGFILE for details
+		echo Dependency installation failed, see log in $LOGFILE for details
 		exit 1
 	fi
 fi
 
 scp do-build ../conf/$package/ximian-build.conf sources/$package/*-$version.tar.gz $target_host:$jaildir/tmp 
 
-(echo > status/$distro; ./jail-do $distro sh -x /tmp/do-build $version >> $LOGFILE 2>&1; rm status/$distro)
-
-scp $target_host:$jaildir/tmp/status /tmp/status-$distro-$package
-if grep -q failure /tmp/status-$distro-$package; then
-   echo Build failed, see log in $LOGFILE for details
-   exit 1;
+echo > status/$distro;
+if ! ./jail-do $distro sh -x /tmp/do-build $version >> $LOGFILE 2>&1; then
+	rm status/$distro
+	echo Build failed, see log in $LOGFILE for details
+	exit 1;
 fi
+
+rm status/$distro
 
 distro_info $distro
 get_destroot $distro
@@ -65,6 +66,6 @@ mkdir -p packages/$DEST_ROOT/$package
 scp $target_host:$jaildir/tmp/root/built-packages/* packages/$DEST_ROOT/$package
 
 one_rpm=`ls -1 packages/$DEST_ROOT/$package/*.rpm | head -n1`
-ver=`rpm -qp --queryformat '%{VERSION}' $one_rpm 2>/dev/null`
+ver=`rpm_query VERSION $one_rpm`
 mkdir -p packages/$DEST_ROOT/$package/$ver
 mv packages/$DEST_ROOT/$package/*.rpm packages/$DEST_ROOT/$package/$ver

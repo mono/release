@@ -49,3 +49,8 @@ function latest_version ()
 	LATEST_VERSION=`ls -d -t -1  $* | head -n1 2> /dev/null`
 	[ ! "x$LATEST_VERSION" == x ]
 }
+
+function rpm_query ()
+{
+	rpm -qp --queryformat "%{$1}" $2 2>/dev/null
+}

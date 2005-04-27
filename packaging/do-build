@@ -2,8 +2,6 @@
 
 version=$1
 
-echo failure > /tmp/status
-
 rm -rf /tmp/root/built-packages || exit 1
 cd /tmp && rm -rf scratch && mkdir scratch && cd scratch || exit 1
 
@@ -20,5 +18,3 @@ bb_do $VERSION_STRING			|| exit 1
 bb_lint $VERSION_STRING			|| exit 1
 
 rm -rf /tmp/root/built-packages/*.src.rpm
-
-echo success > /tmp/status
