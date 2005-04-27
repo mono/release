@@ -1,3 +1,6 @@
+alias ssh='ssh -o "StrictHostKeyChecking no"'
+alias scp='scp -o "StrictHostKeyChecking no"'
+
 function distro_info () {
 	DISTRO=$1
 	
