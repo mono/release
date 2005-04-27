@@ -2,6 +2,7 @@ BUILD_HOSTS=(
 	fedora-3-i386
 	nld-9-i586
 	suse-93-i586
+	suse-93-x86_64
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -14,7 +15,8 @@ get_destroot () {
 	DEST_ROOT=$DISTRO
 }
 
-HEAD_PATH="trunk/gtk-sharp"
+#HEAD_PATH="trunk/gtk-sharp"
+HEAD_PATH="branches/gtk-sharp-1-9-branch/gtk-sharp"
 RELEASE_PATH="tags/gtk-sharp/[[versiondot]]"
 
 get_tarball () {

@@ -3,7 +3,12 @@ BUILD_HOSTS=(
 	fedora-3-i386
 )
 
-USE_HOSTS=(${BUILD_HOSTS[@]})
+USE_HOSTS=(
+	fedora-3-i386
+	nld-9-i586
+	suse-93-i586
+	suse-93-x86_64
+)
 
 MONO_DEPS=(
 	mono-1.1

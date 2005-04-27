@@ -13,6 +13,7 @@ USE_HOSTS=(
 	sles-9-x86_64
 	suse-92-i586
 	suse-93-i586
+	suse-93-x86_64
 )
 
 MONO_DEPS=(

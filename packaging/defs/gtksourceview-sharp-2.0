@@ -6,6 +6,7 @@ USE_HOSTS=(
 	fedora-3-i386
 	nld-9-i586
 	suse-93-i586
+	suse-93-x86_64
 )
 
 get_destroot () {
