@@ -20,9 +20,10 @@ if test ! -d $root/mcs; then
 fi
 
 echo Updating versions in $root/mono and $root/mcs
-
+echo $root/mono/configure.in has been updated.
 perl -pi -e "s/AM_INIT_AUTOMAKE.*(mono,.*)/AM_INIT_AUTOMAKE(mono,$version)/" $root/mono/configure.in
 
-for i in mcs/AssemblyInfo.cs; do
+for i in mcs/AssemblyInfo.cs ilasm/AssemblyInfo.cs; do
+	echo $root/mcs/$i has been updated
 	perl -pi -e "s/\[assembly: AssemblyVersion(".*")\]/\[assembly: AssemblyVersion(\"$version\")\]/" $root/mcs/$i
 done
