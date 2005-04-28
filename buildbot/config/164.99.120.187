@@ -1,0 +1,4 @@
+lane_name=intel-head-mono
+prefix=/mono2
+install=true
+extra_script=true
