@@ -1,0 +1,4 @@
+sh setup-machine 164.99.120.187 admin trunk
+sh setup-machine amd-mono nbuilder trunk
+sh setup-machine g5-mono nbuilder trunk
+sh setup-machine x86-mono nbuilder trunk
