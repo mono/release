@@ -44,4 +44,4 @@ done
 #
 # Upload the templates and files
 #
-scp -C -q src/*.html index.html $DEST
+scp -o "StrictHostKeyChecking no" -C -q src/*.html index.html $DEST
