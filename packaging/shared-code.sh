@@ -49,11 +49,27 @@ function ships_package ()
 
 function latest_version ()
 {
-	LATEST_VERSION=`ls -d -t -1  $* | head -n1 2> /dev/null`
+	FILES=$(find $1 -type d -maxdepth 1)
+	LATEST_VERSION=`(ls -vrd1  $FILES | head -n1) 2> /dev/null`
 	[ ! "x$LATEST_VERSION" == x ]
 }
 
 function rpm_query ()
 {
 	rpm -qp --queryformat "%{$1}" $2 2>/dev/null
+}
+
+
+function get_revision ()
+{
+	if [ $DEST_ROOT == $DISTRO ]; then
+	
+		# remove the -ARCH from the end
+		oscode=${DISTRO%-*}
+		# remove the "-" from the middle
+		oscode=${oscode//-/}		
+		REVISION="$serial.$oscode.novell"
+	else
+		REVISION="$serial.novell"
+	fi
 }

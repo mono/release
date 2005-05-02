@@ -3,13 +3,17 @@
 msvn_tar () {
     get_svn_path
     scp do-msvn-tar $target_host:$jaildir/tmp
-    ./jail-do $distro sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_rev
+    ./jail-do $distro sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_rev || exit 1
+    scp $target_host:$jaildir/tmp/built-tarball/*.tar.gz sources/$package 
 }
 
 get_svn_path () {
     case "$version" in
 	snap )
-	    [ x$snapshot_rev == x ] && ( echo "You need to specify a revision"; exit 1 )
+	    if [ x$snapshot_rev == x ] then;
+		echo "You need to specify a revision"
+		exit 1
+	    fi
 	    svn_path=$HEAD_PATH
 	    ;;
 	*)
@@ -32,6 +36,9 @@ snapshot_rev=$4
 . conf/$distro
 . defs/$package
 
+mkdir -p sources/$package
+
+
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
 	if ! ./install-deps $distro ${MONO_DEPS[@]}; then
 		echo Dependency installation failed, see log in $LOGFILE for details
@@ -39,8 +46,7 @@ if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
 	fi
 fi
 
-get_tarball
-
-mkdir -p sources/$package
-
-scp $target_host:$jaildir/tmp/built-tarball/*.tar.gz sources/$package 
+if ! get_tarball ; then 
+	echo Tarball creation failed
+	exit 1
+fi

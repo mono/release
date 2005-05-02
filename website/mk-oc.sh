@@ -40,7 +40,7 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 			ships_package || continue
 			get_destroot
 
-			latest_version $DEST_ROOT/$package/*/ || continue
+			latest_version $DEST_ROOT/$package || continue
 					
 			mkdir -p $chan/$DISTRO
 			ln $LATEST_VERSION/*.rpm $chan/$DISTRO

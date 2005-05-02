@@ -8,7 +8,7 @@ cd mono
 
 if uname | grep CYGWIN; then
     echo Windows Build.
-    bash mono-build-w32.sh || echo error; exit 1 
+    bash mono-build-w32.sh || exit 1 
 else
     echo "Calling autogen.sh --with-preview=yes --prefix=/mono"
     sh autogen.sh --with-preview=yes --prefix=$prefix || { echo "errors"; exit 1; }

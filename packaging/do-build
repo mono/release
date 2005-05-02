@@ -1,7 +1,7 @@
 #!/bin/sh
 
 version=$1
-
+rev=$2
 rm -rf /tmp/root/built-packages || exit 1
 cd /tmp && rm -rf scratch && mkdir scratch && cd scratch || exit 1
 
@@ -10,11 +10,11 @@ mv ../*.tar.gz .
 # rpm needs this to be happy
 chown root:root *.tar.gz
 
-VERSION_STRING="-V $version"
 
-bb_lint -g prebuild $VERSION_STRING	|| exit 1
-bb_unpack apply				|| exit 1
-bb_do $VERSION_STRING			|| exit 1
-bb_lint $VERSION_STRING			|| exit 1
+
+bb_lint -g prebuild -V $version -R $rev -S ''		|| exit 1
+bb_unpack apply						|| exit 1
+bb_do -V $version -R $rev -S ''				|| exit 1
+bb_lint -V $version -R $rev -S ''			|| exit 1
 
 rm -rf /tmp/root/built-packages/*.src.rpm

@@ -1,6 +1,11 @@
 BUILD_HOSTS=(
+	suse-93-i586
+)
+
+USE_HOSTS=(
 	fedora-3-i386
 	nld-9-i586
+	nld-9-x86_64
 	redhat-9-i386
 	rhel-3-i386
 	rhel-4-i386
@@ -11,20 +16,14 @@ BUILD_HOSTS=(
 	suse-93-x86_64
 )
 
-USE_HOSTS=(${BUILD_HOSTS[@]})
-
 MONO_DEPS=(
 	mono-1.1
 )
 
 get_destroot () {
-	DEST_ROOT=$DISTRO
+	DEST_ROOT=noarch
 }
 
-
-HEAD_PATH="branches/gtk-sharp-1-0-branch/gtk-sharp"
-RELEASE_PATH="tags/gtk-sharp/[[versiondot]]"
-
 get_tarball () {
-	msvn_tar $1
+	wget http://primates.ximian.com/~bmaurer/ikvm-$version.tar.gz -O sources/ikvm/ikvm-$version.tar.gz
 }

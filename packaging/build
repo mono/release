@@ -1,11 +1,13 @@
 #!/bin/sh
 #
-# Usage: build [os-target] [package] [version]
+# Usage: build os-target package version [serial]
 #
 # Where:
 #    os-target is the OS target that we are building for
 #    package is the name of the BB XML configuration file on the repository
 #    version is the version you want to build
+#    serial is optionally the build number. If it is not present, it is assumed
+#      to be zero.
 #
 # Example:
 #    build suse-92-i386 mono-1.1 1.1.6
@@ -14,6 +16,7 @@
 distro=$1
 package=$2
 version=$3
+serial=${4-0}
 
 . shared-code.sh
 
@@ -40,6 +43,20 @@ fi
 . conf/$distro
 . defs/$package
 
+distro_info $distro
+get_destroot $distro
+get_revision
+
+if [ $serial -eq 0 ]; then
+	VER_PATH="$version"
+else
+	VER_PATH="$version-$serial"
+fi
+
+if [ -d packages/$DEST_ROOT/$package/$VER_PATH ]; then
+	echo "The path for this package (packages/$DEST_ROOT/$package/$VER_PATH) already exists. You probably need to bump the revision number"
+	exit 1;
+fi
 
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
 	if ! ./install-deps $distro ${MONO_DEPS[@]} >> $LOGFILE 2>&1; then
@@ -51,7 +68,7 @@ fi
 scp do-build ../conf/$package/ximian-build.conf sources/$package/*-$version.tar.gz $target_host:$jaildir/tmp 
 
 echo > status/$distro;
-if ! ./jail-do $distro sh -x /tmp/do-build $version >> $LOGFILE 2>&1; then
+if ! ./jail-do $distro sh -x /tmp/do-build $version $REVISION >> $LOGFILE 2>&1; then
 	rm status/$distro
 	echo Build failed, see log in $LOGFILE for details
 	exit 1;
@@ -59,13 +76,5 @@ fi
 
 rm status/$distro
 
-distro_info $distro
-get_destroot $distro
-
-mkdir -p packages/$DEST_ROOT/$package
-scp $target_host:$jaildir/tmp/root/built-packages/* packages/$DEST_ROOT/$package
-
-one_rpm=`ls -1 packages/$DEST_ROOT/$package/*.rpm | head -n1`
-ver=`rpm_query VERSION $one_rpm`
-mkdir -p packages/$DEST_ROOT/$package/$ver
-mv packages/$DEST_ROOT/$package/*.rpm packages/$DEST_ROOT/$package/$ver
+mkdir -p packages/$DEST_ROOT/$package/$VER_PATH
+scp $target_host:$jaildir/tmp/root/built-packages/* packages/$DEST_ROOT/$package/$VER_PATH

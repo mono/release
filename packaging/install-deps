@@ -20,10 +20,10 @@ for i in $DEPS; do
 	
 	get_destroot
 	
-	latest_version packages/$DEST_ROOT/$i/*/ || (
+	if ! latest_version packages/$DEST_ROOT/$i; then
 		echo "Could not find $i for $DISTRO (looking in $DEST_ROOT)"
 		exit 1;
-	)
+	fi
 	
 	for i in $LATEST_VERSION/*.rpm; do
 		[[ $i == *.src.rpm ]] && continue
@@ -39,5 +39,5 @@ done
 
 scp ${RPMS[@]} $target_host:$jaildir/tmp/install-packages
 
-./jail-do $TARGET "sh -x -c \"rpm -Uhv /tmp/install-packages/*.rpm\""
+./jail-do $TARGET "sh -x -c \"rpm --replacepkgs -Uhv /tmp/install-packages/*.rpm\""
 ./jail-do $TARGET "sh -x -c \"rm -rf /tmp/install-packages\""

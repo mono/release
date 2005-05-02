@@ -32,7 +32,7 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 				ships_package || continue
 				get_destroot
 			
-				latest_version $DEST_ROOT/$package/*/ || continue
+				latest_version $DEST_ROOT/$package || continue
 						
 				for i in $LATEST_VERSION/*.rpm; do
 					[[ $i == *.src.rpm ]] && continue
