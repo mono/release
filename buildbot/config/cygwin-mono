@@ -1,4 +1,4 @@
-lane_name=intel-head-mono
+lane_name=cygwin-mono
 prefix=/mono2
 install=true
 extra_script=true
