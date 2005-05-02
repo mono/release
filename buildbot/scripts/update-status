@@ -38,7 +38,7 @@ done
 python $cur/apply-template $cur/template.html $cur/index.src index.html
 for file in src/*.src; do
     f=src/`basename $file .src`
-    python $cur/apply-template $f.src $f.html
+    python $cur/apply-template $cur/template.html $f.src $f.html
 done
 
 #
