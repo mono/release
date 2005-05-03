@@ -13,16 +13,16 @@ error_exit()
 
 if uname | grep CYGWIN; then
     echo Windows Build.
-    bash mono-build-w32.sh || exit 1 
+    bash mono-build-w32.sh || error_exit
 else
     echo "Calling autogen.sh --with-preview=yes --prefix=/mono"
     sh autogen.sh --with-preview=yes --prefix=$prefix || { echo "errors"; exit 1; }
     
     echo "Calling make"
-    make MCS_FLAGS='-debug -v' || { echo "errors"; exit 1; }
+    make MCS_FLAGS='-debug' || error_exit
     
     echo "Calling make install"
-    make install || { echo "error"; exit 1; }
+    make install || error_exit
 fi
     
 touch /tmp/buildflag-$USER-`hostname`

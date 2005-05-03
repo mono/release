@@ -29,7 +29,6 @@ fi
 
 # Check mono out first, so we can run aclocal from inside the mono dir (it
 # needs to see which version of the real aclocal to run)
-echo "Updating mono"
 
 #svn checkout $TRUNK/mono || exit -1
 
@@ -134,8 +133,11 @@ fi
 
 # Fetch and install pkg-config, glib, iconv, intl
 
-install_package pkgconfig-0.15.zip bin/pkg-config.exe pkgconfig
-
+if [ $install_pkgconfig = "yes" ]; then
+    install_package pkgconfig-0.11-20020310.zip bin/pkg-config.exe pkgconfig
+else
+    echo "Not installing pkgconfig, you already seem to have it installed"
+fi
 #install_package glib-2.0.4-20020703.zip lib/libglib-2.0-0.dll glib
 #install_package glib-dev-2.0.4-20020703.zip lib/glib-2.0.lib glib-dev
 #install_package libiconv-1.7.zip lib/iconv.dll iconv
@@ -149,17 +151,19 @@ install_package icu-2.6.1-Win32_msvc7.zip icu/bin/icuuc26.dll icu
 
 install_icuconfig
 
-echo "Fixing up the pkgconfig paths"
-for i in $here/install/lib/pkgconfig/*.pc
-do
-mv $i $i.orig
-sed -e "s@^prefix=/target\$@prefix=$here/install@" < $i.orig > $i
-done
-export PKG_CONFIG_PATH=$here/install/lib/pkgconfig
+if [ $install_pkgconfig = "no" ]; then
+    echo "Fixing up the pkgconfig paths"
+    for i in $here/install/lib/pkgconfig/*.pc
+    do
+	mv $i $i.orig
+	sed -e "s@^prefix=/target\$@prefix=$here/install@" < $i.orig > $i
+    done
+    export PKG_CONFIG_PATH=$here/install/lib/pkgconfig
+fi
 
 # Needed to find the libgc bits
 export CFLAGS="-I $here/install/include -I $here/install/icu/include"
-export LDFLAGS="-L$here/install/lib -L$here/install/icu/lib -L$here/install/bin"
+export LDFLAGS="-L$here/install/lib -L$here/install/icu/lib"
 export PATH="$here/install/icu/bin:$PATH"
 
 # Make sure we build native w32, not cygwin
@@ -170,12 +174,9 @@ export PATH="$here/install/icu/bin:$PATH"
 # to be in windows-native form.  It also needs to have '\' turned into
 # '/' to avoid quoting issues during the build.
 prefix=`cygpath -w $here/install | sed -e 's@\\\\@/@g'`
-
+export PATH=/cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322/:$PATH
 # Build and install mono
 echo "Building and installing mono"
-
-
-export PATH=/cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322:/cygdrive/c/buildbot/HEAD/install/bin:"/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin":$PATH
 
 (cd $here/mono; ./autogen.sh --prefix=$prefix || exit -1; make || exit -1; make install || exit -1) || exit -1
 
