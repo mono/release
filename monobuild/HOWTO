@@ -1,0 +1,60 @@
+
+Configuration: Path to release Work Area
+----------------------------------------
+Modify the Build/Config.pm and point $releaseRepo to the working copy of the following Subversion repository: mono-cvs.ximian.com/source/trunk/release
+
+
+Configuring Apache for MonoBuild
+--------------------------------
+
+Add the following to /etc/apache2/mod_perl-startup.pl:
+
+use lib qw(/home/wberrier/wa/mono/msvn/release/monobuild);
+
+The above will point to your working copy.
+
+Make sure that your mod_perl configuration includes the startup file.
+
+Also, include the following Perl Directives:
+PerlInitHandler Apache::Reload
+
+
+Here's a working example of /etc/apache2/conf.d/mod_perl.conf:
+----------------------------------------------------------------
+<Directory "/srv/www/perl-lib">
+    AllowOverride None
+    Options None
+    Order allow,deny
+    Deny from all
+</Directory>
+
+<IfModule mod_perl.c>
+    PerlRequire "/etc/apache2/mod_perl-startup.pl"
+
+    ScriptAlias /perl/ "/srv/www/cgi-bin/"
+    <Location /perl/>
+        # mod_perl mode
+        SetHandler perl-script
+        PerlResponseHandler ModPerl::Registry
+        PerlOptions +ParseHeaders
+        Options +ExecCGI
+    </Location>
+
+    # Important stuff
+    ##############################################################
+    PerlInitHandler Apache::Reload
+    #ScriptAlias /cgi-perl/ "/srv/www/cgi-bin/"
+    ScriptAlias /cgi-perl/ "/home/wberrier/wa/mono/msvn/release/monobuild/www/cgi-perl/"
+    <Location /cgi-perl>
+        # perl cgi mode
+        SetHandler  perl-script
+        PerlResponseHandler ModPerl::PerlRun
+        PerlOptions +ParseHeaders
+        Options +ExecCGI
+    </Location>
+    ##############################################################
+
+    # The /cgi-bin/ ScriptAlias is already set up in httpd.conf
+
+</IfModule>
+

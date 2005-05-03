@@ -1,0 +1,50 @@
+28 Apr 2005
+Wade / Ben
+
+------
+Design
+------
+
+Each of the build hosts contact the web server for specific jobs
+The web server is responsible for assigning jobs to each client
+the build client will pop the job (text file) out of it's directory (hostname) 
+When the build client is done, it sends the success/fail message back to the web server (puts it in a directory), and also puts the log file in a directory
+
+
+Need to automatically generate some pages (or combine the following information into a page):
+
+Status page: Shows success/fail and links to log files (which get posted after the build)
+Control Center Page: build components on specific platforms
+
+Need to have archives of the builds (rpms) as well as the logs... very important
+
+How to know that the builds are in progress? (Without using a database... flat state file I guess)
+
+
+Questions:
+-Will we only want to be able to build HEAD from the webpage, or be able to pick a revision?
+-Do we need web accessible archives (builds and logs)...? How will these archives get cleaned up?
+
+
+One the log and download page that Ben sent me, we can have all the logs and builds available from there
+
+
+-------
+Phase 2
+-------
+-Later...  a cron job will set up mandatory job requests, so that the builds get run every night
+-to utilize the hardware better, we need to find the best build box to assign the job to
+-We need to track and calculate dependencies so we know which components to build when we need a new build
+	(this gets somewhat complicated... always rebuild dep, what if parent project doesn't change??, etc...)
+
+
+-------
+Phase 3
+-------
+-Test suites, not only build, but do unit tests on the builds
+-Ben mentioned something that we need to get our test cases running against an installed Mono instead of a compiled source tree
+
+
+----
+try setting this up on monobuild2 for now
+
