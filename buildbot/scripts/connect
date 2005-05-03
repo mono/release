@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 . shared-vars
 
 echo "Making tap file for $MASTER... "

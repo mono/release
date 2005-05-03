@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 if test '!' -f /tmp/buildflag-$USER-`hostname`; then
 	echo Build failed, skipping extras
 	exit 1

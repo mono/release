@@ -1,7 +1,7 @@
 base=svn+ssh://buildbot@mono-cvs.ximian.com/source
-branch=`cat ~/BRANCH`
+branch=`cat $HOME/BRANCH`
 MASTER=64.14.94.132
-xbasedir=~/$branch
+xbasedir=$HOME/$branch
 extra_script=true
 install=false
 . ~/buildbot-config

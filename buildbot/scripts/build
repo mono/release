@@ -1,10 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
-. ~/buildbot-config
+. $HOME/buildbot-config
 . shared-vars
 
 rm -f /tmp/buildflag-$USER-`hostname`
 cd mono
+error_exit() 
+{ 
+	echo error 
+	exit 1 
+}
 
 if uname | grep CYGWIN; then
     echo Windows Build.
