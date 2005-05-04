@@ -1,12 +1,4 @@
 BUILD_HOSTS=(
-	sles-9-i586
-	redhat-9-i386
-	
-	sles-9-x86_64
-	# need redhat x86 distro
-)
-
-USE_HOSTS=(
 	fedora-3-i386
 	nld-9-i586
 	nld-9-x86_64
@@ -20,13 +12,15 @@ USE_HOSTS=(
 	suse-93-x86_64
 )
 
+USE_HOSTS=(${BUILD_HOSTS[@]})
+
 MONO_DEPS=(
 	mono-1.1
 	xsp
 )
 
 get_destroot () {
-	DEST_ROOT=$DISTRO_TYPE-$ARCH
+	DEST_ROOT=$DISTRO
 }
 
 HEAD_PATH="trunk/mod_mono"

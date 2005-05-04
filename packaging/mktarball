@@ -10,7 +10,7 @@ msvn_tar () {
 get_svn_path () {
     case "$version" in
 	snap )
-	    if [ x$snapshot_rev == x ] then;
+	    if [ x$snapshot_rev == x ]; then
 		echo "You need to specify a revision"
 		exit 1
 	    fi

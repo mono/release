@@ -1,5 +1,7 @@
 #!/bin/sh
 
+mount /proc &> /dev/null
+
 version=$1
 rev=$2
 rm -rf /tmp/root/built-packages || exit 1
