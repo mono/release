@@ -51,7 +51,7 @@ function latest_version ()
 {
 	FILES=`(find $1 -type d -maxdepth 1) 2> /dev/null`
 	
-	[ ! "x$FILES" == x ] || exit 1
+	[ ! "x$FILES" == x ] || return 1
 	
 	LATEST_VERSION=`(ls -vrd1  $FILES | head -n1) 2> /dev/null`
 }
