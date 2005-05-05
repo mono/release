@@ -3,6 +3,7 @@
 package Mono::Build;
 
 use Mono::Build::Config;
+use Env::Bash;
 
 sub getDistros
 {
@@ -51,10 +52,18 @@ sub getComponents
 	closedir(DIR);
 
 	return sort @components;
-
-
 }
 
+
+sub getPackageInfo
+{
+	my $pkg = shift;
+	my $var = shift;
+	
+	my $dir = $Mono::Build::Config::componentDir;
+	
+	return get_env_var( $var, Source => "$dir/$pkg", );
+}
 
 sub getState
 {
@@ -63,11 +72,7 @@ sub getState
 	my @states = (
 			'notused',
 			'success', 
-			'success', 
-			'success', 
-			'success', 
 			'failure', 
-			'building', 
 			'building', 
 		     );
 

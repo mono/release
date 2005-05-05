@@ -10,33 +10,7 @@ use Mono::Build;
 
 # Read these in from a file later...
 my @linux_distros = Mono::Build::getDistros();
-
-		#'nld-9-x86_64',
-#		'rhel-3-i386',
-#		'sles-9-i586',
-#		'suse-92-i586',
-#		'suse-93-x86_64',
-#		'fedora-3-i386',
-#		'nld-9-i586',
-#		'redhat-9-i386',
-#		'rhel-4-i386',
-#		'sles-9-x86_64',
-#		'suse-93-i586',
-#		);
-
 my @linux_components = Mono::Build::getComponents();
-#my @linux_components = (
-#		'gtk-sharp-2.0',
-#		'mod_mono',
-#		'monodoc',
-#		'gecko-sharp-2.0',
-#		'gtksourceview-sharp-2.0',
-#		'mono-1.1',
-#		'xsp',
-#		'gtk-sharp',
-#		'libgdiplus-1.1',
-#		'monodevelop'
-#		);
 
 my @other_platforms = (
 		'sparc',
@@ -80,12 +54,19 @@ print "</thead><tbody>";
 foreach my $component (sort @linux_components)
 {
 	print "<tr><td>$component</td>\n";
+	my @buildhosts;
+	@buildhosts = Mono::Build::getPackageInfo($component, "BUILD_HOSTS");
 
 	foreach my $distro (sort @linux_distros)
 	{
 		print "<td ";
-		my $rand = randomResult();	
+		my $rand = randomResult();
 		my $state = Mono::Build::getState($rand);
+
+
+		unless (Mono::Build::arrayContains($distro, @buildhosts)) {
+			$state = "notused"
+		}
 
 		print "class=$state>";
 
@@ -136,6 +117,7 @@ foreach my $component (sort @other_components)
 		print "<td ";
 		my $rand;	
 		my $state;
+
 
 		# Make sure you don't get unused
 		do 
@@ -194,7 +176,7 @@ END
 
 sub randomResult
 {
-	return int(rand(10));
+	return int(rand(3)) + 1;
 }
 
 
