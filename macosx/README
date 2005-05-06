@@ -2,7 +2,7 @@ monobuild.sh is a complete rewrite of the build system for Mono on OS X.  It has
 
 current invokation is:
 
-monobuild.sh YES YES YES $PWD
+sudo monobuild.sh YES YES YES $PWD
 where
 	first arg is whether configure should be run YES|NO
 	second arg is whether make should run YES|NO
