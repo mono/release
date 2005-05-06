@@ -7,6 +7,9 @@ fi
 
 echo Running: $extra_script
 
+export PATH=$prefix/bin:$PATH
+unset MONO_PATH
+
 $extra_script
 
 exit 0
