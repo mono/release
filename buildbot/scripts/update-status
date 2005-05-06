@@ -7,6 +7,9 @@ export NAME=$2
 export SECTIONS="mscorlib cscompmgd System System.Xml System.Configuration.Install System.Data System.Data.OracleClient System.Design System.Drawing System.Drawing.Design System.DirectoryServices System.Management System.Messaging System.Web System.Web.Services Microsoft.VisualBasic System.EnterpriseServices System.Runtime.Remoting System.Windows.Forms System.Runtime.Serialization.Formatters.Soap System.Security"
 export DEST="mono-web@mono.ximian.com:go-mono/class-status/$NAME/"
 export PATH=/mono/bin:$PATH
+
+unset MONO_PATH
+
 cur=`pwd`
 cd ./mono/web/web
 
@@ -16,17 +19,24 @@ cd ./mono/web/web
 wget -nv -O masterinfos-$VERSION.tar.gz http://mono.ximian.com/masterinfos/masterinfos-$VERSION.tar.gz
 tar zxpf masterinfos-$VERSION.tar.gz
 
+PROFILE=nonesuch
+case $VERSION in
+1.1) PROFILE=default ;;
+2.0) PROFILE=net_2_0 ;;
+esac
+
 #
 # Build the necessary tools
 #
 mcs -nowarn:0618 transform.cs
-(cd ../../../mcs/tools/corcompare; make PROFILE=net_2_0)
+(cd ../../../mcs/tools/corcompare; make PROFILE=default)
+(cd ../../../mcs/tools/corcompare; make PROFILE=$PROFILE)
 
 #
 # Generate the data
 #
 for i in $SECTIONS; do
-    mono ../../../mcs/tools/corcompare/mono-api-info.exe $i > infos/$i.xml || (rm -f infos/$i.xml && exit 1)
+    mono ../../../mcs/class/lib/$PROFILE/mono-api-info.exe $i > infos/$i.xml || (rm -f infos/$i.xml && exit 1)
     mono ../../../mcs/tools/corcompare/mono-api-diff.exe masterinfos/$i.xml infos/$i.xml > src/$i.xml || (rm -f src/$i.xml && exit 1)
     mono ./transform.exe src/$i.xml ../../../mcs/tools/corcompare/mono-api.xsl > src/$i.html.in || (rm -f src/$i.html.in && exit 1)
     perl htmlify src/$i.html.in > src/class-status-$i.src
