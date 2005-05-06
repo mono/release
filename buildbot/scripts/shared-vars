@@ -4,4 +4,4 @@ MASTER=64.14.94.132
 xbasedir=$HOME/$branch
 extra_script=true
 install=false
-. ~/buildbot-config
+. $HOME/buildbot-config
