@@ -1,31 +1,13 @@
-To build Mono.framework using this script all you need to do is run buildMono.sh.
+monobuild.sh is a complete rewrite of the build system for Mono on OS X.  It has stolen some ideas from DarwinPorts to solve some issues.
 
-There are several options that can be used with this script:
+current invokation is:
 
-		-g remove gz files (defaults to  no)
-		-m make clean (defaults to no)
-		-c run configure (defaults to yes)
-		-p create packages in $BUILDROOT/MonoBuild/Packages, defaults to no
-		-h this message
+monobuild.sh YES YES YES $PWD
+where
+	first arg is whether configure should be run YES|NO
+	second arg is whether make should run YES|NO
+	third arg is where make install should run YES|NO
+	fourth arg is the directory to the release/macosx directory
+		(that's the macos dir inside the release module in svn)
 
-NOTE:  By default the script uses Tiger's PackageMaker because of a bug fix in Tiger.
-
-Normally when building you will launch the script with the -p option.  This will create packages in $BUILDROOT/Packages.  $BUILDROOT is set to /Users/Shared/MonoBuild by default.  
-
-NOTE:  This script doesn't currently use chrooting so it DOES build the packages in /Library/Frameworks.
-
-Once the script is done running with the -p option you will have to do the following steps to finish creating a mpkg and dmg.  This is because PackageMaker can't script mpkg creation.  :-(
-
-Open the MFMPKG.pmsm file.  This is meta package file that works with the defaults.  If you have changed the location that the Packages are created in via the buildMono.sh script then this file won't work for you.
-
-Once the file is open, create the mpkg with the command-k key combo.
-
-Once this is done you will need to edit the Mono.mpkg/Contents/Info.plist file.  Update the IFPkgFlagComponeyDirectory to this:
-
-        <key>IFPkgFlagComponentDirectory</key>
-        <string>../Packages</string>
-
-
-When this is done, run the createDmg.sh script to build the disk image in the current working directory.  
-
-NOTE:  if you change $BUILDROOT in buildMono.sh then you will have to change it in createDmg.sh too.
+need to clean up command line args and/or add getops so that more things can be specified at the command line.  Currently you need to edit the script, but it works
