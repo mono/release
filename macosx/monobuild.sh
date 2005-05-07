@@ -1,5 +1,7 @@
 #!/bin/sh -x
 
+#This script must be run as root!
+
 #startup options
 CLEAN=NO
 CONFIGURE=$1
@@ -371,16 +373,18 @@ EOF
 cat <<EOF > ${PLISTS}/Description.plist 
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-
-
-if [ ! -d ${FRAMEWORKPREFIX}/Versions/Current/Resoures ]; then
-	mkdir -p ${FRAMEWORKPREFIX}/Versions/Current/Resources
-fi
-
-cp ${PLISTS}/*.plist ${FRAMEWORKPREFIX}/Versions/Current/Resources
-cd ${FRAMEWORKPREFIX}
-ln -sf ${FRAMEWORKPREFIX}/Versions/Current/Resources Resources
+<plist version="1.0">                                                                                  
+<dict>                                                                                                 
+                <key>IFPkgDescriptionDescription</key>                                                 
+                <string>Mono.framework-${MONOVERSION}</string>                                          
+                <key>IFPkgDescriptionTitle</key>                                                       
+                <string>Mono.Framework</string>                                            
+                <key>IFPkgDescriptionVersion</key>                                                     
+                <string>${MONOVERSION}</string>                                                            
+</dict>                                                                                                
+</plist>                                                                                               
 EOF
+
 }
 
 #####################################################
@@ -535,13 +539,21 @@ if [ ${INSTALL} == "YES" ]; then
 	
 	cd ${FRAMEWORKPREFIX}
 	
-	#if [ ! -d Resources ] ; then
-	cd ${MONOPREFIX}
-	mkdir Resources
-	cp ${PLISTS}/version.plist Resources
-	cp ${PLISTS}/Info.plist Resources
+	if [ ! -d ${FRAMEWORKPREFIX}/Versions/Current/Resoures ]; then
+		mkdir -p ${FRAMEWORKPREFIX}/Versions/Current/Resources
+	fi
+	
+	cp ${PLISTS}/*.plist ${FRAMEWORKPREFIX}/Versions/Current/Resources
 	cd ${FRAMEWORKPREFIX}
-		
+	ln -sf ${FRAMEWORKPREFIX}/Versions/Current/Resources Resources
+
+	#if [ ! -d Resources ] ; then
+# 	cd ${MONOPREFIX}
+# 	mkdir Resources
+# 	cp ${PLISTS}/version.plist Resources
+# 	cp ${PLISTS}/Info.plist Resources
+# 	cd ${FRAMEWORKPREFIX}
+# 		
 	if [ ! -e Versions/Current/Resources ]; then
 		ln -sf Versions/Current/Resources Resources
 	fi
