@@ -7,6 +7,9 @@ Modify the Build/Config.pm and point $releaseRepo to the working copy of the fol
 Configuring Apache for MonoBuild
 --------------------------------
 
+Make sure you have mod_perl installed and working 
+	- On SuSE type systems, add perl to the APACHE_MODULES list in /etc/sysconfig/apache2
+
 Add the following to /etc/apache2/mod_perl-startup.pl:
 
 use lib qw(/home/wberrier/wa/mono/msvn/release/monobuild);

@@ -92,12 +92,16 @@ td.failure {
 	background:red;
 }
 
-td.building {
+td.inprogress{
 	background:yellow
 }
 
 td.notused {
 	background:white;
+}
+
+td.new {
+	background:lightgray;
 }
 
 table.legend th {

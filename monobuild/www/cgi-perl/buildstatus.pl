@@ -9,8 +9,8 @@ use lib "$FindBin::RealBin/../..";
 use Mono::Build;
 
 # Read these in from a file later...
-my @linux_distros = Mono::Build::getDistros();
-my @linux_components = Mono::Build::getComponents();
+my @linux_platforms = Mono::Build::getPlatforms();
+my @linux_packages = Mono::Build::getPackages();
 
 my @other_platforms = (
 		'sparc',
@@ -18,7 +18,7 @@ my @other_platforms = (
 		'mac'
 		);
 
-my @other_components = ('mono-1.1');
+my @other_packages = ('mono-1.1');
 
 my $rev;
 
@@ -37,45 +37,47 @@ Content-type: text/html
 END
 
 print<<END;
-<h3>Linux Distros</h3>
+<h3>Linux Platforms</h3>
 
 <p>
 <table class="buildstatus">
 	<thead><td></td>
 END
 
-foreach my $distro (sort @linux_distros)
+foreach my $platform (sort @linux_platforms)
 {
-	print "<td>$distro</td>\n";
+	print "<td>$platform</td>\n";
 }
 
 print "</thead><tbody>";
 
-foreach my $component (sort @linux_components)
+foreach my $package (sort @linux_packages)
 {
-	print "<tr><td>$component</td>\n";
+	print "<tr><td>$package</td>\n";
 	my @buildhosts;
-	@buildhosts = Mono::Build::getPackageInfo($component, "BUILD_HOSTS");
+	@buildhosts = Mono::Build::getPackageInfo($package, "BUILD_HOSTS");
 
-	foreach my $distro (sort @linux_distros)
+	foreach my $platform (sort @linux_platforms)
 	{
 		print "<td ";
-		my $rand = randomResult();
-		my $state = Mono::Build::getState($rand);
+		my $rev = Mono::Build::getLatestRevision($platform, $package);
+		my $state = Mono::Build::getState($platform, $package, $rev);
 
-
-		unless (Mono::Build::arrayContains($distro, @buildhosts)) {
+		unless (Mono::Build::arrayContains($platform, @buildhosts)) {
 			$state = "notused"
+		}
+
+		# if it hasn't been been yet...
+		if($rev eq "" && $state eq "")
+		{
+			$state = "new";
 		}
 
 		print "class=$state>";
 
-		$rev = "r454";
-
 		if($state ne 'notused')
 		{
-			#print "<a href=logs/$component-$distro-$rev$rand.log>$rev$rand</a>";
-			print "<a href=/package_status_example.html>$rev$rand</a>";
+			print "<a href=packagestatus.pl?platform=$platform&package=$package&revision=$rev>$rev</a>";
 		}
 		
 		print "</td>\n";
@@ -101,18 +103,18 @@ print<<END;
 	<thead><td></td>
 END
 
-foreach my $distro (sort @other_platforms)
+foreach my $other_platform (sort @other_platforms)
 {
-	print "<td>$distro</td>\n";
+	print "<td>$other_platform</td>\n";
 }
 
 print "</thead><tbody>";
 
-foreach my $component (sort @other_components)
+foreach my $other_package (sort @other_packages)
 {
-	print "<tr><td>$component</td>\n";
+	print "<tr><td>$other_package</td>\n";
 
-	foreach my $distro (sort @other_platforms)
+	foreach my $other_platform (sort @other_platforms)
 	{
 		print "<td ";
 		my $rand;	
@@ -122,15 +124,15 @@ foreach my $component (sort @other_components)
 		# Make sure you don't get unused
 		do 
 		{
-			$rand = randomResult();	
-			$state = Mono::Build::getState($rand);
+			$rand = randomRev();	
+			$state = randomState($rand);
 		} while($state eq 'notused');
 
 		print "class=$state>";
 
 		$rev = "r454";
 
-		#print "<a href=logs/$component-$distro-$rev$rand.log>$rev$rand</a>";
+		#print "<a href=logs/$package-$platform-$rev$rand.log>$rev$rand</a>";
 		print "<a href=/package_status_example.html>$rev$rand</a>";
 
 		print "</td>\n";
@@ -155,9 +157,10 @@ print<<END;
 <table class=legend>
 
 <tbody>
-<tr><th>In Progress</th><td class=building></td></tr>
+<tr><th>In Progress</th><td class=inprogress></td></tr>
 <tr><th>Success</td><td class=success></td></tr>
 <tr><th>Failed</td><td class=failure></td></tr>
+<tr><th>Never Built</td><td class=new></td></tr>
 
 </tbody>
 </table>
@@ -174,9 +177,20 @@ print<<END;
 
 END
 
-sub randomResult
+sub randomRev
 {
-	return int(rand(3)) + 1;
+	return int(rand(3) + 1);
 }
 
-
+sub randomState
+{
+	my $index = shift;
+	my @states = (
+			'notused',
+			'success', 
+			'failure', 
+			'inprogress', 
+		     );
+ 
+	return $states[$index % @states];
+}

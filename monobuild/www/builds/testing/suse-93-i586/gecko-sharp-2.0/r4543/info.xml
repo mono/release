@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Data describing a set of builds for a component on a platform -->
+
+
+<build>
+	<platform>suse-93-i586</platform>
+	<package>gecko-sharp-2.0</package>
+	<revision>123</revision>
+
+	<buildhost>monobuild1</buildhost>
+	<start>Fri Apr 29 14:20:47</start>
+	<finish>Fri Apr 29 15:20:47</finish>
+
+	<steps>
+		<step>
+			<name>Make Tarballs</name>
+			<status>success</status>
+			<log>mktarball.log</log>
+			<download>gecko.tar.gz</download>
+		</step>
+		<step>
+			<name>Build</name>
+			<status>success</status>
+			<log>build.log</log>
+		</step>
+		<step>
+			<name>Make RPMS</name>
+			<status>success</status>
+			<log>rpm.log</log>
+			<download>gecko.rpm</download>
+		</step>
+
+	</steps>
+
+
+</build>
+
+
+
+

@@ -28,6 +28,16 @@ Questions:
 
 One the log and download page that Ben sent me, we can have all the logs and builds available from there
 
+The xml format: 
+---------------
+I don't want to have to parse tons of xml files for every hit to the main status page... 
+        I don't, because you can get the revisions from the directory listing, you'll
+	only need to parse the xml once you go to the downloads page
+	One of the main issues is whether to have the xml contain multiple builds, or have
+		an xml document for each build.
+		It would probably be easier to remove a build if you could just delete the directory... I think I'll do that
+			So, I'll need to modify my xml
+
 
 -------
 Phase 2
