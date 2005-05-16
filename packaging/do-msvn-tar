@@ -39,11 +39,42 @@ md_change_ver ()
 	sed -i "s/\(AC_INIT.*\)\(0\.[0-9]*\)/\1\2.$snapshot_rev/" configure.in
 }
 
+gtk_sharp_2_4_change_ver ()
+{
+	sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$snapshot_rev/" bootstrap-2.4
+}
+
+gtk_sharp_2_6_change_ver ()
+{
+	sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$snapshot_rev/" bootstrap
+}
+
+#
+# What to do for autogen...
+#
+
+normal_autogen ()
+{
+	./autogen.sh
+}
+
+gtk_sharp_2_4_autogen ()
+{
+	./bootstrap-2.4
+}
+
+
+gtk_sharp_2_6_autogen ()
+{
+	./bootstrap
+}
+
 DO_CHANGE_AUTOMAKE='normal_change_ver'
+DO_AUTOGEN='normal_autogen'
 
 # Special case package configurations
 case $package in
-    mono-1.1 )
+    mono-1.1 | mono-ifzen )
 	# we need to check out both mono and mcs in this case. The svn path we
 	# get is just below where the modules live.
 	
@@ -64,6 +95,21 @@ case $package in
 	DO_CHANGE_AUTOMAKE='md_change_ver'
 	
 	;;
+	
+    gtk-sharp-2.0 )
+	DO_CHANGE_AUTOMAKE='gtk_sharp_2_4_change_ver'
+	DO_AUTOGEN="gtk_sharp_2_4_autogen"
+	
+	$SVNEXPORT $MONO_ROOT/$svn_path
+        ;;
+
+    gtk-sharp-2.6 )
+	DO_CHANGE_AUTOMAKE='gtk_sharp_2_6_change_ver'
+	DO_AUTOGEN="gtk_sharp_2_6_autogen"
+	
+	$SVNEXPORT $MONO_ROOT/$svn_path
+        ;;
+
     * )
 	$SVNEXPORT $MONO_ROOT/$svn_path
 	;;
@@ -77,7 +123,7 @@ if [ ! x$snapshot_rev == x ]; then
 	$DO_CHANGE_AUTOMAKE
 fi
 
-./autogen.sh || exit 1
+$DO_AUTOGEN || exit 1
 make dist $DIST_FLAGS || exit 1
 rm -rf /tmp/built-tarball
 mkdir -p /tmp/built-tarball

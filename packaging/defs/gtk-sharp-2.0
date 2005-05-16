@@ -15,9 +15,8 @@ get_destroot () {
 	DEST_ROOT=$DISTRO
 }
 
-#HEAD_PATH="trunk/gtk-sharp"
-HEAD_PATH="branches/gtk-sharp-1-9-branch/gtk-sharp"
-RELEASE_PATH="tags/gtk-sharp/[[versiondot]]/gtk-sharp"
+HEAD_PATH="trunk/gtk-sharp"
+RELEASE_PATH="tags/gtk-sharp/[[gtksharp2ver]]/gtk-sharp"
 
 get_tarball () {
 	msvn_tar $1

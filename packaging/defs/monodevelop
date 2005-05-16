@@ -17,6 +17,8 @@ MONO_DEPS=(
 	monodoc
 	gecko-sharp-2.0
 	gtksourceview-sharp-2.0
+	boo
+	ikvm
 )
 
 get_destroot () {

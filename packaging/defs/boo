@@ -1,0 +1,32 @@
+BUILD_HOSTS=(
+	fedora-3-i386
+)
+
+USE_HOSTS=(
+	fedora-3-i386
+	nld-9-i586
+	nld-9-x86_64
+	redhat-9-i386
+	rhel-3-i386
+	rhel-4-i386
+	sles-9-i586
+	sles-9-x86_64
+	suse-92-i586
+	suse-93-i586
+	suse-93-x86_64
+)
+
+MONO_DEPS=(
+	mono-1.1
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+get_tarball () {
+	# nop, we don't build their code, we get a binary
+	# only tarball
+	
+	return 0;
+}

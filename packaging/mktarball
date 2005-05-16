@@ -4,7 +4,7 @@ msvn_tar () {
     get_svn_path
     scp do-msvn-tar $target_host:$jaildir/tmp
     ./jail-do $distro sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_rev || exit 1
-    scp $target_host:$jaildir/tmp/built-tarball/*.tar.gz sources/$package 
+    scp $target_host:$jaildir/tmp/built-tarball/*.tar.gz sources/$real_package 
 }
 
 get_svn_path () {
@@ -21,6 +21,7 @@ get_svn_path () {
 	    versiondash=${version//\\./-}
 	    svn_path=${RELEASE_PATH//\\[\\[version\\]\\]/${versiondash}}
 	    svn_path=${svn_path//\\[\\[versiondot\\]\\]/${version}}
+	    svn_path=${svn_path//\\[\\[gtksharp2ver\\]\\]/${version/#2.5/1.9}_${version}}
 	    ;;
     esac
 }
@@ -32,11 +33,25 @@ package=$2
 version=$3
 snapshot_rev=$4
 
+real_package=$package
+
+#
+# Total hack for the wacked out gtk# stuff
+#
+if [[ $package = "gtk-sharp-2.6" ]]; then
+	real_package="gtk-sharp-2.0"
+fi
+
+if [[ $package = "gtk-sharp-2.0" ]]; then
+	# Hack to get stuff from the right path
+	version=${version/#1.9/2.5}
+fi
+
 . shared-code.sh
 . conf/$distro
-. defs/$package
+. defs/$real_package
 
-mkdir -p sources/$package
+mkdir -p sources/$real_package
 
 
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then

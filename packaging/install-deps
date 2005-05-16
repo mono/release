@@ -34,10 +34,14 @@ done
 
 [ ${#RPMS[@]} -eq 0 ] && exit 0
 
+rpm_names=$(rpm -qp --queryformat '%{NAME} ' ${RPMS[@]})
 
 ./jail-do $TARGET "sh -x -c \"rm -rf /tmp/install-packages; mkdir -p /tmp/install-packages -m777\""
 
 scp ${RPMS[@]} $target_host:$jaildir/tmp/install-packages
 
-./jail-do $TARGET "sh -x -c \"rpm --replacepkgs -Uhv /tmp/install-packages/*.rpm\""
-./jail-do $TARGET "sh -x -c \"rm -rf /tmp/install-packages\""
+
+
+./jail-do $TARGET "sh -x -c \"rug rm -y $rpm_names\""
+./jail-do $TARGET "sh -x -c \"rug in -y /tmp/install-packages/*.rpm\""
+#./jail-do $TARGET "sh -x -c \"rm -rf /tmp/install-packages\""
