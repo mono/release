@@ -91,7 +91,7 @@ img {
 #	gtk-sharp-1.0 gtk-sharp
 	
 	<h3>Development Tools</h3>
-#	devtools monodoc gecko-sharp-2.0 gtksourceview-sharp-2.0 monodevelop
+#	devtools monodoc gecko-sharp-2.0 gtksourceview-sharp-2.0 monodevelop boo ikvm
 
 	<h3>Gtk# 2</h3>
 #	gtk-sharp-2.0 gtk-sharp-2.0
