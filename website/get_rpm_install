@@ -6,11 +6,19 @@ else
 	RC_URL="ftp://ftp.novell.com/pub/ximian/redcarpet2/$DISTRO"
 fi
 
+case $DISTRO in
+	suse-93-* | rhel-*)
+		DOWNLOAD_RC=""
+	;;
+	* )
+		DOWNLOAD_RC="If you do not already have Red Carpet, you can <a href='$RC_URL'>download it.</a>"
+	;;
+esac
 
 cat <<EOF
 	<p>
 	The best way to install Mono on your system is to use Novell's Red Carpet.
-	If you do not already have Red Carpet, you can <a href='$RC_URL'>download it.</a>
+	$DOWNLOAD_RC
 	</p>
 	
 	<p>To use Red Carpet, execute these commands:</p>
