@@ -140,8 +140,7 @@ echo "Done with ${NAME}"
 NAME=mono
 VERSION=${MONOVERSION}
 DISTNAME=${NAME}-${MONOVERSION}.tar.gz
-#URL=http://www.go-mono.com/archive/${MONOVERSION}/${DISTNAME}
-URL=http://primates.ximian.com/~bmaurer/sources/mono-1.1/${DISTNAME}
+URL=http://www.go-mono.com/sources/mono-1.1/${DISTNAME}
 WORKSRCDIR=${NAME}-${VERSION}
 
 echo "Building ${NAME}"
@@ -237,9 +236,9 @@ echo "Done with ${NAME}"
 
 ###############################################
 NAME=libgdiplus
-VERSION=1.1.5
+VERSION=1.1.7
 DISTNAME=${NAME}-${VERSION}.tar.gz
-URL=http://www.go-mono.com/archive/${VERSION}/${DISTNAME}
+URL=http://www.go-mono.com/sources/libgdiplus-1.1/${DISTNAME}
 WORKSRCDIR=${NAME}-${VERSION}
 
 echo "Building ${NAME}"
