@@ -2,17 +2,19 @@
 
 #This script must be run as root!
 
-#startup options
-CLEAN=NO
-CONFIGURE=$1
-MAKE=$2
-INSTALL=$3
-MONOBUILDFILES=$4
+#startup options, these are default values.
+CLEAN="NO"
+CONFIGURE="YES"
+MAKE="YES"
+INSTALL="YES"
+MONOBUILDFILES="NO"
+SVN="NO"
+SVNDIR="NO"
+MONOVERSION="NO"
 
 BUILDROOT=/Users/Shared/MonoBuild
 PLISTS=${BUILDROOT}/plists
 RESOURCES=${BUILDROOT}/resources
-MONOVERSION=1.1.7
 FRAMEWORKPREFIX=/Library/Frameworks/Mono.framework
 MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/${MONOVERSION}
 DEPS=${BUILDROOT}/Dependancies
@@ -25,6 +27,70 @@ export LDFLAGS="-L${MONOPREFIX}/lib"
 export PATH="/usr/X11R6/bin/:${MONOPREFIX}/bin:$PATH"
 export PKG_CONFIG_PATH="/usr/X11R6/lib/pkgconfig/:$PKG_CONFIG_PATH"
 export ACLOCAL_FLAGS="-I ${MONOPREFIX}/share/aclocal/"
+
+usage()
+{
+echo "Proper usage is as follows"
+cat <<EOF
+	monobuild.sh
+        -m <mono version> specifies version of mono to build
+        -s <svn directory> build from svn checked out sources
+	-M make (default yes)
+	-C make clean (default no)
+	-c run configure (default yes)
+	-i make install (default yes)
+	-h this message
+
+        example:
+        buildMono.sh -m 1.1.7 
+        buildMono.sh -m nightly -s /tmp/mono
+EOF
+exit
+}
+
+while getopts hm:piMCcRs:oO option
+do
+ 		if [ $option == "m" ]; then
+ 			MONOVERSION=$OPTARG	
+ 		fi
+ 		if [ $option == "i" ]; then
+ 			INSTALL="YES"
+ 		fi
+ 		if [ $option == "o" ]; then
+ 			BUILD="NO"	
+ 		fi
+		if [ $option == "O" ]; then
+		    PACKAGEONLY="YES"
+		fi
+ 		if [ $option == "M" ]; then
+ 			MAKE="YES"	
+ 		fi
+ 		if [ $option == "C" ]; then
+ 			CLEAN="YES"	
+ 		fi
+		if [ $option == "c" ]; then
+			CONFIGURE="YES"	
+		fi
+		if [ $option == "R" ]; then
+			REMOVE="YES"	
+		fi
+		if [ $option == "h" ]; then
+			usage
+		fi
+		if [ $option == "p" ]; then
+			PACKAGE="YES"	
+		fi
+		if [ $option == "s" ]; then
+			if [ ! -d "/Library/Frameworks/Mono.framework/Versions/Current" ]; then
+				echo "To do this you MUST have the current version of Mono.framework installed"
+				echo "You can dl this from http://mono-project.com/downloads/"
+				exit
+			else
+				SVN="YES"
+				SVNDIR=$OPTARG
+			fi
+		fi
+done
 
 #		if [ ! -d ${MONOPREFIX}/lib ]; then
 mkdir -p ${MONOPREFIX}/lib
@@ -143,11 +209,28 @@ DISTNAME=${NAME}-${MONOVERSION}.tar.gz
 URL=http://www.go-mono.com/sources/mono-1.1/${DISTNAME}
 WORKSRCDIR=${NAME}-${VERSION}
 
-echo "Building ${NAME}"
-fetch ${WORKSRCDIR} ${URL} ${DISTNAME}
-build ${WORKSRCDIR} ${NAME}
-echo "Done with ${NAME}"
+if [ SVNDIR == "NO" ]; then
+	echo "Building ${NAME}"
+	fetch ${WORKSRCDIR} ${URL} ${DISTNAME}
+	build ${WORKSRCDIR} ${NAME}
+	echo "Done with ${NAME}"
+else
+	export PREFIX=/Library/Frameworks/Mono.framework/Versions/Current
+    export NEW_PREFIX=/Library/Frameworks/Mono.framework/Versions/nightly
 
+    export PKG_CONFIG_PATH=/Library/Frameworks/Mono.framework/Library/pkgconfig
+    export PATH=${PREFIX}/bin:/usr/X11R6/bin:$PATH
+    export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/Current/share/aclocal/"
+    export C_INCLUDE_PATH=${C_INCLUDE_PATH}:${PREFIX}/include
+	export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
+	export DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}:/usr/X11R6/lib:${PREFIX}/lib
+
+    cd ${SVNDIR}
+    ./autogen.sh --prefix=${NEW_PREFIX}
+    make
+    make install
+
+fi
 #################################################
 
 
