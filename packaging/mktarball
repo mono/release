@@ -33,6 +33,16 @@ package=$2
 version=$3
 snapshot_rev=$4
 
+# Argument checking
+if [ -z $distro ] || [ -z $package ] || [ -z $version ]; then
+	echo ""
+	echo "Usage: mktarball <target jail> <package> <version|snap> [svn rev]"
+	echo " where version is a tagged version from svn"
+	echo " Note: if you specify snap, you must specify svn rev"
+	echo ""
+	exit 1
+fi
+
 real_package=$package
 
 #

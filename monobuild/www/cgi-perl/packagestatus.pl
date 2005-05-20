@@ -6,11 +6,14 @@ use warnings;
 # Decided on XPath because it's simpler to install, even though it's probably slower than XML::LibXML
 use XML::XPath;
 use CGI qw(:standard);
+use CGI::Carp;
 
 # Local modules
 use FindBin;
 use lib "$FindBin::RealBin/../..";
 use Mono::Build;
+
+my $rootUrl = $Mono::Build::Config::rootUrl;
 
 my $html;
 
@@ -122,7 +125,7 @@ Content-type: text/html
 
 <html><head>
 
-<title>Mono Build Status</title><link rel="stylesheet" href="/build.css" type="text/css"></head>
+<title>Mono Build Status</title><link rel="stylesheet" href="$rootUrl/build.css" type="text/css"></head>
 
 <body>
 
@@ -132,7 +135,5 @@ $html
 </html>
 
 END
-
-
 
 

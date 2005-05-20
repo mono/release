@@ -3,6 +3,9 @@
 package Mono::Build;
 
 use XML::XPath;
+use XML::Simple;
+use File::Path;
+use Data::Dumper;
 
 # Local packages
 use Mono::Build::Config;
@@ -72,7 +75,8 @@ sub getLatestRevision
 	my $platform = shift;
 	my $package = shift;
 
-	my $revision;
+	# If this doesn't get overwritten, a build hasn't been don for this platform/package combo
+	my $revision = "";
 	
 	my $dir = "$Mono::Build::Config::buildsDir/$platform/$package";
 
@@ -98,76 +102,32 @@ sub getLatestRevision
 
 	};
 
-	if($@)
-	{
-		# No builds done with this platform or package
-		$revision = "";
-	}
-
 	return $revision;
 	
 }
 
-# Get the state of a package on a platform, not of a particular step
+# Get the state of a package on a platform
 sub getState
 {
-
 
 	my $platform = shift;
 	my $package = shift;
 	my $revision = shift;
 
-	my $xp;
-	my @states;
-
-	my $nodeset;
-	my $node;
-	my $state;
-
 	my $xmlFile = "$Mono::Build::Config::buildsDir/$platform/$package/$revision/info.xml";
 
+	my $state = "";
+
+	my $xmlRef;
+
 	eval {
-		$xp = XML::XPath->new(filename => $xmlFile);
-		$nodeset = $xp->find('/build/steps/step/status');
 
-		foreach my $node ($nodeset->get_nodelist)
-		{
-			$state = XML::XPath::Node::Text::string_value($node); 
-
-			#print "State: $state\n";
-			push @states, $state;
-
+		if( -e $xmlFile) {
+			$xmlRef = readInfoXML($xmlFile);
+			$state = $xmlRef->{'state'};
 		}
 	};
 
-	if($@)
-	{
-		$state = "";
-
-	}
-
-	# State order of preference: inprogress, failure, success, <null>
-	
-	if(arrayContains("inprogress", @states))
-	{
-		$state = "inprogress";
-	}
-
-	elsif(arrayContains("failure", @states))
-	{
-		$state = "failure";
-	}
-
-	# If I get this far, I assume everything succeeded
-	elsif(arrayContains("success", @states))
-	{
-		$state = "success";
-	}
-
-	else
-	{
-		$state = "";
-	}
 
 	return $state;
 
@@ -192,6 +152,144 @@ sub arrayContains
 	return 0;
 
 
+}
+
+# Args: platform, package
+# Returns: success or fail
+sub scheduleBuild
+{
+	my $platform = shift;
+	my $package = shift;
+	my $rev = shift;
+
+
+	print STDERR "Latest rev: $rev\n";
+
+	# Check to see if this isn't here already...
+
+	# Start outputting the structure
+	my $dir = "$Mono::Build::Config::buildsDir/$platform/$package/$rev";
+	my $xmlFile = "$dir/info.xml";
+
+	# If it hasn't already been scheduled
+	if(! -e $xmlFile) {
+
+		eval {	
+			mkpath($dir);
+			mkpath("$dir/files");
+			mkpath("$dir/logs");
+		};
+
+		if($@) {
+			print STDERR "Failed to create directory structure ($dir)\n";
+			return "create_dir error";
+		}
+		
+		# Get a starter structure...	
+		my $xmlRef = readInfoXML("$Mono::Build::Config::releaseRepo/monobuild/info.xml_new");
+
+		# Fill in what we know
+		$xmlRef->{revision} = $rev;
+		$xmlRef->{platform} = $platform;
+		$xmlRef->{package} = $package;
+
+		# Mark the build as queued
+		$xmlRef->{state} = "queued";
+
+		print STDERR Dumper($xmlRef);
+
+		writeInfoXML($xmlRef, $xmlFile);
+		return "";
+
+	} else {
+
+		# Either the data is bogus, or it's already been scheduled...
+
+		# TODO What to do when the build exists?  Probably want to schedule it again if it's finished
+		# If it's in the finished state, queue it again
+		return "already scheduled";
+	}
+
+
+}
+
+# Have one subroutine to do this because I'll want to considate options
+sub readInfoXML
+{
+	my $file = shift;
+
+	my $ref = "";
+	my $fh;
+
+	# Open, lock, read, close
+	eval {
+		$fh = new IO::File($file);
+
+		flock($fh, 2);
+
+		$ref = XMLin($fh);
+
+		close($fh);
+
+	};
+
+	return $ref;
+
+}
+
+# Consolidate options
+sub writeInfoXML
+{
+
+	my $xmlRef = shift;
+	my $xmlFile = shift;
+
+	my $fh;
+
+	my $returnCode = 0;
+
+	eval {
+
+		# Open a file
+		open($fh, ">$xmlFile");
+
+		# Blocking lock
+		flock($fh, 2);
+
+		# Write out the file
+		#XMLout($xmlRef, OutputFile => $xmlFile);
+		#print STDERR XMLout($xmlRef, NoAttr => 1, RootName => "build");
+		XMLout($xmlRef, NoAttr => 1, RootName => "build", OutputFile => $fh);
+
+		# Close and unlock file
+		close($fh);
+
+		$returnCode = 1;
+
+	};
+
+	return $returnCode;
+
+}
+
+# Big NOTE: for this to work under apache, apache must have ssh set up
+#   Just try it out (get-latest-rev) as the user apache is running as to make sure it works
+#    Big NOTE 2: Also, make SURE the apache configs hide the ssh keys!!
+sub getLatestTreeRevision
+{
+	my $revision;
+
+	eval {
+
+		$revision = `$Mono::Build::Config::releaseRepo/packaging/get-latest-rev`;
+		chomp $revision;
+
+		# Convention used thoughout the system
+		$revision = "r$revision";
+	};
+
+	return $revision;
+	
 }
 
 

@@ -104,6 +104,10 @@ td.new {
 	background:lightgray;
 }
 
+td.queued {
+	background:lightpink;
+}
+
 table.legend th {
 	font-weight:normal;
 	text-align:right;

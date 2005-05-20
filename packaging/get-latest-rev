@@ -1,0 +1,4 @@
+#!/bin/sh
+
+svn ls svn+ssh://mono-cvs.ximian.com/source -v | awk '{print $1}' | sort -nr | head -n1 
+

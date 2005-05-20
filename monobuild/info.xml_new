@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Data describing a set of builds for a component on a platform -->
+
+<build>
+	<platform></platform>
+	<package></package>
+	<revision></revision>
+
+	<buildhost></buildhost>
+	<start></start>
+	<finish></finish>
+
+	<steps>
+		<step>
+			<index>0</index>
+			<name></name>
+			<state></state>
+			<log></log>
+			<download></download>
+		</step>
+	</steps>
+</build>
+
+
+
