@@ -56,6 +56,11 @@ function latest_version ()
 	LATEST_VERSION=`(ls -vrd1  $FILES | head -n1) 2> /dev/null`
 }
 
+function latest_tarball ()
+{
+	LATEST_VERSION=`(ls -vrd1  $1 | head -n1) 2> /dev/null`
+}
+
 function rpm_query ()
 {
 	rpm -qp --queryformat "%{$1}" $2 2>/dev/null
