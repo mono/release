@@ -1,0 +1,140 @@
+#!/bin/sh
+
+DOWNLOAD_URL=http://primates.ximian.com/~wberrier/linux-installer
+DOWNLOAD_URL=http://164.99.120.153/linux-installer
+
+OUTPUT=~/installbuilder-2.4.1/output/mono-1.1.7-installer.bin
+
+cleanUp()
+{
+	# Why remove these?	
+	#rm -Rf thirdparty/tarballs/*
+	rm -Rf build/*
+	rm -f mono-1.1.7-installer.bin
+}
+
+# Argument checking...
+if [ -z $1 ]; then
+	echo ""
+	echo "Usage: buildlinux-installer <mode>"
+	echo " where mode can be either web or local"
+	echo ""
+	echo " local: pulls packages off the local box"
+	echo " web: tries to download them"
+	echo ""
+	exit 1
+fi
+
+cleanUp
+
+CWD=`pwd`
+
+# Clean up...
+
+# check for installer and install if it isn't there
+if [ ! -e $HOME/installbuilder-2.4.1/bin/builder ]; then
+	
+	INSTALLER=installbuilder-multiplatform-2.4.1-linux-installer.bin
+
+	# Works for now... doesn't redownload if not needed
+	echo "Downloading the Bitrock installer..."
+	wget -c $DOWNLOAD_URL/bitrock/$INSTALLER -O /tmp/$INSTALLER
+	chmod 755 /tmp/$INSTALLER
+
+	echo "Installing the Bitrock installer..."
+	/tmp/$INSTALLER --mode unattended
+fi
+
+
+# start collecting rpms... 
+
+if [ $1 == "local" ]; then
+	echo Getting packages from the local disk...
+	echo "local Mode not suported yet"
+	exit 1
+elif [ $1 == "web" ]; then
+	echo Downloading the packages from some obscure place...
+
+	# This is kinda ugly for the moment, but it's the idea that counts
+
+	# Collect packages
+	cd thirdparty/tarballs
+
+	RPM_LIST=(
+		ftp.ximian.com/pub/mono/redhat-9-i386
+		ftp.ximian.com/pub/mono/redhat-9-i386/linc-1.0.1-1.i386.rpm
+		ftp.ximian.com/pub/mono/redhat-9-i386/pkgconfig-0.14.0-3.i386.rpm
+		ftp.ximian.com/pub/mono/redhat-9-i386/libstdc++-3.2.2-5.i386.rpm
+		ftp.ximian.com/pub/mono/redhat-9-i386/libgal2.0_6-1.99.11-0.ximian.6.1.i386.rpm
+		ftp.ximian.com/pub/mono/redhat-9-i386/libicu26-2.6.2-1.ximian.6.0.i386.rpm
+		www.go-mono.com/archive/1.0.5/redhat-9-i386/libgtkhtml3.0_4-3.0.10-0.ximian.6.1.i386.rpm
+		www.go-mono.com/archive/1.0.5/redhat-9-i386/gtksourceview-1.0.1-0.ximian.6.1.i386.rpm
+		www.go-mono.com/archive/1.0.6/redhat-9-i386/gtksourceview-sharp-0.5-1.ximian.6.1.i386.rpm
+		www.go-mono.com/archive/1.0.6/redhat-9-i386/cairo-devel-0.3.0-0.ximian.6.1.i386.rpm
+		www.go-mono.com/archive/1.0.6/redhat-9-i386/libpixman-0.1.2-1.ximian.6.1.i386.rpm
+		www.go-mono.com/archive/1.0.6/redhat-9-i386/gecko-sharp-0.6-1.ximian.6.1.i386.rpm
+		www.go-mono.com/archive/1.0.6/redhat-9-i386/libpixman-devel-0.1.2-1.ximian.6.1.i386.rpm
+		www.go-mono.com/archive/1.0.6/redhat-9-i386/cairo-0.3.0-0.ximian.6.1.i386.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-extras-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-jscript-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/gtk-sharp-gapi-1.0.9-0.redhat9.novell.i386.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-ikvm-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-core-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-devel-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-winforms-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-data-sqlite-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/bytefx-data-mysql-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-basic-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-data-sybase-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/xsp-1.0.9-0.novell.noarch.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-locale-extras-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/monodoc-1.0.6-0.novell.noarch.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/gtk-sharp-1.0.9-0.redhat9.novell.i386.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-data-postgresql-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-complete-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-data-oracle-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mod_mono-1.0.9-0.redhat9.novell.i386.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/libgdiplus-1.1.7-0.redhat9.novell.i386.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/ibm-data-db2-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-web-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-data-1.1.7-1.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/suse-93-i586/gtk-sharp2-1.9.3.1-0.suse93.novell.i586.rpm
+		www.go-mono.com/archive/1.1.7/suse-93-i586/gtk-sharp2-gapi-1.9.3.1-0.suse93.novell.i586.rpm
+	)
+
+	# Create the dir structure
+	mkdir -p ftp.ximian.com/pub/mono/redhat-9-i386
+	mkdir -p www.go-mono.com/archive/1.0.5/redhat-9-i386
+	mkdir -p www.go-mono.com/archive/1.0.6/redhat-9-i386
+	mkdir -p www.go-mono.com/archive/1.1.7/redhat-9-i386
+	mkdir -p www.go-mono.com/archive/1.1.7/suse-93-i586
+
+	for file in ${RPM_LIST[@]}; do
+		wget -c $DOWNLOAD_URL/$file -O $file
+	done
+
+	cd $CWD
+
+else
+	echo "Unknown mode: $1 (web or local)"
+	exit 1;
+fi
+
+
+
+# Call the tcl script to build
+./rpm-miguel.tcl
+
+
+# If the build was successful, clean up
+if [ -e $OUTPUT ]; then
+
+	cleanUp
+
+	# Move the install binary to the current directory
+	mv $OUTPUT .
+
+
+fi
+
+

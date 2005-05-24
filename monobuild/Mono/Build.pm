@@ -11,6 +11,8 @@ use Data::Dumper;
 use Mono::Build::Config;
 use Env::Bash;
 
+our $debug = 1;
+
 sub getPlatforms
 {
 	my $dir = $Mono::Build::Config::platformDir;
@@ -163,7 +165,9 @@ sub scheduleBuild
 	my $rev = shift;
 
 
-	print STDERR "Latest rev: $rev\n";
+	if($debug) {
+		print STDERR "scheduleBuild: Latest rev: $rev\n";
+	}
 
 	# Check to see if this isn't here already...
 
@@ -196,7 +200,10 @@ sub scheduleBuild
 		# Mark the build as queued
 		$xmlRef->{state} = "queued";
 
-		print STDERR Dumper($xmlRef);
+		if($debug) {
+
+			print STDERR Dumper($xmlRef);
+		}
 
 		writeInfoXML($xmlRef, $xmlFile);
 		return "";
@@ -227,7 +234,8 @@ sub readInfoXML
 
 		flock($fh, 2);
 
-		$ref = XMLin($fh);
+		# SuppressEmpty will use empty strings instead of empty hashes
+		$ref = XMLin($fh, SuppressEmpty => undef);
 
 		close($fh);
 
@@ -289,6 +297,23 @@ sub getLatestTreeRevision
 	};
 
 	return $revision;
+	
+}
+
+sub validBuild_PlatformPackage
+{
+	my $platform = shift;
+	my $package = shift;
+
+	my $return_val = 0;
+
+	my @buildhosts = Mono::Build::getPackageInfo($package, "BUILD_HOSTS");
+
+	if(Mono::Build::arrayContains($platform, @buildhosts)) {
+		$return_val = 1;
+	}
+
+	return $return_val;
 	
 }
 

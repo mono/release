@@ -4,9 +4,10 @@ use strict;
 use warnings;
 
 # Decided on XPath because it's simpler to install, even though it's probably slower than XML::LibXML
-use XML::XPath;
+use XML::Simple;
 use CGI qw(:standard);
 use CGI::Carp;
+use Data::Dumper;
 
 # Local modules
 use FindBin;
@@ -17,7 +18,7 @@ my $rootUrl = $Mono::Build::Config::rootUrl;
 
 my $html;
 
-my $xp;
+my $xml_ref;
 my $buildhost;
 my $start;
 my $finish;
@@ -35,21 +36,23 @@ my $revision = param('revision');
 my $xmlFile = "$Mono::Build::Config::buildsDir/$platform/$package/$revision/info.xml";
 
 # Try to open and get data out of the xml document
-eval {
-	$xp = XML::XPath->new(filename => $xmlFile);
-	$buildhost = $xp->findvalue('/build/buildhost');
-	$start = $xp->findvalue('/build/start');
-	$finish = $xp->findvalue('/build/finish');
-};
+$xml_ref = Mono::Build::readInfoXML($xmlFile);
 
-if($@)
-{
+if($Mono::Build::debug) {
+	print STDERR Dumper($xml_ref);
+
+}
+
+# Couldn't find the xml file...
+unless($xml_ref) {
 	$html = "<h1>Mono Build Status</h1>";
 	$html .= "<p>No information found: $package -- $platform -- $revision</p>";
 
-}
-else
-{
+} else {
+
+	$buildhost = $xml_ref->{'buildhost'};
+	$start = $xml_ref->{'start'};
+	$finish = $xml_ref->{'finish'};
 
 	$html = qq(
 
@@ -82,29 +85,47 @@ else
 		<table>
 		<tbody>);
 	
+	# Convert steps to an ordered array
+	my @steps;
+	foreach my $step_name (keys %{ $xml_ref->{'steps'}{'step'} }) {
+
+		# Create a hash 
+		my %hash;
+		$hash{$step_name} = $xml_ref->{'steps'}{'step'}{$step_name};
+
+		# Insert into an array, by current step's index, a reference to the above hash
+		$steps[$xml_ref->{'steps'}{'step'}{$step_name}{'index'}] = \%hash;
+
+	}
+
+	if($Mono::Build::debug) {
+		print STDERR Dumper(@steps);
+	}
+
+
 	# Start through the build steps...	
-
-	my $steps = $xp->find('/build/steps/step');
-
-	foreach my $step ($steps->get_nodelist())
+	foreach my $hash_ref (@steps)
 	{
+		# There's only going to be one key in the hash...
+		my ($name) = keys %$hash_ref;
 
-		# Get each data out of the step...
-		my $name = $step->find('name'); 
-		my $status = $step->find('status'); 
-		my $log = "/$Mono::Build::Config::buildsUrl/$platform/$package/$revision/logs/" . $step->find('log'); 
-		my $download_file = $step->find('download'); 
-		my $download = "/$Mono::Build::Config::buildsUrl/$platform/$package/$revision/files/$download_file"; 
+		my $state = $hash_ref->{$name}{'state'};
+		my $log = "/$Mono::Build::Config::buildsUrl/$platform/$package/$revision/logs/$hash_ref->{$name}{'log'}";
 	
 		$html .= qq(
 				<tr>
 				<th>$name</th>
-				<td><a href="$log">$status</a></td>
-
+				<td><a href="$log">$state</a></td>
 			   );
 
-		if($download)
-		{
+		my $download_file;
+		my $download;
+
+		# If there's download info, add it to the html
+		if($hash_ref->{$name}{'download'}) {
+			$download_file = $hash_ref->{$name}{'download'};
+			$download = "/$Mono::Build::Config::buildsUrl/$platform/$package/$revision/files/$download_file";
+
 			$html .= qq(
 					<td><a href="$download">$download_file</a></td>
 					</tr>

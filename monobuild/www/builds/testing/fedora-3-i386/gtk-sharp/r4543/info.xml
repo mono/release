@@ -14,17 +14,20 @@
 
 	<steps>
 		<step>
+			<index>0</index>
 			<name>Make Tarballs</name>
 			<state>success</state>
 			<log>mktarball.log</log>
 			<download>gtk-sharp.tar.gz</download>
 		</step>
 		<step>
+			<index>1</index>
 			<name>Build</name>
 			<state>success</state>
 			<log>build.log</log>
 		</step>
 		<step>
+			<index>2</index>
 			<name>Make RPMS</name>
 			<state>failure</state>
 			<log>rpm.log</log>

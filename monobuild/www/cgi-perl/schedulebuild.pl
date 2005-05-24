@@ -10,37 +10,43 @@ use Mono::Build;
 
 my $rootUrl = $Mono::Build::Config::rootUrl;
 
-my $debug = 1;
+my $html;
 
-print<<END;
-Content-type: text/html
 
-<HEAD>
-	<TITLE>Mono Build Control</TITLE>
-	<link rel="stylesheet" href="$rootUrl/build.css" type="text/css">
-</HEAD>
-<BODY>
+$html = qq(
 
-<H1>Mono Build Control</H1>
+	<HTML>
+	<HEAD>
+		<TITLE>Mono Build Control</TITLE>
+		<link rel="stylesheet" href="$rootUrl/build.css" type="text/css">
+	</HEAD>
+	<BODY>
 
-<H3>Scheduled the following builds</H3>
+	<H1>Mono Build Control</H1>
 
-<p>
+	<H3>Scheduled the following builds</H3>
 
-END
+	<p>
+	  );
 
 my @builds = param('build');
 my @builds_other =  param('build_other');
+my $latest_rev;
 
-my $latest_rev = Mono::Build::getLatestTreeRevision();
+if($latest_rev = Mono::Build::getLatestTreeRevision())
+{
+	$html .= "Error scheduling build<br>";
+
+	print STDERR join("\n", keys %ENV);
+}
 
 my $platform;
 my $package;
 
-print "Tree revision: $latest_rev<br>";
+$html .= "Tree revision: $latest_rev<br>";
 
 foreach my $build (@builds) {
-	print "$build<br>";
+	$html .= "$build<br>";
 	
 	($platform, $package) = split(/:/, $build);
 	Mono::Build::scheduleBuild($platform, $package, $latest_rev);
@@ -48,19 +54,22 @@ foreach my $build (@builds) {
 }
 
 foreach my $build (@builds_other) {
-	print "$build<br>";
+	$html .= "$build<br>";
 }
 
 
 
-print<<END;
+$html .= qq(
 
-<a href=/>Back</a>
+	<a href=/>Back</a>
 
-</p>
+	</p>
 
-</BODY>
-</HTML>
+	</BODY>
+	</HTML>
 
-END
+	   );
+
+print "Content-type: text/html\n\n";
+print $html;
 
