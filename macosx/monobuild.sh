@@ -3,7 +3,7 @@
 #This script must be run as root!
 
 #startup options, these are default values.
-CLEAN="NO"
+CLEAN="YES"
 CONFIGURE="YES"
 MAKE="YES"
 INSTALL="YES"
@@ -11,22 +11,6 @@ MONOBUILDFILES="NO"
 SVN="NO"
 SVNDIR="NO"
 MONOVERSION="NO"
-
-BUILDROOT=/Users/Shared/MonoBuild
-PLISTS=${BUILDROOT}/plists
-RESOURCES=${BUILDROOT}/resources
-FRAMEWORKPREFIX=/Library/Frameworks/Mono.framework
-MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/${MONOVERSION}
-DEPS=${BUILDROOT}/Dependancies
-
-export CFLAGS="-I${MONOPREFIX}/include" 
-export C_INCLUDE_FLAGS="-I${MONOPREFIX}/include"
-export CPATH="${MONOPREFIX}/include"
-export DYLD_LIBRARY_PATH="${MONOPREFIX}/lib"
-export LDFLAGS="-L${MONOPREFIX}/lib"
-export PATH="/usr/X11R6/bin/:${MONOPREFIX}/bin:$PATH"
-export PKG_CONFIG_PATH="/usr/X11R6/lib/pkgconfig/:$PKG_CONFIG_PATH"
-export ACLOCAL_FLAGS="-I ${MONOPREFIX}/share/aclocal/"
 
 usage()
 {
@@ -92,6 +76,19 @@ do
 		fi
 done
 
+if test x$MONOVERSION = xNO; then
+    echo Please specify a version with -m VERSION
+    exit 1
+fi
+
+BUILDROOT=/Users/Shared/MonoBuild
+PLISTS=${BUILDROOT}/plists
+RESOURCES=${BUILDROOT}/resources
+FRAMEWORKPREFIX=/Library/Frameworks/Mono.framework
+MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/${MONOVERSION}
+DEPS=${BUILDROOT}/Dependancies
+
+
 #		if [ ! -d ${MONOPREFIX}/lib ]; then
 mkdir -p ${MONOPREFIX}/lib
 mkdir -p ${MONOPREFIX}/man
@@ -116,11 +113,19 @@ if [ ! -e ${DEPS} ]; then
 	mkdir -p ${DEPS}
 fi
 
+stop()
+{
+    echo Step: $2 aborted
+    echo see `pwd`/$2.log for details
+    exit 1
+}
+
 build()
 {
+        echo Processing $1
 	cd $1
 	if [ ${CLEAN} == "YES" ]; then
-		make clean
+		make clean >& log.clean || echo $1: clean failed
 	fi
 	if [ ${CONFIGURE} == "YES" ]; then
 		if [ $2 == "mono" ]; then
@@ -140,16 +145,16 @@ cat <<EOF > mcs/class/lib/default/System.Windows.Forms.dll.config
 </configuration>
 EOF
 
-			 ./configure --prefix=$MONOPREFIX --with-preview=yes 
+			 ./configure --prefix=$MONOPREFIX --with-preview=yes >& configure.log  || stop $1 configure
 		else
-			./configure --prefix=$MONOPREFIX 
+			./configure --prefix=$MONOPREFIX >& configure.log  || stop $1 configure
 		fi
 	fi
 	if [ ${MAKE} == "YES" ]; then
-		make 
+		make >& make.log || stop $1 make
 	fi
 	if [ ${INSTALL} == "YES" ]; then
-		make install
+		make install >& install.log || stop $1 install
 	fi
 }
 
@@ -157,7 +162,6 @@ EOF
 #Mono.framework.
 packages() 
 {
-
 
 #pkgconfig
 #################################################
@@ -173,6 +177,7 @@ build ${WORKSRCDIR} ${NAME}
 echo "Done with ${NAME}"
 #################################################
 
+
 #gettext
 #################################################
 NAME=gettext
@@ -182,10 +187,21 @@ URL=http://ftp.gnu.org/pub/gnu/gettext/${DISTNAME}
 WORKSRCDIR=${NAME}-${VERSION}
 
 echo "Building ${NAME}"
+touch $MONOPREFIX/reference
 fetch ${WORKSRCDIR} ${URL} ${DISTNAME}
 build ${WORKSRCDIR} ${NAME}
+
 echo "Done with ${NAME}"
 #################################################
+
+export C_INCLUDE_FLAGS="-I${MONOPREFIX}/include"
+export C_INCLUDE_PATH="-I${MONOPREFIX}/include"
+export CPATH="${MONOPREFIX}/include"
+export DYLD_LIBRARY_PATH="${MONOPREFIX}/lib"
+export LDFLAGS="-L${MONOPREFIX}/lib"
+export PATH="/usr/X11R6/bin/:${MONOPREFIX}/bin:$PATH"
+export PKG_CONFIG_PATH="/usr/X11R6/lib/pkgconfig/:/Library/Frameworks/Mono.framework/Library/pkgconfig:$PKG_CONFIG_PATH"
+export ACLOCAL_FLAGS="-I ${MONOPREFIX}/share/aclocal/"
 
 #glib
 #################################################
@@ -201,6 +217,8 @@ build ${WORKSRCDIR} ${NAME}
 echo "Done with ${NAME}"
 #################################################
 
+clean_gettext
+
 #mono
 #################################################
 NAME=mono
@@ -209,7 +227,7 @@ DISTNAME=${NAME}-${MONOVERSION}.tar.gz
 URL=http://www.go-mono.com/sources/mono-1.1/${DISTNAME}
 WORKSRCDIR=${NAME}-${VERSION}
 
-if [ SVNDIR == "NO" ]; then
+if [ $SVNDIR == "NO" ]; then
 	echo "Building ${NAME}"
 	fetch ${WORKSRCDIR} ${URL} ${DISTNAME}
 	build ${WORKSRCDIR} ${NAME}
@@ -232,7 +250,6 @@ else
 
 fi
 #################################################
-
 
 #JPEG
 #################################################
@@ -258,13 +275,13 @@ if [ ${CONFIGURE} == "YES" ]; then
     sed -e 's/(prefix)\/man/(prefix)\/share\/man/g' makefile.cfg > makefile.cfg.patched
     mv makefile.cfg.patched makefile.cfg
 
-    ./configure --enable-shared --enable-static --prefix=${MONOPREFIX}  
+    ./configure --enable-shared --enable-static --prefix=${MONOPREFIX}  >& configure.log || stop jpeg configure
 fi
 if [ ${MAKE} == "YES" ]; then
-	make 
+	make >& make.log || stop jpeg make
 fi
 if [ ${INSTALL} == "YES" ]; then
-	make install
+	make install-lib >& install.log || stop jpeg install
 fi
 
 ################################
@@ -278,18 +295,18 @@ fetch ${WORKSRCDIR} ${URL} ${DISTNAME}
 cd ${WORKSRCDIR}
 
 if [ ${CLEAN} == "YES" ]; then
-	make clean
+	make clean >& clean.log || echo tiff clean failed
 fi
 if [ ${CONFIGURE} == "YES" ]; then
     ./configure --prefix=${MONOPREFIX} --mandir=${MONOPREFIX}/share/man \
 	--with-jpeg-include-dir=${MONOPREFIX}/include \
-	--with-jpeg-lib-dir=${MONOPREFIX}/lib  
+	--with-jpeg-lib-dir=${MONOPREFIX}/lib  >& configure.log || stop tiff configure
 fi
 if [ ${MAKE} == "YES" ]; then
-	make 
+	make >& make.log || stop tiff make
 fi
 if [ ${INSTALL} == "YES" ]; then
-	make install
+	(cd libtiff; make install >& install.log || stop tiff install)
 fi
 
 ###############################################
@@ -317,6 +334,7 @@ fetch ${WORKSRCDIR} ${URL} ${DISTNAME}
 build ${WORKSRCDIR} ${NAME}
 echo "Done with ${NAME}"
 
+
 ###############################################
 NAME=libgdiplus
 VERSION=1.1.7
@@ -329,16 +347,16 @@ fetch ${WORKSRCDIR} ${URL} ${DISTNAME}
 
 cd ${WORKSRCDIR}
 if [ ${CLEAN} == "YES" ]; then
-	make clean
+	make clean >& clean.log || echo gdiplus clean failed
 fi
 if [ ${CONFIGURE} == "YES" ]; then
-	./configure --prefix=${MONOPREFIX} --with-libjpeg --includedir=${MONOPREFIX}/include  
+	./configure --enable-quartz --enable-freetype --prefix=${MONOPREFIX} --with-libjpeg --includedir=${MONOPREFIX}/include  >& configure.log || stop gdiplus configure
 fi
 if [ ${MAKE} == "YES" ]; then
-	make 
+	make >& make.log || stop gdiplus make
 fi
 if [ ${INSTALL} == "YES" ]; then
-	make install
+	make install >& install.log || stop gdiplus install
 fi
 
 #cocoa#
@@ -359,24 +377,22 @@ ln -sf ${FRAMEWORKPREFIX}/Versions/${MONOVERSION} ${FRAMEWORKPREFIX}/Versions/Cu
 
 cd ${NAME}
 if [ ${CLEAN} == "YES" ]; then
-	make clean
+	make clean >& clean.log || echo cocoa clean failed
 fi
 if [ ${CONFIGURE} == "YES" ]; then
-	./autogen.sh --prefix=${MONOPREFIX} --with-preview=yes
+	./configure --prefix=${MONOPREFIX} --with-preview=yes >& configure.log || stop cocoasharp configure
 fi
 if [ ${MAKE} == "YES" ]; then
-	make 
+	make >& make.log || stop cocoasharp make
 fi
 if [ ${INSTALL} == "YES" ]; then
-	make install
+	make install >& install.log || stop cocoashap install
 fi
 
 echo "Done with ${NAME}"
 
 #################################################
-
 }
-
 
 ###############################################
 #create plist files that are needed by the Installer.
@@ -606,6 +622,25 @@ EOF
 chmod 755 ${RESOURCES}/postflight
 }
 
+clean_gettext()
+{
+    cd $MONOPREFIX
+    (cd share/; find . -newer $MONOPREFIX/reference -and -type f | xargs rm)
+    (cd bin/; find . -newer $MONOPREFIX/reference -and -type f | xargs rm)
+    rm $MONOPREFIX/reference
+}
+
+# 
+cleanup()
+{
+    rm bin/gettext* bin/ngettext bin/xgettext 
+    rm bin/glib-*
+    rm bin/gobject-query
+    rm lib/lib*a
+    strip bin/pedump bin/monodiet bin/monodis bin/jay bin/monograph
+    rm -rf share/gtk-doc
+}
+
 framework()
 {
 ###############################################
@@ -682,6 +717,7 @@ ${PACKAGEMAKER} -build -p ${BUILDROOT}/pkg/MonoFramework-${MONOVERSION}.pkg -f $
 ################################################
 #Actualy calls the script funcations
 packages
+cleanup
 plists
 rtfs
 framework
