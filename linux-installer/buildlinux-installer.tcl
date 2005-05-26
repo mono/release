@@ -25,7 +25,6 @@ puts "Version: $version"
 # Install the installer if it's not installed...
 if { ![file exists ~/installbuilder-2.4.1/bin/builder] } {
 
-
 	set installer installbuilder-multiplatform-2.4.1-linux-installer.bin
 
 	# Download it if it doesn't exist
@@ -50,9 +49,12 @@ array set ::opts \
     external_rpms $prefix/thirdparty/external_rpms \
     mono_rpms $prefix/../packaging/packages]
 
+# Some clean up
 file mkdir $opts(buildroot)
 file delete -force $opts(buildroot)/usr $opts(buildroot)/etc
 
+file delete -force $prefix/output/packages_used.txt
+set packages_used_text "RPMS used to create this build:\n"
 
 namespace eval maui::util {
     proc substituteParametersInFile {filename substitutionParams} {
@@ -92,11 +94,16 @@ namespace eval ::maui::file {
 # Takes a full path to an rpm, and will extract it into the buildroot
 proc extract {file} {
 
+    global prefix
     global opts
+    global packages_used_text
+
     set cwd [exec pwd]
     cd $opts(buildroot)
     
     puts "Extracting $file"
+    exec echo "$file" >> $prefix/output/packages_used.txt
+    append packages_used_text [file tail $file ] "\n"
     exec rpm2cpio $file > kk
     catch {exec cpio --extract --make-directories < kk} kk
     file delete -force kk
@@ -109,6 +116,7 @@ proc extract {file} {
 }
 
 proc extractRPMs {base rpmList} {
+
     foreach f $rpmList {
 
 	# ls has version sorting (-v), use that to get the latest version from the directory
@@ -136,14 +144,30 @@ set external_rpms_list {
 	http://fr.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/pkgconfig-0.14.0-3.i386.rpm
 }
 
+# Stuff from older releases
+set custom_rpms_list {
+	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/libgtkhtml3.0_4-3.0.10-0.ximian.6.1.i386.rpm
+	http://www.go-mono.com/archive/1.0.6/redhat-9-i386/gtksourceview-sharp-0.5-1.ximian.6.1.i386.rpm
+	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/gtksourceview-1.0.1-0.ximian.6.1.i386.rpm
+	http://www.go-mono.com/archive/1.0.6/redhat-9-i386/gecko-sharp-0.6-1.ximian.6.1.i386.rpm
+	ftp://ftp.ximian.com/pub/ximian-evolution/redhat-9-i386/libgal2.0_6-1.99.11-0.ximian.6.1.i386.rpm
+}
 
-# Download the stock rpms if they don't exist already and then extract them
+
+# Download the sotck and custom rpms if they don't exist already and then extract them
 cd $opts(external_rpms)
-foreach rpm $external_rpms_list {
+foreach rpm [ concat $external_rpms_list $custom_rpms_list ] {
 
 	if { ![file exists [file tail $rpm]] } {
 		puts "Downloading: $rpm";
 		catch { exec wget $rpm }
+
+		# If it still doesn't exists, die
+		if { ![file exists [file tail $rpm]] } {
+			puts "Failed to download: $rpm"
+			exit 1
+		}
+
 	} else {
 		#puts "File already exists!"
 	}
@@ -159,6 +183,7 @@ foreach rpm $external_rpms_list {
 #  The first option is a directory of where to look for the rpms
 #    It will pick a subdirectory with the best latest version
 #    and then glob the files beginning with the second arg (list)
+
 
 foreach {base rpmList} \
     [list $opts(mono_rpms)/x86/mono-1.1/ {
@@ -181,6 +206,12 @@ foreach {base rpmList} \
 	ikvm
     } $opts(mono_rpms)/noarch/monodoc {
 	monodoc
+    } $opts(mono_rpms)/noarch/monodevelop/ {
+	monodevelop
+    } $opts(mono_rpms)/noarch/gecko-sharp-2.0/ {
+	gecko-sharp-2.0
+    } $opts(mono_rpms)/noarch/gtksourceview-sharp-2.0/ {
+	gtksourceview-sharp-2.0
     } $opts(mono_rpms)/suse-93-i586/gtk-sharp-2.0/ {
 	gtk-sharp2
     }] {
@@ -230,10 +261,12 @@ file rename etc usr/etc
 
 # Disable monodevelop for now
 # monodevelop
+# Why?
 set lista {
     monodoc mod webshot mcs asp-state dbsessmgr mod-mono-server xsp
     resgen makecert mbas monodocer monodocs2html monodocs2slashdoc
     gconfsharp2-schemagen gapi-codegen gapi2-codegen gapi2-fixup gapi2-parser
+    monodevelop
 }
 
 foreach f [glob $p/usr/lib/pkgconfig/*.pc] {
@@ -285,7 +318,8 @@ file copy -force $p/../projects/mono/License.txt $p/usr/share/doc
 # Get the readme for this version if it's there, otherwise don't worry about it
 if { [ catch { exec wget http://go-mono.com/archive/$version -o $p/usr/share/doc/Readme.txt } ] } {
 	# If there was an error, zero out the Readme file
-	maui::file::write $p/usr/share/doc/Readme.txt ""
+	maui::file::write $p/usr/share/doc/Readme.txt "No release notes for this build..."
+	maui::file::write $p/usr/share/doc/Readme.txt $packages_used_text
 
 }
 
