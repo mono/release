@@ -21,7 +21,7 @@ if [ ! x$snapshot_rev == x ]; then
 	rev_arg="-r $snapshot_rev"
 fi
 
-SVNEXPORT="svn export -q $ref_arg"
+SVNEXPORT="svn export -q $rev_arg"
 MONO_ROOT="svn+ssh://distro@mono-cvs.ximian.com/source"
 MD_ROOT="svn+ssh://distro@mono-cvs.ximian.com/svn/monodevelop"
 

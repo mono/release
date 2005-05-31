@@ -1,0 +1,4 @@
+cd packages
+rsync -Cavz -e ssh . go-mono.com:go-mono/download
+ssh go-mono.com "release/website/mk-index.sh ~/go-mono/download/"
+ssh go-mono.com "release/website/mk-oc.sh    ~/go-mono/download/ official"

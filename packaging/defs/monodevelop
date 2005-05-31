@@ -1,11 +1,11 @@
 BUILD_HOSTS=(
-	# needs to be an rh system for packaging sanity
-	fedora-3-i386
+	suse-93-i586
 )
 
 USE_HOSTS=(
 	fedora-3-i386
 	nld-9-i586
+	suse-92-i586
 	suse-93-i586
 	suse-93-x86_64
 )
