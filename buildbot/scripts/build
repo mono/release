@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 
 . $HOME/buildbot-config
 . shared-vars

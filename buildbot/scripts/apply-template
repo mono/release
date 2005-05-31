@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/python
 
 """Usage: python make-final-html.py template content output"""
     
