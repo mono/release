@@ -1,0 +1,34 @@
+BUILD_HOSTS=(
+	nld-9-i586
+)
+
+USE_HOSTS=(
+	fedora-3-i386
+	nld-9-i586
+	nld-9-x86_64
+	redhat-9-i386
+	rhel-3-i386
+	rhel-4-i386
+	sles-9-i586
+	sles-9-x86_64
+	suse-92-i586
+	suse-93-i586
+	suse-93-x86_64
+)
+
+MONO_DEPS=(
+	mono-1.1
+	gtk-sharp-2.0
+	monodoc
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH="trunk/mono-tools"
+RELEASE_PATH="tags/mono-[[version]]/mono-tools"
+
+get_tarball () {
+	msvn_tar $1
+}
