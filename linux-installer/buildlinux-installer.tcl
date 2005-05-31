@@ -54,7 +54,7 @@ file mkdir $opts(buildroot)
 file delete -force $opts(buildroot)/usr $opts(buildroot)/etc
 
 file delete -force $prefix/output/packages_used.txt
-set packages_used_text "RPMS used to create this build:\n"
+set packages_used_text "RPMS used to create this build:\n\n"
 
 namespace eval maui::util {
     proc substituteParametersInFile {filename substitutionParams} {
@@ -64,14 +64,6 @@ namespace eval maui::util {
 
     proc substituteParameters {text substitutionParams} {
         return [string map $substitutionParams $text]
-        set result {}
-        foreach line [split $text \n] {
-            foreach {name value} $substitutionParams {
-                regsub -all $name $line $value line
-            }
-            lappend result $line
-        }
-	return [join $result \n]
     }
 }
 
@@ -247,7 +239,11 @@ foreach d [list 1.0 2.0 gtk-sharp gecko-sharp] {
 	    continue
 	}
 	set target [file readlink $f]
+	puts "-------------------------";
+	puts "Start target: $target";
 	set target ../[string range $target [string first gac $target] end]
+	puts "End target: $target";
+	puts "-------------------------";
 	file delete $f
 	puts "$f $target"
 	#file link $f $target                                                                                                                                                                                 
@@ -316,10 +312,10 @@ file copy -force $p/../projects/mono/License.txt $p/usr/share/doc
 # Need to figure out another way to get this version specific file...
 #file copy -force $p/../projects/mono/Readme-1.1.7.txt $p/usr/share/doc/Readme.txt
 # Get the readme for this version if it's there, otherwise don't worry about it
-if { [ catch { exec wget http://go-mono.com/archive/$version -o $p/usr/share/doc/Readme.txt } ] } {
+if { [ catch { exec wget http://go-mono.com/archive/$version -O $p/usr/share/doc/Readme.txt } ] } {
 	# If there was an error, zero out the Readme file
 	maui::file::write $p/usr/share/doc/Readme.txt "No release notes for this build..."
-	maui::file::write $p/usr/share/doc/Readme.txt $packages_used_text
+	maui::file::write $p/usr/share/doc/Readme.txt "Visit http://go-mono.com/archive/1.1.7 for release details\n\n$packages_used_text"
 
 }
 

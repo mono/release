@@ -8,4 +8,4 @@ export PKG_CONFIG_PATH=$MONO_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
 export LD_LIBRARY_PATH=$MONO_PREFIX/lib:$MONO_PREFIX/lib/monodoc:$LD_LIBRARY_PATH
 export PATH=$MONO_PREFIX/bin:$PATH
 
-exec @@BITROCK_MONO_ROOTDIR@@/bin/mono.bin "$@"
+exec @@BITROCK_MONO_ROOTDIR@@/bin/wrapper.bin "$@"

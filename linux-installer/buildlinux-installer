@@ -1,145 +1,509 @@
-#!/bin/sh
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use File::Basename;
+use File::Path;
+use File::Copy;
+use Cwd qw( abs_path cwd );
+
+use File::Slurp;
 
 # This is a test run... but this should be rewritten to to what the 
 #  corresponding tcl script does if the tcl gets too difficult to maintain
 
-DOWNLOAD_URL=http://primates.ximian.com/~wberrier/linux-installer
-DOWNLOAD_URL=http://164.99.120.153/linux-installer
+
+# TODO:(After this script obsoletes the tcl script...
+#  Make sure that if a version of a package is found that matches the version passed in, use it instead... this only makes sense for mono opackages though... nothing else... in fact, strict version checking only makes sense for mono, for example, if you didn't have the packages locally, and you wanted to download them.
+
+# TODO2: Go through each of the binaries and make sure you can execute them!  (For example, boo doesn't work either...)
+
+# BOO Syntax highlighting is going to take some more porting... look at this file: opt/gnome/share/gtksourceview-1.0/language-specs/boo.lang for steps on how to do this
+
+#DOWNLOAD_URL=http://primates.ximian.com/~wberrier/linux-installer
+my $DOWNLOAD_URL = "http://localhost/linux-installer";
+
+my $prefix = cwd();
+
+my $buildroot = "$prefix/build";
+my $external_rpms = "$prefix/thirdparty/external_rpms";
+my $mono_rpms = "$prefix/../packaging/packages";
+
+my @external_rpms_list = qw(
+	http://fr2.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/libstdc++-3.2.2-5.i386.rpm
+	http://fr2.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/linc-1.0.1-1.i386.rpm
+	http://fr.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/pkgconfig-0.14.0-3.i386.rpm
+);
 
 
-cleanUp()
-{
-	# Why remove these?	
-	rm -Rf thirdparty/tarballs/*
+my @custom_rpms_list = qw(
+	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/libgtkhtml3.0_4-3.0.10-0.ximian.6.1.i386.rpm
+	http://www.go-mono.com/archive/1.0.6/redhat-9-i386/gtksourceview-sharp-0.5-1.ximian.6.1.i386.rpm
+	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/gtksourceview-1.0.1-0.ximian.6.1.i386.rpm
+	http://www.go-mono.com/archive/1.0.6/redhat-9-i386/gecko-sharp-0.6-1.ximian.6.1.i386.rpm
+	ftp://ftp.ximian.com/pub/ximian-evolution/redhat-9-i386/libgal2.0_6-1.99.11-0.ximian.6.1.i386.rpm
+);
 
-	rm -Rf build/*
-	rm -f mono-$MONO_VERSION-installer.bin
-}
+# Hash of base pathes mapping to an array of rpms
+my %local_rpms = (
+		# No mono-tools for now... next release
+		"$mono_rpms/x86/mono-1.1" => [ qw(
+			mono-extras mono-jscript mono-ikvm mono-core
+			mono-devel mono-winforms
+			bytefx-data-mysql mono-basic
+			mono-locale-extras mono-data
+			mono-complete ibm-data-db2 mono-web
+			)],
+		"$mono_rpms/redhat-9-i386/mod_mono" =>  [ qw(
+			mod_mono
+			)],
+		"$mono_rpms/redhat-9-i386/gtk-sharp" => [ qw(
+			gtk-sharp
+			)],
+		"$mono_rpms/redhat-9-i386/libgdiplus-1.1" => [ qw(
+			libgdiplus 
+			)], 
+		"$mono_rpms/noarch/boo" => [ qw(
+			boo
+			)],
+		"$mono_rpms/noarch/xsp" => [ qw(
+			xsp
+			)],
+		"$mono_rpms/noarch/ikvm" => [ qw(
+			ikvm
+			)],
+		"$mono_rpms/noarch/monodoc" => [ qw(
+			monodoc
+			)], 
+		"$mono_rpms/noarch/monodevelop" => [ qw(
+			monodevelop
+			)],
+		"$mono_rpms/noarch/gecko-sharp-2.0" => [ qw(
+			gecko-sharp-2.0
+			)],
+		"$mono_rpms/noarch/gtksourceview-sharp-2.0" => [ qw(
+			gtksourceview-sharp-2.0
+			)],
+		"$mono_rpms/suse-93-i586/gtk-sharp-2.0" => [ qw(
+			gtk-sharp2
+			)]
+	);
+
+
+my $debug = 0;
+
+my $readme_text;
+my $packages_used_text = "RPMS used to create this build:\n\n";
+
+# Version passed in from the command line
+my $mono_version = shift;
 
 # Argument checking...
-if [ -z $1 ] || [ -z $2 ]; then
-	echo ""
-	echo "Usage: buildlinux-installer <version> <mode>"
-	echo " where version is the mono release version (Ex: 1.1.7-1)"
-	echo " where mode can be either web or local"
-	echo ""
-	echo " local: pulls packages off the local box"
-	echo " web: tries to download them"
-	echo ""
-	exit 1
-fi
+unless($mono_version) {
+	print "";
+	print "Usage: buildlinux-installer <mono release version>\n";
+	print "  Example: buildlinux-installer 1.1.7-1\n";
+	print "";
 
-cleanUp
+	exit 1;
+}
 
-export MONO_VERSION=$1
-MODE=$2
-OUTPUT=~/installbuilder-2.4.1/output/mono-$MONO_VERSION-installer.bin
-
-CWD=`pwd`
-
-# Clean up...
+my $mono_installer_output = "$ENV{HOME}/installbuilder-2.4.1/output/mono-$mono_version-installer.bin";
 
 # check for installer and install if it isn't there
-if [ ! -e $HOME/installbuilder-2.4.1/bin/builder ]; then
+if ( ! -e "$ENV{HOME}/installbuilder-2.4.1/bin/builder" ) {
 	
-	INSTALLER=installbuilder-multiplatform-2.4.1-linux-installer.bin
+	my $installer = "installbuilder-multiplatform-2.4.1-linux-installer.bin";
 
-	# Works for now... doesn't redownload if not needed
-	echo "Downloading the Bitrock installer..."
-	wget -c $DOWNLOAD_URL/bitrock/$INSTALLER -O /tmp/$INSTALLER
-	chmod 755 /tmp/$INSTALLER
+	# Doesn't redownload if not needed
+	print "Downloading the Bitrock installer...\n";
+	system("wget -c $DOWNLOAD_URL/bitrock/$installer -O /tmp/$installer");
+	chmod (0755, "/tmp/$installer");
 
-	echo "Installing the Bitrock installer..."
-	/tmp/$INSTALLER --mode unattended
-fi
+	print "Installing the Bitrock installer...\n";
+	system("/tmp/$installer --mode unattended");
+}
 
+if ( ! -e $buildroot ) {
+	mkdir $buildroot;
+}
 
-# start collecting rpms... 
+cleanUp();
 
-if [ $MODE == "local" ]; then
-	echo Getting packages from the local disk...
-	echo "local Mode not suported yet"
-	exit 1
-elif [ $MODE == "web" ]; then
-	echo Downloading the packages from some obscure place...
+# Download the stock and custom rpms if they don't exist already and then extract them
+my $cwd = cwd();
+chdir ($external_rpms);
 
-	# This is kinda ugly for the moment, but it's the idea that counts
+foreach my $url (@external_rpms_list, @custom_rpms_list) {
 
-	# Collect packages
-	cd thirdparty/tarballs
+	# Get the filename portion from the url
+	my $file = File::Basename::basename($url);
 
-	RPM_LIST=(
-		ftp.ximian.com/pub/mono/redhat-9-i386
-		ftp.ximian.com/pub/mono/redhat-9-i386/linc-1.0.1-1.i386.rpm
-		ftp.ximian.com/pub/mono/redhat-9-i386/pkgconfig-0.14.0-3.i386.rpm
-		ftp.ximian.com/pub/mono/redhat-9-i386/libstdc++-3.2.2-5.i386.rpm
-		ftp.ximian.com/pub/mono/redhat-9-i386/libgal2.0_6-1.99.11-0.ximian.6.1.i386.rpm
-		www.go-mono.com/archive/1.0.5/redhat-9-i386/libgtkhtml3.0_4-3.0.10-0.ximian.6.1.i386.rpm
-		www.go-mono.com/archive/1.0.5/redhat-9-i386/gtksourceview-1.0.1-0.ximian.6.1.i386.rpm
-		www.go-mono.com/archive/1.0.6/redhat-9-i386/gtksourceview-sharp-0.5-1.ximian.6.1.i386.rpm
-		www.go-mono.com/archive/1.0.6/redhat-9-i386/cairo-devel-0.3.0-0.ximian.6.1.i386.rpm
-		www.go-mono.com/archive/1.0.6/redhat-9-i386/libpixman-0.1.2-1.ximian.6.1.i386.rpm
-		www.go-mono.com/archive/1.0.6/redhat-9-i386/gecko-sharp-0.6-1.ximian.6.1.i386.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-extras-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-jscript-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/gtk-sharp-gapi-1.0.9-0.redhat9.novell.i386.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-ikvm-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-core-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-devel-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-winforms-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-data-sqlite-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/bytefx-data-mysql-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-basic-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-data-sybase-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/xsp-1.0.9-0.novell.noarch.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-locale-extras-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/monodoc-1.0.6-0.novell.noarch.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/gtk-sharp-1.0.9-0.redhat9.novell.i386.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-data-postgresql-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-complete-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-data-oracle-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mod_mono-1.0.9-0.redhat9.novell.i386.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/libgdiplus-1.1.7-0.redhat9.novell.i386.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/ibm-data-db2-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-web-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/redhat-9-i386/mono-data-1.1.7-1.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/suse-93-i586/gtk-sharp2-1.9.3.1-0.suse93.novell.i586.rpm
-		www.go-mono.com/archive/1.1.7/suse-93-i586/gtk-sharp2-gapi-1.9.3.1-0.suse93.novell.i586.rpm
-	)
+	if ( ! -e $file ) {
+		print "Downloading: $file\n";
 
-	# Create the dir structure
-	mkdir -p ftp.ximian.com/pub/mono/redhat-9-i386
-	mkdir -p www.go-mono.com/archive/1.0.5/redhat-9-i386
-	mkdir -p www.go-mono.com/archive/1.0.6/redhat-9-i386
-	mkdir -p www.go-mono.com/archive/1.1.7/redhat-9-i386
-	mkdir -p www.go-mono.com/archive/1.1.7/suse-93-i586
+		system("wget $url");
 
-	for file in ${RPM_LIST[@]}; do
-		wget -c $DOWNLOAD_URL/$file -O $file
-	done
+		# If it still doesn't exists, die
+		if ( ! -e $file ) {
+			print "Failed to download: $file\n";
+			exit 1;
+		}
 
-	cd $CWD
-
-else
-	echo "Unknown mode: $1 (web or local)"
-	exit 1;
-fi
+	}
+	
+	extract(abs_path($file));
+}
 
 
+foreach my $base (keys %local_rpms) {
 
-# Call the tcl script to build
-./rpm-miguel.tcl
+	# Send the base and an array of rpms
+	extractRPMs($base, @{ $local_rpms{$base} } );
+}
 
+# Keep record of which packages went into this build...
+write_file("$prefix/output/packages_used.txt", $packages_used_text);
+
+
+# The tcl version of the this script got the "normalized" full path to the file... this should work
+my $p = $buildroot;
+
+#  Binaries that need a wrapper in order to run in a different location
+#   Need a better way to do this... template needs substitution...
+my @wrapped_elf_binaries = qw( mono monodiet monodis monograph );
+
+foreach my $file (@wrapped_elf_binaries) {
+	rename("$buildroot/usr/bin/$file", "$buildroot/usr/bin/$file.bin");
+	copy("$p/../wrapper.template", "$buildroot/usr/bin/$file");
+	# For some reason, the copy doesn't preserve the permissions...
+	chmod(0755, "$buildroot/usr/bin/$file");
+
+	substituteParametersInFile("$buildroot/usr/bin/$file", 'wrapper.bin' => "$file.bin");
+}
+
+
+# Other permissions that do not get set... gapi_codegen.exe, gapi-fixup.exe, #does this matter?  Probably... because there's that one feature which will invoke mono on certain types of binaries... this should probably happen in the rpm though so it gets fixed in both places...
+
+# Relativize the symbolic links
+foreach my $d (qw(1.0 2.0 gtk-sharp gecko-sharp)) {
+
+	if(! -e "$p/usr/lib/mono/$d") {
+		print "Skipping $d\n";
+	} else {
+
+		chdir "$p/usr/lib/mono/$d";
+
+		foreach my $f (glob "*.dll") {
+
+			# If it's not a symbolic link, skip it
+			if(! -l $f) {
+				print "Skipping $f\n";
+			} else {
+	
+				my $target = readlink $f;
+
+				print "Start target: $target\n" if ($debug);
+
+				# Match from "gac" on to the rest of the string
+				$target =~ /(gac.*)/;
+
+				$target = "../$1";
+
+				print "End target: $target\n" if ($debug);
+
+				unlink($f);
+
+				print "$f $target\n";
+
+				# Create the link
+				symlink($target, $f);
+
+			}
+		}
+	}
+}
+
+chdir $p;
+
+# Why was this done...?
+rmtree ("usr/etc");
+rename ("etc", "usr/etc");
+
+
+my @executable_wrappers = qw(
+	monodoc mod webshot mcs asp-state dbsessmgr mod-mono-server xsp
+	resgen makecert mbas monodocer monodocs2html monodocs2slashdoc
+	gconfsharp2-schemagen gapi-codegen gapi2-codegen gapi2-fixup gapi2-parser
+	monodevelop
+
+	xsd 
+	booc booi booish 
+	ikvm ikvmc ikvmstub 
+);
+
+# Location substitution for the pkgconfig files...
+foreach my $f (glob "$p/usr/lib/pkgconfig/*.pc") {
+
+	substituteParametersInFile($f, '/usr' => '@@BITROCK_MONO_ROOTDIR@@');
+	print "Substituting $f\n";
+}
+
+# Get list .net executables, check if there's a wrapper, and if so, add it to the list to get substituted
+foreach my $f ((glob "$p/usr/bin/*.exe"), (glob "$p/usr/lib/mono/*/*.exe")) {
+
+	my $path;
+	my $suffix;
+
+	($f, $path, $suffix) = &File::Basename::fileparse($f, '\..*$');
+
+	my $num_found;
+
+	# if the wrapper exists... add it to the list...
+	if(-e "$p/usr/bin/$f") {
+		# Add it to the list if it's not there already
+		unless($num_found = grep(/$f/, @executable_wrappers)) {
+			print "Adding $f to list of executables!\n";
+			push @executable_wrappers, $f;
+		}
+	}
+}
+
+foreach my $f (@executable_wrappers) {
+	
+	if(-e "$p/usr/bin/$f") {
+		substituteParametersInFile("$p/usr/bin/$f", 
+			'/usr' 			=> '@@BITROCK_MONO_ROOTDIR@@', 
+			'exec mono' 		=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono',
+			'mono --debug mod.exe' 	=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono --debug mod.exe');
+		print "Substituting $f\n";
+	} else {
+		print "***Not found $f***\n";
+	}
+}
+
+# Add some extra settings for specific scripts...
+# 	(What other locations will this need to happen?)
+substituteParametersInFile("$p/usr/bin/gacutil",
+	'gacutil.exe' =>  '"gacutil.exe -gacdir @@BITROCK_MONO_ROOTDIR@@"');
+
+#substituteParametersInFile("$p/usr/lib/mono/gac/monodoc/1.0.0.0__0738eb9f132ed756/monodoc.dll.config",
+# This glob should only return one file...
+substituteParametersInFile( (glob "$p/usr/lib/mono/gac/monodoc/1.0*/monodoc.dll.config"),
+	'/usr' => '@@BITROCK_MONO_ROOTDIR@@');
+
+# This was commented out in the original script...
+#maui::util::substituteParametersInFile $p/usr/lib/mono/gac/gtkhtml-sharp/1.0.0.0__35e10195dab3c99f/gtkhtml-sharp.dll.config [list .4 .2]
+#maui::file::write $p/usr/bin/setenv.sh "export PATH=\$PATH:$p/bin/ export LD_LIBRARY_PATH=$p/lib:$p/lib/monodoc"
+
+# Add some sections for gtksourceview to integrate boo
+
+my %boo_config_file_additions = (
+	"$p/usr/share/mime-info/gtksourceview-sharp.keys" => 
+"text/x-boo
+	category=Software Development/Source Code
+	can_be_executable=true
+	default_action_type=application
+	description=boo source code
+	short_list_application_ids_for_novice_user_level=monodevelop,gedit
+
+",
+	"$p/usr/share/mime-info/gtksourceview-sharp.mime" => 
+"text/x-boo
+	ext: boo
+"
+
+	);
+
+appendTextToFiles(%boo_config_file_additions);
+# TODO: Not working quite yet...
+#$readme_text .= "\nYou may need to run 'update-mime-database /usr/share/mime' in order to fully integrate boo syntax highlighting.\n";
+
+
+copy("$p/../projects/mono.xml", $p);
+substituteParametersInFile("$p/mono.xml", '@@VERSION@@' => $mono_version);
+
+copy("$p/../projects/mono/readme.gif", "$p/usr/share/pixmaps");
+copy("$p/../projects/mono/monourl.gif", "$p/usr/share/pixmaps");
+copy("$p/../projects/mono/monotm48x48.png", "$p/usr/share/pixmaps");
+copy("$p/../projects/mono/License.txt", "$p/usr/share/doc");
+# Need to figure out another way to get this version specific file...
+#file copy -force $p/../projects/mono/Readme-1.1.7.txt $p/usr/share/doc/Readme.txt
+# Get the readme for this version if it's there, otherwise don't worry about it
+#system("wget http://go-mono.com/archive/$mono_version -O $p/usr/share/doc/Readme.txt");
+if(!-e "$p/usr/share/doc/Readme.txt") {
+	# If there was an error, zero out the Readme file
+	#$readme_text = "No release notes for this build...";
+	$readme_text .= "\nVisit http://go-mono.com/archive/1.1.7 for release details\n\n$packages_used_text.\n";
+
+	write_file("$p/usr/share/doc/Readme.txt", $readme_text);
+
+	# Just so some of the Readme makes sense...
+	substituteParametersInFile("$p/usr/share/doc/Readme.txt",
+			'/usr' => '@@BITROCK_MONO_ROOTDIR@@');
+
+}
+
+mkdir "$p/html";
+# TODO: Here's another file that changes with each release... need to update it manually for now
+copy("$p/../projects/mono/html/index.html", "$p/html");
+copy("$p/../projects/mono/html/mono.css", "$p/html");
+copy("$p/../projects/mono/html/bitrock.png", "$p/html");
+
+# Generate some stuff in mono.xml
+my $result;
+
+# Get a list of files to put in the package...
+foreach my $item (@executable_wrappers, @wrapped_elf_binaries) {
+	$result .= "*/bin/$item;";
+}
+
+$result .= "*/monodoc.dll.config;*/*.pc";
+$result .= ";*share/doc/Readme.txt";
+
+substituteParametersInFile("$p/mono.xml",
+    '@@SUBST_FILES@@' => $result);
+
+# Fix RPM directory permissions (chmod to 0755)
+recurseDirectories("$p/usr/");
+
+# Run the install
+system("$ENV{HOME}/installbuilder-2.4.1/bin/builder build $p/mono.xml");
+
+# Move file to the current
 
 # If the build was successful, clean up
-if [ -e $OUTPUT ]; then
-
-	cleanUp
+if ( -e $mono_installer_output ) {
 
 	# Move the install binary to the current directory
-	mv $OUTPUT .
+	rename("$mono_installer_output", "$prefix/output/" . basename($mono_installer_output));
+
+}
+
+################ Helper Subroutines ##############################
+
+sub cleanUp
+{
+	# This probably won't be necessary... oh well...
+	unlink("$ENV{HOME}/installbuilder-2.4.1/output/mono-$mono_version-installer.bin");
+
+	unlink("$prefix/output/mono-$mono_version-installer.bin");
+	# Takes a reference to a list of files/paths...
+	rmtree([glob "$buildroot/*"]);
+	unlink ("$prefix/output/packages_used.txt");
+}
+
+sub extract
+{
+
+	my $file = shift;
+
+	my $cwd = cwd();
+
+	chdir($buildroot);
+
+	system("ls");
+
+	print "Extracting $file\n";
+	$packages_used_text .= basename($file) . "\n";
+	system("rpm2cpio $file | cpio --extract --make-directories");
+	# Verbose...
+	#system("rpm2cpio $file | cpio -v --extract --make-directories");
+
+	# Go back to the working directory...
+	chdir $cwd;
+}
+
+# TODO:  Can we ignore svn packages?  Or, do we need to match as best as we can...
+sub extractRPMs
+{
+
+	my $base = shift;
+	my @rpms = @_;
+
+	my $package_version;
+
+	foreach my $rpm (@rpms) {
+
+		# If the exact version doesn't exist, go for the latest...
+		if(-e "$base/$mono_version" ) {
+			$package_version = $mono_version;
+		} else {
+			$package_version = `ls -vr $base | head -n1`;
+			chomp $package_version;
+		}
+
+		foreach my $file (glob "$base/$package_version/$rpm*") {
+			extract ($file);
+		}
+
+	}
+}
 
 
-fi
+sub substituteParametersInFile
+{
+	my $file = shift;
+	my %parameters = @_;
 
+	my $text = read_file($file);
+
+	$text = substituteParameters($text, %parameters);
+
+	write_file($file, $text);
+
+}
+
+# First arg: text
+# Second arg, hash of key value pairs to swap in the text
+sub substituteParameters
+{
+
+	my $text = shift;
+
+	my %parameters = @_;
+
+	foreach my $old (keys %parameters) {
+		# In the text, substitute the key with the value from the hash
+		$text =~ s/$old/$parameters{$old}/g;
+	}
+
+	return $text;
+
+}
+
+# Recursively change directores to 755
+sub recurseDirectories
+{
+	my $directory = shift;
+
+	chmod(0755, $directory);
+
+	my @files = glob "$directory/*";
+
+	foreach my $file (@files) { 
+		if(-d $file) {
+			recurseDirectories($file);
+		# If it ends in .exe, make it executable (This is a hack for now, because the rpms should already have these permissions set...)
+		} elsif ( $file =~ /\.exe$/) {
+			chmod(0755, $file);
+		}
+	}
+}
+
+
+
+sub appendTextToFiles
+{
+	my %file_text_map = @_;
+
+	foreach my $file (keys %file_text_map) {
+		print "Adding text to: $file\n";
+		my $text = read_file("$file");
+		$text .= $file_text_map{$file};
+
+		write_file($file, $text);
+	}
+}
 
