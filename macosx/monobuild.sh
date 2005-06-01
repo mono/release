@@ -20,7 +20,7 @@ cat <<EOF
         -m <mono version> specifies version of mono to build
         -s <svn directory> build from svn checked out sources
 	-M make (default yes)
-	-C make clean (default no)
+	-C make clean (default yes)
 	-c run configure (default yes)
 	-i make install (default yes)
 	-h this message
@@ -29,7 +29,7 @@ cat <<EOF
         buildMono.sh -m 1.1.7 
         buildMono.sh -m nightly -s /tmp/mono
 EOF
-exit
+exit 1
 }
 
 while getopts hm:piMCcRs:oO option
@@ -47,13 +47,13 @@ do
 		    PACKAGEONLY="YES"
 		fi
  		if [ $option == "M" ]; then
- 			MAKE="YES"	
+ 			MAKE="NO"	
  		fi
  		if [ $option == "C" ]; then
- 			CLEAN="YES"	
+ 			CLEAN="NO"	
  		fi
 		if [ $option == "c" ]; then
-			CONFIGURE="YES"	
+			CONFIGURE="NO"	
 		fi
 		if [ $option == "R" ]; then
 			REMOVE="YES"	
@@ -72,13 +72,17 @@ do
 			else
 				SVN="YES"
 				SVNDIR=$OPTARG
+				if [ ! -d ${SVNDIR} ]; then
+					echo "The ${SVNDIR} does not exist"
+					usage
+				fi
 			fi
 		fi
 done
 
-if test x$MONOVERSION = xNO; then
+if [ ${MONOVERSION} == "NO" ]; then
     echo Please specify a version with -m VERSION
-    exit 1
+    usage
 fi
 
 BUILDROOT=/Users/Shared/MonoBuild
@@ -122,15 +126,16 @@ stop()
 
 build()
 {
-        echo Processing $1
+    echo Processing $1
 	cd $1
 	if [ ${CLEAN} == "YES" ]; then
 		make clean >& log.clean || echo $1: clean failed
 	fi
 	if [ ${CONFIGURE} == "YES" ]; then
 		if [ $2 == "mono" ]; then
-		
-			###############################################
+
+#Indentation is off so that files are created correctly		
+###############################################
 #Create gacutil config files specific to OS X
 cat <<EOF > mcs/class/lib/default/System.Drawing.dll.config
 <configuration>
@@ -234,7 +239,7 @@ if [ $SVNDIR == "NO" ]; then
 	echo "Done with ${NAME}"
 else
 	export PREFIX=/Library/Frameworks/Mono.framework/Versions/Current
-    export NEW_PREFIX=/Library/Frameworks/Mono.framework/Versions/nightly
+    export NEW_PREFIX=/Library/Frameworks/Mono.framework/Versions/${MONOVERSION}
 
     export PKG_CONFIG_PATH=/Library/Frameworks/Mono.framework/Library/pkgconfig
     export PATH=${PREFIX}/bin:/usr/X11R6/bin:$PATH
