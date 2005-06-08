@@ -18,7 +18,6 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono-1.1
-	gtk-sharp
 )
 
 get_destroot () {
