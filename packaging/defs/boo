@@ -27,6 +27,8 @@ get_destroot () {
 get_tarball () {
 	# nop, we don't build their code, we get a binary
 	# only tarball
-	
-	return 0;
+	#return 0;
+
+	# Download it
+	wget http://primates.ximian.com/~wberrier/packaging/sources/boo/boo-$version.tar.gz -O sources/boo/boo-$version.tar.gz
 }
