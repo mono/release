@@ -10,19 +10,11 @@ use Cwd qw( abs_path cwd );
 
 use File::Slurp;
 
-# This is a test run... but this should be rewritten to to what the 
-#  corresponding tcl script does if the tcl gets too difficult to maintain
-
-
-# TODO:(After this script obsoletes the tcl script...
-#  Make sure that if a version of a package is found that matches the version passed in, use it instead... this only makes sense for mono opackages though... nothing else... in fact, strict version checking only makes sense for mono, for example, if you didn't have the packages locally, and you wanted to download them.
-
-# TODO2: Go through each of the binaries and make sure you can execute them!  (For example, boo doesn't work either...)
+# TODO: Go through each of the binaries and make sure you can execute them!  (For example, boo doesn't work either...)
 
 # BOO Syntax highlighting is going to take some more porting... look at this file: opt/gnome/share/gtksourceview-1.0/language-specs/boo.lang for steps on how to do this
 
-#DOWNLOAD_URL=http://primates.ximian.com/~wberrier/linux-installer
-my $DOWNLOAD_URL = "http://localhost/linux-installer";
+my DOWNLOAD_URL = "http://primates.ximian.com/~wberrier/linux-installer";
 
 my $prefix = cwd();
 
