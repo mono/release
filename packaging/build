@@ -27,7 +27,8 @@ mkdir -p `dirname $LOGFILE`
 
 usage()
 {
-	echo "Usage is: build configuration package version"
+	echo "Usage is: build configuration package version <release>"
+	echo "	<release> is optional"
 }
 
 if test x$version = x; then
