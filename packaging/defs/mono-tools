@@ -27,7 +27,7 @@ get_destroot () {
 }
 
 HEAD_PATH="trunk/mono-tools"
-RELEASE_PATH="tags/mono-[[version]]/mono-tools"
+RELEASE_PATH="tags/mono-tools-[[version]]"
 
 get_tarball () {
 	msvn_tar $1
