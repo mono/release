@@ -14,7 +14,7 @@ use File::Slurp;
 
 # BOO Syntax highlighting is going to take some more porting... look at this file: opt/gnome/share/gtksourceview-1.0/language-specs/boo.lang for steps on how to do this
 
-my DOWNLOAD_URL = "http://primates.ximian.com/~wberrier/linux-installer";
+my $DOWNLOAD_URL = "http://primates.ximian.com/~wberrier/linux-installer";
 
 my $prefix = cwd();
 
@@ -39,16 +39,12 @@ my @custom_rpms_list = qw(
 
 # Hash of base pathes mapping to an array of rpms
 my %local_rpms = (
-		# No mono-tools for now... next release
 		"$mono_rpms/x86/mono-1.1" => [ qw(
 			mono-extras mono-jscript mono-ikvm mono-core
 			mono-devel mono-winforms
 			bytefx-data-mysql mono-basic
 			mono-locale-extras mono-data
 			mono-complete ibm-data-db2 mono-web
-			)],
-		"$mono_rpms/redhat-9-i386/mod_mono" =>  [ qw(
-			mod_mono
 			)],
 		"$mono_rpms/redhat-9-i386/gtk-sharp" => [ qw(
 			gtk-sharp
@@ -67,6 +63,9 @@ my %local_rpms = (
 			)],
 		"$mono_rpms/noarch/monodoc" => [ qw(
 			monodoc
+			)], 
+		"$mono_rpms/noarch/mono-tools" => [ qw(
+			mono-tools
 			)], 
 		"$mono_rpms/noarch/monodevelop" => [ qw(
 			monodevelop
