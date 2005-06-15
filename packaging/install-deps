@@ -42,7 +42,7 @@ scp ${RPMS[@]} $target_host:$jaildir/tmp/install-packages
 
 ./jail-do $TARGET "sh -x -c \"/etc/init.d/rcd restart\""
 ./jail-do $TARGET "sh -x -c \"rug rm -y $rpm_names\""
-./jail-do $TARGET "sh -x -c \"rug in -y /tmp/install-packages/*.rpm\""
+./jail-do $TARGET "sh -x -c \"rug in -y -r /tmp/install-packages/*.rpm\""
 #./jail-do $TARGET "sh -x -c \"/etc/init.d/rcd stop\""
 #./jail-do $TARGET "sh -x -c \"rm -rf /tmp/install-packages\""
 

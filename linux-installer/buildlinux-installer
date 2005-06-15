@@ -326,7 +326,7 @@ copy("$p/../projects/mono/License.txt", "$p/usr/share/doc");
 if(!-e "$p/usr/share/doc/Readme.txt") {
 	# If there was an error, zero out the Readme file
 	#$readme_text = "No release notes for this build...";
-	$readme_text .= "\nVisit http://go-mono.com/archive/1.1.7 for release details\n\n$packages_used_text.\n";
+	$readme_text .= "\nVisit http://go-mono.com/archive/$mono_version for release details\n\n$packages_used_text.\n";
 
 	write_file("$p/usr/share/doc/Readme.txt", $readme_text);
 
