@@ -1,8 +1,8 @@
 cd packages
-rsync -Cavz -e ssh . go-mono.com:go-mono/download
+rsync -Cavz -e ssh . mono-web@go-mono.com:go-mono/download
 cd ../sources
-rsync -Cavz -e ssh . go-mono.com:go-mono/sources
+rsync -Cavz -e ssh . mono-web@go-mono.com:go-mono/sources
 
-ssh go-mono.com "release/website/mk-index.sh   ~/go-mono/download/"
-ssh go-mono.com "release/website/mk-oc.sh      ~/go-mono/download/ official"
-ssh go-mono.com "release/website/mk-sources.sh ~/go-mono/sources/"
+ssh mono-web@go-mono.com "release/website/mk-index.sh   ~/go-mono/download/"
+ssh mono-web@go-mono.com "release/website/mk-oc.sh      ~/go-mono/download/ official"
+ssh mono-web@go-mono.com "release/website/mk-sources.sh ~/go-mono/sources/"
