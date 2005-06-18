@@ -46,6 +46,9 @@ my %local_rpms = (
 			mono-locale-extras mono-data
 			mono-complete ibm-data-db2 mono-web
 			)],
+		"$mono_rpms/redhat-9-i386/mono-debugger" => [ qw(
+			mono-debugger
+			)],
 		"$mono_rpms/redhat-9-i386/gtk-sharp" => [ qw(
 			gtk-sharp
 			)],
@@ -242,21 +245,28 @@ foreach my $f (glob "$p/usr/lib/pkgconfig/*.pc") {
 }
 
 # Get list .net executables, check if there's a wrapper, and if so, add it to the list to get substituted
-foreach my $f ((glob "$p/usr/bin/*.exe"), (glob "$p/usr/lib/mono/*/*.exe")) {
+foreach my $file ((glob "$p/usr/bin/*.exe"), (glob "$p/usr/lib/mono/*/*.exe")) {
 
+	my $name;
 	my $path;
 	my $suffix;
 
-	($f, $path, $suffix) = &File::Basename::fileparse($f, '\..*$');
+	($name, $path, $suffix) = &File::Basename::fileparse($file, '\..*$');
 
 	my $num_found;
 
 	# if the wrapper exists... add it to the list...
-	if(-e "$p/usr/bin/$f") {
+	if(-e "$p/usr/bin/$name") {
 		# Add it to the list if it's not there already
-		unless($num_found = grep(/$f/, @executable_wrappers)) {
-			print "Adding $f to list of executables!\n";
-			push @executable_wrappers, $f;
+		unless($num_found = grep(/$name/, @executable_wrappers)) {
+			print "Adding $name to list of executables!\n";
+			push @executable_wrappers, $name;
+		}
+
+		# If it's in /lib/mono/2.0, add extra env info
+		if($file =~ /lib\/mono\/2\.0/) {
+			print "Adding lib/mono/2.0 env info: $file\n";
+			substituteParametersInFile("$p/usr/bin/$name", 'exec' => 'MONO_PATH=$MONO_PATH:/usr/lib/mono/2.0 exec');
 		}
 	}
 }
@@ -267,7 +277,7 @@ foreach my $f (@executable_wrappers) {
 		substituteParametersInFile("$p/usr/bin/$f", 
 			'/usr' 			=> '@@BITROCK_MONO_ROOTDIR@@', 
 			'exec mono' 		=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono',
-			'mono --debug mod.exe' 	=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono --debug mod.exe');
+			'mono --debug' 	=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono --debug');
 		print "Substituting $f\n";
 	} else {
 		print "***Not found $f***\n";
