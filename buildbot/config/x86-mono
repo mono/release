@@ -1,6 +1,4 @@
-export PATH=/mono/bin:$PATH
-export LD_LIBRARY_PATH=/mono/lib
 lane_name=intel-head-mono
-prefix=/mono
+prefix=$HOME/install
 install=true
 extra_script='sh -x ./update-status 2.0 mono-HEAD-vs-fx-2 || { echo "errors"; exit 1; }' 
