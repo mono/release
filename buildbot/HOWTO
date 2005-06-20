@@ -17,6 +17,8 @@ Sparc		sparcmono	sparc-1.0		builder / builder
 
 AMD64		amd-mono	amd-head lane		builder / builder
 
+Itanium		mono-itanium
+
 
 Q.  How to reconnect a build node?
 
