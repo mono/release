@@ -92,15 +92,27 @@ my $packages_used_text = "RPMS used to create this build:\n\n";
 
 # Version passed in from the command line
 my $mono_version = shift;
+my $mono_release_version = shift;
+$mono_release_version = 0 if(!$mono_release_version);
 
 # Argument checking...
 unless($mono_version) {
 	print "";
-	print "Usage: buildlinux-installer <mono release version>\n";
+	print "Usage: buildlinux-installer <mono version> [<release>]\n";
 	print "  Example: buildlinux-installer 1.1.7-1\n";
+	print "  Example: buildlinux-installer 1.1.8.1 1\n";
 	print "";
 
 	exit 1;
+}
+
+my $output = "$prefix/output/${mono_version}_$mono_release_version/installer/";
+
+if(-e $output) {
+	print "$output already exists... please remove this dir or use the package version\n";
+	exit(1);
+} else {
+	mkpath($output);
 }
 
 my $mono_installer_output = "$ENV{HOME}/installbuilder-2.4.1/output/mono-$mono_version-installer.bin";
@@ -158,7 +170,7 @@ foreach my $base (keys %local_rpms) {
 }
 
 # Keep record of which packages went into this build...
-write_file("$prefix/output/packages_used.txt", $packages_used_text);
+write_file("$output/packages_used.txt", $packages_used_text);
 
 
 # The tcl version of the this script got the "normalized" full path to the file... this should work
@@ -373,12 +385,10 @@ recurseDirectories("$p/usr/");
 system("$ENV{HOME}/installbuilder-2.4.1/bin/builder build $p/mono.xml");
 
 # Move file to the current
-
-# If the build was successful, clean up
 if ( -e $mono_installer_output ) {
 
 	# Move the install binary to the current directory
-	rename("$mono_installer_output", "$prefix/output/" . basename($mono_installer_output));
+	rename("$mono_installer_output", "$output/mono-${mono_version}_$mono_release_version-installer.bin");
 
 }
 
@@ -386,13 +396,11 @@ if ( -e $mono_installer_output ) {
 
 sub cleanUp
 {
-	# This probably won't be necessary... oh well...
-	unlink("$ENV{HOME}/installbuilder-2.4.1/output/mono-$mono_version-installer.bin");
+	#unlink("$output/mono-$mono_version-installer.bin");
+	#unlink("$output/packages_used.txt");
 
-	unlink("$prefix/output/mono-$mono_version-installer.bin");
 	# Takes a reference to a list of files/paths...
 	rmtree([glob "$buildroot/*"]);
-	unlink ("$prefix/output/packages_used.txt");
 }
 
 sub extract
@@ -403,8 +411,6 @@ sub extract
 	my $cwd = cwd();
 
 	chdir($buildroot);
-
-	system("ls");
 
 	print "Extracting $file\n";
 	$packages_used_text .= basename($file) . "\n";

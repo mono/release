@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Build in parallel packages on all BUILD_HOSTS
+

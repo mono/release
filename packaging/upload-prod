@@ -3,6 +3,10 @@ rsync -Cavz -e ssh . mono-web@go-mono.com:go-mono/download
 cd ../sources
 rsync -Cavz -e ssh . mono-web@go-mono.com:go-mono/sources
 
+# Push the installer
+cd ../../linux-installer/output
+rsync -Cavz -e ssh . mono-web@go-mono.com:go-mono/archive
+
 ssh mono-web@go-mono.com "release/website/mk-index.sh   ~/go-mono/download/"
 ssh mono-web@go-mono.com "release/website/mk-oc.sh      ~/go-mono/download/ official"
 ssh mono-web@go-mono.com "release/website/mk-sources.sh ~/go-mono/sources/"
