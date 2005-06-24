@@ -1,4 +1,9 @@
 BUILD_HOSTS=(
+	redhat-9-i386
+	nld-9-x86_64
+)
+
+USE_HOSTS=(
 	fedora-3-i386
 	nld-9-i586
 	nld-9-x86_64
@@ -12,14 +17,12 @@ BUILD_HOSTS=(
 	suse-93-x86_64
 )
 
-USE_HOSTS=(${BUILD_HOSTS[@]})
-
 MONO_DEPS=(
 	mono-1.1
 )
 
 get_destroot () {
-	DEST_ROOT=$DISTRO
+	DEST_ROOT=$ARCH
 }
 
 HEAD_PATH="trunk/debugger"
