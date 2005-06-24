@@ -1,5 +1,8 @@
 #!/bin/sh
 
+version=$1
+shift
+
 rm -f bscripts/*
 for product in $*; do
 	. defs/$product 
@@ -7,7 +10,7 @@ for product in $*; do
 	for target_distro in ${BUILD_HOSTS[@]}; do
 		. conf/$target_distro
 		
-		echo sh build $target_distro $product >> bscripts/$target_host
+		echo sh build $target_distro $product $version >> bscripts/$target_host
 		if echo $hosts | grep -qv $target_host;  then
 			hosts="$hosts $target_host";
 		fi

@@ -1,4 +1,14 @@
 #!/bin/sh
 
-svn ls svn+ssh://mono-cvs.ximian.com/source -v | awk '{print $1}' | sort -nr | head -n1 
+distro=$1
+
+if [ -z $distro ] ; then
+	echo "Usage: ./get-latest-rev <package>"
+	exit 1
+fi
+
+. defs/$distro
+
+
+svn ls svn+ssh://mono-cvs.ximian.com/source/$HEAD_PATH -v | awk '{print $1}' | sort -nr | head -n1 
 
