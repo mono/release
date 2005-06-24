@@ -1,14 +1,19 @@
 #!/bin/sh
 
-distro=$1
+package=$1
 
-if [ -z $distro ] ; then
+if [ -z $package ] ; then
 	echo "Usage: ./get-latest-rev <package>"
 	exit 1
 fi
 
-. defs/$distro
+. defs/$package
 
+if [ "$package" == "monodevelop" ]; then
+	ROOT=svn+ssh://mono-cvs.ximian.com/svn/monodevelop
+else
+	ROOT=svn+ssh://mono-cvs.ximian.com/source
+fi
 
-svn ls svn+ssh://mono-cvs.ximian.com/source/$HEAD_PATH -v | awk '{print $1}' | sort -nr | head -n1 
+svn ls $ROOT/$HEAD_PATH -v | awk '{print $1}' | sort -nr | head -n1 
 
