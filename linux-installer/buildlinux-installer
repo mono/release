@@ -46,7 +46,7 @@ my %local_rpms = (
 			mono-locale-extras mono-data
 			mono-complete ibm-data-db2 mono-web
 			)],
-		"$mono_rpms/redhat-9-i386/mono-debugger" => [ qw(
+		"$mono_rpms/x86/mono-debugger" => [ qw(
 			mono-debugger
 			)],
 		"$mono_rpms/redhat-9-i386/gtk-sharp" => [ qw(
@@ -109,7 +109,7 @@ unless($mono_version) {
 my $output = "$prefix/output/${mono_version}_$mono_release_version/installer/";
 
 if(-e $output) {
-	print "$output already exists... please remove this dir or use the package version\n";
+	print "$output already exists... please remove this dir or bump the package release version\n";
 	exit(1);
 } else {
 	mkpath($output);
@@ -439,6 +439,10 @@ sub extractRPMs
 		} else {
 			$package_version = `ls -vr $base | head -n1`;
 			chomp $package_version;
+
+			if(!$package_version) {
+				die "Couldn't find $base...\n";
+			}
 		}
 
 		foreach my $file (glob "$base/$package_version/$rpm*") {
