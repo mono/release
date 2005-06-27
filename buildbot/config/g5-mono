@@ -1,7 +1,7 @@
 lane_name=ppc-head
-export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/1.0.4/share/aclocal/"
+export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/Current/share/aclocal/"
 
-export PKG_CONFIG_PATH=/usr/lib/pkgconfig:/Library/Frameworks/Mono.framework/Versions/1.0.4/lib/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=/usr/lib/pkgconfig:/Library/Frameworks/Mono.framework/Versions/Current/lib/pkgconfig:$PKG_CONFIG_PATH
 PATH=$PATH:/System/Library/Frameworks/Python.framework/Versions/2.3/bin
 prefix=/Users/nbuilder/install
 install=true
