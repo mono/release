@@ -4,7 +4,7 @@ msvn_tar () {
     get_svn_path
     scp do-msvn-tar $target_host:$jaildir/tmp
     ./jail-do $distro sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_rev || exit 1
-    scp $target_host:$jaildir/tmp/built-tarball/*.tar.gz sources/$real_package 
+    scp $target_host:$jaildir/tmp/built-tarball/*.tar.gz $source_path/$real_package 
 }
 
 get_svn_path () {
@@ -46,6 +46,12 @@ if [ -z $distro ] || [ -z $package ] || [ -z $version ]; then
 	exit 1
 fi
 
+if [ -z $snapshot_rev ]; then
+	source_path=sources
+else
+	source_path=snapshot_sources
+fi
+
 real_package=$package
 
 #
@@ -64,7 +70,7 @@ fi
 . conf/$distro
 . defs/$real_package
 
-mkdir -p sources/$real_package
+mkdir -p $source_path/$real_package
 
 
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
