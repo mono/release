@@ -1,10 +1,19 @@
 #!/bin/sh
 #
-# Usage: install-deps TARGET monopackages
+# Usage: install-deps <snap> TARGET monopackages
 #    ex: install-deps suse-93-i586 mono-1.1 gtk-sharp-2.0
+#    ex: install-deps snap suse-93-i586 mono-1.1 gtk-sharp-2.0
 #
+#    snap will install dependencies from snapshot built packages
 
 . shared-code.sh
+
+if [ $1 == "snap" ]; then
+	shift;
+	package_path=snapshot_packages
+else
+	package_path=packages
+fi
 
 TARGET=$1
 shift
@@ -20,7 +29,7 @@ for i in $DEPS; do
 	
 	get_destroot
 	
-	if ! latest_version packages/$DEST_ROOT/$i; then
+	if ! latest_version $package_path/$DEST_ROOT/$i; then
 		echo "Could not find $i for $DISTRO (looking in $DEST_ROOT)"
 		exit 1;
 	fi
@@ -40,7 +49,7 @@ rpm_names=$(rpm -qp --queryformat '%{NAME} ' ${RPMS[@]})
 
 scp ${RPMS[@]} $target_host:$jaildir/tmp/install-packages
 
-./jail-do $TARGET "sh -x -c \"/etc/init.d/rcd restart\""
+#./jail-do $TARGET "sh -x -c \"/etc/init.d/rcd restart\""
 ./jail-do $TARGET "sh -x -c \"rug rm -y $rpm_names\""
 ./jail-do $TARGET "sh -x -c \"rug in -y -r /tmp/install-packages/*.rpm\""
 #./jail-do $TARGET "sh -x -c \"/etc/init.d/rcd stop\""
