@@ -1,3 +1,4 @@
 #! /bin/bash
 
+[ -f mono/runtime/semdel-wrapper ] && { mono/runtime/semdel-wrapper > /dev/null 2>&1 || : }
 rm -rf mono mcs
