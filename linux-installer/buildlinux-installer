@@ -15,6 +15,7 @@ use File::Slurp;
 # BOO Syntax highlighting is going to take some more porting... look at this file: opt/gnome/share/gtksourceview-1.0/language-specs/boo.lang for steps on how to do this
 
 my $DOWNLOAD_URL = "http://primates.ximian.com/~wberrier/linux-installer";
+my $IB_VER = "2.4.1";
 
 my $prefix = cwd();
 
@@ -46,9 +47,9 @@ my %local_rpms = (
 			mono-locale-extras mono-data
 			mono-complete ibm-data-db2 mono-web
 			)],
-		"$mono_rpms/x86/mono-debugger" => [ qw(
-			mono-debugger
-			)],
+		#"$mono_rpms/x86/mono-debugger" => [ qw(
+		#	mono-debugger
+		#	)],
 		"$mono_rpms/redhat-9-i386/gtk-sharp" => [ qw(
 			gtk-sharp
 			)],
@@ -106,21 +107,13 @@ unless($mono_version) {
 	exit 1;
 }
 
-my $output = "$prefix/output/${mono_version}_$mono_release_version/installer/";
 
-if(-e $output) {
-	print "$output already exists... please remove this dir or bump the package release version\n";
-	exit(1);
-} else {
-	mkpath($output);
-}
-
-my $mono_installer_output = "$ENV{HOME}/installbuilder-2.4.1/output/mono-$mono_version-installer.bin";
+my $mono_installer_output = "$ENV{HOME}/installbuilder-$IB_VER/output/mono-$mono_version-installer.bin";
 
 # check for installer and install if it isn't there
-if ( ! -e "$ENV{HOME}/installbuilder-2.4.1/bin/builder" ) {
+if ( ! -e "$ENV{HOME}/installbuilder-$IB_VER/bin/builder" ) {
 	
-	my $installer = "installbuilder-multiplatform-2.4.1-linux-installer.bin";
+	my $installer = "installbuilder-multiplatform-$IB_VER-linux-installer.bin";
 
 	# Doesn't redownload if not needed
 	print "Downloading the Bitrock installer...\n";
@@ -129,6 +122,22 @@ if ( ! -e "$ENV{HOME}/installbuilder-2.4.1/bin/builder" ) {
 
 	print "Installing the Bitrock installer...\n";
 	system("/tmp/$installer --mode unattended");
+}
+
+# Check for license file
+if ( ! -e "$ENV{HOME}/installbuilder-$IB_VER/license.xml" ) {
+
+	if ( -e "$prefix/novell.xml" ) { 
+		copy("$prefix/novell.xml", "$ENV{HOME}/installbuilder-$IB_VER/license.xml");
+	} else {
+		print "Please place novell.xml in $prefix or copy license.xml to $ENV{HOME}/installbuilder-$IB_VER/license.xml before proceeding\n";
+		exit(1);
+	}
+
+	if ( ! -e "$ENV{HOME}/installbuilder-$IB_VER/license.xml" ) {
+		print "Still cannot find $ENV{HOME}/installbuilder-$IB_VER/license.xml\n";
+		exit(1);
+	}
 }
 
 if ( ! -e $buildroot ) {
@@ -169,6 +178,15 @@ foreach my $base (keys %local_rpms) {
 	extractRPMs($base, @{ $local_rpms{$base} } );
 }
 
+my $output = "$prefix/output/${mono_version}_$mono_release_version/installer/";
+
+if(-e $output) {
+	print "$output already exists... please remove this dir or bump the package release version\n";
+	exit(1);
+} else {
+	mkpath($output);
+}
+
 # Keep record of which packages went into this build...
 write_file("$output/packages_used.txt", $packages_used_text);
 
@@ -177,7 +195,6 @@ write_file("$output/packages_used.txt", $packages_used_text);
 my $p = $buildroot;
 
 #  Binaries that need a wrapper in order to run in a different location
-#   Need a better way to do this... template needs substitution...
 my @wrapped_elf_binaries = qw( mono monodiet monodis monograph );
 
 foreach my $file (@wrapped_elf_binaries) {
@@ -382,7 +399,7 @@ substituteParametersInFile("$p/mono.xml",
 recurseDirectories("$p/usr/");
 
 # Run the install
-system("$ENV{HOME}/installbuilder-2.4.1/bin/builder build $p/mono.xml");
+system("$ENV{HOME}/installbuilder-$IB_VER/bin/builder build $p/mono.xml");
 
 # Move file to the current
 if ( -e $mono_installer_output ) {
