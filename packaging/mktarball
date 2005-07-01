@@ -48,10 +48,8 @@ fi
 
 if [ -z $snapshot_rev ]; then
 	source_path=sources
-	snap=
 else
 	source_path=snapshot_sources
-	snap=snap
 fi
 
 real_package=$package
@@ -76,7 +74,7 @@ mkdir -p $source_path/$real_package
 
 
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
-	if ! ./install-deps $snap $distro ${MONO_DEPS[@]}; then
+	if ! ./install-deps $distro ${MONO_DEPS[@]}; then
 		echo Dependency installation failed, see log in $LOGFILE for details
 		exit 1
 	fi

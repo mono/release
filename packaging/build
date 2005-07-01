@@ -58,11 +58,9 @@ fi
 if [ -e sources/$package/*-$version.tar.gz ]; then
 	source_path=sources
 	package_path=packages
-	snap=
 elif [ -e snapshot_sources/$package/*-$version.tar.gz ]; then
 	source_path=snapshot_sources
 	package_path=snapshot_packages
-	snap=snap
 else
 	echo Cannot find source file for $package
 	exit 1
@@ -74,7 +72,7 @@ if [ -d $package_path/$DEST_ROOT/$package/$VER_PATH ]; then
 fi
 
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
-	if ! ./install-deps $snap $distro ${MONO_DEPS[@]} >> $LOGFILE 2>&1; then
+	if ! ./install-deps $distro ${MONO_DEPS[@]} >> $LOGFILE 2>&1; then
 		echo Dependency installation failed, see log in $LOGFILE for details
 		exit 1
 	fi
