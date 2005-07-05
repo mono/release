@@ -1,6 +1,6 @@
 BUILD_HOSTS=(
 	redhat-9-i386
-	nld-9-x86_64
+	sles-9-x86_64
 )
 
 USE_HOSTS=(
