@@ -90,4 +90,4 @@ fi
 rm status/$distro
 
 mkdir -p $package_path/$DEST_ROOT/$package/$VER_PATH
-scp $target_host:$jaildir/tmp/builder/built-packages/* $package_path/$DEST_ROOT/$package/$VER_PATH
+scp $target_host:$jaildir/tmp/nobody/built-packages/* $package_path/$DEST_ROOT/$package/$VER_PATH

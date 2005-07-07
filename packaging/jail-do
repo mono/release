@@ -34,4 +34,4 @@ fi
 #
 ADD_SBIN='PATH=/sbin:/usr/sbin:$PATH'
 
-ssh $SSH_FLAGS $target_host "$ADD_SBIN sudo chroot $jaildir $CMD"
+ssh $SSH_FLAGS $target_host "$ADD_SBIN sudo -H chroot $jaildir $CMD"
