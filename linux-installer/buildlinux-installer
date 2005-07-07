@@ -47,9 +47,9 @@ my %local_rpms = (
 			mono-locale-extras mono-data
 			mono-complete ibm-data-db2 mono-web
 			)],
-		#"$mono_rpms/x86/mono-debugger" => [ qw(
-		#	mono-debugger
-		#	)],
+		"$mono_rpms/x86/mono-debugger" => [ qw(
+			mono-debugger
+			)],
 		"$mono_rpms/redhat-9-i386/gtk-sharp" => [ qw(
 			gtk-sharp
 			)],
