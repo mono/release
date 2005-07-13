@@ -20,10 +20,6 @@ serial=${4-0}
 
 . shared-code.sh
 
-LOGFILE=logs/$package-$version-$distro
-rm -rf $LOGFILE
-
-mkdir -p `dirname $LOGFILE`
 
 usage()
 {
@@ -70,6 +66,12 @@ if [ -d $package_path/$DEST_ROOT/$package/$VER_PATH ]; then
 	echo "The path for this package ($package_path/$DEST_ROOT/$package/$VER_PATH) already exists. You probably need to bump the revision number"
 	exit 1;
 fi
+
+LOGFILE=logs/$package-$version-$serial-$distro
+rm -rf $LOGFILE
+
+mkdir -p `dirname $LOGFILE`
+
 
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
 	if ! ./install-deps $distro ${MONO_DEPS[@]} >> $LOGFILE 2>&1; then
