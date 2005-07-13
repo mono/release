@@ -1,5 +1,5 @@
-alias ssh='ssh -o "StrictHostKeyChecking no"'
-alias scp='scp -o "StrictHostKeyChecking no"'
+alias ssh='ssh -o "StrictHostKeyChecking no" -o "Cipher blowfish"'
+alias scp='scp -o "StrictHostKeyChecking no" -o "Cipher blowfish"'
 
 function distro_info () {
 	DISTRO=$1
