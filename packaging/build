@@ -40,6 +40,12 @@ fi
 . conf/$distro
 . defs/$package
 
+contains $distro `echo ${BUILD_HOSTS[@]}`
+if [ $? -eq 0 ]; then
+	echo $distro is not in BUILD_HOSTS
+	exit 1
+fi
+
 distro_info $distro
 get_destroot $distro
 get_revision

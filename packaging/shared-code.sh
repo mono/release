@@ -47,6 +47,24 @@ function ships_package ()
 	return 1
 }
 
+# Second arg is a space delimeted string...
+# see: http://linuxreviews.org/beginner/abs-guide/en/x15283.html
+function contains ()
+{
+	needle=$1
+	haystack=(`echo "$2" `)
+
+	return_val=0
+
+	for var in ${haystack[@]}; do
+		if [ $var == $needle ]; then
+			return_val=1
+		fi
+	done
+	
+	return $return_val
+}
+
 function latest_version ()
 {
 	FILES=`(find $1 -type d -maxdepth 1) 2> /dev/null`
