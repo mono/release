@@ -157,6 +157,10 @@
           <name>PKG_CONFIG_PATH</name>
           <value>$PKG_CONFIG_PATH:${installdir}/lib/pkgconfig</value>
         </addEnvironmentVariable>
+        <addEnvironmentVariable>
+          <name>MANPATH</name>
+          <value>$MANPATH:${installdir}/share/man</value>
+        </addEnvironmentVariable>
        </actionList>
           <ruleList>
           <compareText>

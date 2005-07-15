@@ -23,10 +23,12 @@ my $buildroot = "$prefix/build";
 my $external_rpms = "$prefix/thirdparty/external_rpms";
 my $mono_rpms = "$prefix/../packaging/packages";
 
+# the readline package is for the debugger
 my @external_rpms_list = qw(
 	http://fr2.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/libstdc++-3.2.2-5.i386.rpm
 	http://fr2.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/linc-1.0.1-1.i386.rpm
 	http://fr.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/pkgconfig-0.14.0-3.i386.rpm
+	http://fr2.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/readline-4.3-5.i386.rpm
 );
 
 
@@ -107,6 +109,14 @@ unless($mono_version) {
 	exit 1;
 }
 
+my $output = "$prefix/output/${mono_version}_$mono_release_version/installer/";
+
+if(-e $output) {
+	print "$output already exists... please remove this dir or bump the package release version\n";
+	exit(1);
+} else {
+	mkpath($output);
+}
 
 my $mono_installer_output = "$ENV{HOME}/installbuilder-$IB_VER/output/mono-$mono_version-installer.bin";
 
@@ -178,14 +188,6 @@ foreach my $base (keys %local_rpms) {
 	extractRPMs($base, @{ $local_rpms{$base} } );
 }
 
-my $output = "$prefix/output/${mono_version}_$mono_release_version/installer/";
-
-if(-e $output) {
-	print "$output already exists... please remove this dir or bump the package release version\n";
-	exit(1);
-} else {
-	mkpath($output);
-}
 
 # Keep record of which packages went into this build...
 write_file("$output/packages_used.txt", $packages_used_text);
