@@ -33,14 +33,16 @@ if test x$version = x; then
 fi
 
 if test -f status/$distro; then
-   echo There is already a build in progress on $1
-   exit 1
+   echo $1 jail is busy
+#   exit 1
 fi
 
 . conf/$distro
 . defs/$package
 
-contains $distro `echo ${BUILD_HOSTS[@]}`
+# See: http://linuxreviews.org/beginner/abs-guide/en/x15283.html
+# Example 34-16. Passing and returning arrays
+contains $distro "`echo ${BUILD_HOSTS[@]}`"
 if [ $? -eq 0 ]; then
 	echo $distro is not in BUILD_HOSTS
 	exit 1
@@ -78,9 +80,11 @@ rm -rf $LOGFILE
 
 mkdir -p `dirname $LOGFILE`
 
+echo > status/$distro;
 
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
 	if ! ./install-deps $distro ${MONO_DEPS[@]} >> $LOGFILE 2>&1; then
+		rm status/$distro
 		echo Dependency installation failed, see log in $LOGFILE for details
 		exit 1
 	fi
@@ -88,14 +92,14 @@ fi
 
 scp do-build ../conf/$package/ximian-build.conf $source_path/$package/*-$version.tar.gz $target_host:$jaildir/tmp 
 
-echo > status/$distro;
 if ! ./jail-do $distro sh -x /tmp/do-build $version $REVISION >> $LOGFILE 2>&1; then
 	rm status/$distro
 	echo Build failed, see log in $LOGFILE for details
 	exit 1;
 fi
 
-rm status/$distro
-
 mkdir -p $package_path/$DEST_ROOT/$package/$VER_PATH
 scp $target_host:$jaildir/tmp/builder/built-packages/* $package_path/$DEST_ROOT/$package/$VER_PATH
+
+rm status/$distro
+

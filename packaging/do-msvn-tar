@@ -7,12 +7,10 @@ package=$1
 svn_path=$2
 snapshot_rev=$3
 
-mount /proc &> /dev/null
-
 cd /tmp
-rm -rf package-builder
-mkdir package-builder
-cd package-builder
+rm -rf tarball-creation
+mkdir -p tarball-creation
+cd tarball-creation
 
 # use the key in /usr/share/ximian-build-system/conf/ssh
 export SVN_SSH=/usr/bin/bb_ssh
@@ -131,4 +129,4 @@ mv *.tar.gz /tmp/built-tarball
 
 cd /tmp
 
-rm -rf package-builder	
+rm -rf tarball-creation

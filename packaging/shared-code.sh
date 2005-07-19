@@ -49,6 +49,7 @@ function ships_package ()
 
 # Second arg is a space delimeted string...
 # see: http://linuxreviews.org/beginner/abs-guide/en/x15283.html
+# Example 34-16. Passing and returning arrays
 function contains ()
 {
 	needle=$1

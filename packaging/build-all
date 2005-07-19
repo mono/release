@@ -1,4 +1,49 @@
 #!/bin/sh
 
-# Build in parallel packages on all BUILD_HOSTS
+# Build a package in parallel all BUILD_HOSTS
+
+package=$1
+version=$2
+release=$3
+
+if [ -z $package ] || [ -z $version ]; then
+	echo "Usage: ./build-all <package> <version> [<release>]"
+	exit 1
+fi
+
+if [ -z $release ] ; then
+	release=0
+fi
+
+. defs/$package
+
+PIDS=()
+
+for distro in  ${BUILD_HOSTS[@]}; do
+	echo Starting $distro
+	./build $distro $package $version $release > logs/build-all.$distro.$package.$version-$release 2>&1 &
+	PIDS=(${PIDS[@]} $!)
+done
+
+count=0
+num_builds=${#BUILD_HOSTS[@]}
+
+#TODO Optimally, this would scan for pids that finished and print out the status...
+#  so you could start fixing the failed builds while the rest were finishing
+while [ $count -lt $num_builds ]; do
+
+	wait ${PIDS[$count]}
+
+	return_code=$?
+
+	if [ "$return_code" -ne 0 ]; then
+		echo - ${BUILD_HOSTS[$count]} failed
+		cat logs/build-all.${BUILD_HOSTS[$count]}.$package.$version-$release
+	else
+		echo - ${BUILD_HOSTS[$count]} Succeeded
+	fi
+
+	let count+=1
+
+done
 

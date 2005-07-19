@@ -3,7 +3,7 @@
 msvn_tar () {
     get_svn_path
     scp do-msvn-tar $target_host:$jaildir/tmp
-    ./jail-do $distro sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_rev || exit 1
+    ./jail-do $distro "mount /proc &> /dev/null ; sudo -H -u builder sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_rev"  || ( rm status/$distro && exit 1 )
     scp $target_host:$jaildir/tmp/built-tarball/*.tar.gz $source_path/$real_package 
 }
 
@@ -72,15 +72,26 @@ fi
 
 mkdir -p $source_path/$real_package
 
+if test -f status/$distro; then
+   echo $1 jail is busy
+   exit 1
+fi
+
+echo > status/$distro;
 
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
 	if ! ./install-deps $distro ${MONO_DEPS[@]}; then
+		rm status/$distro
 		echo Dependency installation failed, see log in $LOGFILE for details
 		exit 1
 	fi
 fi
 
 if ! get_tarball ; then 
+	rm status/$distro
 	echo Tarball creation failed
 	exit 1
 fi
+
+rm status/$distro
+
