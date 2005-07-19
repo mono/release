@@ -1,3 +1,6 @@
+# /opt/gnome stupidity
+. /etc/profile.d/gnome-filesystem.sh
+
 lane_name=x86-64-head
 prefix=$HOME/install
 install=true
