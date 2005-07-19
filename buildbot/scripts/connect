@@ -1,14 +1,22 @@
 #! /bin/bash
 . shared-vars
 
-echo "Making tap file for $MASTER... "
+# kill any old instances
+if [ -f twistd.pid ]; then
+    echo -n "Killing old daemon (PID `cat twistd.pid`)..." 
+    kill `cat twistd.pid` && rm -f twistd.pid
+    echo "  done."
+fi
+
+echo -n "Making tap file for $MASTER... "
 mktap buildbot slave \
     --name $lane_name \
     --passwd "foobar" \
     --basedir $xbasedir \
     --master $MASTER:8007 \
     --keepalive 120
-echo "done."
+echo "  done."
 
-echo "Connected to server... "
-twistd -n -d $PWD -l $PWD/buildbotclient.log -f buildbot.tap
+echo -n "Connecting to server... "
+twistd -d $PWD -l $PWD/buildbotclient.log -f buildbot.tap
+echo "  done."

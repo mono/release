@@ -1,4 +1,6 @@
-sh setup-machine cygwin-mono  admin     trunk
-sh setup-machine amd-mono     nbuilder  trunk
+#sh setup-machine cygwin-mono  admin     trunk
+#sh setup-machine mono-sparc builder trunk
+
+sh setup-machine monobuild2   builder   trunk
 sh setup-machine g5-mono      nbuilder  trunk
 sh setup-machine x86-mono     nbuilder  trunk

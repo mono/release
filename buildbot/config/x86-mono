@@ -1,4 +1,4 @@
-lane_name=intel-head-mono
+lane_name=i386-head
 prefix=$HOME/install
 install=true
 extra_script='sh -x ./update-status 2.0 mono-HEAD-vs-fx-2 || { echo "errors"; exit 1; }' 

@@ -20,9 +20,17 @@ if test '!' -f config/$host; then
 	exit 1
 fi
 
+echo "Setting up $host"
+
 branch=`echo $branch | sed 's#/#-#g'`
-ssh $login@$fq_host "echo $branch > BRANCH; mkdir $branch"
-scp -pr scripts/* $login@$fq_host:$branch
-scp ~/.ssh/builder-id-dsa $login@$fq_host:.ssh/id_dsa
-scp config/$host $login@$fq_host:buildbot-config
-ssh $login@$fq_host "chmod 700 ~/.ssh; chmod 600 ~/.ssh/*"
+
+echo -n "     Copying files..."
+ssh $login@$fq_host "echo $branch > BRANCH; mkdir -p $branch"
+scp -qpr scripts/* $login@$fq_host:$branch
+scp -q ~/.ssh/builder-id-dsa $login@$fq_host:.ssh/id_dsa
+scp -q config/$host $login@$fq_host:buildbot-config
+echo "  ok."
+
+echo -n "     Starting server..."
+ssh $login@$fq_host "chmod 700 ~/.ssh; chmod 600 ~/.ssh/*; cd $branch; sh connect" &> /dev/null
+echo "  ok."
