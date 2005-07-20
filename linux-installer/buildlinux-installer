@@ -316,9 +316,9 @@ foreach my $f (@executable_wrappers) {
 }
 
 # Add some extra settings for specific scripts...
-# 	(What other locations will this need to happen?)
+# 	(What other scripts need something like this?)
 substituteParametersInFile("$p/usr/bin/gacutil",
-	'gacutil.exe' =>  '"gacutil.exe -gacdir @@BITROCK_MONO_ROOTDIR@@"');
+	'gacutil.exe' =>  'gacutil.exe -gacdir @@BITROCK_MONO_ROOTDIR@@');
 
 #substituteParametersInFile("$p/usr/lib/mono/gac/monodoc/1.0.0.0__0738eb9f132ed756/monodoc.dll.config",
 # This glob should only return one file...
