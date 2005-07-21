@@ -8,7 +8,19 @@ login=$2
 host=$1
 branch=$3
 
-fq_host=$host.boston.ximian.com
+# Map `virtual' host names into real ones.
+case $host in
+	ghbuildbot )
+		# This is for mainsoft so we can have a buildbot
+		# doing the java stuff
+		fq_host=213.31.213.19
+		;;
+	* )
+		# Some vpn setups won't have this by default,
+		# so make it easy for people by doing it for them ;-)
+		fq_host=$host.boston.ximian.com
+		;;
+esac
 
 if test x$branch = x; then
 	echo Usage is: setup-machine host login trunk

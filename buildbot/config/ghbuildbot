@@ -1,0 +1,4 @@
+# /opt/gnome stupidity
+lane_name=gh-head
+prefix=$HOME/install
+install=true
