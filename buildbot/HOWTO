@@ -3,48 +3,33 @@ Hosts:
 Architecture	Hostname	Responsible for		User / Pass
 ============    ========        ===============
 
+At 8CC (all hostsnames are .boston.ximian.com):
 x86		hardhat		Packaging
-		x86-mono	intel-1.0		builder2 / builder
-				intel-head		builder / builder
+		x86-mono	i386-head		nbulder / nbuilder
 		cygwin-mono	cygwin-head lane	
 
-PPC		g5-mono		ppc-1.0			builder / builder
-				ppc-head		builder / builder	 
+PPC		g5-mono		ppc-head		nbuilder / nbuilder
 		macmono		
 
-Sparc		sparcmono	sparc-1.0		builder / builder
-				sparc-head		builder / builder
-
-AMD64		amd-mono	amd-head lane		builder / builder
+Sparc		sparcmono	sparc-head		builder / builder
+		
+AMD64		monobuild2	amd-head lane		builder / builder
 
 Itanium		mono-itanium
+
+With Mainsoft:
+x86/java	213.31.213.19
+		(ghbuildbot)	Java buildbot		builder / ssh keys only
+							ask Ben or Miguel for access.
 
 
 Q.  How to reconnect a build node?
 
-A.  First, ssh into the node using the corresponding username and password.
+A.  run ./setup-all. It will update and reconnect all build nodes
 
-    On each of the build nodes, there is a ongoing screen session for
-each lane the node is responsible for: i.e. on x86-mono, the
-`intel-head' lane is running inside the `HEAD' screen session, and the
-`intel-1.0' lane inside the `1.0' screen session.
+Q. What scripts are used on the nodes.
 
-    When a lane is offline, connect to the node responsible for that
-lane and reattach into the correct screen session (screen -r <name of
-session>). End the running `connect' process and start a new one again
-from the screen session. When you're done, disconnect from the screen
-session (C-a d).
-
-    If the machine had to be rebooted / was rebooted, then ssh into
-the node as the appropriate user (see table above) and start a new
-screen session again (screen -S <name of session>, etc etc), make sure
-you're in the correct directory (HEAD vs. 1.0), and run "sh connect".
-
-The scripts used in the nodes:
-
-On each machine, you'll find two directories, `1.0' and `HEAD' (except
-for AMD, because it's responsible for only one lane). Inside the
-directory, there are the following scripts:
+Each branch (currnetly, only `trunk') had the following scripts:
 
     o clean-up -  Clears out the previous checkout.
     o checkout -  Checks out the latest revision from SVN.
@@ -59,22 +44,22 @@ On the cgywin box, the scripts are in c:\builder.
 
 Q.  How do I set up a new build node?
 
-A.  You need to have python 2.x, twisted 1.3.0 and buildbot 0.4.3
-installed.
+A.  First, you need python and twisted on the box. Most dristros have
+this in rpms, so you can just use those.
 
-Go to one of the existing build nodes and grab an existing copy of the
-6 scripts used and tweak as appropriate.
+Then, download buildbot 0.6.4 from sourceforge. On redhat/suse
+systems, you should run:
 
-The `connect' script contains a key used to identify the build lane.
-When adding a new lane, you need to connect to the buildbot master
-(mono.ximian.com) as build-master and add a new entry inside
-`private.py' for identifying the lane. After that, log in as root on
-the master and run `restart-build-server'. The new lane will now
-appear on the main page and the node can be connected.
+	python setup.py bdist_rpm
 
-By default the builds will be installed to /mono-1.0 and /mono. Make
-sure that these directories exist before starting a new build, also
-make sure that the builder user has read/write permission into the
-directories.
+There will then be an rpm in dist that you can install. This allows us
+to keep stuff in the rpm database for easy updates, etc.
 
+On other systems, do
+
+	python setup.py install
+
+Add a file in config/ for the buildbot node, and then add it to
+setup-all. On mono.ximian.com, you'll need to modify private.py to add
+a new lane.
 
