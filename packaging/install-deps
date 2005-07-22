@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Usage: install-deps TARGET monopackages
-#    ex: install-deps suse-93-i586 mono-1.1 gtk-sharp-2.0
+#    Usage: install-deps TARGET monopackages
+#  example: install-deps suse-93-i586 mono-1.1 gtk-sharp-2.0
 #
 
 . shared-code.sh
