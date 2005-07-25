@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Execute a command inside all the jails:
+# Usage: ./jail-do-all <command>
+# Example: ./jail-do-all rm /tmp/do-msvn-tar
+
+if [ -z $1 ]; then
+	echo "Usage: ./jail-do-all <command>"
+	exit 1
+fi
+
+cd conf
+jails=(`ls *-*-*`)
+cd ..
+
+for jail in ${jails[@]}; do
+	./jail-do $jail $*
+done
