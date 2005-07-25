@@ -13,7 +13,10 @@ cd ./mono/web/web
 #
 # Download the masterinfo files and unpack them
 #
-wget -nv -O masterinfos-$VERSION.tar.gz http://mono.ximian.com/masterinfos/masterinfos-$VERSION.tar.gz
+#wget -nv -O masterinfos-$VERSION.tar.gz http://mono.ximian.com/masterinfos/masterinfos-$VERSION.tar.gz
+wget -m http://mono.ximian.com/masterinfos/masterinfos-$VERSION.tar.gz
+test $? -eq 0 || exit 1
+cp mono.ximian.com/masterinfos/masterinfos-$VERSION.tar.gz .
 tar zxpf masterinfos-$VERSION.tar.gz
 
 PROFILE=nonesuch
