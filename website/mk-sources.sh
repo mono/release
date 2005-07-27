@@ -27,6 +27,7 @@ do
 			TARBALLS=(${TARBALLS[@]} $LATEST_VERSION)
 		done
 		echo ${TARBALLS[@]}
+		echo "<ul>" >> $OUT
 		for i in ${TARBALLS[@]}; do
 			n=$(basename $i)
 			echo "<li><a href='$i'>$n</a></li>" >> $OUT

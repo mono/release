@@ -89,6 +89,7 @@ img {
 #	gtk-sharp
 	
 	<h3>gecko-sharp</h3>
+	<ul>
 	<li><a href='/packagers/gecko-sharp/gecko-sharp-0.6.tar.gz'>gecko-sharp-0.6.tar.gz</a></li>
 	</ul>
 
