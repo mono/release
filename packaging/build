@@ -34,7 +34,7 @@ fi
 
 if test -f status/$distro; then
    echo $1 jail is busy
-#   exit 1
+   exit 1
 fi
 
 . conf/$distro
