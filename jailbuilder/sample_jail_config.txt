@@ -3,18 +3,18 @@
 jail_name=suse-93-i586
 
 #rpm_repository_path=suse93rpms
-rpm_repository_path=small_group_of_rpms
+rpm_repository_path=suse93_small
 #rpm_repository_path=suse93rpms_x86_64
 
 # Only accept packages with these arches
 valid_arch=i386 i586 i686 noarch
 
-required_rpms=aaa_base gcc make autoconf automake
+required_rpms=aaa_base gcc make autoconf automake pwdutils vim rug iputils util-linux
 
-#extra_external_rpms? (download and install inside jail: rcd/rug for example)
+#environment
 
 # Other various/optional post jail settings:
-nameservers=nameserver 192.168.1.1
+nameservers=137.65.1.3 137.65.1.4 130.57.22.5
 users=builder
 
 

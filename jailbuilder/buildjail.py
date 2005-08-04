@@ -59,8 +59,10 @@ class Package:
 	#  Assuming I can do this here because I'm dealing with a base distro
 	def remove_version_req(class_object, string):
 		string = string.split(' <= ')[0]
-		string = string.split(' = ' )[0]
 		string = string.split(' >= ')[0]
+		string = string.split(' = ' )[0]
+		string = string.split(' < ' )[0]
+		string = string.split(' > ' )[0]
 		return string
 	# Make this a 'static' class method... weird?? 
 	#supposed to be updated to be simpler syntax... ? first hackish thing I've seen in Python
@@ -76,22 +78,23 @@ class Package:
 		self.requires = []
 
 		# collect the users/groups we need to create in the jail (so everything doesn't get created as root)
-		self.groups = []
-		self.users = []
+		self.groups = {}
+		self.users = {}
 
 		print full_path
 
-		self.valid_rpm_name()
+		if self.valid_rpm_name():
+			self.load_package_info()
 
-		self.load_package_info()
 
 	# rpm base name: NAME
 	# provides: PROVIDES
 	# requires: REQUIRES
 	# users and groups? (FILEGROUPNAME, FILEUSERNAME)
-
+	# Reference website: http://rikers.org/rpmbook/node30.html
 	def load_package_info(self):
-		(status, output) = commands.getstatusoutput("""rpm --nosignature -qp --queryformat "____NAME\n%{NAME}\n____REQUIRES\n" --requires --queryformat "____FILEUSERNAME\n%{FILEUSERNAME}\n____FILEGROUPNAME\n%{FILEGROUPNAME}\n____ARCH\n%{ARCH}\n____PROVIDES\n" --provides --list """ + self.full_path)
+		(status, output) = commands.getstatusoutput("""rpm -qp --queryformat "____NAME\n%{NAME}\n____ARCH\n%{ARCH}\n____FILELIST\n[%{FILENAMES}\n]" --queryformat "____REQUIRES\n" --requires --queryformat "____PROVIDES\n" --provides """ + self.full_path)
+		#(status, output) = commands.getstatusoutput("""rpm --nosignature -qp --queryformat "____NAME\n%{NAME}\n____ARCH\n%{ARCH}\n____FILELIST\n[%{FILENAMES}|%{FILEGROUPNAME}|%{FILEUSERNAME}\n]" --queryformat "____REQUIRES\n" --requires --queryformat "____PROVIDES\n" --provides """ + self.full_path)
 
 		#print output
 
@@ -102,22 +105,29 @@ class Package:
 			if Package.marker.search(line):
 				marker = line
 			else:
-				if marker == "____PROVIDES":
-					line = Package.remove_version_req(line)
-					self.provides.append(line)
-				elif marker == "____NAME":
+				if marker == "____NAME":
 					self.name = line.strip()
+				elif marker == "____ARCH":
+					self.arch = line.strip()
 				elif marker == "____REQUIRES":
-					# Ignore 'rpmlib(' requirements (don't know how to satisfy them)
+					# Ignore 'rpmlib(' requirements (don't know how to find out what the rpm binary provides)
 					if not Package.rpmlib_req.search(line):
 						line = Package.remove_version_req(line)
 						self.requires.append(line)
-				elif marker == "____FILEUSERNAME":
-					self.users.extend(line.split())
-				elif marker == "____FILEGROUPNAME":
-					self.groups.extend(line.split())
-				elif marker == "____ARCH":
-					self.arch = line.strip()
+				elif marker == "____PROVIDES":
+					line = Package.remove_version_req(line)
+					self.provides.append(line)
+				elif marker == "____FILELIST":
+					try:
+						# We're not collecting users/groups anymore
+						#(filename, group, user) = line.split("|")
+						#self.provides.append(filename)
+						#self.groups[group] = 1
+						#self.users[user] = 1
+						self.provides.append(line)
+					except ValueError:
+						print "Line: " + line
+						sys.exit(1)
 				else:
 					print "Unknown marker tag: " + marker
 					sys.exit(1)
@@ -138,12 +148,19 @@ class Jail:
 		self.config = config
 		self.jail_location = os.path.abspath(path)
 
+		if not os.path.exists(self.jail_location):
+			print("Target jail location does not exists: %s" % self.jail_location)
+			sys.exit(1)
+
 		# These are base names of rpms
 		#    for rpm based distros, you must add the rpm dep since we are ignoring rpmlib requirements
 		self.orig_required_rpms = config.get_required_rpms()
 		self.orig_required_rpms.append("rpm")
 		self.required_rpms = []
 		self.valid_arch_types = config.get_valid_arch()
+
+		# Get and set environment
+		self.environment = self.config.get_environment()
 
 		self.available_rpms = {} # map of rpm_name -> Package object
 		self.provide_map = {} # Large map to have quick access to provides
@@ -164,6 +181,9 @@ class Jail:
 
 		self.initialize_jail()
 
+		# Do without base accounts... oh well, we'll see if it causes any problems later
+		#self.install_base_accounts()
+
 		# Lay down the rpms
 		self.install_packages()
 
@@ -172,6 +192,7 @@ class Jail:
 
 
 	# May be able to cache this later to speed things up
+	# TODO: load up external rpms as well
 	def load_package_cache(self):
 
 		files = os.listdir(self.config.get_rpm_repository_path())
@@ -179,8 +200,8 @@ class Jail:
 
 		for rpm_filename in files:
 			my_package = Package(
-				self.config.get_rpm_repository_path() + os.sep + 
-				rpm_filename)
+				os.path.join(self.config.get_rpm_repository_path(), rpm_filename))
+				
 
 			# Make sure it's a valid architecture
 			#print self.valid_arch_types
@@ -278,57 +299,146 @@ class Jail:
 			print "-required_rpms already has " + package_name
 
 
+	# TODO: the rpm database version (berkeley db) needs to be customized for each jail
 	def initialize_jail(self):
 
 		# Blow away the directory
-			# How does this handle symbolic links?
 		shutil.rmtree(self.jail_location)
 		
+		os.makedirs(self.jail_location + os.sep + "var/lib/rpm") # Needed for rpm version 3
 		command = """rpm --root %s --initdb""" % self.jail_location
 		print command
 		(status, output) = commands.getstatusoutput(command)
 		if status:
 			print "Error initializing the rpm database inside the jail"
 			sys.exit(1)
+
+	# Ended up not being needed...	
+	def install_base_accounts(self):
+
+		group_count = 1
+		user_count = 1
+
+		# Remove root from groups and users
+		self.groups.pop("root")
+		self.users.pop("root")
+
+		etc_dir = self.jail_location + os.sep + "etc"
+		os.mkdir(etc_dir)
+
+		# Create the groups
+		group_file = open(etc_dir + os.sep + "group", 'w')
+		group_file.write("%s:x:%d:\n" % ( "root", 0))
+		for group in self.groups:
+			group_file.write("%s:x:%d:\n" % ( group, group_count) )
+			group_count += 1
+		group_file.close()
+
+		# Create the users
+		user_file = open(etc_dir + os.sep + "passwd", 'w')
+		user_file.write("%s:x:%d:0:::\n" % ( "root", 0))
+		for user in self.users:
+			user_file.write("%s:x:%d::::\n" % ( user, user_count))
+			user_count += 1
+		user_file.close()
+
+		#shadow_file = open(self.jail_location + os.sep + "etc" + os.sep + "shadow", 'w')
+		#shadow_file.write("%s:*:%d:0:::::\n" % ( "root", 0))
+		#shadow_file.write("%s:*:%d:0:10000::::\n" % ( user, user_count))
+		#shadow_file.close()
 		
+		# convert the shadow accounts
+		#commands.getstatusoutput("pwconv -P %s" % etc_dir)
+
 
 	def install_packages(self):
 
 		# Generate a manifest file (list of rpm files)
-		# Get a tmp filename
-
 		manifest_filename = tempfile.mktemp()
-
 		manifest = open(manifest_filename, 'w')
 
 		for rpm in self.required_rpms:
 			path = self.available_rpms[rpm].full_path
-			#print path
 			manifest.write(path + "\n")
-
 		manifest.close()
 
-		print manifest_filename
-
+		# This will work (using a manifest filename) as long as you're using rpm version 4 and above
 		command = """rpm --root %s -i %s""" % (self.jail_location, manifest_filename)
 		print command
 		(status, output) = commands.getstatusoutput(command)
 		print output
 		if status:
-			print "Error installing rpms inside the jail"
-			sys.exit(1)
+			print "Error installing rpms inside the jail!!!"
+			print "***Usually this is ok for now***"
 
-		# Parse the output to get users and groups (don't know any other way to do it!!)
-		# "warning: group rpm does not exist - using root"
+		# Copy all required rpms to inside the jail
+		package_dir = self.jail_location + os.sep + "jailbuilder"
+		os.mkdir(package_dir)
 
-		# Create the users and groups
+		# Copy the required rpms and write a new manifest file (can't use manifest file on rpm < 4)
+		#jail_manifest = open(self.jail_location + os.sep + "jailbuilder" + os.sep + "manifest", 'w')
+		rpm_list = ""
+		for rpm in self.required_rpms:
+			rpm_path = self.available_rpms[rpm].full_path
+			shutil.copy(rpm_path, package_dir)
+			#jail_manifest.write("jailbuilder" + os.sep + os.path.basename(rpm_path) + "\n")
+			rpm_list = rpm_list + " jailbuilder" + os.sep + os.path.basename(rpm_path)
+		#jail_manifest.close()
 
-		# Lay down the packages again
+		# Is this ever going to be different for different distros?
+		shutil.rmtree(self.jail_location + os.sep + "var/lib/rpm")
+		os.mkdir(self.jail_location + os.sep + "var/lib/rpm")
+		
+		command = "chroot %s env %s rpm --initdb" % (self.jail_location, self.environment)
+		print command
+		(status, output) = commands.getstatusoutput(command)
+		print "Status: %d" % status
+		print "Output: " + output
+		
+		# manifest files don't work on rpm 3 and below...
+		#command = "chroot %s env %s rpm --force -U %s" % (self.jail_location, self.environment, "jailbuilder" + os.sep + "manifest")
+
+		# But, this method may be a problem because of the length of the arguments
+		command = "chroot %s env %s rpm --force -U %s" % (self.jail_location, self.environment, rpm_list)
+		print command
+		(status, output) = commands.getstatusoutput(command)
+		print "Status: %d" % status
+		print "Output: " + output
+
+		# Cleanup...
+		os.unlink(manifest_filename)
+		shutil.rmtree(self.jail_location + os.sep + "jailbuilder")
+
+		# Remove rpmorig and rpmnew files from the jail
+		match_rpmorig = re.compile("rpmorig$")
+		match_rpmnew = re.compile("rpmnew$")
+		for root, dirs, files in os.walk(self.jail_location):
+			for file in files:
+				full_path = os.path.join(root, file)
+				if match_rpmorig.search(full_path):
+					print "Removing: " + full_path
+					os.remove(full_path)
+				if match_rpmnew.search(full_path):
+					# Remove .rpmnew from string
+					new_full_path = full_path.replace(".rpmnew", "")
+					os.rename(full_path, new_full_path)
+					print "Renamed file:" + full_path
 
 
 
 	def post_config(self):
-		pass
+		
+		# Process resolv.conf
+		name_servers = self.config.get_nameservers()
+		
+		if name_servers:
+			resolv_conf = open(os.path.join(self.jail_location, "etc", "resolv.conf"), 'w')
+			for server in name_servers:
+				resolv_conf.write("nameserver %s\n" % server)
+			resolv_conf.close()
+
+
+		# Process user creation
 
 
 # This will parse the config file and have values available (probably xml?  could be simpler...)
@@ -342,14 +452,17 @@ class Config:
 		# Load all elements into a dictionary
 		for line in open(filename).readlines():
 			if not Config.comment.search(line):
-				(key, value) = line.split("=")
+				(key, value) = line.split("=", 1)
 				self.setting[key] = value.strip()
 
 		
 		print self.setting
 
 	def get_setting(self, name):
-		return self.setting[name]
+		if self.setting.has_key(name):
+			return self.setting[name]
+		else:
+			return ""
 
 	def get_rpm_repository_path(self):
 		return self.get_setting("rpm_repository_path")
@@ -360,7 +473,11 @@ class Config:
 	def get_required_rpms(self):
 		return self.get_setting("required_rpms").split()
 
+	def get_nameservers(self):
+		return self.get_setting("nameservers").split()
 
+	def get_environment(self):
+		return self.get_setting("environment")
 
 
 def commandline():
