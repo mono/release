@@ -1,39 +1,22 @@
 #!/usr/bin/env python
 
-# Check out the build rpm from ftp://ftp.suse.com/pub/suse/i386/9.3/suse/noarch/build-2005.5.12-0.1.noarch.rpm for ideas how to lay down a jail
-
+# See README for instructions on how to use buildjail.py
+# Basic technique for creating the jail:
+#   -Read in package info for all rpms in the rpm_repository_path specified in jail_config.txt
+#   -Get list of base packages from jail_config.txt
+#   -Resolve all dependencies in order to install the base packages (as well as add the rpm package to the list)
+#   -Initialize an rpm database in the jail_directory
+#   -Install all required rpms in the jail_directory
+#   -Copy rpms into the jail
+#   -Remove the jail's rpm database
+#   -Enter the jail with chroot:
+#     -Reinitialize the rpm database
+#     -Reinstall all the rpms
+#   -Clean up rpms and rpmorig and rename rpmnew to overwrite current config files
+#   -Set up some config options (resolv.conf, user creation, etc)
+#   
 # 
-# Initialize the rpm database in the jail root
-# 
-# Get some base packages...
-# 
-# Resolve all of the dependencies (figure out what packages require, then find what packages provide)  red-carpet libraries may provide this (as well as some yum python bindings)
-# 
-# install all required users and groups (get this list as we process the rpms) (Doesn't seem to work, may have to install once, capture output of users/groups, and then reinstall with first adding certain users)
-# 
-# 
-# set up resolv.conf
-# 
-# install rcd/rug
-# 
-# Add service
-# activate the server
-# subscribe to the correct channels
-# activate the services for red-carpet
-# 
-# 
-# 
-# Then, any time a new package is added to the jail, just add the package to the jail definition
-# 
-# 
-
-# Will be provided a list of rpms for jail
-
-# Need to get the rpms' deps and requirements (might as well do this for all the rpms) (Could be lengthy!)
-
-# Check to make sure the lists' requirements are provided for, and add to the list as needed
-
-# Don't need to worry about other types of package managers (ex: dpkg) because debian have tools to build jails already (not sure how good they are)
+# Typical jail creation (not including collecting the rpms with gatherrpms.py) can be processed in less than 10 minutes
 
 
 import sys
@@ -64,6 +47,7 @@ class Package:
 		string = string.split(' < ' )[0]
 		string = string.split(' > ' )[0]
 		return string
+
 	# Make this a 'static' class method... weird?? 
 	#supposed to be updated to be simpler syntax... ? first hackish thing I've seen in Python
 	#  But there may be a clearer newer syntax I'm not aware of
@@ -77,32 +61,28 @@ class Package:
 		self.provides = []
 		self.requires = []
 
-		# collect the users/groups we need to create in the jail (so everything doesn't get created as root)
-		self.groups = {}
-		self.users = {}
-
 		print full_path
 
 		if self.valid_rpm_name():
 			self.load_package_info()
 
 
-	# rpm base name: NAME
-	# provides: PROVIDES
-	# requires: REQUIRES
-	# users and groups? (FILEGROUPNAME, FILEUSERNAME)
-	# Reference website: http://rikers.org/rpmbook/node30.html
+	# Get metadata for an rpm
+	# (Reference website: http://rikers.org/rpmbook/node30.html)
+	# TODO: do a hash of the filename, and check a cache for the data before reloading
 	def load_package_info(self):
 		(status, output) = commands.getstatusoutput("""rpm -qp --queryformat "____NAME\n%{NAME}\n____ARCH\n%{ARCH}\n____FILELIST\n[%{FILENAMES}\n]" --queryformat "____REQUIRES\n" --requires --queryformat "____PROVIDES\n" --provides """ + self.full_path)
-		#(status, output) = commands.getstatusoutput("""rpm --nosignature -qp --queryformat "____NAME\n%{NAME}\n____ARCH\n%{ARCH}\n____FILELIST\n[%{FILENAMES}|%{FILEGROUPNAME}|%{FILEUSERNAME}\n]" --queryformat "____REQUIRES\n" --requires --queryformat "____PROVIDES\n" --provides """ + self.full_path)
 
 		#print output
 
 		for line in output.split("\n"):
 			line = line.strip()
 
+			# Ignore rpm warnings...
+			if line.count("warning:"):
+				pass
 			# If this is a marker, set the marker
-			if Package.marker.search(line):
+			elif Package.marker.search(line):
 				marker = line
 			else:
 				if marker == "____NAME":
@@ -111,6 +91,7 @@ class Package:
 					self.arch = line.strip()
 				elif marker == "____REQUIRES":
 					# Ignore 'rpmlib(' requirements (don't know how to find out what the rpm binary provides)
+					#  If the rpm binary cannot resolv, something will fail later anyway
 					if not Package.rpmlib_req.search(line):
 						line = Package.remove_version_req(line)
 						self.requires.append(line)
@@ -118,16 +99,7 @@ class Package:
 					line = Package.remove_version_req(line)
 					self.provides.append(line)
 				elif marker == "____FILELIST":
-					try:
-						# We're not collecting users/groups anymore
-						#(filename, group, user) = line.split("|")
-						#self.provides.append(filename)
-						#self.groups[group] = 1
-						#self.users[user] = 1
-						self.provides.append(line)
-					except ValueError:
-						print "Line: " + line
-						sys.exit(1)
+					self.provides.append(line)
 				else:
 					print "Unknown marker tag: " + marker
 					sys.exit(1)
@@ -169,9 +141,6 @@ class Jail:
 		self.requires = {}
 		self.provides = {}
 
-		self.users = {}
-		self.groups = {}
-
 		self.load_package_cache()
 
 		#print self.provide_map
@@ -181,18 +150,18 @@ class Jail:
 
 		self.initialize_jail()
 
-		# Do without base accounts... oh well, we'll see if it causes any problems later
-		#self.install_base_accounts()
-
 		# Lay down the rpms
+		self.bootstrap_install()
+
+		# Install rpms from inside jail
 		self.install_packages()
 
+		self.post_cleanup()
 		self.post_config()
 
 
 
 	# May be able to cache this later to speed things up
-	# TODO: load up external rpms as well
 	def load_package_cache(self):
 
 		files = os.listdir(self.config.get_rpm_repository_path())
@@ -204,8 +173,6 @@ class Jail:
 				
 
 			# Make sure it's a valid architecture
-			#print self.valid_arch_types
-			#print my_package.arch
 			# TODO What if there are two packages with each a different valid arch?  Probably won't
 			#  matter because the packages are going to get updated with rug anyway... (or are they?)
 
@@ -225,6 +192,8 @@ class Jail:
 	def collect_required_packages(self):
 		# Have two data structures: current requires, and current supplied provides (these structures deal with rpms names, not filenames)
 		#  Start adding new packages to get rid of the requires list
+
+		print "Required packages:"
 
 		# Add initial deps
 		for req_rpm in self.orig_required_rpms:
@@ -261,21 +230,14 @@ class Jail:
 
 		# When you make it here, you've got all your deps!
 		print self.required_rpms
-		print self.groups
-		print self.users
-
-
 
 
 	# Add package to list of required rpms
 	def add_package(self, package_name):
 
-		#pdb.set_trace()
-
 		# Only add the package if it's not there already
 		if not self.required_rpms.count(package_name):
 			if self.available_rpms.has_key(package_name):
-				print "Adding %s to required_rpms" % package_name
 				self.required_rpms.append(package_name)
 				# Add the requirements
 				for req in self.available_rpms[package_name].requires:
@@ -285,24 +247,16 @@ class Jail:
 				for prov in self.available_rpms[package_name].provides:
 					self.provides[prov] = 1 # don't want duplicates
 
-				for user in self.available_rpms[package_name].users:
-					#print "User:" + user
-					self.users[user] = 1 # Don't want duplicates
-				for group in self.available_rpms[package_name].groups:
-					#print "Group:" + group
-					self.groups[group] = 1 # Don't want duplicates
-
 			else:
 				print "ERROR!: requesting package %s but do not have %s in available rpms!" % (package_name, package_name)
 				sys.exit(1)
-		else:
-			print "-required_rpms already has " + package_name
 
-
-	# TODO: the rpm database version (berkeley db) needs to be customized for each jail
 	def initialize_jail(self):
 
 		# Blow away the directory
+		# Unmount the possible proc dir just in case
+		commands.getstatusoutput("umount %s" % self.jail_location + os.sep + "proc")
+		print "Removing jail target dir..."
 		shutil.rmtree(self.jail_location)
 		
 		os.makedirs(self.jail_location + os.sep + "var/lib/rpm") # Needed for rpm version 3
@@ -313,45 +267,8 @@ class Jail:
 			print "Error initializing the rpm database inside the jail"
 			sys.exit(1)
 
-	# Ended up not being needed...	
-	def install_base_accounts(self):
 
-		group_count = 1
-		user_count = 1
-
-		# Remove root from groups and users
-		self.groups.pop("root")
-		self.users.pop("root")
-
-		etc_dir = self.jail_location + os.sep + "etc"
-		os.mkdir(etc_dir)
-
-		# Create the groups
-		group_file = open(etc_dir + os.sep + "group", 'w')
-		group_file.write("%s:x:%d:\n" % ( "root", 0))
-		for group in self.groups:
-			group_file.write("%s:x:%d:\n" % ( group, group_count) )
-			group_count += 1
-		group_file.close()
-
-		# Create the users
-		user_file = open(etc_dir + os.sep + "passwd", 'w')
-		user_file.write("%s:x:%d:0:::\n" % ( "root", 0))
-		for user in self.users:
-			user_file.write("%s:x:%d::::\n" % ( user, user_count))
-			user_count += 1
-		user_file.close()
-
-		#shadow_file = open(self.jail_location + os.sep + "etc" + os.sep + "shadow", 'w')
-		#shadow_file.write("%s:*:%d:0:::::\n" % ( "root", 0))
-		#shadow_file.write("%s:*:%d:0:10000::::\n" % ( user, user_count))
-		#shadow_file.close()
-		
-		# convert the shadow accounts
-		#commands.getstatusoutput("pwconv -P %s" % etc_dir)
-
-
-	def install_packages(self):
+	def bootstrap_install(self):
 
 		# Generate a manifest file (list of rpm files)
 		manifest_filename = tempfile.mktemp()
@@ -362,7 +279,7 @@ class Jail:
 			manifest.write(path + "\n")
 		manifest.close()
 
-		# This will work (using a manifest filename) as long as you're using rpm version 4 and above
+		# This will work (using a manifest filename) as long as you're using rpm version 4 and above on the host machine
 		command = """rpm --root %s -i %s""" % (self.jail_location, manifest_filename)
 		print command
 		(status, output) = commands.getstatusoutput(command)
@@ -371,11 +288,18 @@ class Jail:
 			print "Error installing rpms inside the jail!!!"
 			print "***Usually this is ok for now***"
 
+		# Cleanup...
+		os.unlink(manifest_filename)
+
+	
+	def install_packages(self):
+
 		# Copy all required rpms to inside the jail
 		package_dir = self.jail_location + os.sep + "jailbuilder"
 		os.mkdir(package_dir)
 
-		# Copy the required rpms and write a new manifest file (can't use manifest file on rpm < 4)
+		# write a new manifest file 
+		#(can't use manifest file on rpm < 4)
 		#jail_manifest = open(self.jail_location + os.sep + "jailbuilder" + os.sep + "manifest", 'w')
 		rpm_list = ""
 		for rpm in self.required_rpms:
@@ -385,16 +309,18 @@ class Jail:
 			rpm_list = rpm_list + " jailbuilder" + os.sep + os.path.basename(rpm_path)
 		#jail_manifest.close()
 
-		# Is this ever going to be different for different distros?
+		# Is this location ever going to be different for different distros?
 		shutil.rmtree(self.jail_location + os.sep + "var/lib/rpm")
 		os.mkdir(self.jail_location + os.sep + "var/lib/rpm")
-		
+	
+		# Reinitialize the rpm database with the jail's version of rpm	
 		command = "chroot %s env %s rpm --initdb" % (self.jail_location, self.environment)
 		print command
 		(status, output) = commands.getstatusoutput(command)
 		print "Status: %d" % status
 		print "Output: " + output
-		
+
+		# Reinstall the rpms from inside the jail		
 		# manifest files don't work on rpm 3 and below...
 		#command = "chroot %s env %s rpm --force -U %s" % (self.jail_location, self.environment, "jailbuilder" + os.sep + "manifest")
 
@@ -405,8 +331,9 @@ class Jail:
 		print "Status: %d" % status
 		print "Output: " + output
 
-		# Cleanup...
-		os.unlink(manifest_filename)
+
+	def post_cleanup(self):
+		# Remove rpms inside jail
 		shutil.rmtree(self.jail_location + os.sep + "jailbuilder")
 
 		# Remove rpmorig and rpmnew files from the jail

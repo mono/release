@@ -1,13 +1,15 @@
 # Format: <name>=<value>
 
-jail_name=suse-93-i586
+jail_name=fedora-4-i386
 
-rpm_repository_path=suse93rpms
+#rpm_repository_path=suse93rpms
+rpm_repository_path=fc4rpms
+#rpm_repository_path=suse93rpms_x86_64
 
 # Only accept packages with these arches
 valid_arch=i386 i586 i686 noarch
 
-required_rpms=aaa_base gcc make autoconf automake pwdutils vim rug iputils util-linux
+required_rpms=gcc make autoconf automake yum vim-enhanced
 
 #environment=
 

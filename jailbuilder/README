@@ -3,7 +3,8 @@ General procedure for building jails:
 
 one way to do it is install a distro and then tar up the root drive, and then extract the tarball an another machine
 
-I thought it was kind of a pain and usually a distro install installs many more packages than you actually need in the jail.
+I thought it was a pain to find a spare box and spend and hour or two to set up the box. And, usually a distro installs many more packages than you actually need in the jail.
+Plus, if we loose any of ours jails it is quite a bit of downtime if we don't have backups.
 
 So, use gatherrpms.py to collect all the rpms for a certain distro.
 
@@ -15,9 +16,10 @@ run: (as root or under sudo)
 
 It may take some figuring out to create the jail just right, but once you have it, it's much easier to recreate the jail for future use.
 
-I recommend documenting the sites you got the rpms from in the jail config.
+I recommend documenting the sites you got the rpms from in the jail config so you can easily recreate the jail.
 
-Note, this procedure also works for producing rpm based jails on debian based distros
+Note: this procedure also works for producing rpm based jails on debian based distros
+Note: These scripts only require the rpm binary and python.  **No other external libraries**
 
 -----------------------------------------------
 
@@ -29,7 +31,8 @@ redhat-9-i386: rpm commands will only work with the following environment var:
 	LD_ASSUME_KERNEL=2.2.5
 	make sure in the jail config file you specify:
 		environment=LD_ASSUME_KERNEL=2.2.5
-	This environment var is needed if you're running on a machine that's not 		running the rh9 stock kernel
+	This environment var is needed if you're running on a machine that's not
+	 	running the rh9 stock kernel
 
 
 
