@@ -1,6 +1,9 @@
 alias ssh='ssh -o "StrictHostKeyChecking no" -o "Cipher blowfish"'
 alias scp='scp -o "StrictHostKeyChecking no" -o "Cipher blowfish"'
 
+confdir=$(dirname $(pwd)/$0)
+RPMVERCMP="$confdir/../rpmvercmp/rpmvercmp"
+
 function distro_info () {
 	DISTRO=$1
 	
@@ -72,12 +75,17 @@ function latest_version ()
 	
 	[ ! "x$FILES" == x ] || return 1
 	
-	LATEST_VERSION=`(ls -vrd1  $FILES | head -n1) 2> /dev/null`
+	#LATEST_VERSION=`(ls -vrd1  $FILES | head -n1) 2> /dev/null`
+
+	LATEST_VERSION=`$RPMVERCMP $FILES | tail -n1`
+	
 }
 
 function latest_tarball ()
 {
-	LATEST_VERSION=`(ls -vrd1  $1 | head -n1) 2> /dev/null`
+	#LATEST_VERSION=`(ls -vrd1  $1 | head -n1) 2> /dev/null`
+
+	LATEST_VERSION=`$RPMVERCMP $1 | tail -n1`
 }
 
 function rpm_query ()

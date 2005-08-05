@@ -1,0 +1,13 @@
+#!/bin/bash
+
+
+dir=`ls`
+for i in `./rpmvercmp ${dir[@]}`; do
+   echo $i
+
+done
+
+echo `./rpmvercmp ${dir[@]}`
+
+#echo $sorted
+
