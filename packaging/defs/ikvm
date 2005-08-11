@@ -25,5 +25,5 @@ get_destroot () {
 }
 
 get_tarball () {
-	wget http://primates.ximian.com/~bmaurer/ikvm-$version.tar.gz -O sources/ikvm/ikvm-$version.tar.gz
+	wget http://primates.ximian.com/~wberrier/packaging/sources/ikvm/ikvm-$version.tar.gz -O sources/ikvm/ikvm-$version.tar.gz
 }
