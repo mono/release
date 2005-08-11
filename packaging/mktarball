@@ -3,8 +3,12 @@
 msvn_tar () {
     get_svn_path
     scp do-msvn-tar $target_host:$jaildir/tmp
-    ./jail-do $distro "mount /proc &> /dev/null ; sudo -H -u builder sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_rev"  || ( rm status/$distro && exit 1 )
-    scp $target_host:$jaildir/tmp/built-tarball/*.tar.gz $source_path/$real_package 
+    ./jail-do $distro "mount /proc &> /dev/null ; sudo -H -u builder sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_rev" || return 1
+    tarball=`./jail-do $distro "cd /tmp/built-tarball && ls"`
+    scp $target_host:$jaildir/tmp/built-tarball/*.tar.gz $source_path/$real_package
+
+    # Keep a map of which params produce which tarball
+    echo $key=$source_path/$real_package/$tarball >> tarball_map
 }
 
 get_svn_path () {
@@ -28,7 +32,6 @@ get_svn_path () {
 	    ;;
     esac
 }
-
 
 
 distro=$1
@@ -69,6 +72,19 @@ fi
 . shared-code.sh
 . conf/$distro
 . defs/$real_package
+
+# Check to see if this tarball is already on disk
+key=$package:$version:$snapshot_rev
+echo Checking for duplicates in tarball_map with key: $key
+data=`grep $key tarball_map`
+if [ ! -z $data ]; then
+	# split on =
+	IFS==
+	set -- $data
+	# Key set to $1
+	echo Tarball exists: $2
+	exit 1
+fi
 
 mkdir -p $source_path/$real_package
 
