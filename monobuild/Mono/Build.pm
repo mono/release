@@ -1,11 +1,16 @@
 #!/usr/bin/perl
 
+use warnings;
+use strict;
+
 package Mono::Build;
 
-use XML::XPath;
 use XML::Simple;
 use File::Path;
 use Data::Dumper;
+use IO::File;
+use File::Basename;
+use Cwd qw( cwd );
 
 # Local packages
 use Mono::Build::Config;
@@ -13,18 +18,36 @@ use Env::Bash;
 
 our $debug = 1;
 
+# TODO For consistency... ...?
+our $queued = "queued";
+our $notused = "notused";
+our $inprogress = "inprogress";
+our $success = "success";
+our $failure = "failure";
+our $new = "new";
+
+our %descriptiveState = (
+	$queued 	=> "Queued",
+	$notused 	=> "Not Used",
+	$inprogress 	=> "In Progress",
+	$success 	=> "Success",
+	$failure 	=> "Failure",
+	$new 		=> "New",
+);
+
 sub getPlatforms
 {
-	my $dir = $Mono::Build::Config::platformDir;
+	my $platform_dir = $Mono::Build::Config::platformDir;
 	my @platforms;
 
-	opendir(DIR, $dir) or die "Can't open dir: $dir\n";
+	opendir(DIR, $platform_dir) or die "Can't open dir: $platform_dir\n";
+
+	my $dir;
 
 	while($dir = readdir(DIR))
 	{
-		# For some reason... .svn fails the -d perl test...???
-		#if(!-d $dir)
-		if($dir ne "." && $dir ne ".." && $dir ne ".svn" && $dir ne "hosts")
+		# If it's not a directory, not the "hosts" file...
+		if(! -d "$platform_dir/$dir" && $dir ne "hosts" && $dir !~ /^\./)
 		{
 			push @platforms, $dir;
 		}
@@ -40,16 +63,17 @@ sub getPlatforms
 
 sub getPackages
 {
-	my $dir = $Mono::Build::Config::packageDir;
+	my $package_dir = $Mono::Build::Config::packageDir;
 	my @packages;
 
-	opendir(DIR, $dir) or die "Can't open dir: $dir\n";
+	opendir(DIR, $package_dir) or die "Can't open dir: $package_dir\n";
 
+	my $dir;
 
 	while($dir = readdir(DIR))
 	{
-		# For some reason... .svn fails the -d perl test...???
-		if(!-d $dir && $dir ne ".svn")
+		#  Ignore files/directores that start with a period
+		if(! -d "$package_dir/$dir" && $dir !~ /^\./)
 		{
 			push @packages, $dir;
 		}
@@ -76,6 +100,8 @@ sub getLatestRevision
 {
 	my $platform = shift;
 	my $package = shift;
+
+	my @revisions;
 
 	# If this doesn't get overwritten, a build hasn't been don for this platform/package combo
 	my $revision = "";
@@ -241,6 +267,10 @@ sub readInfoXML
 
 	};
 
+	if($@) {
+		print STDERR "Error reading xml file!: $file\n";
+	}
+
 	return $ref;
 
 }
@@ -316,6 +346,150 @@ sub validBuild_PlatformPackage
 	return $return_val;
 	
 }
+
+sub getQueuedPackages
+{
+
+	my @queuedPackages;
+
+	my @distros;
+	my @packages;
+	my @revisions;
+	my $latestRev;
+	my $state;
+
+	my @platforms = glob("$Mono::Build::Config::buildsDir/*");
+
+	foreach my $platform (@platforms) {
+
+		$platform = File::Basename::basename($platform);
+
+		@packages = glob("$Mono::Build::Config::buildsDir/$platform/*");
+
+		foreach my $package (@packages) {
+
+			$package = File::Basename::basename($package);
+
+			@revisions = sort( glob("$Mono::Build::Config::buildsDir/$platform/$package/*"));
+
+			$latestRev = pop @revisions;
+
+			$latestRev = File::Basename::basename($latestRev);
+
+			$state = getState($platform, $package, $latestRev);
+
+			if($state eq "queued") {
+				push @queuedPackages, "$platform:$package:$latestRev";
+
+			}
+		}
+
+
+
+	}
+
+	return @queuedPackages;
+
+}
+
+################################################################
+## Name: executeCommand                                        
+################################################################
+sub executeCommand
+{
+	my $command = shift;
+
+	print "Current working directory: " . cwd() . "\n";
+	print "Executing: $command\n";
+
+	my @results;
+
+	open IN, "$command 2>&1 |";
+	@results = <IN>;
+	close IN;
+
+	#unshift @results,($?/256);
+	chomp @results;
+
+	return @results;
+
+}
+
+# Args: $platform, $package, $revision, %hash of key values to put in info.xml
+#
+# platform, package, revision, state, buildhost, start, finish...
+sub updateBuild
+{
+
+	my $platform = shift;
+	my $package = shift;
+	my $revision = shift;
+
+	my %info = @_;
+
+	my $xmlFile = "$Mono::Build::Config::buildsDir/$platform/$package/$revision/info.xml";
+
+	# Get a starter structure...	
+	my $xmlRef = readInfoXML($xmlFile);
+
+	# If something was passed in, put it into the 
+	foreach my $key (keys %info) {
+		if($info{$key}) { 
+			$xmlRef->{$key} = $info{$key};
+		}
+	}
+
+	if($debug) {
+
+		print STDERR Dumper($xmlRef);
+	}
+
+	writeInfoXML($xmlRef, $xmlFile);
+
+}
+
+# Args: $platform, $package, $revision, $stepName, %hash of key values to put in the step
+#
+# platform, package, revision, state, buildhost, start, finish...
+#  TODO: Does this step need to be mutexed?
+sub updateStep
+{
+
+	my $platform = shift;
+	my $package = shift;
+	my $revision = shift;
+	my $stepName = shift;
+
+	my %info = @_;
+
+	my $xmlFile = "$Mono::Build::Config::buildsDir/$platform/$package/$revision/info.xml";
+
+	# Get a starter structure...	
+	my $xmlRef = readInfoXML($xmlFile);
+
+	# Find out if this is a new step...
+	
+	# If not, get a new index
+
+	# If something was passed in, put it into the 
+	
+	
+	foreach my $key (keys %info) {
+		if($info{$key}) { 
+			$xmlRef->{$key} = $info{$key};
+		}
+	}
+
+	if($debug) {
+
+		print STDERR Dumper($xmlRef);
+	}
+
+	writeInfoXML($xmlRef, $xmlFile);
+
+}
+
+
 
 
 1;
