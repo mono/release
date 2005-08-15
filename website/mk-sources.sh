@@ -18,7 +18,7 @@ do
 		for package in ${ARGS[@]}; do 
 			
 			if [[ x$package == xgtk-sharp-2.0 ]]; then
-				latest_tarball "$package/gtk-sharp-1.9.*.tar.gz"
+				latest_tarball "$package/gtk-sharp-2.3.*.tar.gz"
 				TARBALLS=(${TARBALLS[@]} $LATEST_VERSION)
 			fi
 			
