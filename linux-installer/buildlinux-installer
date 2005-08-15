@@ -408,6 +408,9 @@ if ( -e $mono_installer_output ) {
 
 	# Move the install binary to the current directory
 	rename("$mono_installer_output", "$output/mono-${mono_version}_$mono_release_version-installer.bin");
+	# Do md5sum generation
+	chdir($output);
+	system("md5sum *.bin > mono-${mono_version}_$mono_release_version-installer.bin.md5");
 
 }
 
