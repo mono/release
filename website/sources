@@ -98,9 +98,9 @@ img {
 
 	<h3>Gtk# 2</h3>
 	<p>
-		These packages are <em>API unstable</em> development versions of Gtk#. In addition
-		to the risk of API breakages, by using thse packages you greatly limit your user base, especially
-		by using the 2.5.x series, which is <em>not available on most distros today</em>.
+		These releases are API stable Beta versions of Gtk#.  We recommend using the 2.3.x release.
+		By using the 2.5.x package, you limit your user base, since Gtk+ 2.6 is not available on
+		many distros.
 	</p>
 #	gtk-sharp-2.0
 
