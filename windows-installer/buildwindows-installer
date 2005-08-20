@@ -1,0 +1,77 @@
+#!/bin/sh
+
+MONO_LOCATION=/cygdrive/c/mono/Mono-1.1.8.3
+
+
+if [ ! -e "external_download" ] ; then
+	mkdir external_download
+fi
+
+external_download=(
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/glib-2.6.6.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/glib-dev-2.6.6.zip
+	http://www.gimp.org/~tml/gimp/win32/pkgconfig-0.15.zip
+	http://www.gimp.org/~tml/gimp/win32/libiconv-1.9.1.bin.woe32.zip
+	http://www.gimp.org/~tml/gimp/win32/gettext-runtime-0.13.1.zip
+)
+
+
+cd external_download
+for url in ${external_download[@]} ; do
+	file=`basename $url`
+	if [ ! -e $file ]; then
+		wget $url
+	fi
+done
+cd ..
+
+# Clean up dir first
+rm -Rf mono_deps
+rm -Rf /devel/target
+mkdir mono_deps
+mkdir -p /devel/target
+cd mono_deps
+for file in `ls ../external_download`; do
+	unzip ../external_download/$file
+done
+cd ..
+
+chmod 755 mono_deps/bin/*
+
+mono_deps=`pwd`/mono_deps
+
+ln -s $mono_deps /devel/target/glib-2.6.6
+
+export PKG_CONFIG_PATH=$mono_deps/lib/pkgconfig
+
+mono_dir=${1//\.tar\.gz/}
+
+echo $mono_dir
+
+rm -Rf $mono_dir
+rm -Rf /opt/mono
+
+tar -zxf ./$1
+
+# Add deps and installed mono to path
+export PATH=$PATH:$MONO_LOCATION/bin:$mono_deps/bin
+
+# Add dep libraries to path (Does this fix the warning?)
+export PATH=$PATH:$mono_deps/lib
+
+cd $mono_dir
+
+# Won't need this in future versions
+sed -e "s/csc.exe/mcs/" mcs/build/platforms/win32.make > win32.make; mv win32.make mcs/build/platforms
+
+./configure --prefix=/opt/mono
+# Funky cygwin hack... (this probably could be fixed with the autotools
+sed -e "s/\/cyg\//\/\//" libtool > libtool.new; mv libtool.new libtool; chmod 755 libtool
+
+
+make || (exit 1)
+
+# TODO: resgen.exe errors: failing to initialize properly
+
+make install || (exit 1)
+
