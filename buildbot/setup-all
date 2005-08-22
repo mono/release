@@ -5,3 +5,4 @@ sh setup-machine monobuild2   builder   trunk
 sh setup-machine g5-mono      nbuilder  trunk
 sh setup-machine x86-mono     nbuilder  trunk
 sh setup-machine ghbuildbot   builder   trunk
+sh setup-machine mono-itanium builder   trunk

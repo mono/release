@@ -1,0 +1,7 @@
+# /opt/gnome stupidity
+. /etc/profile.d/gnome-filesystem.sh
+
+lane_name=ia64-head
+prefix=$HOME/install
+install=true
+extra_script=true 
