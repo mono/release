@@ -10,6 +10,7 @@ function distro_info () {
 	case "$DISTRO" in
 		*-i[35]86) ARCH=x86 ;;
 		 *-x86_64) ARCH=x86_64 ;;
+		 *-ia64)   ARCH=ia64 ;;
 	esac
 	
 	case "$DISTRO" in
