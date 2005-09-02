@@ -18,6 +18,10 @@
 # 
 # Typical jail creation (not including collecting the rpms with gatherrpms.py) can be processed in less than 10 minutes
 
+#TODO: add proc filesystem to /etc/fstab (or at least make sure it's there)
+
+
+
 
 import sys
 import os
