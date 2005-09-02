@@ -23,13 +23,16 @@ my $buildroot = "$prefix/build";
 my $external_rpms = "$prefix/thirdparty/external_rpms";
 my $mono_rpms = "$prefix/../packaging/packages";
 
-# the readline package is for the debugger
+# the readline package is for the debugger (Probably won't need this for the next release of the debugger)
+# libtiff and libungif are for libgdiplus
 my @external_rpms_list = qw(
 	http://fr2.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/libstdc++-3.2.2-5.i386.rpm
 	http://fr2.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/linc-1.0.1-1.i386.rpm
 	http://fr.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/pkgconfig-0.14.0-3.i386.rpm
 	http://fr2.rpmfind.net/linux/redhat/9/en/os/i386/RedHat/RPMS/readline-4.3-5.i386.rpm
+
 	ftp://ftp.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libtiff-3.5.7-11.i386.rpm
+	ftp://ftp.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libungif-4.1.0-15.i386.rpm
 );
 
 
