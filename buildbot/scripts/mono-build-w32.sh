@@ -178,7 +178,13 @@ export PATH=/cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322/:$PATH
 # Build and install mono
 echo "Building and installing mono"
 
-(cd $here/mono; ./autogen.sh --prefix=$prefix || exit -1; make || exit -1; make install || exit -1) || exit -1
+(
+	set -e
+	cd $here/mono
+	./autogen.sh --prefix=$prefix
+	make EXTERNAL_MCS=csc.exe EXTERNAL_RUNTIME=env
+	make install
+) || exit -1
 
 
 echo ""
