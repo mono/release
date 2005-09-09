@@ -3,7 +3,7 @@
 if [[ x$DISTRO == xfedora-* ]]; then
 	RC_URL="http://www.snorp.net/files/packages/rcd-fc3/"
 else
-	RC_URL="ftp://ftp.novell.com/pub/ximian/redcarpet2/$DISTRO"
+	RC_URL="ftp://ftp.ximian.com/pub/redcarpet2/$DISTRO"
 fi
 
 case $DISTRO in
