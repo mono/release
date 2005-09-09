@@ -11,11 +11,14 @@ x86		hardhat		Packaging
 PPC		g5-mono		ppc-head		nbuilder / nbuilder
 		macmono		
 
-Sparc		sparcmono	sparc-head		builder / builder
+Sparc		sparcmono	sparc-head		builder / builder (decommissioned)
+		mono-sparc				builder / builder
 		
 AMD64		monobuild2	amd-head lane		builder / builder
 
 Itanium		mono-itanium
+
+ARM		mono-arm
 
 With Mainsoft:
 x86/java	213.31.213.19
