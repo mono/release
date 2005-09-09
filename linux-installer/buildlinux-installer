@@ -40,7 +40,6 @@ my @custom_rpms_list = qw(
 	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/libgtkhtml3.0_4-3.0.10-0.ximian.6.1.i386.rpm
 	http://www.go-mono.com/archive/1.0.6/redhat-9-i386/gtksourceview-sharp-0.5-1.ximian.6.1.i386.rpm
 	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/gtksourceview-1.0.1-0.ximian.6.1.i386.rpm
-	http://www.go-mono.com/archive/1.0.6/redhat-9-i386/gecko-sharp-0.6-1.ximian.6.1.i386.rpm
 	ftp://ftp.ximian.com/pub/ximian-evolution/redhat-9-i386/libgal2.0_6-1.99.11-0.ximian.6.1.i386.rpm
 );
 
@@ -79,6 +78,9 @@ my %local_rpms = (
 			)], 
 		"$mono_rpms/noarch/monodevelop" => [ qw(
 			monodevelop
+			)],
+		"$mono_rpms/noarch/gecko-sharp" => [ qw(
+			gecko-sharp
 			)],
 		"$mono_rpms/noarch/gecko-sharp-2.0" => [ qw(
 			gecko-sharp-2.0
@@ -261,11 +263,19 @@ rmtree ("usr/etc");
 rename ("etc", "usr/etc");
 
 
+# TODO: This list needs to be dynamic (it's a pain to update it for all the new shell wrappers)
 my @executable_wrappers = qw(
-	monodoc mod webshot mcs asp-state dbsessmgr mod-mono-server xsp
+	al
+	monodoc mod webshot mcs asp-state dbsessmgr 
+	mod-mono-server mod-mono-server2 
+	xsp xsp2
 	resgen makecert mbas monodocer monodocs2html monodocs2slashdoc
 	gconfsharp2-schemagen gapi-codegen gapi2-codegen gapi2-fixup gapi2-parser
 	monodevelop
+	
+	mdassembler mdcs2ecma mdnormalizer mdvalidater
+
+	sn xsp2
 
 	xsd 
 	booc booi booish 
@@ -279,6 +289,7 @@ foreach my $f (glob "$p/usr/lib/pkgconfig/*.pc") {
 	print "Substituting $f\n";
 }
 
+# This only works for the executables match the wrappers (some don't: mdassembler -> assembler.exe)
 # Get list .net executables, check if there's a wrapper, and if so, add it to the list to get substituted
 foreach my $file ((glob "$p/usr/bin/*.exe"), (glob "$p/usr/lib/mono/*/*.exe")) {
 

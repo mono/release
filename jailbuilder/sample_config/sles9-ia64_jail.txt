@@ -8,7 +8,8 @@ rpm_repository_path=sles9-ia64rpms
 # Only accept packages with these arches
 valid_arch=ia64 noarch
 
-required_rpms=gcc make autoconf automake vim rug iputils util-linux sles-release mktemp procps aaa_base aaa_skel sudo pwdutils pkgconfig bison tar file
+required_rpms=gcc make autoconf automake vim rug iputils util-linux sles-release mktemp procps aaa_base aaa_skel sudo pwdutils pkgconfig bison tar file libungif libpng-devel
+
 
 # Environment to set before executing things inside the jail (format: var=value var2=value2, etc...)
 environment=

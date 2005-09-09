@@ -86,6 +86,18 @@ case $package in
 	
 	;;
 
+    monodoc )
+	$SVNEXPORT $MONO_ROOT/$svn_path
+
+	# Checkout errors from the mcs module
+	mcs_svn_path=${svn_path//monodoc/mono}
+	mkdir mcs
+	cd mcs
+	$SVNEXPORT $MONO_ROOT/$mcs_svn_path/mcs/errors
+	cd ..
+	
+	;;
+
     monodevelop )
 	# md has its own svn repo
 	$SVNEXPORT $MD_ROOT/$svn_path
