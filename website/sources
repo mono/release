@@ -87,14 +87,9 @@ img {
      
 	<h3>Gtk# 1</h3>
 #	gtk-sharp
-	
-	<h3>gecko-sharp</h3>
-	<ul>
-	<li><a href='/packagers/gecko-sharp/gecko-sharp-0.6.tar.gz'>gecko-sharp-0.6.tar.gz</a></li>
-	</ul>
 
 	<h3>Development Tools</h3>
-#	monodoc mono-tools gecko-sharp-2.0 gtksourceview-sharp-2.0 monodevelop boo ikvm mono-debugger
+#	monodoc mono-tools gecko-sharp gecko-sharp-2.0 gtksourceview-sharp-2.0 monodevelop boo ikvm mono-debugger
 
 	<h3>Gtk# 2</h3>
 	<p>
