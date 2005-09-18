@@ -1,16 +1,42 @@
+
+On this document:
+
+	* How to build masterinfos
+	* Updating masterinfos for the buildbot
+
 How to build all masterinfos
 ===============================
-The Makefile in this directory is intended to help building the masterinfos on
-windows under cygwin. To build them:
 
-1. Edit the Makefile and update it to your paths.
+	The Makefile in this directory is intended to help building
+	the masterinfos on windows under cygwin. To build them:
+	
+	1. Edit the Makefile and update it to your paths.
+	
+	2. Copy assemblies-list.txt, createinfos.sh, Makefile to a
+	directory, say, 'lalala'. Ensure createinfos.sh has +x
+	permissions.
+	
+	3. Copy mono-api-info.cs from SVN (mcs/tools/corcompare) to
+	'lalala'.
+	
+	4. make infos
+	
+	You'll get a 1.1 and a 2.0 directory with the .xml files.
 
-2. Copy assemblies-list.txt, createinfos.sh, Makefile to a directory, say,
-'lalala'. Ensure createinfos.sh has +x permissions.
 
-3. Copy mono-api-info.cs from SVN (mcs/tools/corcompare) to 'lalala'.
+Updating masterinfos for the buildbot
+=====================================
 
-4. make infos
+	Log into root@mono.ximian.com and go into the directory
 
-You'll get a 1.1 and a 2.0 directory with the .xml files.
+	/var/www/mono-website/go-mono/masterinfos
 
+	Download the new masterinfos with the full build name 
+	and link it to the appropriate file, for instance, for
+	the 2.x profile use:
+
+		masterinfos-2.0.tar.gz
+
+	Trigger a rebuild on Buildbot.
+
+	Currently we use the x86 machine for updating the status pages.
