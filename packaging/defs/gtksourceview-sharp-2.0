@@ -20,6 +20,7 @@ MONO_DEPS=(
 	gtk-sharp-2.0
 	gtk-sharp
 	monodoc
+	mono-tools
 )
 
 HEAD_PATH="trunk/gtksourceview-sharp"
