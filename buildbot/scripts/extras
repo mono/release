@@ -3,7 +3,7 @@ if test '!' -f /tmp/buildflag-$USER-`hostname`; then
 	echo Build failed, skipping extras
 	exit 1
 fi
-. shared-vars
+. ./shared-vars
 
 echo Running: $extra_script
 

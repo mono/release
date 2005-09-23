@@ -1,5 +1,5 @@
 #! /bin/bash
-. shared-vars
+. ./shared-vars
 
 # kill any old instances
 if [ -f twistd.pid ]; then

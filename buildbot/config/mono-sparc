@@ -1,5 +1,7 @@
-export PATH=/mono/bin:$PATH
-export LD_LIBRARY_PATH=/mono/lib
+PATH=/mono/bin:$PATH
+LD_LIBRARY_PATH=/mono/lib
+export PATH LD_LIBRARY_PATH
+
 lane_name=sparc-head
 prefix=$HOME/mono-installed
 install=true
