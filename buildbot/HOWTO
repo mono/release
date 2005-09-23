@@ -16,9 +16,14 @@ Sparc		sparcmono	sparc-head		builder / builder (decommissioned)
 		
 AMD64		monobuild2	amd-head lane		builder / builder
 
+AMD64		monobuild2	amd-head lane		builder / builder
+
 Itanium		mono-itanium
 
 ARM		mono-arm
+
+Old:
+AMD64		amd-mono	amd-head lane		builder / builder
 
 With Mainsoft:
 x86/java	213.31.213.19
