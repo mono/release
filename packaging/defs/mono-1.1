@@ -23,6 +23,12 @@ get_destroot () {
 	DEST_ROOT=$ARCH
 }
 
+# This requires mono because of the mono-find-provides  ... ???
+#  Otherwise, if mono's not installed, these scripts are not there???
+MONO_DEPS=(
+	mono-1.1
+)
+
 HEAD_PATH="trunk"
 RELEASE_PATH="tags/mono-[[version]]"
 
