@@ -2,32 +2,36 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Mono 1.1.8 with Gtk# 1.9.5
-AppVerName=Mono for Windows 1.1.8
+AppName=Mono @@MONO_VERSION@@ with @@GTK_SHARP_VERSION@@
+AppVerName=Mono for Windows @@MONO_VERSION@@
 AppPublisher=Mono
 AppPublisherURL=http://www.mono-project.com
 AppSupportURL=http://www.mono-project.com/about/faq.html
 AppUpdatesURL=http://www.mono-project.com/downloads/index.html
-DefaultDirName={pf}\Mono-1.1.8
-DefaultGroupName=Mono 1.1.8 for Windows
-AppID={{C85F0372-2236-44C1-A217-A14D6E8D53FB}
+DefaultDirName={pf}\Mono-@@MONO_VERSION@@
+DefaultGroupName=Mono @@MONO_VERSION@@ for Windows
+AppID={{@@MONO_GUID@@}
 Compression=lzma/max
 ;Compression=bzip/4
 SolidCompression=true
 DisableDirPage=false
 DisableReadyPage=false
-OutputBaseFilename=mono-1.1.8-gtksharp-1.9.5-win32-0.0
-VersionInfoVersion=1.1.8.0
-VersionInfoDescription=Mono 1.1.8 with Gtk# Installer for Win32
+OutputBaseFilename=mono-@@MONO_VERSION@@-gtksharp-@@GTK_SHARP_VERSION@@-win32-@@REVISION@@
+VersionInfoVersion=@@MONO_VERSION@@
+VersionInfoDescription=Mono @@MONO_VERSION@@ with Gtk# Installer for Win32
 VersionInfoCompany=Mono
-InfoBeforeFile=mono\mono_1.1.8\ReleaseNotes.txt
-LicenseFile=mono\mono_1.1.8\mono-lic.txt
-WizardSmallImageFile=installerBannerSmall256_52x52.bmp
-WizardImageFile=1.1.8-installerBanner256.bmp
+InfoBeforeFile=setup-files\ReleaseNotes.txt
+LicenseFile=setup-files\mono-lic.txt
+WizardSmallImageFile=setup-files\installerBannerSmall256_52x52.bmp
+WizardImageFile=setup-files\installerBanner256.bmp
 UninstallDisplayIcon={app}\mono.ico
-SetupIconFile=mono.ico
+SetupIconFile=setup-files\mono.ico
 ShowLanguageDialog=yes
-AppVersion=1.1.8
+AppVersion=@@MONO_VERSION@@
+
+; Put in place of version: @@MONO_VERSION@@ and replace before this file is run
+; Notes: sh files have format of:  c:/mono/bin/mono.exe c:/mono/lib/mono/1.0/gacutil.exe "$@"
+; Notes: bat files have format of what's in wrapper.bat
 
 
 [Types]
@@ -37,75 +41,62 @@ Name: custom; Description: Custom installation; Flags: iscustom
 
 [Components]
 Name: mono; Description: Mono Files; Types: full compact custom; Flags: fixed
-Name: gtk1; Description: GTK+ 2.6 Files; Types: full custom
-Name: gtk1\gtkSharp\monodoc; Description: MonoDoc 1.0.5; Types: full custom
-Name: gtk1\gtkSharp; Description: Gtk# 1.0.10/1.9.5 Files; Types: full custom
-Name: gtk1\gtkSharp\geckosharp; Description: Gecko# 2.0.0.7 Files; Types: full custom
-Name: gtk1\gtkSharp\samples; Description: Samples; Types: full custom
-Name: xsp; Description: XSP 1.1.0 files; Types: full custom
+Name: gtk; Description: GTK+ 2.6 Files; Types: full custom
+Name: gtk\gtkSharp\monodoc; Description: MonoDoc; Types: full custom
+Name: gtk\gtkSharp; Description: Gtk# @@GTK_SHARP_VERSION@@ Files; Types: full custom
+Name: gtk\gtkSharp\geckosharp; Description: Gecko# Files; Types: full custom
+Name: gtk\gtkSharp\samples; Description: Samples; Types: full custom
+Name: xsp; Description: XSP files; Types: full custom
 
 [Tasks]
 
 [Files]
-Source: mono\mono_1.1.8\*; DestDir: {app}; Components: mono; Flags: ignoreversion recursesubdirs
-Source: mono\batandsh_1.1.8\*; DestDir: {app}\bin; Components: mono; Flags: ignoreversion recursesubdirs
-Source: mono\xsp_1.1.0\*; DestDir: {app}; Components: xsp; Flags: ignoreversion recursesubdirs
-Source: mono\gtk_2.6\*; DestDir: {app}; Components: gtk1; Flags: ignoreversion recursesubdirs
-Source: mono\GtkSharp_1.0.10-1.9.5\*; DestDir: {app}; Components: gtk1\gtksharp; Flags: ignoreversion recursesubdirs
-Source: mono\GeckoSharp_2.0.0.7\*; DestDir: {app}; Components: gtk1\gtkSharp\geckosharp; Flags: ignoreversion recursesubdirs
-Source: mono\Samples\*; DestDir: {app}\samples; Components: gtk1\gtkSharp\samples; Flags: ignoreversion recursesubdirs
-Source: mono\batandsh\startXSP.bat; DestDir: {app}\bin; Components: xsp; Flags: ignoreversion
-Source: mono\batandsh\startXSP2.bat; DestDir: {app}\bin; Components: xsp; Flags: ignoreversion
-Source: mono\batandsh\prj2make-sharp-gtk.bat; DestDir: {app}\bin; Components: gtk1\gtkSharp\samples; Flags: ignoreversion
-Source: mono\batandsh\prj2make-sharp-gtk.; DestDir: {app}\bin; Components: gtk1\gtkSharp\samples; Flags: ignoreversion
-Source: mono\batandsh\GtkDemo.bat; DestDir: {app}\bin; Components: gtk1\gtkSharp\samples; Flags: ignoreversion
-Source: mono\batandsh\GtkDemo.; DestDir: {app}\bin; Components: gtk1\gtkSharp\samples; Flags: ignoreversion
-Source: mono\batandsh\sqlsharpgtk.bat; DestDir: {app}\bin; Components: gtk1\gtkSharp\samples; Flags: ignoreversion
-Source: mono\batandsh\sqlsharpgtk.; DestDir: {app}\bin; Components: gtk1\gtkSharp\samples; Flags: ignoreversion
-Source: mono\sample_exe\sqlsharpgtk.exe; DestDir: {app}\lib; Components: gtk1\gtkSharp\samples; Flags: ignoreversion
-Source: mono\sample_exe\sqlsharpgtk.exe.config; DestDir: {app}\lib; Components: gtk1\gtkSharp\samples; Flags: ignoreversion
-Source: mono\sample_exe\Mono.Data.SqlSharp.DatabaseBrowser.dll; DestDir: {app}\lib; Components: gtk1\gtkSharp\samples; Flags: ignoreversion
-Source: mono\sample_exe\prj2make-sharp-gtk.exe; DestDir: {app}\lib; Components: gtk1\gtkSharp\samples; Flags: ignoreversion
-Source: mono\monodoc_1.0.5\*; DestDir: {app}; Components: gtk1\gtkSharp\monodoc; Flags: ignoreversion recursesubdirs
+Source: build\mono\*; DestDir: {app}; Components: mono; Flags: ignoreversion recursesubdirs
+Source: build\xsp\*; DestDir: {app}; Components: xsp; Flags: ignoreversion recursesubdirs
+Source: build\gtk\*; DestDir: {app}; Components: gtk; Flags: ignoreversion recursesubdirs
+Source: build\gtk-sharp\*; DestDir: {app}; Components: gtk\gtksharp; Flags: ignoreversion recursesubdirs
+Source: build\gecko-sharp\*; DestDir: {app}; Components: gtk\gtkSharp\geckosharp; Flags: ignoreversion recursesubdirs
+Source: build\samples\*; DestDir: {app}; Components: gtk\gtkSharp\samples; Flags: ignoreversion recursesubdirs
+Source: build\monodoc\*; DestDir: {app}; Components: gtk\gtkSharp\monodoc; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]
 Filename: {app}\Mono.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://www.mono-project.com
-Filename: {app}\MonoReleaseNotes.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://go-mono.com/archive/1.1.8/
-Filename: {app}\GtkPlus.url; Section: InternetShortcut; Components: gtk1; Key: URL; String: http://www.gtk.org
-Filename: {app}\GtkSharp.url; Section: InternetShortcut; Components: gtk1\gtkSharp; Key: URL; String: http://gtk-sharp.sourceforge.net/index.html
+Filename: {app}\MonoReleaseNotes.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://go-mono.com/archive/@@MONO_VERSION@@/
+Filename: {app}\GtkPlus.url; Section: InternetShortcut; Components: gtk; Key: URL; String: http://www.gtk.org
+Filename: {app}\GtkSharp.url; Section: InternetShortcut; Components: gtk\gtkSharp; Key: URL; String: http://gtk-sharp.sourceforge.net/index.html
 Filename: {app}\Xsplocal.url; Section: InternetShortcut; Components: xsp; Key: URL; String: {code:GetURLAndPort}/index.aspx
 Filename: {app}\Xsplocal2.url; Section: InternetShortcut; Components: xsp; Key: URL; String: {code:GetURLAndPort}/index2.aspx
-Filename: {app}\MonoDocWeb.url; Section: InternetShortcut; Components: xsp and gtk1\gtkSharp\monodoc; Key: URL; String: {code:GetURLAndPort}/header.html
+Filename: {app}\MonoDocWeb.url; Section: InternetShortcut; Components: xsp and gtk\gtkSharp\monodoc; Key: URL; String: {code:GetURLAndPort}/header.html
 
 [Icons]
-Name: {group}\Mono-1.1.8 Command Prompt; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono 1.1.8 Command Prompt
+Name: {group}\Mono-@@MONO_VERSION@@ Command Prompt; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono @@MONO_VERSION@@ Command Prompt
 Name: {group}\Readme; Filename: {app}\ReleaseNotes.txt; Comment: Combined Installer Release Notes
-Name: {group}\{cm:ProgramOnTheWeb,Mono-1.1.8 Release Notes}; Filename: {app}\MonoReleaseNotes.url
-Name: {group}\Applications\Gtk# Demo; Filename: {app}\bin\GtkDemo.bat; Components: gtk1\gtkSharp\samples; Comment: Gtk# Demo
-;Name: {group}\Applications\Sql# GTK; Filename: {app}\bin\sqlsharpgtk.bat; Components: gtk1\gtkSharp\samples; Comment: SQL# GUI version
-Name: {group}\Applications\Prj2Make# GTK; Filename: {app}\bin\prj2make-sharp-gtk.bat; Components: gtk1\gtkSharp\samples; Comment: Makefile generator tool.
-Name: {group}\Applications\Samples Directory; Filename: {app}\samples; Components: gtk1\gtkSharp\samples; Comment: Gtk# samples directory
+Name: {group}\{cm:ProgramOnTheWeb,Mono-@@MONO_VERSION@@ Release Notes}; Filename: {app}\MonoReleaseNotes.url
+Name: {group}\Applications\Gtk# Demo; Filename: {app}\bin\GtkDemo.bat; Components: gtk\gtkSharp\samples; Comment: Gtk# Demo
+Name: {group}\Applications\Sql# GTK; Filename: {app}\bin\sqlsharpgtk.bat; Components: gtk\gtkSharp\samples; Comment: SQL# GUI version
+Name: {group}\Applications\Prj2Make# GTK; Filename: {app}\bin\prj2make-sharp-gtk.bat; Components: gtk\gtkSharp\samples; Comment: Makefile generator tool.
+Name: {group}\Applications\Samples Directory; Filename: {app}\samples; Components: gtk\gtkSharp\samples; Comment: Gtk# samples directory
 Name: {group}\XSP\XSP Test Web Server; Filename: {app}\bin\startXSP.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\XSP\XSP 2.0 Test Web Server; Filename: {app}\bin\startXSP2.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\{cm:ProgramOnTheWeb,Mono}; IconFilename: {app}\mono.ico; Filename: {app}\Mono.url
-Name: {group}\{cm:UninstallProgram,Mono-1.1.8 Win32}; Filename: {uninstallexe}
-Name: {group}\{cm:ProgramOnTheWeb,Gtk+}; Components: gtk1; Filename: {app}\GtkPlus.url
-Name: {group}\{cm:ProgramOnTheWeb,Gtk#}; Components: gtk1\gtkSharp; Filename: {app}\GtkSharp.url
+Name: {group}\{cm:UninstallProgram,Mono-@@MONO_VERSION@@ Win32}; Filename: {uninstallexe}
+Name: {group}\{cm:ProgramOnTheWeb,Gtk+}; Components: gtk; Filename: {app}\GtkPlus.url
+Name: {group}\{cm:ProgramOnTheWeb,Gtk#}; Components: gtk\gtkSharp; Filename: {app}\GtkSharp.url
 Name: {group}\XSP\XSP Index Page; Components: xsp; Filename: {app}\Xsplocal.url
 Name: {group}\XSP\XSP 2.0 Index Page; Components: xsp; Filename: {app}\Xsplocal2.url
-Name: {group}\XSP\MonoDoc Web; Components: xsp and gtk1\gtkSharp\monodoc; Filename: {app}\MonoDocWeb.url
+Name: {group}\XSP\MonoDoc Web; Components: xsp and gtk\gtkSharp\monodoc; Filename: {app}\MonoDocWeb.url
 
 [Registry]
 Root: HKLM; Subkey: SOFTWARE\Novell\Mono; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: Software\Novell\Mono; ValueType: string; ValueName: DefaultCLR; ValueData: 1.1.8; Flags: uninsdeletevalue
-Root: HKLM; Subkey: SOFTWARE\Novell\Mono\1.1.8; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.8; ValueType: string; ValueName: FrameworkAssemblyDirectory; ValueData: {app}\lib; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.8; ValueType: string; ValueName: MonoConfigDir; ValueData: {app}\etc; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.8; ValueType: string; ValueName: SdkInstallRoot; ValueData: {app}; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.8; Components: xsp; ValueType: dword; ValueName: XSPIsInstalled; ValueData: 1; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.8; Components: gtk1\gtkSharp; ValueType: dword; ValueName: GtkSharpIsInstalled; ValueData: 1; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.8; Components: gtk1; ValueType: dword; ValueName: GtkPlusDevIsInstalled; ValueData: 1; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono; ValueType: string; ValueName: DefaultCLR; ValueData: @@MONO_VERSION@@; Flags: uninsdeletevalue
+Root: HKLM; Subkey: SOFTWARE\Novell\Mono\@@MONO_VERSION@@; Flags: uninsdeletekeyifempty
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: FrameworkAssemblyDirectory; ValueData: {app}\lib; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: MonoConfigDir; ValueData: {app}\etc; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: SdkInstallRoot; ValueData: {app}; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: xsp; ValueType: dword; ValueName: XSPIsInstalled; ValueData: 1; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: gtk\gtkSharp; ValueType: dword; ValueName: GtkSharpIsInstalled; ValueData: 1; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: gtk; ValueType: dword; ValueName: GtkPlusDevIsInstalled; ValueData: 1; Flags: uninsdeletevalue
 Root: HKLM; Subkey: SOFTWARE\Novell\Mono DefaultCLR; Flags: uninsdeletekeyifempty
 Root: HKLM; Subkey: Software\Novell\Mono DefaultCLR; ValueType: string; ValueName: Installer Language; ValueData: 1033; Flags: uninsdeletevalue
 
@@ -131,7 +122,7 @@ var
     bRc: Boolean;
 begin
     // Get the registry value
-    bRc := RegQueryStringValue(HKLM, 'SOFTWARE\Novell\Mono\1.1.8', 'SdkInstallRoot',
+    bRc := RegQueryStringValue(HKLM, 'SOFTWARE\Novell\Mono\@@MONO_VERSION@@', 'SdkInstallRoot',
     strMonoBaseDir
     );
 
@@ -141,10 +132,10 @@ begin
     end;
 end;
 
-// Checks to see if Mono 1.1.8 is Installed
-Function IsMono101Installed() : Boolean;
+// Checks to see if Mono @@MONO_VERSION@@ is Installed
+Function IsMonoInstalled() : Boolean;
 begin
-    Result := RegValueExists(HKLM, 'SOFTWARE\Novell\Mono\1.1.8', 'SdkInstallRoot');
+    Result := RegValueExists(HKLM, 'SOFTWARE\Novell\Mono\@@MONO_VERSION@@', 'SdkInstallRoot');
 end;
 
 Function SayMessage(const strMsg: String; const typMsgBox: TMsgBoxType) : Integer;
@@ -152,10 +143,11 @@ begin
   Result := MsgBox(strMsg, typMsgBox, MB_OK);
 end;
 
+//These Initialize* functions must get called automatically
 Function InitializeSetup : Boolean;
 begin
 	// Check requirements before Installation
-	If IsMono101Installed() = true Then
+	If IsMonoInstalled() = true Then
 	begin
 	 Result := false;
 	 SayMessage('Mono seems to be installed.' + #13 + #10 + 'Please uninstall it and run this setup again.', mbError);
@@ -177,6 +169,7 @@ begin
     PortForXSP.Values[0] := '8088';
 end;
 
+// Replace files with no slash conversion
 Procedure ReplaceRootPathForBat(var strFileName: String; const strOrignal, strReplacement: String);
 var
   strFileContents: String;
@@ -192,6 +185,8 @@ begin
   end;
 end;
 
+
+// Replace files with slash conversion
 Procedure ReplaceRootPath(var strFileName: String; const strOrignal,
 strOriginalForwardSlash, strReplacement, strReplacementForwardSlash: String);
 var
@@ -214,6 +209,12 @@ Procedure WriteRootPath(const cstrBasePath, cstrBasePathForwardSlash: String);
 var strFilePath, strPortXSP: String;
 begin
   // Shell Scripts
+	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mcs.'
+	ReplaceRootPath(strFilePath, 'C:\Target', 'C:/Target', cstrBasePath, cstrBasePathForwardSlash);
+	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
+
+
+
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodocer.';
 	ReplaceRootPath(strFilePath, 'C:\Target', 'C:/Target', cstrBasePath, cstrBasePathForwardSlash);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodocs2html.';
@@ -317,8 +318,6 @@ begin
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\makecert.'
 	ReplaceRootPath(strFilePath, 'C:\Target', 'C:/Target', cstrBasePath, cstrBasePathForwardSlash);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mbas.'
-	ReplaceRootPath(strFilePath, 'C:\Target', 'C:/Target', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mcs.'
 	ReplaceRootPath(strFilePath, 'C:\Target', 'C:/Target', cstrBasePath, cstrBasePathForwardSlash);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mkbundle.'
 	ReplaceRootPath(strFilePath, 'C:\Target', 'C:/Target', cstrBasePath, cstrBasePathForwardSlash);
@@ -547,8 +546,12 @@ begin
 	ReplaceRootPathForBat(strFilePath, 'C:\Target', cstrBasePath);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mbas.bat'
 	ReplaceRootPathForBat(strFilePath, 'C:\Target', cstrBasePath);
+
+
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mcs.bat'
-	ReplaceRootPathForBat(strFilePath, 'C:\Target', cstrBasePath);
+	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
+
+
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mkbundle.bat'
 	ReplaceRootPathForBat(strFilePath, 'C:\Target', cstrBasePath);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mint.bat'
