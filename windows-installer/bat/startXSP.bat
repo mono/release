@@ -1,4 +1,4 @@
 @echo off
-call C:\cygwin\tmp\install\bin\setmonopath.bat
-cd /D C:\cygwin\tmp\install\share\doc\xsp\test
+call @@DOS_MONO_INST_DIR@@\bin\setmonopath.bat
+cd /D @@DOS_MONO_INST_DIR@@\lib\xsp\test
 xsp --root . --port 8089 --applications /:.

@@ -1,0 +1,67 @@
+Release Notes for Mono, Gtk# and XSP Combined Windows Installer. 
+Code name: "About Time"
+By Wade Berrier <wberrier@novell.com> September 29, 2005
+------------------------------------------------------------------------
+
+General Description:
+
+This installation includes Mono 1.1.9.1 for Windows and the Gtk# 1.0.10 
+and 2.3.91 for Windows.  It also includes a built and configured version 
+of XSP 1.1.9.1.
+
+
+New in this Release:
+
+Boo and ikvm are now included.
+
+The build system for the installer has been revamped.  Because of this,
+upcoming versions will be released very shortly after Mono releases.
+Although much time has been spent to ensure a quality build, there
+may be some growing pains because of the new build system.
+
+Requirements:
+
+This build runs on Windows 2000 or later.
+
+Known Issues:
+
+-The monodoc browser (Mono-tools) was not included in this release
+ because mono-tools doesn't build on windows yet.  Hopefully this
+ will change. 
+-Some of the precompiled samples don't work because they
+ depend on gtk# 1.9.5.  The samples have been included in order to 
+ look at the source code. This will be fixed in an upcoming release.
+-Gtk# 2.3.91 normally includes documentation.  This build does not.
+
+
+Credits and Related Information:
+
+The Mono, Gtk# and XSP Combined Windows Installer was put together
+by Francisco T. Martinez under the recommendations and advice of the
+Mono community.  Special gratitude to Daniel Morgan, Miguel de Icaza,
+Mike Kestner, Lluis Sanchez, Gonzalo Paniagua Javier, Erik Dasque, Atsushi
+Enomoto, Urs Muff, Ivan Wong, John Luke, Joseph Hill, Todd Berman, 
+Jackson Harper, and Kornél Pál.
+
+Wade Berrier now maintains the installer and is VERY grateful for the
+work Francisco (Paco) did to put the installer together.
+
+For Support and Questions you can visit the locations or email the 
+mailing list below:
+
+Mono Project Web Site URL:
+http://www.mono-project.com
+
+Mono Project Mailing List Subscription and Archive:
+http://www.mono-project.com/about/mailing-lists.html#maillists
+
+Gtk# Project Web Site URL:
+http://gtk-sharp.sourceforge.net
+
+Gtk# Project Mailing List Subscription and Archive:
+http://lists.ximian.com/mailman/listinfo/gtk-sharp-list
+
+
+Microsoft Windows is a registered trademark of
+Microsoft Corporation.
+

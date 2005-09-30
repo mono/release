@@ -1,7 +1,7 @@
 @ECHO OFF
 SETLOCAL
-SET PATH=C:\cygwin\tmp\install\bin;%PATH%
-SET MONO_PATH=C:\cygwin\tmp\install\lib
-SET MONO_CFG_DIR=C:\cygwin\tmp\install\etc
-"C:\cygwin\tmp\install\lib\mono.exe" "C:\cygwin\tmp\install\lib\mono\1.0\@@MONO_WRAPPER@@.exe" %*
+SET PATH=@@DOS_MONO_INST_DIR@@\bin;%PATH%
+SET MONO_PATH=@@DOS_MONO_INST_DIR@@\lib
+SET MONO_CFG_DIR=@@DOS_MONO_INST_DIR@@\etc
+"@@DOS_MONO_INST_DIR@@\bin\mono.exe" "@@DOS_MONO_INST_DIR@@\lib\mono\1.0\@@MONO_WRAPPER@@.exe" %*
 ENDLOCAL
