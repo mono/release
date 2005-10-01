@@ -238,8 +238,8 @@ class Package:
 ### Main Execution Starts Here ###
 
 if len(sys.argv) < 4:
-	print "Usage: buildwindows-installer <mono version> <gtk-sharp versions> <revision>"
-	print "Example: buildwindows-installer 1.1.9.1 1.0.10-2.3.91 0"
+	print "Usage: buildwindows-installer <mono version> <gtk-sharp version> <revision>"
+	print "Example: buildwindows-installer 1.1.9.1 2.3.91 0"
 	sys.exit(1)
 
 output_dir = 'Output/%s_%s/windows' % ( sys.argv[1], sys.argv[3]) 
@@ -646,8 +646,12 @@ os.chdir('..')
 # Run the guid generator on windows
 # TODO:  Need to be able to interact (just in case keys aren't set up) and also capture output
 os.system("scp guidgen/guid_generator.exe %s:" % windows_build_client)
+# It would be nice to have a win32 console app to spit this out and not be dependent on mono
 guid = commands.getoutput("ssh %s '. /tmp/build_deps/env.sh; mono ./guid_generator.exe' " % windows_build_client).split().pop()
 
+if guid == "found" or not re.compile('.*-.*-.*-.*-.*').search(guid):
+	print "Error getting guid: %s" % guid
+	sys.exit(1)
 
 # Massage .iss file
 #  Mono.iss file (version, AppId, etc...)
