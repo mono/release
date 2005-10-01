@@ -1,4 +1,4 @@
-PATH=/mono/bin:$PATH
+PATH=/mono/bin:/usr/local/bin:$PATH
 LD_LIBRARY_PATH=/mono/lib
 export PATH LD_LIBRARY_PATH
 
