@@ -242,7 +242,7 @@ if len(sys.argv) < 4:
 	print "Example: buildwindows-installer 1.1.9.1 2.3.91 0"
 	sys.exit(1)
 
-output_dir = 'Output/%s_%s/windows' % ( sys.argv[1], sys.argv[3]) 
+output_dir = 'Output/%s/windows-installer/%s' % ( sys.argv[1], sys.argv[3]) 
 
 if os.path.exists(output_dir):
 	print "Build already exists: %s (you probably need to bump the revision)" % output_dir
