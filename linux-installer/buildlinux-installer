@@ -115,7 +115,7 @@ unless($mono_version) {
 	exit 1;
 }
 
-my $output = "$prefix/output/${mono_version}_$mono_release_version/installer/";
+my $output = "$prefix/output/${mono_version}/linux-installer/$mono_release_version/";
 
 if(-e $output) {
 	print "$output already exists... please remove this dir or bump the package release version\n";
@@ -382,7 +382,7 @@ copy("$p/../projects/mono/License.txt", "$p/usr/share/doc");
 if(!-e "$p/usr/share/doc/Readme.txt") {
 	# If there was an error, zero out the Readme file
 	#$readme_text = "No release notes for this build...";
-	$readme_text .= "\nVisit http://go-mono.com/archive/${mono_version}_$mono_release_version for release details\n\n$packages_used_text.\n";
+	$readme_text .= "\nVisit http://go-mono.com/archive/${mono_version} for release details\n\n$packages_used_text.\n";
 
 	write_file("$p/usr/share/doc/Readme.txt", $readme_text);
 
