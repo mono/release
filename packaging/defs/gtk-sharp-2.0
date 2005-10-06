@@ -21,6 +21,13 @@ get_destroot () {
 HEAD_PATH="trunk/gtk-sharp"
 RELEASE_PATH="tags/gtk-sharp/[[gtksharp2ver]]/gtk-sharp"
 
+# Note, the above tags are a little weird... here's now the automation handles them:
+# Example tag: svn+ssh://mono-cvs.ximian.com/source/tags/gtk-sharp/2.3.92_2.5.92/gtk-sharp
+# example mktarball:  ./mktarball suse-93-i586 gtk-sharp-2.0 2.3.92
+# example mktarball:  ./mktarball suse-93-i586 gtk-sharp-2.6 2.5.92
+
+#  I believe it's the same with ./build
+
 get_tarball () {
 	msvn_tar $1
 }
