@@ -17,6 +17,8 @@ use File::Slurp;
 my $DOWNLOAD_URL = "http://primates.ximian.com/~wberrier/linux-installer";
 my $IB_VER = "2.4.1";
 
+my $RPMVERCMP = abs_path(cwd() . "/../rpmvercmp/rpmvercmp");
+
 my $prefix = cwd();
 
 my $buildroot = "$prefix/build";
@@ -120,8 +122,6 @@ my $output = "$prefix/output/${mono_version}/linux-installer/$mono_release_versi
 if(-e $output) {
 	print "$output already exists... please remove this dir or bump the package release version\n";
 	exit(1);
-} else {
-	mkpath($output);
 }
 
 my $mono_installer_output = "$ENV{HOME}/installbuilder-$IB_VER/output/mono-$mono_version-installer.bin";
@@ -196,6 +196,7 @@ foreach my $base (keys %local_rpms) {
 
 
 # Keep record of which packages went into this build...
+mkpath($output);
 write_file("$output/packages_used.txt", $packages_used_text);
 
 
@@ -466,20 +467,20 @@ sub extractRPMs
 	my $base = shift;
 	my @rpms = @_;
 
+	my @package_versions;
 	my $package_version;
 
 	foreach my $rpm (@rpms) {
 
-		# If the exact version doesn't exist, go for the latest...
-		if(-e "$base/$mono_version" ) {
-			$package_version = $mono_version;
-		} else {
-			$package_version = `ls -vr $base | head -n1`;
-			chomp $package_version;
+		opendir(DIR, $base) or die "Couldn't list files in dir: $base\n";
+		@package_versions = readdir(DIR);
+		closedir(DIR);
+		@package_versions = `$RPMVERCMP @package_versions`;
+		$package_version = pop @package_versions;
+		chomp($package_version);
 
-			if(!$package_version) {
-				die "Couldn't find $base...\n";
-			}
+		if(!$package_version) {
+			die "Couldn't find $base...\n";
 		}
 
 		foreach my $file (glob "$base/$package_version/$rpm*") {
