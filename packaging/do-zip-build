@@ -1,0 +1,36 @@
+#!/bin/sh
+
+rev=$1
+package=$2
+distro=$3
+
+rm -rf /tmp/builder/built-packages 	|| exit 1
+cd /tmp && rm -rf scratch 		|| exit 1
+rm -rf install 			 	|| exit 1
+mkdir scratch && cd scratch 		|| exit 1
+
+mv ../$package .
+mv ../*.tar.gz .
+
+tarball=`ls *.tar.gz`
+component_name_ver=${tarball//\.tar\.gz/}
+arch=${distro#*-*-}
+
+tar -zxf *.tar.gz
+cd $component_name_ver
+
+# Load environment for deps
+. /tmp/build_deps/env.sh
+
+# Call the function for this destroot
+. /tmp/scratch/$package
+DISTRO_UNDERSCORES=${distro//-/_}
+${DISTRO_UNDERSCORES}_ZIP_BUILD || exit 1
+# TODO:  For some reason the above exit isn't being called on failures
+
+# Package up the build
+mkdir -p /tmp/builder/built-packages
+cd /tmp/install || exit 1
+zip -r /tmp/builder/built-packages/$component_name_ver-$rev.$arch.zip *
+
+

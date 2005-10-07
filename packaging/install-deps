@@ -13,36 +13,76 @@ DEPS=$*
 . conf/$TARGET
 distro_info $TARGET
 
-RPMS=()
+PACKAGES=()
 
-for i in $DEPS; do
-	. defs/$i
-	
-	get_destroot
-	
-	if ! latest_version packages/$DEST_ROOT/$i; then
-		echo "Could not find $i for $DISTRO (looking in $DEST_ROOT)"
-		exit 1;
-	fi
-	
-	for i in $LATEST_VERSION/*.rpm; do
-		[[ $i == *.src.rpm ]] && continue
+if [ -z $USE_ZIP_PKG ] ; then
+	packages_dir="packages"
+
+# Get all url based deps
+else
+	packages_dir="zip_packages"
+fi
+
+
+for pkg in ${DEPS[@]}; do
+	# If not a url (TODO: Better method of determining url)
+	if [ ${pkg//http:/} == $pkg ] && [ ${pkg//ftp:/} == $pkg ] ; then
+		. defs/$pkg
 		
-		RPMS=(${RPMS[@]} $i)
-	done
+		get_destroot
+
+		## Allow zip packages to use the rpms in noarch
+		old_packages_dir=$packages_dir
+		if [ $DEST_ROOT == "noarch" ] ; then
+			packages_dir="packages"
+		fi
+
+
+		if ! latest_version $packages_dir/$DEST_ROOT/$pkg; then
+			echo "Could not find $pkg for $DISTRO (looking in $packages_dir/$DEST_ROOT)"
+			exit 1;
+		fi
+
+		for i in $LATEST_VERSION/*; do
+			PACKAGES=(${PACKAGES[@]} $i)
+		done
+
+		# Restore from "packages" from noarch
+		packages_dir=$old_packages_dir
+
+	else
+		file=`basename $pkg`
+		if [ ! -e "external_zip_pkg/$file" ] ; then
+			cd external_zip_pkg
+			wget $pkg
+			cd ..
+		fi
+		PACKAGES=(${PACKAGES[@]} "external_zip_pkg/$file")
+
+	fi
+
 done
 
-[ ${#RPMS[@]} -eq 0 ] && exit 0
 
-rpm_names=$(rpm -qp --queryformat '%{NAME} ' ${RPMS[@]})
+[ ${#PACKAGES[@]} -eq 0 ] && exit 0
 
 ./jail-do $TARGET "sh -x -c \"rm -rf /tmp/install-packages; mkdir -p /tmp/install-packages -m777\""
+scp ${PACKAGES[@]} $target_host:$jaildir/tmp/install-packages
 
-scp ${RPMS[@]} $target_host:$jaildir/tmp/install-packages
+# Install the packages with rcd
+if [ -z $USE_ZIP_PKG ] ; then
 
-# check if rcd is running in this jail and start it if it isn't
-./jail-do $TARGET "sh -x -c \"rug ping\"" || ( ./jail-do $TARGET "sh -x -c \"/usr/sbin/rcd -r \"" && echo Wait for rcd to come alive... && sleep 5 )
+	# check if rcd is running in this jail and start it if it isn't
+	./jail-do $TARGET "sh -x -c \"rug ping\"" || ( ./jail-do $TARGET "sh -x -c \"/usr/sbin/rcd -r \"" && echo Wait for rcd to come alive... && sleep 5 )
 
-./jail-do $TARGET "sh -x -c \"rug rm -y $rpm_names\""
-./jail-do $TARGET "sh -x -c \"rug in -y -r /tmp/install-packages/*.rpm\""
+	rpm_names=$(rpm -qp --queryformat '%{NAME} ' ${PACKAGES[@]})
+	./jail-do $TARGET "sh -x -c \"rug rm -y $rpm_names\""
+	./jail-do $TARGET "sh -x -c \"rug in -y -r /tmp/install-packages/*.rpm\""
+
+else
+	scp do-install-zip-pkgs $target_host:$jaildir/tmp/install-packages
+	./jail-do $TARGET "sh -x -c \"/tmp/install-packages/do-install-zip-pkgs /tmp/build_deps /tmp/install-packages/*\""
+
+fi
+
 

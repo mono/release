@@ -1,0 +1,3 @@
+target_host=builder@monowin.dnsdhcp.provo.novell.com
+#target_host=builder@137.65.145.33
+USE_ZIP_PKG=1

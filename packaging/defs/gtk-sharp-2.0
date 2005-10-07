@@ -5,6 +5,7 @@ BUILD_HOSTS=(
 	suse-92-i586
 	suse-93-i586
 	suse-93-x86_64
+	win-4-i386
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -13,6 +14,7 @@ MONO_DEPS=(
 	mono-1.1
 	monodoc
 )
+
 
 get_destroot () {
 	DEST_ROOT=$DISTRO
@@ -31,3 +33,98 @@ RELEASE_PATH="tags/gtk-sharp/[[gtksharp2ver]]/gtk-sharp"
 get_tarball () {
 	msvn_tar $1
 }
+
+win_4_i386_ZIP_DEPS=(
+
+	# These are specific to gtk-sharp
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/gtk+-2.6.9.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/gtk+-dev-2.6.9.zip
+
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/atk-1.9.0.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/atk-dev-1.9.0.zip
+
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/pango-1.8.2.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/pango-dev-1.8.2.zip
+
+	http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2-2.6.20-mono.win32.zip
+
+	# For some extra dll's (art-sharp, glade-sharp, rsvg-sharp)
+	#  Need updated 2.3.16 for these to work
+	http://www.gimp.org/~tml/gimp/win32/libart_lgpl-2.3.14.zip
+	http://www.gimp.org/~tml/gimp/win32/libart_lgpl-dev-2.3.14.zip
+
+	http://www.gimp.org/~tml/gimp/win32/librsvg-2.4.0.zip
+	http://www.gimp.org/~tml/gimp/win32/librsvg-dev-2.4.0.zip
+	http://www.gimp.org/~tml/gimp/win32/libgsf-1.8.2-20040121.zip
+	http://www.gimp.org/~tml/gimp/win32/libgsf-dev-1.8.2.zip
+
+	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-dev.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-bin.zip
+
+)
+
+win_4_i386_ZIP_BUILD () {
+
+	{
+		# Make sure it's not dependent on cygwin
+		export CC="gcc -mno-cygwin"
+
+		CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322`
+		CSC=`cygpath -a $CSC`
+
+		# Add MS SDK to path for ilasm and ildasm
+		SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin"`
+		SDK=`cygpath -a $SDK`
+		export PATH=$SDK:$CSC:$PATH
+
+		# Since we're using MS compiler, fake like mono's not installed
+		mkdir /tmp/backup
+		mv /tmp/build_deps/lib/pkgconfig/mono.pc /tmp/backup
+
+		# TODO: Paco used to alter configure.in to change the dep on libart to 2.3.14
+		# Something like this:
+		#  Paco said people were using rsvg-sharp compiled in this manner with no problems... should probably investigate this
+		sed -i "s/2.3.16/2.3.14/" configure
+
+		./configure --prefix=/tmp/install
+
+		# Don't have cyg in dll files
+		sed -i "s/\/cyg\//\/\//" libtool
+
+		# Clean up the gac of gtk-sharp
+		rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp
+
+		make || exit 1
+		make install || exit 1
+
+		# TODO: Should I be using mono's gacutil instead to install these files?
+
+		# Move files out of MS gac and install them into the /tmp/install's gac
+		mkdir -p /tmp/install/lib/mono/gac
+		mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/install/lib/mono/gac
+
+		# Copy the rest of the files into their other location (would be symlink on unix, not on cygwin though...)
+		mkdir -p /tmp/install/lib/mono/gtk-sharp-2.0
+		cd /tmp/install/lib/mono/gac
+		find . -name "*.dll" -exec cp -f '{}' /tmp/install/lib/mono/gtk-sharp-2.0/ \;
+
+		# Remove some uneeded files
+		find /tmp/install -name "*\.a" | xargs rm -f
+		find /tmp/install -name "*\.la" | xargs rm -f
+		find /tmp/install -name "__*\.ini" | xargs rm -f
+
+		# Don't have to worry about removing the .config files because this is built with ms sdk.  Once we build with mono we'll have to remove them
+		find /tmp/install -name "*\.config" | xargs rm -f
+
+		# Windows convention to have .dll files in the bin dir instead of lib
+		mv /tmp/install/lib/*.dll /tmp/install/bin
+
+		cd /tmp/install/bin
+		strip --strip-unneeded *.dll *.exe
+
+
+	} || exit 1
+
+}
+
+

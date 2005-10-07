@@ -23,6 +23,23 @@ MONO_DEPS=(
 	gtk-sharp
 )
 
+# Here for reference only
+win_4_i386_ZIP_BUILD () {
+
+	{
+		# Only needed for boot strapping
+		#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
+
+		./configure --prefix=/tmp/install
+		make
+		make install
+
+	} || exit 1
+
+}
+
+
+
 get_destroot () {
 	DEST_ROOT=noarch
 }

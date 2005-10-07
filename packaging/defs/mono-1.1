@@ -2,6 +2,7 @@ BUILD_HOSTS=(
         redhat-9-i386
         sles-9-x86_64
         sles-9-ia64
+	win-4-i386
 )
 
 USE_HOSTS=(
@@ -17,10 +18,64 @@ USE_HOSTS=(
 	suse-92-i586
 	suse-93-i586
 	suse-93-x86_64
+	win-4-i386
 )
 
+
+## format: <$DISTRO>_ZIP_DEPS
+# Note: $DISTRO must have the hyphens converted to underscores
+win_4_i386_ZIP_DEPS=(
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/glib-2.6.6.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/glib-dev-2.6.6.zip
+	http://www.gimp.org/~tml/gimp/win32/pkgconfig-0.15.zip
+	http://www.gimp.org/~tml/gimp/win32/libiconv-1.9.1.bin.woe32.zip
+	http://www.gimp.org/~tml/gimp/win32/gettext-0.14.5.zip
+	http://www.gimp.org/~tml/gimp/win32/gettext-dev-0.14.5.zip
+
+	# Old library
+	#http://www.gimp.org/~tml/gimp/win32/gettext-runtime-0.13.1.zip
+)
+
+win_4_i386_ZIP_BUILD () {
+
+	{
+		# Only needed for boot strapping
+		#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
+
+		./configure --prefix=/tmp/install
+
+		# Hacks to get it to build 
+		#  These has been added in 1.1.9
+		#sed -i 's/RESGEN =.*/RESGEN = MONO_PATH="$(topdir)\/class\/lib\/$(PROFILE)$(PLATFORM_PATH_SEPARATOR)$$MONO_PATH" $(INTERNAL_RESGEN)/' mcs/build/platforms/win32.make
+		#sed -i "s/csc.exe/mcs/" mcs/build/platforms/win32.make
+		#sed -i "s/\/cyg\//\/\//" libtool
+
+		# In trunk on 4 Oct 2005 by Zoltan - fixed in 1.1.9.2
+		#sed -i "s,-mno-cygwin,,g" libtool 
+
+		make
+		make install 
+
+		# Delete some unwanted files (some people may want them... have a "dev" section in installer?)
+		find /tmp/install -name "*.a" | xargs rm -f
+		find /tmp/install -name "*.la" | xargs rm -f
+
+		cd /tmp/install/bin
+		#strip --strip-debug *.dll *.exe
+		# Safe?
+		strip --strip-unneeded *.dll *.exe
+
+
+	} || exit 1
+
+}
+
 get_destroot () {
-	DEST_ROOT=$ARCH
+	if [ -z $USE_ZIP_PKG ] ; then
+		DEST_ROOT=$ARCH
+	else
+		DEST_ROOT=$DISTRO
+	fi
 }
 
 # This requires mono because of the mono-find-provides  ... ???
@@ -35,3 +90,5 @@ RELEASE_PATH="tags/mono-[[version]]"
 get_tarball () {
 	msvn_tar $1
 }
+
+

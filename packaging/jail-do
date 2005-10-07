@@ -34,4 +34,11 @@ fi
 #
 ADD_SBIN='PATH=/sbin:/usr/sbin:$PATH'
 
-ssh $SSH_FLAGS $target_host "$ADD_SBIN sudo -H chroot $jaildir $CMD"
+# Don't chroot if none defined (Used initially for windows)
+if [ -z $jaildir ] ; then
+	CHROOT_CMD=
+else
+	CHROOT_CMD="$ADD_SBIN sudo -H chroot $jaildir"
+fi
+
+ssh $SSH_FLAGS $target_host "$CHROOT_CMD $CMD"

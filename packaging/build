@@ -70,6 +70,10 @@ else
 	exit 1
 fi
 
+if [ ! -z $USE_ZIP_PKG ]; then
+	package_path=zip_packages
+fi
+
 if [ -d $package_path/$DEST_ROOT/$package/$VER_PATH ]; then
 	echo "The path for this package ($package_path/$DEST_ROOT/$package/$VER_PATH) already exists. You probably need to bump the revision number"
 	exit 1;
@@ -82,6 +86,11 @@ mkdir -p `dirname $LOGFILE`
 
 echo > status/$distro;
 
+# Clean out deps area
+./jail-do $distro rm -Rf /tmp/build_deps 
+
+
+echo "Installing locally built packages..."
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
 	if ! ./install-deps $distro ${MONO_DEPS[@]} >> $LOGFILE 2>&1; then
 		rm status/$distro
@@ -90,12 +99,48 @@ if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
 	fi
 fi
 
-scp do-build ../conf/$package/ximian-build.conf $source_path/$package/*-$version.tar.gz $target_host:$jaildir/tmp 
+echo "Installing external dependencies..."
+DISTRO_UNDERSCORES=${DISTRO//-/_}
+eval DISTRO_DEPS=\${${DISTRO_UNDERSCORES}_ZIP_DEPS[@]}
 
-if ! ./jail-do $distro sh -x /tmp/do-build $version $REVISION >> $LOGFILE 2>&1; then
-	rm status/$distro
-	echo Build failed, see log in $LOGFILE for details
-	exit 1;
+# Gather external deps for deps
+for dep in ${MONO_DEPS[@]} ; do
+	. defs/$dep
+	eval DEPS=\${${DISTRO_UNDERSCORES}_ZIP_DEPS[@]}
+	DISTRO_DEPS=(${DISTRO_DEPS[@]} ${DEPS[@]})
+done
+
+# Load this package back in (needed?)
+. defs/$package
+
+# If this distro is using the ZIP system and there are zip deps 
+if [ ! ${#DISTRO_DEPS[@]} -eq 0 ] && [ ! -z $USE_ZIP_PKG ] ; then
+	if ! ./install-deps $distro ${DISTRO_DEPS[@]} >> $LOGFILE 2>&1; then
+		rm status/$distro
+		echo Dependency installation failed, see log in $LOGFILE for details
+		exit 1
+	fi
+fi
+
+
+if [ -z $USE_ZIP_PKG ]; then
+
+	scp do-build ../conf/$package/ximian-build.conf $source_path/$package/*-$version.tar.gz $target_host:$jaildir/tmp 
+
+	if ! ./jail-do $distro sh -x /tmp/do-build $version $REVISION >> $LOGFILE 2>&1; then
+		rm status/$distro
+		echo Build failed, see log in $LOGFILE for details
+		exit 1;
+	fi
+
+else
+	scp do-zip-build defs/$package $source_path/$package/*-$version.tar.gz $target_host:$jaildir/tmp 
+
+	if ! ./jail-do $distro sh -x /tmp/do-zip-build $REVISION $package $distro >> $LOGFILE 2>&1; then
+		rm status/$distro
+		echo Build failed, see log in $LOGFILE for details
+		exit 1;
+	fi
 fi
 
 mkdir -p $package_path/$DEST_ROOT/$package/$VER_PATH

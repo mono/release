@@ -12,10 +12,16 @@ cd packages
 rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/download
 cd ../sources
 rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/sources
+cd ..
 
-# Push the installer
-cd ../../linux-installer/output
+# Push the installers
+cd ../linux-installer/output
 rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
+cd -
+
+cd ../windows-installer/Output
+rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
+cd -
 
 if [ -z $DRYRUN ]; then
 

@@ -15,6 +15,7 @@ USE_HOSTS=(
 	suse-92-i586
 	suse-93-i586
 	suse-93-x86_64
+	win-4-i386
 )
 
 MONO_DEPS=(
@@ -22,6 +23,28 @@ MONO_DEPS=(
 	gtk-sharp
 	monodoc
 )
+
+
+# Here for reference only... (we don't build noarch packages in cygwin anymore)
+win_4_i386_ZIP_BUILD () {
+
+	{       
+		# Make sure it's not dependent on cygwin
+		export CC="gcc -mno-cygwin"                                                                                   
+
+		./configure --prefix=/tmp/install
+
+		## Fix the paths for gacutil
+		sed -i 's/root \$(DESTDIR)/root C:\/cygwin\/\$(DESTDIR)/' gtkmozembed/Makefile
+
+		make
+		make install
+
+
+	} || exit 1
+
+}
+
 
 get_destroot () {
 	DEST_ROOT=noarch

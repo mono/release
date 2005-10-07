@@ -16,6 +16,7 @@ function distro_info () {
 	case "$DISTRO" in
 		fedora-* | redhat-*        ) DISTRO_TYPE=redhat;;
 		suse-*   | nld-* | sles-*  ) DISTRO_TYPE=suse;;
+		win-*			   ) DISTRO_TYPE=win;;
 	esac
 	
 	case "$DISTRO" in

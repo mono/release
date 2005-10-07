@@ -10,6 +10,7 @@ BUILD_HOSTS=(
 	suse-92-i586
 	suse-93-i586
 	suse-93-x86_64
+	win-4-i386
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -17,6 +18,68 @@ USE_HOSTS=(${BUILD_HOSTS[@]})
 MONO_DEPS=(
 	mono-1.1
 )
+
+win_4_i386_ZIP_DEPS=(
+
+	# MAJOR TODO: what version of gtk does gtk-sharp 1.0.10 bind to???
+	# These are specific to gtk-sharp
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/gtk+-2.6.9.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/gtk+-dev-2.6.9.zip
+
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/atk-1.9.0.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/atk-dev-1.9.0.zip
+
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/pango-1.8.2.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/pango-dev-1.8.2.zip
+
+	http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2-2.6.20-mono.win32.zip
+
+	# For some extra dll's (art-sharp, glade-sharp, rsvg-sharp)
+	http://www.gimp.org/~tml/gimp/win32/libart_lgpl-2.3.14.zip
+	http://www.gimp.org/~tml/gimp/win32/libart_lgpl-dev-2.3.14.zip
+
+	http://www.gimp.org/~tml/gimp/win32/librsvg-2.4.0.zip
+	http://www.gimp.org/~tml/gimp/win32/librsvg-dev-2.4.0.zip
+	http://www.gimp.org/~tml/gimp/win32/libgsf-1.8.2-20040121.zip
+	http://www.gimp.org/~tml/gimp/win32/libgsf-dev-1.8.2.zip
+
+	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-dev.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-bin.zip
+
+)
+
+win_4_i386_ZIP_BUILD () {
+
+	{
+		# Make sure it's not dependent on cygwin
+		export CC="gcc -mno-cygwin"
+
+		# Fix the paths for gacutil
+		sed -i 's/\$(DESTDIR)\$(prefix)\/lib/`cygpath -m \$(DESTDIR)\$(prefix)\/lib`/' configure
+		./configure --prefix=/tmp/install
+
+		# Don't have cyg in dll files
+		sed -i "s/\/cyg\//\/\//" libtool
+
+		make || exit 1
+		make install || exit 1
+
+		# Remove some uneeded files
+		find /tmp/install -name "*\.a" | xargs rm -f
+		find /tmp/install -name "*\.la" | xargs rm -f
+		find /tmp/install -name "*\.config" | xargs rm -f
+
+		# Windows convention to have .dll files in the bin dir instead of lib
+		mv /tmp/install/lib/*.dll /tmp/install/bin
+
+		cd /tmp/install/bin
+		strip --strip-unneeded *.dll *.exe
+
+
+	} || exit 1
+
+}
+
 
 get_destroot () {
 	DEST_ROOT=$DISTRO
