@@ -50,6 +50,7 @@ Name: xsp; Description: XSP files; Types: full custom
 
 [Files]
 Source: build\mono\*; DestDir: {app}; Components: mono; Flags: ignoreversion recursesubdirs
+Source: build\gdiplus.dll; DestDir: {app}\bin; Components: mono; OnlyBelowVersion: 0,5.01
 Source: build\xsp\*; DestDir: {app}; Components: xsp; Flags: ignoreversion recursesubdirs
 Source: build\gtk\*; DestDir: {app}; Components: gtk; Flags: ignoreversion recursesubdirs
 Source: build\gtk-sharp\*; DestDir: {app}; Components: gtk\gtksharp; Flags: ignoreversion recursesubdirs
@@ -80,6 +81,7 @@ Name: {group}\Applications\Sql# GTK; Filename: {app}\bin\sqlsharpgtk.bat; Compon
 Name: {group}\Applications\Prj2Make# GTK; Filename: {app}\bin\prj2make-sharp-gtk.bat; Components: gtk\gtkSharp\samples; Comment: Makefile generator tool.
 Name: {group}\Applications\Samples Directory; Filename: {app}\samples; Components: gtk\gtkSharp\samples; Comment: Gtk# samples directory
 Name: {group}\Applications\Glade 2; Filename: {app}\bin\glade-2.exe; Components: gtk; Comment: Glade 2 Gui Builder
+Name: {group}\Applications\Gtk Theme Selector; Filename: {app}\bin\gtkthemeselector.exe; Components: gtk; Comment: GTK Theme Selector
 Name: {group}\XSP\XSP Test Web Server; Filename: {app}\bin\startXSP.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\XSP\XSP 2.0 Test Web Server; Filename: {app}\bin\startXSP2.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\{cm:ProgramOnTheWeb,Mono}; IconFilename: {app}\mono.ico; Filename: {app}\Mono.url

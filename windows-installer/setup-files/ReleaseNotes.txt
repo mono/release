@@ -1,23 +1,23 @@
 Release Notes for Mono, Gtk# and XSP Combined Windows Installer. 
-Code name: "About Time"
-By Wade Berrier <wberrier@novell.com> September 29, 2005
+By Wade Berrier <wberrier@novell.com> October 6, 2005
 ------------------------------------------------------------------------
+
+Check http://go-mono.com/archive/1.1.9.2/ for release details.
 
 General Description:
 
-This installation includes Mono 1.1.9.1 for Windows and the Gtk# 1.0.10 
-and 2.3.91 for Windows.  It also includes a built and configured version 
-of XSP 1.1.9.1.
-
+This installation includes Mono 1.1.9.2 for Windows and the Gtk# 1.0.10 
+and 2.3.92 for Windows.  It also includes a built and configured version 
+of XSP 1.1.9.2.
 
 New in this Release:
 
-Boo and ikvm are now included.
-
-The build system for the installer has been revamped.  Because of this,
-upcoming versions will be released very shortly after Mono releases.
-Although much time has been spent to ensure a quality build, there
-may be some growing pains because of the new build system.
+-Native binaries and dlls are not statically linked anymore.
+-Microsoft's gdiplus is now included.  Note: this will only be installed on 
+Windows 2000.
+-Gtk-wimp theme is included
+-rsvg DllImport works
+-Gtk# Docs are now included (although monodoc browser still doesn't work)
 
 Requirements:
 
@@ -31,7 +31,6 @@ Known Issues:
 -Some of the precompiled samples don't work because they
  depend on gtk# 1.9.5.  The samples have been included in order to 
  look at the source code. This will be fixed in an upcoming release.
--Gtk# 2.3.91 normally includes documentation.  This build does not.
 
 
 Credits and Related Information:

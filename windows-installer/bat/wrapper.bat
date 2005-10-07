@@ -1,5 +1,1 @@
-@ECHO OFF
-SETLOCAL
-SET PATH=@@DOS_MONO_INST_DIR@@\bin;%PATH%
-"@@DOS_MONO_INST_DIR@@\bin\mono.exe" "@@DOS_MONO_INST_DIR@@\lib\mono\1.0\@@MONO_WRAPPER@@.exe" %*
-ENDLOCAL
+@"@@DOS_MONO_INST_DIR@@\bin\mono.exe" "@@DOS_MONO_INST_DIR@@\@@MONO_WRAPPER@@.exe" %*
