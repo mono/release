@@ -36,6 +36,10 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 		. $packagingdir/defs/$package
 
 		for distro_conf in $packagingdir/conf/*-*-*; do 
+
+			# Skip the distros that use zip packaging system
+			! egrep "^USE_ZIP_PKG" $packagingdir/conf/$distro_conf > /dev/null 2>&1 || continue
+
 			distro_info `basename $distro_conf`
 			ships_package || continue
 			get_destroot

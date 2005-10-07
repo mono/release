@@ -11,6 +11,9 @@ WEB_DIR=$1
 cd $WEB_DIR
 
 for distro_conf in $packagingdir/conf/*-*-*; do
+
+	# Skip the distros that use zip packaging system
+	! egrep "^USE_ZIP_PKG" $packagingdir/conf/$distro_conf > /dev/null 2>&1 || continue
 	
 	distro_info `basename $distro_conf`
 	
