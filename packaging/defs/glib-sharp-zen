@@ -11,7 +11,7 @@ MONO_DEPS=(
 )
 
 get_destroot () {
-	DEST_ROOT=$DISTRO
+	DEST_ROOT=$ARCH
 }
 
 HEAD_PATH="trunk/gtk-sharp"

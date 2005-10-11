@@ -17,6 +17,10 @@ USE_HOSTS=(
 	suse-93-x86_64
 )
 
+MONO_DEPS=(
+	mono-ifzen
+)
+
 get_destroot () {
 	DEST_ROOT=$ARCH
 }

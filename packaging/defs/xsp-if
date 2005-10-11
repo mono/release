@@ -1,0 +1,50 @@
+BUILD_HOSTS=(
+	nld-9-i586
+)
+
+USE_HOSTS=(
+	fedora-3-i386
+	nld-9-i586
+	nld-9-x86_64
+	redhat-9-i386
+	rhel-3-i386
+	rhel-4-i386
+	sles-9-i586
+	sles-9-ia64
+	sles-9-x86_64
+	suse-92-i586
+	suse-93-i586
+	suse-93-x86_64
+	win-4-i386
+)
+
+MONO_DEPS=(
+	mono-ifzen
+)
+
+# Here for reference only
+win_4_i386_ZIP_BUILD () {
+
+	{
+		# Only needed for boot strapping
+		#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
+
+		./configure --prefix=/tmp/install
+		make
+		make install
+
+	} || exit 1
+
+}
+
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH="trunk/xsp"
+RELEASE_PATH="tags/mono-[[version]]/xsp"
+
+get_tarball () {
+	msvn_tar $1
+}
