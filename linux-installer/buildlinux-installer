@@ -46,54 +46,22 @@ my @custom_rpms_list = qw(
 );
 
 # Hash of base pathes mapping to an array of rpms
-my %local_rpms = (
-		"$mono_rpms/x86/mono-1.1" => [ qw(
-			mono-extras mono-jscript mono-ikvm mono-core
-			mono-devel mono-winforms
-			bytefx-data-mysql mono-basic
-			mono-locale-extras mono-data
-			mono-complete ibm-data-db2 mono-web
-			)],
-		"$mono_rpms/x86/mono-debugger" => [ qw(
-			mono-debugger
-			)],
-		"$mono_rpms/redhat-9-i386/gtk-sharp" => [ qw(
-			gtk-sharp
-			)],
-		"$mono_rpms/redhat-9-i386/libgdiplus-1.1" => [ qw(
-			libgdiplus 
-			)], 
-		"$mono_rpms/noarch/boo" => [ qw(
-			boo
-			)],
-		"$mono_rpms/noarch/xsp" => [ qw(
-			xsp
-			)],
-		"$mono_rpms/noarch/ikvm" => [ qw(
-			ikvm
-			)],
-		"$mono_rpms/noarch/monodoc" => [ qw(
-			monodoc
-			)], 
-		"$mono_rpms/noarch/mono-tools" => [ qw(
-			mono-tools
-			)], 
-		"$mono_rpms/noarch/monodevelop" => [ qw(
-			monodevelop
-			)],
-		"$mono_rpms/noarch/gecko-sharp" => [ qw(
-			gecko-sharp
-			)],
-		"$mono_rpms/noarch/gecko-sharp-2.0" => [ qw(
-			gecko-sharp-2.0
-			)],
-		"$mono_rpms/noarch/gtksourceview-sharp-2.0" => [ qw(
-			gtksourceview-sharp-2.0
-			)],
-		"$mono_rpms/suse-93-i586/gtk-sharp-2.0" => [ qw(
-			gtk-sharp2
-			)]
-	);
+my @local_rpms = (
+	"$mono_rpms/x86/mono-1.1",
+	"$mono_rpms/x86/mono-debugger",
+	"$mono_rpms/redhat-9-i386/gtk-sharp",
+	"$mono_rpms/redhat-9-i386/libgdiplus-1.1",
+	"$mono_rpms/noarch/boo",
+	"$mono_rpms/noarch/xsp",
+	"$mono_rpms/noarch/ikvm",
+	"$mono_rpms/noarch/monodoc",
+	"$mono_rpms/noarch/mono-tools",
+	"$mono_rpms/noarch/monodevelop",
+	"$mono_rpms/noarch/gecko-sharp",
+	"$mono_rpms/noarch/gecko-sharp-2.0",
+	"$mono_rpms/noarch/gtksourceview-sharp-2.0",
+	"$mono_rpms/suse-93-i586/gtk-sharp-2.0",
+);
 
 
 my $debug = 0;
@@ -188,10 +156,12 @@ foreach my $url (@external_rpms_list, @custom_rpms_list) {
 }
 
 
-foreach my $base (keys %local_rpms) {
+foreach my $base (@local_rpms) {
+
+	my $latest_version = getLatestVersion($base);
 
 	# Send the base and an array of rpms
-	extractRPMs($base, @{ $local_rpms{$base} } );
+	extractRPMs("$base/$latest_version");
 }
 
 
@@ -203,7 +173,7 @@ write_file("$output/packages_used.txt", $packages_used_text);
 # The tcl version of the this script got the "normalized" full path to the file... this should work
 my $p = $buildroot;
 
-#  Binaries that need a wrapper in order to run in a different location
+#  Native binaries that need a wrapper in order to run in a different location
 my @wrapped_elf_binaries = qw( mono monodiet monodis monograph );
 
 foreach my $file (@wrapped_elf_binaries) {
@@ -217,6 +187,7 @@ foreach my $file (@wrapped_elf_binaries) {
 
 
 # Other permissions that do not get set... gapi_codegen.exe, gapi-fixup.exe, #does this matter?  Probably... because there's that one feature which will invoke mono on certain types of binaries... this should probably happen in the rpm though so it gets fixed in both places...
+
 
 # Relativize the symbolic links
 foreach my $d (qw(1.0 2.0 gtk-sharp gecko-sharp)) {
@@ -257,12 +228,22 @@ foreach my $d (qw(1.0 2.0 gtk-sharp gecko-sharp)) {
 	}
 }
 
+
 chdir $p;
 
-# Why was this done...?
+# Don't need the opt gnome file
+rmtree ("opt");
+
+# Move etc under usr since we will collect all files under usr for installer
 rmtree ("usr/etc");
 rename ("etc", "usr/etc");
 
+# Location substitution for the pkgconfig files...
+foreach my $f (glob "$p/usr/lib/pkgconfig/*.pc") {
+
+	substituteParametersInFile($f, '/usr' => '@@BITROCK_MONO_ROOTDIR@@');
+	print "Substituting $f\n";
+}
 
 # TODO: This list needs to be dynamic (it's a pain to update it for all the new shell wrappers)
 my @executable_wrappers = qw(
@@ -276,19 +257,13 @@ my @executable_wrappers = qw(
 	
 	mdassembler mdcs2ecma mdnormalizer mdvalidater
 
-	sn xsp2
+	sn
 
 	xsd 
 	booc booi booish 
 	ikvm ikvmc ikvmstub 
 );
 
-# Location substitution for the pkgconfig files...
-foreach my $f (glob "$p/usr/lib/pkgconfig/*.pc") {
-
-	substituteParametersInFile($f, '/usr' => '@@BITROCK_MONO_ROOTDIR@@');
-	print "Substituting $f\n";
-}
 
 # This only works for the executables match the wrappers (some don't: mdassembler -> assembler.exe)
 # Get list .net executables, check if there's a wrapper, and if so, add it to the list to get substituted
@@ -324,7 +299,7 @@ foreach my $f (@executable_wrappers) {
 		substituteParametersInFile("$p/usr/bin/$f", 
 			'/usr' 			=> '@@BITROCK_MONO_ROOTDIR@@', 
 			'exec mono' 		=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono',
-			'mono --debug' 	=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono --debug');
+			'mono --debug'	 	=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono --debug');
 		print "Substituting $f\n";
 	} else {
 		print "***Not found $f***\n";
@@ -460,33 +435,12 @@ sub extract
 	chdir $cwd;
 }
 
-# TODO:  Can we ignore svn packages?  Or, do we need to match as best as we can...
 sub extractRPMs
 {
+	my $package_path = shift;
 
-	my $base = shift;
-	my @rpms = @_;
-
-	my @package_versions;
-	my $package_version;
-
-	foreach my $rpm (@rpms) {
-
-		opendir(DIR, $base) or die "Couldn't list files in dir: $base\n";
-		@package_versions = readdir(DIR);
-		closedir(DIR);
-		@package_versions = `$RPMVERCMP @package_versions`;
-		$package_version = pop @package_versions;
-		chomp($package_version);
-
-		if(!$package_version) {
-			die "Couldn't find $base...\n";
-		}
-
-		foreach my $file (glob "$base/$package_version/$rpm*") {
-			extract ($file);
-		}
-
+	foreach my $file (glob "$package_path/*") {
+		extract ($file);
 	}
 }
 
@@ -554,5 +508,24 @@ sub appendTextToFiles
 
 		write_file($file, $text);
 	}
+}
+
+sub getLatestVersion
+{
+	my $dir = shift;
+
+	opendir(DIR, $dir) or die "Couldn't list files in dir: $dir\n";
+	my @package_versions = readdir(DIR);
+	closedir(DIR);
+	@package_versions = `$RPMVERCMP @package_versions`;
+	my $package_version = pop @package_versions;
+	chomp($package_version);
+
+	if($package_version eq "." || $package_version eq "..") {
+		die "Could not find latest version in $dir\n";
+	}
+
+	return $package_version;
+
 }
 
