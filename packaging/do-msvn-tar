@@ -100,7 +100,8 @@ case $package in
 
     monodevelop )
 	# md has its own svn repo
-	$SVNEXPORT $MD_ROOT/$svn_path
+	#$SVNEXPORT $MD_ROOT/$svn_path
+	$SVNEXPORT $MONO_ROOT/$svn_path
 	
 	DO_CHANGE_AUTOMAKE='md_change_ver'
 	

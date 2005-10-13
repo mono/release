@@ -9,11 +9,11 @@ fi
 
 . defs/$package
 
-if [ "$package" == "monodevelop" ]; then
-	ROOT=svn+ssh://mono-cvs.ximian.com/svn/monodevelop
-else
+#if [ "$package" == "monodevelop" ]; then
+#	ROOT=svn+ssh://mono-cvs.ximian.com/svn/monodevelop
+#else
 	ROOT=svn+ssh://mono-cvs.ximian.com/source
-fi
+#fi
 
 svn ls $ROOT/$HEAD_PATH -v | awk '{print $1}' | sort -nr | head -n1 
 
