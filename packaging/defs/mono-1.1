@@ -54,6 +54,7 @@ win_4_i386_ZIP_BUILD () {
 		#sed -i "s,-mno-cygwin,,g" libtool 
 
 		make
+		make check
 		make install 
 
 		# Delete some unwanted files (some people may want them... have a "dev" section in installer?)
