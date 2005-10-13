@@ -316,6 +316,9 @@ class Jail:
 		# Is this location ever going to be different for different distros?
 		shutil.rmtree(self.jail_location + os.sep + "var/lib/rpm")
 		os.mkdir(self.jail_location + os.sep + "var/lib/rpm")
+
+		# Add chroot path to environment for redhat based systems
+		os.environ['PATH'] = os.environ['PATH'] + ":/usr/sbin"
 	
 		# Reinitialize the rpm database with the jail's version of rpm	
 		command = "chroot %s env %s rpm --initdb" % (self.jail_location, self.environment)
