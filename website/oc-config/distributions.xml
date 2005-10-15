@@ -844,6 +844,28 @@
 			<file source="/etc/SuSE-release" substring="SuSE Linux 9.3"/>
 		</detect>
 	</distro>
+	<distro>
+		<name>SuSE Linux</name>
+		<version>10.0</version>
+		<arch>i586</arch>
+		<type>rpm</type>
+		<target>suse-100-i586</target>
+		<status>supported</status>
+		<detect>
+			<file source="/etc/SuSE-release" substring="SuSE Linux 10.0"/>
+		</detect>
+	</distro>
+	<distro>
+		<name>SuSE Linux</name>
+		<version>10.0</version>
+		<arch>x86_64</arch>
+		<type>rpm</type>
+		<target>suse-100-x86_64</target>
+		<status>supported</status>
+		<detect>
+			<file source="/etc/SuSE-release" substring="SuSE Linux 10.0"/>
+		</detect>
+	</distro>
 	
 	<distro>
 		<name>Debian GNU/Linux</name>
