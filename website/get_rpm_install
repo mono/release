@@ -7,6 +7,9 @@ else
 fi
 
 case $DISTRO in
+	suse-100-*)
+		DOWNLOAD_RC="To get Red Carpet, go to <a href='http://primates.ximian.com/~rml/sanitize/'>here</a>."
+	;;
 	suse-93-*)
 		DOWNLOAD_RC="To get Red Carpet, install the rcd and rug packages via YAST"
 	;;
