@@ -125,7 +125,7 @@ fi
 
 if [ -z $USE_ZIP_PKG ]; then
 
-	scp do-build ../conf/$package/ximian-build.conf $source_path/$package/*-$version.tar.gz $target_host:$jaildir/tmp 
+	scp do-build ../conf/$package/* $source_path/$package/*-$version.tar.gz $target_host:$jaildir/tmp 
 
 	if ! ./jail-do $distro sh -x /tmp/do-build $version $REVISION >> $LOGFILE 2>&1; then
 		rm status/$distro

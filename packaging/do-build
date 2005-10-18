@@ -12,9 +12,11 @@ cd /tmp && rm -rf scratch 		|| exit 1
 $SUDO mkdir scratch && cd scratch 	|| exit 1
 
 mv ../ximian-build.conf .
+mv ../*.patch .
 mv ../*.tar.gz .
 # rpm needs this to be happy
 chown root:root *.tar.gz
+chown root:root *.patch
 
 
 $SUDO bb_lint -g prebuild -V $version -R $rev -S ''	|| exit 1
