@@ -63,21 +63,28 @@ for pkg in ${DEPS[@]}; do
 
 done
 
-
 [ ${#PACKAGES[@]} -eq 0 ] && exit 0
 
 ./jail-do $TARGET "sh -x -c \"rm -rf /tmp/install-packages; mkdir -p /tmp/install-packages -m777\""
 scp ${PACKAGES[@]} $target_host:$jaildir/tmp/install-packages
 
-# Install the packages with rcd
+# Install the packages with rpm/rcd
 if [ -z $USE_ZIP_PKG ] ; then
 
-	# check if rcd is running in this jail and start it if it isn't
-	./jail-do $TARGET "sh -x -c \"rug ping\"" || ( ./jail-do $TARGET "sh -x -c \"/usr/sbin/rcd -r \"" && echo Wait for rcd to come alive... && sleep 5 )
-
 	rpm_names=$(rpm -qp --queryformat '%{NAME} ' ${PACKAGES[@]})
-	./jail-do $TARGET "sh -x -c \"rug rm -y $rpm_names\""
-	./jail-do $TARGET "sh -x -c \"rug in -y -r /tmp/install-packages/*.rpm\""
+
+	# Use rug if the jail has it
+	if ./jail-do $TARGET "sh -x -c \"ls /usr/sbin/rcd\"" ; then
+
+		# check if rcd is running in this jail and start it if it isn't
+		./jail-do $TARGET "sh -x -c \"rug ping\"" || ( ./jail-do $TARGET "sh -x -c \"/usr/sbin/rcd -r \"" && echo Wait for rcd to come alive... && sleep 5 )
+
+		./jail-do $TARGET "sh -x -c \"rug rm -y $rpm_names\""
+		./jail-do $TARGET "sh -x -c \"rug in -y -r /tmp/install-packages/*.rpm\""
+	else
+		./jail-do $TARGET "sh -x -c \"rpm -e $rpm_names\""
+		./jail-do $TARGET "sh -x -c \"rpm -Uvh /tmp/install-packages/*.rpm\""
+	fi
 
 else
 	scp do-install-zip-pkgs $target_host:$jaildir/tmp/install-packages
