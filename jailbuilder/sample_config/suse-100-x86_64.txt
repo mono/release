@@ -1,0 +1,23 @@
+# Format: <name>=<value>
+
+jail_name=suse-100-x86_64
+
+rpm_repository_path=suse100rpms
+
+# http://kirk.provo.novell.com/install/10.0
+# http://primates.ximian.com/~rml/sanitize/rcd-2.4.8-4.i586.rpm
+# http://primates.ximian.com/~rml/sanitize/rug-2.4.8-2.i586.rpm
+
+# Only accept packages with these arches (using order as priority)
+valid_arch=x86_64 i586 noarch
+
+required_rpms=aaa_base gcc make autoconf automake pwdutils vim iputils util-linux sysvinit yast2 yast2-packagemanager procps sudo yast2-ncurses kbd yast2-packager
+
+
+#environment=
+
+# Other various/optional post jail settings:
+nameservers=137.65.1.3 137.65.1.4 130.57.22.5
+users=builder
+
+

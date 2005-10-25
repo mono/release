@@ -171,21 +171,25 @@ class Jail:
 		files = os.listdir(self.config.get_rpm_repository_path())
 		files.sort()
 
+
 		for rpm_filename in files:
 			my_package = Package(
 				os.path.join(self.config.get_rpm_repository_path(), rpm_filename))
 				
 
-			# Make sure it's a valid architecture
-			# TODO What if there are two packages with each a different valid arch?  Probably won't
-			#  matter because the packages are going to get updated with rug anyway... (or are they?)
+			# If the package is a valid arch, and
+			# It hasn't been loaded yet, or if this arch has a priority over the loaded package
+			if self.valid_arch_types.count(my_package.arch) and ( not self.available_rpms.has_key(my_package.name) or self.valid_arch_types.index(self.available_rpms[my_package.name].arch) > self.valid_arch_types.index(my_package.arch)):
+				# If the package is going to be overwritten, clean the old one up
+				if self.available_rpms.has_key(my_package.name):
+					del self.available_rpms[my_package.name]
 
-			if self.valid_arch_types.count(my_package.arch):
 				self.available_rpms[my_package.name] = my_package
 
 				# Load up dictionary lookup to quickly resolve deps
 				for provide in my_package.provides:
 					self.provide_map[provide] = my_package.name
+
 			else:
 				print "Skipping %s package for arch %s" % (my_package.name, my_package.arch)
 				# Don't need this object anymore
