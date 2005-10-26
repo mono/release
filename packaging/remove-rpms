@@ -1,0 +1,84 @@
+#!/usr/bin/env python
+
+# Script to remove rpms and their depedents (sometimes easier to use this script rather that get rug/rcd working on a particular distro)
+
+# Usage: ./remove-rpms rpm1 rpm2 rpm3
+
+import re
+import sys
+import commands
+
+import pdb
+
+#rpm_flags = "--test"
+rpm_flags = ""
+
+child_rpm_match = re.compile("is needed by \(installed\) (\S+)")
+
+def rpm_is_installed(rpm_name):
+
+	(status, output) = commands.getstatusoutput("rpm -q " + rpm_name)
+
+	if status:
+		return 0
+	else:
+		return 1
+
+# Parse rpm -e output to see what other rpms depend on the ones we're trying to remove
+def get_dependent_rpms(command_output):
+
+	rpms = []
+
+	for line in command_output.split('\n'):
+		if child_rpm_match.search(line):
+			rpm = child_rpm_match.search(line).group(1)
+
+			rpms.append(rpm)
+
+	#print "*Dependent rpms: " + " ".join(rpms)
+
+	return rpms
+
+def remove_rpms(rpms):
+
+	installed_rpms = []
+
+	for rpm in rpms:
+		if rpm_is_installed(rpm):
+			installed_rpms.append(rpm)
+	status = 1
+
+	while status:
+		command = "rpm %s -e %s" % (rpm_flags, ' '.join(installed_rpms) )
+		(status, output) = commands.getstatusoutput(command)
+
+		if not status:
+			installed_rpms.sort()
+			return installed_rpms
+		else:
+			new_rpms = get_dependent_rpms(output)
+
+			# Only add duplicates
+			for rpm in new_rpms:
+				if not installed_rpms.count(rpm):
+					installed_rpms.append(rpm)
+
+
+
+def commandline():
+
+	if len(sys.argv) < 2:
+		print "Usage: ./remove-rpms rpm1 rpm2 ..."
+		sys.exit(1)
+
+	rpms = sys.argv[1:]
+
+	removed_rpms = remove_rpms(rpms)
+
+	print "\nRemoved the following rpms:\n\n" + "\n".join(removed_rpms)
+	print "\n -- RPM removal Complete! -- \n"
+
+
+if __name__ == "__main__":
+        commandline()
+
