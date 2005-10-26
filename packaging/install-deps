@@ -82,7 +82,8 @@ if [ -z $USE_ZIP_PKG ] ; then
 		./jail-do $TARGET "sh -x -c \"rug rm -y $rpm_names\""
 		./jail-do $TARGET "sh -x -c \"rug in -y -r /tmp/install-packages/*.rpm\""
 	else
-		./jail-do $TARGET "sh -x -c \"rpm -e $rpm_names\""
+		scp ./remove-rpms $target_host:$jaildir/tmp
+		./jail-do $TARGET "sh -x -c \"/tmp/remove-rpms $rpm_names\""
 		./jail-do $TARGET "sh -x -c \"rpm -Uvh /tmp/install-packages/*.rpm\""
 	fi
 
@@ -91,5 +92,4 @@ else
 	./jail-do $TARGET "sh -x -c \"/tmp/install-packages/do-install-zip-pkgs /tmp/build_deps /tmp/install-packages/*\""
 
 fi
-
 
