@@ -13,6 +13,7 @@ PPC		g5-mono		ppc-head		nbuilder / nbuilder
 
 Sparc		sparcmono	sparc-head		builder / builder (decommissioned)
 		mono-sparc				builder / builder
+		pbartok2.provo.novell.com		
 		
 AMD64		monobuild2	amd-head lane		builder / builder
 
@@ -29,6 +30,7 @@ With Mainsoft:
 x86/java	213.31.213.19
 		(ghbuildbot)	Java buildbot		builder / ssh keys only
 							ask Ben or Miguel for access.
+
 
 
 Q.  How to reconnect a build node?
