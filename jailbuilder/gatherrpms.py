@@ -20,6 +20,7 @@ import htmllib
 import ftplib
 import formatter
 import string
+import time
 
 # For debugging
 import pdb
@@ -231,8 +232,17 @@ def crawl_web(url):
 			(scheme, network, path, query, frag) = urlparse.urlsplit(url)
 			filename = destdir + os.sep + os.path.basename(path)
 			if not os.path.exists(filename):
+
 				print "* Downloading: " + url
-				urllib.urlretrieve(url, filename)
+				try:
+					urllib.urlretrieve(url, filename)
+				except IOError:
+					# How many times should I retry this?
+					print "IOError, will try again in 5 secs"
+					time.sleep(5)
+					os.remove(filename)
+					urllib.urlretrieve(url, filename)
+						
 			elif not valid_rpm(os.getcwd() + os.sep + filename):
 				print "Invalid digest: " + filename
 				sys.exit(1)
