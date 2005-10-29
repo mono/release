@@ -1,0 +1,2 @@
+target_host=builder@monobuild2.boston.ximian.com
+jaildir=/jails/fedora-4-x86_64-root-0/jail/

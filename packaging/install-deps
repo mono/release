@@ -21,6 +21,9 @@ if [ -z $USE_ZIP_PKG ] ; then
 # Get all url based deps
 else
 	packages_dir="zip_packages"
+	if [ ! -e "external_zip_pkg" ] ; then
+		mkdir external_zip_pkg
+	fi
 fi
 
 

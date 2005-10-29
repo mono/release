@@ -7,6 +7,8 @@ BUILD_HOSTS=(
 
 USE_HOSTS=(
 	fedora-3-i386
+	fedora-4-i386
+	fedora-4-x86_64
 	nld-9-i586
 	nld-9-x86_64
 	redhat-9-i386
@@ -19,6 +21,7 @@ USE_HOSTS=(
 	suse-93-i586
 	suse-93-x86_64
 	suse-100-i586
+	suse-100-x86_64
 	win-4-i386
 )
 
@@ -56,16 +59,13 @@ win_4_i386_ZIP_BUILD () {
 
 		make
 		make check
-		make install 
-
-		# Delete some unwanted files (some people may want them... have a "dev" section in installer?)
-		find /tmp/install -name "*.a" | xargs rm -f
-		find /tmp/install -name "*.la" | xargs rm -f
+		make install
 
 		cd /tmp/install/bin
-		#strip --strip-debug *.dll *.exe
-		# Safe?
 		strip --strip-unneeded *.dll *.exe
+
+		cd /tmp/install/lib
+		strip --strip-unneeded *.a
 
 
 	} || exit 1

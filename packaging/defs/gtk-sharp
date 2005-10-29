@@ -1,5 +1,7 @@
 BUILD_HOSTS=(
 	fedora-3-i386
+	fedora-4-i386
+	fedora-4-x86_64
 	nld-9-i586
 	redhat-9-i386
 	rhel-3-i386
@@ -11,6 +13,7 @@ BUILD_HOSTS=(
 	suse-93-i586
 	suse-93-x86_64
 	suse-100-i586
+	suse-100-x86_64
 	win-4-i386
 )
 
