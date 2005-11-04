@@ -8,8 +8,6 @@ import re
 import sys
 import commands
 
-import pdb
-
 #rpm_flags = "--test"
 rpm_flags = ""
 
@@ -48,13 +46,13 @@ def remove_rpms(rpms):
 			installed_rpms.append(rpm)
 	status = 1
 
-	while status:
+	while status and installed_rpms:
 		command = "rpm %s -e %s" % (rpm_flags, ' '.join(installed_rpms) )
 		(status, output) = commands.getstatusoutput(command)
 
 		if not status:
 			installed_rpms.sort()
-			return installed_rpms
+			break
 		else:
 			new_rpms = get_dependent_rpms(output)
 
@@ -63,6 +61,7 @@ def remove_rpms(rpms):
 				if not installed_rpms.count(rpm):
 					installed_rpms.append(rpm)
 
+	return installed_rpms
 
 
 def commandline():
