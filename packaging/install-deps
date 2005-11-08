@@ -68,7 +68,7 @@ done
 
 [ ${#PACKAGES[@]} -eq 0 ] && exit 0
 
-./jail-do $TARGET "sh -x -c \"rm -rf /tmp/install-packages; mkdir -p /tmp/install-packages -m777\""
+./jail-do $TARGET "bash -x -c \"rm -rf /tmp/install-packages; mkdir -p /tmp/install-packages -m777\""
 scp ${PACKAGES[@]} $target_host:$jaildir/tmp/install-packages
 
 # Install the packages with rpm/rcd
@@ -77,22 +77,22 @@ if [ -z $USE_ZIP_PKG ] ; then
 	rpm_names=$(rpm -qp --queryformat '%{NAME} ' ${PACKAGES[@]})
 
 	# Use rug if the jail has it
-	if ./jail-do $TARGET "sh -x -c \"ls /usr/sbin/rcd\"" ; then
+	if ./jail-do $TARGET "bash -x -c \"ls /usr/sbin/rcd\"" ; then
 
 		# check if rcd is running in this jail and start it if it isn't
-		./jail-do $TARGET "sh -x -c \"rug ping\"" || ( ./jail-do $TARGET "sh -x -c \"/usr/sbin/rcd -r \"" && echo Wait for rcd to come alive... && sleep 5 )
+		./jail-do $TARGET "bash -x -c \"rug ping\"" || ( ./jail-do $TARGET "bash -x -c \"/usr/sbin/rcd -r \"" && echo Wait for rcd to come alive... && sleep 5 )
 
-		./jail-do $TARGET "sh -x -c \"rug rm -y $rpm_names\""
-		./jail-do $TARGET "sh -x -c \"rug in -y -r /tmp/install-packages/*.rpm\""
+		./jail-do $TARGET "bash -x -c \"rug rm -y $rpm_names\""
+		./jail-do $TARGET "bash -x -c \"rug in -y -r /tmp/install-packages/*.rpm\""
 	else
 		scp ./remove-rpms $target_host:$jaildir/tmp
-		./jail-do $TARGET "sh -x -c \"/tmp/remove-rpms $rpm_names\""
-		./jail-do $TARGET "sh -x -c \"rpm -Uvh /tmp/install-packages/*.rpm\""
+		./jail-do $TARGET "bash -x -c \"/tmp/remove-rpms $rpm_names\""
+		./jail-do $TARGET "bash -x -c \"rpm -Uvh /tmp/install-packages/*.rpm\""
 	fi
 
 else
 	scp do-install-zip-pkgs $target_host:$jaildir/tmp/install-packages
-	./jail-do $TARGET "sh -x -c \"/tmp/install-packages/do-install-zip-pkgs /tmp/build_deps /tmp/install-packages/*\""
+	./jail-do $TARGET "bash -x -c \"/tmp/install-packages/do-install-zip-pkgs /tmp/build_deps /tmp/install-packages/*\""
 
 fi
 
