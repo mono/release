@@ -28,7 +28,7 @@ esac
 #
 # Build the necessary tools
 #
-mcs -nowarn:0618 transform.cs
+mcs -nowarn:0618 transform.cs XhtmlWriter.cs
 (cd ../../../mcs/tools/corcompare; make PROFILE=default)
 (cd ../../../mcs/tools/corcompare; make PROFILE=$PROFILE)
 
