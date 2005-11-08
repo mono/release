@@ -1,4 +1,4 @@
-#! /bin/bash -x
+\#! /bin/bash -x
 #
 # USAGE: update-status VERSION NAME
 #
@@ -55,3 +55,4 @@ done
 # Upload the templates and files
 #
 scp -o "StrictHostKeyChecking no" -C -q src/*.html index.html $DEST
+scp -o "StrictHostKeyChecking no" -q deploy/cm/* $DEST/cm/
