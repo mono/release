@@ -92,11 +92,6 @@ img {
 #	monodoc mono-tools gecko-sharp gecko-sharp-2.0 gtksourceview-sharp-2.0 monodevelop boo ikvm mono-debugger
 
 	<h3>Gtk# 2</h3>
-	<p>
-		These releases are API stable Beta versions of Gtk#.  We recommend using the 2.3.x release.
-		By using the 2.5.x package, you limit your user base, since Gtk+ 2.6 is not available on
-		many distros.
-	</p>
 #	gtk-sharp-2.0
 
 </body>
