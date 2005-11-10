@@ -162,6 +162,10 @@
           <name>MANPATH</name>
           <value>${installdir}/share/man:$MANPATH</value>
         </addEnvironmentVariable>
+        <addEnvironmentVariable>
+          <name>LD_LIBRARY_PATH</name>
+          <value>${installdir}/lib:$LD_LIBRARY_PATH</value>
+        </addEnvironmentVariable>
        </actionList>
           <ruleList>
           <compareText>
