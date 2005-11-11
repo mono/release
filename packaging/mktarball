@@ -31,8 +31,11 @@ get_svn_path () {
 
 	    if expr match $version '2\.5' ; then
 		svn_path=${svn_path//$gtksharp2ver_match/${version/#2.5/2.3}_${version}}
-	    else
+	    elif expr match $version '2\.6' ; then
 	        svn_path=${svn_path//$gtksharp2ver_match/${version/#2.6/2.4}_${version}}
+	    else
+	        #  This handles the case of the '2.7.1' tag (which doesn't have the ver_ver format)
+	        svn_path=${svn_path//$gtksharp2ver_match/${version}}
 	    fi
 
 	    ;;
@@ -67,6 +70,10 @@ real_package=$package
 # Total hack for the wacked out gtk# stuff
 #
 if [[ $package = "gtk-sharp-2.6" ]]; then
+	real_package="gtk-sharp-2.0"
+fi
+
+if [[ $package = "gtk-sharp-2.8" ]]; then
 	real_package="gtk-sharp-2.0"
 fi
 

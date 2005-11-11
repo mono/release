@@ -2,6 +2,7 @@ BUILD_HOSTS=(
         redhat-9-i386
         sles-9-x86_64
         sles-9-ia64
+	sunos-8-sparc
 	win-4-i386
 )
 
@@ -40,6 +41,45 @@ win_4_i386_ZIP_DEPS=(
 	#http://www.gimp.org/~tml/gimp/win32/gettext-runtime-0.13.1.zip
 )
 
+# Need to get these in format... guess I gotta build them myself
+sunos_8_sparc_ZIP_DEPS=(
+	# Repack these
+	#ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/5.8/libgcc-3.3-sol8-sparc-local.gz
+#
+#
+#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/8/expat-1.95.5-sol8-sparc-local.gz
+#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/8/glib-2.6.2-sol8-sparc-local.gz
+#
+#	# Build my own newer versions
+#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/5.8/libiconv-1.8-sol8-sparc-local.gz
+#	# This comes with gettext
+#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/8/libintl-3.4.0-sol8-sparc-local.gz 
+#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/8/gettext-0.14.1-sol8-sparc-local.gz
+#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/5.8/pkgconfig-0.15.0-sol8-sparc-local.gz
+#
+
+	# Packages I've built
+	http://primates.ximian.com/~wberrier/sunos/gettext-0.14.5-0.sunos8.novell.sparc.zip
+	http://primates.ximian.com/~wberrier/sunos/libiconv-1.9.1-0.sunos8.novell.sparc.zip
+	http://primates.ximian.com/~wberrier/sunos/glib-2.8.3-0.sunos8.novell.sparc.zip
+	http://primates.ximian.com/~wberrier/sunos/pkg-config-0.20-0.sunos8.novell.sparc.zip
+
+	# Repackaged
+	http://primates.ximian.com/~wberrier/sunos/libgcc-3.3-0.sunos8.novell.sparc.zip
+)
+
+sunos_8_sparc_ZIP_BUILD () {
+	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
+	export M4=/usr/local/bin/m4
+
+	# Do this to make sure libgcc is found.  Won't be needed when we install libgcc into build_deps
+	#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
+	./configure --prefix=/tmp/install
+	make || exit 1
+	make install-strip || exit 1
+}
+
 win_4_i386_ZIP_BUILD () {
 
 	{
@@ -49,16 +89,9 @@ win_4_i386_ZIP_BUILD () {
 		./configure --prefix=/tmp/install
 
 		# Hacks to get it to build 
-		#  These has been added in 1.1.9
-		#sed -i 's/RESGEN =.*/RESGEN = MONO_PATH="$(topdir)\/class\/lib\/$(PROFILE)$(PLATFORM_PATH_SEPARATOR)$$MONO_PATH" $(INTERNAL_RESGEN)/' mcs/build/platforms/win32.make
-		#sed -i "s/csc.exe/mcs/" mcs/build/platforms/win32.make
-		#sed -i "s/\/cyg\//\/\//" libtool
-
-		# In trunk on 4 Oct 2005 by Zoltan - fixed in 1.1.9.2
-		#sed -i "s,-mno-cygwin,,g" libtool 
 
 		make
-		make check
+		#make check
 		make install
 
 		cd /tmp/install/bin
@@ -66,7 +99,6 @@ win_4_i386_ZIP_BUILD () {
 
 		cd /tmp/install/lib
 		strip --strip-unneeded *.a
-
 
 	} || exit 1
 
@@ -83,6 +115,7 @@ get_destroot () {
 # This requires mono because of the mono-find-provides  ... ???
 #  Otherwise, if mono's not installed, these scripts are not there???
 MONO_DEPS=(
+# TODO: comment this out for now (solaris build)
 	mono-1.1
 )
 
@@ -92,5 +125,4 @@ RELEASE_PATH="tags/mono-[[version]]"
 get_tarball () {
 	msvn_tar $1
 }
-
 

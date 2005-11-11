@@ -1,0 +1,2 @@
+target_host=nbuilder@g5-mono.boston.ximian.com
+USE_ZIP_PKG=1

@@ -31,6 +31,7 @@ RELEASE_PATH="tags/gtk-sharp/[[gtksharp2ver]]/gtk-sharp"
 # Example tag: svn+ssh://mono-cvs.ximian.com/source/tags/gtk-sharp/2.3.92_2.5.92/gtk-sharp
 # example mktarball:  ./mktarball suse-93-i586 gtk-sharp-2.0 2.3.92
 # example mktarball:  ./mktarball suse-93-i586 gtk-sharp-2.6 2.5.92
+# Another note: 2.7.1 and above require the tarball to be built on suse-100-i586
 
 #  I believe it's the same with ./build
 

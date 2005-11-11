@@ -44,7 +44,12 @@ gtk_sharp_2_4_change_ver ()
 
 gtk_sharp_2_6_change_ver ()
 {
-	sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$snapshot_rev/" bootstrap
+	sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$snapshot_rev/" bootstrap-2.6
+}
+
+gtk_sharp_2_8_change_ver ()
+{
+	sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$snapshot_rev/" bootstrap-2.8
 }
 
 #
@@ -64,7 +69,12 @@ gtk_sharp_2_4_autogen ()
 
 gtk_sharp_2_6_autogen ()
 {
-	./bootstrap
+	./bootstrap-2.6
+}
+
+gtk_sharp_2_8_autogen ()
+{
+	./bootstrap-2.8
 }
 
 DO_CHANGE_AUTOMAKE='normal_change_ver'
@@ -117,6 +127,13 @@ case $package in
     gtk-sharp-2.6 )
 	DO_CHANGE_AUTOMAKE='gtk_sharp_2_6_change_ver'
 	DO_AUTOGEN="gtk_sharp_2_6_autogen"
+	
+	$SVNEXPORT $MONO_ROOT/$svn_path
+        ;;
+
+    gtk-sharp-2.8 )
+	DO_CHANGE_AUTOMAKE='gtk_sharp_2_8_change_ver'
+	DO_AUTOGEN="gtk_sharp_2_8_autogen"
 	
 	$SVNEXPORT $MONO_ROOT/$svn_path
         ;;

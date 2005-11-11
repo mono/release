@@ -28,6 +28,8 @@ done
 count=0
 num_builds=${#BUILD_HOSTS[@]}
 
+final_exit=0
+
 #TODO Optimally, this would scan for pids that finished and print out the status...
 #  so you could start fixing the failed builds while the rest were finishing
 while [ $count -lt $num_builds ]; do
@@ -39,6 +41,7 @@ while [ $count -lt $num_builds ]; do
 	if [ "$return_code" -ne 0 ]; then
 		echo - ${BUILD_HOSTS[$count]} failed
 		cat logs/build-all.${BUILD_HOSTS[$count]}.$package.$version-$release
+		let final_exit+=1
 	else
 		echo - ${BUILD_HOSTS[$count]} Succeeded
 	fi
@@ -46,4 +49,6 @@ while [ $count -lt $num_builds ]; do
 	let count+=1
 
 done
+
+exit $final_exit
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 
 # Will be /tmp/build_deps for the packaging system
@@ -46,15 +46,21 @@ chmod 755 $DEST/bin/*
 reg_safe_dest=${DEST//\//\\\/}
 for file in `find . -name "*.pc"` ; do
 	echo Substituting $file
-	sed -i "s/^prefix=.*/prefix=$reg_safe_dest/" $file
+	sed -e "s/^prefix=.*/prefix=$reg_safe_dest/" $file > $file.new; mv $file.new $file
+
 done
+
 
 
 # Write out an env.sh in the $DEST dir so we can use that when we build
 # This needs to by dynamic
 echo "export PKG_CONFIG_PATH=\$PKG_CONFIG_PATH:$DEST/lib/pkgconfig" > env.sh
-#echo "export PATH=\$PATH:$DEST/bin:$DEST/lib" >> env.sh
 echo "export PATH=\$PATH:$DEST/bin" >> env.sh
+
+# Needed for the solaris builds so far
+echo "export LDFLAGS=-L$DEST/lib" >> env.sh
+echo "export CPPFLAGS=-I$DEST/include" >> env.sh
+echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$DEST/lib" >> env.sh
 
 # This will work for our own built mono package
 # If this is going to work on our mono zip, then all the mono bin /sh files will need to be replaced...
@@ -71,6 +77,17 @@ reg_safe_dest=${dest//\//\\\/}
 cyg_dest="C:/cygwin/usr"
 cyg_reg_safe_dest=${cyg_dest//\//\\\/}
 
+
+# Fake out the .la files (for solaris for now, win32 doesn't seem to need this)
+libdir=$DEST/lib
+reg_safe_libdir=${libdir//\//\\\/}
+for file in `find . -name "*.la"` ; do
+	echo Substituting $file
+	sed -e "s/^libdir=.*/libdir='$reg_safe_libdir'/g" $file > $file.new; mv $file.new $file
+	sed -e "s/$reg_safe_source/$reg_safe_dest/g" $file > $file.new; mv $file.new $file
+done
+
+
 #?
 cd bin
 for file in `find .` ; do
@@ -81,18 +98,18 @@ for file in `find .` ; do
 		#sed -i "s/^prefix=$reg_safe_source/prefix=$cyg_reg_safe_dest/" $file
 
 		# Replace /tmp/install with /tmp/build_deps ($DEST)
-		sed -i "s/$reg_safe_source/$reg_safe_dest/" $file
+		sed -e "s/$reg_safe_source/$reg_safe_dest/" $file > $file.new; mv $file.new $file
 	fi
 
 
 	# Do same substitution for the noarch rpms: (/usr instead of /tmp/install)
 	if grep "/usr" $file && grep "#!/bin/sh" $file ; then
 		# First take care of the cygpath -d (Specifically for monodoc)
-		sed -i "s/^prefix=$reg_safe_source2/prefix=$cyg_reg_safe_dest/" $file
-		sed -i "s/^monodocdir=$reg_safe_source2/monodocdir=$cyg_reg_safe_dest/" $file
+		sed -e "s/^prefix=$reg_safe_source2/prefix=$cyg_reg_safe_dest/" $file > $file.new; mv $file.new $file
+		sed -e "s/^monodocdir=$reg_safe_source2/monodocdir=$cyg_reg_safe_dest/" $file > $file.new; mv $file.new $file
 
 		# Replace /usr with /tmp/build_deps ($DEST)
-		sed -i "s/$reg_safe_source2/$reg_safe_dest/" $file
+		sed -e "s/$reg_safe_source2/$reg_safe_dest/" $file > $file.new; mv $file.new $file
 
 	fi
 

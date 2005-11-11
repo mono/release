@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 rev=$1
 package=$2
@@ -16,7 +16,8 @@ tarball=`ls *.tar.gz`
 component_name_ver=${tarball//\.tar\.gz/}
 arch=${distro#*-*-}
 
-tar -zxf *.tar.gz
+#tar -zxf *.tar.gz
+gunzip -c *.tar.gz | tar -xf -
 cd $component_name_ver
 
 # Load environment for deps
