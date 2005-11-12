@@ -20,7 +20,7 @@ rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
 cd -
 
 cd ../windows-installer/Output
-rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
+rsync -avz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
 cd -
 
 if [ -z $DRYRUN ]; then

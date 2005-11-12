@@ -487,6 +487,13 @@ shutil.move('gtk-wimp-0.7.0-bin/libwimp.dll', 'lib/gtk-2.0/2.4.0/engines')
 os.makedirs('share/themes/gtk-wimp/gtk-2.0')
 shutil.move('gtk-wimp-0.7.0-bin/Theme/gtk-2.0/gtkrc', 'share/themes/gtk-wimp/gtk-2.0')
 
+# Do some theme renaming (Looks like something similar is proposed for upstream)
+# Rename default to Raleigh
+shutil.move('share/themes/Default', 'share/themes/Raleigh')
+
+# Make the wimp theme the default
+shutil.move('share/themes/gtk-wimp', 'share/themes/Default')
+
 # Make it the default theme? Not for now... (Doing this makes it so the theme selector doesn't work)
 #shutil.copy('share/themes/gtk-wimp/gtk-2.0/gtkrc', 'etc/gtk-2.0')
 

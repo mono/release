@@ -25,6 +25,7 @@ MONO_DEPS=(
 	mono-1.1
 	monodoc
 	gtk-sharp
+	gecko-sharp
 )
 
 # Here for reference only

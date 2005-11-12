@@ -286,6 +286,8 @@ begin
 	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-api-diff.';
 	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
+	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mozroots.';
+	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\jay.';
 	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\IFaceDisco.';
@@ -375,6 +377,8 @@ begin
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xsp.'
 	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mod-mono-server.'
+	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
+	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xbuild.'
 	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
 	// etc files
 	strFilePath := RemoveBackslash(cstrBasePath) + '\etc\gtk-2.0\gdk-pixbuf.loaders.'
@@ -708,6 +712,8 @@ begin
 	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monoresgen.bat'
 	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
+	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mozroots.bat'
+	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\nunit-console.bat'
 	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\pedump.bat'
@@ -731,6 +737,8 @@ begin
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\permview.bat'
 	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
 	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\prj2make-sharp-gtk.bat'
+	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
+	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xbuild.bat'
 	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
 
    // ------ MonoDoc

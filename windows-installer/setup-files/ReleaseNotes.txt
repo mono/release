@@ -1,23 +1,19 @@
 Release Notes for Mono, Gtk# and XSP Combined Windows Installer. 
-By Wade Berrier <wberrier@novell.com> October 6, 2005
+By Wade Berrier <wberrier@novell.com> Nov 11, 2005
 ------------------------------------------------------------------------
 
-Check http://go-mono.com/archive/1.1.9.2/ for release details.
+Check http://go-mono.com/archive/1.1.10/ for release details.
 
 General Description:
 
-This installation includes Mono 1.1.9.2 for Windows and the Gtk# 1.0.10 
-and 2.3.92 for Windows.  It also includes a built and configured version 
-of XSP 1.1.9.2.
+This installation includes Mono 1.1.10 for Windows and the Gtk# 1.0.10 
+and 2.4.0 for Windows.  It also includes a built and configured version 
+of XSP 1.1.10.
 
 New in this Release:
 
--Native binaries and dlls are not statically linked anymore.
--Microsoft's gdiplus is now included.  Note: this will only be installed on 
-Windows 2000.
--Gtk-wimp theme is included
--rsvg DllImport works
--Gtk# Docs are now included (although monodoc browser still doesn't work)
+-gtk-wimp theme now the default.  The old Default theme was renamed to
+ 'Raleigh'.
 
 Requirements:
 
