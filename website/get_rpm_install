@@ -62,6 +62,11 @@ enabled=1
 name=Gtk# 2.0 for fedora-$releasever-$basearch
 baseurl=http://go-mono.com/download/gtk-sharp-2.0/fedora-$releasever-$basearch/
 enabled=1
+
+[mono-tools]
+name=Mono Tools for fedora-$releasever-$basearch
+baseurl=http://go-mono.com/download/mono-tools/fedora-$releasever-$basearch/
+enabled=1
 EOF
     ;;
 esac
