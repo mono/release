@@ -61,9 +61,7 @@ Source: build\monodoc\*; DestDir: {app}; Components: gtk\gtkSharp\monodoc; Flags
 
 [INI]
 Filename: {app}\Mono.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://www.mono-project.com
-;Filename: {app}\MonoReleaseNotes.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://go-mono.com/archive/@@MONO_VERSION@@/
-; This needs to be hard coded for now
-Filename: {app}\MonoReleaseNotes.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://go-mono.com/archive/1.1.9.1_0/
+Filename: {app}\MonoReleaseNotes.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://go-mono.com/archive/@@MONO_VERSION@@/
 Filename: {app}\GtkPlus.url; Section: InternetShortcut; Components: gtk; Key: URL; String: http://www.gtk.org
 Filename: {app}\GtkSharp.url; Section: InternetShortcut; Components: gtk\gtkSharp; Key: URL; String: http://gtk-sharp.sourceforge.net/index.html
 Filename: {app}\Xsplocal.url; Section: InternetShortcut; Components: xsp; Key: URL; String: {code:GetURLAndPort}/index.aspx
@@ -174,645 +172,73 @@ begin
     PortForXSP.Values[0] := '8088';
 end;
 
-// Replace files with no slash conversion
-Procedure ReplaceRootPathForBat(var strFileName: String; const strOrignal, strReplacement: String);
+// Search and replace in a file
+Procedure substituteInFile(strFileName, strOriginal, strReplacement: String);
 var
-  strFileContents: String;
+	strFileContents: String;
 begin
-  // Read the contents of the file into a string
-  if LoadStringFromFile(strFileName, strFileContents) = true then
-  begin
-    // Perform search and replace
-    StringChange(strFileContents, strOrignal, strReplacement);
-
-    // Write the changed string back out to the file
-    SaveStringToFile(strFileName, strFileContents, false);
-  end;
+	// Read the contents of the file into a string and continue if string is found in file
+	if (LoadStringFromFile(strFileName, strFileContents) = true) and (Pos(strOriginal, strFileContents) > 0)  then
+	begin
+		// Perform search and replace
+		StringChange(strFileContents, strOriginal, strReplacement);
+		// Write the changed string back out to the file
+		SaveStringToFile(strFileName, strFileContents, false);
+	end;
 end;
 
 
-// Replace files with slash conversion
-Procedure ReplaceRootPath(var strFileName: String; const strOrignal,
-strOriginalForwardSlash, strReplacement, strReplacementForwardSlash: String);
+Procedure WriteRootPath(const cstrBasePath: String);
 var
-  strFileContents: String;
+	strFilePath, forwardSlashBasePath: String;
+	FindRec: TFindRec;
+	listOfDirs: Array OF String;
+	numFiles, i: Longint;
 begin
-  // Read the contents of the file into a string
-  if LoadStringFromFile(strFileName, strFileContents) = true then
-  begin
 
-    // Perform search and replace
-    StringChange(strFileContents, strOrignal, strReplacement);
-    StringChange(strFileContents, strOriginalForwardSlash, strReplacementForwardSlash);
+	forwardSlashBasePath := cstrBasePath;
+	StringChange(forwardSlashBasePath, '\', '/')
+  	
+	listOfDirs := [
+		'\bin',
+		'\etc\gtk-2.0',
+		'\etc\pango',
+		'\lib\pkgconfig',
+		'\lib\mono\gac\monodoc\1.0.0.0__0738eb9f132ed756'
+	]
 
-    // Write the changed string back out to the file
-    SaveStringToFile(strFileName, strFileContents, false);
-  end;
-end;
+	numFiles := GetArrayLength(ListOfDirs);
 
-Procedure WriteRootPath(const cstrBasePath, cstrBasePathForwardSlash: String);
-var strFilePath, strPortXSP: String;
-begin
-  // Shell Scripts
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mcs.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
+	// List of directories and vars to replace:  bin, etc/gtk-2.0, etc/pango, lib/pkgconfig
+	// lib\mono\gac\monodoc\1.0.0.0__0738eb9f132ed756\monodoc.dll.config
+	// share\doc\xsp\test\bin\monodoc.dll.config (This dir doesn't exist anymore)
 
+	for i := 0 to numFiles - 1 do
+	begin
+		// Iterate through all files in the directory
+		if FindFirst(cstrBasePath + listOfDirs[i] + '\*', FindRec) then
+		begin
+			try
+			repeat
+  				// Skip directories
+				if FindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY = 0 then
+					strFilePath := cstrBasePath + listOfDirs[i] + '\' + FindRec.Name;				
+					substituteInFile(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath)
+					substituteInFile(strFilePath, '@@WIN_MONO_INST_DIR@@', forwardSlashBasePath)
 
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\libpng13-config.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodocer.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodocs2html.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodocs2slashdoc.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gnome-autogen.sh';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gnome-doc-common.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\webshot.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\GtkDemo.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\dtd2xsd.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gapi2-parser.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gapi2-codegen.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gapi2-fixup.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gconfsharp2-schemagen.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gconfsharp-schemagen.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gapi-codegen.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gapi-fixup.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gconfsharp-schemagen.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mod.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodoc.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xsp.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xsp2.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mod-mono-server2.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\dbsessmgr.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\dbsessmgr2.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\asp-state.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\asp-state2.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\browsercaps-updater.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\caspool.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\glib-gettextize.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monostyle.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-find-requires.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-find-provides.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-api-info.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-api-diff.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mozroots.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\jay.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\IFaceDisco.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\ictool.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\GenerateDelegate.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\EnumCheck.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\CorCompare.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\brwsercaps-updater.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\al.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\cert2spc.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\certmgr.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\chktrust.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\cilc.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\disco.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gacutil.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\genxs.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gmcs.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\ilasm.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\makecert.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mbas.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mkbundle.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mint.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodis.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monograph.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monop.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\resgen.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monoresgen.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\nunit-console.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\prj2make.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\permview.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\pedump.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\secutil.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\setreg.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\signcode.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\sn.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\soapsuds.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\sqlsharp.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\sqlsharpgtk.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\prj2make-sharp.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\prj2make-sharp-gtk.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\wsdl.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\wsdl2.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xsd.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xsp.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mod-mono-server.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xbuild.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	// etc files
-	strFilePath := RemoveBackslash(cstrBasePath) + '\etc\gtk-2.0\gdk-pixbuf.loaders.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\etc\gtk-2.0\gtk.immodules.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\etc\gtk-2.0\gtkrc.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\etc\pango\pango.modules.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
+  			until not FindNext(FindRec);
+			finally
+			FindClose(FindRec);
+			end;
+		end; // If
+	end;  // For
 
-    // Config files in bin
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\freetype-config.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\libpng-config.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\libpng12-config.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xml2-config.'
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-
-    // Pkg-config files
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gnome-mime-data-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libgnomecanvas-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libgnomeprint-2.2.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gtk-doc.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\bonobo-activation-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gconf-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libbonobo-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libIDL-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\ORBit-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\ORBit-CosNaming-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\ORBit-idl-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\ORBit-imodule-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\monodoc.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gmodule-no-export-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libgnomecanvas-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gecko-sharp.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gecko-sharp-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\art-sharp-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gapi-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\glade-sharp-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gtk-dotnet-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gtk-sharp-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\rsvg-sharp-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\mono-nunit.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\art-sharp.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gapi.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gdkglext-1.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gdkglext-win32-1.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gtk-engines-2.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gtkglext-1.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gtkglext-win32-1.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libart-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libgsf-1.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libiconv.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\librsvg-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\atk.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\fontconfig.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\freetype2.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gdk-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gdk-pixbuf-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gdk-win32-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\glib-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gmodule-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gobject-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gthread-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gtk+-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gtk+-win32-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\gtk-sharp.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\glade-sharp.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libglade-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libintl.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libpng.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libpng12.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libxml-2.0.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\mint.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\mono.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\pango.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\pangoft2.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\pangowin32.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\rsvg-sharp.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\boo.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\ikvm.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\libpng13.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\xsp.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\pkgconfig\xsp-2.pc';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-
-
-	// More Shell/batch files
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\booc.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\booi.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\booish.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\caspol.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\caspol.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-service.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-service.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gnunit.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gnunit.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gnunit2.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gnunit2.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\ikvm.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\ikvm.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\ikvmc.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\ikvmc.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\ikvmstub.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\ikvmstub.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\macpack.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\macpack.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mdassembler.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mdassembler.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mdcs2ecma.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mdcs2ecma.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mdnormalizer.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mdnormalizer.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mdvalidater.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mdvalidater.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mjs.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mjs.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monoservice.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monoservice.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-shlib-cop.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-shlib-cop.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monop2.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monop2.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gasnview.';
-	ReplaceRootPath(strFilePath, '@@DOS_MONO_INST_DIR@@', '@@WIN_MONO_INST_DIR@@', cstrBasePath, cstrBasePathForwardSlash);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gasnview.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
+	// Set the Port for XSP
+	substituteInFile(cstrBasePath + '\bin\startXSP.bat', '8089', PortForXSP.Values[0]);
+	substituteInFile(cstrBasePath + '\bin\startXSP2.bat', '8089', PortForXSP.Values[0]);
 	
-	// Batch Files
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodocer.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodocs2html.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodocs2slashdoc.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gapi2-codegen.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gapi2-fixup.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gapi2-parser.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gapi-codegen.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gapi-fixup.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\webshot.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\GtkDemo.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\dtd2xsd.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xsp2.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mod-mono-server2.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\asp-state2.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\dbsessmgr2.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\cert2spc.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\certmgr.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\chktrust.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\cilc.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\disco.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gacutil.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\genxs.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\gmcs.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\ilasm.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\makecert.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mbas.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mcs.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\setmonopath.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mkbundle.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mint.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodis.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monograph.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monop.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monoresgen.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mozroots.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\nunit-console.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\pedump.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\secutil.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\setreg.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\signcode.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\sn.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\soapsuds.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\sqlsharp.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\sqlsharpgtk.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\prj2make.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\permview.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\prj2make-sharp-gtk.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xbuild.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-   // ------ MonoDoc
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mod.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monodoc.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\lib\mono\gac\monodoc\1.0.0.0__0738eb9f132ed756\monodoc.dll.config';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\share\doc\xsp\test\bin\monodoc.dll.config';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-  // Set the Port for XSP
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\startXSP.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strPortXSP := PortForXSP.Values[0];
-	ReplaceRootPathForBat(strFilePath, '8089', strPortXSP);
-  // Set the Port for XSP 2.0
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\startXSP2.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strPortXSP := PortForXSP.Values[0];
-	ReplaceRootPathForBat(strFilePath, '8089', strPortXSP);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\monostyle.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-find-requires.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-find-provides.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-api-info.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mono-api-diff.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\jay.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\IFaceDisco.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\ictool.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\GenerateDelegate.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\EnumCheck.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\CorCompare.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\al.bat';
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\wsdl.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\wsdl2.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xsd.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\asp-state.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\browsercaps-updater.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\dbsessmgr.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\mod-mono-server.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\resgen.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\xsp.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\booc.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\booi.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-	strFilePath := RemoveBackslash(cstrBasePath) + '\bin\booish.bat'
-	ReplaceRootPathForBat(strFilePath, '@@DOS_MONO_INST_DIR@@', cstrBasePath);
-
-
 end;
+
 
 Function GetURLAndPort(Param: String) : string;
 var strPort: string;
@@ -823,19 +249,16 @@ end;
 
 Procedure CurStepChanged(CurStep: TSetupStep);
 var
- strBasePath, strShortPath, strBasePathForwardSlash: String;
+ strBasePath: String;
 begin
   if CurStep = ssPostInstall THEN
   begin
-    strBasePath := ExpandConstant('{app}');
+    // Get the var and then remove the backslash from the end
+    strBasePath := RemoveBackslash(ExpandConstant('{app}'));
+    // If there's a space, use the shortname
     if Pos(' ', strBasePath) <> 0 THEN
-    begin
-      strShortPath := GetShortName(strBasePath);
-      strBasePath := strShortPath;
-    end;
-    strBasePathForwardSlash := strBasePath;
-    StringChange(strBasePathForwardSlash, '\', '/');
-    WriteRootPath(strBasePath, strBasePathForwardSlash);
+      strBasePath := GetShortName(strBasePath);
+    WriteRootPath(strBasePath);
   end;
 end;
 
