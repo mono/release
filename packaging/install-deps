@@ -46,7 +46,7 @@ for pkg in ${DEPS[@]}; do
 			exit 1;
 		fi
 
-		for i in $LATEST_VERSION/*; do
+		for i in $LATEST_VERSION/*.zip $LATEST_VERSION/*.rpm; do
 			PACKAGES=(${PACKAGES[@]} $i)
 		done
 
