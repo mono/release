@@ -144,7 +144,7 @@ else
 fi
 
 mkdir -p $package_path/$DEST_ROOT/$package/$VER_PATH
-scp $target_host:$jaildir/tmp/builder/built-packages/* $package_path/$DEST_ROOT/$package/$VER_PATH
+scp $target_host:$jaildir/tmp/builder/built-packages/* $target_host:$jaildir/tmp/scratch/*.spec $package_path/$DEST_ROOT/$package/$VER_PATH
 
 rm status/$distro
 
