@@ -4,34 +4,28 @@ Architecture	Hostname	Responsible for		User / Pass
 ============    ========        ===============
 
 At 8CC (all hostsnames are .boston.ximian.com):
-x86		hardhat		Packaging
-		x86-mono	i386-head		nbulder / nbuilder
+
+x86/Linux	hardhat		Packaging
+		x86-mono	i386-head		nbuilder / nbuilder
 		cygwin-mono	cygwin-head lane	
 
-PPC		g5-mono		ppc-head		nbuilder / nbuilder
-		macmono		
+PPC/OSX		g5-mono		ppc-head		nbuilder / nbuilder
 
-Sparc		sparcmono	sparc-head		builder / builder (decommissioned)
-		mono-sparc				builder / builder
-		pbartok2.provo.novell.com		
-		
-AMD64		monobuild2	amd-head lane		builder / builder
+Sparc/Solaris8	mono-sparc				builder / builder
+Sparc/Solaris10	pbartok2.provo.novell.com		
 
-AMD64		monobuild2	amd-head lane		builder / builder
+AMD64/Linux	monobuild2	amd-head lane		builder / builder
 
-Itanium		mono-itanium
+Itanium/Linux	mono-itanium	ia64-head-mono		builder /builder
 
-ARM		mono-arm
+ARM/Linux	mono-arm
 
-Old:
-AMD64		amd-mono	amd-head lane		builder / builder
+AMD64/Solaris	amd-mono				builder / builder
 
 With Mainsoft:
 x86/java	213.31.213.19
 		(ghbuildbot)	Java buildbot		builder / ssh keys only
 							ask Ben or Miguel for access.
-
-
 
 Q.  How to reconnect a build node?
 
