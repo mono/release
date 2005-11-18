@@ -300,7 +300,7 @@
 	}
 
 	ini_set("memory_limit", "20M");
-	$usage = "php generate-html1.php --profile <profile> --distro <distro> --help\n";
+	$usage = "php generate-html.php --profile <profile> --distro <distro> --help\n";
 	if (($argc < 3) || in_array("--help", $argv)) {
 		print "$usage";
 		exit;
@@ -322,7 +322,7 @@
 		}
 	}
 
-	if (false == in_array($distro_name, array('suse-90-i586', 'redhat-9-i386', 'fedora-1-i386','windowsXP'))) {
+	if (false == in_array($distro_name, array('suse-90-i586', 'redhat-9-i386', 'fedora-1-i386'))) {
 		print "Invalid distro!!\n";
 		exit;
 	}
@@ -332,7 +332,7 @@
 		exit;
 	}
 
-	$distros = array(0 => 'suse-90-i586', 1 => 'fedora-1-i386', 2 => 'redhat-9-i386', 3=> 'windowsXP');
+	$distros = array(0 => 'suse-90-i586', 1 => 'fedora-1-i386', 2 => 'redhat-9-i386');
 	$profiles = array(0 => 'default', 1 => 'net_2_0');
 
 	$distro = array_search($distro_name, $distros);

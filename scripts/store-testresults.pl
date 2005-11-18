@@ -6,15 +6,11 @@
 # 
 #
 # Author: Sachin Kumar <skumar1@novell.com>
-#         Roopa Wilson <wroopa@novell.com>
-#         Satya Sudha K <ksathyasudha@novell.com>
-#         Ritvik Mayank <mritvik@novell.com>
-#
 
 use XML::DOM;
 use File::Basename;
 
-#$DATE=20050106;
+#$DATE=20051017;
 $DATE = `date +'%Y%m%d'`;
 chomp $DATE ;
 
@@ -28,9 +24,8 @@ $TESTPASS = 0;
 $TESTFAIL = 1;
 $TESTNOTRUN = 2; 
 
-#$MCS_ROOT = "/home/skumar/monobuild/working/mcs";
-$MCS_ROOT = "/tmp/snapshot/$DATE/mcs";
-$MONO_ROOT = "/tmp/snapshot/$DATE/mono";
+$MCS_ROOT = "/home/build/src/$DATE/mcs";
+$MONO_ROOT = "/home/build/src/$DATE/mono";
 
 
 @MCS_NUNIT_TESTDIRS = (
@@ -39,16 +34,22 @@ $MONO_ROOT = "/tmp/snapshot/$DATE/mono";
                        "$MCS_ROOT/class/Microsoft.JScript",
                        "$MCS_ROOT/class/Microsoft.VisualBasic",
                        "$MCS_ROOT/class/Mono.Directory.LDAP",
+                       "$MCS_ROOT/class/Mono.Posix",
                        "$MCS_ROOT/class/Mono.Security",
-                       "$MCS_ROOT/class/Npgsql",
+                       "$MCS_ROOT/class/Managed.Windows.Forms",
+#                       "$MCS_ROOT/class/Npgsql",
                        "$MCS_ROOT/class/System",
                        "$MCS_ROOT/class/System.Configuration.Install",
                        "$MCS_ROOT/class/System.Data",
+                       "$MCS_ROOT/class/System.Data.OracleClient",
+                       "$MCS_ROOT/class/System.DirectoryServices",
+                       "$MCS_ROOT/class/System.ServiceProcess",
                        "$MCS_ROOT/class/System.Drawing",
                        "$MCS_ROOT/class/System.Runtime.Remoting",
                        "$MCS_ROOT/class/System.Runtime.Serialization.Formatters.Soap",
                        "$MCS_ROOT/class/System.Security",
                        "$MCS_ROOT/class/System.Web.Services",
+                       "$MCS_ROOT/class/System.Web",
                        "$MCS_ROOT/class/System.XML",
                        "$MCS_ROOT/class/corlib",
                        "$MCS_ROOT/class/System.Web.Services/Test/standalone",
@@ -64,6 +65,18 @@ $TESTFILES_ROOT = "/var/www/html/tests/$DATE" ;
 @MCS_TESTFILES = (
 		  "$MCS_ROOT/tests"
 		  );
+		  
+@SYS_DATA_PROVIDER_A = (
+                        "$MCS_ROOT/class/System.Data/Test/DataProviderTests/dataadaptertests"
+                       );
+
+@SYS_DATA_PROVIDER_R = (
+                        "$MCS_ROOT/class/System.Data/Test/DataProviderTests/datareadertests"
+                       );
+
+@MSVB_STANDALONE = ( 
+		    "$MCS_ROOT/class/Microsoft.VisualBasic/Test/standalone"
+		   );	
 
 
 @NEW_MBAS_TESTFILES = (
@@ -91,6 +104,7 @@ $TESTFILES_ROOT = "/var/www/html/tests/$DATE" ;
 
 for my $profile (@PROFILES)
 { 
+    print "$profile\n";
 
   # Create a DOM doc root
   $root = new XML::DOM::Document;
@@ -115,8 +129,6 @@ for my $profile (@PROFILES)
     print $nunitfile."/TestResult.xml\n" ;
     nunit_results ( $nunitfile."/TestResult.xml", $NUNITTESTS , $profile) ;
     }
- 
-
 
 # Scan all mono runtime test files 
    for my $runtime( @MONO_RUNTIME_TESTFILES )
@@ -141,14 +153,14 @@ for my $profile (@PROFILES)
 }
 
  #mcs  error tests
-
-  for my $dir (@MCS_ERRORDIR)
+  
+  for my $dir ( @MCS_ERRORDIR )
   {
     my $file=$dir;
     if($profile eq "default") {
-    $file.="/mcserrortests";
+      $file.="/mcserrortests";
     } else {
-    $file.="/gmcserrortests";
+      $file.="/gmcserrortests";
     }
     print $file."\n";
     my ($tsresults, $tcresults) = get_mcserror_test_results ( $file , "OK", "KNOWN" ) ;
@@ -165,10 +177,46 @@ for my $profile (@PROFILES)
         $file.="/gmcs.log";
      }
      print $file."\n";
-     my ($tsresults, $tcresults )  = get_mcs_tests_results ($file, "PASS", "FAIL") ;
+     my ($tsresults, $tcresults )  = get_mcs_test_results ( $file, "OK", "KNOWN") ;
      append_testsuite ( $tsresults, $tcresults, $MCSTESTS, 0, $profile ) ;
    }
    
+# System.Data DataProvider test for adapter
+     for my $mydataadapter ( @SYS_DATA_PROVIDER_A )
+    {
+      my $file=$mydataadapter;
+      $file.="/mssql-dataadaptertest.log";
+      print $file."\n";
+      my ($tsresults, $tcresults )  = get_data_adapter_test_results ($file, "OK", "FAIL") ;
+      append_testsuite ( $tsresults, $tcresults, $OTHERTESTS, 0, $profile ) ;
+    }
+
+# System.Data DataProvider test for reader
+     for my $mydatareader ( @SYS_DATA_PROVIDER_R )
+    {
+      my $file=$mydatareader;
+      $file.="/mssql-datareadertest.log";
+      print $file."\n";
+      my ($tsresults, $tcresults )  = get_data_reader_test_results ($file, "OK", "FAIL") ;
+      append_testsuite ( $tsresults, $tcresults, $OTHERTESTS, 0, $profile ) ;
+    }
+
+# MS VB stand alone test
+    for my $msvbstandalone ( @MSVB_STANDALONE )
+   {
+     my $file=$msvbstandalone;
+     if ($profile eq "default") {
+        $file.="/msvb-standalone.log";
+     } else {
+        $file.="/msvb2-standalone.log";
+     }
+     print $file."\n";
+     my ($tsresults, $tcresults )  = get_msvb_standalone_results ($file, "PASS", "FAIL") ;
+     append_testsuite ( $tsresults, $tcresults, $MCSTESTS, 0, $profile ) ;
+   }
+ 
+
+
     for my $nunitfile( @MCS_NUNIT_TESTDIRS )
     { my $file=$nunitfile ;
     open(FILE, $nunitfile."/TestResult-$profile.xml") || print "can't open file:$nunitfile/TestResult-$profile.xml for reading",next  ;
@@ -266,35 +314,169 @@ sub get_mcserror_test_results {
     return (\@tsresults, \@tcresults ) ;
 }   
 
+sub get_mcs_test_results {
 
-sub get_mcs_tests_results
-{
     my ( $testresult, $PASS, $FAIL ) = @_ ;
     my @tsresults = ($testresult, 0, 0, 0) ;
     my @tcresults = () ;
-    my $i = 0;     
 
     open (FILEHANDLE, $testresult);
-#    Results: total tests: 95, failed: 0, cfailed: 0 (pass: 100.00%)
-#    FAIL: test-1: compilation
-
+    
+    # cs-12.cs...INCORRECT ERROR 
+    # cs0017.cs...SUCCESS
     while (<FILEHANDLE>) 
-    {
+    {	
 	my $testcase = $_ ;
-	my @arr = split (' ', $testcase);
-	
-	$arr[1] = substr ($arr[1], 0, -1) if ( $#arr == 2 ) ; # test name	
-	
+	my @arr = split ('\.\.\.', $testcase);	
+
 	if ( $testcase =~ /$FAIL/ )
 	{
-	    ($tmp = $testresult) =~ s/.log/-$arr[1].log/ ;
 	    $tsresults[2]++ ; # increment count 
-	    open (FILE, $tmp);
-	    my $stacktrace = "" ;
-	    $stacktrace = $stacktrace.$_ foreach (<FILE>);
-	    
-	    push @tcresults, [ $arr[1], $TESTFAIL, "", $stacktrace, 0] ;  
+
+	    my $file =  "$MCS_ROOT/tests/$arr[0].log" ;
+	    if (open (FILE, $file) != 1) {
+		push @tcresults, [ $arr[0], $TESTFAIL, $arr[1], "", 0];
+	    }
+	    else {
+		my $stacktrace = "" ;
+		$stacktrace = $stacktrace.$_ foreach (<FILE>);
+		push @tcresults, [ $arr[0], $TESTFAIL, $arr[1], $stacktrace, 0] ;  
+	    }
 	}
+
+	if ( $testcase =~ /$PASS/ )
+	{
+	    $tsresults[1]++ ; # increment count 
+	    push @tcresults, [ $arr[0], $TESTPASS, "", "", 0] ;  
+	}
+    }
+    return (\@tsresults, \@tcresults ) ;
+}
+
+sub get_data_adapter_test_results
+ {
+     my ( $testresult, $PASS, $FAIL ) = @_ ;
+     my @tsresults = ($testresult, 0, 0, 0) ;
+     my @tcresults = () ;
+     my $i = 0;
+
+     open (FILEHANDLE, $testresult);
+
+     while (<FILEHANDLE>)
+     {
+       my $testcase = $_ ;
+       my @arr = split (' ', $testcase);
+
+       $arr[1] = substr ($arr[1], 0, -1) if ( $#arr == 2 ) ; # test name
+
+       if ( $testcase =~ /$FAIL/ )
+       {
+           ($tmp = $testresult) =~ s/.log/-$arr[1].log/ ;
+           $tsresults[2]++ ; # increment count
+           open (FILE, $tmp);
+           my $stacktrace = "" ;
+           $stacktrace = $stacktrace.$_ foreach (<FILE>);
+
+           push @tcresults, [ $arr[1], $TESTFAIL, "", $stacktrace, 0] ;
+       }
+       if ( $testcase =~ /$PASS/ )
+       {
+           $tsresults[1]++ ; # increment count
+           push @tcresults, [ $arr[1], $TESTPASS, "", "", 0] ;
+       }
+     }
+     return (\@tsresults, \@tcresults ) ;
+ }
+
+ sub get_data_reader_test_results
+ {
+     my ( $testresult, $PASS, $FAIL ) = @_ ;
+     my @tsresults = ($testresult, 0, 0, 0) ;
+     my @tcresults = () ;
+     my $i = 0;
+
+     open (FILEHANDLE, $testresult);
+
+     while (<FILEHANDLE>)
+     {
+       my $testcase = $_ ;
+       my @arr = split (' ', $testcase);
+
+       $arr[1] = substr ($arr[1], 0, -1) if ( $#arr == 2 ) ; # test name
+
+       if ( $testcase =~ /$FAIL/ )
+       {
+           ($tmp = $testresult) =~ s/.log/-$arr[1].log/ ;
+           $tsresults[2]++ ; # increment count
+           open (FILE, $tmp);
+           my $stacktrace = "" ;
+           $stacktrace = $stacktrace.$_ foreach (<FILE>);
+
+           push @tcresults, [ $arr[1], $TESTFAIL, "", $stacktrace, 0] ;
+       }
+       if ( $testcase =~ /$PASS/ )
+       {
+           $tsresults[1]++ ; # increment count
+           push @tcresults, [ $arr[1], $TESTPASS, "", "", 0] ;
+       }
+     }
+     return (\@tsresults, \@tcresults ) ;
+ }
+
+sub get_msvb_standalone_results
+{
+    my ( $testresult, $PASS, $FAIL ) = @_ ;
+	print "$testresult\n";
+ #   print ("\n LOOKING FOR ". $testresult. "\n" );
+    my @tsresults = ($testresult, 0, 0, 0) ;
+    my @tcresults = () ;
+	
+    my @arr = split ('/', $testresult);
+    my $dirname = dirname($testresult);
+    my $filename = basename($testresult);
+                                                                                                                            
+    # Removing _test.dll from the testsuite name
+    $arr[$#arr] =~ s/_test.dll$//g ;
+    #$filename =~ s/_test.dll$//g ;
+                                                                                                                            
+    # Removing .results from the testsuite name
+    $arr[$#arr] =~ s/.results$//g ;
+   # $filename =~ s/.results$//g ;
+
+    my $testsuite_name = $arr[$#arr -1 ];
+#    print ("\n TESTSUIT ". $testsuite_name . "\n" );
+    open (FILEHANDLE, $testresult);
+    
+    # cs-12.cs...INCORRECT ERROR 
+    # cs0017.cs...SUCCESS
+    while (<FILEHANDLE>) 
+    {	
+	my $testcase = $_ ;
+	my @arr = split ('\: ', $testcase);
+#	print "arr [0] = $arr[0], [1] = $arr[1]\n";
+	if ( $testcase =~ /$FAIL/ )
+	{
+	    $tsresults[2]++ ; # increment count 
+            $arr[0] =~ s/[ \t]+$//g;
+	    my $testfile_name = $arr[1];
+	    my $testfile_name =~ s/^\.\///g ;
+	    $arr [0] =~ s/^\.\///g;
+	    my $file =  "$arr[1]" ;
+	    my $file =  "$MCS_ROOT/class/Microsoft.VisualBasic/Test/standalone/$file" ;
+	    $file .= ".log";
+	    $arr [0] =~ s/\//:/g ;
+	    if (open (FILE, $file) != 1) {
+#		print "Couldn't open $file\n";
+		push @tcresults, [ $arr[1], $TESTFAIL, "", 0];
+	    }
+	    else {
+		my $stacktrace = "" ;
+		$stacktrace = $stacktrace.$_ foreach (<FILE>);
+#		print "stacktrace = $stacktrace\n";
+		push @tcresults, [ $arr[1], $TESTFAIL, $stacktrace, 0] ;  
+	    }
+	}
+
 	if ( $testcase =~ /$PASS/ )
 	{
 	    $tsresults[1]++ ; # increment count 
@@ -302,10 +484,14 @@ sub get_mcs_tests_results
 	}
     }
     return (\@tsresults, \@tcresults ) ;
+
+
 }
+
 sub get_new_mbastest_results {
 
     my ( $testresult, $PASS, $FAIL ) = @_ ;
+	print "$testresult\n";
 #    print ("\n LOOKING FOR ". $testresult. "\n" );
     my @tsresults = ($testresult, 0, 0, 0) ;
     my @tcresults = () ;
@@ -331,27 +517,25 @@ sub get_new_mbastest_results {
     while (<FILEHANDLE>) 
     {	
 	my $testcase = $_ ;
-#	my @arr = split ('\: ', $testcase);	
 	my @arr = split ('\: ', $testcase);	
-#	print($testcase."test.................................... \n" );
 	if ( $testcase =~ /$FAIL/ )
 	{
 	    $tsresults[2]++ ; # increment count 
             $arr[0] =~ s/[ \t]+$//g;
+	    my $testfile_name = $arr[0];
+	    my $testfile_name =~ s/^\.\///g ;
+	    $arr [0] =~ s/^\.\///g;
 	    my $file =  "$arr[0]" ;
-	    my $file =  "$MCS_ROOT/mbas/Test/$testsuite_name/$arr[0]" ;
-#	    my $file =  "$MCS_ROOT/btests/logs/$testsuite_name-$arr[0]" ;
+	    my $file =  "$MCS_ROOT/mbas/Test/$testsuite_name/$file" ;
 	    $file .= ".log";
-#		print ("\nLooking for " . $file ."\n");
+	    $arr [0] =~ s/\//:/g ;
 	    if (open (FILE, $file) != 1) {
 		push @tcresults, [ $arr[0], $TESTFAIL, "", 0];
-#		push @tcresults, [ $arr[0], $TESTFAIL, $arr[1], "", 0];
 	    }
 	    else {
 		my $stacktrace = "" ;
 		$stacktrace = $stacktrace.$_ foreach (<FILE>);
 		push @tcresults, [ $arr[0], $TESTFAIL, $stacktrace, 0] ;  
-#		push @tcresults, [ $arr[0], $TESTFAIL, $arr[1], $stacktrace, 0] ;  
 	    }
 	}
 
@@ -484,7 +668,6 @@ sub get_nunit_testcase_results
     }
     return \@tcresults ;
 }   
-
 
 sub create_testsuite_element
 {

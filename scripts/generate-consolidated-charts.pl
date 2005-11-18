@@ -62,6 +62,7 @@ foreach my $file (@filenames) {
   get_stats ($file, \%pass_fail_stats, \%perc_stats, \%total_stats, \@dates, \%test_suite_names);
 }
 
+
 my $output_file = "$root_dir/testresults.dat";
 write_data_to_file(\%pass_fail_stats, \@dates, \%test_suite_names, $output_file, 1 );
 generate_charts($output_file, $chart_dir, "individual" );
@@ -307,7 +308,7 @@ sub generate_charts {
 sub plot_graph {
   my ($output_file, $title, $ylabel, $plot_cmd) = (@_);
   
-  my $GNUPlot = '/usr/local/bin/gnuplot';
+  my $GNUPlot = '/usr/bin/gnuplot';
   open ( GNUPLOT, "|$GNUPlot");
 
   my $cmds = "";

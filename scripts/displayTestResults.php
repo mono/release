@@ -62,7 +62,7 @@
 		//Default is Suse
 		case 0:
 		        $distro = 0 ;
-			$xml_dir = "/var/www/mono-website/go-mono/tests/testresults/suse-90-i586/$profile_name/xml/";
+			$xml_dir = "/var/www/html/testresults/suse-90-i586/$profile_name/xml/";
 			$distro_name = "Suse";
 #                        print "<p><br><div id=1tab>";
 
@@ -71,13 +71,13 @@
                         print "<td><img src=\"overlap_off_off.gif\" border=0 height=20 width=18></td><td class=tabputty noWrap><a href=\"?&profile=$profile&distro=1\"><font size=2px>Fedora Core 1</a></td>";
                         print "<td><img src=\"overlap_off_on.gif\" border=0 height=20 width=18></td><td class=tabblue noWrap height=20><font size=2px>Suse 9</td><td><img src=\"last_right_on.gif\" border=0 height=20 width=18></td></tr>";
                         print "<tr><td class=tabblue colSpan=40 height=5><IMG height=5 src=\"spacer.gif\" width=1 border=0></td>";
-			$filename = "/var/www/mono-website/go-mono/tests/suse-90-i586-$profile_name.html";
+			$filename = "/var/www/html/suse-90-i586-$profile_name.html";
 		 	include($filename);
 
                 break;
 
 		case 1:
-			$xml_dir = "/var/www/mono-website/go-mono/tests/fedora-1-i386/$profile_name/xml/";
+			$xml_dir = "/var/www/html/testresults/fedora-1-i386/$profile_name/xml/";
 			$distro_name = "Fedora Core 1";
  #                       print "<p><br><div id=1tab>";
 	                print "<td><img src=\"first_left_off.gif\" border=0 height=20 width=18></td><td class=tabputty noWrap><a href=\"?&profile=$profile&distro=3\"><font size=2px>windowsXP</a></td>";
@@ -91,7 +91,7 @@
 		 	include($filename);
                 break;
 		case 2:
-			$xml_dir = "/var/www/mono-website/go-mono/tests/testresults/redhat-9-i386/$profile_name/xml/";
+			$xml_dir = "/var/www/html/testresults/redhat-9-i386/$profile_name/xml/";
 			$distro_name = "RedHat Linux 9";
   #                      print "<p><br><div id=1tab>";
 	                print "<td><img src=\"first_left_off.gif\" border=0 height=20 width=18></td><td class=tabputty noWrap><a href=\"?&profile=$profile&distro=3\"><font size=2px>windowsXP</a></td>";
@@ -105,7 +105,7 @@
 		 	include($filename);
                 break;
 	case 3:
-			$xml_dir = "/var/www/mono-website/go-mono/tests/testresults/windowsXP/$profile_name/xml/";
+			$xml_dir = "/var/www/html/testresults/windowsXP/$profile_name/xml/";
 			$distro_name = "windowsXP";
   #                      print "<p><br><div id=1tab>";
 			print "<td><img src=\"first_left_on.gif\" border=0 height=20 width=18></td><td class=tabblue noWrap> <font size=2px>windowsXP</td>";
@@ -125,11 +125,12 @@
          print "<br><br><b>Color Description</b><br><br>";
          print "<table border=1>";
 	 print "<tr><td bgcolor=30b323>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </td> <td>&nbsp;&nbsp Pass percentage exactly 100 &nbsp;&nbsp</td></tr>";
-         print "<tr><td bgcolor=lightgreen>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </td> <td>&nbsp;&nbsp Pass percentage greater that 90 &nbsp;&nbsp</td></tr>";
+         print "<tr><td bgcolor=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </td> <td>&nbsp;&nbsp Pass percentage greater that 90 &nbsp;&nbsp</td></tr>";
          print "<tr><td bgcolor=yellow>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </td> <td>&nbsp;&nbsp Pass percentage between 60 and 90 &nbsp;&nbsp</td></tr>";
-         print "<tr><td bgcolor=red>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td> <td>&nbsp;&nbsp Pass percentage less that 60 &nbsp;&nbsp</td></tr>";
+         print "<tr><td bgcolor=lightgreen>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td> <td>&nbsp;&nbsp Pass percentage less that 60 &nbsp;&nbsp</td></tr>";
          print "</table>";
-         print "<br><font size=2> NOTE: Color displayed for test suite is based on the most recent test result</font>";
+         print "<br><font color= #0000FF > * Frequency of tests : Suse twice a week, Redhat and Fedora once every week </font> </p>";
+	 print "<br><font size=2> NOTE: Color displayed for test suite is based on the most recent test result</font>";
          print "</p>";
 ?>
 <a href="http://mono.ximian.com/tests/scripts.tar.gz">[Get the scripts used for running these tests]</a>

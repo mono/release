@@ -162,42 +162,42 @@
 		$distroPath = "suse-90-i586";
 		$profilePath = "default";
 		if ($distro == 0 && $profile == 0){ # suse and default
-			$root = "/var/www/mono-website/go-mono/tests/testresults/suse-90-i586/default/";
+			$root = "/var/www/html/testresults/suse-90-i586/default/";
 			}
 		else if ($distro == 1 && $profile == 0){ # fedora-1-i386 and default
 			$distroPath = "fedora-1-i386";
 			$profilePath = "default";
-			$root = "/var/www/mono-website/go-mono/tests/testresults/fedora-1-i386/default/";
+			$root = "/var/www/html/testresults/fedora-1-i386/default/";
 			}
 		else if ($distro == 2 && $profile == 0){ # redhat default 
 			$distroPath = "redhat-9-i386";
 			$profilePath = "default";
-		        $root = "/var/www/mono-website/go-mono/tests/testresults/redhat-9-i386/default/";
+		        $root = "/var/www/html/testresults/redhat-9-i386/default/";
 			}
 		else if ($distro == 3 && $profile == 0){ # Windows Xp default
 			$distroPath = "windowsXP";
 			$profilePath = "default";
-			$root = "/var/www/mono-website/go-mono/tests/testresults/windowsXP/default/";	
+			$root = "/var/www/html/testresults/windowsXP/default/";	
 			}
         	else if ($distro == 0 && $profile == 1){ # suse-90-i586 net 2
 			$distroPath = "suse-90-i586";
 			$profilePath = "net_2_0";
-			$root = "/var/www/mono-website/go-mono/tests/testresults/suse-90-i586/net_2_0/";
+			$root = "/var/www/html/testresults/suse-90-i586/net_2_0/";
 			}
          	else if ($distro == 1 && $profile == 1){ # fedora net 2  
 			$distroPath = "fedora-1-i386";
 			$profilePath = "net_2_0";
-			$root = "/var/www/mono-website/go-mono/tests/testresults/fedora-1-i386/net_2_0/";
+			$root = "/var/www/html/testresults/fedora-1-i386/net_2_0/";
 			}
         	else if ($distro == 2 && $profile == 1){ # redhat net 2  
 			$distroPath = "redhat-9-i386";
 			$profilePath = "net_2_0";
-			$root = "/var/www/mono-website/go-mono/tests/testresults/redhat-9-i386/net_2_0/";
+			$root = "/var/www/html/testresults/redhat-9-i386/net_2_0/";
 			} 
 		else if ($distro == 3 && $profile == 1){ # Windows Xp  net 2  
 			$distroPath = "windowsXP";
 			$profilePath = "net_2_0";
-			$root = "/var/www/mono-website/go-mono/tests/testresults/windowsXP/net_2_0/";
+			$root = "/var/www/html/testresults/windowsXP/net_2_0/";
 			}
 
 
@@ -209,7 +209,7 @@
 
 		#Displaying Charts
 		if($_GET['image']==1) {
-#			print "$chart_location_1;";
+			print "$chart_location_1;";
 			print "<h1>Progress Charts</h1>";
 			print "<p><h4> Pass and Fail Percentages</h4><img src=\"$chart_location_1\"></p>";
 			print "<p><h4>Number of Passes</h4><img src=\"$chart_location_2\"></p>";
