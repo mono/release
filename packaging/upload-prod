@@ -1,12 +1,17 @@
 #!/bin/sh
 
-DRYRUN=$1
+VERSION=$1
+DRYRUN=$2
 
-if [ ! -z $DRYRUN ]; then
+if test x$VERSION = x || test x$VERSION = xdry ; then
+	echo "Usage: ./upload-prod <version> [<dry>]"
+	exit 1
+fi
+
+if test x$DRYRUN = xdry ; then
 	extra_options=n
 	echo "Doing dry run..."
 fi
-
 
 cd packages
 rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/download
@@ -25,9 +30,10 @@ cd -
 
 if [ -z $DRYRUN ]; then
 
-	ssh mono-web@go-mono.com "release/website/mk-index.sh   ~/go-mono/download/"
+	ssh mono-web@go-mono.com "cp -f release/website/packaging.css   ~/go-mono/"
+	ssh mono-web@go-mono.com "release/website/mk-sources.sh ~/go-mono/sources/ $VERSION"
+	ssh mono-web@go-mono.com "release/website/mk-index.sh   ~/go-mono/download/ $VERSION"
 	ssh mono-web@go-mono.com "release/website/mk-oc.sh      ~/go-mono/download/ official"
-	ssh mono-web@go-mono.com "release/website/mk-sources.sh ~/go-mono/sources/"
 
 fi
 
