@@ -110,8 +110,11 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 				. $confdir/$line >> $HISTORY_OUT
 			fi
 		else
-			echo ${line//\\[\\[arch\\]\\]/$(basename $distro_conf)} >> $OUT
-			echo ${line//\\[\\[arch\\]\\]/$(basename $distro_conf)} >> $HISTORY_OUT
+			line=${line//\\[\\[arch\\]\\]/$(basename $distro_conf)}
+			line=${line//\\[\\[version\\]\\]/$VERSION}
+
+			echo $line >> $OUT
+			echo $line >> $HISTORY_OUT
 		fi
 	done
 done

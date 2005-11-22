@@ -1,10 +1,10 @@
 <html>
 <head>
 <link rel="stylesheet" href="/packaging.css" type="text/css">
-<title>Mono Sources</title>
+<title>Mono [[version]] Sources</title>
 </head>
 <body>
-<h1>Mono Sources</h1>
+<h1>Mono [[version]] Sources</h1>
 
 	<h3>Mono 1.1</h3> 
 #	mono-1.1 libgdiplus-1.1

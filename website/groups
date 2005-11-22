@@ -1,10 +1,10 @@
 <html>
 <head>
 <link rel="stylesheet" href="/packaging.css" type="text/css">
-<title>Mono Downloads -- [[arch]]</title>
+<title>Mono [[version]] Downloads -- [[arch]]</title>
 </head>
 <body>
-<h1>Mono Downloads -- [[arch]]</h1>
+<h1>Mono [[version]] Downloads -- [[arch]]</h1>
 
 !	get_rpm_install
 

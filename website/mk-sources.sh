@@ -49,7 +49,9 @@ do
 		echo "</ul>" >> $OUT
 		echo "</ul>" >> $HISTORY_OUT
 	else
-		echo ${line} >> $OUT
-		echo ${line} >> $HISTORY_OUT
+		line=${line//\\[\\[version\\]\\]/$VERSION}
+
+		echo $line >> $OUT
+		echo $line >> $HISTORY_OUT
 	fi
 done
