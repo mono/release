@@ -1,0 +1,19 @@
+<html>
+<head>
+<link rel="stylesheet" href="/packaging.css" type="text/css">
+<title>Mono [[version]] Downloads</title>
+</head>
+<body>
+<h1>Mono [[version]] Downloads</h1>
+
+<h3>Sources</h3> 
+[[sources]]
+
+<h3>Installers</h3>
+[[installers]]
+
+<h3>RPM Packages</h3>
+[[packages]]
+
+</body>
+</html>

@@ -3,6 +3,8 @@
 VERSION=$1
 DRYRUN=$2
 
+DO_DRYRUN=0
+
 if test x$VERSION = x || test x$VERSION = xdry ; then
 	echo "Usage: ./upload-prod <version> [<dry>]"
 	exit 1
@@ -11,6 +13,7 @@ fi
 if test x$DRYRUN = xdry ; then
 	extra_options=n
 	echo "Doing dry run..."
+	DO_DRYRUN=1
 fi
 
 cd packages
@@ -28,13 +31,16 @@ cd ../windows-installer/Output
 rsync -avz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
 cd -
 
-if [ -z $DRYRUN ]; then
-
-	ssh mono-web@go-mono.com "cp -f release/website/packaging.css   ~/go-mono/"
-	ssh mono-web@go-mono.com "release/website/mk-sources.sh ~/go-mono/sources/ $VERSION"
-	ssh mono-web@go-mono.com "release/website/mk-index.sh   ~/go-mono/download/ $VERSION"
-	ssh mono-web@go-mono.com "release/website/mk-oc.sh      ~/go-mono/download/ official"
-
+if test x$DO_DRYRUN = x1 ; then
+	echo "Stopping because of dry run"
+	exit
 fi
+
+ssh mono-web@go-mono.com "cp -f release/website/packaging.css   ~/go-mono/"
+ssh mono-web@go-mono.com "release/website/mk-sources.sh 	~/go-mono/sources/ $VERSION"
+ssh mono-web@go-mono.com "release/website/mk-index.sh   	~/go-mono/download/ $VERSION"
+ssh mono-web@go-mono.com "release/website/mk-history-index.sh	~/go-mono/archive/ $VERSION"
+ssh mono-web@go-mono.com "release/website/mk-oc.sh		~/go-mono/download/ official"
+
 
 
