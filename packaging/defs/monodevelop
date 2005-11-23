@@ -35,7 +35,7 @@ get_destroot () {
 
 # MonoDeveop moved into the mono hierarchy
 HEAD_PATH="trunk/monodevelop"
-RELEASE_PATH="branches/monodevelop/[[versiondot]]"
+RELEASE_PATH="tags/monodevelop/[[versiondot]]"
 
 get_tarball () {
 	msvn_tar $1
