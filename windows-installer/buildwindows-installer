@@ -31,8 +31,6 @@
 # Need to do the same thing the linux installer does: look in lib/mono/1.0/*.exe and make sure there are wrappers 
 # After all shell wrappers are created, create an equivalent .bat wrapper
 
-# Questions for Paco: (or investigate further) where does glade fit into this?  I have glade build deps for gtk-sharp2 but what about the actual glade program?  Does it come with the gtksharp for VisualStudio?  I think it came with the mono combined, but there are certainly no links to it...
-
 import sys
 import os
 import shutil
@@ -525,12 +523,21 @@ os.chdir("..")
 ##########################################
 # Special case for etc/mono/config
 
-# Add rsvg map
 os.chdir('mono')
 
+# Add rsvg map
 add_dll_map('etc/mono/config', '<dllmap dll="rsvg-2" target="librsvg-2-2.dll"/>')
 
+# Remove other maps that aren't necessary on win32 (this should be done with the autotools so that people
+#  who run from source will get the changes)
 remove_dll_map('etc/mono/config', '<dllmap dll="MonoPosixHelper" target="libMonoPosixHelper.so"/>')
+remove_dll_map('etc/mono/config', '<dllmap dll="libmySQL.dll" target="libmysqlclient.so" />')
+remove_dll_map('etc/mono/config', '<dllmap dll="odbc32.dll" target="libodbc.so" />')
+remove_dll_map('etc/mono/config', '<dllmap dll="oci" target="clntsh" />')
+remove_dll_map('etc/mono/config', '<dllmap dll="db2cli" target="libdb2_36.so"/>')
+remove_dll_map('etc/mono/config', '<dllmap dll="msvcrt" target="libc.so.6"/>')
+remove_dll_map('etc/mono/config', '<dllmap dll="libX11" target="libX11.so"/>')
+remove_dll_map('etc/mono/config', '<dllmap dll="libcairo-2.dll" target="libcairo.so.2"/>')
 
 os.chdir("..")
 
