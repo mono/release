@@ -1,6 +1,7 @@
 PATH=/mono/bin:/usr/local/bin:$PATH
+M4=/usr/local/bin/m4
 LD_LIBRARY_PATH=/mono/lib:/usr/local/lib
-export PATH LD_LIBRARY_PATH
+export PATH LD_LIBRARY_PATH M4
 
 lane_name=sparc-head
 prefix=$HOME/mono-installed
