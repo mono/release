@@ -35,10 +35,8 @@ my @external_rpms_list = qw(
 	ftp://linux.nssl.noaa.gov/redhat/linux/9/en/os/i386/RedHat/RPMS/libungif-4.1.0-15.i386.rpm
 );
 
-
 my @custom_rpms_list = qw(
-	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/libgtkhtml3.0_4-3.0.10-0.ximian.6.1.i386.rpm
-	http://www.go-mono.com/archive/1.0.6/redhat-9-i386/gtksourceview-sharp-0.5-1.ximian.6.1.i386.rpm
+	ftp://mirrors.kernel.org/suse/i386/9.3/suse/i586/gtkhtml2-3.6.1-5.i586.rpm
 	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/gtksourceview-1.0.1-0.ximian.6.1.i386.rpm
 	ftp://ftp.ximian.com/pub/ximian-evolution/redhat-9-i386/libgal2.0_6-1.99.11-0.ximian.6.1.i386.rpm
 );
@@ -178,7 +176,8 @@ my $p = $buildroot;
 
 chdir $p;
 
-# Don't need the opt gnome file
+# Move files under usr instead of using opt
+`cp -Rf opt/gnome/* usr`; # easier than perl's method...
 rmtree ("opt");
 
 # Move etc under usr since we will collect all files under usr for installer
@@ -222,19 +221,19 @@ substituteParametersInFile( (glob "$p/usr/lib/mono/gac/monodoc/1.0*/monodoc.dll.
 # Add some sections for gtksourceview to integrate boo
 
 my %boo_config_file_additions = (
-	"$p/usr/share/mime-info/gtksourceview-sharp.keys" => 
-"text/x-boo
-	category=Software Development/Source Code
-	can_be_executable=true
-	default_action_type=application
-	description=boo source code
-	short_list_application_ids_for_novice_user_level=monodevelop,gedit
-
-",
-	"$p/usr/share/mime-info/gtksourceview-sharp.mime" => 
-"text/x-boo
-	ext: boo
-"
+	#"$p/usr/share/mime-info/gtksourceview-sharp.keys" => 
+#"text/x-boo
+#	category=Software Development/Source Code
+#	can_be_executable=true
+#	default_action_type=application
+#	description=boo source code
+#	short_list_application_ids_for_novice_user_level=monodevelop,gedit
+#
+#",
+#	"$p/usr/share/mime-info/gtksourceview-sharp.mime" => 
+#"text/x-boo
+#	ext: boo
+#"
 
 	);
 
@@ -316,11 +315,14 @@ sub extract
 
 	chdir($buildroot);
 
-	print "Extracting $file\n";
-	$packages_used_text .= basename($file) . "\n";
-	system("rpm2cpio $file | cpio --extract --make-directories");
-	# Verbose...
-	#system("rpm2cpio $file | cpio -v --extract --make-directories");
+	if ($file =~ /\.rpm$/) { 
+
+		print "Extracting $file\n";
+		$packages_used_text .= basename($file) . "\n";
+		system("rpm2cpio $file | cpio --extract --make-directories");
+		# Verbose...
+		#system("rpm2cpio $file | cpio -v --extract --make-directories");
+	}
 
 	# Go back to the working directory...
 	chdir $cwd;
