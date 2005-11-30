@@ -1,11 +1,13 @@
 #!/bin/sh -e
 
+HOMEDIR=$(dirname $(which $0))/daily
+
 ## Script to build mono/mcs and create daily mono tarballs
 unset MONO_PATH
 unset LD_LIBRARY_PATH
 DATE=`date +'%Y%m%d'`
-SNAPSHOT=/home/build/src/$DATE
-PREFIX=/home/build/src/install
+SNAPSHOT=$HOMEDIR/src/$DATE
+PREFIX=$HOMEDIR/src/install
 export PATH=$PREFIX/bin:$PATH
 export PKG_CONFIG_PATH=/opt/gnome/lib/pkgconfig
 #export JAVA_HOME=/incoming/tmpinst/j2sdk1.4.1_03
@@ -18,15 +20,12 @@ echo > mono-log
 
 # Check out mono and mcs
 echo Check out mono and mcs
-svn co svn://svn.myrealbox.com/source/trunk/mono |tee -a mono-log
-svn co svn://svn.myrealbox.com/source/trunk/mcs |tee -a mono-log
-
-#svn co svn+ssh://mritvik@mono-cvs.ximian.com/source/trunk/mono |tee -a mono-log
-#svn co svn+ssh://mritvik@mono-cvs.ximian.com/source/trunk/mcs |tee -a mono-log
+svn export -q svn://svn.myrealbox.com/source/trunk/mono |tee -a mono-log
+svn export -q svn://svn.myrealbox.com/source/trunk/mcs |tee -a mono-log
 
 #Create Backup of the checkout
 echo Creating Backup for todays checkout | tee -a mono-log
-#(cd /home/build/src && tar -czvf $DATE.tar.gz $DATE/) 
+#(cd $HOMEDIR/src && tar -czvf $DATE.tar.gz $DATE/) 
 echo Finshed creating backups | tee -a mono-log
 
 # Bump mono version number
@@ -55,7 +54,7 @@ tar zcvpf monolite-$DATE.tar.gz monolite-$DATE/ | tee -a mono-log
 mkdir $SNAPSHOT/monocharge-$DATE
 
 # install script and readme
-cp /home/build/scripts/monocharge/* $SNAPSHOT/monocharge-$DATE
+cp $HOMEDIR/../monocharge/* $SNAPSHOT/monocharge-$DATE
 
 # NET 1.0
 mkdir -p $SNAPSHOT/monocharge-$DATE/1.0
@@ -79,3 +78,4 @@ echo Copy resulting tarball to top-level dir | tee -a mono-log
 
 #cd $SNAPSHOT
 scp -i /home/build/tmp/ssh/cron_dsa  *.tar.gz  mono-web@mono.ximian.com:go-mono/daily |tee -a mono-log
+

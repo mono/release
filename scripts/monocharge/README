@@ -1,0 +1,25 @@
+This contains precompiled libraries and executables.
+
+Layout:
+------
+
+	1.0
+		precompiled executables and libraries for profile 1.0
+
+	2.0      
+	
+		precompiled executables and libraries for profile 2.0
+	
+	recharge.sh 
+		script to install monocharge
+
+
+How to install monocharge:
+-------------------------
+
+
+tar xvzf monocharge-xxxx.tar.gz
+cd monocharge-xxxx 
+env prefix=/path/to/prefix ./recharge.sh
+
+Note: By default prefix=/usr/local  
