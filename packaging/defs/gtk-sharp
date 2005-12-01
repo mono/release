@@ -36,7 +36,11 @@ win_4_i386_ZIP_DEPS=(
 	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/pango-1.8.2.zip
 	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/pango-dev-1.8.2.zip
 
-	http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2-2.6.20-mono.win32.zip
+	http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2-2.6.20-1-mono.win32.zip
+
+	# for libxml2 and other image deps
+	http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-bin.zip
+	http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-lib.zip
 
 	# For some extra dll's (art-sharp, glade-sharp, rsvg-sharp)
 	http://www.gimp.org/~tml/gimp/win32/libart_lgpl-2.3.14.zip

@@ -325,9 +325,10 @@ selection.packages.append(Package(
 selection.packages.append(Package(
 			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/jpeg-6b-4-dep.zip')
 			)
-selection.packages.append(Package(
-			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libpng-1.2.8-dep.zip')
-			)
+# Don't need this because it only contains zlib
+#selection.packages.append(Package(
+#			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libpng-1.2.8-dep.zip')
+#			)
 selection.packages.append(Package(
 			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libpng-1.2.8-bin.zip')
 			)
@@ -340,9 +341,10 @@ selection.packages.append(Package(
 selection.packages.append(Package(
 			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/freetype-2.1.10-bin.zip')
 			)
-selection.packages.append(Package(
-			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/freetype-2.1.10-dep.zip')
-			)
+# Don't need this because it only contains zlib
+#selection.packages.append(Package(
+#			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/freetype-2.1.10-dep.zip')
+#			)
 selection.packages.append(Package(
 			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gladewin32/glade-2.6.0-rc1.zip')
 			)
