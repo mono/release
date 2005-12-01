@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-HOMEDIR=$(dirname $(which $0))/daily
+HOMEDIR=$(dirname $(which $0))/daily_build
 
 ## Script to build mono/mcs and create daily mono tarballs
 unset MONO_PATH
@@ -69,13 +69,17 @@ cp $SNAPSHOT/mcs/class/lib/net_2_0/*.dll $SNAPSHOT/monocharge-$DATE/2.0
 tar zcvpf monocharge-$DATE.tar.gz monocharge-$DATE/ | tee -a mono-log
 
 # Make mono tarball and check
-(cd $SNAPSHOT/mono && make distcheck || exit 1 ) | tee -a mono-log
+#(cd $SNAPSHOT/mono && make distcheck || exit 1 ) | tee -a mono-log
+(cd $SNAPSHOT/mono && make dist || exit 1 ) | tee -a mono-log
 
 # Copy resulting tarball to top-level dir
 echo Copy resulting tarball to top-level dir | tee -a mono-log
 (cd $SNAPSHOT/mono && cp *.tar.gz $SNAPSHOT )
-(cd $SNAPSHOT/mono && cp *mono-$DATE* $SNAPSHOT )
+# Not sure what this is for
+#(cd $SNAPSHOT/mono && cp *mono-$DATE* $SNAPSHOT )
 
-#cd $SNAPSHOT
-scp -i /home/build/tmp/ssh/cron_dsa  *.tar.gz  mono-web@mono.ximian.com:go-mono/daily |tee -a mono-log
+scp -i $HOMEDIR/../key/cron_key  *.tar.gz  mono-web@mono.ximian.com:go-mono/daily |tee -a mono-log
+
+# Run command to update webpage
+ssh mono-web@mono.ximian.com "go-mono/daily/make-html" |tee -a mono-log
 
