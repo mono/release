@@ -81,5 +81,6 @@ echo Copy resulting tarball to top-level dir | tee -a mono-log
 scp -i $HOMEDIR/../key/cron_key  *.tar.gz  mono-web@mono.ximian.com:go-mono/daily |tee -a mono-log
 
 # Run command to update webpage
-ssh mono-web@mono.ximian.com "go-mono/daily/make-html" |tee -a mono-log
+ssh -i $HOMEDIR/../key/cron_key mono-web@mono.ximian.com "go-mono/daily/make-html" |tee -a mono-log
+
 
