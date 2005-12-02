@@ -18,6 +18,10 @@ fi
 
 cd packages
 rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/download
+
+cd ../external_packages
+rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/external_packages
+
 cd ../sources
 rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/sources
 cd ..

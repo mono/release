@@ -1,0 +1,9 @@
+ChannelID   "mono-deps-[[name]]"
+Name        "Dependencies for mono"
+Alias       "mono-deps-[[name]]"
+Description "Dependencies for mono that don't come with the distro"
+Priority     100
+IconPath     http://www.ximian.com/foo.png
+
++ ../external_packages
+

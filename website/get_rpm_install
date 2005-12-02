@@ -71,6 +71,12 @@ name=Mono Tools for fedora-$releasever-$basearch
 baseurl=http://go-mono.com/download/mono-tools/fedora-$releasever-$basearch/
 enabled=1
 gpgcheck=0
+
+[mono-deps]
+name=Mono Deps for fedora-$releasever-$basearch
+baseurl=http://go-mono.com/download/mono-deps/fedora-$releasever-$basearch/
+enabled=1
+gpgcheck=0
 EOF
     ;;
 esac

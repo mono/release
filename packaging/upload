@@ -1,4 +1,4 @@
 cd packages
-rsync -Cavz -e ssh . mono-web@go-mono.com:go-mono/download-stage
-ssh mono-web@go-mono.com "release/website/mk-index.sh ~/go-mono/download-stage/"
+rsync -Cavzn -e ssh . mono-web@go-mono.com:go-mono/download-stage
+#ssh mono-web@go-mono.com "release/website/mk-index.sh ~/go-mono/download-stage/ $VERSION"
 ssh mono-web@go-mono.com "release/website/mk-oc.sh    ~/go-mono/download-stage/ stage"
