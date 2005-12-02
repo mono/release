@@ -105,10 +105,18 @@ for distro_conf in $packagingdir/conf/*-*-*; do
 			
 			. $confdir/$line >> $OUT
 
+			# Provide url path for the HISTORY external deps
+			if test x$line == xget_external_deps ; then
+				EXTERNAL_PATH="../../../../external_packages"
+			fi
+
 			# Don't display repository information for history pages
 			if test x$line != xget_rpm_install ; then
 				. $confdir/$line >> $HISTORY_OUT
 			fi
+
+			unset EXTERNAL_PATH
+
 		else
 			line=${line//\\[\\[arch\\]\\]/$(basename $distro_conf)}
 			line=${line//\\[\\[version\\]\\]/$VERSION}

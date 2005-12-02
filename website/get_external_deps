@@ -1,0 +1,43 @@
+#!/bin/sh
+
+# Default, unless overridden
+: ${EXTERNAL_PATH="../../external_packages"}
+
+external_rpms=(`ls ../external_packages/$DISTRO/*.rpm`)
+external_src_rpms=(`ls ../external_packages/$DISTRO/*.src.rpm`)
+
+if [ ${#external_rpms[@]} -eq 0 ]; then
+	exit 0
+fi
+
+echo "<h3>External Dependencies</h3>"
+echo "<ul>"
+for i in ${external_rpms[@]} ; do
+
+	i=`basename $i`
+
+	[[ $i == *.src.rpm ]] && continue
+
+	NAME=$(rpm_query NAME ../external_packages/$DISTRO/$i)
+	DESC=$(rpm_query SUMMARY ../external_packages/$DISTRO/$i)
+	echo "<li><a href='$EXTERNAL_PATH/$DISTRO/$i'>$NAME</a> -- $DESC</li>"
+done
+echo "</ul>"
+
+if [ ${#external_src_rpms[@]} -eq 0 ]; then
+        exit 0
+fi
+
+echo "<p>Source RPMS:"
+for i in ${external_src_rpms[@]} ; do
+
+        i=`basename $i`
+
+        NAME=$(rpm_query NAME ../external_packages/$DISTRO/$i)
+        echo "<a href='$EXTERNAL_PATH/$DISTRO/$i'>$NAME</a>"
+done
+echo "</p>"
+
+
+
+
