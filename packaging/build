@@ -58,21 +58,26 @@ else
 	VER_PATH="$version-$serial"
 fi
 
+# Set some defaults of where to find packages/sources
+source_path=sources
+if [ ! -z $USE_ZIP_PKG ]; then
+	package_path=zip_packages
+else
+	package_path=packages
+fi
+
 # Figure out if this is a snapshot build or not...
 if [ -e sources/$package/*-$version.tar.gz ]; then
-	source_path=sources
-	package_path=packages
+	echo "Using release sources and packages"
 elif [ -e snapshot_sources/$package/*-$version.tar.gz ]; then
-	source_path=snapshot_sources
-	package_path=snapshot_packages
+	echo "Using snapshot sources and packages"
+	source_path="snapshot_${source_path}"
+	package_path="snapshot_${package_path}"
 else
 	echo Cannot find source file for $package
 	exit 1
 fi
 
-if [ ! -z $USE_ZIP_PKG ]; then
-	package_path=zip_packages
-fi
 
 if [ -d $package_path/$DEST_ROOT/$package/$VER_PATH ]; then
 	echo "The path for this package ($package_path/$DEST_ROOT/$package/$VER_PATH) already exists. You probably need to bump the revision number"
