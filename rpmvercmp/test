@@ -1,0 +1,31 @@
+#!/bin/bash
+  
+  
+# Why something had to be used besides ls -v : fails sorting the files mono source tarball versions
+# rpmvercmp fixed the below version problem, but introduced some problems in that 1.1.10.1 and 1.1.10-1 were equivalent, thus had to come up with currently in rpmvercmp.c
+  
+# This is what fails with ls -v *
+versions=(
+	mono-1.1.9.2.tar.gz
+	mono-1.1.10.1.tar.gz
+	mono-1.1.10.tar.gz
+	hey
+	mono-1.1.9.tar.gz
+	mono-1.1.9.1.tar.gz
+)
+  
+echo ${versions[@]}
+./rpmvercmp ${versions[@]}
+  
+versions=(
+	1.1.9.2
+	1.1.10-1
+	1.1.10.1
+	1.1.10
+	1.1.9
+	1.1.9.1
+)
+  
+echo ${versions[@]}
+./rpmvercmp ${versions[@]}
+
