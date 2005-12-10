@@ -42,6 +42,7 @@ import string
 import glob
 import distutils.dir_util
 import re
+import datetime
 
 # Global constant type vars
 cwd = os.getcwd()
@@ -49,6 +50,9 @@ windows_build_client = 'builder@monowin.dnsdhcp.provo.novell.com'
 packaging_dir = cwd + "/../packaging"
 rpmvercmp = cwd + "/../rpmvercmp/rpmvercmp"
 external_downloads = cwd + os.sep +"external_downloads"
+
+# Package types that we're able to extract
+valid_extensions = [ '.rpm', '.zip', '.exe', '.bz2', '.gz' ]
 
 # Get vars out of shell scripts (def files)
 def get_env_var(var_name, source):
@@ -250,7 +254,10 @@ class Package:
 			package_files = os.listdir(self.latest_path)
 
 			for file in package_files:
-				extract_file(self.latest_path + os.sep + file)
+				# Make sure it's a valid extension
+				(root, ext) = os.path.splitext(file)
+				if valid_extensions.count(ext):
+					extract_file(self.latest_path + os.sep + file)
 
 
 		if self.deps:
@@ -798,7 +805,9 @@ parameter_map[re.compile("@@MONO_VERSION@@")] = sys.argv[1]
 parameter_map[re.compile("@@GTK_SHARP_VERSION@@")] = sys.argv[2]
 parameter_map[re.compile("@@MONO_REVISION@@")] = sys.argv[3]
 parameter_map[re.compile("@@MONO_GUID@@")] = guid
+parameter_map[re.compile("@@DATE@@")] = datetime.date.today().strftime('%b %d, %Y')
 substitute_parameters_in_file("Mono.iss", re.compile(''), parameter_map)
+substitute_parameters_in_file('build/mono/ReleaseNotes.txt', re.compile(''), parameter_map)
 
 # Massage setmonopath.bat
 parameter_map = {}

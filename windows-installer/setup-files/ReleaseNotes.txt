@@ -1,23 +1,26 @@
 Release Notes for Mono, Gtk# and XSP Combined Windows Installer. 
-By Wade Berrier <wberrier@novell.com> Nov 11, 2005
+By Wade Berrier <wberrier@novell.com> @@DATE@@
 ------------------------------------------------------------------------
 
-Check http://go-mono.com/archive/1.1.10/ for release details.
+Check http://go-mono.com/archive/@@MONO_VERSION@@/ for release details.
 
 General Description:
 
-This installation includes Mono 1.1.10 for Windows and the Gtk# 1.0.10 
-and 2.4.0 for Windows.  It also includes a built and configured version 
-of XSP 1.1.10.
+This installation includes Mono @@MONO_VERSION@@  for Windows and the 
+Gtk# 1.0.10 and @@GTK_SHARP_VERSION@@ for Windows.  It also includes a 
+built and configured version of XSP.
 
-New in this Release:
+Installer Changes:
 
--gtk-wimp theme now the default.  The old Default theme was renamed to
+1.1.10.1:
+ -InnoSetup shell/batch file substitution has been cleaned up.
+1.1.10:
+ -gtk-wimp theme now the default.  The old Default theme was renamed to
  'Raleigh'.
 
 Requirements:
 
-This build runs on Windows 2000 or later.
+- This build runs on Windows 2000 or later.
 
 Known Issues:
 
@@ -56,7 +59,5 @@ http://gtk-sharp.sourceforge.net
 Gtk# Project Mailing List Subscription and Archive:
 http://lists.ximian.com/mailman/listinfo/gtk-sharp-list
 
-
-Microsoft Windows is a registered trademark of
-Microsoft Corporation.
+Microsoft Windows is a registered trademark of Microsoft Corporation.
 
