@@ -1,0 +1,40 @@
+BUILD_HOSTS=(
+	suse-93-i586
+)
+
+
+USE_HOSTS=(
+	fedora-3-i386
+	fedora-4-i386
+	fedora-4-x86_64
+	nld-9-i586
+	redhat-9-i386
+	rhel-3-i386
+	rhel-4-i386
+	sles-9-i586
+	sles-9-ia64
+	sles-9-x86_64
+	suse-92-i586
+	suse-93-i586
+	suse-93-x86_64
+	suse-100-i586
+	suse-100-x86_64
+	win-4-i386
+)
+
+MONO_DEPS=(
+	mono-1.1
+	gtk-sharp-2.0
+)
+
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH="trunk/heap-buddy"
+RELEASE_PATH="tags/heap-buddy-[[version]]"
+
+get_tarball () {
+	msvn_tar $1
+}
