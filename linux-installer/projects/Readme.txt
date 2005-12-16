@@ -8,6 +8,9 @@ Warning: gtk-sharp apps (Monodoc, MonoDevelop, etc...)
 
 Installer changes:
 
+1.1.11:
+- Added heap-buddy
+
 1.1.10.1:
 - Fix Monodevelop help browsing
 

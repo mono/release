@@ -2,7 +2,7 @@ BUILD_HOSTS=(
 	redhat-9-i386
 	sles-9-x86_64
 	sles-9-ia64
-	win-4-i386
+#	win-4-i386
 )
 
 
@@ -29,6 +29,21 @@ MONO_DEPS=(
 	mono-1.1
 )
 
+win_4_i386_ZIP_BUILD () {
+
+	# Make sure it's not dependent on cygwin
+	export CC="gcc -mno-cygwin"                                                                                   
+
+	./configure --prefix=/tmp/install
+
+	make		|| exit 1
+	make install	|| exit 1
+
+	cd /tmp/install/lib
+
+	strip --strip-unneeded *.dll *.exe *.a
+
+}
 
 get_destroot () {
 	DEST_ROOT=$ARCH

@@ -791,10 +791,12 @@ os.chdir('..')
 # TODO:  Need to be able to interact (just in case keys aren't set up) and also capture output
 os.system("scp guidgen/guid_generator.exe %s:" % windows_build_client)
 # It would be nice to have a win32 console app to spit this out and not be dependent on mono
-guid = commands.getoutput("ssh %s '. /tmp/build_deps/env.sh; mono ./guid_generator.exe' " % windows_build_client).split().pop()
+output = commands.getoutput("ssh %s '. /tmp/build_deps/env.sh; mono ./guid_generator.exe' " % windows_build_client)
+guid = output.split().pop()
 
 if guid == "found" or not re.compile('.*-.*-.*-.*-.*').search(guid):
 	print "Error getting guid: %s" % guid
+	print "Output : %s" % output
 	sys.exit(1)
 
 # Massage .iss file

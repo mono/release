@@ -16,8 +16,16 @@ tarball=`ls *.tar.gz`
 component_name_ver=${tarball//\.tar\.gz/}
 arch=${distro#*-*-}
 
-#tar -zxf *.tar.gz
-gunzip -c *.tar.gz | tar -xf -
+if [ -e /opt/csw/bin/gtar ] ; then
+	# This is for the solaris 8 machine
+	TAR=/opt/csw/bin/gtar
+else
+	TAR=tar
+fi
+
+$TAR -zxf *.tar.gz			|| exit 1
+#gzip -dc *.tar.gz | tar -xf -		|| exit 1
+
 cd $component_name_ver
 
 # Load environment for deps

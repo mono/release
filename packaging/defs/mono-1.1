@@ -82,25 +82,23 @@ sunos_8_sparc_ZIP_BUILD () {
 
 win_4_i386_ZIP_BUILD () {
 
-	{
-		# Only needed for boot strapping
-		#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
+	# Only needed for boot strapping
+	#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
 
-		./configure --prefix=/tmp/install
+	./configure --prefix=/tmp/install
 
-		# Hacks to get it to build 
+	# Hacks to get it to build 
 
-		make
-		#make check
-		make install
+	make || exit 1
+	#make check
+	make install || exit 1
 
-		cd /tmp/install/bin
-		strip --strip-unneeded *.dll *.exe
+	cd /tmp/install/bin
+	strip --strip-unneeded *.dll *.exe
 
-		cd /tmp/install/lib
-		strip --strip-unneeded *.a
+	cd /tmp/install/lib
+	strip --strip-unneeded *.a
 
-	} || exit 1
 
 }
 
@@ -111,13 +109,6 @@ get_destroot () {
 		DEST_ROOT=$DISTRO
 	fi
 }
-
-# This requires mono because of the mono-find-provides  ... ???
-#  Otherwise, if mono's not installed, these scripts are not there???
-MONO_DEPS=(
-# TODO: comment this out for now (solaris build)
-	mono-1.1
-)
 
 HEAD_PATH="trunk"
 RELEASE_PATH="tags/mono-[[version]]"

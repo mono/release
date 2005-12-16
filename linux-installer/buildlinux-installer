@@ -45,6 +45,7 @@ my @custom_rpms_list = qw(
 my @local_rpms = (
 	"$mono_rpms/x86/mono-1.1",
 	"$mono_rpms/x86/mono-debugger",
+	"$mono_rpms/x86/heap-buddy",
 	"$mono_rpms/redhat-9-i386/gtk-sharp",
 	"$mono_rpms/redhat-9-i386/libgdiplus-1.1",
 	"$mono_rpms/noarch/boo",

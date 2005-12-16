@@ -68,7 +68,7 @@ done
 
 [ ${#PACKAGES[@]} -eq 0 ] && exit 0
 
-./jail-do $TARGET "bash -x -c \"rm -rf /tmp/install-packages; mkdir -p /tmp/install-packages -m777\""
+./jail-do $TARGET "bash -x -c \"rm -rf /tmp/install-packages; mkdir -p -m777 /tmp/install-packages\""
 scp ${PACKAGES[@]} $target_host:$jaildir/tmp/install-packages
 
 # Install the packages with rpm/rcd
