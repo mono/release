@@ -1,5 +1,8 @@
 BUILD_HOSTS=(
-	suse-93-i586
+	redhat-9-i386
+	sles-9-x86_64
+	sles-9-ia64
+	win-4-i386
 )
 
 
@@ -24,12 +27,11 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono-1.1
-	gtk-sharp-2.0
 )
 
 
 get_destroot () {
-	DEST_ROOT=noarch
+	DEST_ROOT=$ARCH
 }
 
 HEAD_PATH="trunk/heap-buddy"
