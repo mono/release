@@ -110,7 +110,7 @@ fi
 echo > status/$distro;
 
 if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
-	if ! ./install-deps $distro ${MONO_DEPS[@]}; then
+	if ! ./install-deps $distro $package ; then
 		rm status/$distro
 		echo Dependency installation failed, see log in $LOGFILE for details
 		exit 1

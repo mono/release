@@ -91,42 +91,12 @@ mkdir -p `dirname $LOGFILE`
 
 echo > status/$distro;
 
-# Clean out deps area
-./jail-do $distro rm -Rf /tmp/build_deps 
-
-
-echo "Installing locally built packages..."
-if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
-	if ! ./install-deps $distro ${MONO_DEPS[@]} >> $LOGFILE 2>&1; then
-		rm status/$distro
-		echo Dependency installation failed, see log in $LOGFILE for details
-		exit 1
-	fi
+echo "Install dependencies..."
+if ! ./install-deps $distro $package >> $LOGFILE 2>&1; then
+	rm status/$distro
+	echo Dependency installation failed, see log in $LOGFILE for details
+	exit 1
 fi
-
-echo "Installing external dependencies..."
-DISTRO_UNDERSCORES=${DISTRO//-/_}
-eval DISTRO_DEPS=\${${DISTRO_UNDERSCORES}_ZIP_DEPS[@]}
-
-# Gather external deps for deps
-for dep in ${MONO_DEPS[@]} ; do
-	. defs/$dep
-	eval DEPS=\${${DISTRO_UNDERSCORES}_ZIP_DEPS[@]}
-	DISTRO_DEPS=(${DISTRO_DEPS[@]} ${DEPS[@]})
-done
-
-# Load this package back in (needed?)
-. defs/$package
-
-# If this distro is using the ZIP system and there are zip deps 
-if [ ! ${#DISTRO_DEPS[@]} -eq 0 ] && [ ! -z $USE_ZIP_PKG ] ; then
-	if ! ./install-deps $distro ${DISTRO_DEPS[@]} >> $LOGFILE 2>&1; then
-		rm status/$distro
-		echo Dependency installation failed, see log in $LOGFILE for details
-		exit 1
-	fi
-fi
-
 
 if [ -z $USE_ZIP_PKG ]; then
 

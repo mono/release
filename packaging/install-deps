@@ -1,24 +1,28 @@
 #!/bin/sh
 #
-#    Usage: install-deps TARGET monopackages
-#  example: install-deps suse-93-i586 mono-1.1 gtk-sharp-2.0
+#    Usage: install-deps TARGET <package> <local packages>
+#
+#       where:
+#           package is package to build to install deps for (can also be 'none')
+#           local packages is packages in the defs dir and/or urls if distro is zip based
 #
 
 . shared-code.sh
 
 TARGET=$1
 shift
+PACKAGE=$1
+shift
+
 DEPS=$*
 
 . conf/$TARGET
-distro_info $TARGET
 
 PACKAGES=()
 
 if [ -z $USE_ZIP_PKG ] ; then
 	packages_dir="packages"
 
-# Get all url based deps
 else
 	packages_dir="zip_packages"
 	if [ ! -e "external_zip_pkg" ] ; then
@@ -26,8 +30,27 @@ else
 	fi
 fi
 
+DISTRO_UNDERSCORES=${TARGET//-/_}
 
-for pkg in ${DEPS[@]}; do
+# Install deps for this package, and additional deps on command line, but not this package itself
+if [ $PACKAGE != "none" ] ; then
+	. defs/$PACKAGE
+	# Get distro specific deps for $PACKAGE
+	eval DISTRO_DEPS=\${${DISTRO_UNDERSCORES}_ZIP_DEPS[@]}
+	DEPS=(${DEPS[@]} ${MONO_DEPS[@]})
+fi
+
+# Gather external deps for deps
+for dep in ${DEPS[@]} ; do
+        . defs/$dep
+        eval ZIP_DEPS=\${${DISTRO_UNDERSCORES}_ZIP_DEPS[@]}
+        DISTRO_DEPS=(${DISTRO_DEPS[@]} ${ZIP_DEPS[@]})
+	DEPS=(${DEPS[@]} ${MONO_DEPS[@]})
+done
+
+distro_info $TARGET
+
+for pkg in ${DEPS[@]} ${DISTRO_DEPS[@]} ; do
 	# If not a url (TODO: Better method of determining url)
 	if [ ${pkg//http:/} == $pkg ] && [ ${pkg//ftp:/} == $pkg ] ; then
 		. defs/$pkg
@@ -40,13 +63,12 @@ for pkg in ${DEPS[@]}; do
 			packages_dir="packages"
 		fi
 
-
 		if ! latest_version $packages_dir/$DEST_ROOT/$pkg; then
-			echo "Could not find $pkg for $DISTRO (looking in $packages_dir/$DEST_ROOT)"
+			echo "Could not find $pkg for $TARGET (looking in $packages_dir/$DEST_ROOT)"
 			exit 1;
 		fi
 
-		for i in $LATEST_VERSION/*.zip $LATEST_VERSION/*.rpm; do
+		for i in `ls $LATEST_VERSION/*.zip $LATEST_VERSION/*.rpm 2>/dev/null` ; do
 			PACKAGES=(${PACKAGES[@]} $i)
 		done
 
@@ -66,9 +88,26 @@ for pkg in ${DEPS[@]}; do
 
 done
 
-[ ${#PACKAGES[@]} -eq 0 ] && exit 0
+# Make list unique
+filename=`mktemp`
+for i in ${PACKAGES[@]} ; do
+	echo $i >> $filename
+done
+PACKAGES=(`cat $filename | sort | uniq`)
+rm -f $filename
 
-./jail-do $TARGET "bash -x -c \"rm -rf /tmp/install-packages; mkdir -p -m777 /tmp/install-packages\""
+# Testing
+#for i in ${PACKAGES[@]} ; do
+#	echo $i
+#done
+#exit 1
+
+
+# Clean out deps area
+./jail-do $TARGET "bash -x -c \"rm -rf /tmp/install-packages /tmp/build_deps; mkdir -p -m777 /tmp/install-packages\""
+
+# Stop if no packages found
+[ ${#PACKAGES[@]} -eq 0 ] && exit 0
 scp ${PACKAGES[@]} $target_host:$jaildir/tmp/install-packages
 
 # Install the packages with rpm/rcd
