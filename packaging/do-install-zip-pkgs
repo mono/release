@@ -38,15 +38,11 @@ for file in $* ; do
 
 done
 
-
-# Avoids "Application Error"
-chmod 755 $DEST/bin/*
-
 # Change prefix in the .pc files
 reg_safe_dest=${DEST//\//\\\/}
 for file in `find . -name "*.pc"` ; do
 	echo Substituting $file
-	sed -e "s/^prefix=.*/prefix=$reg_safe_dest/" $file > $file.new; mv $file.new $file
+	sed -e "s/^prefix=.*/prefix=$reg_safe_dest/g" $file > $file.new; mv $file.new $file
 
 done
 
@@ -98,18 +94,18 @@ for file in `find .` ; do
 		#sed -i "s/^prefix=$reg_safe_source/prefix=$cyg_reg_safe_dest/" $file
 
 		# Replace /tmp/install with /tmp/build_deps ($DEST)
-		sed -e "s/$reg_safe_source/$reg_safe_dest/" $file > $file.new; mv $file.new $file
+		sed -e "s/$reg_safe_source/$reg_safe_dest/g" $file > $file.new; mv $file.new $file
 	fi
 
 
 	# Do same substitution for the noarch rpms: (/usr instead of /tmp/install)
 	if grep "/usr" $file && grep "#!/bin/sh" $file ; then
 		# First take care of the cygpath -d (Specifically for monodoc)
-		sed -e "s/^prefix=$reg_safe_source2/prefix=$cyg_reg_safe_dest/" $file > $file.new; mv $file.new $file
-		sed -e "s/^monodocdir=$reg_safe_source2/monodocdir=$cyg_reg_safe_dest/" $file > $file.new; mv $file.new $file
+		sed -e "s/^prefix=$reg_safe_source2/prefix=$cyg_reg_safe_dest/g" $file > $file.new; mv $file.new $file
+		sed -e "s/^monodocdir=$reg_safe_source2/monodocdir=$cyg_reg_safe_dest/g" $file > $file.new; mv $file.new $file
 
 		# Replace /usr with /tmp/build_deps ($DEST)
-		sed -e "s/$reg_safe_source2/$reg_safe_dest/" $file > $file.new; mv $file.new $file
+		sed -e "s/$reg_safe_source2/$reg_safe_dest/g" $file > $file.new; mv $file.new $file
 
 	fi
 
@@ -117,4 +113,6 @@ done
 #?
 cd ..
 
+# Avoids "Application Error" and allows scripts to be run
+chmod 755 $DEST/bin/*
 
