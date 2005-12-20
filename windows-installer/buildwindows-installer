@@ -789,9 +789,8 @@ os.chdir('..')
 
 # Run the guid generator on windows
 # TODO:  Need to be able to interact (just in case keys aren't set up) and also capture output
-os.system("scp guidgen/guid_generator.exe %s:" % windows_build_client)
-# It would be nice to have a win32 console app to spit this out and not be dependent on mono
-output = commands.getoutput("ssh %s '. /tmp/build_deps/env.sh; mono ./guid_generator.exe' " % windows_build_client)
+os.system("scp guidgen/guidgen.exe %s:" % windows_build_client)
+output = commands.getoutput("ssh %s './guidgen.exe' " % windows_build_client)
 guid = output.split().pop()
 
 if guid == "found" or not re.compile('.*-.*-.*-.*-.*').search(guid):
