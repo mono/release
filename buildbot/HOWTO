@@ -16,9 +16,10 @@ Sparc/Solaris10	pbartok2.provo.novell.com
 
 AMD64/Linux	monobuild2	amd-head lane		builder / builder
 
-Itanium/Linux	mono-itanium	ia64-head-mono		builder /builder
+Itanium/Linux	mono-itanium	ia64-head-mono		builder / builder
 
-ARM/Linux	mono-arm
+ARM/Linux	mono-arm	arm-head		builder / builder
+(Down right now)
 
 AMD64/Solaris	amd-mono				builder / builder
 
@@ -33,7 +34,7 @@ A.  run ./setup-all. It will update and reconnect all build nodes
 
 Q. What scripts are used on the nodes.
 
-Each branch (currnetly, only `trunk') had the following scripts:
+Each branch (currently, only `trunk') had the following scripts:
 
     o clean-up -  Clears out the previous checkout.
     o checkout -  Checks out the latest revision from SVN.
@@ -56,8 +57,13 @@ systems, you should run:
 
 	python setup.py bdist_rpm
 
-There will then be an rpm in dist that you can install. This allows us
-to keep stuff in the rpm database for easy updates, etc.
+For Debian based systems:
+
+	dpkg-buildpackage
+
+There will then be an rpm in dist or a dpkg at the root of the source tree 
+that you can install. This allows us to keep stuff in the rpm database for 
+easy updates, etc.
 
 On other systems, do
 
