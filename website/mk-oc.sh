@@ -31,13 +31,16 @@ cat $confdir/oc-config/$serverconf.conf | while read line; do
 
 			external_dir=$(echo ${lline:1})
 
-			for distro_conf in $external_dir/*-*-* ; do
+			for distro_conf in $packagingdir/conf/*-*-* ; do
+
+				# Only do this for non-zip package type distros
+				! egrep "^USE_ZIP_PKG" $distro_conf > /dev/null 2>&1 || continue
 
 				distro_info `basename $distro_conf`
 
 				mkdir -p $chan/$DISTRO
 
-				for rpm_file in $distro_conf/*.rpm ; do
+				for rpm_file in `ls $external_dir/$DISTRO/*.rpm 2> /dev/null ` ; do
 					# Skip source rpms
 					if [ ${rpm_file//\.src\.rpm/} != $rpm_file ] ; then
 						continue
