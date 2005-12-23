@@ -202,6 +202,9 @@ foreach my $f (glob "$p/usr/bin/*") {
 	}
 }
 
+# Fixed in svn, but required here
+push @executable_wrappers, "mdb";
+
 foreach my $f (@executable_wrappers) {
 	
 	if(-e "$p/usr/bin/$f") {
