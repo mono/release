@@ -1,0 +1,14 @@
+This is the 1.1.13 branch, which is the branch that we are shipping in SUSE
+line of enterprise products, and hence is a long lived product until we 
+ship Mono 1.2 in a service pack.
+
+There are some parts of Mono that remain under development and those must be
+copied on each micro release of 1.1.13 from trunk, these are:
+
+	mcs/ilasm
+	mcs/class/PEAPI
+	libgdiplus
+	mcs/class/System.Drawing
+	mcs/class/System.Windows.Forms
+
+
