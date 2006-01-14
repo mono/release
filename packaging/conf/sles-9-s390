@@ -1,0 +1,2 @@
+target_host=builder@unknownhost
+jaildir=/jails/sles-9-s390

@@ -21,18 +21,18 @@ shift
 SSH_FLAGS="-q"
 
 if [ "x$*" == x ] ; then
-	CMD="bash -l"
+	CMD="$SHELL --login"
 	# allocate a tty
 	SSH_FLAGS="$SSH_FLAGS -t"
 else
-	CMD="bash -lc '$*'"
+	CMD="$SHELL --login -c '$*'"
 fi
 
 #
 # redhat systems have chroot in sbin, so we need to add that to
-# the path while we ssh in.
+# the path while we ssh in. (Add /usr/local/bin)
 #
-ADD_SBIN='PATH=/sbin:/usr/sbin:$PATH'
+ADD_SBIN='PATH=/sbin:/usr/sbin:/usr/local/bin:$PATH'
 
 # Don't chroot if none defined (Used initially for windows)
 if [ -z $jaildir ] ; then

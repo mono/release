@@ -16,6 +16,16 @@ shift
 
 DEPS=$*
 
+if [ x$PACKAGE == x ] ; then
+	echo ""
+	echo "Usage: ./install-deps TARGET <package> <local packages>"
+	echo " where:"
+        echo "   package is package to build to install deps for (can also be 'none')"
+        echo "   local packages is packages in the defs dir and/or urls if distro is zip based"
+	echo ""
+	exit 1
+fi
+
 . conf/$TARGET
 
 DISTRO_UNDERSCORES=${TARGET//-/_}

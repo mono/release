@@ -1,4 +1,6 @@
 target_host=builder@mono-sparc.boston.ximian.com
+#target_host=builder@137.65.144.30
 #target_host=builder@pbartok2.provo.novell.com
 #jaildir=/jails/sunos-8-sparc-root-0
+#jaildir=/home/builder/sol8_jail
 USE_ZIP_PKG=1
