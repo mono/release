@@ -1,7 +1,8 @@
+# Possibly use sles-8 as the new base distro?
 BUILD_HOSTS=(
-        redhat-9-i386
-        sles-9-x86_64
-        sles-9-ia64
+	redhat-9-i386
+	sles-9-x86_64
+	sles-9-ia64
 	sunos-8-sparc
 	win-4-i386
 )
@@ -17,6 +18,8 @@ USE_HOSTS=(
 	rhel-4-i386
 	sles-9-i586
 	sles-9-ia64
+	sles-9-s390
+	sles-9-s390x
 	sles-9-x86_64
 	suse-92-i586
 	suse-93-i586
@@ -24,6 +27,12 @@ USE_HOSTS=(
 	suse-100-i586
 	suse-100-x86_64
 	win-4-i386
+)
+
+# Having this ensures that the wrong mono isn't in the jail
+#  (Or that mono is present for the snapshot builds)
+MONO_DEPS=(
+	mono-1.1
 )
 
 
@@ -41,10 +50,19 @@ win_4_i386_ZIP_DEPS=(
 	#http://www.gimp.org/~tml/gimp/win32/gettext-runtime-0.13.1.zip
 )
 
-# Need to get these in format... guess I gotta build them myself
+# Need to get these in zip format... guess I gotta build them myself
+#  These first 4 are packages I've built
 sunos_8_sparc_ZIP_DEPS=(
-	# Repack these
-	#ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/5.8/libgcc-3.3-sol8-sparc-local.gz
+#	http://primates.ximian.com/~wberrier/sunos/gettext-0.14.5-0.sunos8.novell.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/libiconv-1.9.1-0.sunos8.novell.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/glib-2.8.3-0.sunos8.novell.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/pkg-config-0.20-0.sunos8.novell.sparc.zip
+#
+#	# Repackaged
+#	http://primates.ximian.com/~wberrier/sunos/libgcc-3.3-0.sunos8.novell.sparc.zip
+#
+#	# Repack these
+#	#ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/5.8/libgcc-3.3-sol8-sparc-local.gz
 #
 #
 #	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/8/expat-1.95.5-sol8-sparc-local.gz
@@ -56,24 +74,16 @@ sunos_8_sparc_ZIP_DEPS=(
 #	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/8/libintl-3.4.0-sol8-sparc-local.gz 
 #	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/8/gettext-0.14.1-sol8-sparc-local.gz
 #	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/5.8/pkgconfig-0.15.0-sol8-sparc-local.gz
-#
-
-	# Packages I've built
-	http://primates.ximian.com/~wberrier/sunos/gettext-0.14.5-0.sunos8.novell.sparc.zip
-	http://primates.ximian.com/~wberrier/sunos/libiconv-1.9.1-0.sunos8.novell.sparc.zip
-	http://primates.ximian.com/~wberrier/sunos/glib-2.8.3-0.sunos8.novell.sparc.zip
-	http://primates.ximian.com/~wberrier/sunos/pkg-config-0.20-0.sunos8.novell.sparc.zip
-
-	# Repackaged
-	http://primates.ximian.com/~wberrier/sunos/libgcc-3.3-0.sunos8.novell.sparc.zip
 )
 
 sunos_8_sparc_ZIP_BUILD () {
 	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
+
+	# Only if a non-gnu m4 is in the path
 	export M4=/usr/local/bin/m4
 
 	# Do this to make sure libgcc is found.  Won't be needed when we install libgcc into build_deps
-	#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+	export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 	./configure --prefix=/tmp/install
 	make || exit 1
@@ -103,10 +113,13 @@ win_4_i386_ZIP_BUILD () {
 }
 
 get_destroot () {
-	if [ -z $USE_ZIP_PKG ] ; then
-		DEST_ROOT=$ARCH
-	else
+	# rh9 rpms can't be used on sles-8-i386
+	if [ $DISTRO == "sles-8-i386" ] ; then
 		DEST_ROOT=$DISTRO
+	elif [ x$USE_ZIP_PKG != x ] ; then
+		DEST_ROOT=$DISTRO
+	else
+		DEST_ROOT=$ARCH
 	fi
 }
 
