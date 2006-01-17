@@ -11,6 +11,8 @@ function distro_info () {
 		*-i[35]86) ARCH=x86 ;;
 		 *-x86_64) ARCH=x86_64 ;;
 		 *-ia64)   ARCH=ia64 ;;
+		 *-s390)   ARCH=s390 ;;
+		 *-s390x)  ARCH=s390x ;;
 	esac
 	
 	case "$DISTRO" in
