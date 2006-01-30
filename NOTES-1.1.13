@@ -9,6 +9,17 @@ copied on each micro release of 1.1.13 from trunk, these are:
 	mcs/class/PEAPI
 	libgdiplus
 	mcs/class/System.Drawing
-	mcs/class/System.Windows.Forms
+	mcs/class/Managed.Windows.Forms
+
+mcs portion done with (from mcs branch dir):
+
+svn rm ilasm class/PEAPI class/System.Drawing class/Managed.Windows.Forms
+
+Commit.... then
+
+svn cp $MSVN/trunk/mcs/ilasm 				.
+svn cp $MSVN/trunk/mcs/class/PEAPI 			class
+svn cp $MSVN/trunk/mcs/class/System.Drawing 		class
+svn cp $MSVN/trunk/mcs/class/Managed.Windows.Forms 	class
 
 
