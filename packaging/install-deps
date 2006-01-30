@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env python
 #
 #    Usage: install-deps TARGET <package> <local packages>
 #
@@ -7,141 +7,85 @@
 #           local packages is packages in the defs dir and/or urls if distro is zip based
 #
 
-. shared-code.sh
 
-TARGET=$1
-shift
-PACKAGE=$1
-shift
+import os
+import sys
+import re
+import glob
 
-DEPS=$*
+sys.path += ['../pyutils']
 
-if [ x$PACKAGE == x ] ; then
-	echo ""
-	echo "Usage: ./install-deps TARGET <package> <local packages>"
-	echo " where:"
-        echo "   package is package to build to install deps for (can also be 'none')"
-        echo "   local packages is packages in the defs dir and/or urls if distro is zip based"
-	echo ""
-	exit 1
-fi
+import packaging
+import utils
 
-. conf/$TARGET
+import pdb
 
-DISTRO_UNDERSCORES=${TARGET//-/_}
-
-# Install deps for this package, and additional deps on command line, but not this package itself
-if [ $PACKAGE != "none" ] ; then
-	. defs/$PACKAGE
-	# Get distro specific deps for $PACKAGE
-	eval DISTRO_DEPS=\${${DISTRO_UNDERSCORES}_ZIP_DEPS[@]}
-	DEPS=(${DEPS[@]} ${MONO_DEPS[@]})
-fi
-
-# Gather external deps for deps
-for dep in ${DEPS[@]} ; do
-        . defs/$dep
-        eval ZIP_DEPS=\${${DISTRO_UNDERSCORES}_ZIP_DEPS[@]}
-        DISTRO_DEPS=(${DISTRO_DEPS[@]} ${ZIP_DEPS[@]})
-	DEPS=(${DEPS[@]} ${MONO_DEPS[@]})
-done
-
-# Choose where to get the packages from
-if [ -z $USE_ZIP_PKG ] ; then
-	packages_dir="packages"
-
-else
-	packages_dir="zip_packages"
-	if [ ! -e "external_zip_pkg" ] ; then
-		mkdir external_zip_pkg
-	fi
-fi
-
-# Gather actual filenames for deps
-distro_info $TARGET
-PACKAGES=()
-for pkg in ${DEPS[@]} ${DISTRO_DEPS[@]} ; do
-	# If not a url (TODO: Better method of determining url)
-	if [ ${pkg//http:/} == $pkg ] && [ ${pkg//ftp:/} == $pkg ] ; then
-		. defs/$pkg
-		
-		get_destroot
-
-		## Allow zip packages to use the rpms in noarch
-		old_packages_dir=$packages_dir
-		if [ $DEST_ROOT == "noarch" ] ; then
-			packages_dir="packages"
-		fi
-
-		if ! latest_version $packages_dir/$DEST_ROOT/$pkg; then
-			echo "Could not find $pkg for $TARGET (looking in $packages_dir/$DEST_ROOT)"
-			exit 1;
-		fi
-
-		for i in `ls $LATEST_VERSION/*.zip $LATEST_VERSION/*.rpm 2>/dev/null` ; do
-			PACKAGES=(${PACKAGES[@]} $i)
-		done
-
-		# Restore from "packages" from noarch
-		packages_dir=$old_packages_dir
-
-	else
-		file=`basename $pkg`
-		if [ ! -e "external_zip_pkg/$file" ] ; then
-			cd external_zip_pkg
-			wget $pkg
-			cd ..
-		fi
-		PACKAGES=(${PACKAGES[@]} "external_zip_pkg/$file")
-
-	fi
-
-done
-
-# Make list unique
-filename=`mktemp`
-for i in ${PACKAGES[@]} ; do
-	echo $i >> $filename
-done
-PACKAGES=(`cat $filename | sort | uniq`)
-rm -f $filename
-
-# Testing
-#for i in ${PACKAGES[@]} ; do
-#	echo $i
-#done
-#exit 1
+if len(sys.argv) < 3:
+	print ""
+	print "Usage: ./install-deps TARGET <package> <local packages>"
+	print " where:"
+        print "   package is package to build to install deps for (can also be 'none')"
+        print "   local packages is packages in the defs dir and/or urls if distro is zip based"
+	print ""
+	sys.exit(1)
 
 
-# Clean out deps area
-./jail-do $TARGET "bash -x -c \"rm -rf /tmp/install-packages /tmp/build_deps; mkdir -p -m777 /tmp/install-packages\""
+target = sys.argv[1]
+build_deps_package = sys.argv[2]
+
+
+deps = []
+if len(sys.argv) > 3: deps = sys.argv[3:]
+
+target_env = packaging.buildenv(target, print_output=1)
+
+
+
+files = []
+if build_deps_package != 'none':
+	package = packaging.package(target_env, build_deps_package)
+	files += package.get_latest_dep_files()
+
+for dep in deps:
+	package = packaging.package(target_env, dep)
+	files += package.get_latest_files()
+	files += package.get_latest_dep_files()
+
+
+# Remove duplciates
+files = utils.remove_list_duplicates(files)
+
 
 # Stop if no packages found
-[ ${#PACKAGES[@]} -eq 0 ] && exit 0
-scp ${PACKAGES[@]} $target_host:$jaildir/tmp/install-packages
+if len(files) == 0:
+	print "No packages found..."
+	sys.exit()
+
+# Clean out deps area
+target_env.ssh.execute("rm -rf /tmp/install-packages /tmp/build_deps; mkdir -p -m777 /tmp/install-packages")
+
+# copy packages
+# It would be nice to see the output...
+target_env.ssh.copy_to(files, '/tmp/install-packages', mode='scp', compress=0)
 
 # Install the packages with rpm/rcd
-if [ -z $USE_ZIP_PKG ] ; then
+if target_env.info['USE_ZIP_PKG']:
 
-	rpm_names=$(rpm -qp --queryformat '%{NAME} ' ${PACKAGES[@]})
+	target_env.ssh.copy_to(['do-install-zip-pkgs', '../pyutils/utils.py'], '/tmp/install-packages', mode='scp')
+        target_env.ssh.execute( "/tmp/install-packages/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps /tmp/install-packages/*")
 
-	# Use rug if the jail has it
-	if ./jail-do $TARGET "bash -x -c \"ls /usr/sbin/rcd\"" ; then
+else:
 
-		# check if rcd is running in this jail and start it if it isn't
-		./jail-do $TARGET "bash -x -c \"rug ping\"" || ( ./jail-do $TARGET "bash -x -c \"/usr/sbin/rcd -r \"" && echo Wait for rcd to come alive... && sleep 5 )
+        (code, rpm_names) = utils.launch_process("rpm -qp --queryformat '%%{NAME} ' %s" % " ".join(files))
 
-		./jail-do $TARGET "bash -x -c \"rug rm -y $rpm_names\""
-		./jail-do $TARGET "bash -x -c \"rug in -y -r /tmp/install-packages/*.rpm\""
-	else
-		scp ./remove-rpms $target_host:$jaildir/tmp
-		./jail-do $TARGET "bash -x -c \"/tmp/remove-rpms $rpm_names\""
-		./jail-do $TARGET "bash -x -c \"rpm -Uvh /tmp/install-packages/*.rpm\""
-	fi
+        # Use rug if the jail has it
+	(code, output) = target_env.ssh.execute('ls /usr/sbin/rcd')
+	if not code:
+                # check if rcd is running in this jail and start it if it isn't
+		target_env.ssh.execute('rug ping || ( /usr/sbin/rcd -r  && echo Wait for rcd to come alive... && sleep 5 ) ')
+		target_env.ssh.execute('rug rm -y %s ; rug in -y -r /tmp/install-packages/*.rpm' % rpm_names)
+        else:
+		target_env.ssh.copy_to('remove-rpms', '/tmp')
+		target_env.ssh.execute('/tmp/remove-rpms %s ;  rpm -Uvh /tmp/install-packages/*.rpm' % rpm_names)
 
-else
-	scp do-install-zip-pkgs $target_host:$jaildir/tmp/install-packages
-	./jail-do $TARGET "bash -x -c \"/tmp/install-packages/do-install-zip-pkgs /tmp/build_deps /tmp/install-packages/*\""
-
-fi
 

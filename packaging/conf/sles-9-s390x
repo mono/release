@@ -1,2 +1,3 @@
-target_host=builder@unknownhost
-jaildir=/jails/sles-9-s390x
+#target_host=builder@aussie-1.osdl.marist.edu
+target_host=root@aussie-1.osdl.marist.edu
+#jaildir=/jails/sles-9-s390x

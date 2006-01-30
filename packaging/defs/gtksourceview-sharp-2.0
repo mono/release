@@ -31,16 +31,12 @@ MONO_DEPS=(
 # Here for reference only... (we don't build noarch on cygwin anymore)
 win_4_i386_ZIP_BUILD () {
 
-	{
-		#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
+	#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
 
-		./configure --prefix=/tmp/install
+	./configure --prefix=/tmp/install
 
-		make
-		make install
-
-
-	} || exit 1
+	make
+	make install
 
 }
 

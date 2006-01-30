@@ -35,6 +35,10 @@ cd ../windows-installer/Output
 rsync -avz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
 cd -
 
+cd ../sunos/output
+rsync -avz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
+cd -
+
 if test x$DO_DRYRUN = x1 ; then
 	echo "Stopping because of dry run"
 	exit

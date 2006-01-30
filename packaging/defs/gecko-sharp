@@ -32,20 +32,16 @@ MONO_DEPS=(
 # Here for reference only... (we don't build noarch packages in cygwin anymore)
 win_4_i386_ZIP_BUILD () {
 
-	{       
-		# Make sure it's not dependent on cygwin
-		export CC="gcc -mno-cygwin"                                                                                   
+	# Make sure it's not dependent on cygwin
+	export CC="gcc -mno-cygwin"                                                                                   
 
-		./configure --prefix=/tmp/install
+	./configure --prefix=/tmp/install
 
-		## Fix the paths for gacutil
-		sed -i 's/root \$(DESTDIR)/root C:\/cygwin\/\$(DESTDIR)/' gtkmozembed/Makefile
+	## Fix the paths for gacutil
+	sed -i 's/root \$(DESTDIR)/root C:\/cygwin\/\$(DESTDIR)/' gtkmozembed/Makefile
 
-		make
-		make install
-
-
-	} || exit 1
+	make
+	make install
 
 }
 

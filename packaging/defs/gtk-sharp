@@ -55,37 +55,35 @@ win_4_i386_ZIP_DEPS=(
 	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-dev.zip
 	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-bin.zip
 
+	# TODO: add gconf and other libs so gnome# can be built, and then mono-tools
+
 )
 
 win_4_i386_ZIP_BUILD () {
 
-	{
-		# Make sure it's not dependent on cygwin
-		export CC="gcc -mno-cygwin"
+	# Make sure it's not dependent on cygwin
+	export CC="gcc -mno-cygwin"
 
-		# Fix the paths for gacutil
-		sed -i 's/\$(DESTDIR)\$(prefix)\/lib/`cygpath -m \$(DESTDIR)\$(prefix)\/lib`/' configure
-		./configure --prefix=/tmp/install
+	# Fix the paths for gacutil
+	sed -i 's/\$(DESTDIR)\$(prefix)\/lib/`cygpath -m \$(DESTDIR)\$(prefix)\/lib`/' configure
+	./configure --prefix=/tmp/install
 
-		# Don't have cyg in dll files
-		sed -i "s/\/cyg\//\/\//" libtool
+	# Don't have cyg in dll files
+	sed -i "s/\/cyg\//\/\//" libtool
 
-		make || exit 1
-		make install || exit 1
+	make || exit 1
+	make install || exit 1
 
-		# Remove some uneeded files
-		find /tmp/install -name "*\.a" | xargs rm -f
-		find /tmp/install -name "*\.la" | xargs rm -f
-		find /tmp/install -name "*\.config" | xargs rm -f
+	# Remove some uneeded files
+	/usr/bin/find /tmp/install -name "*\.a" | xargs rm -f
+	/usr/bin/find /tmp/install -name "*\.la" | xargs rm -f
+	/usr/bin/find /tmp/install -name "*\.config" | xargs rm -f
 
-		# Windows convention to have .dll files in the bin dir instead of lib
-		mv /tmp/install/lib/*.dll /tmp/install/bin
+	# Windows convention to have .dll files in the bin dir instead of lib
+	mv /tmp/install/lib/*.dll /tmp/install/bin
 
-		cd /tmp/install/bin
-		strip --strip-unneeded *.dll *.exe
-
-
-	} || exit 1
+	cd /tmp/install/bin
+	strip --strip-unneeded *.dll *.exe
 
 }
 

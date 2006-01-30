@@ -1,0 +1,25 @@
+2006-01-30  Wade Berrier <wberrier@novell.com>
+
+	* Add xrender/render packages for libgdiplus
+	* Add changelog to package
+
+2006-01-26  Wade Berrier <wberrier@novell.com>
+
+	* Fixed environment scripts (accidentally published a package without the reloc vars...)
+
+2006-01-20  Wade Berrier <wberrier@novell.com>
+
+	* Initial package
+	* Unify some installer and packaging code for solaris packaging
+	* Use packages from sunfreeware.com
+	* Add some environment settings to setup.sh for relocation
+	* Picked sunfreeware over blastwave... little bit out of date, 
+	  but fresh installs of solaris 8 will need some sun patches 
+	  before software from blastwave will work.
+	* Sun binutils don't work on Mono
+	* binutils strip doesn't work on sunos8 (maybe fixed in later version than
+	  what's on sunfreeware)
+	* Latest glib on sunfreeware is broken (Use glib-2.2.3)
+	* Lots of software in the package requires patch 112438 (solaris 8 sparc)
+	  for /dev/u?random
+

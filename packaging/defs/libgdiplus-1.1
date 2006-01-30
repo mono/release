@@ -9,8 +9,10 @@ BUILD_HOSTS=(
         rhel-4-i386
         sles-9-i586
         sles-9-ia64
-        sles-9-s390x
+        #sles-9-s390
+        #sles-9-s390x
         sles-9-x86_64
+        sunos-8-sparc
         suse-92-i586
         suse-93-i586
 	suse-93-x86_64
@@ -30,3 +32,56 @@ RELEASE_PATH="tags/mono-[[version]]/libgdiplus"
 get_tarball () {
 	msvn_tar $1
 }
+
+sunos_8_sparc_ZIP_BUILD () {
+        # Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
+
+        # Only if a non-gnu m4 is in the path
+        export M4=/usr/local/bin/m4
+
+        # Do this to make sure libgcc is found.  Won't be needed when we install libgcc into build_deps
+        #export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+	# .la file missing a library
+	#search for 'libexpat.la' and replace it with 'libexpat.la -liconv'
+	file=/tmp/build_deps/lib/libfontconfig.la
+	sed -e "s/libexpat.la/libexpat.la -liconv/g" $file > $file.new; mv $file.new $file
+
+        ./configure --prefix=/tmp/install
+        make || exit 1
+        make install || exit 1
+
+        # Make sure to use the solaris version of strip
+        cd /tmp/install/lib
+        /usr/ccs/bin/strip * || true  # just so it doesn't bail out
+}
+
+sunos_8_sparc_ZIP_DEPS=(
+
+        # Sunfreeware packages
+        #ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libgcc-3.3-sol8-sparc-local.gz
+        # Have to use this one because above is not under $prefix/lib
+        http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libgcc-3.3-0-sunos8.sparc.zip
+
+	# Hmm... having it in here conflicts with file installed on buildbox...
+	# But, since mono-1.1 requires this as well, we can leave it out...
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libiconv-1.8-sol8-sparc-local.gz
+
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/fontconfig-2.2.98-sol8-sparc-local.gz
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/freetype-2.1.9-sol8-sparc-local.gz
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/zlib-1.2.3-sol8-sparc-local.gz
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/expat-1.95.5-sol8-sparc-local.gz
+        ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/pkgconfig-0.15.0-sol8-sparc-local.gz
+
+	# Graphic format deps
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libpng-1.2.8-sol8-sparc-local.gz
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libungif-4.1.0b1-sol8-sparc-local.gz
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/tiff-3.7.4-sol8-sparc-local.gz
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/jpeg-6b-sol8-sparc-local.gz
+
+	# Seems to also depend on glib, but since mono-1.1 does too, don't include it here... (unless it's not installed on the build box)
+
+)
+
+
+

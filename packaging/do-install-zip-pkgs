@@ -1,118 +1,126 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
 
+#  File location is where the actual files will be installed
+#  Relocation destination is where the files will eventually be run from
 
 # Will be /tmp/build_deps for the packaging system
-DEST=$1
-shift
-
-echo Installing to $DEST
-
-#rm -Rf $DEST
-#mkdir -p $DEST
-
-if [ ! -e $DEST ] ; then
-	mkdir -p $DEST
-fi
-
-cd $DEST
-
-for file in $* ; do
-	
-	if expr match $file '.*rpm' ; then
-		# Turn the rpm's /usr/lib into /lib
-		rm -Rf /tmp/rpm_unpack
-		mkdir -p /tmp/rpm_unpack
-		cd /tmp/rpm_unpack
-		rpm2cpio $file | cpio -idv
-		cd usr # Depends on having the prefix to be /usr (this may not work with all rpms)
-		cp -Rf * $DEST
-		cd $DEST
-		rm -Rf /tmp/rpm_unpack
-	# TODO: These matches are broken, ex: do-install-zip-pkgs matches
-	elif expr match $file '.*zip' ; then
-		unzip -o $file
-	else
-		echo "Don't know how to handle: $file"
-		continue
-	fi
-
-done
-
-# Change prefix in the .pc files
-reg_safe_dest=${DEST//\//\\\/}
-for file in `find . -name "*.pc"` ; do
-	echo Substituting $file
-	sed -e "s/^prefix=.*/prefix=$reg_safe_dest/g" $file > $file.new; mv $file.new $file
-
-done
 
 
+import sys
+import distutils.dir_util
+import utils
+import os
+import glob
+import re
 
-# Write out an env.sh in the $DEST dir so we can use that when we build
+if len(sys.argv) < 3:
+	print "Usage: ./do-install-zip-pkgs <file location> <relocation destination> [ full path to packages... ]"
+	print "  Note: full path to packages is usually a glob"
+	sys.exit(1)
+
+dest = sys.argv[1]
+reloc = sys.argv[2]
+
+package_files = sys.argv[3:]
+
+print " *** Installing to %s for destination %s *** " % (dest, reloc)
+
+if not os.path.exists(dest):
+	distutils.dir_util.mkpath(dest)
+
+os.chdir(dest)
+
+
+for package_file in package_files:
+	utils.extract_file(package_file)
+
+
+### Change prefix in the .pc files ###
+parameter_map = {}
+# Note: using substitute_parameters_in_file uses re.sub, and using ^ works best with re.M, otherwise
+#  the ^ only matches at the beginning of the string
+parameter_map[re.compile("^prefix=.*", re.M)] = "prefix=" + reloc
+
+# for all of the .pc files
+for root, dirs, files in os.walk('.'):
+	for file in files:
+		if re.compile('\.pc$').search(file):
+			utils.substitute_parameters_in_file(os.path.join(root, file), re.compile(''), parameter_map)
+
+# Write out an env.sh in the $RELOC dir so we can use that when we build
 # This needs to by dynamic
-echo "export PKG_CONFIG_PATH=\$PKG_CONFIG_PATH:$DEST/lib/pkgconfig" > env.sh
-echo "export PATH=\$PATH:$DEST/bin" >> env.sh
+env = open('env.sh', 'w')
+env.write('export PKG_CONFIG_PATH=%s/lib/pkgconfig:$PKG_CONFIG_PATH\n' % reloc)
+env.write('export PATH=%s/bin:$PATH\n' % reloc)
 
 # Needed for the solaris builds so far
-echo "export LDFLAGS=-L$DEST/lib" >> env.sh
-echo "export CPPFLAGS=-I$DEST/include" >> env.sh
-echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$DEST/lib" >> env.sh
+env.write('export LDFLAGS=-L%s/lib\n' % reloc)
+env.write('export CPPFLAGS=-I%s/include\n' % reloc)
+env.write('export LD_LIBRARY_PATH=%s/lib:$LD_LIBRARY_PATH\n' % reloc)
 
-# This will work for our own built mono package
-# If this is going to work on our mono zip, then all the mono bin /sh files will need to be replaced...
-source="/tmp/install"
-reg_safe_source=${source//\//\\\/}
+env.close()
+os.chmod('env.sh', 0755)
 
-source2="/usr"
-reg_safe_source2=${source2//\//\\\/}
+# Write out csh environment file
+env = open('env.csh', 'w')
+env.write('setenv PKG_CONFIG_PATH %s/lib/pkgconfig:$PKG_CONFIG_PATH\n' % reloc)
+env.write('setenv PATH %s/bin:$PATH\n' % reloc)
 
-dest=$DEST
-reg_safe_dest=${dest//\//\\\/}
+env.write('setenv LDFLAGS -L%s/lib\n' % reloc)
+env.write('setenv CPPFLAGS -I%s/include\n' % reloc)
+env.write('setenv LD_LIBRARY_PATH %s/lib:$LD_LIBRARY_PATH\n' % reloc)
 
-# This is only until the monodoc (possibily other packages) package gets fixed
-cyg_dest="C:/cygwin/usr"
-cyg_reg_safe_dest=${cyg_dest//\//\\\/}
+env.close()
+os.chmod('env.csh', 0755)
 
+# Fake out .la files (for solaris, win32 doesn't seem to need this
+parameter_map = {}
+parameter_map[re.compile("^libdir=.*", re.M)] = "libdir='" + reloc + "/lib'"
+parameter_map[re.compile("/usr/local")] = reloc
+parameter_map[re.compile("/opt/csw")] = reloc
+parameter_map[re.compile("/tmp/install")] = reloc
 
-# Fake out the .la files (for solaris for now, win32 doesn't seem to need this)
-libdir=$DEST/lib
-reg_safe_libdir=${libdir//\//\\\/}
-for file in `find . -name "*.la"` ; do
-	echo Substituting $file
-	sed -e "s/^libdir=.*/libdir='$reg_safe_libdir'/g" $file > $file.new; mv $file.new $file
-	sed -e "s/$reg_safe_source/$reg_safe_dest/g" $file > $file.new; mv $file.new $file
-done
-
-
-#?
-cd bin
-for file in `find .` ; do
-	if grep "/tmp/install" $file && grep "#!/bin/sh" $file ; then
-
-		# Don't think this is an issue because we're using the rpm
-		## First take care of the cygpath -d issues (hack until monodoc and other bugs get fixed)
-		#sed -i "s/^prefix=$reg_safe_source/prefix=$cyg_reg_safe_dest/" $file
-
-		# Replace /tmp/install with /tmp/build_deps ($DEST)
-		sed -e "s/$reg_safe_source/$reg_safe_dest/g" $file > $file.new; mv $file.new $file
-	fi
+for root, dirs, files in os.walk('.'):
+	for file in files:
+		if re.compile('\.la$').search(file):
+			utils.substitute_parameters_in_file(os.path.join(root, file), re.compile(''), parameter_map)
 
 
-	# Do same substitution for the noarch rpms: (/usr instead of /tmp/install)
-	if grep "/usr" $file && grep "#!/bin/sh" $file ; then
-		# First take care of the cygpath -d (Specifically for monodoc)
-		sed -e "s/^prefix=$reg_safe_source2/prefix=$cyg_reg_safe_dest/g" $file > $file.new; mv $file.new $file
-		sed -e "s/^monodocdir=$reg_safe_source2/monodocdir=$cyg_reg_safe_dest/g" $file > $file.new; mv $file.new $file
 
-		# Replace /usr with /tmp/build_deps ($DEST)
-		sed -e "s/$reg_safe_source2/$reg_safe_dest/g" $file > $file.new; mv $file.new $file
+os.chdir('bin')
 
-	fi
+# Only do this for cygwin (basically for monodoc for gtk-sharp2)
+if os.path.exists('c:/cygwin/usr/'):
+	print "Making cygwin specific massages to bin/* wrappers..."
+	parameter_map = {}
+	parameter_map[re.compile("^prefix=/usr", re.M)] = "prefix=C:/cygwin/usr"
+	parameter_map[re.compile("^monodocdir=/usr", re.M)] = "monodocdir=C:/cygwin/usr"
 
-done
-#?
-cd ..
+	for root, dirs, files in os.walk('.'):
+		for file in files:
+			# Search and replace in all files containing #!/bin/sh and /tmp/install
+			utils.substitute_parameters_in_file(os.path.join(root, file), re.compile('#!/bin/sh.*/usr', re.M | re.DOTALL), parameter_map)
 
-# Avoids "Application Error" and allows scripts to be run
-chmod 755 $DEST/bin/*
+
+# Now for the rest of the files in bin
+print "Massaging bin/* wrappers..."
+parameter_map = {}
+# For packages we build
+parameter_map[re.compile("/tmp/install")] = reloc
+# For packages we consume (noarch rpms)
+parameter_map[re.compile("/usr")] = reloc
+
+for root, dirs, files in os.walk('.'):
+	for file in files:
+		# Search and replace in all files containing #!/bin/sh and /tmp/install
+		utils.substitute_parameters_in_file(os.path.join(root, file), re.compile('#!/bin/sh.*(/tmp/install|/usr)', re.M | re.DOTALL), parameter_map)
+
+os.chdir('..')
+
+
+# Avoids "Application Error" on win32 and allows scripts to be run
+for file in glob.glob('bin/*'):
+	os.chmod(file, 0755)
+
+
 

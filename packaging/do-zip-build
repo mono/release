@@ -4,6 +4,8 @@ rev=$1
 package=$2
 distro=$3
 
+# Possibly: dest=$4
+
 rm -rf /tmp/builder/built-packages 	|| exit 1
 cd /tmp && rm -rf scratch 		|| exit 1
 rm -rf install 			 	|| exit 1
@@ -48,6 +50,6 @@ ${DISTRO_UNDERSCORES}_ZIP_BUILD || exit 1
 # Package up the build
 mkdir -p /tmp/builder/built-packages
 cd /tmp/install || exit 1
-zip -r /tmp/builder/built-packages/$component_name_ver-$rev.$arch.zip *
+zip -yr /tmp/builder/built-packages/$component_name_ver-$rev.$arch.zip *
 
 

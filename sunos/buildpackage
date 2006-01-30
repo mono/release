@@ -1,0 +1,273 @@
+#!/usr/bin/env python
+
+# Clean up build area on solaris box where things will get installed to
+
+# Lay out rpms that sparc rpm chokes on (noarch rpms: ikvm)
+
+# ./install-deps sunos-8-sparc none mono-1.1 monodoc boo xsp
+
+# Install files on sparc machine
+
+# strip files in bin/ and lib/ (using /usr/ccs/bin/strip) in order to save space
+
+# move env.sh to  setup-environment.sh, and write out an equivalent setup-environment.csh
+# Probably have to add MONO_PATH to some places (ex: lib/mono/monodoc) and boo
+#  Will have to try this out on machines without any mono to know if more paths need to be set in MONO_PATH
+# This fixes it for now: export MONO_GAC_PREFIX=/tmp/build_deps
+
+# Generate the prototype files
+
+# 
+
+"""
+
+TODO:
+-Release (ChangLog)
+-packages_used.txt
+-Should I delete some of the extra junk that my dep packages install?
+
+xBuild/package libgdiplus
+x probably should use ./jail-do just in case we end up doing this in a jail (done with packaging.py)
+"""
+
+"""
+libgdiplus notes:
+x freetype will be needed (probably also fontconfig)
+x also, add image types to build deps: png gif tiff jpeg
+
+"""
+
+import commands
+import os
+import os.path
+import sys
+import shutil
+import pdb
+import glob
+import re
+import distutils.dir_util
+import threading
+
+sys.path += ['../pyutils']
+import utils
+import packaging
+
+# Constants
+# Which noarch packages to include in the various packages
+rpm_packages_to_include = {}
+zip_packages_to_include = {}
+
+zip_packages_to_include['sunos-8-sparc'] = ['mono-1.1', 'libgdiplus-1.1' ]
+rpm_packages_to_include['sunos-8-sparc'] = ['xsp', 'ikvm', 'boo', 'monodoc' ]
+
+zip_packages_to_include['sunos-10-sparc'] = ['mono-1.1', 'libgdiplus-1.1', 'gtk-sharp-2.0', 'gtk-sharp' ]
+rpm_packages_to_include['sunos-10-sparc'] = ['xsp', 'ikvm', 'boo', 'monodoc' ]
+
+debug=1
+
+
+def build_package(target):
+
+	
+	env = packaging.buildenv(target, print_output=debug)
+
+	remote_temp = "/tmp/packaging"
+
+	remote_strip_loc = env.info['jail_strip_path']
+
+	# Really unable to keep track here because we use ./install-deps
+	packages_used = []
+
+	output_dir = os.path.join("output", version, target, release) 
+
+	if os.path.exists(output_dir):
+		print "%s exists, bump release number" % output_dir
+		sys.exit(1)
+
+	temp_dir = "build" + os.sep + target
+	unpacking_dir = temp_dir + os.sep + "temp"
+
+	cwd = os.getcwd()
+
+	if os.path.exists(temp_dir): shutil.rmtree(temp_dir)
+	distutils.dir_util.mkpath(unpacking_dir)
+	os.chdir(unpacking_dir)
+
+	# Gotta do this here because rpm2cpio on solaris doesn't always work
+	# Extract noarch rpms
+	for package in rpm_packages_to_include[target]:
+		package = packaging.package(env, package)
+		latest_ver_dir = package.path + os.sep + utils.get_latest_ver(package.path)
+
+		for file in os.listdir(latest_ver_dir):
+			if not re.compile('\.spec').search(file):
+				utils.extract_file(latest_ver_dir + os.sep + file)
+
+
+	print "Cleaning up"
+	env.ssh.execute("rm -Rf %s; mkdir -p -m777 %s " % ( remote_temp, remote_temp))
+
+	print "Copying files to remote..."
+	env.ssh.copy_to("*", remote_temp);
+
+	os.chdir(cwd)
+
+	print "Installing mono to build env..."
+	# Install the rest of mono
+	# Gotta do this remotely because I don't have pkgtrans on linux
+	#  Also, this gets all the deps
+	#utils.launch_process("cd ../packaging; ./install-deps %s none %s" % (target, " ".join(zip_packages_to_include[target]) ), print_output=debug)
+
+	# Get all files needed for the zip packages to include
+	files = []
+	for zip in zip_packages_to_include[target]:
+		package = packaging.package(env, zip)
+		files += package.get_latest_files()
+		files += package.get_latest_dep_files()
+
+	# Remove duplicates
+	files = utils.remove_list_duplicates(files)
+	#print files
+	#sys.exit(1)
+	
+	# Copy the over...
+	env.ssh.copy_to(files, '/tmp/install-packages', mode='scp', compress=0)
+
+	# Little duplication, but oh well
+	# This will install the packages onto /tmp/packaging and do all the substitution, including the noarch rpms
+	# TODO: pythonized  install-deps and do-install-zip-pkgs
+	env.ssh.print_output=debug
+	env.ssh.execute("/tmp/install-packages/do-install-zip-pkgs %s /opt/mono /tmp/install-packages/* " % (remote_temp))
+
+	# Strip files to save space
+	env.ssh.execute("cd %s/bin; %s *; cd ../lib; %s * " % (remote_temp, remote_strip_loc, remote_strip_loc))
+	env.ssh.print_output=debug
+
+	print "Appending to startup environment..."
+	# Add MONO_GAC_PREFIX to environment files
+	# and rename env.sh to setup.sh
+
+	vars = {}
+	vars['MONO_GAC_PREFIX'] = "/opt/mono"
+	vars['MONO_PREFIX'] = "/opt/mono"
+	vars['MONO_CFG_DIR'] = "/opt/mono/etc"
+	vars['MONO_PATH'] = "/opt/mono/lib"
+	vars['MANPATH'] = "/opt/mono/share/man:/opt/mono/man:\$MANPATH"
+
+	for k,v in vars.iteritems():
+		env.ssh.execute("cd %s; echo 'export %s=%s' >>  env.sh; echo 'setenv %s %s' >> env.csh" % (remote_temp, k, v, k, v))
+		
+	# Rename environment files
+	env.ssh.execute("cd %s; mv env.sh  setup.sh " % (remote_temp))
+	env.ssh.execute("cd %s; mv env.csh setup.csh " % (remote_temp))
+
+	# Start process of making the package
+
+	# Create pkginfo
+	print "Generate pkginfo and prototype files..."
+	pkginfo_file = temp_dir + os.sep + "pkginfo"
+	prototype_file = temp_dir + os.sep + "prototype"
+	shutil.copy('pkginfo.template', pkginfo_file)
+
+	#  Get some version information
+	mono_package = packaging.package(env, 'mono-1.1')
+	revision = mono_package.get_revision(release)
+
+	# Get string of packages
+	packages =  rpm_packages_to_include[target] + zip_packages_to_include[target]
+	packages.sort()
+	packages_string = " ".join( packages )
+
+	parameter_map = {}
+	parameter_map[re.compile("@@MONO_VERSION@@")] = version
+	parameter_map[re.compile("@@MONO_RELEASE@@")] = revision
+	parameter_map[re.compile("@@MONO_PACKAGES@@")] = packages_string
+	utils.substitute_parameters_in_file(pkginfo_file, re.compile(''), parameter_map)
+
+	# Create prototype
+	(code, prototype) = env.ssh.execute("cd %s; find . -print | pkgproto | sort" % remote_temp, capture_stderr=0 )
+
+	#print prototype
+
+	#Sample output: uid=104(builder) gid=1(other)
+	(code, output) = env.ssh.execute("id")
+	(uid, gid) = re.compile(r"""\((.*?)\).*\((.*?)\)""").search(output).groups()
+
+	parameter_map = {}
+	parameter_map[re.compile(uid)] = "root"
+	parameter_map[re.compile(gid)] = "root"
+	parameter_map[re.compile(" 0700 ")] = " 0755 "
+
+	prototype = utils.substitute_parameters(prototype, parameter_map)
+
+	prototype = "i pkginfo\n" + prototype
+
+	if os.path.exists(prototype_file): os.remove(prototype_file)
+
+	fd = open(prototype_file, 'w')
+	fd.write(prototype)
+	fd.close()
+
+	print "Copy pkginfo and prototype to host..."
+	# Use scp mode because we don't want paths to be included in the destination
+	env.ssh.copy_to([pkginfo_file, prototype_file], remote_temp, mode='scp')
+
+
+	# Actually build the package
+	print "Building package..."
+	package_filename = "mono-%s_%s.%s.pkg" % (version, revision, env.info['arch'])
+	(code, output) = env.ssh.execute("cd %s; pkgmk -d . -b \`pwd\`  &&  pkgtrans -s \`pwd\` %s all; gzip %s" % (remote_temp, package_filename, package_filename ))
+	if code:
+		print "%s: Error in creating package" % target
+		sys.exit(1)
+
+	distutils.dir_util.mkpath(output_dir)
+
+	print "Copy package back..."
+	# Have to use scp mode here, because I don't want the remote_temp dir in the filename
+	# Also, use no compression, since file is already compressed
+	env.ssh.copy_from("%s/%s.gz" % (remote_temp, package_filename), output_dir, mode='scp', compress=0)
+
+	# Create md5
+	print "Create md5..."
+	utils.launch_process("cd %s; md5sum %s.gz > %s.gz.md5 " % (output_dir, package_filename, package_filename), print_output=debug)
+
+
+
+####  Main execution ####
+# Collect args
+if len(sys.argv) < 3:
+	print "Usage: ./buildpackage <target> <version> [<release>]"
+	print " target is the 'distro name', or 'all' for all solaris builds"
+	print " Example: ./buildpackage sunos-8-sparc 1.1.13"
+	sys.exit(1)
+
+target = sys.argv[1]
+version = sys.argv[2]
+
+if len(sys.argv) > 3:
+	release = sys.argv[3]
+else:
+	release = "0"
+
+
+if target == 'all':
+	targets = map(os.path.basename, glob.glob(packaging.packaging_dir + "/conf/sunos-*-*"))
+else:
+	targets = target.split(',')
+
+
+# Starting build each target
+threads = []
+for target in targets:
+	thread = threading.Thread(target=build_package, args=(target,))
+	thread.run()
+	
+	threads.append(thread)
+
+
+# Wait for all to finish
+for thread in threads:
+	if thread.isAlive(): thread.join()
+
+

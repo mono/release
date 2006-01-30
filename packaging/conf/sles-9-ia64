@@ -1,2 +1,3 @@
 target_host=builder@mono-itanium.boston.ximian.com
 jaildir=/jails/sles-9-ia64-root-0/jail
+chroot_path=/usr/bin/chroot

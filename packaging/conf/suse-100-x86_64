@@ -1,2 +1,3 @@
 target_host=builder@monobuild2.boston.ximian.com
 jaildir=/jails/suse-100-x86_64-root-0/jail/
+chroot_path=/usr/bin/chroot

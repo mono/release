@@ -3,6 +3,8 @@ BUILD_HOSTS=(
 	redhat-9-i386
 	sles-9-x86_64
 	sles-9-ia64
+	sles-9-s390
+	sles-9-s390x
 	sunos-8-sparc
 	win-4-i386
 )
@@ -21,6 +23,7 @@ USE_HOSTS=(
 	sles-9-s390
 	sles-9-s390x
 	sles-9-x86_64
+	sunos-8-sparc
 	suse-92-i586
 	suse-93-i586
 	suse-93-x86_64
@@ -32,7 +35,7 @@ USE_HOSTS=(
 # Having this ensures that the wrong mono isn't in the jail
 #  (Or that mono is present for the snapshot builds)
 MONO_DEPS=(
-	mono-1.1
+#	mono-1.1
 )
 
 
@@ -50,30 +53,56 @@ win_4_i386_ZIP_DEPS=(
 	#http://www.gimp.org/~tml/gimp/win32/gettext-runtime-0.13.1.zip
 )
 
-# Need to get these in zip format... guess I gotta build them myself
-#  These first 4 are packages I've built
 sunos_8_sparc_ZIP_DEPS=(
-#	http://primates.ximian.com/~wberrier/sunos/gettext-0.14.5-0.sunos8.novell.sparc.zip
-#	http://primates.ximian.com/~wberrier/sunos/libiconv-1.9.1-0.sunos8.novell.sparc.zip
-#	http://primates.ximian.com/~wberrier/sunos/glib-2.8.3-0.sunos8.novell.sparc.zip
-#	http://primates.ximian.com/~wberrier/sunos/pkg-config-0.20-0.sunos8.novell.sparc.zip
+
+#	# Repackaged Sunfreeware packages
+#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/expat-1.95.5-0.sunos8.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/gettext-0.14.1-0-sunos8.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/glib-2.3.3-0-sunos8.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libiconv-1.8-0-sunos8.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libintl-3.4.0-0-sunos8.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/pkgconfig-0.15.0-0-sunos8.sparc.zip
+
+
+#	# Self Compiled versions
+#	# gettext also comes with libintl
+#	http://primates.ximian.com/~wberrier/sunos/deps/novell/gettext-0.14.5-0.sunos8.novell.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/deps/novell/libiconv-1.9.1-0.sunos8.novell.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/deps/novell/glib-2.8.3-0.sunos8.novell.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/deps-novell/pkg-config-0.20-0.sunos8.novell.sparc.zip
 #
 #	# Repackaged
-#	http://primates.ximian.com/~wberrier/sunos/libgcc-3.3-0.sunos8.novell.sparc.zip
+#	http://primates.ximian.com/~wberrier/sunos/deps-novell/libgcc-3.3-0.sunos8.novell.sparc.zip
+
 #
-#	# Repack these
-#	#ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/5.8/libgcc-3.3-sol8-sparc-local.gz
-#
-#
-#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/8/expat-1.95.5-sol8-sparc-local.gz
-#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/8/glib-2.6.2-sol8-sparc-local.gz
-#
-#	# Build my own newer versions
-#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/5.8/libiconv-1.8-sol8-sparc-local.gz
-#	# This comes with gettext
-#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/8/libintl-3.4.0-sol8-sparc-local.gz 
-#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/8/gettext-0.14.1-sol8-sparc-local.gz
-#	ftp://sunfreeware.nssl.noaa.gov/pub/freeware/sparc/5.8/pkgconfig-0.15.0-sol8-sparc-local.gz
+#	# Sunfreeware packages
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libgcc-3.3-sol8-sparc-local.gz
+	# Have to use this one because above is not under $prefix/lib
+	# TODO: This packages doesn't have symbolic links, is this ok?
+	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libgcc-3.3-0-sunos8.sparc.zip
+
+	# 2.6.2 glib is missing a header file
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/glib-2.6.2-sol8-sparc-local.gz
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/glib-2.2.3-sol8-sparc-local.gz 
+
+	# Gettext needs expat
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/gettext-0.14.1-sol8-sparc-local.gz
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/expat-1.95.5-sol8-sparc-local.gz
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libiconv-1.8-sol8-sparc-local.gz
+
+	# Most packages need this
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libintl-3.4.0-sol8-sparc-local.gz 
+
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/pkgconfig-0.15.0-sol8-sparc-local.gz
+
+	# Random generator for crypto
+	# The other option is to require: a sun patch (http://www.cosy.sbg.ac.at/~andi/SUNrand/)
+	# For sunos8sparc, it's patch 112438
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/egd-0.8-sol8-sparc-local.gz
+	# Egd won't work here... users must use the patch
+
+	# For testing...
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/gdb-6.0-sol8-sparc-local.gz
 )
 
 sunos_8_sparc_ZIP_BUILD () {
@@ -83,11 +112,25 @@ sunos_8_sparc_ZIP_BUILD () {
 	export M4=/usr/local/bin/m4
 
 	# Do this to make sure libgcc is found.  Won't be needed when we install libgcc into build_deps
-	export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+	#export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
+	# Relocation on solaris is causing problems... if we're going to have to use /opt/mono as a prefix,
+		# Big changes are going to be needed
+	
 	./configure --prefix=/tmp/install
 	make || exit 1
-	make install-strip || exit 1
+	# Cannot find ELF
+	# Gnu Strip causes problems on Solaris
+	#  (http://sunportal.sunmanagers.org/pipermail/summaries/2003-August/004247.html)
+	# This is fixed in a later bintuils release... is this enough reason to use blastwave packages?
+	#make install-strip || exit 1
+	make install || exit 1
+
+	# Make sure to use the solaris version of strip
+	cd /tmp/install/lib
+	/usr/ccs/bin/strip * || true
+	cd /tmp/install/bin
+	/usr/ccs/bin/strip * || true
 }
 
 win_4_i386_ZIP_BUILD () {

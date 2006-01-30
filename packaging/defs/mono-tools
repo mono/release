@@ -1,5 +1,6 @@
 BUILD_HOSTS=(
 	nld-9-i586
+	#win-4-i386
 )
 
 USE_HOSTS=(
@@ -31,15 +32,14 @@ MONO_DEPS=(
 # Here for reference only
 win_4_i386_ZIP_BUILD () {
 
-	{
-		# Only needed for boot strapping
-		#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
+	# Only needed for boot strapping
+	#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
 
-		./configure --prefix=/tmp/install
-		make
-		make install
+	# Once gtk-sharp can be built with gnome-sharp, this will build
 
-	} || exit 1
+	./configure --prefix=/tmp/install
+	make
+	make install
 
 }
 

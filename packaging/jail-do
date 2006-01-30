@@ -1,44 +1,21 @@
-#!/bin/sh
-#
-# Executes either a command or an interactive shell on a jail
-# ./jail-do suse-93-i586
-# ./jail-do suse-93-i586 rug in my-package
-#
+#!/usr/bin/env python
 
-TARGET=$1
-shift
+import sys
+import string
 
-. conf/$TARGET
-. shared-code.sh
+sys.path += ['../pyutils']
 
-#
-# FIXME
-#
-# There are weird things happening with quoting here. You can't
-# pass a command with single quotes. We need to fix this somewhow
-#
+import sshutils
+import packaging
 
-SSH_FLAGS="-q"
+buildenv = packaging.buildenv(sys.argv[1], print_output=1)
 
-if [ "x$*" == x ] ; then
-	CMD="$SHELL --login"
-	# allocate a tty
-	SSH_FLAGS="$SSH_FLAGS -t"
-else
-	CMD="$SHELL --login -c '$*'"
-fi
+if len(sys.argv) > 2:
+	command = string.join(sys.argv[2:], ' ')
+	print "Executing: %s" % command
+	status, output = buildenv.ssh.execute(command)
+	sys.exit(status)
+else:
+	print "Logging in"
+	buildenv.ssh.interactive_login()
 
-#
-# redhat systems have chroot in sbin, so we need to add that to
-# the path while we ssh in. (Add /usr/local/bin)
-#
-ADD_SBIN='PATH=/sbin:/usr/sbin:/usr/local/bin:$PATH'
-
-# Don't chroot if none defined (Used initially for windows)
-if [ -z $jaildir ] ; then
-	CHROOT_CMD=
-else
-	CHROOT_CMD="$ADD_SBIN sudo -H chroot $jaildir"
-fi
-
-ssh $SSH_FLAGS $target_host "$CHROOT_CMD $CMD"
