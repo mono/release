@@ -1,33 +1,14 @@
 #!/usr/bin/env python
 
-# Clean up build area on solaris box where things will get installed to
-
-# Lay out rpms that sparc rpm chokes on (noarch rpms: ikvm)
-
-# ./install-deps sunos-8-sparc none mono-1.1 monodoc boo xsp
-
-# Install files on sparc machine
-
-# strip files in bin/ and lib/ (using /usr/ccs/bin/strip) in order to save space
-
-# move env.sh to  setup-environment.sh, and write out an equivalent setup-environment.csh
-# Probably have to add MONO_PATH to some places (ex: lib/mono/monodoc) and boo
-#  Will have to try this out on machines without any mono to know if more paths need to be set in MONO_PATH
-# This fixes it for now: export MONO_GAC_PREFIX=/tmp/build_deps
-
-# Generate the prototype files
-
-# 
-
 """
-
 TODO:
--Release (ChangLog)
--packages_used.txt
 -Should I delete some of the extra junk that my dep packages install?
+-Fix the csh script (vars failing that weren't previously set)
 
-xBuild/package libgdiplus
+x Build/package libgdiplus
 x probably should use ./jail-do just in case we end up doing this in a jail (done with packaging.py)
+x Release (ChangLog)
+x packages_used.txt
 """
 
 """
@@ -75,9 +56,6 @@ def build_package(target):
 
 	remote_strip_loc = env.info['jail_strip_path']
 
-	# Really unable to keep track here because we use ./install-deps
-	packages_used = []
-
 	output_dir = os.path.join("output", version, target, release) 
 
 	if os.path.exists(output_dir):
@@ -93,6 +71,9 @@ def build_package(target):
 	distutils.dir_util.mkpath(unpacking_dir)
 	os.chdir(unpacking_dir)
 
+	# Keep list of files used to build this package
+	packages_used = []
+
 	# Gotta do this here because rpm2cpio on solaris doesn't always work
 	# Extract noarch rpms
 	for package in rpm_packages_to_include[target]:
@@ -102,6 +83,7 @@ def build_package(target):
 		for file in os.listdir(latest_ver_dir):
 			if not re.compile('\.spec').search(file):
 				utils.extract_file(latest_ver_dir + os.sep + file)
+				packages_used += [ file ]
 
 
 	print "Cleaning up"
@@ -114,9 +96,6 @@ def build_package(target):
 
 	print "Installing mono to build env..."
 	# Install the rest of mono
-	# Gotta do this remotely because I don't have pkgtrans on linux
-	#  Also, this gets all the deps
-	#utils.launch_process("cd ../packaging; ./install-deps %s none %s" % (target, " ".join(zip_packages_to_include[target]) ), print_output=debug)
 
 	# Get all files needed for the zip packages to include
 	files = []
@@ -127,15 +106,17 @@ def build_package(target):
 
 	# Remove duplicates
 	files = utils.remove_list_duplicates(files)
-	#print files
-	#sys.exit(1)
+
+	packages_used += map(os.path.basename, files)
+	packages_used.sort()
+
+	# Also copy script to relocate and unpack the packages
+	files += [packaging.packaging_dir + os.sep + 'do-install-zip-pkgs']
 	
-	# Copy the over...
+	# Copy them over...
 	env.ssh.copy_to(files, '/tmp/install-packages', mode='scp', compress=0)
 
-	# Little duplication, but oh well
-	# This will install the packages onto /tmp/packaging and do all the substitution, including the noarch rpms
-	# TODO: pythonized  install-deps and do-install-zip-pkgs
+	# This will unpack and do all the substitution, including the noarch rpms
 	env.ssh.print_output=debug
 	env.ssh.execute("/tmp/install-packages/do-install-zip-pkgs %s /opt/mono /tmp/install-packages/* " % (remote_temp))
 
@@ -148,11 +129,10 @@ def build_package(target):
 	# and rename env.sh to setup.sh
 
 	vars = {}
-	vars['MONO_GAC_PREFIX'] = "/opt/mono"
-	vars['MONO_PREFIX'] = "/opt/mono"
-	vars['MONO_CFG_DIR'] = "/opt/mono/etc"
-	vars['MONO_PATH'] = "/opt/mono/lib"
-	vars['MANPATH'] = "/opt/mono/share/man:/opt/mono/man:\$MANPATH"
+	vars['MONO_GAC_PREFIX'] = '/opt/mono'
+	vars['MONO_PREFIX'] = '/opt/mono'
+	vars['MONO_CFG_DIR'] = '/opt/mono/etc'
+	vars['MONO_PATH'] = '/opt/mono/lib'
 
 	for k,v in vars.iteritems():
 		env.ssh.execute("cd %s; echo 'export %s=%s' >>  env.sh; echo 'setenv %s %s' >> env.csh" % (remote_temp, k, v, k, v))
@@ -160,6 +140,14 @@ def build_package(target):
 	# Rename environment files
 	env.ssh.execute("cd %s; mv env.sh  setup.sh " % (remote_temp))
 	env.ssh.execute("cd %s; mv env.csh setup.csh " % (remote_temp))
+
+
+	# Print out packages_used
+	print "Saving list of packages..."
+	fd = open("%s/packages_used.txt" % temp_dir, 'w')
+	for file in packages_used:
+		fd.write(file + "\n")
+	fd.close()
 
 	# Start process of making the package
 
@@ -200,6 +188,9 @@ def build_package(target):
 
 	prototype = utils.substitute_parameters(prototype, parameter_map)
 
+	# Add packages_used and ChangeLog
+	prototype += "\nf none packages_used.txt\nf none ChangeLog"
+
 	prototype = "i pkginfo\n" + prototype
 
 	if os.path.exists(prototype_file): os.remove(prototype_file)
@@ -208,9 +199,9 @@ def build_package(target):
 	fd.write(prototype)
 	fd.close()
 
-	print "Copy pkginfo and prototype to host..."
+	print "Copy pkginfo, prototype, packages_used, and ChangeLog to host..."
 	# Use scp mode because we don't want paths to be included in the destination
-	env.ssh.copy_to([pkginfo_file, prototype_file], remote_temp, mode='scp')
+	env.ssh.copy_to([pkginfo_file, prototype_file, temp_dir + os.sep + 'packages_used.txt', 'ChangeLog'], remote_temp, mode='scp')
 
 
 	# Actually build the package
@@ -231,6 +222,10 @@ def build_package(target):
 	# Create md5
 	print "Create md5..."
 	utils.launch_process("cd %s; md5sum %s.gz > %s.gz.md5 " % (output_dir, package_filename, package_filename), print_output=debug)
+
+	print "Saving packages_used.txt..."
+	shutil.copy(temp_dir + os.sep + 'packages_used.txt', output_dir)
+
 
 
 
