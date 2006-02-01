@@ -33,6 +33,7 @@ cat <<EOF
 rug sa http://go-mono.com/download
 rug sub mono-1.1-official
 rug sub gtk-sharp-official
+rug sub mono-tools-official
 rug in mono-complete gtk-sharp
 	</xmp>
 EOF
