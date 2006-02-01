@@ -19,7 +19,7 @@
 #	monodoc mono-tools gecko-sharp gecko-sharp-2.0 gtksourceview-sharp-2.0 monodevelop boo ikvm mono-debugger heap-buddy
 
 	<h3>Gtk# 2</h3>
-#	gtk-sharp-2.0
+#	gtk-sharp-2.0 gtk-sharp-2.8
 
 </body>
 </html>

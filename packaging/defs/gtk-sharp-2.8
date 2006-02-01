@@ -1,15 +1,7 @@
 BUILD_HOSTS=(
-	fedora-3-i386
-	fedora-4-i386
-	fedora-4-x86_64
-	nld-9-i586
-	rhel-4-i386
-	suse-92-i586
-	suse-93-i586
-	suse-93-x86_64
-	#suse-100-i586
-	#suse-100-x86_64
-	#win-4-i386
+	suse-100-i586
+	suse-100-x86_64
+	win-4-i386
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -27,19 +19,11 @@ get_destroot () {
 HEAD_PATH="trunk/gtk-sharp"
 RELEASE_PATH="tags/gtk-sharp/[[gtksharp2ver]]/gtk-sharp"
 
-# Note, the above tags are a little weird... here's now the automation handles them:
-# Example tag: svn+ssh://mono-cvs.ximian.com/source/tags/gtk-sharp/2.3.92_2.5.92/gtk-sharp
-# example mktarball:  ./mktarball suse-93-i586 gtk-sharp-2.0 2.3.92
-# example mktarball:  ./mktarball suse-93-i586 gtk-sharp-2.6 2.5.92
-# Another note: 2.7.1 and above require the tarball to be built on suse-100-i586
-#   ex:  ./mktarball suse-100-i586 gtk-sharp-2.8 2.7.90
-
-#  I believe it's the same with ./build
-
 get_tarball () {
 	msvn_tar $1
 }
 
+# TODO
 win_4_i386_ZIP_DEPS=(
 
 	# These are specific to gtk-sharp
@@ -70,6 +54,18 @@ win_4_i386_ZIP_DEPS=(
 
 	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-dev.zip
 	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-bin.zip
+
+	# 2.8 files and deps
+	ftp://ftp.gtk.org/pub/gtk/v2.8/win32/atk-1.10.3.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.8/win32/atk-dev-1.10.3.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.8/win32/cairo-1.0.2.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.8/win32/cairo-dev-1.0.2.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.8/win32/gtk+-2.8.9.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.8/win32/gtk+-dev-2.8.9.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.8/win32/pango-1.10.2.zip
+	ftp://ftp.gtk.org/pub/gtk/v2.8/win32/pango-dev-1.10.2.zip
+
+
 
 )
 
