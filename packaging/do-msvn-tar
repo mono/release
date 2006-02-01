@@ -151,6 +151,8 @@ if [ ! x$snapshot_rev == x ]; then
 	$DO_CHANGE_AUTOMAKE
 fi
 
+# SuSE 9.3 gnome pkgconfig path
+export PKG_CONFIG_PATH=/opt/gnome/lib/pkgconfig
 $DO_AUTOGEN || exit 1
 make dist $DIST_FLAGS || exit 1
 rm -rf /tmp/built-tarball
