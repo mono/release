@@ -35,19 +35,30 @@ USE_HOSTS=(
 # Having this ensures that the wrong mono isn't in the jail
 #  (Or that mono is present for the snapshot builds)
 MONO_DEPS=(
-#	mono-1.1
+	mono-1.1
 )
 
 
 ## format: <$DISTRO>_ZIP_DEPS
 # Note: $DISTRO must have the hyphens converted to underscores
 win_4_i386_ZIP_DEPS=(
-	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/glib-2.6.6.zip
-	ftp://ftp.gtk.org/pub/gtk/v2.6/win32/glib-dev-2.6.6.zip
+
+	# glib 2.8 from ftp.gnome.org (Probably the same, but we'll use the ones from the same place we get gnome)
+	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/glib-2.8.6.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/glib-dev-2.8.6.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/dependencies/gettext-0.14.5.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/dependencies/gettext-dev-0.14.5.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/dependencies/libiconv-1.9.1.bin.woe32.zip
+
+	# This pkg-config expects win32 names... not cygwin names...
+	#ftp://ftp.gtk.org/pub/gtk/v2.8/win32/dependencies/pkg-config-0.20.zip
 	http://www.gimp.org/~tml/gimp/win32/pkgconfig-0.15.zip
-	http://www.gimp.org/~tml/gimp/win32/libiconv-1.9.1.bin.woe32.zip
-	http://www.gimp.org/~tml/gimp/win32/gettext-0.14.5.zip
-	http://www.gimp.org/~tml/gimp/win32/gettext-dev-0.14.5.zip
+
+	#ftp://ftp.gtk.org/pub/gtk/v2.6/win32/glib-2.6.6.zip
+	#ftp://ftp.gtk.org/pub/gtk/v2.6/win32/glib-dev-2.6.6.zip
+	#http://www.gimp.org/~tml/gimp/win32/libiconv-1.9.1.bin.woe32.zip
+	#http://www.gimp.org/~tml/gimp/win32/gettext-0.14.5.zip
+	#http://www.gimp.org/~tml/gimp/win32/gettext-dev-0.14.5.zip
 
 	# Old library
 	#http://www.gimp.org/~tml/gimp/win32/gettext-runtime-0.13.1.zip
@@ -134,6 +145,10 @@ sunos_8_sparc_ZIP_BUILD () {
 }
 
 win_4_i386_ZIP_BUILD () {
+	# Pull in settings here instead of loading a shell in the ssh command
+	. /etc/profile
+	# The above puts me in my home dir... get me back
+	cd -
 
 	# Only needed for boot strapping
 	#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
@@ -168,6 +183,7 @@ get_destroot () {
 
 HEAD_PATH="trunk"
 RELEASE_PATH="tags/mono-[[version]]"
+BRANCH_PATH="branches/mono-[[version]]"
 
 get_tarball () {
 	msvn_tar $1
