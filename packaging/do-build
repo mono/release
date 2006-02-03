@@ -14,8 +14,10 @@ $SUDO mkdir scratch && cd scratch 	|| exit 1
 mv ../ximian-build.conf .
 mv ../*.patch .
 mv ../*.tar.gz .
+mv ../*.zip .
 # rpm needs this to be happy
 chown root:root *.tar.gz
+chown root:root *.zip
 chown root:root *.patch
 
 

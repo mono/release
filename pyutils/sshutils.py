@@ -21,7 +21,7 @@ import pdb
 
 class init:
 	
-	def __init__(self, target_host, print_output=1, jaildir="", chroot_path="/usr/sbin/chroot", remote_tar_path="tar", local_tar_path="tar"):
+	def __init__(self, target_host, print_output=1, jaildir="", chroot_path="/usr/sbin/chroot", remote_tar_path="tar", local_tar_path="tar", target_command_prefix=""):
 
 		self.target_host = target_host
 
@@ -31,11 +31,14 @@ class init:
 		self.chroot_path = chroot_path
 		self.remote_tar_path = remote_tar_path
 		self.local_tar_path = local_tar_path
+		self.target_command_prefix = target_command_prefix
 
 		#  quiet
 		# Ignore host checks, and blowfish might be faster and less cpu intensive
 		# Batchmode: don't prompt for password, quickly detect unavailable hosts
-		self.options = '-q -o "StrictHostKeyChecking no" -o "Cipher blowfish" '
+		#self.options = '-q -o "StrictHostKeyChecking no" -o "Cipher blowfish" '
+		# Let's be a little more verbose (especially with scp)... hmm... didn't work
+		self.options = '-o "StrictHostKeyChecking no" -o "Cipher blowfish" '
 
 		# Check to see if we're using a jail
 		if self.jaildir:
@@ -51,6 +54,9 @@ class init:
 	#  Will always return output
 	# NOTE: In order to use backticks, you must escape them in the string you pass in
 	def execute(self, command, capture_stderr=1):
+
+		if self.target_command_prefix:
+			command = self.target_command_prefix + command
 
 		# Quoting very importand here: double quotes
 		command = '"' + command + '"'
@@ -136,7 +142,7 @@ class init:
 		        command = "cd %s; ssh %s %s ' %s %s -pcf - %s ' | %s -pvxf - " % (dest, self.options + compress_option, self.target_host, self.remote_tar_path, tar_dir_options, files, self.local_tar_path )
 
 		else:
-			print "Invalid copy_to mode: %s" % mode
+			print "Invalid copy_from mode: %s" % mode
 			sys.exit(1)
 
 		if self.print_output: print command

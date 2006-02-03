@@ -67,9 +67,9 @@ else
 fi
 
 # Figure out if this is a snapshot build or not...
-if [ -e sources/$package/*-$version.tar.gz ]; then
+if [ -e sources/$package/*-$version.tar.gz ] || [ -e sources/$package/*-$version.zip ] ; then
 	echo "Using release sources and packages"
-elif [ -e snapshot_sources/$package/*-$version.tar.gz ]; then
+elif [ -e snapshot_sources/$package/*-$version.tar.gz ] || [ -e snapshot_sources/$package/*-$version.zip ] ; then
 	echo "Using snapshot sources and packages"
 	source_path="snapshot_${source_path}"
 	package_path="snapshot_${package_path}"
@@ -100,7 +100,7 @@ fi
 
 if [ -z $USE_ZIP_PKG ]; then
 
-	scp do-build ../conf/$package/* $source_path/$package/*-$version.tar.gz $target_host:$jaildir/tmp 
+	scp do-build ../conf/$package/* $source_path/$package/*-$version.tar.gz $source_path/$package/*-$version.zip $target_host:$jaildir/tmp 
 
 	#if ! ./jail-do $distro bash -x /tmp/do-build $version $REVISION >> $LOGFILE 2>&1; then
 	if ! ./jail-do $distro "/tmp/do-build $version $REVISION" >> $LOGFILE 2>&1; then
@@ -110,7 +110,7 @@ if [ -z $USE_ZIP_PKG ]; then
 	fi
 
 else
-	scp do-zip-build ../conf/$package/*.patch defs/$package $source_path/$package/*-$version.tar.gz $target_host:$jaildir/tmp 
+	scp do-zip-build ../conf/$package/*.patch defs/$package $source_path/$package/*-$version.tar.gz $source_path/$package/*-$version.zip $target_host:$jaildir/tmp 
 
 	if ! ./jail-do $distro "/tmp/do-zip-build $REVISION $package $distro" >> $LOGFILE 2>&1; then
 		rm status/$distro

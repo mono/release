@@ -245,7 +245,8 @@ def launch_process(command, capture_stderr=1, print_output=1):
 	execute_option = ""
 	if capture_stderr: execute_option = " 2>&1 "
 
-	process = os.popen("%s %s" % ( command, execute_option) )
+	# bufsize=1 makes it line buffered, -1, unbuffered
+	process = os.popen("%s %s" % ( command, execute_option), 'r', -1 )
 	collected = []
 	# Use this looping method insead of 'for line in process' so it doesn't use the readahead buffer
 	#  This smooths output greatly, instead of getting big chunks of output with lots of lag
@@ -254,6 +255,8 @@ def launch_process(command, capture_stderr=1, print_output=1):
 		if not line: break
 		if print_output:
 			print line,
+			sys.stdout.flush()
+			process.flush()
 		collected += line
 
 	exit_code = process.close()

@@ -35,7 +35,7 @@ class buildenv:
 		args['target_host'] = self.info['target_host']
 		args['print_output'] = print_output
 
-		for i in "jaildir chroot_path remote_tar_path local_tar_path".split():
+		for i in "jaildir chroot_path remote_tar_path local_tar_path target_command_prefix".split():
 			if self.info.has_key(i):
 				args[i] = self.info[i]
 	
@@ -99,8 +99,11 @@ class buildenv:
 			# Skip comments
 			if not re.compile("^#").search(line):
 				try:
-					(key, value) = re.compile("^(.+)=(.*)$").search(line).groups()
+					# Grab key and value from key=value format
+						# Also, ingnore double or single quotes arond the value
+					(key, value) = re.compile('^(.+)="?\'?(.*?)"?\'?$').search(line).groups()
 					info[key] = value
+					#print "Key: %s, value: %s" %( key, value)
 				except AttributeError:
 					pass
 

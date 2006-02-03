@@ -43,7 +43,6 @@ MONO_DEPS=(
 # Note: $DISTRO must have the hyphens converted to underscores
 win_4_i386_ZIP_DEPS=(
 
-	# glib 2.8 from ftp.gnome.org (Probably the same, but we'll use the ones from the same place we get gnome)
 	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/glib-2.8.6.zip
 	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/glib-dev-2.8.6.zip
 	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/dependencies/gettext-0.14.5.zip
@@ -145,10 +144,6 @@ sunos_8_sparc_ZIP_BUILD () {
 }
 
 win_4_i386_ZIP_BUILD () {
-	# Pull in settings here instead of loading a shell in the ssh command
-	. /etc/profile
-	# The above puts me in my home dir... get me back
-	cd -
 
 	# Only needed for boot strapping
 	#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
@@ -166,8 +161,6 @@ win_4_i386_ZIP_BUILD () {
 
 	cd /tmp/install/lib
 	strip --strip-unneeded *.a
-
-
 }
 
 get_destroot () {
