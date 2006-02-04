@@ -72,7 +72,7 @@ target_env.ssh.copy_to(files, '/tmp/install-packages', mode='scp', compress=0)
 if target_env.info['USE_ZIP_PKG']:
 
 	target_env.ssh.copy_to(['do-install-zip-pkgs', '../pyutils/utils.py'], '/tmp/install-packages', mode='scp')
-        target_env.ssh.execute( "/tmp/install-packages/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps /tmp/install-packages/*")
+        (code, output) = target_env.ssh.execute( "/tmp/install-packages/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps /tmp/install-packages/*")
 
 else:
 
@@ -83,9 +83,11 @@ else:
 	if not code:
                 # check if rcd is running in this jail and start it if it isn't
 		target_env.ssh.execute('rug ping || ( /usr/sbin/rcd -r  && echo Wait for rcd to come alive... && sleep 5 ) ')
-		target_env.ssh.execute('rug rm -y %s ; rug in -y -r /tmp/install-packages/*.rpm' % rpm_names)
+		(code, output) = target_env.ssh.execute('rug rm -y %s ; rug in -y -r /tmp/install-packages/*.rpm' % rpm_names)
         else:
 		target_env.ssh.copy_to('remove-rpms', '/tmp')
-		target_env.ssh.execute('/tmp/remove-rpms %s ;  rpm -Uvh /tmp/install-packages/*.rpm' % rpm_names)
+		(code, output) = target_env.ssh.execute('/tmp/remove-rpms %s ;  rpm -Uvh /tmp/install-packages/*.rpm' % rpm_names)
 
+# Exit with return code...
+sys.exit(code)
 

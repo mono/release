@@ -1,2 +1,3 @@
 target_host=builder@hardhat.boston.ximian.com
 jaildir=/jails/suse-100-i586/jail
+target_command_prefix=". /etc/profile;"
