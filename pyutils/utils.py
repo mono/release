@@ -22,6 +22,7 @@ import re
 import tempfile
 import string
 import glob
+import distutils.dir_util
 
 import pdb
 
@@ -53,7 +54,7 @@ def get_env_var(var_name, source):
 
         return output
 # Extract either tarball, rpm, or zip
-def extract_file(filename):
+def extract_file(filename, preserve_symlinks=0):
         print "Extracting: %s" % filename
         (root, ext) = os.path.splitext(filename)
 
@@ -85,11 +86,7 @@ def extract_file(filename):
                         sys.exit(1)
 
                 os.chdir("usr")
-                #(status, output) = commands.getstatusoutput("cp -Rf * ../..")
-                #(status, output) = commands.getstatusoutput("find . -print | cpio -pdum ../..")
-		# Launch process doesn't work well with find on cygwin...
-		#(status, output) = launch_process("find . -print | cpio -pdum ../..")
-		recursive_copy(".", "../..")
+		distutils.dir_util.copy_tree(".", "../..", preserve_symlinks=preserve_symlinks)
 
                 if status:
                         print "Error massaging files from rpm: %s" % filename
@@ -141,12 +138,7 @@ def extract_file(filename):
 			except AttributeError:
 				pass
 
-                #(status, output) = launch_process("find . -print | cpio -pdum ../../..")
-                #if status:
-                #        print "Error massaging files from solaris package: %s" % filename
-                #        sys.exit(1)
-
-                recursive_copy(".", "../../..")
+		distutils.dir_util.copy_tree(".", "../../..", preserve_symlinks=preserve_symlinks)
 
                 os.chdir("../../..")
                 shutil.rmtree(tempdir)
@@ -275,45 +267,25 @@ def get_latest_ver(dir):
 
         (code, output) = launch_process(rpmvercmp + " " + string.join(files), print_output=debug)
 
+	# TODO: Write python version...
+	# Happens when the rpmvercmp that's compiled and checked in doesn't run on a new host
+	if code:
+		print "Warning, rpmvercmp is not working!"
+		cwd = os.getcwd()
+		os.chdir(os.path.dirname(rpmvercmp))
+		print "Attempting to fix..."
+		(code, output) = launch_process("make clean; make", print_output=debug)
+		(code, output) = launch_process(rpmvercmp + " " + string.join(files), print_output=debug)
+		os.chdir(cwd)
+
+		if code:
+			print "Unable to fix..."
+			sys.exit(1)
+		
         # Get last line of output
         latest_version = output.split().pop()
 
         return latest_version
-
-def recursive_copy(src, dest):
-	"""Args: src dir, dest dir: copies everything in src to dest.
-
-	Differs from shutil.copy_tree in that the destination can exist
-	"""
-
-	for root, dirs, files in os.walk('.'):
-		for dir in dirs:
-			# TODO: Do we need to take care of symlinked directories?
-			   # os.walk doesn't follow them
-			dest_dir = os.path.join(dest, root, dir)
-			if not os.path.exists(dest_dir):
-				os.mkdir(dest_dir)
-		for file in files:
-			src_file = os.path.join(root, file)
-			dest_file = os.path.join(dest, root, file)
-			if not os.path.exists(dest_file):
-				# Check to see if it's a symlink
-				try:
-					target = os.readlink(src_file)
-					if debug: print "Read link: %s" % target
-					do_link = 1
-				except OSError:
-					do_link = 0
-				# Avoid nested try blocks...
-				if do_link:
-					os.symlink(target, dest_file)
-					if debug: print "Created symlink: %s to %s" % (target, dest_file)
-				else:
-					shutil.copy2(src_file, dest_file)
-					if debug: print "Copied %s to %s" % (src_file, dest_file)
-
-			else:
-				print "Warning! %s exists in destination already" % src_file
 
 
 def remove_list_duplicates(my_list):

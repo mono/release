@@ -122,5 +122,7 @@ int main(int argc, char *argv[])
 
 	print_list(&argv[1], index_map, argc - 1);
 
+	exit(0);
+
 }
 
