@@ -234,44 +234,53 @@ os.chdir("..")
 #
 #########################################
 
-##########################################
-# Special case for gtk-wimp theme
-# TODO: Get this working with new gtk
-os.chdir('gtk')
-
-if not os.path.exists('lib/gtk-2.0/2.4.0'):
-	print "Error munging gtk-wimp: Path doesn't exist: lib/gtk-2.0/2.4.0"
-	sys.exit(1)
-
-# Dir already exists...
-#os.makedirs('lib/gtk-2.0/2.4.0/engines')
-shutil.move('gtk-wimp-0.7.0-bin/libwimp.dll', 'lib/gtk-2.0/2.4.0/engines')
-
-os.makedirs('share/themes/gtk-wimp/gtk-2.0')
-shutil.move('gtk-wimp-0.7.0-bin/Theme/gtk-2.0/gtkrc', 'share/themes/gtk-wimp/gtk-2.0')
-
-# Do some theme renaming (Looks like something similar is proposed for upstream)
-# Rename default to Raleigh
-# Already done
-#shutil.move('share/themes/Default', 'share/themes/Raleigh')
-
-# Make the wimp theme the default
-# Default dir is basically empty
-# Hmm... didn't work... what's the default theme on win?
-shutil.rmtree('share/themes/Default')
-#shutil.move('share/themes/gtk-wimp', 'share/themes/Default')
-distutils.dir_util.copy_tree("share/themes/gtk-wimp", "share/themes/Default")
-
-# Another way to make the wimp theme the default
-shutil.copy('share/themes/gtk-wimp/gtk-2.0/gtkrc', 'etc/gtk-2.0')
-
-shutil.rmtree('gtk-wimp-0.7.0-bin')
-
-os.chdir("..")
-
+###########################################
+## Special case for gtk-wimp theme
+## TODO: Get this working with new gtk
+#os.chdir('gtk')
+#
+#if not os.path.exists('lib/gtk-2.0/2.4.0'):
+#	print "Error munging gtk-wimp: Path doesn't exist: lib/gtk-2.0/2.4.0"
+#	sys.exit(1)
+#
+## Dir already exists...
+##os.makedirs('lib/gtk-2.0/2.4.0/engines')
+#shutil.move('gtk-wimp-0.7.0-bin/libwimp.dll', 'lib/gtk-2.0/2.4.0/engines')
+#
+#os.makedirs('share/themes/gtk-wimp/gtk-2.0')
+#shutil.move('gtk-wimp-0.7.0-bin/Theme/gtk-2.0/gtkrc', 'share/themes/gtk-wimp/gtk-2.0')
+#
+## Do some theme renaming (Looks like something similar is proposed for upstream)
+## Rename default to Raleigh
+## Already done
+##shutil.move('share/themes/Default', 'share/themes/Raleigh')
+#
+## Make the wimp theme the default
+## Default dir is basically empty
+## Hmm... didn't work... what's the default theme on win?
+#shutil.rmtree('share/themes/Default')
+##shutil.move('share/themes/gtk-wimp', 'share/themes/Default')
+#distutils.dir_util.copy_tree("share/themes/gtk-wimp", "share/themes/Default")
+#
+## Another way to make the wimp theme the default
+#shutil.copy('share/themes/gtk-wimp/gtk-2.0/gtkrc', 'etc/gtk-2.0')
+#
+#shutil.rmtree('gtk-wimp-0.7.0-bin')
+#
+#os.chdir("..")
+#
 #
 #########################################
 
+########################################
+# Set default theme
+#
+os.chdir('gtk')
+shutil.copy('share/themes/MS-Windows/gtk-2.0/gtkrc', 'etc/gtk-2.0')
+os.chdir('..')
+
+#
+########################################
 
 ##########################################
 # Special case for ms' gdiplus

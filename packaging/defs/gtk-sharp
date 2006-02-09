@@ -59,7 +59,9 @@ win_4_i386_ZIP_RUNTIME_DEPS=(
 	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/glade-2.12.1-rc1.zip
 	#http://easynews.dl.sourceforge.net/sourceforge/gladewin32/glade-2.6.0-rc1.zip
 	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/gts-0.1.1.zip
-	http://easynews.dl.sourceforge.net/sourceforge/gtk-wimp/gtk-wimp-0.7.0-bin.zip
+
+	# the wimp theme is now MS Windows that is part of gtk+
+	#http://easynews.dl.sourceforge.net/sourceforge/gtk-wimp/gtk-wimp-0.7.0-bin.zip
 
 	# For GtkDemo iconview (Hmm... this didn't fix it... later)
 	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/dependencies/hicolor-icon-theme-0.5.zip

@@ -13,6 +13,9 @@ built and configured version of XSP.
 
 Installer Changes:
 
+Next:
+ -removed wimp theme, as it comes with gtk+ named as MS-Windows
+
 1.1.13.2-1:
  -Upgraded to GTK+ 2.8 and most Gnome 2.12 deps are included
  -Upgraded to gtk# 2.8
