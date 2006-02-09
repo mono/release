@@ -30,7 +30,7 @@ import pdb
 #  So it's not arch specific
 module_dir = os.path.dirname(__file__)
 if module_dir != "": module_dir += os.sep
-rpmvercmp = os.path.abspath(module_dir + "../rpmvercmp/rpmvercmp")
+rpmvercmp_path = os.path.abspath(module_dir + "../rpmvercmp/rpmvercmp")
 
 debug=0
 
@@ -263,29 +263,37 @@ def launch_process(command, capture_stderr=1, print_output=1):
 
 # This isn't buildenv or package specific, leave it here
 def get_latest_ver(dir):
-        files = os.listdir(dir)
 
-        (code, output) = launch_process(rpmvercmp + " " + string.join(files), print_output=debug)
+	if os.path.exists(dir):
+		files = os.listdir(dir)
+	else:
+		print "Path does not exist: %s" % dir
+		sys.exit(1)
+		
+        latest_version = version_sort(files).pop()
 
-	# TODO: Write python version...
-	# Happens when the rpmvercmp that's compiled and checked in doesn't run on a new host
+        return latest_version
+
+# TODO: Might implement this in python later... ?
+def version_sort(my_list):
+	"""returns list that was passed in in a sorted order."""
+
+	# Test to see if rpmvercmp is working
+        (code, output) = launch_process(rpmvercmp_path + " " + string.join(my_list), print_output=debug)
 	if code:
 		print "Warning, rpmvercmp is not working!"
 		cwd = os.getcwd()
-		os.chdir(os.path.dirname(rpmvercmp))
+		os.chdir(os.path.dirname(rpmvercmp_path))
 		print "Attempting to fix..."
 		(code, output) = launch_process("make clean; make", print_output=debug)
-		(code, output) = launch_process(rpmvercmp + " " + string.join(files), print_output=debug)
+		(code, output) = launch_process(rpmvercmp_path + " " + string.join(my_list), print_output=debug)
 		os.chdir(cwd)
 
 		if code:
 			print "Unable to fix..."
 			sys.exit(1)
-		
-        # Get last line of output
-        latest_version = output.split().pop()
 
-        return latest_version
+	return output.split()
 
 
 def remove_list_duplicates(my_list):
