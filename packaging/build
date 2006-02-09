@@ -102,7 +102,6 @@ if [ -z $USE_ZIP_PKG ]; then
 
 	scp do-build ../conf/$package/* $source_path/$package/*-$version.tar.gz $source_path/$package/*-$version.zip $target_host:$jaildir/tmp 
 
-	#if ! ./jail-do $distro bash -x /tmp/do-build $version $REVISION >> $LOGFILE 2>&1; then
 	if ! ./jail-do $distro "/tmp/do-build $version $REVISION" >> $LOGFILE 2>&1; then
 		rm status/$distro
 		echo Build failed, see log in $LOGFILE for details

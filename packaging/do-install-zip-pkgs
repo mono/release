@@ -32,7 +32,7 @@ os.chdir(dest)
 
 
 for package_file in package_files:
-	utils.extract_file(package_file)
+	utils.extract_file(package_file, preserve_symlinks=1)
 
 
 ### Change prefix in the .pc files ###

@@ -100,7 +100,9 @@ class init:
 
 		elif mode == 'tar':
 			# Note: the -f - option to the remote tar is required for solaris tar, otherwise it tries to read from a tape
-		        command = "%s -pc %s | ssh %s %s 'cd %s ; %s -pvxf - ' " % (self.local_tar_path, src, self.options + compress_option, self.target_host, self.jaildir + os.sep + dest, self.remote_tar_path )
+			if self.jaildir:
+				dest = self.jaildir + os.sep + dest
+		        command = "%s -pc %s | ssh %s %s 'cd %s ; %s -pvxf - ' " % (self.local_tar_path, src, self.options + compress_option, self.target_host, dest, self.remote_tar_path )
 		else:
 			print "Invalid copy_to mode: %s" % mode
 			sys.exit(1)

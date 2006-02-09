@@ -35,6 +35,38 @@ win_4_i386_ZIP_RUNTIME_DEPS=(
 	http://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/dependencies/expat-1.2.zip
 	http://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/dependencies/regex-spencer-3.8g3.zip
 
+	# Deps that used to be listed in buildwindows script
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/jpeg-6b-4-bin.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/jpeg-6b-4-dep.zip
+	# Don't need this because it only contains zlib
+	#http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libpng-1.2.8-dep.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libpng-1.2.8-bin.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/tiff-3.7.3-dep.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/tiff-3.7.3-bin.zip
+
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libungif-4.1.4-bin.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libungif-4.1.4-lib.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libungif-4.1.4-dep.zip
+
+	#http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/giflib-4.1.4-bin.zip
+	#http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/giflib-4.1.4-lib.zip
+	#http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/giflib-4.1.4-dep.zip
+
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/freetype-2.1.10-bin.zip
+	# Don't need this because it only contains zlib
+	#http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/freetype-2.1.10-dep.zip
+
+	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/glade-2.12.1-rc1.zip
+	#http://easynews.dl.sourceforge.net/sourceforge/gladewin32/glade-2.6.0-rc1.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/gts-0.1.1.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gtk-wimp/gtk-wimp-0.7.0-bin.zip
+
+	# For GtkDemo iconview (Hmm... this didn't fix it... later)
+	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/dependencies/hicolor-icon-theme-0.5.zip
+	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/dependencies/default-icon-theme-0.1.zip
+	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/gnome-icon-theme-2.12.0.zip
+	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/gnome-icon-theme-dev-2.12.0.zip
+
 )
 
 win_4_i386_ZIP_DEPS=(
@@ -62,8 +94,8 @@ win_4_i386_ZIP_DEPS=(
 	http://www.gimp.org/~tml/gimp/win32/libgsf-1.8.2-20040121.zip
 	http://www.gimp.org/~tml/gimp/win32/libgsf-dev-1.8.2.zip
 
-	#http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-dev.zip
-	#http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-bin.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-dev.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-bin.zip
 
 	# TODO: add gconf and other libs so gnome# and gtkhtml# can be built, and then mono-tools
 
@@ -91,8 +123,9 @@ win_4_i386_ZIP_DEPS=(
 	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libgnomeui-2.12.0.zip
 	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libgnomeui-dev-2.12.0.zip
 
-	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libglade-2.5.1-20060104.zip
-	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libglade-dev-2.5.1-20060104.zip
+	# Hmm... gtk# apps don't like this version
+	#http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libglade-2.5.1-20060104.zip
+	#http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libglade-dev-2.5.1-20060104.zip
 
 	# libgnomeprintui
 	http://ftp.gnome.org/pub/GNOME/desktop/2.12/2.12.2/win32/libgnomeprintui-2.12.1.zip

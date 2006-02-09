@@ -51,5 +51,7 @@ ${DISTRO_UNDERSCORES}_ZIP_BUILD || exit 1
 mkdir -p /tmp/builder/built-packages
 cd /tmp/install || exit 1
 zip -yr /tmp/builder/built-packages/$component_name_ver-$rev.$arch.zip *
+# Keep a copy of the "spec" file
+cp /tmp/scratch/$package /tmp/builder/built-packages
 
 

@@ -182,7 +182,7 @@ class package:
 		if var_to_echo: my_script.write("echo ${%s}\n" % var_to_echo)
 		my_script.close()
 
-		(code, output) = utils.launch_process("sh %s" % tmp_script, print_output=self.package_env.print_output)
+		(code, output) = utils.launch_process("sh %s" % tmp_script, print_output=0)
 
 		os.unlink(tmp_script)
 
@@ -224,6 +224,14 @@ class package:
 	def get_distro_zip_deps(self):
 		name_underscored = self.package_env.name.replace("-", "_")
 		name_underscored += "_ZIP_DEPS"
+		if self.info.has_key(name_underscored):
+			return self.info[name_underscored]
+		else:
+			return []
+
+	def get_distro_zip_runtime_deps(self):
+		name_underscored = self.package_env.name.replace("-", "_")
+		name_underscored += "_ZIP_RUNTIME_DEPS"
 		if self.info.has_key(name_underscored):
 			return self.info[name_underscored]
 		else:

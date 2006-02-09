@@ -46,77 +46,61 @@ import datetime
 
 # Local common utils
 sys.path += [ "../pyutils" ]
+import packaging
 import utils
 
 # Global constant type vars
 cwd = os.getcwd()
-packaging_dir = cwd + "/../packaging"
-external_downloads = cwd + os.sep +"external_downloads"
-windows_build_client = utils.get_env_var('target_host', packaging_dir + "/conf/win-4-i386")
+
+installer_env = packaging.buildenv('win-4-i386')
 
 # Represents a selection in the installer
 class Selection:
-	def __init__(self, name):
+	def __init__(self, name, deps=None, packages=None, urls=None):
 		self.name = name
-		self.packages = []
 
-
-
-# Definitions: base: base path to find directory of version for the packages
-#              package: flag: include the package we build
-#              deps: flag: include the deps that are required to build
-
-class Package:
-	def __init__(self, base="", package=0, deps=0, url=0):
-		self.base = os.path.abspath(packaging_dir + os.sep + base)
-		self.package = package
+		self.packages = packages
 		self.deps = deps
-		self.url = url
+		self.urls = urls
 
-		# Get path to latest set of packages
-		if not url:
-			self.latest_path = self.base + os.sep + self.get_latest_ver()
-		else:
-			self.latest_path = ""
+		# This is the only way to pass separate default values for mutable objects
+		if deps ==     None: self.deps = []
+		if packages == None: self.packages = []
+		if urls ==     None: self.urls = []
 
-	def get_latest_ver(self):
-		return utils.get_latest_ver(self.base)
+		# Load some package objects
+		self.pack_objs = {}
+		for pack in utils.remove_list_duplicates(self.deps + self.packages):
+			self.pack_objs[pack] = packaging.package(installer_env,pack)
 
-	def extract_files(self):
+		self.files = self.get_filelist()
 
-		if self.url:
-		
-			# Get filename
-			filename = os.path.basename(self.url)
-			#print filename
+	def get_filelist(self):
+		# Only compute once
+		try:
+			return self.files
+		except AttributeError:
+			self.files = []
+			
+			for package in self.packages:
+				self.files += self.pack_objs[package].get_latest_files()
 
-			utils.get_url(self.url, external_downloads)
+			for dep in self.deps:
+				self.urls += self.pack_objs[dep].get_distro_zip_deps() + self.pack_objs[dep].get_distro_zip_runtime_deps()
 
-			utils.extract_file(external_downloads + os.sep + filename)
-
-
-		if self.package:
-			#print "Base: " + self.latest_path	
-			package_files = os.listdir(self.latest_path)
-
-			for file in package_files:
-				# Make sure we don't try some filetypes
-				(root, ext) = os.path.splitext(file)
-				if ext != '.spec':
-					files_used_in_installer.append( utils.extract_file(self.latest_path + os.sep + file) )
-
-
-		if self.deps:
-			# Get def name
-			def_file = os.path.basename(self.base)
-			deps = utils.get_env_var("win_4_i386_ZIP_DEPS", packaging_dir + os.sep + "defs" + os.sep + def_file)
-			deps = deps.split()
-
-			for url in deps:
-				# Get filename, download, and extract
+			for url in self.urls:
 				filename = os.path.basename(url)
-				utils.get_url(url, external_downloads)
-				utils.extract_file(external_downloads + os.sep + filename)
+				url_dest = packaging.packaging_dir + os.sep + 'external_zip_pkg'
+				url_dest_file = url_dest + os.sep + filename
+				if not os.path.exists(url_dest_file):
+					utils.get_url(url, url_dest)
+				self.files += [ url_dest_file ]
+
+			self.files = utils.remove_list_duplicates(self.files)
+
+		return self.files
+		
+
 
 
 ### Main Execution Starts Here ###
@@ -140,138 +124,35 @@ if os.path.exists(output_dir):
 files_used_in_installer = []
 selections = []
 
-selection = Selection('mono')
-selection.packages.append(Package(
-			base	=	'zip_packages/win-4-i386/mono-1.1',
-			package	=	1,
-			deps	=	1)
-			)
-selection.packages.append(Package(
-			url	=	'http://primates.ximian.com/~wberrier/windows-installer/ms_gdiplus/3102.1360/gdiplus.exe')
-			)
-selection.packages.append(Package(
-			base	=	'packages/noarch/boo',
-			package	=	1,
-			deps	=	1)
-			)
-selection.packages.append(Package(
-			base	=	'packages/noarch/ikvm',
-			package	=	1,
-			deps	=	1)
-			)
-selections.append(selection)
+selections += [ Selection('mono', packages = "mono-1.1 boo ikvm".split(), deps=['mono-1.1'] ) ]
 
-selection = Selection('gtk')
-selection.packages.append(Package(
-			base	=	'zip_packages/win-4-i386/gtk-sharp',
-			package	=	0,
-			deps	=	1)
-			)
-selection.packages.append(Package(
-			base	=	'zip_packages/win-4-i386/gtk-sharp-2.0',
-			package	=	0,
-			deps	=	1)
-			)
-selection.packages.append(Package(
-			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/jpeg-6b-4-bin.zip')
-			)
-selection.packages.append(Package(
-			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/jpeg-6b-4-dep.zip')
-			)
-# Don't need this because it only contains zlib
-#selection.packages.append(Package(
-#			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libpng-1.2.8-dep.zip')
-#			)
-selection.packages.append(Package(
-			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libpng-1.2.8-bin.zip')
-			)
-selection.packages.append(Package(
-			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/tiff-3.7.3-dep.zip')
-			)
-selection.packages.append(Package(
-			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/tiff-3.7.3-bin.zip')
-			)
-selection.packages.append(Package(
-			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/freetype-2.1.10-bin.zip')
-			)
-# Don't need this because it only contains zlib
-#selection.packages.append(Package(
-#			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/freetype-2.1.10-dep.zip')
-#			)
-selection.packages.append(Package(
-			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gladewin32/glade-2.6.0-rc1.zip')
-			)
-selection.packages.append(Package(
-			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gladewin32/gts-0.1.1.zip')
-			)
-selection.packages.append(Package(
-			url	=	'http://easynews.dl.sourceforge.net/sourceforge/gtk-wimp/gtk-wimp-0.7.0-bin.zip')
-			)
-selections.append(selection)
+# TODO: try out gtk-sharp-2.8
+#  Everything works except monodoc browser... fails on glade-sharp glade 2.5 seems to be killing this
+#  Need to use the same glade in compiling gtk-sharp 1.0 and gtk-sharp 2.8
+# glade-sharp does link against the native libglade library... hmm... try rebuilding 1.0 and 2.8 against the 2.5?  I thought they were...
+#selections += [ Selection('gtk', deps = "gtk-sharp gtk-sharp-2.0".split() ) ]
+selections += [ Selection('gtk', deps = "gtk-sharp gtk-sharp-2.8".split() ) ]
 
-selection = Selection('gtk-sharp')
-selection.packages.append(Package(
-			base	=	'zip_packages/win-4-i386/gtk-sharp',
-			package	=	1,
-			deps	=	0)
-			)
-selection.packages.append(Package(
-			base	=	'zip_packages/win-4-i386/gtk-sharp-2.0',
-			package	=	1,
-			deps	=	0)
-			)
-selections.append(selection)
+#selections += [ Selection('gtk-sharp', packages = "gtk-sharp gtk-sharp-2.0".split() ) ]
+selections += [ Selection('gtk-sharp', packages = "gtk-sharp gtk-sharp-2.8".split() ) ]
 
-selection = Selection('monodoc')
-selection.packages.append(Package(
-			base	=	'packages/noarch/monodoc',
-			package	=	1,
-			deps	=	0)
-			)
-"""
-# Not working right now... (probably have to build this on windows in order to compile with gecko instead of gtkhtml)
-selection.packages.append(Package(
-			base	=	'packages/noarch/mono-tools',
-			package	=	1,
-			deps	=	0)
-			)
-"""
-selections.append(selection)
+selections += [ Selection('monodoc', packages = "monodoc mono-tools".split() ) ]
 
+# TODO: Why am I distributing gecko-sharp without the GRE?
+# TODO: Also, why am I distributing gnome?.... ? adds some to gtk-sharp 1.0.10
+#   monodoc browser needs gconf-sharp, which depends on gnome-sharp...
+#  So, until the GRE for gecko-sharp gets easier to distribute, including gnome is how it is
+selections += [ Selection('gecko-sharp', packages = "gecko-sharp gecko-sharp-2.0".split() ) ]
 
-selection = Selection('gecko-sharp')
-selection.packages.append(Package(
-			base	=	'packages/noarch/gecko-sharp',
-			package	=	1,
-			deps	=	0)
-			)
-selection.packages.append(Package(
-			base	=	'packages/noarch/gecko-sharp-2.0',
-			package	=	1,
-			deps	=	0)
-			)
-selections.append(selection)
+# Hmm... needs to be a better way to package up these samples...
+selections += [ Selection('samples', urls = """
+http://primates.ximian.com/~wberrier/windows-installer/sqlsharpgtk-0.3-appguidelines.zip
+http://primates.ximian.com/~wberrier/windows-installer/samples-1.zip
+""".split()
+ ) ]
+#http://primates.ximian.com/~wberrier/windows-installer/sqlsharpgtk-0.3-0-bin.tar.gz 
 
-
-selection = Selection('samples')
-selection.packages.append(Package(
-			#url	=	'http://forge.novell.com/modules/xfcontent/private.php/sqlsharpgtk/sqlsharpgtk-0.3-bin.tar.gz')
-			#  This updated url has sqlsharp compiled for the new gtk#
-			url	=	'http://primates.ximian.com/~wberrier/windows-installer/sqlsharpgtk-0.3-0-bin.tar.gz')
-			)
-selection.packages.append(Package(
-			url	=	'http://primates.ximian.com/~wberrier/windows-installer/samples.zip')
-			)
-selections.append(selection)
-
-
-selection = Selection('xsp')
-selection.packages.append(Package(
-			base	=	'packages/noarch/xsp',
-			package	=	1,
-			deps	=	0)
-			)
-selections.append(selection)
+selections += [ Selection('xsp', packages = "xsp".split() ) ]
 
 
 
@@ -284,56 +165,86 @@ os.chdir('build')
 
 # Start gathering, laying down, and extracting 
 for selection in selections:
+	print "Selection: " + selection.name
+
+	files = selection.files
+	files_used_in_installer += map(os.path.basename, files)
 
 	os.mkdir(selection.name)
 	os.chdir(selection.name)
-
-	for package in selection.packages:
-		package.extract_files()
+	
+	for file in files:
+		utils.extract_file(file, preserve_symlinks=0)
 
 	os.chdir("..")
 
+# uniqify the files array
+files_used_in_installer = utils.remove_list_duplicates(files_used_in_installer)
+
+# Not needed anymore... (had to rebuild for some reason...)
+###########################################
+## Special case for sqlsharpgtk, massage it
+#os.chdir('samples')
+#dir = glob.glob('sqlsharpgtk*').pop()
+#print dir
+#distutils.dir_util.mkpath('share/doc' + os.sep + dir)
+#os.chdir(dir)
+#
+#output = commands.getoutput("cp -f *.TXT ../share/doc/%s" % dir)
+#output = commands.getoutput("mv sqlsharpgtk ../bin")
+#output = commands.getoutput("cp -f sqlsharpgtk.* ../lib")
+#output = commands.getoutput("cp -f Mono.Data.SqlSharp.DatabaseBrowser.* ../lib")
+#
+#os.chdir("..")
+#shutil.rmtree(dir)
+#os.chdir("..")
+## End of sqlsharpgtk special case
 ##########################################
-# Special case for sqlsharpgtk, massage it
+
+##########################################
+# Special case for gtk-sharp samples
 os.chdir('samples')
-dir = glob.glob('sqlsharpgtk*').pop()
-print dir
-distutils.dir_util.mkpath('share/doc' + os.sep + dir)
-os.chdir(dir)
 
-output = commands.getoutput("cp -f *.TXT ../share/doc/%s" % dir)
-output = commands.getoutput("mv sqlsharpgtk ../bin")
-output = commands.getoutput("cp -f sqlsharpgtk.* ../lib")
-output = commands.getoutput("cp -f Mono.Data.SqlSharp.DatabaseBrowser.* ../lib")
+# Move them from the gtk-sharp-2.8 package
+distutils.dir_util.copy_tree("../gtk-sharp/samples", "samples")
+distutils.dir_util.remove_tree("../gtk-sharp/samples")
+
+distutils.dir_util.mkpath('bin')
+
+fd = open('bin/GtkDemo', 'w')
+fd.write("""#!/bin/sh
+exec @@WIN_MONO_INST_DIR@@/bin/mono @@WIN_MONO_INST_DIR@@/samples/gtk-sharp-2.0/GtkDemo/GtkDemo.exe "$@" """)
+fd.close()
 
 os.chdir("..")
-shutil.rmtree(dir)
-os.chdir("..")
-# End of sqlsharpgtk special case
+# End of gtk-sharp samples special case
 #########################################
+
 
 ##########################################
 # Special case for glade
-os.chdir('gtk/glade')
-output = commands.getoutput("cp -Rfp * ..")
-os.chdir('..')
-shutil.rmtree('glade')
-
-os.chdir("..")
-
+#  Not needed in the new glade
+#os.chdir('gtk/glade')
+#output = commands.getoutput("cp -Rfp * ..")
+#os.chdir('..')
+#shutil.rmtree('glade')
+#
+#os.chdir("..")
+#
 #
 #########################################
 
 ##########################################
 # Special case for gtk-wimp theme
-
+# TODO: Get this working with new gtk
 os.chdir('gtk')
 
 if not os.path.exists('lib/gtk-2.0/2.4.0'):
 	print "Error munging gtk-wimp: Path doesn't exist: lib/gtk-2.0/2.4.0"
 	sys.exit(1)
 
-os.makedirs('lib/gtk-2.0/2.4.0/engines')
+# Dir already exists...
+#os.makedirs('lib/gtk-2.0/2.4.0/engines')
 shutil.move('gtk-wimp-0.7.0-bin/libwimp.dll', 'lib/gtk-2.0/2.4.0/engines')
 
 os.makedirs('share/themes/gtk-wimp/gtk-2.0')
@@ -341,13 +252,18 @@ shutil.move('gtk-wimp-0.7.0-bin/Theme/gtk-2.0/gtkrc', 'share/themes/gtk-wimp/gtk
 
 # Do some theme renaming (Looks like something similar is proposed for upstream)
 # Rename default to Raleigh
-shutil.move('share/themes/Default', 'share/themes/Raleigh')
+# Already done
+#shutil.move('share/themes/Default', 'share/themes/Raleigh')
 
 # Make the wimp theme the default
-shutil.move('share/themes/gtk-wimp', 'share/themes/Default')
+# Default dir is basically empty
+# Hmm... didn't work... what's the default theme on win?
+shutil.rmtree('share/themes/Default')
+#shutil.move('share/themes/gtk-wimp', 'share/themes/Default')
+distutils.dir_util.copy_tree("share/themes/gtk-wimp", "share/themes/Default")
 
 # Another way to make the wimp theme the default
-#shutil.copy('share/themes/gtk-wimp/gtk-2.0/gtkrc', 'etc/gtk-2.0')
+shutil.copy('share/themes/gtk-wimp/gtk-2.0/gtkrc', 'etc/gtk-2.0')
 
 shutil.rmtree('gtk-wimp-0.7.0-bin')
 
@@ -398,8 +314,6 @@ os.chdir("..")
 
 #
 #########################################
-
-
 
 
 
@@ -485,7 +399,7 @@ for selection in selections:
 					shutil.copy(cwd + "/bat/wrapper.bat", bat_file)
 
 					# Get the path of the binary out of the shell script
-					# Match everything afeter mono then after the / up to .exe
+					# Match everything after mono then after the / up to .exe
 					path_string = re.compile(r"mono{0,1}?.*?\/(.*?).exe{0,1}").search(text).groups()
 					# Get the last match
 					path_string = path_string[len(path_string) - 1]
@@ -554,6 +468,11 @@ os.remove("gtk-sharp/bin/gapi2-parser")
 shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gconfsharp-schemagen.exe", "gtk-sharp/bin/gconfsharp2-schemagen.exe")
 os.remove("gtk-sharp/bin/gconfsharp2-schemagen")
 
+# Fix dll map config for gtkhtml
+# TODO: is this not done in the gtk-sharp build?
+utils.add_dll_map('mono/etc/mono/config', '<dllmap dll="gtkhtml-3.0" target="libgtkhtml-3.8-15.dll"/>')
+
+
 #
 ##############################################
 
@@ -593,20 +512,23 @@ parameter_map[re.compile(r"\\monodocs2slashdoc")] = r"\\lib\\monodoc\\monodocs2s
 utils.substitute_parameters_in_file("monodoc/bin/monodocs2slashdoc.bat", re.compile(''), parameter_map)
 
 
-# This is from mono-tools:
-#substitute_parameters_in_file("monodoc/bin/monodoc.bat", re.compile(''), parameter_map)
-
 # From mono-tools
-#parameter_map = {}
-#parameter_map[re.compile(r"monodoc.exe")] = r"browser.exe"
-#substitute_parameters_in_file("monodoc/bin/monodoc.bat", re.compile(''), parameter_map)
+parameter_map = {}
+parameter_map[re.compile(r"browser.exe")] = r"browser.exe --no-gecko"
+utils.substitute_parameters_in_file("monodoc/bin/monodoc", re.compile(''), parameter_map)
 
+parameter_map = {}
+#  Add path so gconf stuff can load
+# (TODO note: MonoLaunch would be nice here instead of doing this)
+parameter_map[re.compile('@"@@')] = 'PATH=@@DOS_MONO_INST_DIR@@\\\\bin;%PATH%\r\n@"@@'
+#  This is weird... but it works
+parameter_map[re.compile('browser.exe"')] = 'lib\monodoc\\\\browser.exe" --no-gecko'
+utils.substitute_parameters_in_file("monodoc/bin/monodoc.bat", re.compile(''), parameter_map)
 
 # Substitute the config file to point to the docs
 parameter_map = {}
 parameter_map[re.compile(r"/usr")] = r"@@WIN_MONO_INST_DIR@@"
 utils.substitute_parameters_in_file("monodoc/lib/mono/gac/monodoc/1.0.0.0__0738eb9f132ed756/monodoc.dll.config", re.compile(''), parameter_map)
-
 
 #
 ##############################################
@@ -614,6 +536,7 @@ utils.substitute_parameters_in_file("monodoc/lib/mono/gac/monodoc/1.0.0.0__0738e
 
 ##############################################
 # gtk massages (This will need to be updated when a new version of gtk comes)
+# TODO
 
 # Substitute some etc files
 parameter_map = {}
@@ -634,10 +557,10 @@ utils.substitute_parameters_in_file("gtk/etc/pango/pango.modules", re.compile(''
 os.chdir('..')
 
 # Run the guid generator on windows
-# TODO:  Need to be able to interact (just in case keys aren't set up) and also capture output
 print "Copying/running guidgen..."
-os.system("scp guidgen/guidgen.exe %s:" % windows_build_client)
-output = commands.getoutput("ssh %s './guidgen.exe' " % windows_build_client)
+installer_env.ssh.copy_to('guidgen/guidgen.exe', '.', mode="scp")
+(code, output) = installer_env.ssh.execute('./guidgen.exe')
+print "\n",
 guid = output.split().pop()
 
 if guid == "found" or not re.compile('.*-.*-.*-.*-.*').search(guid):
@@ -673,20 +596,26 @@ packages_file.close()
 
 # Copy everything to windows_build_client 
 print "Cleaning up files files from build client..."
-os.system("ssh %s 'rm -Rf /tmp/windows-installer; mkdir -p /tmp/windows-installer/Output'" % windows_build_client)
+installer_env.ssh.execute("rm -Rf /tmp/windows-installer; mkdir -p /tmp/windows-installer/Output")
+if code:
+	print "Error cleaning up"
+	print output
+	sys.exit(code)
+
 print "Copying files to build client..."
-os.system("tar -zpcf - build Mono.iss setup-files  | ssh %s 'cd /tmp/windows-installer; tar -zpxf -'" % windows_build_client)
+installer_env.ssh.copy_to(["build", "Mono.iss", "setup-files"], '/tmp/windows-installer', compress=1)
 
 # Run installer on windows
-if os.system("""ssh %s 'export PATH="$PATH:/cygdrive/c/PROGRA~1/INNOSE~1:C:\Program Files\Inno Setup5"; cd /tmp/windows-installer; ISCC.exe Mono.iss' """ % windows_build_client):
+(code, output) = installer_env.ssh.execute('export PATH="$PATH:/cygdrive/c/PROGRA~1/INNOSE~1:C:\Program Files\Inno Setup5"; cd /tmp/windows-installer; ISCC.exe Mono.iss')
+
+if code:
 	print "Error running installer"
 	sys.exit(1)
 
 # Copy resultant file back
-os.system("mkdir -p Output; scp %s:/tmp/windows-installer/Output/* %s" % (windows_build_client, output_dir))
+installer_env.ssh.copy_from("/tmp/windows-installer/Output/*", output_dir, mode='scp')
 
 # Generate the md5sum of the final installer
 output_filename = os.path.basename(glob.glob(output_dir + os.sep + "*.exe").pop())
 os.system("cd %s; md5sum *.exe > %s.md5 " % (output_dir, output_filename))
-
 

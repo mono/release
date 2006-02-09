@@ -39,9 +39,9 @@ Name: custom; Description: Custom installation; Flags: iscustom
 
 [Components]
 Name: mono; Description: Mono Files; Types: full compact custom; Flags: fixed
-Name: gtk; Description: GTK+ 2.6 Files; Types: full custom
-Name: gtk\gtkSharp\monodoc; Description: MonoDoc; Types: full custom
+Name: gtk; Description: GTK+ 2.8 and Gnome 2.12 Files; Types: full custom
 Name: gtk\gtkSharp; Description: Gtk# @@GTK_SHARP_VERSION@@ Files; Types: full custom
+Name: gtk\gtkSharp\monodoc; Description: Monodoc and Mono Tools; Types: full custom
 Name: gtk\gtkSharp\geckosharp; Description: Gecko# Files; Types: full custom
 Name: gtk\gtkSharp\samples; Description: Samples; Types: full custom
 Name: xsp; Description: XSP files; Types: full custom
@@ -73,13 +73,13 @@ Filename: {app}\Xsplocal2.url; Section: InternetShortcut; Components: xsp; Key: 
 Name: {group}\Mono-@@MONO_VERSION@@ Command Prompt; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono @@MONO_VERSION@@ Command Prompt
 Name: {group}\Readme; Filename: {app}\ReleaseNotes.txt; Comment: Combined Installer Release Notes
 Name: {group}\{cm:ProgramOnTheWeb,Mono-@@MONO_VERSION@@ Release Notes}; Filename: {app}\MonoReleaseNotes.url
-; TODO:  Disable samples until I can get them compiled for gtk# 2.3.91
-;Name: {group}\Applications\Gtk# Demo; Filename: {app}\bin\GtkDemo.bat; Components: gtk\gtkSharp\samples; Comment: Gtk# Demo
+Name: {group}\Applications\Gtk# Demo; Filename: {app}\bin\GtkDemo.bat; Components: gtk\gtkSharp\samples; Comment: Gtk# Demo
 Name: {group}\Applications\Sql# GTK; Filename: {app}\bin\sqlsharpgtk.bat; Components: gtk\gtkSharp\samples; Comment: SQL# GUI version
 Name: {group}\Applications\Prj2Make# GTK; Filename: {app}\bin\prj2make-sharp-gtk.bat; Components: gtk\gtkSharp\samples; Comment: Makefile generator tool.
 Name: {group}\Applications\Samples Directory; Filename: {app}\samples; Components: gtk\gtkSharp\samples; Comment: Gtk# samples directory
 Name: {group}\Applications\Glade 2; Filename: {app}\bin\glade-2.exe; Components: gtk; Comment: Glade 2 Gui Builder
 Name: {group}\Applications\Gtk Theme Selector; Filename: {app}\bin\gtkthemeselector.exe; Components: gtk; Comment: GTK Theme Selector
+Name: {group}\Applications\Monodoc Browser; IconFilename: {app}\mono.ico; Filename: {app}\bin\monodoc.bat; Components: gtk\gtkSharp\monodoc; Comment: Mono Documentation Browser
 Name: {group}\XSP\XSP Test Web Server; Filename: {app}\bin\startXSP.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\XSP\XSP 2.0 Test Web Server; Filename: {app}\bin\startXSP2.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\{cm:ProgramOnTheWeb,Mono}; IconFilename: {app}\mono.ico; Filename: {app}\Mono.url
@@ -114,6 +114,7 @@ Type: files; Name: {app}\GtkSharp.url
 Type: files; Name: {app}\Xsplocal.url
 Type: files; Name: {app}\Xsplocal2.url
 ;Type: files; Name: {app}\MonoDocWeb.url
+;TODO: delete monodoc and gconf cruft?
 
 [Code]
 var

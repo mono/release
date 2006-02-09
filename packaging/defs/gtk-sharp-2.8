@@ -1,8 +1,7 @@
 BUILD_HOSTS=(
 	suse-100-i586
 	suse-100-x86_64
-	# Not ready yet
-	#win-4-i386
+	win-4-i386
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -18,10 +17,168 @@ get_destroot () {
 }
 
 HEAD_PATH="trunk/gtk-sharp"
-RELEASE_PATH="tags/gtk-sharp/[[versiondot]]/gtk-sharp"
+#RELEASE_PATH="tags/gtk-sharp/[[versiondot]]/gtk-sharp"
+RELEASE_PATH="tags/gtk-sharp/2.x.1/gtk-sharp"
 
 get_tarball () {
 	msvn_tar $1
 }
 
+win_4_i386_ZIP_DEPS=(
+
+        http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2-2.6.20-1-mono.win32.zip
+
+        # for libxml2 and other image deps
+        http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-bin.zip
+        http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-lib.zip
+
+        # For some extra dll's (art-sharp, glade-sharp, rsvg-sharp)
+        #http://www.gimp.org/~tml/gimp/win32/libart_lgpl-2.3.14.zip
+        #http://www.gimp.org/~tml/gimp/win32/libart_lgpl-dev-2.3.14.zip
+
+        http://www.gimp.org/~tml/gimp/win32/librsvg-2.4.0.zip
+        http://www.gimp.org/~tml/gimp/win32/librsvg-dev-2.4.0.zip
+        http://www.gimp.org/~tml/gimp/win32/libgsf-1.8.2-20040121.zip
+        http://www.gimp.org/~tml/gimp/win32/libgsf-dev-1.8.2.zip
+
+        http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-dev.zip
+        http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-bin.zip
+
+        # gtk 2.8 / gnome 2.12
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/atk-1.10.3.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/atk-dev-1.10.3.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/gtk+-2.8.11.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/gtk+-dev-2.8.11.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/pango-1.10.2.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/pango-dev-1.10.2.zip
+
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/dependencies/cairo-1.0.2.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/dependencies/cairo-dev-1.0.2.zip
+
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/GConf-dev-2.12.1-20050910.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/GConf-2.12.1-20050910-1.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/ORBit2-2.13.2.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/ORBit2-dev-2.13.2.zip
+
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libart_lgpl-2.3.17.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libart_lgpl-dev-2.3.17.zip
+
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libgnomecanvas-2.12.0.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libgnomecanvas-dev-2.12.0.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libgnomeui-2.12.0.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libgnomeui-dev-2.12.0.zip
+
+        #http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libglade-2.5.1-20060104.zip
+        #http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libglade-dev-2.5.1-20060104.zip
+
+        # libgnomeprintui
+        http://ftp.gnome.org/pub/GNOME/desktop/2.12/2.12.2/win32/libgnomeprintui-2.12.1.zip
+        http://ftp.gnome.org/pub/GNOME/desktop/2.12/2.12.2/win32/libgnomeprintui-dev-2.12.1.zip
+        http://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/libgnomeprint-2.12.1.zip
+        http://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/libgnomeprint-dev-2.12.1.zip
+
+        # gtkhtml
+        http://ftp.gnome.org/pub/GNOME/desktop/2.12/2.12.2/win32/gtkhtml-3.9.90.zip
+        http://ftp.gnome.org/pub/GNOME/desktop/2.12/2.12.2/win32/gtkhtml-dev-3.9.90.zip
+
+        # libgnome
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libgnome-2.12.0.1-20050929.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libgnome-dev-2.12.0.1-20050929.zip
+
+        # gda and gnomedb? we don't ship them with anything else...
+
+        # libbonobo and bonoboui?  Not sure yet...  gdk, vfs, bonobo
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libbonobo-2.10.1-20051220.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libbonobo-dev-2.10.1-20051220.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libbonoboui-2.10.1.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libbonoboui-dev-2.10.1.zip
+
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/gnome-vfs-2.12.2.pre-tml-20051126.zip
+        http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/gnome-vfs-dev-2.12.2.pre-tml-20051126.zip
+
+        http://ftp.gnome.org/pub/gnome/platform/2.12/2.12.2/win32/dependencies/popt-1.10.2-tml-20050828.zip
+        http://ftp.gnome.org/pub/gnome/platform/2.12/2.12.2/win32/dependencies/popt-dev-1.10.2-tml-20050828.zip
+
+
+)
+
+win_4_i386_ZIP_BUILD () {
+        # Make sure it's not dependent on cygwin
+        export CC="gcc -mno-cygwin"
+
+        CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322`
+        CSC=`cygpath -a $CSC`
+
+        # Add MS SDK to path for ilasm and ildasm
+        SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin"`
+        SDK=`cygpath -a $SDK`
+        export PATH=$SDK:$CSC:$PATH
+
+        # Since we're using MS compiler, fake like mono's not installed
+        mkdir -p /tmp/backup
+        mv /tmp/build_deps/lib/pkgconfig/mono.pc /tmp/backup
+
+        # Build fails on gnome-vfs tests, don't build those
+        # Actually, so sed below for sample/Makefile
+        #mv /tmp/build_deps/lib/pkgconfig/gnome-vfs-* /tmp/backup/
+
+        # TODO: Paco used to alter configure.in to change the dep on libart to 2.3.14
+        # Something like this:
+        #  Paco said people were using rsvg-sharp compiled in this manner with no problems... should probably investigate this
+        # Don't need this anymore since we have something newer than 2.3.16
+        #sed -i "s/2.3.16/2.3.14/" configure
+
+        # Patch configure to check for gtkhtml, even if gnome# isn't enabled
+        #if test "x$enable_gnome" = "xyes"; then
+        #if test "xyes" = "xyes"; then
+        # Can't do this... gtkhtml depends on gnome
+
+        ./configure --prefix=/tmp/install
+
+        # let's just skip the gnomevfs sample instead of disabling gnome-vfs
+	# Unnecessary in 2.8.1... doh, still another problem: Mono.GetOptions
+        sed -i "s/gnomevfs valtest/valtest/" sample/Makefile
+
+        # Don't have cyg in dll files
+        sed -i "s/\/cyg\//\/\//" libtool
+
+        # Clean up the MS gac of gtk-sharp
+        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp
+
+        make || exit 1
+        make install || exit 1
+
+	# Install the samples
+	mkdir -p /tmp/install/samples/gtk-sharp-2.0
+	cp -Rf sample/* /tmp/install/samples/gtk-sharp-2.0
+
+        # TODO: Should I be using mono's gacutil instead to install these files?
+
+        # Move files out of MS gac and install them into the /tmp/install's gac
+        mkdir -p /tmp/install/lib/mono/gac
+        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/install/lib/mono/gac
+
+        # Copy the rest of the files into their other location (would be symlink on unix, not on cygwin though...)
+        #  Should this be a symlink?  Seems like cygwin handles them...
+        mkdir -p /tmp/install/lib/mono/gtk-sharp-2.0
+        cd /tmp/install/lib/mono/gac
+        find . -name "*.dll" -exec cp -f '{}' /tmp/install/lib/mono/gtk-sharp-2.0/ \;
+
+	# Remove some uneeded files
+        #  exit on the first failure, usually means windows find was used instead of cygwin's find
+        find /tmp/install -name "*\.a" | xargs rm -f || exit 1
+        find /tmp/install -name "*\.la" | xargs rm -f
+        find /tmp/install -name "__*\.ini" | xargs rm -f
+
+        # Don't have to worry about removing the .config files because this is built with ms sdk.  Once we build with mono we'll have to remove them
+        find /tmp/install -name "*\.config" | xargs rm -f
+
+        # Windows convention to have .dll files in the bin dir instead of lib
+        mv /tmp/install/lib/*.dll /tmp/install/bin
+
+        cd /tmp/install/bin
+        strip --strip-unneeded *.dll *.exe
+
+
+}
 

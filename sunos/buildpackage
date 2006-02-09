@@ -42,7 +42,7 @@ zip_packages_to_include['sunos-8-sparc'] = ['mono-1.1', 'libgdiplus-1.1' ]
 rpm_packages_to_include['sunos-8-sparc'] = ['xsp', 'ikvm', 'boo', 'monodoc' ]
 
 zip_packages_to_include['sunos-10-sparc'] = ['mono-1.1', 'libgdiplus-1.1', 'gtk-sharp-2.0', 'gtk-sharp' ]
-rpm_packages_to_include['sunos-10-sparc'] = ['xsp', 'ikvm', 'boo', 'monodoc' ]
+rpm_packages_to_include['sunos-10-sparc'] = ['xsp', 'ikvm', 'boo', 'monodoc', 'mono-tools', 'monodevelop', 'gtksourceview-sharp-2.0' ]
 
 debug=1
 
@@ -82,7 +82,7 @@ def build_package(target):
 
 		for file in os.listdir(latest_ver_dir):
 			if not re.compile('\.spec').search(file):
-				utils.extract_file(latest_ver_dir + os.sep + file)
+				utils.extract_file(latest_ver_dir + os.sep + file, preserve_symlinks=1)
 				packages_used += [ file ]
 
 

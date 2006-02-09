@@ -1,5 +1,6 @@
 Release Notes for Mono, Gtk# and XSP Combined Windows Installer. 
 By Wade Berrier <wberrier@novell.com> @@DATE@@
+Based on the work of Francisco G. Martinez  (Paco)
 ------------------------------------------------------------------------
 
 Check http://go-mono.com/archive/@@MONO_VERSION@@/ for release details.
@@ -11,6 +12,20 @@ Gtk# 1.0.10 and @@GTK_SHARP_VERSION@@ for Windows.  It also includes a
 built and configured version of XSP.
 
 Installer Changes:
+
+1.1.13.2-1:
+ -Upgraded to GTK+ 2.8 and most Gnome 2.12 deps are included
+ -Upgraded to gtk# 2.8
+ -Upgraded Glade to 2.10 (Downloaded zip was labeled 2.12.1...?)
+ -MonoDoc browser is included
+  -gnome-sharp for gtk-sharp 1.0 have been added
+  -Many Gnome Deps were required for this.  So, until we have gecko-sharp
+   working in the installer, this is the way it goes.  Including Gnome deps
+   add around 40MB uncompressed to the installed files.
+ -Copied files in place of symbolic links for monodoc, gecko-sharp and boo
+ -Got the samples working with the current gtk-sharp (Bug #77292)
+ -sqlsharpgtk now uses the Mono App Guidelines for its file locations
+  -Had to recompile for some unknown reason...
 
 1.1.10.1:
  -InnoSetup shell/batch file substitution has been cleaned up.
@@ -25,14 +40,11 @@ Requirements:
 - This build runs on Windows 2000 or later.
 
 Known Issues:
-
--The monodoc browser (Mono-tools) was not included in this release
- because mono-tools doesn't build on windows yet.  Hopefully this
- will change. 
--Some of the precompiled samples don't work because they
- depend on gtk# 1.9.5.  The samples have been included in order to 
- look at the source code. This will be fixed in an upcoming release.
-
+-Uploading changes in Monodoc causes a crash.  Still looking into this.
+-Generating the index in Monodoc causes an exception (chmod error)
+ but the index eventually gets generated
+-Icon View in GtkDemo crashes because of some missing themes (tried adding
+ themes, but the problem still occurs)
 
 Credits and Related Information:
 
