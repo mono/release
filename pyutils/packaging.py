@@ -101,7 +101,8 @@ class buildenv:
 				try:
 					# Grab key and value from key=value format
 						# Also, ingnore double or single quotes arond the value
-					(key, value) = re.compile('^(.+)="?\'?(.*?)"?\'?$').search(line).groups()
+						# the .+ is nongreedy before the equals sign (allows for more than one equals)
+					(key, value) = re.compile('^(.+?)="?\'?(.*?)"?\'?$').search(line).groups()
 					info[key] = value
 					#print "Key: %s, value: %s" %( key, value)
 				except AttributeError:
