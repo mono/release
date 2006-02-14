@@ -22,6 +22,9 @@ arch=${distro#*-*-}
 if [ -e /usr/local/bin/tar ] ; then
 	# This is for the solaris 8 machine
 	TAR=/usr/local/bin/tar
+elif [ -e /usr/sfw/bin/gtar ] ; then
+	# This is for the solaris 10 box
+	TAR=/usr/sfw/bin/gtar
 else
 	TAR=tar
 fi

@@ -3,9 +3,10 @@ BUILD_HOSTS=(
 	redhat-9-i386
 	sles-9-x86_64
 	sles-9-ia64
-	sles-9-s390
-	sles-9-s390x
+	#sles-9-s390
+	#sles-9-s390x
 	sunos-8-sparc
+	#sunos-10-sparc
 	win-4-i386
 )
 
@@ -68,27 +69,9 @@ win_4_i386_ZIP_DEPS=(
 
 sunos_8_sparc_ZIP_DEPS=(
 
-#	# Repackaged Sunfreeware packages
-#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/expat-1.95.5-0.sunos8.sparc.zip
-#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/gettext-0.14.1-0-sunos8.sparc.zip
-#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/glib-2.3.3-0-sunos8.sparc.zip
-#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libiconv-1.8-0-sunos8.sparc.zip
-#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libintl-3.4.0-0-sunos8.sparc.zip
-#	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/pkgconfig-0.15.0-0-sunos8.sparc.zip
+	# Should we use blastwave instead?  they follow more package standards than smc does... (gmake, gtar, gm4, etc...)
 
-
-#	# Self Compiled versions
-#	# gettext also comes with libintl
-#	http://primates.ximian.com/~wberrier/sunos/deps/novell/gettext-0.14.5-0.sunos8.novell.sparc.zip
-#	http://primates.ximian.com/~wberrier/sunos/deps/novell/libiconv-1.9.1-0.sunos8.novell.sparc.zip
-#	http://primates.ximian.com/~wberrier/sunos/deps/novell/glib-2.8.3-0.sunos8.novell.sparc.zip
-#	http://primates.ximian.com/~wberrier/sunos/deps-novell/pkg-config-0.20-0.sunos8.novell.sparc.zip
-#
-#	# Repackaged
-#	http://primates.ximian.com/~wberrier/sunos/deps-novell/libgcc-3.3-0.sunos8.novell.sparc.zip
-
-#
-#	# Sunfreeware packages
+	# Sunfreeware packages
 	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libgcc-3.3-sol8-sparc-local.gz
 	# Have to use this one because above is not under $prefix/lib
 	# TODO: This packages doesn't have symbolic links, is this ok?
@@ -117,6 +100,13 @@ sunos_8_sparc_ZIP_DEPS=(
 	# For testing...
 	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/gdb-6.0-sol8-sparc-local.gz
 )
+sunos_10_sparc_ZIP_DEPS=(
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/expat-1.95.5-sol8-sparc-local.gz
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libiconv-1.8-sol8-sparc-local.gz
+	#http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libgcc-3.3-0-sunos8.sparc.zip
+	
+	# Glib comes on the system...
+)
 
 sunos_8_sparc_ZIP_BUILD () {
 	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
@@ -144,6 +134,31 @@ sunos_8_sparc_ZIP_BUILD () {
 	/usr/ccs/bin/strip * || true
 	cd /tmp/install/bin
 	/usr/ccs/bin/strip * || true
+}
+
+sunos_10_sparc_ZIP_BUILD () {
+	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
+	# Only if a non-gnu m4 is in the path
+	export M4=/usr/sfw/bin/gm4
+	export MAKE=/usr/sfw/bin/gmake
+	export PKG_CONFIG=/usr/bin/pkg-config.sun
+	
+	#./configure --prefix=/tmp/install
+	./configure --prefix=/opt/mono
+	gmake || exit 1
+	# Cannot find ELF
+	# Gnu Strip causes problems on Solaris
+	#  (http://sunportal.sunmanagers.org/pipermail/summaries/2003-August/004247.html)
+	# This is fixed in a later bintuils release... is this enough reason to use blastwave packages?
+	#make install-strip || exit 1
+	#gmake install DESTDIR=/tmp/install || exit 1
+	gmake install-strip DESTDIR=/tmp/install || exit 1
+
+	# Make sure to use the solaris version of strip (will this work?
+	#cd /tmp/install/lib
+	#/usr/ccs/bin/strip * || true
+	#cd /tmp/install/bin
+	#/usr/ccs/bin/strip * || true
 }
 
 win_4_i386_ZIP_BUILD () {

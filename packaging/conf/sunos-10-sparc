@@ -1,0 +1,5 @@
+target_host=builder@pbartok2.provo.novell.com
+USE_ZIP_PKG=1
+target_command_prefix="export PATH=/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:\$PATH; "
+
+jail_strip_path=/usr/ccs/bin/strip
