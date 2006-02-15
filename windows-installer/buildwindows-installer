@@ -318,6 +318,7 @@ utils.remove_line_matching('etc/mono/config', '<dllmap dll="db2cli" target="libd
 utils.remove_line_matching('etc/mono/config', '<dllmap dll="msvcrt" target="libc.so.6"/>')
 utils.remove_line_matching('etc/mono/config', '<dllmap dll="libX11" target="libX11.so"/>')
 utils.remove_line_matching('etc/mono/config', '<dllmap dll="libcairo-2.dll" target="libcairo.so.2"/>')
+utils.remove_line_matching('etc/mono/config', 'sqlite')
 
 os.chdir("..")
 
