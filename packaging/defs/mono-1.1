@@ -1,5 +1,6 @@
 # Possibly use sles-8 as the new base distro?
 BUILD_HOSTS=(
+	macos-10-ppc
 	redhat-9-i386
 	sles-9-x86_64
 	sles-9-ia64
@@ -14,6 +15,7 @@ USE_HOSTS=(
 	fedora-3-i386
 	fedora-4-i386
 	fedora-4-x86_64
+	macos-10-ppc
 	nld-9-i586
 	nld-9-x86_64
 	redhat-9-i386
@@ -108,6 +110,13 @@ sunos_10_sparc_ZIP_DEPS=(
 	# Glib comes on the system...
 )
 
+macos_10_ppc_ZIP_DEPS=(
+	# See http://primates.ximian.com/~wberrier/macos/deps/README
+	http://primates.ximian.com/~wberrier/macos/deps/gettext-0.14.1-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/glib-2.6.3-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/pkgconfig-0.15.0-0.macos10.novell.ppc.zip
+)
+
 sunos_8_sparc_ZIP_BUILD () {
 	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
 
@@ -117,17 +126,22 @@ sunos_8_sparc_ZIP_BUILD () {
 	# Do this to make sure libgcc is found.  Won't be needed when we install libgcc into build_deps
 	#export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
-	# Relocation on solaris is causing problems... if we're going to have to use /opt/mono as a prefix,
-		# Big changes are going to be needed
-	
-	./configure --prefix=/tmp/install
+	# Use /opt/mono for prefix.  Even though env vars can be used for relocation, this will help
+	./configure --prefix=/opt/mono || exit 1
 	make || exit 1
 	# Cannot find ELF
 	# Gnu Strip causes problems on Solaris
 	#  (http://sunportal.sunmanagers.org/pipermail/summaries/2003-August/004247.html)
 	# This is fixed in a later bintuils release... is this enough reason to use blastwave packages?
 	#make install-strip || exit 1
-	make install || exit 1
+
+	rm -Rf /tmp/temp_install
+	make install DESTDIR=/tmp/temp_install || exit 1
+
+	# Do this so all the zip files have the same base, and we can lay them back here later
+	mkdir -p /tmp/install
+	cd /tmp/temp_install/opt/mono
+	mv * /tmp/install
 
 	# Make sure to use the solaris version of strip
 	cd /tmp/install/lib
@@ -146,6 +160,15 @@ sunos_10_sparc_ZIP_BUILD () {
 	#./configure --prefix=/tmp/install
 	./configure --prefix=/opt/mono
 	gmake || exit 1
+
+	rm -Rf /tmp/temp_install
+	gmake install DESTDIR=/tmp/temp_install || exit 1
+
+	# Do this so all the zip files have the same base, and we can lay them back here later
+	mkdir -p /tmp/install
+	cd /tmp/temp_install/opt/mono
+	mv * /tmp/install
+
 	# Cannot find ELF
 	# Gnu Strip causes problems on Solaris
 	#  (http://sunportal.sunmanagers.org/pipermail/summaries/2003-August/004247.html)
@@ -179,6 +202,29 @@ win_4_i386_ZIP_BUILD () {
 
 	cd /tmp/install/lib
 	strip --strip-unneeded *.a
+}
+
+macos_10_ppc_ZIP_BUILD () {
+
+	# Need a version here...
+	./configure --prefix=/Library/Frameworks/Mono.framework/Versions/$version --with-preview=yes
+
+	make || exit 1
+
+	rm -Rf /tmp/temp_install
+	make install DESTDIR=/tmp/temp_install || exit 1
+
+	# Do this so all the zip files have the same base, and we can lay them back here later
+	mkdir -p /tmp/install
+	cd /tmp/temp_install/Library/Frameworks/Mono.framework/Versions/$version
+	mv * /tmp/install
+
+	#cd /tmp/install/bin
+	#strip --strip-unneeded *.dll *.exe
+
+	#cd /tmp/install/lib
+	#strip --strip-unneeded *.a
+
 }
 
 get_destroot () {

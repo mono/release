@@ -8,6 +8,12 @@ sys.path += ['../pyutils']
 import sshutils
 import packaging
 
+if len(sys.argv) < 2:
+	print "Usage: ./jail-do <distro conf> [command]"
+	print "  Example: ./jail-do suse-93-i586 ls"
+	print "  If no [command] is given, and interactive login will proceed"
+	sys.exit(1)
+
 buildenv = packaging.buildenv(sys.argv[1], print_output=1)
 
 if len(sys.argv) > 2:

@@ -1,0 +1,44 @@
+BUILD_HOSTS=(
+	macos-10-ppc
+)
+
+USE_HOSTS=(${BUILD_HOSTS[@]})
+
+# Note!!  Had to install rpm from here to be able to use the monodoc rpm:
+#http://www-jlc.kek.jp/~fujiik/macosx/10.2.X/memo/RPMonX.html
+MONO_DEPS=(
+	mono-1.1
+	libgdiplus-1.1
+	monodoc
+)
+
+macos_10_ppc_ZIP_BUILD () {
+
+	# Patch for now so that monodoc source dir is gotten from .pc file
+	# , filed bug so it should get fixed later
+	sed -e "s/@MONODOCDIR = \$(prefix)\/lib\/monodoc/@MONODOCDIR = \`pkg-config --variable=sourcesdir monodoc\`/" samples/Makefile.in > out
+	rm -f samples/Makefile.in
+	mv out samples/Makefile.in
+
+	sed -e "s/MONODOCDIR)\/sources/MONODOCDIR)/" samples/Makefile.in > out
+	rm -f samples/Makefile.in
+	mv out samples/Makefile.in
+
+	./configure --prefix=/tmp/install --with-preview=yes
+
+	make || exit 1
+	make install || exit 1
+
+}
+
+
+get_destroot () {
+	DEST_ROOT=$DISTRO
+}
+
+HEAD_PATH="trunk/cocoa-sharp"
+RELEASE_PATH="trunk/cocoa-sharp"
+
+get_tarball () {
+	msvn_tar $1
+}

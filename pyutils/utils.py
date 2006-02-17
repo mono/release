@@ -78,12 +78,27 @@ def extract_file(filename, preserve_symlinks=0):
                 os.mkdir(tempdir)
                 os.chdir(tempdir)
 
-                (status, output) = launch_process("rpm2cpio %s | cpio -idv" % filename, print_output=debug)
+                command = "rpm2cpio %s | cpio -idv" % filename
+                (status, output) = launch_process(command, print_output=debug)
                 #print output
                 #print "Status: %d" % status
                 if status:
-                        print "Error extracting rpm file: %s" % filename
-                        sys.exit(1)
+
+			# Weirdness for macosx...
+			#  This is a huge hack, because rpm2cpio doesn't come with macosx...
+			if re.compile('Unable to set file uid\/gid').search(output):
+				# The files were extracted, it should be ok, try again
+				(status, output) = launch_process(command, print_output=debug)
+				if status:
+					print "Error extracting rpm file: %s" % filename
+					print output
+					sys.exit(1)
+
+			else:
+
+				print "Error extracting rpm file: %s" % filename
+				print output
+				sys.exit(1)
 
                 os.chdir("usr")
 		distutils.dir_util.copy_tree(".", "../..", preserve_symlinks=preserve_symlinks)

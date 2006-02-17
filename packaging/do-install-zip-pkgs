@@ -41,6 +41,9 @@ parameter_map = {}
 #  the ^ only matches at the beginning of the string
 parameter_map[re.compile("^prefix=.*", re.M)] = "prefix=" + reloc
 
+# This is specifically for monodoc
+parameter_map[re.compile("^sourcesdir=.*", re.M)] = "sourcesdir=" + reloc + "/lib/monodoc/sources"
+
 # for all of the .pc files
 for root, dirs, files in os.walk('.'):
 	for file in files:
@@ -59,6 +62,9 @@ env.write('export CPPFLAGS=-I%s/include\n' % reloc)
 env.write('export LD_LIBRARY_PATH=%s/lib:$LD_LIBRARY_PATH\n' % reloc)
 env.write('export MANPATH=%s/share/man:%s/man:$MANPATH\n' % (reloc, reloc))
 
+# This is for macos
+env.write('export DYLD_LIBRARY_PATH=%s/lib\n' % (reloc) )
+
 
 env.close()
 os.chmod('env.sh', 0755)
@@ -72,6 +78,9 @@ env.write('setenv LDFLAGS -L%s/lib\n' % reloc)
 env.write('setenv CPPFLAGS -I%s/include\n' % reloc)
 env.write('setenv LD_LIBRARY_PATH %s/lib:$LD_LIBRARY_PATH\n' % reloc)
 env.write('setenv MANPATH %s/share/man:%s/man:$MANPATH\n' % (reloc, reloc))
+
+# This is for macos
+env.write('setenv DYLD_LIBRARY_PATH %s/lib\n' % (reloc) )
 
 env.close()
 os.chmod('env.csh', 0755)
@@ -119,6 +128,18 @@ for root, dirs, files in os.walk('.'):
 		utils.substitute_parameters_in_file(os.path.join(root, file), re.compile('#!/bin/sh.*(/tmp/install|/usr)', re.M | re.DOTALL), parameter_map)
 
 os.chdir('..')
+
+# Relocate files on macos
+print "Relocating dylib files..."
+# for all of the .dylib files
+for root, dirs, files in os.walk('.'):
+	for file in files:
+		if re.compile('\.dylib$').search(file):
+			old_filename = os.path.abspath('/tmp/install/%s/%s' % (root, file) )
+			new_filename = os.path.abspath( re.sub('/tmp/install', reloc, old_filename) )
+			#print 'Relocating from %s to %s' % (old_filename, new_filename)
+			print 'Running install_name_tool on %s' % root + os.sep + file
+			os.system('install_name_tool -change %s %s %s' % (old_filename, new_filename, root + os.sep + file) )
 
 
 # Avoids "Application Error" on win32 and allows scripts to be run
