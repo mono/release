@@ -1,0 +1,205 @@
+#!/usr/bin/env python
+
+import commands
+import os
+import os.path
+import sys
+import shutil
+import pdb
+import glob
+import re
+import distutils.dir_util
+import threading
+
+sys.path += ['../../pyutils']
+import utils
+import packaging
+
+# Constants
+# Which noarch packages to include in the various packages
+packages_to_include = {}
+
+packages_to_include['macos-10-ppc'] = ['mono-1.1', 'cocoa-sharp', 'libgdiplus-1.1', 'xsp', 'monodoc', 'boo', 'ikvm' ]
+
+debug=1
+
+
+def build_package(target):
+	
+	env = packaging.buildenv(target, print_output=debug)
+
+	remote_temp = "/tmp/packaging"
+	resources_dir = remote_temp + os.sep + 'resources'
+	temp_dir = "build" + os.sep + target
+
+	# Maybe do this later...
+	#remote_strip_loc = env.info['jail_strip_path']
+
+	output_dir = os.path.join("output", version, target, release) 
+
+	if os.path.exists(output_dir):
+		print "%s exists, bump release number" % output_dir
+		sys.exit(1)
+
+
+	# Get list of files we're going to install
+	files = []
+	versions = {}
+        for pac in packages_to_include[target]:
+                package = packaging.package(env, pac)
+		versions[pac] = package.get_version()
+                files += package.get_latest_files()
+                files += package.get_latest_dep_files()
+
+	# Remove duplicates
+        files = utils.remove_list_duplicates(files)
+
+	# Keep list of files used to build this package
+        packages_used = []
+
+        packages_used += map(os.path.basename, files)
+        packages_used.sort()
+
+	# Add helper files to the list
+        files += [packaging.packaging_dir + '/do-install-zip-pkgs']
+        files += [packaging.packaging_dir + '/../pyutils/utils.py']
+
+	for file in files:
+		print file
+
+	# Clean up
+	env.ssh.execute('rm -Rf /tmp/install-packages %s %s; mkdir -p /tmp/install-packages %s/root %s' % (remote_temp, remote_temp, resources_dir, resources_dir) )
+
+	# Copy them over...
+	env.ssh.copy_to(files, '/tmp/install-packages', mode='scp', compress=0)
+
+	# This will unpack and do all the substitution, including the noarch rpms
+	env.ssh.print_output=debug
+	prefix = "/Library/Frameworks/Mono.framework/Versions/%s" % version
+	env.ssh.execute("/tmp/install-packages/do-install-zip-pkgs %s/root%s %s /tmp/install-packages/* " % (remote_temp, prefix, prefix) )
+
+	# Strip files to save space
+	# TODO: ?
+	#env.ssh.execute("cd %s/bin; %s *; cd ../lib; %s * " % (remote_temp, remote_strip_loc, remote_strip_loc))
+	#env.ssh.print_output=debug
+
+	# Print out packages_used
+	if os.path.exists(temp_dir): shutil.rmtree(temp_dir)
+	distutils.dir_util.mkpath(temp_dir)
+
+	print "Saving list of packages..."
+	fd = open("%s/packages_used.txt" % temp_dir, 'w')
+	for file in packages_used:
+		fd.write(file + "\n")
+	fd.close()
+
+
+        #  Get some version information
+        mono_package = packaging.package(env, 'mono-1.1')
+        revision = mono_package.get_revision(release)
+
+	# Start process of making the package
+        package_filename = "MonoFramework-%s_%s.%s" % (version, revision, env.info['arch'])
+
+	# TODO: put RELEASE@@ in the setup-files
+	# Substitue versions in setup files
+	parameter_map = {}
+        parameter_map[re.compile("@@MONO_VERSION@@")] = version
+        parameter_map[re.compile("@@MONO_RELEASE@@")] = release
+        parameter_map[re.compile("@@COCOASHARP_VERSION@@")] = versions['cocoa-sharp']
+        parameter_map[re.compile("@@XSP_VERSION@@")] = versions['xsp']
+        parameter_map[re.compile("@@MONODOC_VERSION@@")] = versions['monodoc']
+        parameter_map[re.compile("@@BOO_VERSION@@")] = versions['boo']
+        parameter_map[re.compile("@@IKVM_VERSION@@")] = versions['ikvm']
+
+	for file in os.listdir('setup-files'):
+		# Skip directories (.svn in particular)
+		if not os.path.isdir(file):
+			shutil.copy('setup-files' + os.sep + file, temp_dir)
+			utils.substitute_parameters_in_file(temp_dir + os.sep + file, re.compile(''), parameter_map)
+
+	cwd = os.getcwd()
+	os.chdir(temp_dir)
+
+	# Copy setup files over
+	env.ssh.copy_to('Description.plist  Info.plist setup-framework.sh'.split(), remote_temp, mode='scp')
+
+	# Copy files to resources_dir (Info.plist?? Doesn't seem to be done before)
+	env.ssh.copy_to('version.plist License.rtf ReadMe.rtf Welcome.rtf uninstallMono.sh postflight'.split(), resources_dir, mode='scp')
+
+	os.chdir(cwd)
+
+	# Testing options
+	env.ssh.print_command=1
+	#env.ssh.execute_command=0
+
+	# Run framework script
+	env.ssh.execute('cd %s/root; ../setup-framework.sh' % remote_temp)
+
+	print "Done with framework..."
+	# Clean up and create dirs
+	# TODO: If the belove PackageMaker requires root privs, this remove will also require root privs
+	env.ssh.execute('rm -Rf %s/PKGROOT %s/pkg; mkdir -p %s/PKGROOT %s/pkg' % (remote_temp, remote_temp, remote_temp, remote_temp) )
+
+	# Copy some files over
+	env.ssh.execute('ditto %s/root/Library/Frameworks/Mono.framework %s/PKGROOT/Library/Frameworks/Mono.framework' % (remote_temp, remote_temp) )
+
+	# TODO: Does this command require root privs? ... it dien't on macbld1...
+	packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
+	env.ssh.execute('%s -build -p %s/pkg/%s.pkg -f %s/PKGROOT -r %s -i %s/Info.plist -d %s/Description.plist' % (packagemaker, remote_temp, package_filename, remote_temp, resources_dir, remote_temp, remote_temp) )
+
+	# TODO: This definitly requires root privs... it didn't on macbld1
+	env.ssh.execute('/usr/bin/hdiutil create -ov -srcfolder %s/pkg/%s.pkg -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, package_filename, version, remote_temp, package_filename) )
+
+	distutils.dir_util.mkpath(output_dir)
+
+	print "Copy package back..."
+	# Have to use scp mode here, because I don't want the remote_temp dir in the filename
+	# Also, use no compression, since file is already compressed
+	env.ssh.copy_from("%s/%s.dmg" % (remote_temp, package_filename), output_dir, mode='scp', compress=0)
+
+	# Create md5
+	print "Create md5..."
+	utils.launch_process("cd %s; md5sum %s.dmg > %s.dmg.md5 " % (output_dir, package_filename, package_filename), print_output=debug)
+
+	print "Saving packages_used.txt..."
+	shutil.copy(temp_dir + os.sep + 'packages_used.txt', output_dir)
+
+
+####  Main execution ####
+# Collect args
+if len(sys.argv) < 3:
+	print "Usage: ./buildpackage <target> <version> [<release>]"
+	print " target is the 'distro name', or 'all' for all mac builds"
+	print " Example: ./buildpackage macos-10-ppc 1.1.13.2 1"
+	sys.exit(1)
+
+target = sys.argv[1]
+version = sys.argv[2]
+
+if len(sys.argv) > 3:
+	release = sys.argv[3]
+else:
+	release = "0"
+
+
+if target == 'all':
+	targets = map(os.path.basename, glob.glob(packaging.packaging_dir + "/conf/macos-*-*"))
+else:
+	targets = target.split(',')
+
+
+# Starting build each target
+threads = []
+for target in targets:
+	thread = threading.Thread(target=build_package, args=(target,))
+	thread.run()
+	
+	threads.append(thread)
+
+
+# Wait for all to finish
+for thread in threads:
+	if thread.isAlive(): thread.join()
+
+

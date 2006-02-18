@@ -284,6 +284,10 @@ def get_latest_ver(dir):
 	else:
 		print "Path does not exist: %s" % dir
 		sys.exit(1)
+
+	if not files:
+		print "No dir entries in %s, exiting..." % dir
+		sys.exit(1)
 		
         latest_version = version_sort(files).pop()
 
@@ -292,6 +296,7 @@ def get_latest_ver(dir):
 # TODO: Might implement this in python later... ?
 def version_sort(my_list):
 	"""returns list that was passed in in a sorted order."""
+
 
 	# Test to see if rpmvercmp is working
         (code, output) = launch_process(rpmvercmp_path + " " + string.join(my_list), print_output=debug)

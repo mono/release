@@ -169,6 +169,8 @@ class package:
 
 		self.path = self.get_package_path()
 
+		# Initialize for later...
+		self.version = ""
 
 	def execute_function(self, func_name, var_to_echo=""):
 
@@ -238,15 +240,19 @@ class package:
 		else:
 			return []
 
-
 	def get_latest_files(self):
-		path = self.path + os.sep + utils.get_latest_ver(self.path)
+		path = self.path + os.sep + self.get_version()
 
 		files = []
 		files += glob.glob(path + os.sep + '*.zip')
 		files += glob.glob(path + os.sep + '*.rpm')
 
 		return files
+
+	def get_version(self):
+		if not self.version:
+			self.version = utils.get_latest_ver(self.path)
+		return self.version
 
 	# Get all url deps, as well as mono_deps latest zip/rpms files, and their url deps
 	def get_latest_dep_files(self):

@@ -206,8 +206,30 @@ win_4_i386_ZIP_BUILD () {
 
 macos_10_ppc_ZIP_BUILD () {
 
+	MONO_PREFIX=/Library/Frameworks/Mono.framework/Versions/$version
+
+	# This really should go in the autotooled build... ?
+	#Create gacutil config files specific to OS X
+cat <<EOF > mcs/class/lib/default/System.Drawing.dll.config
+<configuration>
+        <dllmap dll="gdiplus.dll" target="$MONO_PREFIX/lib/libgdiplus.dylib" />
+</configuration>
+EOF
+
+cat <<EOF > mcs/class/lib/default/System.Windows.Forms.dll.config
+<configuration>
+        <dllmap dll="gdiplus" target="$MONO_PREFIX/lib/libgdiplus.dylib" />
+        <dllmap dll="libX11" target="/usr/X11R6/lib/libX11.dylib" />
+</configuration>
+EOF
+cat<<EOF > mcs/class/lib/default/Mono.Posix.dll.config
+<configuration
+        <dllmap dll="MonoPosixHelper" target="$MONO_PREFIX/lib/libMonoPosixHelper.dylib"/>
+</configuration>
+EOF
+
 	# Need a version here...
-	./configure --prefix=/Library/Frameworks/Mono.framework/Versions/$version --with-preview=yes
+	./configure --prefix=$MONO_PREFIX --with-preview=yes
 
 	make || exit 1
 

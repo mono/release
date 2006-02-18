@@ -21,7 +21,7 @@ import pdb
 
 class init:
 	
-	def __init__(self, target_host, print_output=1, jaildir="", chroot_path="/usr/sbin/chroot", remote_tar_path="tar", local_tar_path="tar", target_command_prefix=""):
+	def __init__(self, target_host, print_output=1, jaildir="", chroot_path="/usr/sbin/chroot", remote_tar_path="tar", local_tar_path="tar", target_command_prefix="", execute_command=1, print_command=0):
 
 		self.target_host = target_host
 
@@ -32,6 +32,10 @@ class init:
 		self.remote_tar_path = remote_tar_path
 		self.local_tar_path = local_tar_path
 		self.target_command_prefix = target_command_prefix
+
+		# Options for debugging
+		self.execute_command=execute_command
+		self.print_command=print_command
 
 		#  quiet
 		# Ignore host checks, and blowfish might be faster and less cpu intensive
@@ -69,7 +73,16 @@ class init:
 			execute_options = command
 	
 		command_string = "ssh -o \"BatchMode yes\" %s %s %s " % (self.options, self.target_host, execute_options)
-		return utils.launch_process(command_string, print_output=self.print_output)
+
+		code = 0
+		output = ""
+
+		if self.print_command: print "Executing %s" % command_string
+
+		if self.execute_command:
+			(code, output) = utils.launch_process(command_string, print_output=self.print_output)
+
+		return code, output
 
 	def interactive_login(self):
 		execute_options = " "
