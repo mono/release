@@ -12,7 +12,7 @@ How to build all masterinfos
 	
 	1. Edit the Makefile and update it to your paths.
 	
-	2. Copy assemblies-list.txt, createinfos.sh, Makefile to a
+	2. Copy assemblies-list*.txt, createinfos.sh, Makefile to a
 	directory, say, 'lalala'. Ensure createinfos.sh has +x
 	permissions.
 	

@@ -11,10 +11,16 @@ else
 	fi
 fi
 
+if test "$#" -ne 2 ;
+then
+	echo "Syntax: $0 (1.1|2.0) listfile"
+	exit 1
+fi
+
 rm -rf $1
 mkdir $1 || exit 1
 
-for i in $(cat assemblies-list.txt)
+for i in $(cat $2)
 do
 	echo $i
 	$INFO $i > $1/$i.xml

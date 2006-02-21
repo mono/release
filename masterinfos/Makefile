@@ -24,10 +24,10 @@ mono-api-diff2.exe: mono-api-diff.cs
 infos: infos1 infos2
 
 infos1: mono-api-info.exe assemblies-list.txt createinfos.sh
-	./createinfos.sh 1.1
+	./createinfos.sh 1.1 assemblies-list.txt
 
-infos2: mono-api-info2.exe assemblies-list.txt createinfos.sh
-	./createinfos.sh 2.0
+infos2: mono-api-info2.exe assemblies-list-2.txt createinfos.sh
+	./createinfos.sh 2.0 assemblies-list-2.txt
 
 clean:
 	rm -f *.pdb *.mdb mono-api-info*.exe mono-api-diff*.exe *~
