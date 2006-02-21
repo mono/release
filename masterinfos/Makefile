@@ -1,5 +1,5 @@
 CSC=g:/windows/microsoft.net/framework/v1.1.4322/csc.exe $(CSCOPTIONS)
-CSC2=g:/windows/microsoft.net/framework/v2.0.40607/csc.exe $(CSCOPTIONS)
+CSC2=g:/windows/microsoft.net/framework/v2.0.50727/csc.exe $(CSCOPTIONS)
 CSCOPTIONS=-nologo -nowarn:0618
 RUNTIME=
 
