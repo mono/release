@@ -45,7 +45,7 @@ done
 #
 # Apply the template to the src files to form the final HTML file
 #
-python $cur/apply-template $cur/template.html $cur/index.src index.html
+python $cur/apply-template $cur/template.html $cur/index-$VERSION.src index.html
 for file in src/*.src; do
     f=src/`basename $file .src`
     python $cur/apply-template $cur/template.html $f.src $f.html
