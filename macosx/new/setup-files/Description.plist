@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
                 <key>IFPkgDescriptionDescription</key>
-                <string>Mono.framework-@@MONO_VERSION@@</string>
+                <string>Mono.framework-@@MONO_VERSION_RELEASE@@</string>
                 <key>IFPkgDescriptionTitle</key>
                 <string>Mono.Framework</string>
                 <key>IFPkgDescriptionVersion</key>
-                <string>@@MONO_VERSION@@</string>
+                <string>@@MONO_VERSION_RELEASE@@</string>
 </dict>
 </plist>

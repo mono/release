@@ -55,13 +55,10 @@ else
 	echo "/Library/Frameworks/Mono.framework/Libraries/libmono.dylib does not exist"
 fi
 
-# What's this for?
-#  Seems like this shouldn't be needed until post install time
-for i in \
-  `ls -al ${MONOPREFIX}/bin | grep -v total | grep -v .exe | grep -vw "\." |awk '{print $9}'`; do
-  echo ${i}
-  ln -sf ${MONOPREFIX}/bin/${i} /usr/bin/${i}
-done
-
-
+##  Not needed here anymore...
+#for i in \
+#  `ls -al ${MONOPREFIX}/bin | grep -v total | grep -v .exe | grep -vw "\." |awk '{print $9}'`; do
+#  echo ${i}
+#  ln -sf ${MONOPREFIX}/bin/${i} /usr/bin/${i}
+#done
 

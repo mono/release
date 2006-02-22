@@ -14,6 +14,12 @@ MONO_DEPS=(
 
 macos_10_ppc_ZIP_BUILD () {
 
+	# This is so we can use the relocated mono (Will probably have to do this for all builds on mac)
+	export  MONO_GAC_PREFIX=/tmp/build_deps
+	export  MONO_PREFIX=/tmp/build_deps
+	export  MONO_CFG_DIR=/tmp/build_deps/etc
+	export  MONO_PATH=/tmp/build_deps/lib
+
 	# Patch for now so that monodoc source dir is gotten from .pc file
 	# , filed bug so it should get fixed later
 	sed -e "s/@MONODOCDIR = \$(prefix)\/lib\/monodoc/@MONODOCDIR = \`pkg-config --variable=sourcesdir monodoc\`/" samples/Makefile.in > out

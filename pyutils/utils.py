@@ -263,7 +263,8 @@ def launch_process(command, capture_stderr=1, print_output=1):
 		if print_output:
 			print line,
 			sys.stdout.flush()
-			process.flush()
+			# This doesn't work on macosx... ?
+			#process.flush()
 		collected += line
 
 	exit_code = process.close()

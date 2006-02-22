@@ -79,9 +79,9 @@ def build_package(target):
 	env.ssh.execute("/tmp/install-packages/do-install-zip-pkgs %s/root%s %s /tmp/install-packages/* " % (remote_temp, prefix, prefix) )
 
 	# Strip files to save space
-	# TODO: ?
-	#env.ssh.execute("cd %s/bin; %s *; cd ../lib; %s * " % (remote_temp, remote_strip_loc, remote_strip_loc))
-	#env.ssh.print_output=debug
+	# These were in the old script as "cleanup"
+	env.ssh.print_command=1
+	env.ssh.execute("cd %s/root%s;   rm bin/gettext* bin/ngettext bin/xgettext; rm bin/glib-* ; rm bin/gobject-query ; rm lib/lib*a ; strip bin/pedump bin/monodiet bin/monodis bin/jay bin/monograph ; rm -rf share/gtk-doc " % (remote_temp, prefix ) )
 
 	# Print out packages_used
 	if os.path.exists(temp_dir): shutil.rmtree(temp_dir)
@@ -101,16 +101,17 @@ def build_package(target):
 	# Start process of making the package
         package_filename = "MonoFramework-%s_%s.%s" % (version, revision, env.info['arch'])
 
-	# TODO: put RELEASE@@ in the setup-files
 	# Substitue versions in setup files
 	parameter_map = {}
         parameter_map[re.compile("@@MONO_VERSION@@")] = version
         parameter_map[re.compile("@@MONO_RELEASE@@")] = release
+        parameter_map[re.compile("@@MONO_VERSION_RELEASE@@")] = version + '_' + release
         parameter_map[re.compile("@@COCOASHARP_VERSION@@")] = versions['cocoa-sharp']
         parameter_map[re.compile("@@XSP_VERSION@@")] = versions['xsp']
         parameter_map[re.compile("@@MONODOC_VERSION@@")] = versions['monodoc']
         parameter_map[re.compile("@@BOO_VERSION@@")] = versions['boo']
         parameter_map[re.compile("@@IKVM_VERSION@@")] = versions['ikvm']
+        parameter_map[re.compile("@@MONO_PACKAGE_FILENAME@@")] = package_filename + ".pkg"
 
 	for file in os.listdir('setup-files'):
 		# Skip directories (.svn in particular)
@@ -138,17 +139,14 @@ def build_package(target):
 
 	print "Done with framework..."
 	# Clean up and create dirs
-	# TODO: If the belove PackageMaker requires root privs, this remove will also require root privs
 	env.ssh.execute('rm -Rf %s/PKGROOT %s/pkg; mkdir -p %s/PKGROOT %s/pkg' % (remote_temp, remote_temp, remote_temp, remote_temp) )
 
 	# Copy some files over
 	env.ssh.execute('ditto %s/root/Library/Frameworks/Mono.framework %s/PKGROOT/Library/Frameworks/Mono.framework' % (remote_temp, remote_temp) )
 
-	# TODO: Does this command require root privs? ... it dien't on macbld1...
 	packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
 	env.ssh.execute('%s -build -p %s/pkg/%s.pkg -f %s/PKGROOT -r %s -i %s/Info.plist -d %s/Description.plist' % (packagemaker, remote_temp, package_filename, remote_temp, resources_dir, remote_temp, remote_temp) )
 
-	# TODO: This definitly requires root privs... it didn't on macbld1
 	env.ssh.execute('/usr/bin/hdiutil create -ov -srcfolder %s/pkg/%s.pkg -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, package_filename, version, remote_temp, package_filename) )
 
 	distutils.dir_util.mkpath(output_dir)

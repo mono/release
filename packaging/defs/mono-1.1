@@ -206,6 +206,11 @@ win_4_i386_ZIP_BUILD () {
 
 macos_10_ppc_ZIP_BUILD () {
 
+	# This helps with relocating binaries to a destination of a very large pathname
+	#  (See http://lists.apple.com/archives/darwin-development/2003/Sep/msg00274.html)
+	#export CFLAGS=" -Wl,-header-pad_max_install_names "
+	export LDFLAGS=" -header-pad_max_install_names "
+
 	MONO_PREFIX=/Library/Frameworks/Mono.framework/Versions/$version
 
 	# This really should go in the autotooled build... ?

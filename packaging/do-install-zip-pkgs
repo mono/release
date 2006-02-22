@@ -119,27 +119,57 @@ print "Massaging bin/* wrappers..."
 parameter_map = {}
 # For packages we build
 parameter_map[re.compile("/tmp/install")] = reloc
+# For mac builds
+parameter_map[re.compile("/Library/Frameworks/Mono.framework/Versions/.*?/")] = reloc + "/"
+# For solaris builds
+parameter_map[re.compile("/opt/mono")] = reloc
 # For packages we consume (noarch rpms)
 parameter_map[re.compile("/usr")] = reloc
 
 for root, dirs, files in os.walk('.'):
 	for file in files:
 		# Search and replace in all files containing #!/bin/sh and /tmp/install
-		utils.substitute_parameters_in_file(os.path.join(root, file), re.compile('#!/bin/sh.*(/tmp/install|/usr)', re.M | re.DOTALL), parameter_map)
+		utils.substitute_parameters_in_file(os.path.join(root, file), re.compile('#!/bin/sh.*(/tmp/install|/usr|/Library/Framework|/opt/mono)', re.M | re.DOTALL), parameter_map)
 
 os.chdir('..')
 
 # Relocate files on macos
 print "Relocating dylib files..."
 # for all of the .dylib files
+# Notes from http://www.opendarwin.org/pipermail/darwinports/2004-August/021704.html
+#  So, each dylib needs to change the reference to itself using:
+#  install_name_tool -id /foo/lib/libintl.3.dylib  libintl.3.4.0.dylib
+
+# And then each reference to a symbol that was in /tmp/install needs to be updated using
+#  install_name_tool -change <old> <new> <file>
+
 for root, dirs, files in os.walk('.'):
 	for file in files:
-		if re.compile('\.dylib$').search(file):
+		path_on_disk = root + os.sep + file
+		# Do this on dylib files as well as the files in bin
+		if ( re.compile('\.dylib$').search(file) or root == "./bin" ) and not os.path.islink(path_on_disk):
+
 			old_filename = os.path.abspath('/tmp/install/%s/%s' % (root, file) )
 			new_filename = os.path.abspath( re.sub('/tmp/install', reloc, old_filename) )
-			#print 'Relocating from %s to %s' % (old_filename, new_filename)
-			print 'Running install_name_tool on %s' % root + os.sep + file
-			os.system('install_name_tool -change %s %s %s' % (old_filename, new_filename, root + os.sep + file) )
+
+			(code, output) = utils.launch_process('otool -L %s' % path_on_disk, print_output=0 )
+
+			# Skip non object files or if otool failed (doesn't exist)
+			if re.compile('is not an object file', re.M).search(output) or code:
+				continue
+
+			print 'Relocating %s' % path_on_disk
+			utils.launch_process('install_name_tool -id %s %s' % (new_filename, path_on_disk ) )
+
+			# libmono-profile-cov is still having an issue getting relocated... check this website for a possible solution:
+			# http://lists.apple.com/archives/darwin-development/2003/Sep/msg00274.html
+			# -Wl,-header-pad_max_install_names
+
+			# Update /tmp/install references to the new target location
+			#Sample output: /tmp/install/lib/libjpeg.62.dylib (compatibility version 63.0.0, current version 63.0.0)
+                        for match in re.compile('\s+/tmp/install/(.*?) \(', re.S | re.M).finditer(output):
+				utils.launch_process('install_name_tool -change /tmp/install/%s %s/%s %s' % (match.group(1), reloc, match.group(1), path_on_disk) )
+
 
 
 # Avoids "Application Error" on win32 and allows scripts to be run

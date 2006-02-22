@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
         <key>CFBundleGetInfoString</key>
-        <string>@@MONO_VERSION@@</string>
+        <string>@@MONO_VERSION_RELEASE@@</string>
         <key>CFBundleIdentifier</key>
         <string>com.ximian.mono</string>
         <key>CFBundleName</key>
         <string>Mono.framework</string>
         <key>CFBundleShortVersionString</key>
-        <string>@@MONO_VERSION@@</string>
+        <string>@@MONO_VERSION_RELEASE@@</string>
         <key>IFMajorVersion</key>
         <integer>0</integer>
         <key>IFMinorVersion</key>
