@@ -76,7 +76,10 @@ def build_package(target):
 	# This will unpack and do all the substitution, including the noarch rpms
 	env.ssh.print_output=debug
 	prefix = "/Library/Frameworks/Mono.framework/Versions/%s" % version
-	env.ssh.execute("/tmp/install-packages/do-install-zip-pkgs %s/root%s %s /tmp/install-packages/* " % (remote_temp, prefix, prefix) )
+	(code, output) = env.ssh.execute("/tmp/install-packages/do-install-zip-pkgs %s/root%s %s /tmp/install-packages/* " % (remote_temp, prefix, prefix) )
+	if code:
+		print "Error extracting and installing packages"
+		sys.exit(1)
 
 	# Strip files to save space
 	# These were in the old script as "cleanup"
@@ -107,6 +110,7 @@ def build_package(target):
         parameter_map[re.compile("@@MONO_RELEASE@@")] = release
         parameter_map[re.compile("@@MONO_VERSION_RELEASE@@")] = version + '_' + release
         parameter_map[re.compile("@@COCOASHARP_VERSION@@")] = versions['cocoa-sharp']
+        parameter_map[re.compile("@@LIBGDIPLUS_VERSION@@")] = versions['libgdiplus-1.1']
         parameter_map[re.compile("@@XSP_VERSION@@")] = versions['xsp']
         parameter_map[re.compile("@@MONODOC_VERSION@@")] = versions['monodoc']
         parameter_map[re.compile("@@BOO_VERSION@@")] = versions['boo']
@@ -144,8 +148,11 @@ def build_package(target):
 	# Copy some files over
 	env.ssh.execute('ditto %s/root/Library/Frameworks/Mono.framework %s/PKGROOT/Library/Frameworks/Mono.framework' % (remote_temp, remote_temp) )
 
+	# Note: DiskManagementTool hangs this has been fixed in 10.4 ( http://lists.apple.com/archives/installer-dev/2005/Jul/msg00005.html )
+	#  This doesn't happen all the time... in fact, never on macbld1.provo.novell.com running 10.3 ... ?
+	# Maybe we make sudo not ask for a password and then prepend this with sudo?
 	packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
-	env.ssh.execute('%s -build -p %s/pkg/%s.pkg -f %s/PKGROOT -r %s -i %s/Info.plist -d %s/Description.plist' % (packagemaker, remote_temp, package_filename, remote_temp, resources_dir, remote_temp, remote_temp) )
+	env.ssh.execute('%s -build -p %s/pkg/%s.pkg -f %s/PKGROOT -v -r %s -i %s/Info.plist -d %s/Description.plist' % (packagemaker, remote_temp, package_filename, remote_temp, resources_dir, remote_temp, remote_temp) )
 
 	env.ssh.execute('/usr/bin/hdiutil create -ov -srcfolder %s/pkg/%s.pkg -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, package_filename, version, remote_temp, package_filename) )
 

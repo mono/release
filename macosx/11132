@@ -146,7 +146,7 @@ cat <<EOF > mcs/class/lib/default/System.Windows.Forms.dll.config
 </configuration>
 EOF
 cat<<EOF > mcs/class/lib/default/Mono.Posix.dll.config
-<configuration
+<configuration>
         <dllmap dll="MonoPosixHelper" target="/Library/Frameworks/Mono.framework/Versions/${MONOVERSION}/lib/libMonoPosixHelper.dylib"/>
 </configuration>
 EOF

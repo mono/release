@@ -89,10 +89,17 @@ sunos_8_sparc_ZIP_DEPS=(
 
 macos_10_ppc_ZIP_BUILD () {
 
-	export PATH="/usr/X11R6/bin/:$PATH"
+	# Needed without below sed...
+	#export PATH="/usr/X11R6/bin/:$PATH"
+
+	# For fontconfig (bundle this ourselves?  What would be the point?)
 	export PKG_CONFIG_PATH="/usr/X11R6/lib/pkgconfig/:$PKG_CONFIG_PATH"
 
-	./configure --enable-quartz --prefix=/tmp/install --with-libjpeg --includedir=/tmp/install/include 
+	# File as bug #77620 in ximian bugzilla
+	file="configure"
+        sed -e "s/freetype-config/pkg-config freetype2 fontconfig/g" $file > $file.new; mv $file.new $file; chmod 755 $file
+
+	./configure --enable-quartz --prefix=/tmp/install --with-libjpeg --includedir=/tmp/build_deps/include 
         make || exit 1
         make install || exit 1
 

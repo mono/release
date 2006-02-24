@@ -16,6 +16,7 @@ What gets installed inside Mono.framework?\
 \
         mono-@@MONO_VERSION@@\
         cocoa#-@@COCOASHARP_VERSION@@\
+        libgdiplus-@@LIBGDIPLUS_VERSION@@\
         xsp-@@XSP_VERSION@@\
         monodoc-@@MONODOC_VERSION@@\
         boo-@@BOO_VERSION@@\
@@ -24,7 +25,11 @@ What gets installed inside Mono.framework?\
         pkgconfig-0.15.0\
         gettext-0.14.1\
         glib-2.6.3\
-
+        freetype-2.1.10\
+        jpeg-6b\
+        libpng-1.2.8\
+        libungif-4.1.3\
+        tiff-3.7.1\
 \
 Included in this version of the Mono.framework is Cocoa#.  Cocoa# is an API bridge that allows Mono developers to call Cocoa APIs while using Mono and C#.  A Cocoa# wiki is available at http://www.mono-project.com/CocoaSharp\
 \
@@ -37,6 +42,8 @@ This uninstallMono.sh script is in the Resources directory of MonoFramework.pkg.
 During the postinstall phase of the installation, links to /usr/bin are created for binaries installed into the Commands directory.  This is done to prevent requiring modifications to the $PATH environmental variable.  Yes, we know that this is not typical for *NIX, but this is Mac OS X. \
 \
 A simple uninstallMono.sh script is included in the disk image.  This is shell script that must be run as root, and it will remove the Mono.framework and the links in /usr/bin.\
+\
+If you have problems find or linking with libmono-profiler-cov.dylib, add /Library/Frameworks/Mono.framework/Versions/Current/lib to DYLD_LIBRARY_PATH .  This is due to a relocation problem.\
 \
 This package was created by the Mono team.  Major contributors to this team include (in alphabetical order): \
 \

@@ -240,7 +240,7 @@ def remove_line_matching(file, text_to_remove):
         fd.close()
 
 
-def launch_process(command, capture_stderr=1, print_output=1):
+def launch_process(command, capture_stderr=1, print_output=1, print_command=0):
 	"""Execute a command, return output (stdout and optionally stderr), and optionally print as we go.
 
 	Returns a tuple: exit code, output
@@ -249,11 +249,21 @@ def launch_process(command, capture_stderr=1, print_output=1):
 	If you want to do this and you need input/output handles, you'll need to use popen2, or os.open2
 	"""
 
+	# This is set by utils.debug
+	if debug:
+		print_output=1
+		print_command=1
+
 	execute_option = ""
 	if capture_stderr: execute_option = " 2>&1 "
 
+	command = "%s %s" % ( command, execute_option)
+
+	if print_command: print command
+
+
 	# bufsize=1 makes it line buffered, -1, unbuffered
-	process = os.popen("%s %s" % ( command, execute_option), 'r', -1 )
+	process = os.popen(command, 'r', -1 )
 	collected = []
 	# Use this looping method insead of 'for line in process' so it doesn't use the readahead buffer
 	#  This smooths output greatly, instead of getting big chunks of output with lots of lag
