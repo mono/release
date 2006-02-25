@@ -52,12 +52,17 @@ class init:
 
 
 		# Possilbly TODO later...
-		self.connection = ""
+		self.conn_in = ""
+		self.conn_out = ""
 
 	# Args: command to execute, and option to print_output
 	#  Will always return output
 	# NOTE: In order to use backticks, you must escape them in the string you pass in
-	def execute(self, command, capture_stderr=1):
+	def execute(self, command, capture_stderr=1, terminate_reg=""):
+		"""Args, command string to execute.  Option args: capture_stderr, and terminate_reg.
+
+		capture_stderr is 1 or 0 (Currently unimplemented)
+		See doc for utils.launch_process for description of terminate_reg. """
 
 		if self.target_command_prefix:
 			command = self.target_command_prefix + command
@@ -80,7 +85,7 @@ class init:
 		if self.print_command: print "Executing %s" % command_string
 
 		if self.execute_command:
-			(code, output) = utils.launch_process(command_string, print_output=self.print_output)
+			(code, output) = utils.launch_process(command_string, print_output=self.print_output, terminate_reg=terminate_reg)
 
 		return code, output
 
@@ -165,14 +170,50 @@ class init:
 
 
 	# Extra future bonus features...
+	#  Not sure this stuff would ever be useful...
 	# Only gets called once, exatblish handle to an ssh connection
 	#  Implementing this would probably only work on unix... python on windows doesn't do return codes when opening pipes for input and output to a process.  Could always do some funky shell stuff to get the output... hmmm...
+	# Actually, I can't think of a good reason for permaconnection... especially with restoring a clean environment
 	def connect(self):
-		pass
-		#self.connection = os.popen4(
+		"""Not working..."""
+		# Set up connection to the host and set the correct stuff in the object
+		command_string = "ssh -o \"BatchMode yes\" -T %s %s 2>&1 " % (self.options, self.target_host)
+
+		(self.conn_in, self.conn_out) = os.popen2(command_string)
+		
 
 	# Check to see if there's a connection, if not, run the command, returning the output, leave connection open
-	def run_command(self):
-		pass
+	def run_command(self, command, print_output=1):
+		"""Not working..."""
+
+		# Connect if we haven't already
+		if not (self.conn_in and self.conn_out):
+			self.connect()
+
+		# TODO: Execute inside jail options
+
+		self.conn_in.write(command + ' && echo "\n@@SSH_UTIL_EXIT_CODE@@:$?\n')
+
+		collected = []
+		code = -1
+
+		exit_reg = re.compile('@@SSH_UTIL_EXIT_CODE@@:(?P<exit>\d+)')
+
+		while(1):
+			line = self.conn_out.readline()
+			if not line: break
+			if print_output:
+				print line,
+				sys.stdout.flush()
+				# This doesn't work on macosx... ?
+				#process.flush()
+			collected += line
+
+			# Check for a line containing an exit code
+			if exit_reg.search(line):
+				code = exit_reg.groupindex['exit']
+				break
+
+		return code, "".join(collected).rstrip()
 
 

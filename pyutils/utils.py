@@ -24,6 +24,9 @@ import string
 import glob
 import distutils.dir_util
 
+import popen2
+import signal
+
 import pdb
 
 # Full path to the rpmvercmp binary, maybe this could be done in python
@@ -240,44 +243,55 @@ def remove_line_matching(file, text_to_remove):
         fd.close()
 
 
-def launch_process(command, capture_stderr=1, print_output=1, print_command=0):
+def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg=""):
 	"""Execute a command, return output (stdout and optionally stderr), and optionally print as we go.
 
 	Returns a tuple: exit code, output
 	Like commands.getstatusoutput, except this is portable, where 'commands' is unix only
 	Also, this can print it's output as it runs, where as commands captures output and returns it later
 	If you want to do this and you need input/output handles, you'll need to use popen2, or os.open2
-	"""
+
+	terminate_reg is a regular expression object where if it is matched during the output,
+		execution terminates, and None is returned for exit code, and output thus far is returned."""
+
+	terminate_flag = 0
+	if terminate_reg: terminate_flag = 1
 
 	# This is set by utils.debug
 	if debug:
 		print_output=1
 		print_command=1
 
-	execute_option = ""
-	if capture_stderr: execute_option = " 2>&1 "
-
-	command = "%s %s" % ( command, execute_option)
-
 	if print_command: print command
 
+	if capture_stderr:
+		process = popen2.Popen4(command)
+	else:
+		process = popen2.Popen3(command)
 
-	# bufsize=1 makes it line buffered, -1, unbuffered
-	process = os.popen(command, 'r', -1 )
+	# Close unnecessary handles
+	process.tochild.close()
+
 	collected = []
 	# Use this looping method insead of 'for line in process' so it doesn't use the readahead buffer
 	#  This smooths output greatly, instead of getting big chunks of output with lots of lag
 	while(1):
-		line = process.readline()
+		line = process.fromchild.readline()
 		if not line: break
 		if print_output:
 			print line,
 			sys.stdout.flush()
 			# This doesn't work on macosx... ?
 			#process.flush()
+
 		collected += line
 
-	exit_code = process.close()
+		if terminate_flag and terminate_reg.search(line):
+			print "** Terminating process because termination string was found **"
+			os.kill(process.pid, signal.SIGKILL)
+			break
+
+	exit_code = process.wait()
 	
 	if exit_code:
 		exit_code /= 256
@@ -286,6 +300,7 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0):
 	#  Concat array elements into a string 
 	#  strip the whitespace off the end (makes it behave more like commands.getxxx)
 	return exit_code, "".join(collected).rstrip()
+
 
 # This isn't buildenv or package specific, leave it here
 def get_latest_ver(dir):

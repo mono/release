@@ -152,7 +152,9 @@ def build_package(target):
 	#  This doesn't happen all the time... in fact, never on macbld1.provo.novell.com running 10.3 ... ?
 	# Maybe we make sudo not ask for a password and then prepend this with sudo?
 	packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
-	env.ssh.execute('%s -build -p %s/pkg/%s.pkg -f %s/PKGROOT -v -r %s -i %s/Info.plist -d %s/Description.plist' % (packagemaker, remote_temp, package_filename, remote_temp, resources_dir, remote_temp, remote_temp) )
+	# Text: PackageMaker[15625] done (0)
+	exit_reg = re.compile('PackageMaker.* done \(.*\)')
+	env.ssh.execute('%s -build -p %s/pkg/%s.pkg -f %s/PKGROOT -v -r %s -i %s/Info.plist -d %s/Description.plist' % (packagemaker, remote_temp, package_filename, remote_temp, resources_dir, remote_temp, remote_temp), terminate_reg=exit_reg )
 
 	env.ssh.execute('/usr/bin/hdiutil create -ov -srcfolder %s/pkg/%s.pkg -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, package_filename, version, remote_temp, package_filename) )
 

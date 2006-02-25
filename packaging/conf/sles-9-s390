@@ -1,3 +1,6 @@
 #target_host=builder@aussie-2.osdl.marist.edu
-target_host=root@aussie-2.osdl.marist.edu
-#jaildir=/jails/sles-9-s390
+#target_host=root@aussie-2.osdl.marist.edu
+
+target_host=root@s390zvi38.suse.de
+jaildir=/mono/jails/sles-9-s390
+chroot_path=/usr/bin/chroot
