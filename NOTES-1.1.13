@@ -23,3 +23,7 @@ svn cp $MSVN/trunk/mcs/class/System.Drawing 		class
 svn cp $MSVN/trunk/mcs/class/Managed.Windows.Forms 	class
 
 
+# Also, if there are changes to libgdiplus, this will need to go from trunk 
+to the 1.1.13 branch
+(14:39:42) SchnukiWork: if you're pulling S.D you have to pull gdi+
+(14:39:50) SchnukiWork: they always come in pairs

@@ -53,17 +53,20 @@ for root, dirs, files in os.walk('.'):
 # Write out an env.sh in the $RELOC dir so we can use that when we build
 # This needs to by dynamic
 env = open('env.sh', 'w')
-env.write('export PKG_CONFIG_PATH=%s/lib/pkgconfig:$PKG_CONFIG_PATH\n' % reloc)
-env.write('export PATH=%s/bin:$PATH\n' % reloc)
+env.write('PKG_CONFIG_PATH=%s/lib/pkgconfig:$PKG_CONFIG_PATH\n' % reloc)
+env.write('PATH=%s/bin:$PATH\n' % reloc)
 
 # Needed for the solaris builds so far
-env.write('export LDFLAGS=-L%s/lib\n' % reloc)
-env.write('export CPPFLAGS=-I%s/include\n' % reloc)
-env.write('export LD_LIBRARY_PATH=%s/lib:$LD_LIBRARY_PATH\n' % reloc)
-env.write('export MANPATH=%s/share/man:%s/man:$MANPATH\n' % (reloc, reloc))
+env.write('LDFLAGS=-L%s/lib\n' % reloc)
+env.write('CPPFLAGS=-I%s/include\n' % reloc)
+env.write('LD_LIBRARY_PATH=%s/lib:$LD_LIBRARY_PATH\n' % reloc)
+env.write('MANPATH=%s/share/man:%s/man:$MANPATH\n' % (reloc, reloc))
 
 # This is for macos
-env.write('export DYLD_LIBRARY_PATH=%s/lib\n' % (reloc) )
+#env.write('DYLD_LIBRARY_PATH=%s/lib\n' % (reloc) )
+
+# Use this method for older shells
+env.write('export PKG_CONFIG_PATH PATH LDFLAGS CPPFLAGS LD_LIBRARY_PATH MANPATH\n')
 
 
 env.close()
@@ -80,7 +83,7 @@ env.write('setenv LD_LIBRARY_PATH %s/lib:$LD_LIBRARY_PATH\n' % reloc)
 env.write('setenv MANPATH %s/share/man:%s/man:$MANPATH\n' % (reloc, reloc))
 
 # This is for macos
-env.write('setenv DYLD_LIBRARY_PATH %s/lib\n' % (reloc) )
+#env.write('setenv DYLD_LIBRARY_PATH %s/lib\n' % (reloc) )
 
 env.close()
 os.chmod('env.csh', 0755)

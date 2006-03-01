@@ -30,17 +30,14 @@ def build_package(target):
 
 	remote_temp = "/tmp/packaging"
 	resources_dir = remote_temp + os.sep + 'resources'
+	remote_PKGROOT = remote_temp + os.sep + 'PKGROOT'
 	temp_dir = "build" + os.sep + target
-
-	# Maybe do this later...
-	#remote_strip_loc = env.info['jail_strip_path']
 
 	output_dir = os.path.join("output", version, target, release) 
 
 	if os.path.exists(output_dir):
 		print "%s exists, bump release number" % output_dir
 		sys.exit(1)
-
 
 	# Get list of files we're going to install
 	files = []
@@ -68,15 +65,16 @@ def build_package(target):
 		print file
 
 	# Clean up
-	env.ssh.execute('rm -Rf /tmp/install-packages %s %s; mkdir -p /tmp/install-packages %s/root %s' % (remote_temp, remote_temp, resources_dir, resources_dir) )
+	env.ssh.execute('rm -Rf /tmp/install-packages %s; mkdir -p /tmp/install-packages %s %s' % (remote_temp, remote_PKGROOT, resources_dir) )
 
 	# Copy them over...
 	env.ssh.copy_to(files, '/tmp/install-packages', mode='scp', compress=0)
 
 	# This will unpack and do all the substitution, including the noarch rpms
 	env.ssh.print_output=debug
-	prefix = "/Library/Frameworks/Mono.framework/Versions/%s" % version
-	(code, output) = env.ssh.execute("/tmp/install-packages/do-install-zip-pkgs %s/root%s %s /tmp/install-packages/* " % (remote_temp, prefix, prefix) )
+	framework_prefix = "/Library/Frameworks/Mono.framework"
+	prefix = "%s/Versions/%s" % (framework_prefix, version)
+	(code, output) = env.ssh.execute("/tmp/install-packages/do-install-zip-pkgs %s%s %s /tmp/install-packages/* " % (remote_PKGROOT, prefix, prefix) )
 	if code:
 		print "Error extracting and installing packages"
 		sys.exit(1)
@@ -84,9 +82,8 @@ def build_package(target):
 	# Strip files to save space
 	# These were in the old script as "cleanup"
 	env.ssh.print_command=1
-	env.ssh.execute("cd %s/root%s;   rm bin/gettext* bin/ngettext bin/xgettext; rm bin/glib-* ; rm bin/gobject-query ; rm lib/lib*a ; strip bin/pedump bin/monodiet bin/monodis bin/jay bin/monograph ; rm -rf share/gtk-doc " % (remote_temp, prefix ) )
+	env.ssh.execute("cd %s%s;   rm bin/gettext* bin/ngettext bin/xgettext; rm bin/glib-* ; rm bin/gobject-query ; rm lib/lib*a ; strip bin/pedump bin/monodiet bin/monodis bin/jay bin/monograph ; rm -rf share/gtk-doc " % (remote_PKGROOT, prefix ) )
 
-	# Print out packages_used
 	if os.path.exists(temp_dir): shutil.rmtree(temp_dir)
 	distutils.dir_util.mkpath(temp_dir)
 
@@ -95,7 +92,6 @@ def build_package(target):
 	for file in packages_used:
 		fd.write(file + "\n")
 	fd.close()
-
 
         #  Get some version information
         mono_package = packaging.package(env, 'mono-1.1')
@@ -126,11 +122,13 @@ def build_package(target):
 	cwd = os.getcwd()
 	os.chdir(temp_dir)
 
-	# Copy setup files over
-	env.ssh.copy_to('Description.plist  Info.plist setup-framework.sh'.split(), remote_temp, mode='scp')
-
-	# Copy files to resources_dir (Info.plist?? Doesn't seem to be done before)
+	# Copy files to resources_dir
 	env.ssh.copy_to('version.plist License.rtf ReadMe.rtf Welcome.rtf uninstallMono.sh postflight'.split(), resources_dir, mode='scp')
+
+	framework_resources_dir = "%s%s/Versions/%s/Resources" % (remote_PKGROOT, framework_prefix, version)
+	env.ssh.execute('mkdir -p %s' % framework_resources_dir )
+
+	env.ssh.copy_to('Info.plist Description.plist version.plist'.split(), framework_resources_dir, mode='scp')
 
 	os.chdir(cwd)
 
@@ -138,25 +136,35 @@ def build_package(target):
 	env.ssh.print_command=1
 	#env.ssh.execute_command=0
 
-	# Run framework script
-	env.ssh.execute('cd %s/root; ../setup-framework.sh' % remote_temp)
+	print "Creating symlinks..."
+	env.ssh.execute('cd %s%s/Versions; ln -sf %s Current' % (remote_PKGROOT, framework_prefix, version) )
+	
+	symlinks = {}
+	symlinks['Versions/Current/Resources'] 	= "Resources"
+	symlinks['Versions/Current/lib'] 	= "Libraries"
+	symlinks['Versions/Current/include'] 	= "Headers"
+	symlinks['Versions/Current/bin'] 	= "Commands"
+	symlinks['Versions/Current'] 		= "Home"
+	symlinks['Libraries/libmono.dylib']	= "Mono"
 
-	print "Done with framework..."
-	# Clean up and create dirs
-	env.ssh.execute('rm -Rf %s/PKGROOT %s/pkg; mkdir -p %s/PKGROOT %s/pkg' % (remote_temp, remote_temp, remote_temp, remote_temp) )
+	for k,v in symlinks.iteritems():
+		env.ssh.execute('cd %s%s; ln -sf %s %s' % (remote_PKGROOT, framework_prefix, k, v) )
 
-	# Copy some files over
-	env.ssh.execute('ditto %s/root/Library/Frameworks/Mono.framework %s/PKGROOT/Library/Frameworks/Mono.framework' % (remote_temp, remote_temp) )
+	print "Done creating symlinks...."
 
 	# Note: DiskManagementTool hangs this has been fixed in 10.4 ( http://lists.apple.com/archives/installer-dev/2005/Jul/msg00005.html )
 	#  This doesn't happen all the time... in fact, never on macbld1.provo.novell.com running 10.3 ... ?
 	# Maybe we make sudo not ask for a password and then prepend this with sudo?
-	packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
-	# Text: PackageMaker[15625] done (0)
-	exit_reg = re.compile('PackageMaker.* done \(.*\)')
-	env.ssh.execute('%s -build -p %s/pkg/%s.pkg -f %s/PKGROOT -v -r %s -i %s/Info.plist -d %s/Description.plist' % (packagemaker, remote_temp, package_filename, remote_temp, resources_dir, remote_temp, remote_temp), terminate_reg=exit_reg )
 
-	env.ssh.execute('/usr/bin/hdiutil create -ov -srcfolder %s/pkg/%s.pkg -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, package_filename, version, remote_temp, package_filename) )
+	# Scan for Text: PackageMaker[15625] done (0)
+	# and then terminate
+	exit_reg = ""
+	#exit_reg = re.compile('PackageMaker.* done \(.*\)')
+
+	packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
+	env.ssh.execute('cd %s; %s -build -p %s/%s.pkg -f %s -r %s -i %s/Info.plist -d %s/Description.plist' % (remote_PKGROOT, packagemaker, remote_temp, package_filename, remote_PKGROOT, resources_dir, framework_resources_dir, framework_resources_dir), terminate_reg=exit_reg)
+
+	env.ssh.execute('/usr/bin/hdiutil create -ov -srcfolder %s/%s.pkg -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, package_filename, version, remote_temp, package_filename) )
 
 	distutils.dir_util.mkpath(output_dir)
 

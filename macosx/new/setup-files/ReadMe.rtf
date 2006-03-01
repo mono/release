@@ -43,7 +43,7 @@ During the postinstall phase of the installation, links to /usr/bin are created 
 \
 A simple uninstallMono.sh script is included in the disk image.  This is shell script that must be run as root, and it will remove the Mono.framework and the links in /usr/bin.\
 \
-If you have problems find or linking with libmono-profiler-cov.dylib, add /Library/Frameworks/Mono.framework/Versions/Current/lib to DYLD_LIBRARY_PATH .  This is due to a relocation problem.\
+If you have problems find or linking with libmono-profiler-cov.dylib or other dylibs, add /Library/Frameworks/Mono.framework/Versions/Current/lib to DYLD_LIBRARY_PATH .  This is due to a relocation problem.\
 \
 This package was created by the Mono team.  Major contributors to this team include (in alphabetical order): \
 \

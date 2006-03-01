@@ -2,24 +2,24 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Mono 1.1.13.2 with GTK# 2.8.1
-AppVerName=Mono for Windows 1.1.13.2
+AppName=Mono 1.1.13.4 with GTK# 2.8.2
+AppVerName=Mono for Windows 1.1.13.4
 AppPublisher=Mono
 AppPublisherURL=http://www.mono-project.com
 AppSupportURL=http://www.mono-project.com/about/faq.html
 AppUpdatesURL=http://www.mono-project.com/downloads/index.html
-DefaultDirName={pf}\Mono-1.1.13.2
-DefaultGroupName=Mono 1.1.13.2 for Windows
-AppID={{ee8e2482-8fc0-4f43-9340-657350df50e6}
+DefaultDirName={pf}\Mono-1.1.13.4
+DefaultGroupName=Mono 1.1.13.4 for Windows
+AppID={{b253e152-3f6f-4e5b-a101-c413033df8f0}
 Compression=lzma/max
 ;Compression=bzip/4
 ;Compression=zip
 SolidCompression=true
 DisableDirPage=false
 DisableReadyPage=false
-OutputBaseFilename=mono-1.1.13.2-gtksharp-2.8.1-win32-1
-VersionInfoVersion=1.1.13.2
-VersionInfoDescription=Mono 1.1.13.2 with Gtk# Installer for Win32
+OutputBaseFilename=mono-1.1.13.4-gtksharp-2.8.2-win32-0
+VersionInfoVersion=1.1.13.4
+VersionInfoDescription=Mono 1.1.13.4 with Gtk# Installer for Win32
 VersionInfoCompany=Mono
 InfoBeforeFile=build\mono\ReleaseNotes.txt
 LicenseFile=setup-files\mono-lic.txt
@@ -28,7 +28,7 @@ WizardImageFile=setup-files\installerBanner256.bmp
 UninstallDisplayIcon={app}\mono.ico
 SetupIconFile=setup-files\mono.ico
 ShowLanguageDialog=yes
-AppVersion=1.1.13.2
+AppVersion=1.1.13.4
 MinVersion=0,5.0
 
 
@@ -40,7 +40,7 @@ Name: custom; Description: Custom installation; Flags: iscustom
 [Components]
 Name: mono; Description: Mono Files; Types: full compact custom; Flags: fixed
 Name: gtk; Description: GTK+ 2.8 and Gnome 2.12 Files; Types: full custom
-Name: gtk\gtkSharp; Description: Gtk# 2.8.1 Files; Types: full custom
+Name: gtk\gtkSharp; Description: Gtk# 2.8.2 Files; Types: full custom
 Name: gtk\gtkSharp\monodoc; Description: Monodoc and Mono Tools; Types: full custom
 Name: gtk\gtkSharp\geckosharp; Description: Gecko# Files; Types: full custom
 Name: gtk\gtkSharp\samples; Description: Samples; Types: full custom
@@ -61,7 +61,7 @@ Source: build\monodoc\*; DestDir: {app}; Components: gtk\gtkSharp\monodoc; Flags
 
 [INI]
 Filename: {app}\Mono.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://www.mono-project.com
-Filename: {app}\MonoReleaseNotes.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://go-mono.com/archive/1.1.13.2/
+Filename: {app}\MonoReleaseNotes.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://go-mono.com/archive/1.1.13.4/
 Filename: {app}\GtkPlus.url; Section: InternetShortcut; Components: gtk; Key: URL; String: http://www.gtk.org
 Filename: {app}\GtkSharp.url; Section: InternetShortcut; Components: gtk\gtkSharp; Key: URL; String: http://gtk-sharp.sourceforge.net/index.html
 Filename: {app}\Xsplocal.url; Section: InternetShortcut; Components: xsp; Key: URL; String: {code:GetURLAndPort}/index.aspx
@@ -70,9 +70,9 @@ Filename: {app}\Xsplocal2.url; Section: InternetShortcut; Components: xsp; Key: 
 ;Filename: {app}\MonoDocWeb.url; Section: InternetShortcut; Components: xsp and gtk\gtkSharp\monodoc; Key: URL; String: {code:GetURLAndPort}/header.html
 
 [Icons]
-Name: {group}\Mono-1.1.13.2 Command Prompt; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono 1.1.13.2 Command Prompt
+Name: {group}\Mono-1.1.13.4 Command Prompt; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono 1.1.13.4 Command Prompt
 Name: {group}\Readme; Filename: {app}\ReleaseNotes.txt; Comment: Combined Installer Release Notes
-Name: {group}\{cm:ProgramOnTheWeb,Mono-1.1.13.2 Release Notes}; Filename: {app}\MonoReleaseNotes.url
+Name: {group}\{cm:ProgramOnTheWeb,Mono-1.1.13.4 Release Notes}; Filename: {app}\MonoReleaseNotes.url
 Name: {group}\Applications\Gtk# Demo; Filename: {app}\bin\GtkDemo.bat; Components: gtk\gtkSharp\samples; Comment: Gtk# Demo
 Name: {group}\Applications\Sql# GTK; Filename: {app}\bin\sqlsharpgtk.bat; Components: gtk\gtkSharp\samples; Comment: SQL# GUI version
 Name: {group}\Applications\Prj2Make# GTK; Filename: {app}\bin\prj2make-sharp-gtk.bat; Components: gtk\gtkSharp\samples; Comment: Makefile generator tool.
@@ -83,7 +83,7 @@ Name: {group}\Applications\Monodoc Browser; IconFilename: {app}\mono.ico; Filena
 Name: {group}\XSP\XSP Test Web Server; Filename: {app}\bin\startXSP.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\XSP\XSP 2.0 Test Web Server; Filename: {app}\bin\startXSP2.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\{cm:ProgramOnTheWeb,Mono}; IconFilename: {app}\mono.ico; Filename: {app}\Mono.url
-Name: {group}\{cm:UninstallProgram,Mono-1.1.13.2 Win32}; Filename: {uninstallexe}
+Name: {group}\{cm:UninstallProgram,Mono-1.1.13.4 Win32}; Filename: {uninstallexe}
 Name: {group}\{cm:ProgramOnTheWeb,Gtk+}; Components: gtk; Filename: {app}\GtkPlus.url
 Name: {group}\{cm:ProgramOnTheWeb,Gtk#}; Components: gtk\gtkSharp; Filename: {app}\GtkSharp.url
 Name: {group}\XSP\XSP Index Page; Components: xsp; Filename: {app}\Xsplocal.url
@@ -92,14 +92,14 @@ Name: {group}\XSP\XSP 2.0 Index Page; Components: xsp; Filename: {app}\Xsplocal2
 
 [Registry]
 Root: HKLM; Subkey: SOFTWARE\Novell\Mono; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: Software\Novell\Mono; ValueType: string; ValueName: DefaultCLR; ValueData: 1.1.13.2; Flags: uninsdeletevalue
-Root: HKLM; Subkey: SOFTWARE\Novell\Mono\1.1.13.2; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.2; ValueType: string; ValueName: FrameworkAssemblyDirectory; ValueData: {app}\lib; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.2; ValueType: string; ValueName: MonoConfigDir; ValueData: {app}\etc; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.2; ValueType: string; ValueName: SdkInstallRoot; ValueData: {app}; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.2; Components: xsp; ValueType: dword; ValueName: XSPIsInstalled; ValueData: 1; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.2; Components: gtk\gtkSharp; ValueType: dword; ValueName: GtkSharpIsInstalled; ValueData: 1; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.2; Components: gtk; ValueType: dword; ValueName: GtkPlusDevIsInstalled; ValueData: 1; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono; ValueType: string; ValueName: DefaultCLR; ValueData: 1.1.13.4; Flags: uninsdeletevalue
+Root: HKLM; Subkey: SOFTWARE\Novell\Mono\1.1.13.4; Flags: uninsdeletekeyifempty
+Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.4; ValueType: string; ValueName: FrameworkAssemblyDirectory; ValueData: {app}\lib; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.4; ValueType: string; ValueName: MonoConfigDir; ValueData: {app}\etc; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.4; ValueType: string; ValueName: SdkInstallRoot; ValueData: {app}; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.4; Components: xsp; ValueType: dword; ValueName: XSPIsInstalled; ValueData: 1; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.4; Components: gtk\gtkSharp; ValueType: dword; ValueName: GtkSharpIsInstalled; ValueData: 1; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\1.1.13.4; Components: gtk; ValueType: dword; ValueName: GtkPlusDevIsInstalled; ValueData: 1; Flags: uninsdeletevalue
 Root: HKLM; Subkey: SOFTWARE\Novell\Mono DefaultCLR; Flags: uninsdeletekeyifempty
 Root: HKLM; Subkey: Software\Novell\Mono DefaultCLR; ValueType: string; ValueName: Installer Language; ValueData: 1033; Flags: uninsdeletevalue
 
@@ -126,7 +126,7 @@ var
     bRc: Boolean;
 begin
     // Get the registry value
-    bRc := RegQueryStringValue(HKLM, 'SOFTWARE\Novell\Mono\1.1.13.2', 'SdkInstallRoot',
+    bRc := RegQueryStringValue(HKLM, 'SOFTWARE\Novell\Mono\1.1.13.4', 'SdkInstallRoot',
     strMonoBaseDir
     );
 
@@ -136,10 +136,10 @@ begin
     end;
 end;
 
-// Checks to see if Mono 1.1.13.2 is Installed
+// Checks to see if Mono 1.1.13.4 is Installed
 Function IsMonoInstalled() : Boolean;
 begin
-    Result := RegValueExists(HKLM, 'SOFTWARE\Novell\Mono\1.1.13.2', 'SdkInstallRoot');
+    Result := RegValueExists(HKLM, 'SOFTWARE\Novell\Mono\1.1.13.4', 'SdkInstallRoot');
 end;
 
 Function SayMessage(const strMsg: String; const typMsgBox: TMsgBoxType) : Integer;

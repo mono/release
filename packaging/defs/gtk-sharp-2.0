@@ -26,7 +26,7 @@ get_destroot () {
 
 HEAD_PATH="trunk/gtk-sharp"
 #RELEASE_PATH="tags/gtk-sharp/[[gtksharp2ver]]/gtk-sharp"
-RELEASE_PATH="tags/gtk-sharp/2.x.1/gtk-sharp"
+RELEASE_PATH="tags/gtk-sharp/2.x.2/gtk-sharp"
 
 # Note, the above tags are a little weird... here's now the automation handles them:
 # Example tag: svn+ssh://mono-cvs.ximian.com/source/tags/gtk-sharp/2.3.92_2.5.92/gtk-sharp

@@ -596,14 +596,6 @@ parameter_map[re.compile("@@MONO_VERSION@@")] = sys.argv[1]
 parameter_map[re.compile("@@MONO_REVISION@@")] = sys.argv[3]
 utils.substitute_parameters_in_file("build/mono/bin/setmonopath.bat", re.compile(''), parameter_map)
 
-# Keep record of what files went into the installer
-distutils.dir_util.mkpath(output_dir)
-packages_file = open('%s/packages_used.txt' % output_dir, 'w')
-files_used_in_installer.sort()
-packages_file.write(string.join(files_used_in_installer, "\n"))
-packages_file.write("\n")
-packages_file.close()
-
 # Copy everything to windows_build_client 
 print "Cleaning up files files from build client..."
 installer_env.ssh.execute("rm -Rf /tmp/windows-installer; mkdir -p /tmp/windows-installer/Output")
@@ -621,6 +613,14 @@ installer_env.ssh.copy_to(["build", "Mono.iss", "setup-files"], '/tmp/windows-in
 if code:
 	print "Error running installer"
 	sys.exit(1)
+
+# Keep record of what files went into the installer
+distutils.dir_util.mkpath(output_dir)
+packages_file = open('%s/packages_used.txt' % output_dir, 'w')
+files_used_in_installer.sort()
+packages_file.write(string.join(files_used_in_installer, "\n"))
+packages_file.write("\n")
+packages_file.close()
 
 # Copy resultant file back
 installer_env.ssh.copy_from("/tmp/windows-installer/Output/*", output_dir, mode='scp')

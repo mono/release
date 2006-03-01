@@ -18,7 +18,7 @@ buildenv = packaging.buildenv(sys.argv[1], print_output=1)
 
 if len(sys.argv) > 2:
 	command = string.join(sys.argv[2:], ' ')
-	print "Executing: %s" % command
+	sys.stderr.write("Executing: %s\n" % command)
 	status, output = buildenv.ssh.execute(command)
 	sys.exit(status)
 else:

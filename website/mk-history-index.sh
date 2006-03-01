@@ -43,8 +43,10 @@ sum_filename=$(basename $installer_dir/*.md5)
 installers="$installers <p>Windows Installer: <a href='$ref_dir/$filename'>$filename</a> [<a href='$ref_dir/$sum_filename'>MD5SUM</a>] </p>"
 
 # Mac
-installer_dir="$ARCHIVE_DIR/$VERSION/macosx"
-ref_dir="../macosx"
+latest_version $ARCHIVE_DIR/$VERSION/macos-10-ppc
+revision=$(basename $LATEST_VERSION)
+installer_dir="$ARCHIVE_DIR/$VERSION/macos-10-ppc/$revision"
+ref_dir="../macos-10-ppc/$revision"
 
 filename=$(basename $installer_dir/*.dmg)
 sum_filename=$(basename $installer_dir/*.md5)

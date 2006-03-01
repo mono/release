@@ -13,7 +13,7 @@ built and configured version of XSP.
 
 Installer Changes:
 
-Next:
+1.1.13.4:
  -removed wimp theme, as it comes with gtk+ named as MS-Windows
 
 1.1.13.2-1:
