@@ -128,14 +128,17 @@ def build_package(target):
 	# Add MONO_GAC_PREFIX to environment files
 	# and rename env.sh to setup.sh
 
-	vars = {}
-	vars['MONO_GAC_PREFIX'] = '/opt/mono'
-	vars['MONO_PREFIX'] = '/opt/mono'
-	vars['MONO_CFG_DIR'] = '/opt/mono/etc'
-	vars['MONO_PATH'] = '/opt/mono/lib'
-
-	for k,v in vars.iteritems():
-		env.ssh.execute("cd %s; echo 'export %s=%s' >>  env.sh; echo 'setenv %s %s' >> env.csh" % (remote_temp, k, v, k, v))
+	# Probably don't need this anymore since we use /opt/mono as build prefix...
+#	vars = {}
+#	vars['MONO_GAC_PREFIX'] = '/opt/mono'
+#	vars['MONO_PREFIX'] = '/opt/mono'
+#	vars['MONO_CFG_DIR'] = '/opt/mono/etc'
+#	vars['MONO_PATH'] = '/opt/mono/lib'
+#
+#	for k,v in vars.iteritems():
+#		env.ssh.execute("cd %s; echo '%s=%s' >>  env.sh; echo 'setenv %s %s' >> env.csh" % (remote_temp, k, v, k, v))
+#
+#	env.ssh.execute("cd %s; export %s >>  env.sh" % (remote_temp, " ".join(vars.keys()) ) )
 		
 	# Rename environment files
 	env.ssh.execute("cd %s; mv env.sh  setup.sh " % (remote_temp))
