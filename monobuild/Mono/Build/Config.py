@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-releaseRepo = "/home/wade/wa/msvn/release"
+releaseRepo = "/home/wberrier/wa/msvn/release"
 
 platformDir = releaseRepo + "/packaging/conf"
 packageDir = releaseRepo + "/packaging/defs"

@@ -1,4 +1,3 @@
-
 // Figure out which set of check boxes to toggle and then toggle them all
 function toggleCheckBoxes(checkboxName)
 {
@@ -9,10 +8,6 @@ function toggleCheckBoxes(checkboxName)
 	if(checkboxName == document.buildform.build) {
 		checkBox = document.buildform.linux;
 	} 
-
-	if(checkboxName == document.buildform.build_other) {
-		checkBox = document.buildform.other;
-	}
 
 	// If more than one build is selected
 	if(checkboxName.length)
@@ -29,5 +24,4 @@ function toggleCheckBoxes(checkboxName)
 	}
 
 }
-
 

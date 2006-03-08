@@ -5,6 +5,7 @@
 	<platform></platform>
 	<package></package>
 	<revision></revision>
+	<state></state>
 
 	<buildhost></buildhost>
 	<start></start>
