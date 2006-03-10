@@ -13,6 +13,7 @@ import commands
 import glob
 import stat
 import fcntl
+import re
 
 import pdb
 
@@ -52,7 +53,8 @@ def getPackages():
 	for entry in os.listdir(Mono.Build.Config.packageDir):
 	
 		# For some reason... .svn fails the -d perl test...???
-		if not os.path.isdir(entry) and entry != ".svn":
+		#  Ignore all dot files
+		if not os.path.isdir(entry) and not re.compile('^\.').search(entry):
 			packages.append(entry)
 
 	packages.sort()
@@ -217,10 +219,13 @@ def getLatestTreeRevision(package):
 
 	dir_loc = Mono.Build.Config.releaseRepo + "/packaging"
 	revision = commands.getoutput("cd %s; ./get-latest-rev %s" % (dir_loc, package) )
-	#revision = revision.split()
 
-	# Convention used thoughout the system
-	revision = "r" + revision
+	return revision
+
+def getLatestBuiltTarball(package):
+
+	tarball_map = Mono.Build.Config.releaseRepo + "/packaging/tarball_map"
+	revision = commands.getoutput("cd %s; ./get-latest-rev %s" % (dir_loc, package) )
 
 	return revision
 
