@@ -28,27 +28,20 @@ MONO_DEPS=(
 	mono-1.1
 )
 
-# Here for reference only
-win_4_i386_ZIP_BUILD () {
-
-	# Only needed for boot strapping
-	#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
-
-	./configure --prefix=/tmp/install
-
-	# Hack to get gacutil working on win32 (prepend C:/cygwin to path) (ximian bug: 76170)
-	#sed -i "s/gacdir /gacdir C:\/cygwin/" bin/Makefile
-
-	make
-	make install
-
-}
-
+BUILD_DIR="dunno"
 
 get_destroot () {
 	DEST_ROOT=noarch
 }
 
-get_tarball () {
-	wget http://primates.ximian.com/~wberrier/packaging/sources/ikvm/ikvm-$version.tar.gz -O sources/ikvm/ikvm-$version.tar.gz
+get_source () {
 }
+
+update_version_file () {
+}
+
+make_dist () {
+	wget http://primates.ximian.com/~wberrier/packaging/sources/ikvm/ikvm-$VERSION.tar.gz -O /tmp/built-tarball/ikvm-$VERSION.tar.gz
+}
+
+

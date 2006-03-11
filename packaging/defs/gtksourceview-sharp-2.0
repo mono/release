@@ -28,23 +28,11 @@ MONO_DEPS=(
 	gecko-sharp
 )
 
-# Here for reference only... (we don't build noarch on cygwin anymore)
-win_4_i386_ZIP_BUILD () {
 
-	#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
+HEAD_PATH=(
+	trunk/gtksourceview-sharp
+)
+RELEASE_PATH=(
+	tags/gtksourceview-sharp-[[version]]
+)
 
-	./configure --prefix=/tmp/install
-
-	make
-	make install
-
-}
-
-
-
-HEAD_PATH="trunk/gtksourceview-sharp"
-RELEASE_PATH="tags/gtksourceview-sharp-[[version]]"
-
-get_tarball () {
-	msvn_tar $1
-}

@@ -16,13 +16,31 @@ get_destroot () {
 	DEST_ROOT=$DISTRO
 }
 
-HEAD_PATH="trunk/gtk-sharp"
-#RELEASE_PATH="tags/gtk-sharp/[[versiondot]]/gtk-sharp"
-RELEASE_PATH="tags/gtk-sharp/2.x.2/gtk-sharp"
+HEAD_PATH=(
+	trunk/gtk-sharp
+)
+RELEASE_PATH=(
+	#tags/gtk-sharp/[[versiondot]]/gtk-sharp
+	tags/gtk-sharp/2.x.2/gtk-sharp
+)
 
-get_tarball () {
-	msvn_tar $1
+get_source () {
+	# substitute version dot with digit.x.digit
+        $SVNEXPORT $MONO_ROOT/$SVN_PATH
 }
+
+# this probably isn't getting escaped correctly... done
+update_version_file () {
+        sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$SNAPSHOT_REV/" bootstrap-2.8
+}
+
+make_dist () {
+        # This is needed on suse systems with gnome in /opt
+        . /etc/profile
+        ./bootstrap-2.8
+        make dist
+}
+
 
 win_4_i386_ZIP_DEPS=(
 

@@ -12,6 +12,7 @@ import distutils.dir_util
 import threading
 
 sys.path += ['../../pyutils']
+import config
 import utils
 import packaging
 
@@ -58,8 +59,8 @@ def build_package(target):
         packages_used.sort()
 
 	# Add helper files to the list
-        files += [packaging.packaging_dir + '/do-install-zip-pkgs']
-        files += [packaging.packaging_dir + '/../pyutils/utils.py']
+        files += [config.packaging_dir + '/do-install-zip-pkgs']
+        files += [config.packaging_dir + '/../pyutils/utils.py']
 
 	for file in files:
 		print file
@@ -199,7 +200,7 @@ else:
 
 
 if target == 'all':
-	targets = map(os.path.basename, glob.glob(packaging.packaging_dir + "/conf/macos-*-*"))
+	targets = map(os.path.basename, glob.glob(config.packaging_dir + "/conf/macos-*-*"))
 else:
 	targets = target.split(',')
 

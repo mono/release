@@ -5,8 +5,6 @@ package=$2
 distro=$3
 version=$4
 
-# Possibly: dest=$5
-
 rm -rf /tmp/builder/built-packages 	|| exit 1
 cd /tmp && rm -rf scratch 		|| exit 1
 rm -rf install 			 	|| exit 1

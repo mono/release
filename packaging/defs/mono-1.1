@@ -268,11 +268,19 @@ get_destroot () {
 	fi
 }
 
-HEAD_PATH="trunk"
-RELEASE_PATH="tags/mono-[[version]]"
-BRANCH_PATH="branches/mono-[[version]]"
+HEAD_PATH=(
+	trunk/mono
+	trunk/mcs
+)
 
-get_tarball () {
-	msvn_tar $1
+RELEASE_PATH=(
+	tags/mono-[[version]]/mono
+	tags/mono-[[version]]/mcs
+)
+
+make_dist () {
+	. /etc/profile
+	./autogen.sh
+	make dist MCS=mcs RESGEN=resgen
 }
 

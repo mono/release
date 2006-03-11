@@ -32,6 +32,7 @@ import threading
 sys.path += ['../pyutils']
 import utils
 import packaging
+import config
 
 # Constants
 # Which noarch packages to include in the various packages
@@ -90,7 +91,7 @@ def build_package(target):
 	env.ssh.execute("rm -Rf %s; mkdir -p -m777 %s " % ( remote_temp, remote_temp))
 
 	print "Copying files to remote..."
-	env.ssh.copy_to("*", remote_temp);
+	env.ssh.copy_to("*", remote_temp, mode='tar');
 
 	os.chdir(cwd)
 
@@ -111,7 +112,7 @@ def build_package(target):
 	packages_used.sort()
 
 	# Also copy script to relocate and unpack the packages
-	files += [packaging.packaging_dir + os.sep + 'do-install-zip-pkgs']
+	files += [config.packaging_dir + os.sep + 'do-install-zip-pkgs']
 	
 	# Copy them over...
 	env.ssh.copy_to(files, '/tmp/install-packages', mode='scp', compress=0)
@@ -250,7 +251,7 @@ else:
 
 
 if target == 'all':
-	targets = map(os.path.basename, glob.glob(packaging.packaging_dir + "/conf/sunos-*-*"))
+	targets = map(os.path.basename, glob.glob(config.packaging_dir + "/conf/sunos-*-*"))
 else:
 	targets = target.split(',')
 

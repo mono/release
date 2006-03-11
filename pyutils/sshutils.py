@@ -21,7 +21,7 @@ import pdb
 
 class init:
 	
-	def __init__(self, target_host, print_output=1, jaildir="", chroot_path="/usr/sbin/chroot", remote_tar_path="tar", local_tar_path="tar", target_command_prefix="", execute_command=1, print_command=0):
+	def __init__(self, target_host, print_output=1, jaildir="", chroot_path="/usr/sbin/chroot", remote_tar_path="tar", local_tar_path="tar", target_command_prefix="", execute_command=1, print_command=0, logger=""):
 
 		self.target_host = target_host
 
@@ -32,6 +32,7 @@ class init:
 		self.remote_tar_path = remote_tar_path
 		self.local_tar_path = local_tar_path
 		self.target_command_prefix = target_command_prefix
+		self.logger = logger
 
 		# Options for debugging
 		self.execute_command=execute_command
@@ -82,10 +83,10 @@ class init:
 		code = 0
 		output = ""
 
-		if self.print_command: print "Executing %s" % command_string
+		if self.print_command: self.log("Executing %s" % command_string)
 
 		if self.execute_command:
-			(code, output) = utils.launch_process(command_string, print_output=self.print_output, terminate_reg=terminate_reg)
+			(code, output) = utils.launch_process(command_string, print_output=self.print_output, terminate_reg=terminate_reg, logger=self.logger)
 
 		return code, output
 
@@ -99,7 +100,7 @@ class init:
 
 
 	# Copy to jail
-	def copy_to(self, src, dest, compress=1, mode='tar'):
+	def copy_to(self, src, dest, compress=1, mode='scp'):
 		"""Args: src (string or list), dest, Returns: (exit_code, output).
 
 		Optional args: compress=0 or 1, mode=tar or scp.
@@ -122,14 +123,14 @@ class init:
 				dest = self.jaildir + os.sep + dest
 		        command = "%s -pc %s | ssh %s %s 'cd %s ; %s -pvxf - ' " % (self.local_tar_path, src, self.options + compress_option, self.target_host, dest, self.remote_tar_path )
 		else:
-			print "Invalid copy_to mode: %s" % mode
+			self.log("Invalid copy_to mode: %s" % mode)
 			sys.exit(1)
 
-		if self.print_output: print command
+		if self.print_output: self.log(command)
 		return utils.launch_process(command, print_output=self.print_output)
 		
 
-	def copy_from(self, src, dest, compress=1, mode='tar'):
+	def copy_from(self, src, dest, compress=1, mode='scp'):
 		"""Args: (src (string or list), dest) Returns: (exit_code, output).
 
 		Optional args: compress=0 or 1, mode=tar or scp.
@@ -162,11 +163,15 @@ class init:
 		        command = "cd %s; ssh %s %s ' %s %s -pcf - %s ' | %s -pvxf - " % (dest, self.options + compress_option, self.target_host, self.remote_tar_path, tar_dir_options, files, self.local_tar_path )
 
 		else:
-			print "Invalid copy_from mode: %s" % mode
+			self.log("Invalid copy_from mode: %s" % mode)
 			sys.exit(1)
 
-		if self.print_output: print command
+		if self.print_output: self.log(command)
 		return utils.launch_process(command, print_output=self.print_output)
+
+	def log(self, message):
+		if self.logger: self.logger.log(message)
+		else: print message
 
 
 	# Extra future bonus features...

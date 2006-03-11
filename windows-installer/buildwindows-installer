@@ -46,6 +46,7 @@ import datetime
 
 # Local common utils
 sys.path += [ "../pyutils" ]
+import config
 import packaging
 import utils
 
@@ -90,7 +91,7 @@ class Selection:
 
 			for url in self.urls:
 				filename = os.path.basename(url)
-				url_dest = packaging.packaging_dir + os.sep + 'external_zip_pkg'
+				url_dest = config.packaging_dir + os.sep + 'external_zip_pkg'
 				url_dest_file = url_dest + os.sep + filename
 				if not os.path.exists(url_dest_file):
 					utils.get_url(url, url_dest)
@@ -605,7 +606,7 @@ if code:
 	sys.exit(code)
 
 print "Copying files to build client..."
-installer_env.ssh.copy_to(["build", "Mono.iss", "setup-files"], '/tmp/windows-installer', compress=1)
+installer_env.ssh.copy_to(["build", "Mono.iss", "setup-files"], '/tmp/windows-installer', compress=1, mode='tar')
 
 # Run installer on windows
 (code, output) = installer_env.ssh.execute('export PATH="$PATH:/cygdrive/c/PROGRA~1/INNOSE~1:C:\Program Files\Inno Setup5"; cd /tmp/windows-installer; ISCC.exe Mono.iss')

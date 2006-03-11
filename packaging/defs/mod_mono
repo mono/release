@@ -29,9 +29,10 @@ get_destroot () {
 	DEST_ROOT=$DISTRO
 }
 
-HEAD_PATH="trunk/mod_mono"
-RELEASE_PATH="tags/mono-[[version]]/mod_mono"
+HEAD_PATH=(
+	trunk/mod_mono
+)
+RELEASE_PATH=(
+	tags/mono-[[version]]/mod_mono
+)
 
-get_tarball () {
-	msvn_tar $1
-}

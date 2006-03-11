@@ -29,9 +29,10 @@ get_destroot () {
 	DEST_ROOT=$ARCH
 }
 
-HEAD_PATH="trunk/debugger"
-RELEASE_PATH="tags/debugger-[[version]]"
+HEAD_PATH=(
+	trunk/debugger
+)
+RELEASE_PATH=(
+	tags/debugger-[[version]]
+)
 
-get_tarball () {
-	msvn_tar $1
-}

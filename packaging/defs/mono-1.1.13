@@ -18,16 +18,25 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
-	mono-ifzen
+	#mono-1.1.13
 )
 
 get_destroot () {
 	DEST_ROOT=$ARCH
 }
 
-HEAD_PATH="branches/mono-1-1-7"
-RELEASE_PATH="tags/mono-[[version]]"
+HEAD_PATH=(
+	branches/mono-1-1-13/mono
+	branches/mono-1-1-13/mcs
+)
+RELEASE_PATH=(
+	tags/mono-[[version]]/mono
+	tags/mono-[[version]]/mcs
+)
 
-get_tarball () {
-	msvn_tar $1
+make_dist () {
+        . /etc/profile
+        ./autogen.sh
+        make dist-zip MCS=mcs RESGEN=resgen
 }
+

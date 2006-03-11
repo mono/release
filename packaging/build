@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env python
 #
 # Usage: build os-target package version [serial]
 #
@@ -13,113 +13,116 @@
 #    build suse-92-i386 mono-1.1 1.1.6
 #
 
-distro=$1
-package=$2
-version=$3
-serial=${4-0}
+import sys
+import glob
+import os.path
+import distutils.dir_util
 
-. shared-code.sh
+sys.path += [ '../pyutils' ]
+import packaging
+import logger
+import utils
 
 
-usage()
-{
-	echo "Usage is: build configuration package version <release>"
-	echo "	<release> is optional"
-}
+if len(sys.argv) < 4:
+	print "Usage is: ./build configuration package version <release>"
+        print "  <release> is optional"
+	sys.exit(1)
 
-if test x$version = x; then
-    usage
-    exit 1;
-fi
+distro = sys.argv[1]
+package_name = sys.argv[2]
+version = sys.argv[3]
 
-if test -f status/$distro; then
-   echo $1 jail is busy
-   exit 1
-fi
+# If serial is passed in
+if len(sys.argv) > 4:
+	serial = sys.argv[4]
+	ver_path = version + "-" + serial
+else:
+	serial = "0"
+	ver_path = version
 
-. conf/$distro
-. defs/$package
 
-# See: http://linuxreviews.org/beginner/abs-guide/en/x15283.html
-# Example 34-16. Passing and returning arrays
-contains $distro "`echo ${BUILD_HOSTS[@]}`"
-if [ $? -eq 0 ]; then
-	echo $distro is not in BUILD_HOSTS
-	exit 1
-fi
+LOGFILE = "logs/%s-%s-%s-%s" % ( package_name, version, serial, distro)
+log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
 
-distro_info $distro
-get_destroot $distro
-get_revision
+build_env = packaging.buildenv(distro, logger=log_obj)
+package = packaging.package(build_env, package_name)
 
-if [ $serial -eq 0 ]; then
-	VER_PATH="$version"
-else
-	VER_PATH="$version-$serial"
-fi
+if build_env.is_locked():
+	print "%s jail is busy" % distro
+	sys.exit(1)
+
+# check to see if this package is a valid build
+if not package.info['BUILD_HOSTS'].count(distro):
+	print "%s is not in BUILD_HOSTS" % distro
+	sys.exit(1)
+
+destroot = package.destroot
+
+ver_path
+revision = package.get_revision(serial)
 
 # Set some defaults of where to find packages/sources
-source_path=sources
-if [ ! -z $USE_ZIP_PKG ]; then
-	package_path=zip_packages
-else
-	package_path=packages
-fi
+source_path = "sources"
 
 # Figure out if this is a snapshot build or not...
-if [ -e sources/$package/*-$version.tar.gz ] || [ -e sources/$package/*-$version.zip ] ; then
-	echo "Using release sources and packages"
-elif [ -e snapshot_sources/$package/*-$version.tar.gz ] || [ -e snapshot_sources/$package/*-$version.zip ] ; then
-	echo "Using snapshot sources and packages"
-	source_path="snapshot_${source_path}"
-	package_path="snapshot_${package_path}"
-else
-	echo Cannot find source file for $package
-	exit 1
-fi
+if glob.glob("sources/%s/*-%s.tar.gz" % (package_name, version)) or glob.glob("sources/%s/*-%s.zip" % (package_name, version)):
+	snapshot = 0
+	print "Using release sources and packages"
+elif glob.glob("snapshot_sources/%s/*-%s.tar.gz" % (package_name, version)) or glob.glob("snapshot_sources/%s/*-%s.zip" % (package_name, version)):
+	print "Using snapshot sources and packages"
+	snapshot = 1
+	source_path = "snapshot_" + source_path
+else:
+	print "Cannot find source file for " + package_name
+	sys.exit(1)
+
+package_path = package.get_package_path(snapshot=snapshot)
+
+print package_path
+
+package_version_path = package_path + os.sep + ver_path
 
 
-if [ -d $package_path/$DEST_ROOT/$package/$VER_PATH ]; then
-	echo "The path for this package ($package_path/$DEST_ROOT/$package/$VER_PATH) already exists. You probably need to bump the revision number"
-	exit 1;
-fi
+if os.path.exists(package_version_path):
+	print "The path for this package (%s) already exists. You probably need to bump the revision number" % package_version_path
+	sys.exit(1)
 
-LOGFILE=logs/$package-$version-$serial-$distro
-rm -rf $LOGFILE
 
-mkdir -p `dirname $LOGFILE`
+build_env.lock_env()
 
-echo > status/$distro;
+print "Installing dependencies..."
+(code, output) = utils.launch_process("./install-deps %s %s" % (distro, package_name), logger=log_obj)
+if code:
+	build_env.unlock_env()
+	print "Dependency installation failed, see log in %s for details" % LOGFILE
+	sys.exit(1)
 
-echo "Install dependencies..."
-if ! ./install-deps $distro $package >> $LOGFILE 2>&1; then
-	rm status/$distro
-	echo Dependency installation failed, see log in $LOGFILE for details
-	exit 1
-fi
 
-if [ -z $USE_ZIP_PKG ]; then
+# Copy tar.gz and zip files
+files_to_copy = [ '%s/%s/*-%s.tar.gz' % (source_path, package_name, version), '%s/%s/*-%s.zip' % (source_path, package_name, version) ]
 
-	scp do-build ../conf/$package/* $source_path/$package/*-$version.tar.gz $source_path/$package/*-$version.zip $target_host:$jaildir/tmp 
+# Files for zip build system and build command
+if build_env.info['USE_ZIP_PKG']:
+	files_to_copy += ['do-zip-build', '../conf/%s/*.patch' % package_name, 'defs/%s' % package_name]
+	build_command = '/tmp/do-zip-build %s %s %s %s' % (revision, package_name, distro, version)
 
-	if ! ./jail-do $distro "/tmp/do-build $version $REVISION" >> $LOGFILE 2>&1; then
-		rm status/$distro
-		echo Build failed, see log in $LOGFILE for details
-		exit 1;
-	fi
+else:
+	files_to_copy += ['do-build', '../conf/%s/*' % package_name ]
+	build_command = '/tmp/do-build %s %s' % (version, revision)
 
-else
-	scp do-zip-build ../conf/$package/*.patch defs/$package $source_path/$package/*-$version.tar.gz $source_path/$package/*-$version.zip $target_host:$jaildir/tmp 
 
-	if ! ./jail-do $distro "/tmp/do-zip-build $REVISION $package $distro $version" >> $LOGFILE 2>&1; then
-		rm status/$distro
-		echo Build failed, see log in $LOGFILE for details
-		exit 1;
-	fi
-fi
+build_env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
 
-mkdir -p $package_path/$DEST_ROOT/$package/$VER_PATH
-scp $target_host:$jaildir/tmp/builder/built-packages/* $target_host:$jaildir/tmp/scratch/*.spec $package_path/$DEST_ROOT/$package/$VER_PATH
+(code, output) = build_env.ssh.execute(build_command)
+if os.system(build_command):
+	build_env.unlock_env()
+	print "Build failed, see log in %s for details" % LOGFILE
+	sys.exit(1)
 
-rm status/$distro
+distutils.dir_util.mkpath(package_version_path)
+build_env.ssh.copy_from(['/tmp/builder/built-packages/*', '/tmp/scratch/*.spec'], package_version_path)
+
+build_env.unlock_env()
+
 

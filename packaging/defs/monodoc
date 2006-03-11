@@ -28,26 +28,25 @@ MONO_DEPS=(
 	mono-1.1
 )
 
-# Here for reference only
-win_4_i386_ZIP_BUILD () {
-
-	# Only needed for boot strapping
-	#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
-
-	./configure --prefix=/tmp/install
-	make
-	make install
-
-}
-
-
 get_destroot () {
 	DEST_ROOT=noarch
 }
 
-HEAD_PATH="trunk/monodoc"
-RELEASE_PATH="tags/monodoc-[[version]]"
+HEAD_PATH=(
+	trunk/monodoc
+	trunk/mcs/errors
+)
+RELEASE_PATH=(
+	tags/monodoc-[[version]]
+	tags/mono-[[version]]/mcs/errors
+)
 
-get_tarball () {
-	msvn_tar $1
+make_dist () {
+	mkdir mcs
+	mv ../errors mcs
+	. /etc/profile
+	./autogen.sh
+	#make dist-zip
+	make dist
 }
+

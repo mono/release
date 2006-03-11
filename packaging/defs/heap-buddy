@@ -53,9 +53,10 @@ get_destroot () {
 	DEST_ROOT=$ARCH
 }
 
-HEAD_PATH="trunk/heap-buddy"
-RELEASE_PATH="tags/heap-buddy-[[version]]"
+HEAD_PATH=(
+	trunk/heap-buddy
+)
+RELEASE_PATH=(
+	tags/heap-buddy-[[version]]
+)
 
-get_tarball () {
-	msvn_tar $1
-}

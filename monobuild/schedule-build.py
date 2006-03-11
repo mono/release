@@ -45,7 +45,7 @@ if invalid:
 for pair in pairs:
 	(platform, package) = pair.split(":")
 
-	latest_rev = Mono.Build.getLatestTreeRevision(package)
+	latest_rev = "r" + Mono.Build.getLatestTreeRevision(package)
 	Mono.Build.scheduleBuild(platform, package, latest_rev)
 	print "Scheduled " + platform + ":" + package
 

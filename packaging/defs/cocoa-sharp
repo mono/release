@@ -42,9 +42,11 @@ get_destroot () {
 	DEST_ROOT=$DISTRO
 }
 
-HEAD_PATH="trunk/cocoa-sharp"
-RELEASE_PATH="trunk/cocoa-sharp"
+HEAD_PATH=(
+	trunk/cocoa-sharp
+)
 
-get_tarball () {
-	msvn_tar $1
-}
+RELEASE_PATH=(
+	trunk/cocoa-sharp
+)
+

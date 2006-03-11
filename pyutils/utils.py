@@ -41,7 +41,7 @@ debug=0
 def get_env_var(var_name, source):
 
 	if not os.path.exists(source):
-		print "File not found: %s" % source
+		print "get_env_var: File not found: %s" % source
 		sys.exit(1)
 
         tmp_script = tempfile.mktemp()
@@ -243,7 +243,7 @@ def remove_line_matching(file, text_to_remove):
         fd.close()
 
 
-def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg=""):
+def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg="", logger=""):
 	"""Execute a command, return output (stdout and optionally stderr), and optionally print as we go.
 
 	Returns a tuple: exit code, output
@@ -261,6 +261,9 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 	if debug:
 		print_output=1
 		print_command=1
+
+	# turn off output if a logger is used
+	if logger: print_output=0
 
 	if print_command: print command
 
@@ -283,6 +286,8 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 			sys.stdout.flush()
 			# This doesn't work on macosx... ?
 			#process.flush()
+		if logger:
+			logger.log(line)
 
 		collected += line
 

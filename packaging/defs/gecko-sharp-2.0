@@ -25,43 +25,15 @@ MONO_DEPS=(
 	gecko-sharp
 )
 
-
-# Here for reference only...
-win_4_i386_ZIP_BUILD () {
-
-	#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
-
-	# Make sure it's not dependent on cygwin
-	export CC="gcc -mno-cygwin"
-
-	./configure --prefix=/tmp/install                                                                             
-
-
-	# Fix the CODEGEN and FIXUP vars in the Makefile
-	sed -i 's/^CODEGEN = .*/CODEGEN = \/tmp\/build_deps\/bin\/mono C:\/cygwin\/tmp\/build_deps\/lib\/gtk-sharp-2.0\/gapi_codegen.exe/' gtkmozembed/Makefile
-	sed -i 's/^FIXUP = .*/FIXUP = \/tmp\/build_deps\/bin\/mono C:\/cygwin\/tmp\/build_deps\/lib\/gtk-sharp-2.0\/gapi-fixup.exe/' gtkmozembed/Makefile
-
-	# fix gapi2-codegen and fixup wrapper scripts (Done above) (That will work for now... but that means we have to do that for every app?  gtk-sharp really needs to be fixed)
-
-	## Fix the paths for gacutil
-	sed -i 's/gacdir /gacdir C:\/cygwin/' gtkmozembed/Makefile
-
-
-	make
-	make install
-
-
-}
-
-
-
 get_destroot () {
 	DEST_ROOT=noarch
 }
 
-HEAD_PATH="trunk/gtkmozembed-sharp"
-RELEASE_PATH="tags/gecko-sharp-[[version]]"
+HEAD_PATH=(
+	trunk/gtkmozembed-sharp
+)
 
-get_tarball () {
-	msvn_tar $1
-}
+RELEASE_PATH=(
+	tags/gecko-sharp-[[version]]
+)
+

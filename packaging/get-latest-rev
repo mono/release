@@ -1,19 +1,24 @@
-#!/bin/sh
+#!/usr/bin/env python
 
-package=$1
+import sys
 
-if [ -z $package ] ; then
-	echo "Usage: ./get-latest-rev <package>"
-	exit 1
-fi
+sys.path += ['../pyutils']
 
-. defs/$package
+import src_repo_utils
+import packaging
+import config
 
-#if [ "$package" == "monodevelop" ]; then
-#	ROOT=svn+ssh://mono-cvs.ximian.com/svn/monodevelop
-#else
-	ROOT=svn+ssh://mono-cvs.ximian.com/source
-#fi
 
-svn ls $ROOT/$HEAD_PATH -v | awk '{print $1}' | sort -nr | head -n1 
+if len(sys.argv) < 2:
+	print "Usage: ./get-latest-rev <package>"
+	sys.exit(1)
+
+package_name = sys.argv[1]
+
+repo = src_repo_utils.svn(config.MONO_ROOT)
+
+pack = packaging.package("", package_name)
+
+print repo.latest_path_revision(pack.info['HEAD_PATH'])
+
 

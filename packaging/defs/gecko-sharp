@@ -29,31 +29,14 @@ MONO_DEPS=(
 	gtk-sharp
 )
 
-
-# Here for reference only... (we don't build noarch packages in cygwin anymore)
-win_4_i386_ZIP_BUILD () {
-
-	# Make sure it's not dependent on cygwin
-	export CC="gcc -mno-cygwin"                                                                                   
-
-	./configure --prefix=/tmp/install
-
-	## Fix the paths for gacutil
-	sed -i 's/root \$(DESTDIR)/root C:\/cygwin\/\$(DESTDIR)/' gtkmozembed/Makefile
-
-	make
-	make install
-
-}
-
-
 get_destroot () {
 	DEST_ROOT=noarch
 }
 
-HEAD_PATH="trunk/gtkmozembed-sharp"
-RELEASE_PATH="tags/gecko-sharp-[[version]]"
+HEAD_PATH=(
+	trunk/gtkmozembed-sharp
+)
+RELEASE_PATH=(
+	tags/gecko-sharp-[[version]]
+)
 
-get_tarball () {
-	msvn_tar $1
-}

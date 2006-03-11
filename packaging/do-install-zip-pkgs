@@ -8,10 +8,12 @@
 
 import sys
 import distutils.dir_util
-import utils
 import os
 import glob
 import re
+
+
+import utils
 
 if len(sys.argv) < 3:
 	print "Usage: ./do-install-zip-pkgs <file location> <relocation destination> [ full path to packages... ]"

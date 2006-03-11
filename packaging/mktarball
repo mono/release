@@ -1,123 +1,110 @@
-#!/bin/sh
+#!/usr/bin/env python
 
-msvn_tar () {
-    get_svn_path
-    scp do-msvn-tar $target_host:$jaildir/tmp
-    ./jail-do $distro "mount /proc &> /dev/null ; sudo -H -u builder sh -x /tmp/do-msvn-tar $package $svn_path $snapshot_rev" || return 1
-    tarball=`./jail-do $distro "cd /tmp/built-tarball && ls"`
-    scp $target_host:$jaildir/tmp/built-tarball/*.tar.gz $source_path/$real_package
+import os
+import sys
+import distutils.dir_util
+import glob
+import commands
 
-    # Keep a map of which params produce which tarball
-    echo $key=$source_path/$real_package/$tarball >> tarball_map
-}
+import pdb
 
-get_svn_path () {
-    case "$version" in
-	snap )
-	    if [ x$snapshot_rev == x ]; then
-		echo "You need to specify a revision"
-		exit 1
-	    fi
-	    svn_path=$HEAD_PATH
-	    ;;
-	*)
-	    unset snapshot_version
-	    versiondash=${version//\./-}
-	    version_match=\\[\\[version\\]\\]
-	    versiondot_match=\\[\\[versiondot\\]\\]
-	    gtksharp2ver_match=\\[\\[gtksharp2ver\\]\\]
-	    svn_path=${RELEASE_PATH//$version_match/${versiondash}}
-	    svn_path=${svn_path//$versiondot_match/${version}}
+sys.path += ['../pyutils' ]
+import logger
+import packaging
+import utils
+import datastore
 
-	    if expr match $version '2\.5' ; then
-		svn_path=${svn_path//$gtksharp2ver_match/${version/#2.5/2.3}_${version}}
-	    elif expr match $version '2\.6' ; then
-	        svn_path=${svn_path//$gtksharp2ver_match/${version/#2.6/2.4}_${version}}
-	    else
-	        #  This handles the case of the '2.7.1' tag (which doesn't have the ver_ver format)
-	        svn_path=${svn_path//$gtksharp2ver_match/${version}}
-	    fi
-
-	    ;;
-    esac
-}
+def usage():
+	print ""
+	print "Usage: ./mktarball <target jail> <package> <version|snap> [svn rev]"
+	print " where version is a tagged version from svn"
+	print " Note: if you specify snap, you must specify svn rev"
+	print ""
 
 
-distro=$1
-package=$2
-version=$3
-snapshot_rev=$4
+### Command line arg handling ###
+if len(sys.argv) < 4:
+	usage()
+	sys.exit(1)
 
-# Argument checking
-if [ -z $distro ] || [ -z $package ] || [ -z $version ]; then
-	echo ""
-	echo "Usage: mktarball <target jail> <package> <version|snap> [svn rev]"
-	echo " where version is a tagged version from svn"
-	echo " Note: if you specify snap, you must specify svn rev"
-	echo ""
-	exit 1
-fi
+distro=sys.argv[1]
+package=sys.argv[2]
+version=sys.argv[3]
 
-if [ -z $snapshot_rev ]; then
-	source_path=sources
-else
-	source_path=snapshot_sources
-fi
+# Optional snapshot rev
+snapshot_rev = ""
+if len(sys.argv) > 4:
+	if len(sys.argv) < 5:
+		usage()
+		sys.exit(1)
+	snapshot_rev=sys.argv[4]
 
-real_package=$package
+# Validate args ... ?
 
-#
-# Total hack for the wacked out gtk# stuff
-#
-if [[ $package = "gtk-sharp-2.6" ]]; then
-	real_package="gtk-sharp-2.0"
-fi
+### End of Command line arg handling ###
 
-if [[ $package = "gtk-sharp-2.0" ]]; then
-	# Hack to get stuff from the right path
-	version=${version/#2.3/2.5}
-	version=${version/#2.4/2.6}
-fi
+LOGFILE = "tarball_logs/%s/%s-%s.log" % (package, version, snapshot_rev)
+log_obj = logger.Logger(filename=LOGFILE)
 
-. shared-code.sh
-. conf/$distro
-. defs/$real_package
+if snapshot_rev:
+	source_path = "snapshot_sources"
+else:
+	source_path = "sources"
 
-# Check to see if this tarball is already on disk
-key=$package:$version:$snapshot_rev
-echo Checking for duplicates in tarball_map with key: $key
-data=`grep $key tarball_map`
-if [ ! -z $data ]; then
-	# split on =
-	IFS==
-	set -- $data
-	# Key set to $1
-	echo Tarball exists: $2
-	exit 1
-fi
+log_obj.log("Sources path: " + source_path)
 
-mkdir -p $source_path/$real_package
+repo = datastore.source_file_repo()
 
-if test -f status/$distro; then
-   echo $1 jail is busy
-   exit 1
-fi
+# Check to see if this is already there
+if repo.contains(package, version, snapshot_rev):
+	log_obj.log("Source file for %s version %s (revision %s) exists" % (package, version, snapshot_rev) )
+	sys.exit(1)
 
-echo > status/$distro;
+package_path = source_path + os.sep + package
+distutils.dir_util.mkpath(package_path)
 
-if [ ! ${#MONO_DEPS[@]} -eq 0 ]; then
-	if ! ./install-deps $distro $real_package ; then
-		rm status/$distro
-		echo Dependency installation failed, see log in $LOGFILE for details
-		exit 1
-	fi
-fi
+env = packaging.buildenv(distro, logger=log_obj)
 
-if ! get_tarball ; then 
-	rm status/$distro
-	echo Tarball creation failed
-	exit 1
-fi
+if env.is_locked():
+	log_obj.log("%s jail is busy" % distro )
+	sys.exit(2)
 
-rm status/$distro
+env.lock_env()
+
+package_obj = packaging.package(env, package)
+
+if package_obj.info.has_key('MONO_DEPS'):
+	(status, output) = utils.launch_process('./install-deps %s %s' % (distro, package), logger=log_obj)
+	if status:
+		env.unlock_env()
+		log_obj.log("Dependency installation failed")
+		sys.exit(3)
+
+
+# Copy some files over and execute!
+files_to_copy = [ 'do-msvn-tar', 'defs/%s' % package] + glob.glob('../pyutils/*.py') 
+env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
+
+log_obj.log("Starting to build source dist...")
+# TODO: may have to escape some stuff here...
+(status, output) = env.ssh.execute('mount /proc &> /dev/null ; sudo -H -u builder /tmp/do-msvn-tar %s %s %s' % (package, version, snapshot_rev) )
+
+if status:
+        env.unlock_env()
+        log_obj.log("Source dist file creation failed")
+        sys.exit(1)
+
+# get tarball filename
+tarball = output.split().pop()
+
+# Copy file back
+#  Note: the tarball var is expected to have be in this format, ex:  mono-1.1/mono-1.1.13.4.tar.gz
+env.ssh.copy_from('/tmp/built-tarball/%s' % tarball, package_path )
+
+# Keep a map of which params produce which tarball
+repo.add_file(package, version, snapshot_rev, tarball)
+
+env.unlock_env()
+
+print "Done!"
 

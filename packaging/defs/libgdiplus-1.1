@@ -27,12 +27,12 @@ get_destroot () {
 	DEST_ROOT=$DISTRO
 }
 
-HEAD_PATH="trunk/libgdiplus"
-RELEASE_PATH="tags/mono-[[version]]/libgdiplus"
-
-get_tarball () {
-	msvn_tar $1
-}
+HEAD_PATH=(
+	trunk/libgdiplus
+)
+RELEASE_PATH=(
+	tags/mono-[[version]]/libgdiplus
+)
 
 sunos_8_sparc_ZIP_BUILD () {
         # Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)

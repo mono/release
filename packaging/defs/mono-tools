@@ -1,6 +1,5 @@
 BUILD_HOSTS=(
 	nld-9-i586
-	#win-4-i386
 )
 
 USE_HOSTS=(
@@ -22,6 +21,7 @@ USE_HOSTS=(
 	suse-93-x86_64
 	suse-100-i586
 	suse-100-x86_64
+	win-4-i386
 )
 
 MONO_DEPS=(
@@ -31,29 +31,16 @@ MONO_DEPS=(
 	gecko-sharp
 )
 
-# Here for reference only
-win_4_i386_ZIP_BUILD () {
-
-	# Only needed for boot strapping
-	#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
-
-	# Once gtk-sharp can be built with gnome-sharp, this will build
-
-	./configure --prefix=/tmp/install
-	make
-	make install
-
-}
-
 
 
 get_destroot () {
 	DEST_ROOT=noarch
 }
 
-HEAD_PATH="trunk/mono-tools"
-RELEASE_PATH="tags/mono-tools-[[version]]"
+HEAD_PATH=(
+	trunk/mono-tools
+)
+RELEASE_PATH=(
+	tags/mono-tools-[[version]]
+)
 
-get_tarball () {
-	msvn_tar $1
-}

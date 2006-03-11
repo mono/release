@@ -194,9 +194,10 @@ get_destroot () {
 }
 
 
-HEAD_PATH="branches/gtk-sharp-1-0-branch/gtk-sharp"
-RELEASE_PATH="tags/gtk-sharp/[[versiondot]]/gtk-sharp"
+HEAD_PATH=(
+	branches/gtk-sharp-1-0-branch/gtk-sharp
+)
+RELEASE_PATH=(
+	tags/gtk-sharp/[[versiondot]]/gtk-sharp
+)
 
-get_tarball () {
-	msvn_tar $1
-}

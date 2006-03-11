@@ -19,14 +19,17 @@ MONO_DEPS=(
 	monodoc
 )
 
-
 get_destroot () {
 	DEST_ROOT=$DISTRO
 }
 
-HEAD_PATH="trunk/gtk-sharp"
-#RELEASE_PATH="tags/gtk-sharp/[[gtksharp2ver]]/gtk-sharp"
-RELEASE_PATH="tags/gtk-sharp/2.x.2/gtk-sharp"
+HEAD_PATH=(
+	trunk/gtk-sharp
+)
+RELEASE_PATH=(
+	#tags/gtk-sharp/[[gtksharp2ver]]/gtk-sharp
+	tags/gtk-sharp/2.x.2/gtk-sharp
+)
 
 # Note, the above tags are a little weird... here's now the automation handles them:
 # Example tag: svn+ssh://mono-cvs.ximian.com/source/tags/gtk-sharp/2.3.92_2.5.92/gtk-sharp
@@ -37,9 +40,24 @@ RELEASE_PATH="tags/gtk-sharp/2.x.2/gtk-sharp"
 
 #  I believe it's the same with ./build
 
-get_tarball () {
-	msvn_tar $1
+get_source () {
+	# TODO:
+	# substitute version dot with digit.x.digit
+        $SVNEXPORT $MONO_ROOT/$SVN_PATH
 }
+
+# this probably isn't getting escaped correctly... done
+update_version_file () {
+	sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$SNAPSHOT_REV/" bootstrap-2.4
+}
+
+make_dist () {
+        # This is needed on suse systems with gnome in /opt
+        . /etc/profile
+	./bootstrap-2.4
+        make dist
+}
+
 
 win_4_i386_ZIP_DEPS=(
 

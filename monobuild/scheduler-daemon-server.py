@@ -24,6 +24,11 @@ tarballPlatform = Mono.Build.Config.mktarballPlatform
 # The web page will lay down very simple scheduling information... and this file will take care of the details
 
 
+# BIG NOTE: Only linux should be able to build each revision, otherwise, windows, sparc, etc... will get way way over loaded... how to handle this?
+# That's only the scheduler, not the tarball creator...
+
+# tarball map has the available tarballs, get the latest version from there
+
 
 
 

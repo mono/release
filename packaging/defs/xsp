@@ -28,26 +28,15 @@ MONO_DEPS=(
 	mono-1.1
 )
 
-# Here for reference only
-win_4_i386_ZIP_BUILD () {
-
-	# Only needed for boot strapping
-	#export PATH=$PATH:/cygdrive/c/mono/Mono-1.1.8.3/bin
-
-	./configure --prefix=/tmp/install
-	make
-	make install
-
-}
-
 
 get_destroot () {
 	DEST_ROOT=noarch
 }
 
-HEAD_PATH="trunk/xsp"
-RELEASE_PATH="tags/mono-[[version]]/xsp"
+HEAD_PATH=(
+	trunk/xsp
+)
+RELEASE_PATH=(
+	tags/mono-[[version]]/xsp
+)
 
-get_tarball () {
-	msvn_tar $1
-}

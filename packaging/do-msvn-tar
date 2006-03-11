@@ -1,162 +1,179 @@
-#!/bin/sh
+#!/usr/bin/env python
 #
 # The driver script to make a tarball
 #
 
-package=$1
-svn_path=$2
-snapshot_rev=$3
+import sys
+import os
+import tempfile
+import shutil
+import glob
 
-cd /tmp
-rm -rf tarball-creation
-mkdir -p tarball-creation
-cd tarball-creation
+import packaging
+
+package = sys.argv[1]
+version = sys.argv[2]
+
+snapshot_rev = ""
+if len(sys.argv) > 3:
+	snapshot_rev = sys.argv[3]
+
+
+os.chdir('/tmp')
+
+dummy_env = ""
+package_obj = packaging.package(dummy_env, package)
+
+if os.path.exists('tarball-creation'):
+	shutil.rmtree('tarball-creation')
+os.mkdir('tarball-creation')
+os.chdir('tarball-creation')
+
+
+# Construct subversion path of location we want to create a tarball from
+svn_paths = []
+if snapshot_rev:
+	rev_arg = "-r " + snapshot_rev
+	if package_obj.info.has_key('HEAD_PATH'):
+		svn_paths += package_obj.info['HEAD_PATH']
+else:
+	rev_arg = ""
+	if package_obj.info.has_key('RELEASE_PATH'):
+		svn_paths += package_obj.info['RELEASE_PATH']
+
+	# Do some svn_path munging
+	# (options: [[version]], [[versiondot]], [[gtksharp2ver]]
+	version_dot = version
+	version_hyphen = version.replace('.', '-')
+
+	for i in range(0, len(svn_paths)):
+		svn_paths[i] = svn_paths[i].replace('[[versiondot]]', version_dot)
+		svn_paths[i] = svn_paths[i].replace('[[version]]', version_hyphen)
+
+		# TODO where to handle gtk-sharp?
+
 
 # use the key in /usr/share/ximian-build-system/conf/ssh
-export SVN_SSH=/usr/bin/bb_ssh
+# This needs to be exported to the environment
+SVN_SSH = "/usr/bin/bb_ssh"
+SVNEXPORT = "svn export -q " + rev_arg
+MONO_ROOT = " svn+ssh://distro@mono-cvs.ximian.com/source" 
+SNAPSHOT_REV = snapshot_rev
+SVN_PATHS = ":".join(svn_paths)
+VERSION = version
 
-if [ ! x$snapshot_rev == x ]; then
-	rev_arg="-r $snapshot_rev"
-fi
+# print env
+print "SVN_SSH: %s" % SVN_SSH
+print "SVNEXPORT: %s" % SVNEXPORT
+print "MONO_ROOT: %s" % MONO_ROOT
+print "SNAPSHOT_REV: %s" % SNAPSHOT_REV
+print "SVN_PATHS: %s" % SVN_PATHS
+print "VERSION: %s" % VERSION
 
-SVNEXPORT="svn export -q $rev_arg"
-MONO_ROOT="svn+ssh://distro@mono-cvs.ximian.com/source"
-MD_ROOT="svn+ssh://distro@mono-cvs.ximian.com/svn/monodevelop"
+env_string = 'export SVN_SSH="%s"; export SVNEXPORT="%s"; export MONO_ROOT="%s"; export SNAPSHOT_REV="%s"; export SVN_PATHS="%s"; export VERSION="%s"' % (SVN_SSH, SVNEXPORT, MONO_ROOT, SNAPSHOT_REV, SVN_PATHS, VERSION)
 
-#
-# These scripts change the version in configure.in to have the svn
-# rev number after it.
-#
-normal_change_ver ()
-{
-	sed -i "s/\(AM_INIT_AUTOMAKE.*\))/\1.$snapshot_rev)/" configure.in
+# If they don't have any svn_paths, they MUST specify BUILD_DIR
+if package_obj.info.has_key('BUILD_DIR'):
+	build_dir = package_obj.info['BUILD_DIR']
+else:
+	try:
+		build_dir = os.path.basename(svn_paths[0])
+	except:
+		print "You must specify BUILD_DIR in def file when not using RELEASE or HEAD PATH"
+		sys.exit(1)
+
+# Maybe we'll eventually use python code in the def file someday...
+default_script = """
+
+# this probably isn't getting escaped correctly... fixed
+update_version_file () {
+	sed -i "s/\(AM_INIT_AUTOMAKE.*\\))/\\1.$SNAPSHOT_REV)/" configure.in
 }
 
-md_change_ver ()
-{
-	sed -i "s/\(AC_INIT.*\)\(0\.[0-9]*\)/\1\2.$snapshot_rev/" configure.in
+make_dist () {
+	# profile is needed on suse systems with gnome in /opt
+	. /etc/profile
+        ./autogen.sh
+        make dist
 }
-
-gtk_sharp_2_4_change_ver ()
-{
-	sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$snapshot_rev/" bootstrap-2.4
-}
-
-gtk_sharp_2_6_change_ver ()
-{
-	sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$snapshot_rev/" bootstrap-2.6
-}
-
-gtk_sharp_2_8_change_ver ()
-{
-	sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$snapshot_rev/" bootstrap-2.8
-}
-
-#
-# What to do for autogen...
-#
-
-normal_autogen ()
-{
-	./autogen.sh
-}
-
-gtk_sharp_2_4_autogen ()
-{
-	./bootstrap-2.4
-}
+"""
 
 
-gtk_sharp_2_6_autogen ()
-{
-	./bootstrap-2.6
-}
+shell_script = tempfile.mktemp()
+fd = open(shell_script, 'w')
+fd.write(default_script)
+fd.close()
 
-gtk_sharp_2_8_autogen ()
-{
-	./bootstrap-2.8
-}
+# pwd: /tmp/tarball-creation
 
-DO_CHANGE_AUTOMAKE='normal_change_ver'
-DO_AUTOGEN='normal_autogen'
+### Execute the source creating functions ###
+def_file = "/tmp/" + package
 
-# Special case package configurations
-case $package in
-    mono-1.1 | mono-ifzen )
-	# we need to check out both mono and mcs in this case. The svn path we
-	# get is just below where the modules live.
-	
-	$SVNEXPORT $MONO_ROOT/$svn_path/mono
-	$SVNEXPORT $MONO_ROOT/$svn_path/mcs
-	
-	BUILD_DIR=mono
-	
-	# needed so that we don't need to build the mono in the tarball
-	DIST_FLAGS="MCS=mcs RESGEN=resgen"
-	
-	;;
+# get_source
+if package_obj.info.has_key('get_source'):
+	script = def_file
+	command = '%s; . %s ; get_source' % (env_string, script)
+	print "Command: %s" % command
+	os.system(command)
+else:
+	for path in svn_paths:
+		command = "%s; %s %s/%s" % (env_string, SVNEXPORT, MONO_ROOT, path)
+		print command
+		os.system(command)
 
-    monodoc )
-	$SVNEXPORT $MONO_ROOT/$svn_path
 
-	# Checkout errors from the mcs module
-	mcs_svn_path=${svn_path//monodoc/mono}
-	mkdir mcs
-	cd mcs
-	$SVNEXPORT $MONO_ROOT/$mcs_svn_path/mcs/errors
-	cd ..
-	
-	;;
+# Go inside the source tree
+os.chdir(build_dir)
 
-    monodevelop )
-	# md has its own svn repo
-	#$SVNEXPORT $MD_ROOT/$svn_path
-	$SVNEXPORT $MONO_ROOT/$svn_path
-	
-	DO_CHANGE_AUTOMAKE='md_change_ver'
-	
-	;;
-	
-    gtk-sharp-2.0 )
-	DO_CHANGE_AUTOMAKE='gtk_sharp_2_4_change_ver'
-	DO_AUTOGEN="gtk_sharp_2_4_autogen"
-	
-	$SVNEXPORT $MONO_ROOT/$svn_path
-        ;;
+# update_version_file (If this is a snapshot build)
+if snapshot_rev:
+	if package_obj.info.has_key('update_version_file'):
+		script = def_file
+	else:
+		script = shell_script
+	os.system('%s; . %s ; update_version_file' % (env_string, script) )
 
-    gtk-sharp-2.6 )
-	DO_CHANGE_AUTOMAKE='gtk_sharp_2_6_change_ver'
-	DO_AUTOGEN="gtk_sharp_2_6_autogen"
-	
-	$SVNEXPORT $MONO_ROOT/$svn_path
-        ;;
+# pwd: /tmp/tarball-creation/$build_dir
 
-    gtk-sharp-2.8 )
-	DO_CHANGE_AUTOMAKE='gtk_sharp_2_8_change_ver'
-	DO_AUTOGEN="gtk_sharp_2_8_autogen"
-	
-	$SVNEXPORT $MONO_ROOT/$svn_path
-        ;;
+# make_dist
+if package_obj.info.has_key('make_dist'):
+	script = def_file
+else:
+	script = shell_script
+os.system('%s; . %s ; make_dist' % (env_string, script) )
 
-    * )
-	$SVNEXPORT $MONO_ROOT/$svn_path
-	;;
-esac
+### End of source creating functions ###
 
-: ${BUILD_DIR=$(basename $svn_path)}
+# clean up shell files
+os.unlink(shell_script)
 
-cd $BUILD_DIR
+### Finish moving things around
+shutil.rmtree('/tmp/built-tarball')
+os.mkdir('/tmp/built-tarball')
 
-if [ ! x$snapshot_rev == x ]; then
-	$DO_CHANGE_AUTOMAKE
-fi
+found_source_file = 0
 
-$DO_AUTOGEN || exit 1
-make dist $DIST_FLAGS || exit 1
-rm -rf /tmp/built-tarball
-mkdir -p /tmp/built-tarball
-mv *.tar.gz /tmp/built-tarball
+# Move zip file
+source_file = glob.glob('*.zip')
+if len(source_file) == 1:
+	os.rename(source_file[0], '/tmp/built-tarball/%s' % source_file[0])
+	found_source_file = 1
+	print "print source filename..."
+	print source_file[0]
 
-cd /tmp
+# Move tar file
+source_file = glob.glob('*.tar.gz')
+if len(source_file) == 1:
+	os.rename(source_file[0], '/tmp/built-tarball/%s' % source_file[0])
+	found_source_file = 1
+	print "print source filename..."
+	print source_file[0]
 
-rm -rf tarball-creation
+# Clean up
+os.chdir('/tmp')
+shutil.rmtree('tarball-creation')
+
+# Propogate exit code
+if not found_source_file:
+	sys.exit(1)
+

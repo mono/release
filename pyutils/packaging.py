@@ -5,35 +5,37 @@ import tempfile
 import os
 import os.path
 import glob
+import fcntl
 
 import pdb
 
-sys.path += ['../pyutils']
+# needed?
+#sys.path += ['../pyutils']
+import config
 import utils
 import sshutils
 import packaging
 
-# Set packaging_dir: full path to release/packaging
-#  Must do at startup, opposed to doing this in a function
-#  Maybe there's a better way to do this
-module_dir = os.path.dirname(__file__)
-if module_dir != "": module_dir += os.sep
-packaging_dir = os.path.abspath(module_dir + '../packaging')
-
 class buildenv:
 
-	def __init__(self, conf_file_name, print_output=1):
+	def __init__(self, conf_file_name, print_output=1, logger=""):
 
                 self.name = conf_file_name
-                self.conf_file = os.path.join(packaging_dir, 'conf', conf_file_name)
+                self.conf_file = os.path.join(config.packaging_dir, 'conf', conf_file_name)
                 self.print_output = print_output
+
+		# Always turn this off if a logger is used
+		if logger: print_output =0
+
+		self.lock_filename = os.path.join(config.packaging_dir, 'status', self.name)
 
 		self.load_info()
 
 		# Construct arguments
 		args = {}
 		args['target_host'] = self.info['target_host']
-		args['print_output'] = print_output
+		args['print_output'] = self.print_output
+		args['logger'] = logger
 
 		for i in "jaildir chroot_path remote_tar_path local_tar_path target_command_prefix".split():
 			if self.info.has_key(i):
@@ -89,7 +91,7 @@ class buildenv:
 
 
 		# Pull out all vars in the distro conf file
-		conf_file = os.path.join(packaging_dir, "conf", self.name)
+		conf_file = os.path.join(config.packaging_dir, "conf", self.name)
 		try:	fd = open(conf_file, 'r')
 		except IOError:
 			print "Error opening file: %s" % conf_file
@@ -124,6 +126,17 @@ class buildenv:
 
 		self.info = info
 
+	# TODO: use fcntl?
+	def lock_env(self):
+		fd = open(self.lock_filename, 'w')
+		fd.write("")
+		fd.close()
+
+	def unlock_env(self):
+		os.unlink(self.lock_filename)
+
+	def is_locked(self):
+		return os.path.exists(self.lock_filename)
 
 class package:
 
@@ -133,7 +146,13 @@ class package:
 
 		self.package_env = package_env
 		self.name = name
-		self.def_file = os.path.join(packaging_dir, "defs", name)
+
+		# Default to use the file in the current dir, otherwise look in the defs dir
+		#  (This change was for do-msvn tar)
+		if os.path.exists(name) and os.path.isfile(name):
+			self.def_file = name
+		else:
+			self.def_file = os.path.join(config.packaging_dir, "defs", name)
 
 		if not os.path.exists(self.def_file):
 			print "File not found: %s" % self.def_file
@@ -165,9 +184,10 @@ class package:
 			self.info[match.group(1)] = match.group(2)
 			
 
-		self.destroot = self.execute_function('get_destroot', 'DEST_ROOT')
-
-		self.path = self.get_package_path()
+		# if we have a build env
+		if self.package_env:
+			self.destroot = self.execute_function('get_destroot', 'DEST_ROOT')
+			self.path = self.get_package_path()
 
 		# Initialize for later...
 		self.version = ""
@@ -191,7 +211,7 @@ class package:
 
 		return output
 
-	def get_package_path(self):
+	def get_package_path(self, snapshot=0):
 
 		# If it's a zipdir package
 		#  Make an exception for noarch packages
@@ -200,7 +220,9 @@ class package:
 		else:
 			packages_dir = "packages"
 
-		return os.path.join(packaging_dir, packages_dir, self.destroot, self.name)
+		if snapshot: packages_dir = "snapshot_" + packages_dir
+
+		return os.path.join(config.packaging_dir, packages_dir, self.destroot, self.name)
 
 
 	# Used for constructing filenames
@@ -258,7 +280,7 @@ class package:
 	def get_latest_dep_files(self):
 		files = []
 
-		url_dest = packaging_dir + os.sep + 'external_zip_pkg'
+		url_dest = config.packaging_dir + os.sep + 'external_zip_pkg'
 
 		for dep in self.get_mono_deps():
 			# Get files for mono deps
@@ -277,4 +299,11 @@ class package:
 			utils.get_url(url, url_dest)
 
 		return utils.remove_list_duplicates(files)
+
+	def valid_platform(self, platform):
+		return_val = 0
+		if self.info['BUILD_HOSTS'].count(platform):
+			return_val = 1
+		return return_val
+
 
