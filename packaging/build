@@ -115,7 +115,7 @@ else:
 build_env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
 
 (code, output) = build_env.ssh.execute(build_command)
-if os.system(build_command):
+if code:
 	build_env.unlock_env()
 	print "Build failed, see log in %s for details" % LOGFILE
 	sys.exit(1)
