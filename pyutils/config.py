@@ -33,7 +33,8 @@ snapshot_sources_dir = packaging_dir + "/snapshot_sources"
 build_info_dir = release_repo_root + "/monobuild/www/builds/testing"
 build_info_url = "/builds/testing"
 
-mktarball_platform = "suse-93-i586"
+# Default distro to make tarballs on (can be overridden in def file)
+mktarball_host = "suse-93-i586"
 
 
 # Mono repo svn location

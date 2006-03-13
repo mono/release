@@ -13,31 +13,31 @@ import logger
 import packaging
 import utils
 import datastore
+import config
 
 def usage():
 	print ""
-	print "Usage: ./mktarball <target jail> <package> <version|snap> [svn rev]"
+	print "Usage: ./mktarball <package> <version|snap> [svn rev]"
 	print " where version is a tagged version from svn"
 	print " Note: if you specify snap, you must specify svn rev"
 	print ""
 
 
 ### Command line arg handling ###
-if len(sys.argv) < 4:
+if len(sys.argv) < 3:
 	usage()
 	sys.exit(1)
 
-distro=sys.argv[1]
-package=sys.argv[2]
-version=sys.argv[3]
+package=sys.argv[1]
+version=sys.argv[2]
 
 # Optional snapshot rev
 snapshot_rev = ""
-if len(sys.argv) > 4:
-	if len(sys.argv) < 5:
+if len(sys.argv) > 3:
+	if len(sys.argv) < 4:
 		usage()
 		sys.exit(1)
-	snapshot_rev=sys.argv[4]
+	snapshot_rev=sys.argv[3]
 
 # Validate args ... ?
 
@@ -62,6 +62,14 @@ if repo.contains(package, version, snapshot_rev):
 
 package_path = source_path + os.sep + package
 distutils.dir_util.mkpath(package_path)
+
+# Get tarball path from def file
+package_obj = packaging.package("", package)
+if package_obj.info.has_key('MKTARBALL_HOST'):
+	distro = package_obj.info['MKTARBALL_HOST']
+else:
+	distro = config.mktarball_host
+log_obj.log("Using distro: " + distro)
 
 env = packaging.buildenv(distro, logger=log_obj)
 

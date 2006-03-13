@@ -60,7 +60,7 @@ while(1):
 
 			latest_for_package = src_repo.latest_path_revision(pack_obj.info['HEAD_PATH'], revision=i)
 			if not distfiles.contains(pack_name, "snap", str(latest_for_package)):
-				command = "cd %s; ./mktarball %s %s snap %d" % (config.packaging_dir, config.mktarball_platform, pack_name, latest_for_package)
+				command = "cd %s; ./mktarball %s snap %d" % (config.packaging_dir, pack_name, latest_for_package)
 				log.log("Executing: " + command)
 				# TODO: Logging
 				#  daemon log

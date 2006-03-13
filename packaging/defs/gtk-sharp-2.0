@@ -43,7 +43,7 @@ RELEASE_PATH=(
 get_source () {
 	# TODO:
 	# substitute version dot with digit.x.digit
-        $SVNEXPORT $MONO_ROOT/$SVN_PATH
+        $SVNEXPORT $MONO_ROOT/$SVN_PATHS
 }
 
 # this probably isn't getting escaped correctly... done

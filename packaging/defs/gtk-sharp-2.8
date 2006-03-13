@@ -11,6 +11,7 @@ MONO_DEPS=(
 	monodoc
 )
 
+MKTARBALL_HOST="suse-100-i586"
 
 get_destroot () {
 	DEST_ROOT=$DISTRO
@@ -26,7 +27,7 @@ RELEASE_PATH=(
 
 get_source () {
 	# substitute version dot with digit.x.digit
-        $SVNEXPORT $MONO_ROOT/$SVN_PATH
+        $SVNEXPORT $MONO_ROOT/$SVN_PATHS
 }
 
 # this probably isn't getting escaped correctly... done
