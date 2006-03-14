@@ -2,9 +2,9 @@
 <!-- Data describing a set of builds for a component on a platform -->
 
 <build>
-	<platform></platform>
+	<distro></distro>
 	<package></package>
-	<revision></revision>
+	<version></version>
 	<state></state>
 
 	<buildhost></buildhost>
@@ -13,7 +13,6 @@
 
 	<steps>
 		<step>
-			<index>0</index>
 			<name></name>
 			<state></state>
 			<log></log>

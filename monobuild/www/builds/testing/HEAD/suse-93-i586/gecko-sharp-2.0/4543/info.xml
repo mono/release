@@ -3,9 +3,9 @@
 
 
 <build>
-	<platform>suse-93-i586</platform>
+	<distro>suse-93-i586</distro>
 	<package>gecko-sharp-2.0</package>
-	<revision>123</revision>
+	<version>123</version>
 	<state>success</state>
 
 	<buildhost>monobuild1</buildhost>
@@ -14,20 +14,17 @@
 
 	<steps>
 		<step>
-			<index>0</index>
 			<name>Make Tarballs</name>
 			<state>success</state>
 			<log>mktarball.log</log>
 			<download>gecko.tar.gz</download>
 		</step>
 		<step>
-			<index>1</index>
 			<name>Build</name>
 			<state>success</state>
 			<log>build.log</log>
 		</step>
 		<step>
-			<index>2</index>
 			<name>Make RPMS</name>
 			<state>success</state>
 			<log>rpm.log</log>
