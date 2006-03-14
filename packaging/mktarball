@@ -29,36 +29,32 @@ if len(sys.argv) < 3:
 	sys.exit(1)
 
 package=sys.argv[1]
-version=sys.argv[2]
-
-# Optional snapshot rev
-snapshot_rev = ""
-if len(sys.argv) > 3:
-	if len(sys.argv) < 4:
+if sys.argv[2] == "snap":
+	try:
+		version = sys.argv[3]
+	except IndexError:
 		usage()
 		sys.exit(1)
-	snapshot_rev=sys.argv[3]
-
-# Validate args ... ?
-
-### End of Command line arg handling ###
-
-LOGFILE = "tarball_logs/%s/%s-%s.log" % (package, version, snapshot_rev)
-log_obj = logger.Logger(filename=LOGFILE)
-
-if snapshot_rev:
+	RELEASE_or_HEAD = "HEAD"
 	source_path = "snapshot_sources"
 else:
+	version=sys.argv[2]
+	RELEASE_or_HEAD = "RELEASE"
 	source_path = "sources"
 
-log_obj.log("Sources path: " + source_path)
+
+### End of Command line arg handling ###
 
 repo = datastore.source_file_repo()
 
 # Check to see if this is already there
-if repo.contains(package, version, snapshot_rev):
-	log_obj.log("Source file for %s version %s (revision %s) exists" % (package, version, snapshot_rev) )
+if repo.contains(RELEASE_or_HEAD, package, version):
+	print "Source file for %s version %s (%s) exists" % (package, version, RELEASE_or_HEAD) 
 	sys.exit(1)
+
+LOGFILE = "%s/%s/%s/%s.log" % (config.mktarball_logs, RELEASE_or_HEAD, package, version)
+log_obj = logger.Logger(filename=LOGFILE)
+log_obj.log("Sources path: " + source_path)
 
 package_path = source_path + os.sep + package
 distutils.dir_util.mkpath(package_path)
@@ -94,8 +90,7 @@ files_to_copy = [ 'do-msvn-tar', 'defs/%s' % package] + glob.glob('../pyutils/*.
 env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
 
 log_obj.log("Starting to build source dist...")
-# TODO: may have to escape some stuff here...
-(status, output) = env.ssh.execute('mount /proc &> /dev/null ; sudo -H -u builder /tmp/do-msvn-tar %s %s %s' % (package, version, snapshot_rev) )
+(status, output) = env.ssh.execute('mount /proc &> /dev/null ; sudo -H -u builder /tmp/do-msvn-tar %s %s %s' % (RELEASE_or_HEAD, package, version) )
 
 if status:
         env.unlock_env()
@@ -110,7 +105,7 @@ tarball = output.split().pop()
 env.ssh.copy_from('/tmp/built-tarball/%s' % tarball, package_path )
 
 # Keep a map of which params produce which tarball
-repo.add_file(package, version, snapshot_rev, tarball)
+repo.add_file(RELEASE_or_HEAD, package, version, package_path + os.sep + tarball)
 
 env.unlock_env()
 

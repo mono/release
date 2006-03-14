@@ -32,7 +32,7 @@ get_source () {
 
 # this probably isn't getting escaped correctly... done
 update_version_file () {
-        sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$SNAPSHOT_REV/" bootstrap-2.8
+        sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$VERSION/" bootstrap-2.8
 }
 
 make_dist () {

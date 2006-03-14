@@ -12,12 +12,9 @@ import distutils.dir_util
 
 import packaging
 
-package = sys.argv[1]
-version = sys.argv[2]
-
-snapshot_rev = ""
-if len(sys.argv) > 3:
-	snapshot_rev = sys.argv[3]
+RELEASE_or_HEAD = sys.argv[1]
+package = sys.argv[2]
+version = sys.argv[3]
 
 
 os.chdir('/tmp')
@@ -33,12 +30,11 @@ os.chdir('tarball-creation')
 
 # Construct subversion path of location we want to create a tarball from
 svn_paths = []
-if snapshot_rev:
-	rev_arg = "-r " + snapshot_rev
+if RELEASE_or_HEAD == "HEAD":
+	rev_arg = "-r " + version
 	if package_obj.info.has_key('HEAD_PATH'):
 		svn_paths += package_obj.info['HEAD_PATH']
 
-	cache_path = 'HEAD'
 else:
 	rev_arg = ""
 	if package_obj.info.has_key('RELEASE_PATH'):
@@ -55,7 +51,6 @@ else:
 
 		# TODO where to handle gtk-sharp?
 
-	cache_path = 'RELEASE'
 
 
 # use the key in /usr/share/ximian-build-system/conf/ssh
@@ -63,7 +58,6 @@ else:
 SVN_SSH = "/usr/bin/bb_ssh"
 SVNEXPORT = "svn export -q " + rev_arg
 MONO_ROOT = " svn+ssh://distro@mono-cvs.ximian.com/source" 
-SNAPSHOT_REV = snapshot_rev
 SVN_PATHS = ":".join(svn_paths)
 VERSION = version
 
@@ -71,11 +65,11 @@ VERSION = version
 print "SVN_SSH: %s" % SVN_SSH
 print "SVNEXPORT: %s" % SVNEXPORT
 print "MONO_ROOT: %s" % MONO_ROOT
-print "SNAPSHOT_REV: %s" % SNAPSHOT_REV
+print "RELEASE_or_HEAD: %s" % RELEASE_or_HEAD
 print "SVN_PATHS: %s" % SVN_PATHS
 print "VERSION: %s" % VERSION
 
-env_string = 'export SVN_SSH="%s"; export SVNEXPORT="%s"; export MONO_ROOT="%s"; export SNAPSHOT_REV="%s"; export SVN_PATHS="%s"; export VERSION="%s"' % (SVN_SSH, SVNEXPORT, MONO_ROOT, SNAPSHOT_REV, SVN_PATHS, VERSION)
+env_string = 'export SVN_SSH="%s"; export SVNEXPORT="%s"; export MONO_ROOT="%s"; export RELEASE_or_HEAD="%s"; export SVN_PATHS="%s"; export VERSION="%s"' % (SVN_SSH, SVNEXPORT, MONO_ROOT, RELEASE_or_HEAD, SVN_PATHS, VERSION)
 
 # If they don't have any svn_paths, they MUST specify BUILD_DIR
 if package_obj.info.has_key('BUILD_DIR'):
@@ -90,7 +84,7 @@ else:
 # Maybe we'll eventually use python code in the def file someday...
 default_script = """
 update_version_file () {
-	sed -i "s/\(AM_INIT_AUTOMAKE.*\\))/\\1.$SNAPSHOT_REV)/" configure.in
+	sed -i "s/\(AM_INIT_AUTOMAKE.*\\))/\\1.$VERSION)/" configure.in
 }
 
 make_dist () {
@@ -119,7 +113,7 @@ if package_obj.info.has_key('get_source'):
 	print "Command: %s" % command
 	os.system(command)
 else:
-	cache_dir = "/tmp/src_cache/%s/%s" % (package, cache_path)
+	cache_dir = "/tmp/src_cache/%s/%s" % (package, RELEASE_or_HEAD)
 	for path in svn_paths:
 		module = os.path.basename(path)
 
@@ -158,7 +152,7 @@ else:
 os.chdir(build_dir)
 
 # update_version_file (If this is a snapshot build)
-if snapshot_rev:
+if RELEASE_or_HEAD == "HEAD":
 	if package_obj.info.has_key('update_version_file'):
 		script = def_file
 	else:

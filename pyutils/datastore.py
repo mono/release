@@ -35,22 +35,22 @@ class source_file_repo:
                 self.info = {}
 
 
-        def add_file(self, package_name, version, snapshot_rev, filename_path):
+        def add_file(self, RELEASE_or_HEAD, package_name, version, filename_path):
 
                 #print "Adding file: %s %s %s %s"  % (package_name, version, snapshot_rev, filename_path)
 
                 self.load_info()
                 # Add to structure
-                key = ":".join([package_name, version, snapshot_rev])
+                key = ":".join([RELEASE_or_HEAD, package_name, version])
                 self.info[key] = filename_path
 
                 # Lock file
                 # Write out file
                 self.write_info()
 
-        def contains(self, package_name, version, snapshot_rev):
+        def contains(self, RELEASE_or_HEAD, package_name, version):
                 self.load_info()
-                return self.info.has_key(":".join([package_name, version, snapshot_rev]))
+                return self.info.has_key(":".join([RELEASE_or_HEAD, package_name, version]))
 
 
         # Probably won't need this...
@@ -60,7 +60,7 @@ class source_file_repo:
                 pass
 
         def load_info(self):
-                # Ex: mono-1.1.13:snap:57664=snapshot_sources/mono-1.1.13/mono-1.1.13.4.57664.tar.gz
+                # Ex: HEAD:mono-1.1.13:57664=snapshot_sources/mono-1.1.13/mono-1.1.13.4.57664.tar.gz
 
                 self.info = {}
 
@@ -80,14 +80,37 @@ class source_file_repo:
                 fd = open(self.data_store_filename, 'w')
                 fcntl.flock(fd, fcntl.LOCK_EX)
 
-                for key, value in self.info.iteritems():
-                        fd.write('%s=%s\n' % (key, value))
+		keys = self.info.keys()
+		keys.sort()
+                for key in keys:
+                        fd.write('%s=%s\n' % (key, self.info[key]))
                 fd.close()
 
 
 # XML data store
 class build_info:
 
+	def __init__(self):
+
+		xmlFile = dir + os.sep + "info.xml"
+
+
+		# load info, or start a new one
+		# Get a starter structure... 
+		xmlRef = readInfoXML(Mono.Build.Config.releaseRepo + "/monobuild/info.xml_new")
+
+		# xmlFile
+		xmlRef.xpathEval("build/package")[0].setContent(package)
+		xmlRef.xpathEval("build/platform")[0].setContent(platform)
+		xmlRef.xpathEval("build/revision")[0].setContent(rev)
+		# TODO
+		xmlRef.xpathEval("build/state")[0].setContent("queued")
+
+		writeInfoXML(xmlRef, xmlFile)
+		xmlRef.freeDoc()
+
+
+	# Hmm... does this method make sense anymore... ?
 	def getQueuedPackages():
 
 		queuedPackages = []
@@ -240,24 +263,5 @@ class build_info:
 				state = ""
 
 		return state
-
-	def __init__(self):
-
-		xmlFile = dir + os.sep + "info.xml"
-
-
-		# load info, or start a new one
-		# Get a starter structure... 
-		xmlRef = readInfoXML(Mono.Build.Config.releaseRepo + "/monobuild/info.xml_new")
-
-		# xmlFile
-		xmlRef.xpathEval("build/package")[0].setContent(package)
-		xmlRef.xpathEval("build/platform")[0].setContent(platform)
-		xmlRef.xpathEval("build/revision")[0].setContent(rev)
-		# TODO
-		xmlRef.xpathEval("build/state")[0].setContent("queued")
-
-		writeInfoXML(xmlRef, xmlFile)
-		xmlRef.freeDoc()
 
 

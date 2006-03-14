@@ -1,21 +1,27 @@
 # Config vars
-
 import os
+
+
+# Default distro to make tarballs on (can be overridden in def file)
+mktarball_host = "suse-93-i586"
+
+# Mono repo svn location
+#MONO_ROOT = " svn+ssh://distro@mono-cvs.ximian.com/source"
+MONO_ROOT = " svn+ssh://wade@mono-cvs.ximian.com/source"
+
 
 # Set release base dir
 #  Must do at startup, opposed to doing this in a function
-#  Maybe there's a better way to do this
 module_dir = os.path.dirname(__file__)
 if module_dir != "": module_dir += os.sep
 release_repo_root = packaging_root = os.path.abspath(module_dir + '..')
+# This gets set to /home/wberrier/wa/msvn/release
 
 
 # Packaging paths
 packaging_dir = release_repo_root + '/packaging'
 platform_conf_dir = packaging_dir + "/conf"
 def_dir = packaging_dir + "/defs"
-
-root_url = ""
 
 # Full path to where the builds are output
 packages_dir = packaging_dir + "/packages"
@@ -25,19 +31,13 @@ snapshot_packages_dir = packaging_dir + "/snapshot_packages"
 sources_dir = packaging_dir + "/sources"
 snapshot_sources_dir = packaging_dir + "/snapshot_sources"
 
-# Build info dirs
-
 # Url path from view of webserver
+web_root_url = ""
+web_root_dir = release_repo_root + "/monobuild/www"
 
-# Testing
-build_info_dir = release_repo_root + "/monobuild/www/builds/testing"
+# 
+build_info_dir = web_root_dir + "/builds/testing"
 build_info_url = "/builds/testing"
 
-# Default distro to make tarballs on (can be overridden in def file)
-mktarball_host = "suse-93-i586"
-
-
-# Mono repo svn location
-#MONO_ROOT = " svn+ssh://distro@mono-cvs.ximian.com/source"
-MONO_ROOT = " svn+ssh://wade@mono-cvs.ximian.com/source"
+mktarball_logs = web_root_dir + "/tarball_logs"
 
