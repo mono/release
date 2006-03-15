@@ -202,16 +202,16 @@ foreach my $f (glob "$p/usr/bin/*") {
 	}
 }
 
-# Fixed in svn, but required here
-push @executable_wrappers, "mdb";
-
 foreach my $f (@executable_wrappers) {
 	
 	if(-e "$p/usr/bin/$f") {
 		substituteParametersInFile("$p/usr/bin/$f", 
 			'/usr' 			=> '@@BITROCK_MONO_ROOTDIR@@', 
-			'exec mono' 		=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono',
-			'mono --debug'	 	=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono --debug');
+			# Add full path for these... ?
+			#'exec mono' 		=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono',
+			# This was added I believe for the debugger, but don't think it's needed
+			#'mono --debug'	 	=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono --debug'
+		);
 		print "Substituting $f\n";
 	} else {
 		print "***Not found $p/usr/bin/$f***\n";

@@ -4,7 +4,9 @@ Please file any bugs or issues at http://bugzilla.ximian.com
 
 Warning: gtk-sharp apps (Monodoc, MonoDevelop, etc...) 
   may not work on all distros.  This is due to differing
-  gtk+ versions.
+  gtk+ versions.  If you know you have a new enough gtk+
+  installed, and are still having problems, try install Gnome.
+  MonoDevelop, for example, requires some Gnome libraries.
 
 Installer changes:
 
