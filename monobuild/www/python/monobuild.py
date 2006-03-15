@@ -21,7 +21,8 @@ def index(req, **vars):
 	# Default to HEAD if it's not specified
 	if vars.has_key('HEAD_or_RELEASE'):
 		HEAD_or_RELEASE = vars['HEAD_or_RELEASE']
-	else: HEAD_or_RELEASE = 'HEAD'
+	else:
+		HEAD_or_RELEASE = 'HEAD'
 
 	scriptname = os.path.basename(req.canonical_filename)
 
@@ -89,7 +90,7 @@ def index(req, **vars):
 				# Then start reading the xml...
 					# Currently this reads a ton of xml files... might need to aggregate these later...
 						# But, that means it's more difficult to remove builds...  issue? 
-				version = build.get_latest_version(HEAD_or_RELEASE, platform, package) # in r<num> format
+				version = build.get_latest_version(HEAD_or_RELEASE, platform, package) # in <num> format
 
 				build_info = datastore.build_info(HEAD_or_RELEASE, platform, package, version)
 
@@ -154,6 +155,12 @@ def index(req, **vars):
 	else:
 		#req.write("""<p><a href="%s?schedule=true">Schedule Builds</a></p>""" % scriptname)
 		pass
+
+	# Link to toggle between HEAD and RELEASE
+	if HEAD_or_RELEASE == "RELEASE":
+		toggle_link = "HEAD"
+	else:   toggle_link = "RELEASE"
+	req.write("""<p><a href="%s?HEAD_or_RELEASE=%s">%s Status</a></p>""" % (scriptname, toggle_link, toggle_link) )
 
 
 	# Footer
