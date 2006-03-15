@@ -34,11 +34,11 @@ get_destroot () {
 	DEST_ROOT=noarch
 }
 
-get_source () {
-}
+#get_source () {
+#}
 
-update_version_file () {
-}
+#update_version_file () {
+#}
 
 make_dist () {
 	wget http://primates.ximian.com/~wberrier/packaging/sources/ikvm/ikvm-$VERSION.tar.gz -O /tmp/built-tarball/ikvm-$VERSION.tar.gz
