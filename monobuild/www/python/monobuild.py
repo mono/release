@@ -1,42 +1,33 @@
 #!/usr/bin/env python
 
-import pdb
-import random
 import os
-
 import sys
-import libxml2
-import pickle
+import random
 
-import Mono.Build
-import Mono.Build.Config
+import xml.xpath
+import xml.dom.minidom
 
-# Some global vars...
-rootUrl = Mono.Build.Config.rootUrl
+import pdb
 
-def randomRev():
-	return random.randint(1,3)
+# How to import these so they are reimported on change?
+import build
+import config
+import packaging
+import datastore
 
-
-def randomState(index):
-
-	states = [
-			'notused',
-			'success', 
-			'failure', 
-			'inprogress' 
-		 ]
- 
-	return states[index]
 
 def index(req, **vars):
 
+	# Default to HEAD if it's not specified
+	if vars.has_key('HEAD_or_RELEASE'):
+		HEAD_or_RELEASE = vars['HEAD_or_RELEASE']
+	else: HEAD_or_RELEASE = 'HEAD'
 
 	scriptname = os.path.basename(req.canonical_filename)
 
 	# Pull this in from the release repo
-	linux_platforms = Mono.Build.getPlatforms()
-	linux_packages = Mono.Build.getPackages()
+	platforms = build.get_platforms()
+	packages = build.get_packages()
 
 	schedule_flag = ""
 	if vars.has_key("schedule"): schedule_flag = vars["schedule"]
@@ -56,7 +47,7 @@ def index(req, **vars):
 
 	<FORM name=buildform action="%s/schedulebuild" method=get enctype="multipart/form-data">
 
-	""" % (rootUrl, rootUrl, scriptname))
+	""" % (config.web_root_url, config.web_root_url, scriptname))
 
 	if schedule_flag:
 		req.write("""<p><INPUT type=submit Value="Build Selected Packages"></p>""")
@@ -76,46 +67,48 @@ def index(req, **vars):
 		<thead><td>%s</td>
 	""" % checkbox_html)
 
-	for platform in linux_platforms:
+	for platform in platforms:
 		req.write("<td>%s</td>\n" % platform)
 
 	req.write("</thead><tbody>")
 
 
-	for package in linux_packages:
+	for package in packages:
 
 		req.write("<tr><td>%s</td>\n" % package)
-		buildhosts = Mono.Build.getPackageInfo(package, "BUILD_HOSTS")
+		pack_obj = packaging.package("", package)
+		buildhosts = pack_obj.info['BUILD_HOSTS']
 
-		rev = ""
+		version = ""
 		state = ""
 
-		for platform in linux_platforms:
-		
+		for platform in platforms:
 		
 			# If this is a valid package for this platform...	
 			if buildhosts.count(platform):
 				# Then start reading the xml...
 					# Currently this reads a ton of xml files... might need to aggregate these later...
 						# But, that means it's more difficult to remove builds...  issue? 
-				rev = Mono.Build.getLatestRevision(platform, package) # in r<num> format
-				state = Mono.Build.getState(platform, package, rev)
+				version = build.get_latest_version(HEAD_or_RELEASE, platform, package) # in r<num> format
+
+				build_info = datastore.build_info(HEAD_or_RELEASE, platform, package, version)
+
+				state = build_info.get_state()
 
 				# if it's a valid package, but hasn't been built yet...
-				if rev == "" and state == "":
+				if version == "" and state == "":
 					state = "new"
 			
 			else:
 			
 				state = "notused"
-			
 
 
 			req.write("<td class=%s>" % state)
 
 			# Print a link if there has been a build, and we're not in schedule mode
 			if state != 'notused' and state != 'new' and not schedule_flag:
-				req.write("<a href=%s/packagestatus?platform=%s&package=%s&revision=%s>%s</a>" % ( scriptname, platform, package, rev, rev))
+				req.write("<a href=%s/packagestatus?platform=%s&package=%s&version=%s&HEAD_or_RELEASE=%s>%s</a>" % ( scriptname, platform, package, version, HEAD_or_RELEASE, version))
 			
 
 			# Print a checkbox if we're in schedule mode and it's a valid BUILD_HOSTS
@@ -159,7 +152,8 @@ def index(req, **vars):
 	if schedule_flag:
 		req.write("""<p><a href="%s">Build Status</a></p>""" % scriptname)
 	else:
-		req.write("""<p><a href="%s?schedule=true">Schedule Builds</a></p>""" % scriptname)
+		#req.write("""<p><a href="%s?schedule=true">Schedule Builds</a></p>""" % scriptname)
+		pass
 
 
 	# Footer
@@ -176,11 +170,13 @@ def packagestatus(req, **vars):
 	try:
 		platform = vars['platform']
 		package = vars['package']
-		revision = vars['revision']
+		version = vars['version']
+		HEAD_or_RELEASE = vars['HEAD_or_RELEASE']
 	except KeyError:
 		return "Invalid arguments"
 
-	meta_files_path = os.path.join("..", "..", Mono.Build.Config.buildsUrl, platform, package, revision)
+
+	build_info = datastore.build_info(HEAD_or_RELEASE, platform, package, version)
 
 	# Just for testing...
 	#platform = "suse-93-i586"
@@ -190,21 +186,22 @@ def packagestatus(req, **vars):
 	html = ""
 	req.content_type = "text/html"
 
-	# Figure out where the xml file is at
-	xmlFile = os.path.join(Mono.Build.Config.buildsDir, vars['platform'], vars['package'], vars['revision'], "info.xml")
 
 	# Try to open and get data out of the xml document
-	try:
+	if build_info.exists:
 
-		xmldoc = libxml2.parseFile(xmlFile)
+		xmldoc = build_info.doc
 
-		buildhost = xmldoc.xpathEval("build/buildhost")[0].content
-		start = xmldoc.xpathEval("build/start")[0].content
-		finish = xmldoc.xpathEval("build/finish")[0].content
+		values = {}
+		for key in ['buildhost', 'start', 'finish' ]:
+			node = xml.xpath.Evaluate('/build/%s/text()' % key, build_info.doc.documentElement)[0]
+			if node:
+				values[key] = node.nodeValue
+			else: values[key] = ""
 	
 		html += """
 
-			<h1>%s  -- %s -- %s</h1>
+			<h1>%s -- %s -- %s</h1>
 
 			<h3>Build status</h3>
 
@@ -231,20 +228,16 @@ def packagestatus(req, **vars):
 			<h3>Build Steps</h3>
 			<p>
 			<table>
-			<tbody>""" % (package, platform, revision, start, finish, buildhost)
+			<tbody>""" % (package, platform, version, values['start'], values['finish'], values['buildhost'])
 
 		count = 0
 		# Start through the build steps...	
 
-		for step in xmldoc.xpathEval("build/steps/step"):
+		for step in xml.xpath.Evaluate('/build/steps/step', build_info.doc.documentElement):
 
-			#html += "<br>".join(dir(step))
-			#html += "<br>" + step.type
-			
-			name = step.xpathEval("name")[0].content
-			state = step.xpathEval("state")[0].content
-
-			log = os.path.join(meta_files_path, 'logs', step.xpathEval("log")[0].content)
+			name = xml.xpath.Evaluate('name/text()', step)[0].nodeValue
+			state = xml.xpath.Evaluate('state/text()', step)[0].nodeValue
+			log = os.path.join(config.build_info_url, build_info.rel_files_dir, 'logs', xml.xpath.Evaluate('log/text()', step)[0].nodeValue)
 
 			html += """
 					<tr>
@@ -254,9 +247,9 @@ def packagestatus(req, **vars):
 
 			# If there's download info, add it to the html
 			try:
-				download = step.xpathEval("download")[0].content
+				download = xml.xpath.Evaluate('download/text()', step)[0].nodeValue
 
-				download_file = os.path.join(meta_files_path, "files", download)
+				download_file = os.path.join(config.build_info_url, build_info.rel_files_dir, "files", download)
 
 				html += """
 						<td><a href="%s">%s</a></td>
@@ -269,12 +262,10 @@ def packagestatus(req, **vars):
 		html += "</tbody></table></p>"
 
 
-		xmldoc.freeDoc()
-
 	# Couldn't find the xml file...
-	except libxml2.parserError:
+	else:
 		html += "<h1>Mono Build Status</h1>"
-		html += "<p>No information found: %s -- %s -- %s</p>" % (package, platform, revision) 
+		html += "<p>No information found: %s -- %s -- %s</p>" % (package, platform, version) 
 
 
 	req.write("""
@@ -287,7 +278,7 @@ def packagestatus(req, **vars):
 	%s
 
 	</body>
-	</html>""" % (rootUrl, html))
+	</html>""" % (config.web_root_url, html))
 
 
 
@@ -315,7 +306,7 @@ def schedulebuild(req, **vars):
 
 		<H3>Scheduled the following builds</H3>
 
-		<p>""" % rootUrl
+		<p>""" % config.web_root_url
 
 	#latest_rev = Mono.Build.getLatestTreeRevision()
 	latest_rev = "r57777"

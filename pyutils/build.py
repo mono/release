@@ -1,16 +1,8 @@
 
 import os
 import os.path
-import tempfile
-import commands
 import sys
-import string
-import libxml2
 import distutils.dir_util
-import commands
-import glob
-import stat
-import fcntl
 import re
 
 import pdb
@@ -20,22 +12,22 @@ import config
 
 debug = 1
 
-def getPlatforms():
+def get_platforms():
 	platforms = []
 
-	for entry in os.listdir(Mono.Build.Config.platformDir):
-		if entry != "." and entry != ".." and entry != ".svn" and entry != "hosts":
+	for entry in os.listdir(config.platform_conf_dir):
+		if entry != ".svn" and entry != "hosts":
 			platforms.append(entry)
 
 	platforms.sort()
 	return platforms
 
 
-def getPackages():
+def get_packages():
 
 	packages = []
 
-	for entry in os.listdir(Mono.Build.Config.packageDir):
+	for entry in os.listdir(config.def_dir):
 	
 		# For some reason... .svn fails the -d perl test...???
 		#  Ignore all dot files
@@ -46,29 +38,26 @@ def getPackages():
 	return packages
 
 
-def getLatestRevision(platform, package):
+def get_latest_version(HEAD_or_RELEASE, platform, package):
 
-	revisions = []
+	versions = []
 
 	# If this doesn't get overwritten, a build hasn't been don for this platform/package combo
-	revision = ""
+	version = ""
 
 	try:
 
-		for entry in os.listdir(Mono.Build.Config.buildsDir + os.sep + platform + os.sep + package):
-			# For some reason... .svn fails the -d perl test...???
-			#if(!-d $dir)
-			if dir != "." and dir != ".." and dir != ".svn":
-				revisions.append(entry)
-	
+		for entry in os.listdir(os.path.join(config.build_info_dir, HEAD_or_RELEASE, platform, package)):
+			if dir != ".svn":
+				versions.append(entry)
 
-		revisions.sort()
-		revision = revisions.pop()
+		versions.sort()
+		version = versions.pop()
 
 	except OSError:
 		pass
 
-	return revision
+	return version
 
 # TODO:
 def getLatestBuiltTarball(package):
@@ -118,5 +107,43 @@ def scheduleBuild(platform, package, rev):
                 # TODO What to do when the build exists?  Probably want to schedule it again if it's finished
                 # If it's in the finished state, queue it again
                 return "already scheduled"
+
+
+# Hmm... does this method make sense anymore... ?
+def get_queued_packages(self):
+
+	queuedPackages = []
+
+	distros = []
+	packages = []
+	revisions = []
+	latestRev = ""
+	state = ""
+
+	platforms = glob.glob(Mono.Build.Config.buildsDir + "/*")
+
+	for platform in platforms:
+
+		platform = os.path.basename(platform)
+
+		packages = glob.glob(Mono.Build.Config.buildsDir + os.sep + platform + os.sep + "*");
+
+		for package in packages:
+
+			package = os.path.basename(package)
+
+			revisions = glob.glob(Mono.Build.Config.buildsDir + os.sep + platform + os.sep + package + os.sep + "*")
+			revisions.sort()
+
+			latestRev = revisions.pop()
+
+			latestRev = os.path.basename(latestRev)
+
+			state = getState(platform, package, latestRev)
+
+			if state == "queued":
+				queuedPackages.append(":".join([platform, package, latestRev]))
+
+	return queuedPackages
 
 

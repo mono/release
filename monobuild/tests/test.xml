@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- Data describing a set of builds for a component on a platform -->
 <build>
-	<platform/>
+	<distro/>
 	<package/>
-	<revision/>
+	<version/>
+	<state/>
 
 	<buildhost/>
 	<start/>
@@ -11,7 +12,6 @@
 
 	<steps>
 		<step>
-			<index>0</index>
 			<name>test build!</name>
 			<state/>
 			<log/>

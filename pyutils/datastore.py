@@ -1,6 +1,6 @@
 
-
-import libxml2
+import xml.xpath
+import xml.dom.minidom
 import fcntl
 import stat
 import os
@@ -11,6 +11,12 @@ import config
 
 all_rwx = stat.S_IRWXO | stat.S_IRWXG | stat.S_IRWXU
 
+# Locking wrappers
+def lock_file(fd):
+	fcntl.flock(fd, fcntl.LOCK_EX)
+
+def unlock_file(fd):
+	fcntl.flock(fd.fileno(), fcntl.LOCK_UN)
 
 
 # tarball datastore
@@ -28,6 +34,8 @@ class source_file_repo:
                         fd = open(self.data_store_filename, 'w')
                         fd.write("")
                         fd.close()
+
+		# Why are these here?
 
                 # Load file
                 self.load_info()
@@ -65,20 +73,21 @@ class source_file_repo:
                 self.info = {}
 
                 fd = open(self.data_store_filename, 'r')
-                fcntl.flock(fd, fcntl.LOCK_EX)
+                lock_file(fd)
 
                 for line in fd.readlines():
                         matches = re.compile('(.*)=(.*)').search(line)
                         self.info[matches.group(1)] = matches.group(2)
 
-                fcntl.flock(fd.fileno(), fcntl.LOCK_UN)
+		# Not needed since we're closing the file
+                #unlock_file(fd)
                 fd.close()
 
 
         def write_info(self):
 
                 fd = open(self.data_store_filename, 'w')
-                fcntl.flock(fd, fcntl.LOCK_EX)
+                lock_file(fd)
 
 		keys = self.info.keys()
 		keys.sort()
@@ -90,69 +99,87 @@ class source_file_repo:
 # XML data store
 class build_info:
 
-	def __init__(self):
+	def __init__(self, HEAD_or_RELEASE, distro, package_name, version):
 
-		xmlFile = dir + os.sep + "info.xml"
+		self.HEAD_or_RELEASE = HEAD_or_RELEASE
+		self.distro = distro
+		self.package_name = package_name
+		self.version = version
 
+		self.xml_file = os.path.join(config.build_info_dir, HEAD_or_RELEASE, distro, package_name, version, "info.xml")
 
-		# load info, or start a new one
-		# Get a starter structure... 
-		xmlRef = readInfoXML(Mono.Build.Config.releaseRepo + "/monobuild/info.xml_new")
+		self.rel_files_dir = os.path.join(HEAD_or_RELEASE, distro, package_name, version)
 
-		# xmlFile
-		xmlRef.xpathEval("build/package")[0].setContent(package)
-		xmlRef.xpathEval("build/platform")[0].setContent(platform)
-		xmlRef.xpathEval("build/revision")[0].setContent(rev)
-		# TODO
-		xmlRef.xpathEval("build/state")[0].setContent("queued")
+		self.exists = self.build_exists()
 
-		writeInfoXML(xmlRef, xmlFile)
-		xmlRef.freeDoc()
+		if self.exists:
+			self.read_info_xml()
 
 
-	# Hmm... does this method make sense anymore... ?
-	def getQueuedPackages():
+	#  This will probably mainly get used by ./build
+	# TODO: create dir structure path
+	def new_build(self):
 
-		queuedPackages = []
+		# Get a starter template if this doesn't exist
 
-		distros = []
-		packages = []
-		revisions = []
-		latestRev = ""
-		state = ""
+		xml_template = config.release_repo_root + "/monobuild/info.xml_new"
+		fd = open(xml_template, 'r')
+		xml_string = fd.read()
+		fd.close()
+		doc = xml.dom.minidom.parseString(xml_string)
 
-		platforms = glob.glob(Mono.Build.Config.buildsDir + "/*")
+		xml.xpath.Evaluate('/build/platform', doc.docmuentElement)[0].appendChild(doc.createTextNode(distro))
+		xml.xpath.Evaluate('/build/package', doc.docmuentElement)[0].appendChild(doc.createTextNode(package_name))
+		xml.xpath.Evaluate('/build/version', doc.docmuentElement)[0].appendChild(doc.createTextNode(version))
 
-		for platform in platforms:
+		# write new xml out
+		self.doc = doc
+		self.write_info_xml()
 
-			platform = os.path.basename(platform)
+		# Mark build as exists
+		self.exists = self.build_exists()
 
-			packages = glob.glob(Mono.Build.Config.buildsDir + os.sep + platform + os.sep + "*");
+	def build_exists(self):
+		return os.path.exists(self.xml_file)
 
-			for package in packages:
+	# Have one subroutine to do this because I'll want to considate options
+	def read_info_xml(self):
 
-				package = os.path.basename(package)
+		fd = open(self.xml_file, 'r')
+		xml_string = fd.read()
+		lock_file(fd)
+		self.doc = xml.dom.minidom.parseString(xml_string)
+		fd.close()
 
-				revisions = glob.glob(Mono.Build.Config.buildsDir + os.sep + platform + os.sep + package + os.sep + "*")
-				revisions.sort()
 
-				latestRev = revisions.pop()
+	# Consolidate options
+	def write_info_xml(self):
 
-				latestRev = os.path.basename(latestRev)
+		# Open a file
+		file_obj = open(self.xml_file, 'w')
 
-				state = getState(platform, package, latestRev)
+		# Blocking lock
+		lock_file(file_obj)
 
-				if state == "queued":
-					queuedPackages.append(":".join([platform, package, latestRev]))
+		# Write out the file
+		file_obj.write(self.doc.toprettyxml())
 
-		return queuedPackages
+		# Close and unlock file
+		file_obj.close()
 
+		# Will this be needed?
+		# Make it world writable (0x777)
+		# Only do this if it's not already all_rwx
+		try:
+			os.chmod(filename, all_rwx)
+		except OSError:
+			pass
 
 
 	# Args: $platform, $package, $revision, %hash of key values to put in info.xml
 	#
 	# platform, package, revision, state, buildhost, start, finish...
-	def updateBuild(platform, package, revision, info):
+	def update_build(self, platform, package, revision, info):
 
 		xmlFile = os.path.join(Mono.Build.Config.buildsDir, platform, package, revision, "info.xml")
 
@@ -174,7 +201,7 @@ class build_info:
 	#
 	# platform, package, revision, state, buildhost, start, finish...
 	#  TODO: Does this step need to be mutexed?
-	def updateStep(platform, package, revision, stepName, info):
+	def update_step(platform, package, revision, step_name, info):
 
 		xmlFile = os.path.join(Mono.Build.Config.buildsDir, platform, package, revision, "info.xml")
 
@@ -196,71 +223,17 @@ class build_info:
 		xmlRef.freeDoc()
 
 
-	# Have one subroutine to do this because I'll want to considate options
-	def readInfoXML(file):
-
-		xmldoc = ""
-
-		try:
-			file_obj = open(file, 'r')
-			fcntl.flock(file_obj.fileno(), fcntl.LOCK_EX)
-
-			text = file_obj.read()
-			xmldoc = libxml2.parseMemory(text, len(text))
-
-			# Not necessary if we're going to close the file (maybe this is only for writing?)
-			fcntl.flock(file_obj.fileno(), fcntl.LOCK_UN)
-
-			file_obj.close()
-
-		except:
-			sys.stderr.write("Error reading xml file! (%s)" % file)
-
-		return xmldoc
-
-	# Consolidate options
-	def writeInfoXML(xmlRef, filename):
-
-		returnCode = 0
-
-		# Open a file
-		file_obj = open(filename, 'w')
-
-		# Blocking lock
-		fcntl.flock(file_obj.fileno(), fcntl.LOCK_EX)
-
-		# Write out the file
-		xmlRef.dump(file_obj)
-
-		# Close and unlock file
-		file_obj.close()
-
-		# Make it world writable (0x777)
-		# (Gotta be a prettier way to do this... oh well)
-		# Only do this if it's not already all_rwx
-		try:
-			os.chmod(filename, all_rwx)
-		except OSError:
-			pass
-
-		returnCode = 1
-
-
-		return returnCode;
-
 	# Get the state of a package on a platform
-	def getState(platform, package, revision):
-
-		xmlFile = os.path.join(Mono.Build.Config.buildsDir, platform, package, revision, "info.xml")
+	def get_state(self):
 
 		state = ""
-		if os.path.exists(xmlFile):
-			try:
-				doc = readInfoXML(xmlFile)
-				state = doc.xpathEval("build/state")[0].content
-				doc.freeDoc()
-			except libxml2.parserError:
-				state = ""
+
+		if self.exists:
+			self.read_info_xml()
+
+			state_node = xml.xpath.Evaluate('/build/state/text()', self.doc.documentElement)[0]
+			if state_node:
+				state = state_node.nodeValue
 
 		return state
 
