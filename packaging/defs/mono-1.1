@@ -281,6 +281,11 @@ RELEASE_PATH=(
 make_dist () {
 	. /etc/profile
 	./autogen.sh
-	make dist MCS=mcs RESGEN=resgen
+	if [ $RELEASE_or_HEAD == "HEAD" ] ; then
+                make dist-zip MCS=mcs RESGEN=resgen
+        else
+                make dist MCS=mcs RESGEN=resgen
+        fi
+
 }
 
