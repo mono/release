@@ -7,6 +7,8 @@
 #           local packages is packages in the defs dir and/or urls if distro is zip based
 #
 
+# TODO: be able to install from snapshot_packages  (RELEASE_or_HEAD)
+
 
 import os
 import sys

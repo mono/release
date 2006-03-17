@@ -122,7 +122,9 @@ else:
 			# svn switch  (will update update if the path in the working copy hasn't changed, this ensures have the right path)
 			command = '%s; cd %s/%s; svn switch %s %s/%s' % (env_string, cache_dir, module, rev_arg, MONO_ROOT, path)
 			print "Executing: " + command
-			os.system(command)
+			if os.system(command):
+				print "*** Error *** updating cached copy failed (this is usually because of a malformed url, ex: invalid version)"
+				sys.exit(1)
 		else:
 			# create cache dir
 			if not os.path.exists(cache_dir): distutils.dir_util.mkpath(cache_dir)
