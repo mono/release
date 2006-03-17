@@ -2,12 +2,7 @@
 
 import os
 import sys
-import random
 
-import xml.xpath
-import xml.dom.minidom
-
-import pdb
 
 # How to import these so they are reimported on change?
 import build
@@ -18,11 +13,17 @@ import datastore
 
 def index(req, **vars):
 
+	# Debug to see what's available in req
+	#return("\n".join(dir(req)))
+
 	# Default to HEAD if it's not specified
 	if vars.has_key('HEAD_or_RELEASE'):
 		HEAD_or_RELEASE = vars['HEAD_or_RELEASE']
 	else:
 		HEAD_or_RELEASE = 'HEAD'
+
+	if HEAD_or_RELEASE != "HEAD" and HEAD_or_RELEASE != "RELEASE":
+		return("Invalid parameters")
 
 	scriptname = os.path.basename(req.canonical_filename)
 
@@ -38,17 +39,17 @@ def index(req, **vars):
 	req.write( """
 	<HTML>
 	<HEAD>
-	<TITLE>Mono Build Status</TITLE>
+	<TITLE>Mono Build Status - %s</TITLE>
 	<link rel="stylesheet" href="%s/build.css" type="text/css">
 	<script language="javascript" src="%s/build.js"></script>
 	</HEAD>
 	<BODY>
 
-	<H1>Mono Build Status</H1>
+	<H1>Mono Build Status - %s</H1>
 
 	<FORM name=buildform action="%s/schedulebuild" method=get enctype="multipart/form-data">
 
-	""" % (config.web_root_url, config.web_root_url, scriptname))
+	""" % (HEAD_or_RELEASE, config.web_root_url, config.web_root_url, HEAD_or_RELEASE, scriptname))
 
 	if schedule_flag:
 		req.write("""<p><INPUT type=submit Value="Build Selected Packages"></p>""")
@@ -87,9 +88,6 @@ def index(req, **vars):
 		
 			# If this is a valid package for this platform...	
 			if buildhosts.count(platform):
-				# Then start reading the xml...
-					# Currently this reads a ton of xml files... might need to aggregate these later...
-						# But, that means it's more difficult to remove builds...  issue? 
 				version = build.get_latest_version(HEAD_or_RELEASE, platform, package) # in <num> format
 
 				build_info = datastore.build_info(HEAD_or_RELEASE, platform, package, version)
@@ -193,21 +191,11 @@ def packagestatus(req, **vars):
 	html = ""
 	req.content_type = "text/html"
 
-
-	# Try to open and get data out of the xml document
+	# If the build exists
 	if build_info.exists:
-
-		xmldoc = build_info.doc
-
-		values = {}
-		for key in ['buildhost', 'start', 'finish' ]:
-			node = xml.xpath.Evaluate('/build/%s/text()' % key, build_info.doc.documentElement)[0]
-			if node:
-				values[key] = node.nodeValue
-			else: values[key] = ""
+		values = build_info.get_build_info()
 	
 		html += """
-
 			<h1>%s -- %s -- %s</h1>
 
 			<h3>Build status</h3>
@@ -237,39 +225,31 @@ def packagestatus(req, **vars):
 			<table>
 			<tbody>""" % (package, platform, version, values['start'], values['finish'], values['buildhost'])
 
-		count = 0
 		# Start through the build steps...	
+		for step in build_info.get_steps_info(read_info=0):
 
-		for step in xml.xpath.Evaluate('/build/steps/step', build_info.doc.documentElement):
-
-			name = xml.xpath.Evaluate('name/text()', step)[0].nodeValue
-			state = xml.xpath.Evaluate('state/text()', step)[0].nodeValue
-			log = os.path.join(config.build_info_url, build_info.rel_files_dir, 'logs', xml.xpath.Evaluate('log/text()', step)[0].nodeValue)
+			log = os.path.join(config.build_info_url, build_info.rel_files_dir, 'logs', step['log'])
 
 			html += """
 					<tr>
 					<th>%s</th>
 					<td><a href="%s">%s</a></td>
-				 """ % (name, log, state)
+				 """ % (step['name'], log, step['state'])
 
 			# If there's download info, add it to the html
-			try:
-				download = xml.xpath.Evaluate('download/text()', step)[0].nodeValue
+			if step['download']:
 
-				download_file = os.path.join(config.build_info_url, build_info.rel_files_dir, "files", download)
+				download_file = os.path.join(config.build_info_url, build_info.rel_files_dir, "files", step['download'])
 
 				html += """
 						<td><a href="%s">%s</a></td>
 						</tr>
-					""" % (download_file, download)
-			except IndexError:
-				pass
+					""" % (download_file, step['download'])
 
 			
 		html += "</tbody></table></p>"
 
 
-	# Couldn't find the xml file...
 	else:
 		html += "<h1>Mono Build Status</h1>"
 		html += "<p>No information found: %s -- %s -- %s</p>" % (package, platform, version) 
@@ -316,8 +296,8 @@ def schedulebuild(req, **vars):
 		<p>""" % config.web_root_url
 
 	#latest_rev = Mono.Build.getLatestTreeRevision()
-	latest_rev = "r57777"
-	latest_rev = "r57635"
+	latest_rev = "57777"
+	latest_rev = "57635"
 
 	#if latest_rev:
 	#	html += "Error scheduling build<br>"

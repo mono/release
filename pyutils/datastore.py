@@ -6,6 +6,9 @@ import stat
 import os
 import glob
 import re
+import distutils.dir_util
+
+import pdb
 
 import config
 
@@ -112,32 +115,28 @@ class build_info:
 
 		self.exists = self.build_exists()
 
-		if self.exists:
-			self.read_info_xml()
-
 
 	#  This will probably mainly get used by ./build
 	# TODO: create dir structure path
 	def new_build(self):
 
-		# Get a starter template if this doesn't exist
+		if not self.exists:
+			# Get a starter template if this doesn't exist
+			doc = xml.dom.minidom.parse(config.release_repo_root + "/monobuild/info.xml_new")
 
-		xml_template = config.release_repo_root + "/monobuild/info.xml_new"
-		fd = open(xml_template, 'r')
-		xml_string = fd.read()
-		fd.close()
-		doc = xml.dom.minidom.parseString(xml_string)
+			xml.xpath.Evaluate('/build/distro', doc.documentElement)[0].appendChild(doc.createTextNode(self.distro))
+			xml.xpath.Evaluate('/build/package', doc.documentElement)[0].appendChild(doc.createTextNode(self.package_name))
+			xml.xpath.Evaluate('/build/version', doc.documentElement)[0].appendChild(doc.createTextNode(self.version))
 
-		xml.xpath.Evaluate('/build/platform', doc.docmuentElement)[0].appendChild(doc.createTextNode(distro))
-		xml.xpath.Evaluate('/build/package', doc.docmuentElement)[0].appendChild(doc.createTextNode(package_name))
-		xml.xpath.Evaluate('/build/version', doc.docmuentElement)[0].appendChild(doc.createTextNode(version))
+			# Create dir where xml doc will be
+			distutils.dir_util.mkpath(os.path.dirname(self.xml_file))
 
-		# write new xml out
-		self.doc = doc
-		self.write_info_xml()
+			# write new xml out
+			self.doc = doc
+			self.write_info_xml()
 
-		# Mark build as exists
-		self.exists = self.build_exists()
+			# Mark build as exists
+			self.exists = self.build_exists()
 
 	def build_exists(self):
 		return os.path.exists(self.xml_file)
@@ -145,11 +144,12 @@ class build_info:
 	# Have one subroutine to do this because I'll want to considate options
 	def read_info_xml(self):
 
-		fd = open(self.xml_file, 'r')
-		xml_string = fd.read()
-		lock_file(fd)
-		self.doc = xml.dom.minidom.parseString(xml_string)
-		fd.close()
+		if self.exists:
+			fd = open(self.xml_file, 'r')
+			xml_string = fd.read()
+			lock_file(fd)
+			self.doc = xml.dom.minidom.parseString(xml_string)
+			fd.close()
 
 
 	# Consolidate options
@@ -162,7 +162,7 @@ class build_info:
 		lock_file(file_obj)
 
 		# Write out the file
-		file_obj.write(self.doc.toprettyxml())
+		file_obj.write(self.doc.toxml())
 
 		# Close and unlock file
 		file_obj.close()
@@ -171,57 +171,109 @@ class build_info:
 		# Make it world writable (0x777)
 		# Only do this if it's not already all_rwx
 		try:
-			os.chmod(filename, all_rwx)
+			os.chmod(self.xml_file, all_rwx)
 		except OSError:
 			pass
 
 
-	# Args: $platform, $package, $revision, %hash of key values to put in info.xml
-	#
-	# platform, package, revision, state, buildhost, start, finish...
-	def update_build(self, platform, package, revision, info):
+	def update_build(self, **info):
+		"""info is a dictionary of keys to update.
 
-		xmlFile = os.path.join(Mono.Build.Config.buildsDir, platform, package, revision, "info.xml")
+		TODO: Should the keys be validated?"""
 
-		# Get a starter structure...
-		xmlRef = readInfoXML(xmlFile)
+		self.read_info_xml()
 
 		# If something was passed in, put it into the
 		for key,value in info.iteritems():
-			if value:
-				xmlRef.xpathEval("build/%s" % key)[0].setContent(value)
+			key_node = xml.xpath.Evaluate('/build/%s' % key, self.doc.documentElement)[0]
 
-		writeInfoXML(xmlRef, xmlFile)
+			# Does text node exist?
+			if key_node.childNodes:
+				key_node.firstChild.nodeValue = value
+			else:
+				key_node.appendChild(self.doc.createTextNode(value))
 
-		# These freeDocs are getting annoying... switch to pyxml?  lxml? 4suite?
-		xmlRef.freeDoc()
+		self.write_info_xml()
 
 
-	# Args: $platform, $package, $revision, $stepName, %hash of key values to put in the step
-	#
-	# platform, package, revision, state, buildhost, start, finish...
-	#  TODO: Does this step need to be mutexed?
-	def update_step(platform, package, revision, step_name, info):
+	def update_step(self, step_name, **info):
+		"""Args: step_name, dictionary of things to update inside step
+		
+		TODO: Does this step need to be mutexed?
+		If the step doesn't exist, create and append it"""
 
-		xmlFile = os.path.join(Mono.Build.Config.buildsDir, platform, package, revision, "info.xml")
+		self.read_info_xml()
 
-		# Get a starter structure...
-		xmlRef = readInfoXML(xmlFile)
+		steps_node = xml.xpath.Evaluate('/build/steps', self.doc.documentElement)[0]
 
-		# Find out if this is a new step...
+		node_step = ""
+		# Find step node
+		for node in xml.xpath.Evaluate('step/name/text()', steps_node):
+			if node.nodeValue == step_name:
+				node_step = node.parentNode.parentNode
+				break
 
-		# If not, get a new index
+		# If not found, create a new one
+		if not node_step:
+			print "%s step not found!" % step_name
+			node_step = self.doc.createElement('step')
 
-		# If something was passed in, put it into the
+			name_node = self.doc.createElement('name')
+			name_node.appendChild(self.doc.createTextNode(step_name))
+			node_step.appendChild(name_node)
 
+			node_step.appendChild(self.doc.createElement('state'))
+			node_step.appendChild(self.doc.createElement('log'))
+			node_step.appendChild(self.doc.createElement('download'))
+			steps_node.appendChild(node_step)
+			
+		# Iterate through info and insert or replace data
 		for key, value in info.iteritems():
-			if key:
-				xmlRef.xpathEval("build/%s" % key)[0].setContent(value)
+			value_node = xml.xpath.Evaluate('%s' % key, node_step)[0]
 
-		writeInfoXML(xmlRef, xmlFile)
+			# See if there's a value set already
+			if value_node.childNodes:
+				value_node.childNodes[0].nodeValue = value
+			else:
+				value_node.appendChild(self.doc.createTextNode(value))
 
-		xmlRef.freeDoc()
+		# persist data		
+		self.write_info_xml()
 
+	def get_build_info(self, read_info=1):
+		values = {}
+
+		if read_info: self.read_info_xml()
+		
+		if self.exists:
+			for key in "distro package version state buildhost start finish".split():
+				nodes = xml.xpath.Evaluate('/build/%s/text()' % key, self.doc.documentElement)
+				if nodes:
+					values[key] = nodes[0].nodeValue
+				else: values[key] = ""
+
+		return values
+
+	def get_steps_info(self, read_info=1):
+		"""Returns an array of step dictionaries.
+
+		If you know you don't need (or want) a reread of the xml, you can pass in read_info=0"""
+
+		if read_info: self.read_info_xml()
+
+		steps = []
+
+		for node in xml.xpath.Evaluate('/build/steps/step', self.doc.documentElement):
+			step = {}
+			for key in "name state log download".split():
+				tmp_node = xml.xpath.Evaluate('%s/text()' % key, node)
+				if tmp_node:
+					step[key] = tmp_node[0].nodeValue
+				else:   step[key] = ""
+			steps.append(step)
+
+		return steps
+	
 
 	# Get the state of a package on a platform
 	def get_state(self):
@@ -231,10 +283,9 @@ class build_info:
 		if self.exists:
 			self.read_info_xml()
 
-			state_node = xml.xpath.Evaluate('/build/state/text()', self.doc.documentElement)[0]
-			if state_node:
-				state = state_node.nodeValue
+			nodes = xml.xpath.Evaluate('/build/state/text()', self.doc.documentElement)
+			if nodes:
+				state = nodes[0].nodeValue
 
 		return state
-
 
