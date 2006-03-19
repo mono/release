@@ -9,8 +9,8 @@
 	<state>failure</state>
 
 	<buildhost>monobuild1</buildhost>
-	<start>Fri Apr 29 14:20:47</start>
-	<finish>Fri Apr 29 15:20:47</finish>
+	<start>Fri Apr 29 14:20:47 2005</start>
+	<finish>Fri Apr 29 15:20:47 2005</finish>
 
 	<steps>
 		<step>
@@ -18,17 +18,23 @@
 			<state>success</state>
 			<log>mktarball.log</log>
 			<download>gtk-sharp.tar.gz</download>
+			<start>Fri Apr 29 14:20:47 2005</start>
+			<finish>Fri Apr 29 15:20:47 2005</finish>
 		</step>
 		<step>
 			<name>Build</name>
 			<state>success</state>
 			<log>build.log</log>
+			<start>Fri Apr 29 14:20:47 2005</start>
+			<finish>Fri Apr 29 15:20:47 2005</finish>
 		</step>
 		<step>
 			<name>Make RPMS</name>
 			<state>failure</state>
 			<log>rpm.log</log>
 			<download>gtk-sharp.rpm</download>
+			<start>Fri Apr 29 14:20:47 2005</start>
+			<finish>Fri Apr 29 15:20:47 2005</finish>
 		</step>
 
 	</steps>

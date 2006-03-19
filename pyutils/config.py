@@ -37,7 +37,7 @@ web_root_dir = release_repo_root + "/monobuild/www"
 
 # 
 build_info_dir = web_root_dir + "/builds/testing"
-build_info_url = "/builds/testing"
+build_info_url = web_root_url + "/builds/testing"
 
 mktarball_logs = web_root_dir + "/tarball_logs"
 

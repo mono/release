@@ -23,6 +23,7 @@ import tempfile
 import string
 import glob
 import distutils.dir_util
+import time
 
 import popen2
 import signal
@@ -355,4 +356,11 @@ def remove_list_duplicates(my_list):
 			files += [ file ]
 	return files
 
+def get_time():
+	#Fri Apr 29 14:20:47
+	#return time.strftime("%a %b %d %H:%M:%S")
+	return time.asctime()
 
+# TODO
+def time_diff(start, finish):
+	pass

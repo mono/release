@@ -1,5 +1,13 @@
 target_host=builder@pbartok2.provo.novell.com
 USE_ZIP_PKG=1
-target_command_prefix="export PATH=/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:\$PATH; "
+#target_command_prefix="export PATH=/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:$PATH; "
+#target_command_prefix="export PATH=/usr/local/bin:/usr/sfw/bin:/usr/ccs/bin:$PATH; "
+
+# Use blastwave instead... they better represent the stuff that comes with solaris10
+#  Plus, sunfreeware doesn't have an updated binutils for solaris10 sparc
+#target_command_prefix="export PATH=/opt/csw/bin:$PATH; "
+
+
+target_command_prefix="export PATH=/opt/csw/bin:$PATH; "
 
 jail_strip_path=/usr/ccs/bin/strip

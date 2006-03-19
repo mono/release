@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- Data describing a set of builds for a component on a platform -->
 
-
 <build>
 	<distro>suse-93-i586</distro>
 	<package>gecko-sharp-2.0</package>
@@ -9,8 +8,8 @@
 	<state>success</state>
 
 	<buildhost>monobuild1</buildhost>
-	<start>Fri Apr 29 14:20:47</start>
-	<finish>Fri Apr 29 15:20:47</finish>
+	<start>Fri Apr 29 14:20:47 2006</start>
+	<finish>Fri Apr 29 15:20:47 2006</finish>
 
 	<steps>
 		<step>
@@ -18,24 +17,27 @@
 			<state>success</state>
 			<log>mktarball.log</log>
 			<download>gecko.tar.gz</download>
+			<start>Fri Apr 29 14:20:47 2006</start>
+			<finish>Fri Apr 29 15:20:47 2006</finish>
 		</step>
 		<step>
 			<name>Build</name>
 			<state>success</state>
 			<log>build.log</log>
+			<start>Fri Apr 29 14:20:47 2006</start>
+			<finish>Fri Apr 29 15:20:47 2006</finish>
 		</step>
 		<step>
 			<name>Make RPMS</name>
 			<state>success</state>
 			<log>rpm.log</log>
 			<download>gecko.rpm</download>
+			<start>Fri Apr 29 14:20:47 2006</start>
+			<finish>Fri Apr 29 15:20:47 2006</finish>
 		</step>
 
 	</steps>
 
 
 </build>
-
-
-
 

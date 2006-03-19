@@ -3,7 +3,7 @@ USE_ZIP_PKG=1
 
 # This is for rpm2cpio from:
 # http://www-jlc.kek.jp/~fujiik/macosx/10.2.X/memo/RPMonX.html
-target_command_prefix='export PATH=\$PATH:/usr/local/bin;  '
+target_command_prefix='export PATH=$PATH:/usr/local/bin;  '
 
 # for testing
 #target_host=nds_cm@macbld1.provo.novell.com

@@ -22,7 +22,10 @@ sys.path += [ '../pyutils' ]
 import packaging
 import logger
 import utils
+import datastore
+import config
 
+import pdb
 
 if len(sys.argv) < 4:
 	print "Usage is: ./build configuration package version <release>"
@@ -41,11 +44,7 @@ else:
 	serial = "0"
 	ver_path = version
 
-
-LOGFILE = "logs/%s-%s-%s-%s" % ( package_name, version, serial, distro)
-log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
-
-build_env = packaging.buildenv(distro, logger=log_obj)
+build_env = packaging.buildenv(distro)
 package = packaging.package(build_env, package_name)
 
 if build_env.is_locked():
@@ -57,25 +56,30 @@ if not package.info['BUILD_HOSTS'].count(distro):
 	print "%s is not in BUILD_HOSTS" % distro
 	sys.exit(1)
 
-destroot = package.destroot
-
-ver_path
 revision = package.get_revision(serial)
 
 # Set some defaults of where to find packages/sources
 source_path = "sources"
 
 # Figure out if this is a snapshot build or not...
-if glob.glob("sources/%s/*-%s.tar.gz" % (package_name, version)) or glob.glob("sources/%s/*-%s.zip" % (package_name, version)):
+#  Could do this by looking at the tarball map... ? (but ./build parameters would have to change)
+sources = glob.glob("sources/%s/*-%s.tar.gz" % (package_name, version)) + glob.glob("sources/%s/*-%s.zip" % (package_name, version))
+snapshot_sources = glob.glob("snapshot_sources/%s/*-%s.tar.gz" % (package_name, version)) + glob.glob("snapshot_sources/%s/*-%s.zip" % (package_name, version))
+if sources:
 	snapshot = 0
 	print "Using release sources and packages"
-elif glob.glob("snapshot_sources/%s/*-%s.tar.gz" % (package_name, version)) or glob.glob("snapshot_sources/%s/*-%s.zip" % (package_name, version)):
+	HEAD_or_RELEASE = "RELEASE"
+elif snapshot_sources:
 	print "Using snapshot sources and packages"
 	snapshot = 1
 	source_path = "snapshot_" + source_path
+	HEAD_or_RELEASE = "HEAD"
 else:
 	print "Cannot find source file for " + package_name
 	sys.exit(1)
+
+sources += snapshot_sources
+source_file = sources[0]
 
 package_path = package.get_package_path(snapshot=snapshot)
 
@@ -91,38 +95,126 @@ if os.path.exists(package_version_path):
 
 build_env.lock_env()
 
+build_info = datastore.build_info(HEAD_or_RELEASE, distro, package_name, ver_path)
+build_info.new_build()
+
+# Update build step to running
+build_info.update_build(state='inprogress', buildhost=build_env.info['target_host'], start=utils.get_time())
+
+# Debug
+#values = build_info.get_build_info()
+#pdb.set_trace()
+#steps = build_info.get_steps_info()
+
+# Update step: Add link to mktarball log
+repo = datastore.source_file_repo()
+logfile = repo.get_log_file(source_file)
+
+# Create symbolic link to tarball in 'files' dir
+# Create symbolic link to tarball_log in 'logs' dir
+try:
+	os.symlink(logfile, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', os.path.basename(logfile) ) )
+	os.symlink(config.packaging_dir + os.sep + source_file, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'files', os.path.basename(source_file) ) )
+except OSError:
+	# Usually means links are already there...
+	pass
+
+build_info.update_step("mktarball", state='success', log=os.path.basename(logfile), download=os.path.basename(source_file))
+
+# Update step: installing deps
+LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', 'install-deps.log')
+log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
+build_info.update_step("install-deps", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time())
+
 print "Installing dependencies..."
 (code, output) = utils.launch_process("./install-deps %s %s" % (distro, package_name), logger=log_obj)
 if code:
 	build_env.unlock_env()
+	build_info.update_step("install-deps", state="failure", finish=utils.get_time())
+	build_info.update_build(state="failure", finish=utils.get_time())
 	print "Dependency installation failed, see log in %s for details" % LOGFILE
 	sys.exit(1)
 
+build_info.update_step("install-deps", state="success", finish=utils.get_time())
 
+# Debug
+#build_env.unlock_env()
+#sys.exit(1)
+
+# Update step: building
+LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', 'build.log')
+log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
+build_info.update_step("build", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time())
 # Copy tar.gz and zip files
-files_to_copy = [ '%s/%s/*-%s.tar.gz' % (source_path, package_name, version), '%s/%s/*-%s.zip' % (source_path, package_name, version) ]
+files_to_copy = [ source_file ]
+
+# Get the dir that tarball unpacks
+#   Will this work with all tarballs?  This is what we do for do-zip-build...
+build_dir = os.path.basename(source_file).replace('.tar.gz', '')
+build_dir = build_dir.replace('.zip', '')
 
 # Files for zip build system and build command
 if build_env.info['USE_ZIP_PKG']:
 	files_to_copy += ['do-zip-build', '../conf/%s/*.patch' % package_name, 'defs/%s' % package_name]
 	build_command = '/tmp/do-zip-build %s %s %s %s' % (revision, package_name, distro, version)
+	remote_src_dir = "/tmp/scratch/%s" % build_dir
 
 else:
 	files_to_copy += ['do-build', '../conf/%s/*' % package_name ]
 	build_command = '/tmp/do-build %s %s' % (version, revision)
+	remote_src_dir = "/tmp/scratch/BUILD/%s" % build_dir
 
 
 build_env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
 
-(code, output) = build_env.ssh.execute(build_command)
+(code, output) = build_env.ssh.execute(build_command, logger=log_obj)
 if code:
 	build_env.unlock_env()
 	print "Build failed, see log in %s for details" % LOGFILE
+	build_info.update_step("build", state="failure", finish=utils.get_time())
+	build_info.update_build(state="failure", finish=utils.get_time())
 	sys.exit(1)
 
 distutils.dir_util.mkpath(package_version_path)
 build_env.ssh.copy_from(['/tmp/builder/built-packages/*', '/tmp/scratch/*.spec'], package_version_path)
 
+# Create link to packages
+try:
+	os.symlink(package_version_path, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'files', 'downloads' ) )
+except OSError:
+	# Probably already exists...
+	pass
+
+build_info.update_step("build", state="success", download=os.path.basename('downloads'), finish=utils.get_time())
+
+# Run postbuild steps
+remote_env = {}
+remote_env['HEAD_or_RELEASE'] = "HEAD"
+counter = 1
+while(1):
+	if package.info.has_key('POSTBUILD_STEP_NAME%d' % counter) and package.info.has_key('POSTBUILD_STEP%d' % counter):
+		print "Running step %d!" % counter
+		name = package.info['POSTBUILD_STEP_NAME%d' % counter]
+		LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', '%s.log' % name)
+		log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
+		build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time())
+
+		# TODO: timeout if no output for 1200 seconds? (like buildbot does)
+		(code, output) = build_env.ssh.execute("cd %s ; " % remote_src_dir + package.info['POSTBUILD_STEP%d' % counter], env=remote_env, logger=log_obj)
+		if code:
+			print "Step %d (%s) failed..." % (counter, package.info['POSTBUILD_STEP_NAME%d' % counter])
+			build_info.update_step(name, state="failure", finish=utils.get_time())
+		else:
+			build_info.update_step(name, state="success", finish=utils.get_time())
+	else:
+		break
+
+	counter += 1
+
+state = build_info.get_collective_state()
+build_info.update_build(state=state, finish=utils.get_time())
+
 build_env.unlock_env()
 
+print "Done!"
 

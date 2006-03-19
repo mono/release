@@ -59,7 +59,7 @@ class init:
 	# Args: command to execute, and option to print_output
 	#  Will always return output
 	# NOTE: In order to use backticks, you must escape them in the string you pass in
-	def execute(self, command, capture_stderr=1, terminate_reg=""):
+	def execute(self, command, capture_stderr=1, terminate_reg="", env={}, logger=""):
 		"""Args, command string to execute.  Option args: capture_stderr, and terminate_reg.
 
 		capture_stderr is 1 or 0 (Currently unimplemented)
@@ -68,8 +68,17 @@ class init:
 		if self.target_command_prefix:
 			command = self.target_command_prefix + command
 
+		# Build environment string
+		env_string=""
+		for k,v in env.iteritems():
+			env_string += "export %s=\"%s\";" % (k,v)
+		command = env_string + command
+
 		# Quoting very importand here: double quotes
 		command = '"' + command + '"'
+
+		# Escape any dollar signs for the shell code
+		command = command.replace('$', '\$')
 
 		if self.jaildir:
 			# Not sure what the most portable flag -c is (executing a command in the shell)
@@ -83,10 +92,19 @@ class init:
 		code = 0
 		output = ""
 
+		# Override logger
+		primary_logger = self.logger
+		if logger:
+			self.logger = logger
+			
 		if self.print_command: self.log("Executing %s" % command_string)
 
 		if self.execute_command:
 			(code, output) = utils.launch_process(command_string, print_output=self.print_output, terminate_reg=terminate_reg, logger=self.logger)
+
+		# restore logger
+		if logger:
+			self.logger = primary_logger
 
 		return code, output
 

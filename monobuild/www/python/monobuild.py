@@ -169,6 +169,7 @@ def index(req, **vars):
 	</HTML>
 	""")
 
+# TODO: Should probably show all builds on this page
 def packagestatus(req, **vars):
 
 
@@ -196,7 +197,7 @@ def packagestatus(req, **vars):
 		values = build_info.get_build_info()
 	
 		html += """
-			<h1>%s -- %s -- %s</h1>
+			<h1>%s -- %s -- %s -- %s</h1>
 
 			<h3>Build status</h3>
 
@@ -214,7 +215,7 @@ def packagestatus(req, **vars):
 			</tr>
 
 			<tr>
-			<th>Build host</th>
+			<th>Build host:</th>
 			<td>%s</td>
 
 			</tr>
@@ -223,7 +224,7 @@ def packagestatus(req, **vars):
 			<h3>Build Steps</h3>
 			<p>
 			<table>
-			<tbody>""" % (package, platform, version, values['start'], values['finish'], values['buildhost'])
+			<tbody>""" % (package, platform, version, HEAD_or_RELEASE, values['start'], values['finish'], values['buildhost'])
 
 		# Start through the build steps...	
 		for step in build_info.get_steps_info(read_info=0):

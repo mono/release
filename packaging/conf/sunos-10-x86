@@ -1,5 +1,5 @@
 target_host=builder@amd-mono.boston.ximian.com
 USE_ZIP_PKG=1
-target_command_prefix='export PATH=/usr/sfw/bin:\$PATH; '
+target_command_prefix='export PATH=/usr/sfw/bin:$PATH; '
 
 #jail_strip_path=/usr/ccs/bin/strip

@@ -98,6 +98,17 @@ class source_file_repo:
                         fd.write('%s=%s\n' % (key, self.info[key]))
                 fd.close()
 
+	def get_log_file(self, source_file):
+		self.load_info()
+		key = ""
+		for k,v in self.info.iteritems():
+			if v == source_file:
+				key = k
+				break
+
+		# Ex: /<full_path>/tarball_logs/RELEASE/libgdiplus-1.1/1.1.13.4.log
+		return config.mktarball_logs + os.sep + key.replace(":", "/") + ".log"
+
 
 # XML data store
 class build_info:
@@ -117,7 +128,6 @@ class build_info:
 
 
 	#  This will probably mainly get used by ./build
-	# TODO: create dir structure path
 	def new_build(self):
 
 		if not self.exists:
@@ -128,8 +138,9 @@ class build_info:
 			xml.xpath.Evaluate('/build/package', doc.documentElement)[0].appendChild(doc.createTextNode(self.package_name))
 			xml.xpath.Evaluate('/build/version', doc.documentElement)[0].appendChild(doc.createTextNode(self.version))
 
-			# Create dir where xml doc will be
-			distutils.dir_util.mkpath(os.path.dirname(self.xml_file))
+			# Create dir where xml doc and other files will be
+			distutils.dir_util.mkpath(os.path.join(config.build_info_dir, self.rel_files_dir, 'files'))
+			distutils.dir_util.mkpath(os.path.join(config.build_info_dir, self.rel_files_dir, 'logs'))
 
 			# write new xml out
 			self.doc = doc
@@ -215,13 +226,15 @@ class build_info:
 
 		# If not found, create a new one
 		if not node_step:
-			print "%s step not found!" % step_name
+			#print "%s step not found!" % step_name
 			node_step = self.doc.createElement('step')
 
 			name_node = self.doc.createElement('name')
 			name_node.appendChild(self.doc.createTextNode(step_name))
 			node_step.appendChild(name_node)
 
+			node_step.appendChild(self.doc.createElement('start'))
+			node_step.appendChild(self.doc.createElement('finish'))
 			node_step.appendChild(self.doc.createElement('state'))
 			node_step.appendChild(self.doc.createElement('log'))
 			node_step.appendChild(self.doc.createElement('download'))
@@ -265,7 +278,7 @@ class build_info:
 
 		for node in xml.xpath.Evaluate('/build/steps/step', self.doc.documentElement):
 			step = {}
-			for key in "name state log download".split():
+			for key in "name start finish state log download".split():
 				tmp_node = xml.xpath.Evaluate('%s/text()' % key, node)
 				if tmp_node:
 					step[key] = tmp_node[0].nodeValue
@@ -288,4 +301,20 @@ class build_info:
 				state = nodes[0].nodeValue
 
 		return state
+
+	def get_collective_state(self):
+		"""Get a resulting state based on the states of the steps."""
+
+		step_states = []
+		state = ""
+
+		if self.exists:
+			self.read_info_xml()
+			state = "success"
+			for step_node in xml.xpath.Evaluate('/build/steps/step/state/text()', self.doc.documentElement):
+				if step_node.nodeValue == "failure":
+					state = "failure"
+
+		return state
+
 
