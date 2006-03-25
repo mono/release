@@ -39,10 +39,12 @@ version = sys.argv[3]
 # If serial is passed in
 if len(sys.argv) > 4:
 	serial = sys.argv[4]
-	ver_path = version + "-" + serial
-else:
-	serial = "0"
+else:	serial = "0"
+
+if serial == "0":
 	ver_path = version
+else:
+	ver_path = version + "-" + serial
 
 build_env = packaging.buildenv(distro)
 package = packaging.package(build_env, package_name)

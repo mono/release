@@ -27,7 +27,7 @@ max_poll_interval = 5
 # Create tarballs starting from this point
 #  Raise or lower this number as we go along...
 #starting_rev = 57790
-starting_rev = 57775
+starting_rev = 58100
 
 # static list of packages to create tarballs for
 # What packages should these be?
@@ -59,14 +59,13 @@ while(1):
 		for pack_name, pack_obj in pack_objs.iteritems():
 
 			latest_for_package = src_repo.latest_path_revision(pack_obj.info['HEAD_PATH'], revision=i)
-			if not distfiles.contains(pack_name, "snap", str(latest_for_package)):
+			if not distfiles.contains('HEAD', pack_name, str(latest_for_package)):
 				command = "cd %s; ./mktarball %s snap %d" % (config.packaging_dir, pack_name, latest_for_package)
 				log.log("Executing: " + command)
 				# TODO: Logging
 				#  daemon log
 
 				# TODO: the system needs to be smarter about reinstalling the same rpms over and over...
-				#  as well as not checking out the source each time (take advantage of 'svn update' somehow)
 
 				# This will show console output, but not write to the log
 				#  Log will be for brief info, and the console will watch what's currently going on
@@ -75,9 +74,9 @@ while(1):
 				# TODO: handle jail busy errors (exit code of 2)
 
 				# Handle failed tarballs...
-				if not distfiles.contains(pack_name, "snap", str(latest_for_package)):
+				if not distfiles.contains('HEAD', pack_name, str(latest_for_package)):
 					log.log("Tarball creation failed...")
-					distfiles.add_file(pack_name, "snap", str(latest_for_package), "tarball_creation_failed")
+					distfiles.add_file('HEAD', pack_name, str(latest_for_package), "tarball_creation_failed")
 			
 
 	# TODO: Don't sleep if the above loop took longer than max_poll_interval

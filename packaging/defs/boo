@@ -32,7 +32,7 @@ get_destroot () {
 	DEST_ROOT=noarch
 }
 
-BUILD_DIR="dunno"
+BUILD_DIR="/tmp"
 
 #get_source () {
 #}

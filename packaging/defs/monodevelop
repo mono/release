@@ -42,6 +42,6 @@ RELEASE_PATH=(
 )
 
 update_version_file () {
-	sed -i "s/\(AC_INIT.*\)\(0\.[0-9]*\)/\1\2.$snapshot_rev/" configure.in
+	sed -i "s/\(AC_INIT.*\)\(0\.[0-9]*\)/\1\2.$VERSION/" configure.in
 }
 
