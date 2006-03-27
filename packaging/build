@@ -101,7 +101,7 @@ build_info = datastore.build_info(HEAD_or_RELEASE, distro, package_name, ver_pat
 build_info.new_build()
 
 # Update build step to running
-build_info.update_build(state='inprogress', buildhost=build_env.info['target_host'], start=utils.get_time())
+build_info.update_build(state='inprogress', buildhost=build_env.info['target_host'], start=utils.get_time(), finish="")
 
 # Debug
 #values = build_info.get_build_info()
@@ -126,7 +126,7 @@ build_info.update_step("mktarball", state='success', log=os.path.basename(logfil
 # Update step: installing deps
 LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', 'install-deps.log')
 log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
-build_info.update_step("install-deps", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time())
+build_info.update_step("install-deps", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 
 print "Installing dependencies..."
 (code, output) = utils.launch_process("./install-deps %s %s" % (distro, package_name), logger=log_obj)
@@ -146,7 +146,7 @@ build_info.update_step("install-deps", state="success", finish=utils.get_time())
 # Update step: building
 LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', 'build.log')
 log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
-build_info.update_step("build", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time())
+build_info.update_step("build", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 # Copy tar.gz and zip files
 files_to_copy = [ source_file ]
 
@@ -199,7 +199,7 @@ while(1):
 		name = package.info['POSTBUILD_STEP_NAME%d' % counter]
 		LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', '%s.log' % name)
 		log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
-		build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time())
+		build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 
 		# TODO: timeout if no output for 1200 seconds? (like buildbot does)
 		(code, output) = build_env.ssh.execute("cd %s ; " % remote_src_dir + package.info['POSTBUILD_STEP%d' % counter], env=remote_env, logger=log_obj)

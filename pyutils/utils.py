@@ -370,7 +370,7 @@ def time_duration_asc(start, finish):
 		start_time = calendar.timegm( time.strptime(start) )
 		finish_time = calendar.timegm( time.strptime(finish) )
 	except:
-		return "(Time parsing error)"
+		return "?"
 
 	# Return minutes of duration
 	return (finish_time - start_time) / 60

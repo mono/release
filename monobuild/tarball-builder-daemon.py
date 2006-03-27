@@ -69,12 +69,14 @@ while(1):
 
 				# This will show console output, but not write to the log
 				#  Log will be for brief info, and the console will watch what's currently going on
-				os.system(command)
+				code = os.system(command)
 
 				# TODO: handle jail busy errors (exit code of 2)
+				if code == 2:
+					print "Jail busy, retrying later..."
 
 				# Handle failed tarballs...
-				if not distfiles.contains('HEAD', pack_name, str(latest_for_package)):
+				elif not distfiles.contains('HEAD', pack_name, str(latest_for_package)):
 					log.log("Tarball creation failed...")
 					distfiles.add_file('HEAD', pack_name, str(latest_for_package), "tarball_creation_failed")
 			
