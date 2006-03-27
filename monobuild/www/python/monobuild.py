@@ -9,7 +9,7 @@ import build
 import config
 import packaging
 import datastore
-
+import utils
 
 def index(req, **vars):
 
@@ -107,7 +107,7 @@ def index(req, **vars):
 
 			# Print a link if there has been a build, and we're not in schedule mode
 			if state != 'notused' and state != 'new' and not schedule_flag:
-				req.write("<a href=%s/packagestatus?platform=%s&package=%s&version=%s&HEAD_or_RELEASE=%s>%s</a>" % ( scriptname, platform, package, version, HEAD_or_RELEASE, version))
+				req.write("<a href=%s/packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s>%s</a>" % ( scriptname, platform, package, HEAD_or_RELEASE, version))
 			
 
 			# Print a checkbox if we're in schedule mode and it's a valid BUILD_HOSTS
@@ -176,84 +176,94 @@ def packagestatus(req, **vars):
 	try:
 		platform = vars['platform']
 		package = vars['package']
-		version = vars['version']
 		HEAD_or_RELEASE = vars['HEAD_or_RELEASE']
 	except KeyError:
 		return "Invalid arguments"
 
+	versions = build.get_versions(HEAD_or_RELEASE, platform, package)
 
-	build_info = datastore.build_info(HEAD_or_RELEASE, platform, package, version)
+	versions = utils.version_sort(versions)
 
-	# Just for testing...
-	#platform = "suse-93-i586"
-	#package = "gecko-sharp-2.0"
-	#revision = "r4543"
+	versions.reverse()
 
 	html = ""
 	req.content_type = "text/html"
 
-	# If the build exists
-	if build_info.exists:
-		values = build_info.get_build_info()
-	
-		html += """
-			<h1>%s -- %s -- %s -- %s</h1>
+	if versions:
+		html += "<h1>%s -- %s -- %s</h1>" % (package, platform, HEAD_or_RELEASE)
 
-			<h3>Build status</h3>
+		for version in versions:
 
-			<p>
-			<table>
-			<tbody>
-			<tr>
-			<th>Build started:</th>
+			build_info = datastore.build_info(HEAD_or_RELEASE, platform, package, version)
+			values = build_info.get_build_info()
 
-			<td>%s</td>
-
-			<th>Build completed:</th>
-			<td>%s</td>
-
-			</tr>
-
-			<tr>
-			<th>Build host:</th>
-			<td>%s</td>
-
-			</tr>
-			</tbody></table>
-
-			<h3>Build Steps</h3>
-			<p>
-			<table>
-			<tbody>""" % (package, platform, version, HEAD_or_RELEASE, values['start'], values['finish'], values['buildhost'])
-
-		# Start through the build steps...	
-		for step in build_info.get_steps_info(read_info=0):
-
-			log = os.path.join(config.build_info_url, build_info.rel_files_dir, 'logs', step['log'])
-
+			duration = utils.time_duration_asc(values['start'], values['finish'])
+		
 			html += """
-					<tr>
-					<th>%s</th>
-					<td><a href="%s">%s</a></td>
-				 """ % (step['name'], log, step['state'])
 
-			# If there's download info, add it to the html
-			if step['download']:
+				<h3>Build status - %s</h3>
 
-				download_file = os.path.join(config.build_info_url, build_info.rel_files_dir, "files", step['download'])
+				<p>
+				<table>
+				<tbody>
+				<tr>
+				<th>Build started:</th>
+
+				<td>%s</td>
+
+				<th>Build completed:</th>
+				<td>%s</td>
+
+				<th>Duration:</th>
+				<td>%s min(s)</td>
+
+				</tr>
+
+				<tr>
+				<th>Build host:</th>
+				<td>%s</td>
+
+				</tr>
+				</tbody></table>
+
+				<h4>Build Steps</h4>
+				<p>
+				<table>
+				<tbody>""" % (version, values['start'], values['finish'], duration, values['buildhost'])
+
+			# Start through the build steps...	
+			for step in build_info.get_steps_info(read_info=0):
+
+				log = os.path.join(config.build_info_url, build_info.rel_files_dir, 'logs', step['log'])
 
 				html += """
+						<tr>
+						<th>%s</th>
 						<td><a href="%s">%s</a></td>
-						</tr>
-					""" % (download_file, step['download'])
+					 """ % (step['name'], log, step['state'])
 
-			
-		html += "</tbody></table></p>"
+				# If there's download info, add it to the html
+				if step['download']:
+
+					download_file = os.path.join(config.build_info_url, build_info.rel_files_dir, "files", step['download'])
+
+					html += """
+							<td><a href="%s">%s</a></td>
+						""" % (download_file, step['download'])
+				else:
+					html += "<td></td>"
+
+				if step['start'] and step['finish']:
+					html += "<td>[ %s min(s) ] </td>" % utils.time_duration_asc(step['start'], step['finish'])
+				html += "</tr>"
+
+				
+			html += "</tbody></table></p><br>"
 
 
 	else:
 		html += "<h1>Mono Build Status</h1>"
-		html += "<p>No information found: %s -- %s -- %s</p>" % (package, platform, version) 
+		html += "<p>No information found: %s -- %s -- %s</p>" % (package, platform, HEAD_or_RELEASE) 
 
 
 	req.write("""

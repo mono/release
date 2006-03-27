@@ -40,24 +40,32 @@ def get_packages():
 
 def get_latest_version(HEAD_or_RELEASE, platform, package):
 
-	versions = []
-
-	# If this doesn't get overwritten, a build hasn't been don for this platform/package combo
 	version = ""
+	versions = get_versions(HEAD_or_RELEASE, platform, package)
+
+	if versions:
+		version = versions.pop()
+
+	return version
+
+def get_versions(HEAD_or_RELEASE, platform, package):
+
+	versions = []
 
 	try:
 
 		for entry in os.listdir(os.path.join(config.build_info_dir, HEAD_or_RELEASE, platform, package)):
-			if dir != ".svn":
+			if entry != ".svn":
 				versions.append(entry)
 
+		# TODO: This is going to eventually be innaccurate
+		# calling rpmvercmp is too slow here, need a python version
 		versions.sort()
-		version = versions.pop()
 
 	except OSError:
 		pass
 
-	return version
+	return versions
 
 # TODO:
 def getLatestBuiltTarball(package):

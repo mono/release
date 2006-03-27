@@ -24,6 +24,7 @@ import string
 import glob
 import distutils.dir_util
 import time
+import calendar
 
 import popen2
 import signal
@@ -361,6 +362,17 @@ def get_time():
 	#return time.strftime("%a %b %d %H:%M:%S")
 	return time.asctime()
 
-# TODO
-def time_diff(start, finish):
-	pass
+def time_duration_asc(start, finish):
+	"""Returns number of minutes between times (and times are in time.asctime format)."""
+
+	# Construct time time tuple
+	try:
+		start_time = calendar.timegm( time.strptime(start) )
+		finish_time = calendar.timegm( time.strptime(finish) )
+	except:
+		return "(Time parsing error)"
+
+	# Return minutes of duration
+	return (finish_time - start_time) / 60
+
+
