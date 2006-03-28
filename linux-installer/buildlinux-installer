@@ -25,18 +25,23 @@ my $mono_rpms = "$prefix/../packaging/packages";
 
 # the readline package is for the debugger (Probably won't need this for the next release of the debugger)
 # libtiff and libungif are for libgdiplus
-my @external_rpms_list = qw(
-	ftp://linux.nssl.noaa.gov/redhat/linux/9/en/os/i386/RedHat/RPMS/libstdc++-3.2.2-5.i386.rpm
-	ftp://linux.nssl.noaa.gov/redhat/linux/9/en/os/i386/RedHat/RPMS/linc-1.0.1-1.i386.rpm
-	ftp://linux.nssl.noaa.gov/redhat/linux/9/en/os/i386/RedHat/RPMS/pkgconfig-0.14.0-3.i386.rpm
-	ftp://linux.nssl.noaa.gov/redhat/linux/9/en/os/i386/RedHat/RPMS/readline-4.3-5.i386.rpm
 
-	ftp://linux.nssl.noaa.gov/redhat/linux/9/en/os/i386/RedHat/RPMS/libtiff-3.5.7-11.i386.rpm
-	ftp://linux.nssl.noaa.gov/redhat/linux/9/en/os/i386/RedHat/RPMS/libungif-4.1.0-15.i386.rpm
+# include 2 versions of gtkhtml2 because each of our gtk-sharp and gtk-sharp-2.0 are built on different oses
+
+my @external_rpms_list = qw(
+	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libstdc++-3.2.2-5.i386.rpm
+	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/linc-1.0.1-1.i386.rpm
+	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/pkgconfig-0.14.0-3.i386.rpm
+	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/readline-4.3-5.i386.rpm
+
+	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libtiff-3.5.7-11.i386.rpm
+	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libungif-4.1.0-15.i386.rpm
+
 );
 
 my @custom_rpms_list = qw(
 	ftp://mirrors.kernel.org/suse/i386/9.3/suse/i586/gtkhtml2-3.6.1-5.i586.rpm
+	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/libgtkhtml3.0_4-3.0.10-0.ximian.6.1.i386.rpm
 	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/gtksourceview-1.0.1-0.ximian.6.1.i386.rpm
 	ftp://ftp.ximian.com/pub/ximian-evolution/redhat-9-i386/libgal2.0_6-1.99.11-0.ximian.6.1.i386.rpm
 );
