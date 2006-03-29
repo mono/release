@@ -53,6 +53,17 @@ sum_filename=$(basename $installer_dir/*.md5)
 
 installers="$installers <p>Mac OSX Installer: <a href='$ref_dir/$filename'>$filename</a> [<a href='$ref_dir/$sum_filename'>MD5SUM</a>] </p>"
 
+# Solaris
+latest_version $ARCHIVE_DIR/$VERSION/sunos-8-sparc
+revision=$(basename $LATEST_VERSION)
+installer_dir="$ARCHIVE_DIR/$VERSION/sunos-8-sparc/$revision"
+ref_dir="../sunos-8-sparc/$revision"
+
+filename=$(basename $installer_dir/*.pkg.gz)
+sum_filename=$(basename $installer_dir/*.md5)
+
+installers="$installers <p>Solaris 8 SPARC Package: <a href='$ref_dir/$filename'>$filename</a> [<a href='$ref_dir/$sum_filename'>MD5SUM</a>] </p>"
+
 #### Packages ####
 packages="<ul>"
 
