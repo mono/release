@@ -111,7 +111,8 @@ int main(int argc, char *argv[])
 	int index_map[argc];
 
 	if(argc < 2) {
-		exit(1);
+		/* Return 0 here signifying an empty list */
+		exit(0);
 	}
 
 	/* Init map */

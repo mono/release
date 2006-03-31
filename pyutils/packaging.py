@@ -138,6 +138,18 @@ class buildenv:
 	def is_locked(self):
 		return os.path.exists(self.lock_filename)
 
+	def offline(self):
+		old_print_output = self.ssh.print_output
+		self.ssh.print_output = 0
+
+		# Run some arbitrary command that will always return true
+		(code, output) = self.ssh.execute("ls")
+
+		self.ssh.print_output = old_print_output
+
+		if code: return 1
+		else:    return 0
+
 class package:
 
 	def __init__(self, package_env, name):
@@ -211,7 +223,7 @@ class package:
 
 		return output
 
-	def get_package_path(self, snapshot=0):
+	def get_package_path(self, HEAD_or_RELEASE="RELEASE"):
 
 		# If it's a zipdir package
 		#  Make an exception for noarch packages
@@ -220,7 +232,7 @@ class package:
 		else:
 			packages_dir = "packages"
 
-		if snapshot: packages_dir = "snapshot_" + packages_dir
+		if HEAD_or_RELEASE == "HEAD": packages_dir = "snapshot_" + packages_dir
 
 		return os.path.join(config.packaging_dir, packages_dir, self.destroot, self.name)
 

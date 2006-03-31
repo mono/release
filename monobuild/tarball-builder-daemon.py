@@ -27,7 +27,8 @@ max_poll_interval = 5
 # Create tarballs starting from this point
 #  Raise or lower this number as we go along...
 #starting_rev = 57790
-starting_rev = 58100
+#starting_rev = 58100
+starting_rev = 58700
 
 # static list of packages to create tarballs for
 # What packages should these be?
@@ -54,7 +55,8 @@ while(1):
 
 
 	# Pretty much do every commit (for binary search on regressions) (should be adjustable)
-	for i in range(starting_rev, latest_tree_rev):
+	#  The + 1 is so that the latest tree revision will be checked (range func does not include the last number in the sequence)
+	for i in range(starting_rev, latest_tree_rev + 1):
 
 		for pack_name, pack_obj in pack_objs.iteritems():
 
@@ -71,7 +73,7 @@ while(1):
 				#  Log will be for brief info, and the console will watch what's currently going on
 				code = os.system(command)
 
-				# TODO: handle jail busy errors (exit code of 2)
+				# handle jail busy errors (exit code of 2)
 				if code == 2:
 					print "Jail busy, retrying later..."
 

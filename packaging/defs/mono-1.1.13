@@ -44,3 +44,20 @@ make_dist () {
 	fi
 }
 
+POSTBUILD_STEP_NAME1="test-runtime"
+POSTBUILD_STEP1 () {
+        cd mono
+        make -k check
+}
+
+POSTBUILD_STEP_NAME2="test-aot"
+POSTBUILD_STEP2 () {
+        echo "Skipping..."
+}
+
+POSTBUILD_STEP_NAME3="test-profiles"
+POSTBUILD_STEP3 () {
+        cd runtime
+        make -k check
+}
+

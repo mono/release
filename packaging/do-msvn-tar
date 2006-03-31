@@ -123,7 +123,7 @@ else:
 			command = '%s; cd %s/%s; svn switch %s %s/%s' % (env_string, cache_dir, module, rev_arg, MONO_ROOT, path)
 			print "Executing: " + command
 			if os.system(command):
-				print "*** Error *** updating cached copy failed (this is usually because of a malformed url, ex: invalid version)"
+				print "*** Error *** updating cached copy failed (this is usually because of a malformed url, ex: invalid version, or bb_ssh failed)"
 				sys.exit(1)
 		else:
 			# create cache dir
@@ -174,6 +174,9 @@ os.system('%s; . %s ; make_dist' % (env_string, script) )
 
 # clean up shell files
 os.unlink(shell_script)
+
+# TODO
+# Remove bb.ssh /tmp files?
 
 ### Finish moving things around
 shutil.rmtree('/tmp/built-tarball')

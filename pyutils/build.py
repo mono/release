@@ -67,11 +67,6 @@ def get_versions(HEAD_or_RELEASE, platform, package):
 
 	return versions
 
-# TODO:
-def getLatestBuiltTarball(package):
-	pass
-
-
 # Args: platform, package
 # Returns: success or fail
 def scheduleBuild(platform, package, rev):

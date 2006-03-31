@@ -192,12 +192,19 @@ def packagestatus(req, **vars):
 	if versions:
 		html += "<h1>%s -- %s -- %s</h1>" % (package, platform, HEAD_or_RELEASE)
 
+		counter = 0
+
 		for version in versions:
 
 			build_info = datastore.build_info(HEAD_or_RELEASE, platform, package, version)
 			values = build_info.get_build_info()
 
-			duration = utils.time_duration_asc(values['start'], values['finish'])
+			if values['start'] and values['finish']:
+				duration = utils.time_duration_asc(values['start'], values['finish'])
+			elif values['start'] and counter == 0:
+				duration = "Running for %s" % utils.time_duration_asc(values['start'], utils.get_time())
+			else:
+				duration = "?"
 		
 			html += """
 
@@ -255,10 +262,15 @@ def packagestatus(req, **vars):
 
 				if step['start'] and step['finish']:
 					html += "<td>[ %s min(s) ] </td>" % utils.time_duration_asc(step['start'], step['finish'])
+				elif step['start'] and counter == 0:
+					html += "<td>[ Running for %s min(s) ] </td>" % utils.time_duration_asc(step['start'], utils.get_time())
 				html += "</tr>"
 
 				
 			html += "</tbody></table></p><br>"
+
+			# Update version counter
+			counter += 1
 
 
 	else:

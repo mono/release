@@ -11,6 +11,7 @@ import distutils.dir_util
 import pdb
 
 import config
+import utils
 
 all_rwx = stat.S_IRWXO | stat.S_IRWXG | stat.S_IRWXU
 
@@ -108,6 +109,28 @@ class source_file_repo:
 
 		# Ex: /<full_path>/tarball_logs/RELEASE/libgdiplus-1.1/1.1.13.4.log
 		return config.mktarball_logs + os.sep + key.replace(":", "/") + ".log"
+
+	def get_latest_tarball(self, RELEASE_or_HEAD, package_name):
+		self.load_info()
+
+		versions = []
+		# Ex: HEAD:mono-1.1.13:57664=snapshot_sources/mono-1.1.13/mono-1.1.13.4.57664.tar.gz
+		for key in self.info.iterkeys():
+			stuff = key.split(":")
+			# If this is the release and packagename
+			if stuff[0] == RELEASE_or_HEAD and stuff[1] == package_name:
+				# If the tarball creation succeeded
+				if self.info[":".join([RELEASE_or_HEAD, package_name, stuff[2]])] != "tarball_creation_failed":
+					versions.append(stuff[2])
+
+		# TODO: Better error handling here
+		try:
+			latest = utils.version_sort(versions).pop()
+			latest_filename = self.info[":".join([RELEASE_or_HEAD, package_name, latest])]
+		except:
+			latest_filename = ""
+
+		return latest_filename
 
 
 # XML data store

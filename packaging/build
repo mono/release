@@ -49,14 +49,23 @@ else:
 build_env = packaging.buildenv(distro)
 package = packaging.package(build_env, package_name)
 
-if build_env.is_locked():
-	print "%s jail is busy" % distro
-	sys.exit(1)
-
 # check to see if this package is a valid build
 if not package.info['BUILD_HOSTS'].count(distro):
 	print "%s is not in BUILD_HOSTS" % distro
-	sys.exit(1)
+	sys.exit(3)
+
+
+if build_env.is_locked():
+	print "%s jail is busy" % distro
+	sys.exit(2)
+
+build_env.lock_env()
+
+if build_env.offline():
+	print "%s jail is offline" % distro
+	build_env.unlock_env()
+	sys.exit(2)
+
 
 revision = package.get_revision(serial)
 
@@ -68,22 +77,21 @@ source_path = "sources"
 sources = glob.glob("sources/%s/*-%s.tar.gz" % (package_name, version)) + glob.glob("sources/%s/*-%s.zip" % (package_name, version))
 snapshot_sources = glob.glob("snapshot_sources/%s/*-%s.tar.gz" % (package_name, version)) + glob.glob("snapshot_sources/%s/*-%s.zip" % (package_name, version))
 if sources:
-	snapshot = 0
 	print "Using release sources and packages"
 	HEAD_or_RELEASE = "RELEASE"
 elif snapshot_sources:
 	print "Using snapshot sources and packages"
-	snapshot = 1
 	source_path = "snapshot_" + source_path
 	HEAD_or_RELEASE = "HEAD"
 else:
 	print "Cannot find source file for " + package_name
-	sys.exit(1)
+	build_env.unlock_env()
+	sys.exit(4)
 
 sources += snapshot_sources
 source_file = sources[0]
 
-package_path = package.get_package_path(snapshot=snapshot)
+package_path = package.get_package_path(HEAD_or_RELEASE=HEAD_or_RELEASE)
 
 print package_path
 
@@ -92,10 +100,8 @@ package_version_path = package_path + os.sep + ver_path
 
 if os.path.exists(package_version_path):
 	print "The path for this package (%s) already exists. You probably need to bump the revision number" % package_version_path
-	sys.exit(1)
-
-
-build_env.lock_env()
+	build_env.unlock_env()
+	sys.exit(5)
 
 build_info = datastore.build_info(HEAD_or_RELEASE, distro, package_name, ver_path)
 build_info.new_build()
@@ -135,7 +141,7 @@ if code:
 	build_info.update_step("install-deps", state="failure", finish=utils.get_time())
 	build_info.update_build(state="failure", finish=utils.get_time())
 	print "Dependency installation failed, see log in %s for details" % LOGFILE
-	sys.exit(1)
+	sys.exit(6)
 
 build_info.update_step("install-deps", state="success", finish=utils.get_time())
 
@@ -175,7 +181,7 @@ if code:
 	print "Build failed, see log in %s for details" % LOGFILE
 	build_info.update_step("build", state="failure", finish=utils.get_time())
 	build_info.update_build(state="failure", finish=utils.get_time())
-	sys.exit(1)
+	sys.exit(7)
 
 distutils.dir_util.mkpath(package_version_path)
 build_env.ssh.copy_from(['/tmp/builder/built-packages/*', '/tmp/scratch/*.spec'], package_version_path)
