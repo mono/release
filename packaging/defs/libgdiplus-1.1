@@ -48,7 +48,7 @@ sunos_8_sparc_ZIP_BUILD () {
 	file=/tmp/build_deps/lib/libfontconfig.la
 	sed -e "s/libexpat.la/libexpat.la -liconv/g" $file > $file.new; mv $file.new $file
 
-        ./configure --prefix=/tmp/install
+        ./configure --prefix=/tmp/install || exit 1
         make || exit 1
         make install || exit 1
 
@@ -93,13 +93,28 @@ macos_10_ppc_ZIP_BUILD () {
 	#export PATH="/usr/X11R6/bin/:$PATH"
 
 	# For fontconfig (bundle this ourselves?  What would be the point?)
-	export PKG_CONFIG_PATH="/usr/X11R6/lib/pkgconfig/:$PKG_CONFIG_PATH"
+	# Needed?
+	#export PKG_CONFIG_PATH="/usr/X11R6/lib/pkgconfig/:$PKG_CONFIG_PATH"
 
 	# File as bug #77620 in ximian bugzilla
 	file="configure"
         sed -e "s/freetype-config/pkg-config freetype2 fontconfig/g" $file > $file.new; mv $file.new $file; chmod 755 $file
 
-	./configure --enable-quartz --prefix=/tmp/install --with-libjpeg --includedir=/tmp/build_deps/include 
+	# Mac OS doesn't come with a fontconfig.pc ... generate one
+	cat <<EOF > /tmp/build_deps/lib/pkgconfig/fontconfig.pc
+prefix=/usr/X11R6
+exec_prefix=\${prefix}
+libdir=/usr/X11R6/lib
+includedir=\${prefix}/include
+
+Name: Fontconfig
+Description: Font configuration and customization library
+Version: 2.3.94
+Libs: -L\${libdir} -lfontconfig -lexpat
+Cflags: -I\${includedir}
+EOF
+
+	./configure --enable-quartz --prefix=/tmp/install --with-libjpeg --includedir=/tmp/build_deps/include || exit 1
         make || exit 1
         make install || exit 1
 

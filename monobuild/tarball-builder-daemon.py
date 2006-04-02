@@ -21,7 +21,7 @@ import logger
 max_poll_interval = 5
 #max_poll_interval = 1
 
-# TODO: catch sig quit to allow finishing of last mktarball?
+# TODO: catch sig quit to allow finishing of last mktarball
 
 
 # Create tarballs starting from this point

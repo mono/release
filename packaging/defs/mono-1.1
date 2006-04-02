@@ -79,9 +79,11 @@ sunos_8_sparc_ZIP_DEPS=(
 	# TODO: This packages doesn't have symbolic links, is this ok?
 	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libgcc-3.3-0-sunos8.sparc.zip
 
-	# 2.6.2 glib is missing a header file
+	# 2.6.2 glib is missing a header file (glibconfig.h)
 	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/glib-2.6.2-sol8-sparc-local.gz
-	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/glib-2.2.3-sol8-sparc-local.gz 
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/glib-2.2.3-sol8-sparc-local.gz 
+	# We need glib 2.4 or higher for the icall [un]setenv
+	http://primates.ximian.com/~wberrier/sunos/deps/novell/glib-2.8.3-0.sunos8.novell.sparc.zip
 
 	# Gettext needs expat
 	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/gettext-0.14.1-sol8-sparc-local.gz
@@ -291,6 +293,7 @@ make_dist () {
 
 POSTBUILD_STEP_NAME1="test-runtime"
 POSTBUILD_STEP1 () {
+	#echo "Skipping..."
 	cd mono
 	make -k check
 }
@@ -302,6 +305,7 @@ POSTBUILD_STEP2 () {
 
 POSTBUILD_STEP_NAME3="test-profiles"
 POSTBUILD_STEP3 () {
+	#echo "Skipping..."
 	cd runtime
 	make -k check
 }

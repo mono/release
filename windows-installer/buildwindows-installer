@@ -598,7 +598,7 @@ parameter_map[re.compile("@@MONO_REVISION@@")] = sys.argv[3]
 utils.substitute_parameters_in_file("build/mono/bin/setmonopath.bat", re.compile(''), parameter_map)
 
 # Copy everything to windows_build_client 
-print "Cleaning up files files from build client..."
+print "Cleaning up files from build client..."
 installer_env.ssh.execute("rm -Rf /tmp/windows-installer; mkdir -p /tmp/windows-installer/Output")
 if code:
 	print "Error cleaning up"

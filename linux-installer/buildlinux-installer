@@ -80,7 +80,7 @@ $mono_release_version = 0 if(!$mono_release_version);
 unless($mono_version) {
 	print "";
 	print "Usage: buildlinux-installer <mono version> [<release>]\n";
-	print "  Example: buildlinux-installer 1.1.7-1\n";
+	print "  Example: buildlinux-installer 1.1.7\n";
 	print "  Example: buildlinux-installer 1.1.8.1 1\n";
 	print "";
 
