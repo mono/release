@@ -36,6 +36,8 @@ my @external_rpms_list = qw(
 
 	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libtiff-3.5.7-11.i386.rpm
 	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libungif-4.1.0-15.i386.rpm
+	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libpng-1.2.2-16.i386.rpm
+	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libjpeg-6b-26.i386.rpm
 
 );
 
@@ -250,6 +252,10 @@ appendTextToFiles(%boo_config_file_additions);
 # TODO: Not working quite yet...
 #$readme_text .= "\nYou may need to run 'update-mime-database /usr/share/mime' in order to fully integrate boo syntax highlighting.\n";
 
+# Fix broken tiff package (package should contain this link, but doesn't)
+chdir("usr/lib");
+symlink("libtiff.so.3.5", "libtiff.so.3");
+chdir("../..");
 
 copy("$p/../projects/mono.xml", $p);
 substituteParametersInFile("$p/mono.xml", '@@VERSION@@' => $mono_version);
