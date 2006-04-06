@@ -25,7 +25,7 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
-	mono-1.1
+	mono
 )
 
 get_destroot () {

@@ -32,7 +32,7 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
-	mono-1.1
+	mono
 )
 
 win_4_i386_ZIP_BUILD () {

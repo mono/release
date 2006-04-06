@@ -40,7 +40,7 @@ USE_HOSTS=(
 # Having this ensures that the wrong mono isn't in the jail
 #  (Or that mono is present for the snapshot builds)
 MONO_DEPS=(
-	mono-1.1
+	mono
 )
 
 win_4_i386_ZIP_RUNTIME_DEPS=(

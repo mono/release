@@ -8,8 +8,8 @@
 
 !	get_rpm_install
 
-	<h3>Mono 1.1</h3> 
-#	mono-1.1 mono-1.1 libgdiplus-1.1
+	<h3>Mono</h3> 
+#	mono mono libgdiplus
 	
 	<h3>XSP/mod_mono</h3>
 #	webserver xsp mod_mono

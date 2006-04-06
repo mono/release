@@ -18,7 +18,7 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
-	mono-1.1
+	mono
 	gtk-sharp-2.0
 	monodoc
 	mono-tools

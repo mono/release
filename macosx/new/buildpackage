@@ -20,7 +20,7 @@ import packaging
 # Which noarch packages to include in the various packages
 packages_to_include = {}
 
-packages_to_include['macos-10-ppc'] = ['mono-1.1', 'cocoa-sharp', 'libgdiplus-1.1', 'xsp', 'monodoc', 'boo', 'ikvm' ]
+packages_to_include['macos-10-ppc'] = ['mono', 'cocoa-sharp', 'libgdiplus', 'xsp', 'monodoc', 'boo', 'ikvm' ]
 
 debug=1
 
@@ -95,7 +95,7 @@ def build_package(target):
 	fd.close()
 
         #  Get some version information
-        mono_package = packaging.package(env, 'mono-1.1')
+        mono_package = packaging.package(env, 'mono')
         revision = mono_package.get_revision(release)
 
 	# Start process of making the package
@@ -107,7 +107,7 @@ def build_package(target):
         parameter_map[re.compile("@@MONO_RELEASE@@")] = release
         parameter_map[re.compile("@@MONO_VERSION_RELEASE@@")] = version + '_' + release
         parameter_map[re.compile("@@COCOASHARP_VERSION@@")] = versions['cocoa-sharp']
-        parameter_map[re.compile("@@LIBGDIPLUS_VERSION@@")] = versions['libgdiplus-1.1']
+        parameter_map[re.compile("@@LIBGDIPLUS_VERSION@@")] = versions['libgdiplus']
         parameter_map[re.compile("@@XSP_VERSION@@")] = versions['xsp']
         parameter_map[re.compile("@@MONODOC_VERSION@@")] = versions['monodoc']
         parameter_map[re.compile("@@BOO_VERSION@@")] = versions['boo']

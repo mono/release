@@ -32,7 +32,7 @@ starting_rev = 58700
 
 # static list of packages to create tarballs for
 # What packages should these be?
-packages = ['mono-1.1', 'mono-1.1.13']
+packages = ['mono', 'mono-1.1.13']
 
 
 src_repo = src_repo_utils.svn(config.MONO_ROOT)

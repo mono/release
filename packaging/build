@@ -10,7 +10,7 @@
 #      to be zero.
 #
 # Example:
-#    build suse-92-i386 mono-1.1 1.1.6
+#    build suse-92-i386 mono 1.1.6
 #
 
 #TODO catch SIGQUIT and update status to 'killed'

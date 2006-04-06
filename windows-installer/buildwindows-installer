@@ -125,7 +125,7 @@ if os.path.exists(output_dir):
 files_used_in_installer = []
 selections = []
 
-selections += [ Selection('mono', packages = "mono-1.1 boo ikvm".split(), deps=['mono-1.1'] ) ]
+selections += [ Selection('mono', packages = "mono boo ikvm".split(), deps=['mono'] ) ]
 
 # TODO: try out gtk-sharp-2.8
 #  Everything works except monodoc browser... fails on glade-sharp glade 2.5 seems to be killing this

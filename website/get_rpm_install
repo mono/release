@@ -31,7 +31,7 @@ cat <<EOF
 	
 	<xmp class='shell'>
 rug sa http://go-mono.com/download
-rug sub mono-1.1-official
+rug sub mono-official
 rug sub gtk-sharp-official
 rug sub mono-tools-official
 rug in mono-complete gtk-sharp
@@ -53,9 +53,9 @@ install mono and related packages.
 EOF
 
 	cat > $DISTRO/mono.repo <<"EOF"
-[mono-1.1]
-name=Mono 1.1 for fedora-$releasever-$basearch
-baseurl=http://go-mono.com/download/mono-1.1/fedora-$releasever-$basearch/
+[mono]
+name=Mono for fedora-$releasever-$basearch
+baseurl=http://go-mono.com/download/mono/fedora-$releasever-$basearch/
 enabled=1
 gpgcheck=0
 

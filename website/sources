@@ -6,8 +6,8 @@
 <body>
 <h1>Mono [[version]] Sources</h1>
 
-	<h3>Mono 1.1</h3> 
-#	mono-1.1 libgdiplus-1.1
+	<h3>Mono</h3> 
+#	mono libgdiplus
 	
 	<h3>XSP/mod_mono</h3>
 #	xsp mod_mono
