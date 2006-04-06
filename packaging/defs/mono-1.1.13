@@ -1,3 +1,5 @@
+web_index="1"
+
 BUILD_HOSTS=(
         redhat-9-i386
         sles-9-x86_64
