@@ -1,3 +1,5 @@
 target_host=builder@monobuild2.boston.ximian.com
 jaildir=/jails/sles-9-x86_64-root-0/jail
 chroot_path=/usr/bin/chroot
+
+web_index=1

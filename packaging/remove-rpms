@@ -11,6 +11,9 @@ import commands
 #rpm_flags = "--test"
 rpm_flags = ""
 
+# TODO: make sure we have root perms so it does go over and over again...
+#  Or, could check return codes to see (dep error versus don't have permission error)
+
 child_rpm_match = re.compile("is needed by \(installed\) (\S+)")
 
 def rpm_is_installed(rpm_name):

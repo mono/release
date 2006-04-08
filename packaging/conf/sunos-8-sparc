@@ -7,3 +7,5 @@ USE_ZIP_PKG=1
 # Jails aren't very friendly on solaris... /dev system gets messed, can't even use stdin
 #jaildir=/export/home/builder/wade/jail
 jail_strip_path=/usr/ccs/bin/strip
+
+web_index=6

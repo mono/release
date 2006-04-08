@@ -133,7 +133,10 @@ class buildenv:
 		fd.close()
 
 	def unlock_env(self):
-		os.unlink(self.lock_filename)
+		if os.path.exists(self.lock_filename):
+			os.unlink(self.lock_filename)
+		else:
+			print "Build environment already unlocked"
 
 	def is_locked(self):
 		return os.path.exists(self.lock_filename)
@@ -182,8 +185,9 @@ class package:
 				file_string += line
 		def_file.close()
 
+		# TODO: abstract out this bash parsing stuff so it's uniform between conf and def files
 		# get vars (var="value")
-		for match in re.compile('^(\w*?)=[^\(](.*?)"$', re.S | re.M).finditer(file_string):
+		for match in re.compile('^(\w*?)=[^\(](.*?)["\']?$', re.S | re.M).finditer(file_string):
 			self.info[match.group(1)] = match.group(2)
 
 		# get arrays ( var=(value list) )

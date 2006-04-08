@@ -13,8 +13,6 @@ class Logger:
 
 	def __init__(self, filename="log.log", print_screen=1):
 		self.print_screen = print_screen
-
-
 		self.full_path = os.path.abspath(filename)
 
 		log_dir = os.path.dirname(self.full_path)
@@ -22,7 +20,6 @@ class Logger:
 			distutils.dir_util.mkpath(log_dir)
 
 		self.fd = open(self.full_path, 'a')
-		
 
 	def __del__(self):
 		self.fd.close()
@@ -30,14 +27,13 @@ class Logger:
 	def log(self, msg):
 
 		# If string doesn't have a line ending, add one (so I don't have to constantly pass in '\n')
-		if not line_reg.search(msg): 
-			msg += os.linesep
+		# Can't do this, because we're not logging by line anymore (logging chunks)
+		#if not line_reg.search(msg): 
+		#	msg += os.linesep
 
 		self.fd.write(msg)
 		self.fd.flush()
 		if self.print_screen:
-			print msg,
+			sys.stdout.write(msg)
 			sys.stdout.flush()
-
-
 

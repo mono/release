@@ -330,13 +330,30 @@ class build_info:
 
 		step_states = []
 		state = ""
+		
 
 		if self.exists:
 			self.read_info_xml()
+			timeout = 0
+			failure = 0
+			testfailure = 0
 			state = "success"
 			for step_node in xml.xpath.Evaluate('/build/steps/step/state/text()', self.doc.documentElement):
-				if step_node.nodeValue == "failure":
-					state = "failure"
+				# Precedence of states
+				if step_node.nodeValue == "timeout":
+					timeout = 1
+				elif step_node.nodeValue == "failure":
+					failure = 1
+				elif step_node.nodeValue == "testfailure":
+					testfailure = 1
+
+			# In order of precedence
+			if timeout:
+				state = "timeout"
+			elif testfailure:
+				state = "testfailure"
+			elif failure:
+				state = "failure"
 
 		return state
 

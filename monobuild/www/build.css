@@ -79,12 +79,14 @@ table.buildstatus tbody td{
 
 table.buildstatus th {
 	font-weight:normal;
-	text-align:right;
+	/* text-align:right; */
+	text-align:center;
 	padding: .5em;
 }
 
+/* Color from buildbots green: #72ff75 */
 td.success {
-	background:PaleGreen;
+	background:springgreen;
 }
 
 
@@ -108,12 +110,21 @@ td.queued {
 	background:pink;
 }
 
+td.timeout {
+	background:steelblue;
+}
+
+td.testfailure {
+	background:orange;
+}
+
 table.legend th {
 	font-weight:normal;
-	text-align:right;
+	text-align:center;
 	padding: .5em;
 }
 
 table.legend td {
 	width: 10em;
+	padding: 1em;
 }

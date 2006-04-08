@@ -28,8 +28,8 @@ def index(req, **vars):
 	scriptname = os.path.basename(req.canonical_filename)
 
 	# Pull this in from the release repo
-	platforms = build.get_platforms()
-	packages = build.get_packages()
+	plat_objs = build.get_platform_objs()
+	pack_objs = build.get_package_objs()
 
 	schedule_flag = ""
 	if vars.has_key("schedule"): schedule_flag = vars["schedule"]
@@ -66,31 +66,58 @@ def index(req, **vars):
 
 	<p>
 	<table class="buildstatus">
-		<thead><td>%s</td>
+		<thead><tr><td>%s</td>
 	""" % checkbox_html)
 
-	for platform in platforms:
-		req.write("<td>%s</td>\n" % platform)
+	# Get unique list of used platforms
+	platforms = {}
+	for obj in pack_objs:
+		for host in obj.info['BUILD_HOSTS']:
+			platforms[host] = ""
 
-	req.write("</thead><tbody>")
+	# Remove unused plat_objs
+	num_removed = 0
+	for i in range(0, len(plat_objs)):
+		if not platforms.has_key(plat_objs[i - num_removed].name):
+			plat_objs.pop(i - num_removed)
+			num_removed += 1
+	
+
+	# Separate noarch packages
+	noarch_pack_objs = []
+	num_removed = 0
+	for i in range(0, len(pack_objs)):
+		# If it's a noarch package
+		# get_destroot': '\n\tDEST_ROOT=noarch\n'
+		if pack_objs[i - num_removed].info['get_destroot'].find('noarch') != -1:
+			#req.write(pack_objs[i - num_removed].info['get_destroot'])
+			noarch_pack_objs.append(pack_objs[i - num_removed])
+			pack_objs.pop(i - num_removed)
+			num_removed += 1
+	
+
+	for obj in pack_objs:
+		req.write("<th>%s</th>\n" % obj.name)
+
+	req.write("</tr></thead>\n<tbody>\n")
 
 
-	for package in packages:
+	# List out non-noarch packages
+	for platform in plat_objs:
 
-		req.write("<tr><td>%s</td>\n" % package)
-		pack_obj = packaging.package("", package)
-		buildhosts = pack_obj.info['BUILD_HOSTS']
+		req.write("<tr><th>%s</th>\n" % platform.name)
 
 		version = ""
 		state = ""
 
-		for platform in platforms:
+		for package in pack_objs:
 		
 			# If this is a valid package for this platform...	
-			if buildhosts.count(platform):
-				version = build.get_latest_version(HEAD_or_RELEASE, platform, package) # in <num> format
+			if package.info['BUILD_HOSTS'].count(platform.name):
+				# TODO: show the last two builds (otherwise, it's going to mostly be showing yellow)
+				version = build.get_latest_version(HEAD_or_RELEASE, platform.name, package.name) # in <num> format
 
-				build_info = datastore.build_info(HEAD_or_RELEASE, platform, package, version)
+				build_info = datastore.build_info(HEAD_or_RELEASE, platform.name, package.name, version)
 
 				state = build_info.get_state()
 
@@ -107,46 +134,121 @@ def index(req, **vars):
 
 			# Print a link if there has been a build, and we're not in schedule mode
 			if state != 'notused' and state != 'new' and not schedule_flag:
-				req.write("<a href=%s/packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s>%s</a>" % ( scriptname, platform, package, HEAD_or_RELEASE, version))
+				req.write("<a href=%s/packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s>%s</a>" % ( scriptname, platform.name, package.name, HEAD_or_RELEASE, version))
 			
 
 			# Print a checkbox if we're in schedule mode and it's a valid BUILD_HOSTS
 			if schedule_flag and state != "notused":
-				req.write("<input type=checkbox name=build value=\"%s:%s\"" % (platform, package))
+				req.write("<input type=checkbox name=build value=\"%s:%s\"" % (platform.name, package.name))
 			
 			
 			req.write("</td>\n")
 
 		
-		req.write("</tr>")
+		req.write("</tr>\n")
+
+	# List out noarch packages
+	req.write("<tr><td></td></tr>\n<tr><td></td>\n")
+
+	version = ""
+	state = ""
+
+	for package in noarch_pack_objs:
+		req.write("<td>%s</td>\n" % package.name)
+	req.write("</tr>\n<tr><td>noarch</td>\n")
+
+	for package in noarch_pack_objs:
+
+		platform_name = package.info['BUILD_HOSTS'][0]	
+		version = build.get_latest_version(HEAD_or_RELEASE, platform_name, package.name) # in <num> format
+
+		build_info = datastore.build_info(HEAD_or_RELEASE, platform_name, package.name, version)
+
+		state = build_info.get_state()
+
+		# if it's a valid package, but hasn't been built yet...
+		if version == "" and state == "":
+			state = "new"
+
+		req.write("<td class=%s>" % state)
+
+		# Print a link if there has been a build, and we're not in schedule mode
+		if state != 'notused' and state != 'new' and not schedule_flag:
+			req.write("<a href=%s/packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s>%s</a>" % ( scriptname, platform_name, package.name, HEAD_or_RELEASE, version))
 		
 
+		# Print a checkbox if we're in schedule mode and it's a valid BUILD_HOST
+		if schedule_flag and state != "notused":
+			req.write("<input type=checkbox name=build value=\"%s:%s\"" % (platform_name, package.name))
+		
+		
+		req.write("</td>\n")
+
+	
+	req.write("</tr>")
+		
 
 
 	req.write("""</tbody>
 	</table>
 	</p>""")
 
+        # Old Legend
+	if 0:
+		req.write("""
 
-	# Legend
-	req.write("""
+		<h3>Legend</h3>
+		<p>
+		<table class=legend>
 
-	<h3>Legend</h3>
-	<p>
-	<table class=legend>
+		<tbody>
+		<tr><th>In Progress</th><td class=inprogress></td></tr>
+		<tr><th>Success</td><td class=success></td></tr>
+		<tr><th>Failed</td><td class=failure></td></tr>
+		<tr><th>Tests Failed</td><td class=testfailure></td></tr>
+		<tr><th>Timed Out</td><td class=timeout></td></tr>
+		<tr><th>Queued</td><td class=queued></td></tr>
+		<tr><th>New</td><td class=new></td></tr>
 
-	<tbody>
-	<tr><th>In Progress</th><td class=inprogress></td></tr>
-	<tr><th>Success</td><td class=success></td></tr>
-	<tr><th>Failed</td><td class=failure></td></tr>
-	<tr><th>Queued</td><td class=queued></td></tr>
-	<tr><th>New</td><td class=new></td></tr>
+		</tbody>
+		</table>
+		</p>
 
-	</tbody>
-	</table>
-	</p>
+		""")
 
-	""")
+        # New Legend
+	else:
+		req.write("""
+
+		<h3>Legend</h3>
+		<p>
+		<table class=legend>
+
+		<tbody>
+		<tr>
+		<th>In Progress</th>
+		<th>Success</th>
+		<th>Failed</th>
+		<th>Tests Failed</th>
+		<th>Timed Out</td>
+		<th>Queued</th>
+		<th>New</th>
+		</tr>
+
+		<td class=inprogress></td>
+		<td class=success></td>
+		<td class=failure></td>
+		<td class=testfailure></td>
+		<td class=timeout></td>
+		<td class=queued></td>
+		<td class=new></td>
+
+		</tbody>
+		</table>
+		</p>
+
+		""")
+
 
 	if schedule_flag:
 		req.write("""<p><a href="%s">Build Status</a></p>""" % scriptname)

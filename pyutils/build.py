@@ -9,10 +9,14 @@ import pdb
 
 # User packages...
 import config
+import packaging
 
 debug = 1
 
 def get_platforms():
+	"""Return buildenv objects sorted by web_index.  If some platforms don't have a web_index, sort
+        the remaining alphabetically."""
+
 	platforms = []
 
 	for entry in os.listdir(config.platform_conf_dir):
@@ -20,7 +24,28 @@ def get_platforms():
 			platforms.append(entry)
 
 	platforms.sort()
+
 	return platforms
+
+def get_platform_objs():
+
+	platforms = get_platforms()
+
+	plat_objs = []
+	plat_map = {}
+	for platform in platforms:
+		plat_obj = packaging.buildenv(platform)
+		if plat_obj.info.has_key('web_index'):
+			index = plat_obj.info['web_index']
+			plat_map[index] = plat_obj
+		else:
+			plat_objs.append(plat_obj)
+
+	# Insert ordered platforms to the beginning of the list
+	for i in range(0, len(plat_map.keys())):
+		plat_objs.insert(i, plat_map[str(i)])
+
+	return plat_objs
 
 
 def get_packages():
@@ -35,7 +60,30 @@ def get_packages():
 			packages.append(entry)
 
 	packages.sort()
+
 	return packages
+
+
+def get_package_objs():
+
+	packages = get_packages()
+
+        pack_objs = []
+        pack_map = {}
+        for package in packages:
+                pack_obj = packaging.package("", package)
+                if pack_obj.info.has_key('web_index'):
+                        index = pack_obj.info['web_index']
+			print "Index: " + index
+                        pack_map[index] = pack_obj
+                else:
+                        pack_objs.append(pack_obj)
+
+        # Insert ordered packages to the beginning of the list
+        for i in range(0, len(pack_map.keys())):
+                pack_objs.insert(i, pack_map[str(i)])
+
+        return pack_objs
 
 
 def get_latest_version(HEAD_or_RELEASE, platform, package):

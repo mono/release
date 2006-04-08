@@ -19,6 +19,7 @@ import sys
 import glob
 import os.path
 import distutils.dir_util
+import signal
 
 sys.path += [ '../pyutils' ]
 import packaging
@@ -28,6 +29,20 @@ import datastore
 import config
 
 import pdb
+
+timeout=1200
+
+def get_state(code, test=0):
+	if code == utils.KILLED_EXIT_CODE:
+		return "timeout"
+	elif code:
+		if test:
+			return "testfailure"
+		else:
+			return "failure"
+	else:
+		return "success"
+
 
 if len(sys.argv) < 4:
 	print "Usage is: ./build configuration package version <release>"
@@ -51,6 +66,7 @@ else:
 build_env = packaging.buildenv(distro)
 package = packaging.package(build_env, package_name)
 
+
 # check to see if this package is a valid build
 if not package.info['BUILD_HOSTS'].count(distro):
 	print "%s is not in BUILD_HOSTS" % distro
@@ -62,6 +78,13 @@ if build_env.is_locked():
 	sys.exit(2)
 
 build_env.lock_env()
+
+# Set signal handler
+# TODO: How to fully kill builds on the client side???
+def keyboard_interrupt(signum, frame):
+	print 'Build aborted:', signum
+	build_env.unlock_env()
+signal.signal(signal.SIGINT, keyboard_interrupt)
 
 if build_env.offline():
 	print "%s jail is offline" % distro
@@ -168,20 +191,24 @@ if build_env.info['USE_ZIP_PKG']:
 	files_to_copy += ['do-zip-build', '../conf/%s/*.patch' % package_name, 'defs/%s' % package_name]
 	build_command = '/tmp/do-zip-build %s %s %s %s' % (revision, package_name, distro, version)
 	remote_src_dir = "/tmp/scratch/%s" % build_dir
+	step_env_pre_cmd = ". /tmp/build_deps/env.sh; "
 
 else:
 	files_to_copy += ['do-build', '../conf/%s/*' % package_name ]
 	build_command = '/tmp/do-build %s %s' % (version, revision)
 	remote_src_dir = "/tmp/scratch/BUILD/%s" % build_dir
+	step_env_pre_cmd = ""
 
 
 build_env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
 
-(code, output) = build_env.ssh.execute(build_command, logger=log_obj)
+(code, output) = build_env.ssh.execute(build_command, logger=log_obj, output_timeout=timeout)
+#code = 0
 if code:
 	build_env.unlock_env()
+	state = get_state(code)
 	print "Build failed, see log in %s for details" % LOGFILE
-	build_info.update_step("build", state="failure", finish=utils.get_time())
+	build_info.update_step("build", state=state, finish=utils.get_time())
 	build_info.update_build(state="failure", finish=utils.get_time())
 	sys.exit(7)
 
@@ -209,13 +236,13 @@ while(1):
 		log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
 		build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 
-		# TODO: timeout if no output for 1200 seconds? (like buildbot does)
-		(code, output) = build_env.ssh.execute("cd %s ; " % remote_src_dir + package.info['POSTBUILD_STEP%d' % counter], env=remote_env, logger=log_obj)
+		(code, output) = build_env.ssh.execute("%s cd %s  " % (step_env_pre_cmd, remote_src_dir + package.info['POSTBUILD_STEP%d' % counter] ), env=remote_env, logger=log_obj, output_timeout=timeout)
+		state = get_state(code, test=1)
 		if code:
 			print "Step %d (%s) failed..." % (counter, package.info['POSTBUILD_STEP_NAME%d' % counter])
-			build_info.update_step(name, state="failure", finish=utils.get_time())
+			build_info.update_step(name, state=state, finish=utils.get_time())
 		else:
-			build_info.update_step(name, state="success", finish=utils.get_time())
+			build_info.update_step(name, state=state, finish=utils.get_time())
 	else:
 		break
 

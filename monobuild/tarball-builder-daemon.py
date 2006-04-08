@@ -51,7 +51,10 @@ while(1):
 
 	# get latest version from the tree
 	latest_tree_rev = src_repo.latest_tree_revision()
-	log.log("Latest tree rev: %d" % latest_tree_rev)
+	log.log("Latest tree rev: %d\n" % latest_tree_rev)
+
+	# Only do for the last couple of commits, rather than constantly updating above number
+	starting_rev = latest_tree_rev - 10
 
 
 	# Pretty much do every commit (for binary search on regressions) (should be adjustable)
@@ -63,7 +66,7 @@ while(1):
 			latest_for_package = src_repo.latest_path_revision(pack_obj.info['HEAD_PATH'], revision=i)
 			if not distfiles.contains('HEAD', pack_name, str(latest_for_package)):
 				command = "cd %s; ./mktarball %s snap %d" % (config.packaging_dir, pack_name, latest_for_package)
-				log.log("Executing: " + command)
+				log.log("Executing: %s\n" % command)
 				# TODO: Logging
 				#  daemon log
 
@@ -79,12 +82,12 @@ while(1):
 
 				# Handle failed tarballs...
 				elif not distfiles.contains('HEAD', pack_name, str(latest_for_package)):
-					log.log("Tarball creation failed...")
+					log.log("Tarball creation failed...\n")
 					distfiles.add_file('HEAD', pack_name, str(latest_for_package), "tarball_creation_failed")
 			
 
 	# TODO: Don't sleep if the above loop took longer than max_poll_interval
-	log.log("Sleeping for %d minute(s)..." % max_poll_interval)
+	log.log("Sleeping for %d minute(s)...\n" % max_poll_interval)
 	time.sleep(60 * max_poll_interval)
 
 

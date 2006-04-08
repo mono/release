@@ -54,7 +54,7 @@ if repo.contains(RELEASE_or_HEAD, package, version):
 
 LOGFILE = "%s/%s/%s/%s.log" % (config.mktarball_logs, RELEASE_or_HEAD, package, version)
 log_obj = logger.Logger(filename=LOGFILE)
-log_obj.log("Sources path: " + source_path)
+log_obj.log("Sources path: %s\n" % source_path)
 
 package_path = source_path + os.sep + package
 distutils.dir_util.mkpath(package_path)
@@ -65,12 +65,12 @@ if package_obj.info.has_key('MKTARBALL_HOST'):
 	distro = package_obj.info['MKTARBALL_HOST']
 else:
 	distro = config.mktarball_host
-log_obj.log("Using distro: " + distro)
+log_obj.log("Using distro: %s\n" % distro)
 
 env = packaging.buildenv(distro, logger=log_obj)
 
 if env.is_locked():
-	log_obj.log("%s jail is busy" % distro )
+	log_obj.log("%s jail is busy\n" % distro )
 	sys.exit(2)
 
 env.lock_env()
@@ -81,7 +81,7 @@ if package_obj.info.has_key('MONO_DEPS'):
 	(status, output) = utils.launch_process('./install-deps %s %s' % (distro, package), logger=log_obj)
 	if status:
 		env.unlock_env()
-		log_obj.log("Dependency installation failed")
+		log_obj.log("Dependency installation failed\n")
 		sys.exit(3)
 
 
@@ -89,12 +89,12 @@ if package_obj.info.has_key('MONO_DEPS'):
 files_to_copy = [ 'do-msvn-tar', 'defs/%s' % package] + glob.glob('../pyutils/*.py') 
 env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
 
-log_obj.log("Starting to build source dist...")
+log_obj.log("Starting to build source dist...\n")
 (status, output) = env.ssh.execute('mount /proc &> /dev/null ; sudo -H -u builder /tmp/do-msvn-tar %s %s %s' % (RELEASE_or_HEAD, package, version) )
 
 if status:
         env.unlock_env()
-        log_obj.log("Source dist file creation failed")
+        log_obj.log("Source dist file creation failed\n")
         sys.exit(1)
 
 # get tarball filename

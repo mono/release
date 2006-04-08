@@ -59,7 +59,7 @@ class init:
 	# Args: command to execute, and option to print_output
 	#  Will always return output
 	# NOTE: In order to use backticks, you must escape them in the string you pass in
-	def execute(self, command, capture_stderr=1, terminate_reg="", env={}, logger=""):
+	def execute(self, command, capture_stderr=1, terminate_reg="", env={}, logger="", output_timeout=0):
 		"""Args, command string to execute.  Option args: capture_stderr, and terminate_reg.
 
 		capture_stderr is 1 or 0 (Currently unimplemented)
@@ -97,10 +97,10 @@ class init:
 		if logger:
 			self.logger = logger
 			
-		if self.print_command: self.log("Executing %s" % command_string)
+		if self.print_command: self.log("Executing %s\n" % command_string)
 
 		if self.execute_command:
-			(code, output) = utils.launch_process(command_string, print_output=self.print_output, terminate_reg=terminate_reg, logger=self.logger)
+			(code, output) = utils.launch_process(command_string, print_output=self.print_output, terminate_reg=terminate_reg, logger=self.logger, output_timeout=output_timeout)
 
 		# restore logger
 		if logger:
@@ -141,7 +141,7 @@ class init:
 				dest = self.jaildir + os.sep + dest
 		        command = "%s -pc %s | ssh %s %s 'cd %s ; %s -pvxf - ' " % (self.local_tar_path, src, self.options + compress_option, self.target_host, dest, self.remote_tar_path )
 		else:
-			self.log("Invalid copy_to mode: %s" % mode)
+			self.log("Invalid copy_to mode: %s\n" % mode)
 			sys.exit(1)
 
 		if self.print_output: self.log(command)
@@ -181,7 +181,7 @@ class init:
 		        command = "cd %s; ssh %s %s ' %s %s -pcf - %s ' | %s -pvxf - " % (dest, self.options + compress_option, self.target_host, self.remote_tar_path, tar_dir_options, files, self.local_tar_path )
 
 		else:
-			self.log("Invalid copy_from mode: %s" % mode)
+			self.log("Invalid copy_from mode: %s\n" % mode)
 			sys.exit(1)
 
 		if self.print_output: self.log(command)

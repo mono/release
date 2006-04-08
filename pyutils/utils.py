@@ -28,6 +28,7 @@ import calendar
 
 import popen2
 import signal
+import fcntl
 
 import pdb
 
@@ -38,6 +39,7 @@ if module_dir != "": module_dir += os.sep
 rpmvercmp_path = os.path.abspath(module_dir + "../rpmvercmp/rpmvercmp")
 
 debug=0
+KILLED_EXIT_CODE=-42
 
 # Get vars out of shell scripts (def files)
 def get_env_var(var_name, source):
@@ -245,16 +247,19 @@ def remove_line_matching(file, text_to_remove):
         fd.close()
 
 
-def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg="", logger=""):
+def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg="", logger="", output_timeout=0):
 	"""Execute a command, return output (stdout and optionally stderr), and optionally print as we go.
 
 	Returns a tuple: exit code, output
 	Like commands.getstatusoutput, except this is portable, where 'commands' is unix only
 	Also, this can print it's output as it runs, where as commands captures output and returns it later
-	If you want to do this and you need input/output handles, you'll need to use popen2, or os.open2
 
 	terminate_reg is a regular expression object where if it is matched during the output,
-		execution terminates, and None is returned for exit code, and output thus far is returned."""
+		execution terminates, and None is returned for exit code, and output thus far is returned
+
+	Optionally pass in a logger object
+
+	output_timeout: kill process if it produces no output for x number of seconds."""
 
 	terminate_flag = 0
 	if terminate_reg: terminate_flag = 1
@@ -277,33 +282,70 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 	# Close unnecessary handles
 	process.tochild.close()
 
+	if output_timeout:
+		flags = fcntl.fcntl(process.fromchild.fileno(), fcntl.F_GETFL)
+		flags = flags | os.O_NONBLOCK
+		fcntl.fcntl(process.fromchild.fileno(), fcntl.F_SETFL, flags)
+	output_received_timestamp = time.time()
+	killed = 0
+
 	collected = []
+
+	# there's a bug with output_timeout... ex:
+	# adding: lib/mono/1.0/mono-service.exe.mdb (deflated 51%)
+	# (deflated 52%)
+	#  adding: lib/mono/1.0/mono-shlib-cop.exe.mdb (deflated 54%)
+	# Looks like a bug in python's readline...
+
+	# TODO: If we're going to accurately use terminate_reg, we'll need some reworking so that we try the reg, line at a time
+
 	# Use this looping method insead of 'for line in process' so it doesn't use the readahead buffer
 	#  This smooths output greatly, instead of getting big chunks of output with lots of lag
 	while(1):
-		line = process.fromchild.readline()
+		try:
+			#line = process.fromchild.readline()
+			#  in non blocking mode, readline somehow misses data... use read() instead
+			line = process.fromchild.read(128)
+			output_received_timestamp = time.time()
+		except IOError:
+			#print "No data..."
+			if time.time() - output_received_timestamp > output_timeout:
+				print "** Terminating process because no output for %d second(s)**" % output_timeout
+				os.kill(process.pid, signal.SIGKILL)
+				killed = 1
+				break
+			# Don't work the processor too much...
+			time.sleep(.3)
+			continue
+
 		if not line: break
 		if print_output:
-			print line,
+			#print line,
+			# Use this instead so we don't get spaces (the print function always adds a space
+			#  between arguments)
+			sys.stdout.write(line)
 			sys.stdout.flush()
 			# This doesn't work on macosx... ?
-			#process.flush()
+			#process.fromchild.flush()
 		if logger:
 			logger.log(line)
 
-		collected += line
+		collected += [ line ]
 
 		if terminate_flag and terminate_reg.search(line):
 			print "** Terminating process because termination string was found **"
 			os.kill(process.pid, signal.SIGKILL)
 			break
 
+
 	exit_code = process.wait()
 	
 	if exit_code:
 		exit_code /= 256
 
-	# Yikes, hope this doesn't break anything
+	if killed:
+		exit_code = KILLED_EXIT_CODE
+
 	#  Concat array elements into a string 
 	#  strip the whitespace off the end (makes it behave more like commands.getxxx)
 	return exit_code, "".join(collected).rstrip()

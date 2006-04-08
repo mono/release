@@ -7,3 +7,5 @@ target_command_prefix='export PATH=$PATH:/usr/local/bin;  '
 
 # for testing
 #target_host=nds_cm@macbld1.provo.novell.com
+
+web_index=5
