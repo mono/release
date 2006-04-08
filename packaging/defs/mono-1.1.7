@@ -1,0 +1,48 @@
+web_index="2"
+
+BUILD_HOSTS=(
+        redhat-9-i386
+        sles-9-x86_64
+)
+
+USE_HOSTS=(
+	fedora-3-i386
+	nld-9-i586
+	nld-9-x86_64
+	redhat-9-i386
+	rhel-3-i386
+	rhel-4-i386
+	sles-9-i586
+	sles-9-x86_64
+	suse-92-i586
+	suse-93-i586
+	suse-93-x86_64
+)
+
+MONO_DEPS=(
+#	mono-1.1.7
+)
+
+get_destroot () {
+	DEST_ROOT=$ARCH
+}
+
+HEAD_PATH=(
+	branches/mono-1-1-7/mono
+	branches/mono-1-1-7/mcs
+)
+RELEASE_PATH=(
+	tags/mono-[[version]]/mono
+	tags/mono-[[version]]/mcs
+)
+
+make_dist () {
+        . /etc/profile
+        ./autogen.sh
+	if [ $RELEASE_or_HEAD == "HEAD" ] ; then
+		make dist-zip MCS=mcs RESGEN=resgen
+	else
+		make dist MCS=mcs RESGEN=resgen
+	fi
+}
+
