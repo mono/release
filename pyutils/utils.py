@@ -22,13 +22,19 @@ import re
 import tempfile
 import string
 import glob
-import distutils.dir_util
 import time
 import calendar
-
 import popen2
 import signal
 import fcntl
+
+# Catch this error, and then die later on if the namespace isn't found
+#  (Allows us to use launch_process without having python-devel rpm installed on SuSE type machines)
+try:
+	import distutils.dir_util
+except ImportError:
+	print "Missing distutils.dir_util..."
+
 
 import pdb
 
@@ -247,19 +253,22 @@ def remove_line_matching(file, text_to_remove):
         fd.close()
 
 
-def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg="", logger="", output_timeout=0):
-	"""Execute a command, return output (stdout and optionally stderr), and optionally print as we go.
+def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg="", logger="", output_timeout=0, kill_process_group=0):
+	"""Execute a command, return output (stdout and optionally stderr), and optionally print output the process is being run.
 
 	Returns a tuple: exit code, output
-	Like commands.getstatusoutput, except this is portable, where 'commands' is unix only
-	Also, this can print it's output as it runs, where as commands captures output and returns it later
 
 	terminate_reg is a regular expression object where if it is matched during the output,
 		execution terminates, and None is returned for exit code, and output thus far is returned
 
-	Optionally pass in a logger object
+	If a logger object (pyutils/logger) is passed in, output will be logged to there as well.
 
-	output_timeout: kill process if it produces no output for x number of seconds."""
+	output_timeout: kill process if it produces no output for x number of seconds.
+
+	kill_process_group: This determines how the process is killed when output_timeout is specified.
+		If this is true, the process group of the current python interpreter is killed, killing all subprocesses.
+		If not, only the child process id is killed.
+		The exit status of killed processes seems to vary (see packaging/build for possibilities)."""
 
 	terminate_flag = 0
 	if terminate_reg: terminate_flag = 1
@@ -286,6 +295,10 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 		flags = fcntl.fcntl(process.fromchild.fileno(), fcntl.F_GETFL)
 		flags = flags | os.O_NONBLOCK
 		fcntl.fcntl(process.fromchild.fileno(), fcntl.F_SETFL, flags)
+		# Set process group
+		# each process created has a process group of the same number as the process id already
+		#  But usually, this is the bash process, and we need to find out how to get that in 
+
 	output_received_timestamp = time.time()
 	killed = 0
 
@@ -311,7 +324,29 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 			#print "No data..."
 			if time.time() - output_received_timestamp > output_timeout:
 				print "** Terminating process because no output for %d second(s)**" % output_timeout
-				os.kill(process.pid, signal.SIGKILL)
+				sys.stdout.flush()
+				# Close I/O handles?
+				process.fromchild.close()
+
+				#  Kill the process
+				try:
+					# Kill the process group of the current process...
+					if kill_process_group:
+						print "** Killing process group (committing suicide) ... **"
+						pid = -os.getpgrp()
+					else:
+						print "** Killing process subprocess pid... **"
+						pid = process.pid
+
+					sys.stdout.flush()
+					os.kill(pid, signal.SIGKILL)
+				
+				except OSError:
+					print "** Error killing process(es) (%d), exiting... **" % pid
+					sys.stdout.flush()
+					sys.exit(1)
+
+				# This will only get set if kill_process_group is false
 				killed = 1
 				break
 			# Don't work the processor too much...

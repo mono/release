@@ -16,6 +16,7 @@ import utils
 import os.path
 import os
 import string
+import config
 
 import pdb
 
@@ -65,6 +66,12 @@ class init:
 		capture_stderr is 1 or 0 (Currently unimplemented)
 		See doc for utils.launch_process for description of terminate_reg. """
 
+		if output_timeout:
+			# Copy some files over
+			self.copy_to([ config.packaging_dir + "/../pyutils/utils.py", config.packaging_dir + "/../pyutils/launch_process.py" ], "/tmp")
+			# Surround command with escaped double quotes in order to run multiline commands
+			command = "/tmp/launch_process.py --kill_process_group --output_timeout=%s \\\"%s\\\" " % (output_timeout, command)
+
 		if self.target_command_prefix:
 			command = self.target_command_prefix + command
 
@@ -73,6 +80,7 @@ class init:
 		for k,v in env.iteritems():
 			env_string += "export %s=\"%s\";" % (k,v)
 		command = env_string + command
+
 
 		# Quoting very importand here: double quotes
 		command = '"' + command + '"'
@@ -100,8 +108,7 @@ class init:
 		if self.print_command: self.log("Executing %s\n" % command_string)
 
 		if self.execute_command:
-			(code, output) = utils.launch_process(command_string, print_output=self.print_output, terminate_reg=terminate_reg, logger=self.logger, output_timeout=output_timeout)
-
+			(code, output) = utils.launch_process(command_string, print_output=self.print_output, terminate_reg=terminate_reg, logger=self.logger)
 		# restore logger
 		if logger:
 			self.logger = primary_logger

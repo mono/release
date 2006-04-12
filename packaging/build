@@ -33,7 +33,13 @@ import pdb
 timeout=1200
 
 def get_state(code, test=0):
-	if code == utils.KILLED_EXIT_CODE:
+	print "Return code: %d" % code
+	#  214 is for killed subprocess
+	#  137 is for killed process groups
+	#  255 seems to be returned through ssh on a killed process...
+	#  How accurrate are these exit codes??
+	#  Some tests are reporting 255 on killed processes?
+	if code == utils.KILLED_EXIT_CODE or code == 214 or code == 137 or code == 255:
 		return "timeout"
 	elif code:
 		if test:
