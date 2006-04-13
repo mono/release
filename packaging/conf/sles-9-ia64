@@ -1,5 +1,6 @@
 target_host=builder@mono-itanium.boston.ximian.com
 jaildir=/jails/sles-9-ia64-root-0/jail
 chroot_path=/usr/bin/chroot
+target_command_prefix=". /etc/profile;"
 
 web_index=2
