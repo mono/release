@@ -283,16 +283,35 @@ def packagestatus(req, **vars):
 		return "Invalid arguments"
 
 	versions = build.get_versions(HEAD_or_RELEASE, platform, package)
-
 	versions = utils.version_sort(versions)
-
 	versions.reverse()
+
+	if len(versions) <= 10:
+		show_links = False
+	else:   show_links = True
+
+	# Flag to show all builds or not
+	if vars.has_key('showall'):
+		showall = True
+	else:   showall = False
+
+
+	# Only show the first 10 versions unless showall link is pushed
+	if not showall and len(versions) > 10:
+		versions = versions[:10]
 
 	html = ""
 	req.content_type = "text/html"
 
 	if versions:
 		html += "<h1>%s -- %s -- %s</h1>" % (package, platform, HEAD_or_RELEASE)
+
+		# Print out links...
+		if show_links:
+			if showall:
+				html += "<p><a href='packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s'>Show Latest 10 Builds</a></p>" % (platform, package, HEAD_or_RELEASE) 
+			else:
+				html += "<p><a href='packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s&showall=1'>Show Full Build History</a></p>" % (platform, package, HEAD_or_RELEASE) 
 
 		counter = 0
 
