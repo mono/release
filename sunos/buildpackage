@@ -162,7 +162,7 @@ def build_package(target):
 	shutil.copy('pkginfo.template', pkginfo_file)
 
 	#  Get some version information
-	mono_package = packaging.package(env, 'mono-1.1')
+	mono_package = packaging.package(env, 'mono')
 	revision = mono_package.get_revision(release)
 
 	# Get string of packages
