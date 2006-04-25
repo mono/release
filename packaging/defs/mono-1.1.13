@@ -20,7 +20,7 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
-	#mono-1.1.13
+	mono-1.1.13
 )
 
 get_destroot () {
@@ -48,6 +48,7 @@ make_dist () {
 
 POSTBUILD_STEP_NAME1="test-runtime"
 POSTBUILD_STEP1 () {
+        #echo "Skipping..."
         cd mono
         make -k check
 }
@@ -59,6 +60,7 @@ POSTBUILD_STEP2 () {
 
 POSTBUILD_STEP_NAME3="test-profiles"
 POSTBUILD_STEP3 () {
+        #echo "Skipping..."
         cd runtime
         make -k check
 }

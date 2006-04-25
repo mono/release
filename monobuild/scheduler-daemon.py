@@ -30,8 +30,7 @@ sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
 
 # Only build the latest tarball available
 # Some of these platforms take much longer, and one platform shouldn't hold them all up
-#latest_build_distros = [ 'sles-9-x86_64', 'macos-10-ppc', 'redhat-9-i386', 'win-4-i386', 'sunos-8-sparc', 'sles-9-ia64', 'sles-9-s390', 'sles-9-s390x' ]
-latest_build_distros = [ 'sles-9-x86_64', 'macos-10-ppc', 'redhat-9-i386', 'win-4-i386', 'sunos-8-sparc', 'sles-9-ia64', 'sles-9-s390' ]
+latest_build_distros = [ 'sles-9-x86_64', 'macos-10-ppc', 'redhat-9-i386', 'win-4-i386', 'sunos-8-sparc', 'sles-9-ia64', 'sles-9-s390', 'sles-9-s390x' ]
 
 latest_build_packages = [ 'mono', 'mono-1.1.13' ]
 

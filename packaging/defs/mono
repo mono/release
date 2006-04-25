@@ -7,7 +7,7 @@ BUILD_HOSTS=(
 	sles-9-x86_64
 	sles-9-ia64
 	sles-9-s390
-	#sles-9-s390x
+	sles-9-s390x
 	sunos-8-sparc
 	#sunos-10-sparc
 	win-4-i386

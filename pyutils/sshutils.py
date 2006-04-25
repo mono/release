@@ -22,7 +22,7 @@ import pdb
 
 class init:
 	
-	def __init__(self, target_host, print_output=1, jaildir="", chroot_path="/usr/sbin/chroot", remote_tar_path="tar", local_tar_path="tar", target_command_prefix="", execute_command=1, print_command=0, logger=""):
+	def __init__(self, target_host, print_output=1, jaildir="", chroot_path="/usr/sbin/chroot", remote_tar_path="tar", local_tar_path="tar", target_command_prefix="", execute_command=1, print_command=0, logger="", build_location="/tmp"):
 
 		self.target_host = target_host
 
@@ -34,6 +34,7 @@ class init:
 		self.local_tar_path = local_tar_path
 		self.target_command_prefix = target_command_prefix
 		self.logger = logger
+		self.build_location = build_location
 
 		# Options for debugging
 		self.execute_command=execute_command
@@ -68,9 +69,9 @@ class init:
 
 		if output_timeout:
 			# Copy some files over
-			self.copy_to([ config.packaging_dir + "/../pyutils/utils.py", config.packaging_dir + "/../pyutils/launch_process.py" ], "/tmp")
+			self.copy_to([ config.packaging_dir + "/../pyutils/utils.py", config.packaging_dir + "/../pyutils/launch_process.py" ], self.build_location)
 			# Surround command with escaped double quotes in order to run multiline commands
-			command = "/tmp/launch_process.py --kill_process_group --output_timeout=%s \\\"%s\\\" " % (output_timeout, command)
+			command = "%s/launch_process.py --kill_process_group --output_timeout=%s \\\"%s\\\" " % (self.build_location, output_timeout, command)
 
 		if self.target_command_prefix:
 			command = self.target_command_prefix + command

@@ -192,21 +192,27 @@ files_to_copy = [ source_file ]
 build_dir = os.path.basename(source_file).replace('.tar.gz', '')
 build_dir = build_dir.replace('.zip', '')
 
+# Set optional custom build_location
+if build_env.info.has_key('build_location'):
+	build_location = build_env.info['build_location']
+else:
+	build_location = "/tmp"
+
 # Files for zip build system and build command
 if build_env.info['USE_ZIP_PKG']:
 	files_to_copy += ['do-zip-build', '../conf/%s/*.patch' % package_name, 'defs/%s' % package_name]
-	build_command = '/tmp/do-zip-build %s %s %s %s' % (revision, package_name, distro, version)
-	remote_src_dir = "/tmp/scratch/%s" % build_dir
-	step_env_pre_cmd = ". /tmp/build_deps/env.sh; "
+	build_command = '%s/do-zip-build %s %s %s %s' % (build_location, revision, package_name, distro, version)
+	remote_src_dir = "%s/scratch/%s" % (build_location, build_dir)
+	step_env_pre_cmd = ". %s/build_deps/env.sh; " % build_location
 
 else:
 	files_to_copy += ['do-build', '../conf/%s/*' % package_name ]
-	build_command = '/tmp/do-build %s %s' % (version, revision)
-	remote_src_dir = "/tmp/scratch/BUILD/%s" % build_dir
+	build_command = '%s/do-build %s %s %s' % (build_location, version, revision, build_location)
+	remote_src_dir = "%s/scratch/BUILD/%s" % (build_location, build_dir)
 	step_env_pre_cmd = ""
 
 
-build_env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
+build_env.ssh.copy_to(files_to_copy, build_location, mode='scp')
 
 (code, output) = build_env.ssh.execute(build_command, logger=log_obj, output_timeout=timeout)
 #code = 0
@@ -219,7 +225,7 @@ if code:
 	sys.exit(7)
 
 distutils.dir_util.mkpath(package_version_path)
-build_env.ssh.copy_from(['/tmp/builder/built-packages/*', '/tmp/scratch/*.spec'], package_version_path)
+build_env.ssh.copy_from(['%s/builder/built-packages/*' % build_location, '%s/scratch/*.spec' % build_location], package_version_path)
 
 # Create link to packages
 try:
@@ -231,6 +237,8 @@ except OSError:
 build_info.update_step("build", state="success", download=os.path.basename('downloads'), finish=utils.get_time())
 
 # Run postbuild steps
+#  TODO: These steps are run as root inside chroot or as the user in conf... they should always be executed as builder
+#  Add support to sshutils' execute: root=1|0 ... ?
 remote_env = {}
 remote_env['HEAD_or_RELEASE'] = "HEAD"
 counter = 1

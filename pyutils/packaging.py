@@ -37,7 +37,7 @@ class buildenv:
 		args['print_output'] = self.print_output
 		args['logger'] = logger
 
-		for i in "jaildir chroot_path remote_tar_path local_tar_path target_command_prefix".split():
+		for i in "jaildir chroot_path remote_tar_path local_tar_path target_command_prefix build_location".split():
 			if self.info.has_key(i):
 				args[i] = self.info[i]
 	
