@@ -66,8 +66,7 @@ def index(req, **vars):
 
 	<p>
 	<table class="buildstatus">
-		<thead><tr><td>%s</td>
-	""" % checkbox_html)
+	""")
 
 	# Get unique list of used platforms
 	platforms = {}
@@ -96,102 +95,86 @@ def index(req, **vars):
 			num_removed += 1
 	
 
-	for obj in pack_objs:
-		req.write("<th>%s</th>\n" % obj.name)
+	count = 0
 
-	req.write("</tr></thead>\n<tbody>\n")
-
-
-	# List out non-noarch packages
-	for platform in plat_objs:
-
-		req.write("<tr><th>%s</th>\n" % platform.name)
-
-		version = ""
-		state = ""
-
-		for package in pack_objs:
+	# Iterate through arch packages, and then noarch packages
+	for (platforms, packs) in  [ (plat_objs, pack_objs), (['noarch'], noarch_pack_objs) ]:
 		
-			# If this is a valid package for this platform...	
-			if package.info['BUILD_HOSTS'].count(platform.name):
-				# TODO: show the last two builds (otherwise, it's going to mostly be showing yellow)
-				version = build.get_latest_version(HEAD_or_RELEASE, platform.name, package.name) # in <num> format
+		req.write("<thead><tr><td>%s</td>\n" % checkbox_html)
 
-				build_info = datastore.build_info(HEAD_or_RELEASE, platform.name, package.name, version)
+		for obj in packs:
+			req.write("<th>%s</th>\n" % obj.name)
 
-				state = build_info.get_state()
+		req.write("</tr></thead>\n<tbody>\n")
 
-				# if it's a valid package, but hasn't been built yet...
-				if version == "" and state == "":
-					state = "new"
+		# list out non-noarch packages
+		for platform in platforms:
+			if platform == 'noarch':
+				platform_name = "noarch"
+			else: platform_name = platform.name
+
+			req.write("<tr><th>%s</th>\n" % platform_name)
+
+			for package in packs:
+				#req.write("<br>".join(package.info.keys()))
+				if platform == "noarch": platform_name = package.info['BUILD_HOSTS'][0]	
 			
-			else:
-			
-				state = "notused"
+				# if this is a valid package for this platform...	
+				if package.info['BUILD_HOSTS'].count(platform_name):
+					# todo: show the last two builds (otherwise, it's going to mostly be showing yellow)
+					versions = build.get_versions(HEAD_or_RELEASE, platform_name, package.name) # in <num> format
 
+					version = ""
+					version2 = ""
+					state = ""
 
-			req.write("<td class=%s>" % state)
+					# pop and get first version
+					if len(versions) > 0:
+						version = versions.pop()
+						build_info = datastore.build_info(HEAD_or_RELEASE, platform_name, package.name, version)
+						state = build_info.get_state()
 
-			# Print a link if there has been a build, and we're not in schedule mode
-			if state != 'notused' and state != 'new' and not schedule_flag:
-				req.write("<a href=%s/packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s>%s</a>" % ( scriptname, platform.name, package.name, HEAD_or_RELEASE, version))
-			
+					# pop and get second version
+					if len(versions) > 0:
+						version2 = versions.pop()
+						build_info2 = datastore.build_info(HEAD_or_RELEASE, platform_name, package.name, version2)
+						state2 = build_info2.get_state()
 
-			# Print a checkbox if we're in schedule mode and it's a valid BUILD_HOSTS
-			if schedule_flag and state != "notused":
-				req.write("<input type=checkbox name=build value=\"%s:%s\"" % (platform.name, package.name))
-			
-			
-			req.write("</td>\n")
+					# if it's a valid package, but hasn't been built yet...
+					if state == "":
+						state = "new"
+						link = ""
+					else:
+						link = "<a href=%s/packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s>%s</a>" % ( scriptname, platform_name, package.name, HEAD_or_RELEASE, version)
 
-		
-		req.write("</tr>\n")
+					# if there's a previous version, print a container table
+					if version2:
+						req.write("<td class=%s>" % state2)
+						req.write("<table class=%s><td>" % (state))
+						req.write(link)
+						req.write("</td></table>")
+						req.write("</td>\n")
+					else:
+						req.write("<td class=%s>" % state)
+						req.write(link)
+						req.write("</td>\n")
+				
+				else:
+					req.write("<td class=notused>")
+					req.write("</td>\n")
 
-	# List out noarch packages
-	req.write("<tr><td></td></tr>\n<tr><td></td>\n")
+			req.write("</tr>\n")
 
-	version = ""
-	state = ""
+		req.write("</tbody>\n")
 
-	for package in noarch_pack_objs:
-		req.write("<td>%s</td>\n" % package.name)
-	req.write("</tr>\n<tr><td>noarch</td>\n")
+		# Separator section ( # Don't write this on the last one )
+		if count == 0:
+			req.write("<tr><td></td></tr>\n")
 
-	for package in noarch_pack_objs:
-
-		platform_name = package.info['BUILD_HOSTS'][0]	
-		version = build.get_latest_version(HEAD_or_RELEASE, platform_name, package.name) # in <num> format
-
-		build_info = datastore.build_info(HEAD_or_RELEASE, platform_name, package.name, version)
-
-		state = build_info.get_state()
-
-		# if it's a valid package, but hasn't been built yet...
-		if version == "" and state == "":
-			state = "new"
-
-		req.write("<td class=%s>" % state)
-
-		# Print a link if there has been a build, and we're not in schedule mode
-		if state != 'notused' and state != 'new' and not schedule_flag:
-			req.write("<a href=%s/packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s>%s</a>" % ( scriptname, platform_name, package.name, HEAD_or_RELEASE, version))
-		
-
-		# Print a checkbox if we're in schedule mode and it's a valid BUILD_HOST
-		if schedule_flag and state != "notused":
-			req.write("<input type=checkbox name=build value=\"%s:%s\"" % (platform_name, package.name))
-		
-		
-		req.write("</td>\n")
-
+		count+= 1
 	
-	req.write("</tr>")
-		
 
-
-	req.write("""</tbody>
-	</table>
-	</p>""")
+	req.write("</table>\n</p>")
 
         # Old Legend
 	if 0:
@@ -271,7 +254,7 @@ def index(req, **vars):
 	</HTML>
 	""")
 
-# TODO: Should probably show all builds on this page
+# List all builds for a platform/package combination
 def packagestatus(req, **vars):
 
 

@@ -85,36 +85,36 @@ table.buildstatus th {
 }
 
 /* Color from buildbots green: #72ff75 */
-td.success {
+.success {
 	background:springgreen;
 }
 
 
-td.failure {
+.failure {
 	background:red;
 }
 
-td.inprogress{
+.inprogress{
 	background:yellow
 }
 
-td.notused {
+.notused {
 	background:white;
 }
 
-td.new {
+.new {
 	background:lightgray;
 }
 
-td.queued {
+.queued {
 	background:pink;
 }
 
-td.timeout {
+.timeout {
 	background:steelblue;
 }
 
-td.testfailure {
+.testfailure {
 	background:orange;
 }
 
