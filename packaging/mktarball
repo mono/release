@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# TODO: Catch sigint, and unlock jail...
+
 import os
 import sys
 import distutils.dir_util

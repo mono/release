@@ -25,7 +25,7 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
-	mono
+	#mono
 )
 
 get_destroot () {
@@ -42,11 +42,13 @@ RELEASE_PATH=(
 )
 
 make_dist () {
-	mkdir mcs
-	mv ../errors mcs
+	mkdir ../mcs
+	mv ../errors ../mcs
 	. /etc/profile
 	./autogen.sh
-	#make dist-zip
-	make dist
+
+	# Use dist-zip instead, otherwise long filenames get chopped
+	#make dist
+	make dist-zip
 }
 

@@ -32,7 +32,7 @@ do
 			if [[ x$package == xgtk-sharp-2.0 ]]; then
 				latest_tarball "$package/gtk-sharp-2.4.*.tar.gz"
 			else
-				latest_tarball "$package/*.tar.gz"
+				latest_tarball "$package/*"
 			fi
 			
 			TARBALLS=(${TARBALLS[@]} $LATEST_VERSION)
