@@ -91,18 +91,8 @@ sunos_8_sparc_ZIP_DEPS=(
 
 macos_10_ppc_ZIP_BUILD () {
 
-	# Needed without below sed...
-	#export PATH="/usr/X11R6/bin/:$PATH"
-
-	# For fontconfig (bundle this ourselves?  What would be the point?)
-	# Needed?
-	#export PKG_CONFIG_PATH="/usr/X11R6/lib/pkgconfig/:$PKG_CONFIG_PATH"
-
-	# File as bug #77620 in ximian bugzilla
-	file="configure"
-        sed -e "s/freetype-config/pkg-config freetype2 fontconfig/g" $file > $file.new; mv $file.new $file; chmod 755 $file
-
 	# Mac OS doesn't come with a fontconfig.pc ... generate one
+	#  (libgdiplus supports using fontconfig-config, but mac also doesn't ship with that)
 	cat <<EOF > /tmp/build_deps/lib/pkgconfig/fontconfig.pc
 prefix=/usr/X11R6
 exec_prefix=\${prefix}
