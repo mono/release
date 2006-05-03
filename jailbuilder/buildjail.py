@@ -125,8 +125,7 @@ class Jail:
 		self.jail_location = os.path.abspath(path)
 
 		if not os.path.exists(self.jail_location):
-			print("Target jail location does not exists: %s" % self.jail_location)
-			sys.exit(1)
+			os.mkdir(self.jail_location)
 
 		# These are base names of rpms
 		#    for rpm based distros, you must add the rpm dep since we are ignoring rpmlib requirements
