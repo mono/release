@@ -1,0 +1,26 @@
+Get the bb source tarball
+
+perl Makefile.PL
+make
+sudo su
+make install
+
+Install XML::Simple
+
+Possibly from cpan...
+
+Copy these scripts from a closely related distro (under /usr/share/ximian-build-system):
+
+conf/os.conf
+scripts/*.guess
+conf/bb.conf
+conf/packsys.conf
+packsys/rpm/*
+
+Command to tar up:
+tar -zcvf bb_conf.tar.gz conf/os.conf scripts/*.guess conf/bb.conf conf/packsys.conf packsys/rpm/*
+
+Add distro and/or arch to conf/os.conf
+
+Fedora 4 and up specifics:
+-Need to change Copyright to License in /usr/bin/bb_do
