@@ -4,6 +4,8 @@ BUILD_HOSTS=(
 	fedora-3-i386
 	fedora-4-i386
 	fedora-4-x86_64
+	fedora-5-i386
+	fedora-5-x86_64
 	nld-9-i586
 	#nld-9-x86_64
 	rhel-3-i386
