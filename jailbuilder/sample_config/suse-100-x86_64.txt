@@ -2,7 +2,7 @@
 
 jail_name=suse-100-x86_64
 
-rpm_repository_path=suse100rpms
+rpm_repository_path=rpms/suse-100
 
 # http://kirk.provo.novell.com/install/10.0
 # http://primates.ximian.com/~rml/sanitize/rcd-2.4.8-4.i586.rpm

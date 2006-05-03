@@ -1,0 +1,20 @@
+# Format: <name>=<value>
+
+jail_name=fedora-5-i386
+rpm_repository_path=rpms/fedora-5-i386
+
+# Only accept packages with these arches
+valid_arch=i686 i586 i386 noarch
+
+required_rpms=which bzip2 libtool tcl gcc gcc-c++ make autoconf automake yum vim-enhanced sudo rpm-build openssh-clients perl-XML-Simple perl-XML-Parser freetype-devel fontconfig-devel libungif-devel libjpeg-devel  libtiff-devel libpng-devel glib2-devel pkgconfig zlib-devel libX11-devel libXrender-devel sqlite-devel pango-devel gtk2-devel libxml2-devel libglade2-devel libgnomecanvas-devel libgnomeui-devel libgnomeprintui22-devel libart_lgpl-devel librsvg2-devel vte-devel gtkhtml3-devel gnome-panel-devel httpd-devel
+
+
+#environment=
+
+# Other various/optional post jail settings:
+nameservers=137.65.1.3 137.65.1.4 130.57.22.5
+users=builder
+
+# MAKEDEV in /dev for random, urandom, null
+# Add /proc to /etc/fstab
+

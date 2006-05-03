@@ -4,7 +4,7 @@ jail_name=sles-8-i386
 
 #ftp://ftp.novell.com/pub/ximian/redcarpet2/sles-8-i386/
 #ftp://kirk.provo.novell.com/install/sles8/
-rpm_repository_path=sles8rpms
+rpm_repository_path=rpms/sles-8-i386
 
 # Only accept packages with these arches
 valid_arch=i386 i586 i686 noarch

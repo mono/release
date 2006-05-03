@@ -3,7 +3,7 @@
 jail_name=sles-9-ia64
 
 #ftp://ftp.novell.com/pub/ximian/redcarpet2/sles-9-ia64/
-rpm_repository_path=sles9-ia64rpms
+rpm_repository_path=rpms/sles9-ia64
 
 # Only accept packages with these arches
 valid_arch=ia64 noarch

@@ -5,7 +5,7 @@ jail_name=redhat-9-i386
 # Rpms came from the following urls:
 # ftp://ftp.novell.com/pub/ximian/redcarpet2/redhat-9-i386/
 # ftp://ftp.redhat.com/pub/redhat/linux/9/en/os/i386/
-rpm_repository_path=rh9rpms
+rpm_repository_path=rpms/redhat-9-i386
 
 # Only accept packages with these arches
 valid_arch=i386 i586 i686 noarch
