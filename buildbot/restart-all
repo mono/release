@@ -1,0 +1,3 @@
+ssh builder@monobuild2 'cd trunk; bash connect'
+ssh builder@mono-itanium 'cd trunk; bash connect
+ssh nbuilder@cygwin-mono 'cd trunk; bash connect &'
