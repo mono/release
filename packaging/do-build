@@ -9,13 +9,15 @@ version=$1
 rev=$2
 location=$3
 rm -rf $location/builder/built-packages 		|| exit 1
-cd $location && rm -rf scratch 				|| exit 1
+cd $location && rm -rf scratch		 		|| exit 1
 mkdir scratch && cd scratch 				|| exit 1
 
-mv ../ximian-build.conf .
-mv ../*.patch .
-mv ../*.tar.gz .
-mv ../*.zip .
+# These need sudo because the uids of builder of the host and jail may not match up
+$EXEC_AS_ROOT mv ../ximian-build.conf .
+$EXEC_AS_ROOT mv ../*.patch .
+$EXEC_AS_ROOT mv ../*.tar.gz .
+$EXEC_AS_ROOT mv ../*.zip .
+
 # rpm needs this to be happy
 $EXEC_AS_ROOT chown root:root *.tar.gz
 $EXEC_AS_ROOT chown root:root *.zip
