@@ -1,4 +1,5 @@
-target_host=builder@monobuild2.boston.ximian.com
+#target_host=builder@monobuild2.boston.ximian.com
+target_host=builder@fedora64.boston.ximian.com
 jaildir=/jails/sles-9-x86_64-root-0/jail
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"

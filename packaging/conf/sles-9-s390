@@ -1,9 +1,7 @@
-#target_host=builder@aussie-2.osdl.marist.edu
-target_host=root@aussie-2.osdl.marist.edu
+target_host=builder@aussie-2.osdl.marist.edu
 build_location="/home/builder/tmp"
 
 # Box in Germany
-#target_host=root@s390zvi38.suse.de
 #target_host=builder@s390zvi38.suse.de
 #jaildir=/mono/jails/sles-9-s390
 

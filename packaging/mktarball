@@ -92,7 +92,8 @@ files_to_copy = [ 'do-msvn-tar', 'defs/%s' % package] + glob.glob('../pyutils/*.
 env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
 
 log_obj.log("Starting to build source dist...\n")
-(status, output) = env.ssh.execute('mount /proc &> /dev/null ; sudo -H -u builder /tmp/do-msvn-tar %s %s %s' % (RELEASE_or_HEAD, package, version) )
+(status, output) = env.ssh.execute('mount /proc &> /dev/null', exec_as_root=1)
+(status, output) = env.ssh.execute('/tmp/do-msvn-tar %s %s %s' % (RELEASE_or_HEAD, package, version) )
 
 if status:
         env.unlock_env()

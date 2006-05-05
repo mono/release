@@ -14,6 +14,7 @@ import os
 import sys
 import re
 import glob
+import time
 
 sys.path += ['../pyutils']
 
@@ -64,7 +65,11 @@ if len(files) == 0:
 	sys.exit()
 
 # Clean out deps area
-target_env.ssh.execute("rm -rf /tmp/install-packages /tmp/build_deps; mkdir -p -m777 /tmp/install-packages")
+(code, output)target_env.ssh.execute("rm -rf /tmp/install-packages /tmp/build_deps")
+if code:
+	print "Error cleaning up... exiting"
+	sys.exit(1)
+target_env.ssh.execute("mkdir -p -m777 /tmp/install-packages")
 
 # copy packages
 # It would be nice to see the output...
@@ -84,11 +89,17 @@ else:
 	(code, output) = target_env.ssh.execute('ls /usr/sbin/rcd')
 	if not code:
                 # check if rcd is running in this jail and start it if it isn't
-		target_env.ssh.execute('rug ping || ( /usr/sbin/rcd -r  && echo Wait for rcd to come alive... && sleep 5 ) ')
-		(code, output) = target_env.ssh.execute('rug rm -y %s ; rug in -y -r /tmp/install-packages/*.rpm' % rpm_names)
+		(code, output) = target_env.ssh.execute('rug ping')
+		if code:
+			target_env.ssh.execute('/usr/sbin/rcd -r', exec_as_root=1)
+			print "Waiting for rcd to come alive..."
+			time.sleep(5)
+		(code, output) = target_env.ssh.execute('rug rm -y %s' % rpm_names, exec_as_root=1)
+		(code, output) = target_env.ssh.execute('rug in -y -r /tmp/install-packages/*.rpm', exec_as_root=1)
         else:
 		target_env.ssh.copy_to('remove-rpms', '/tmp')
-		(code, output) = target_env.ssh.execute('/tmp/remove-rpms %s ;  rpm -Uvh /tmp/install-packages/*.rpm' % rpm_names)
+		(code, output) = target_env.ssh.execute('/tmp/remove-rpms %s' % rpm_names, exec_as_root=1)
+		(code, output) = target_env.ssh.execute('rpm -Uvh /tmp/install-packages/*.rpm', exec_as_root=1)
 
 # Exit with return code...
 sys.exit(code)

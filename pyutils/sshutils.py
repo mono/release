@@ -17,6 +17,7 @@ import os.path
 import os
 import string
 import config
+import re
 
 import pdb
 
@@ -49,7 +50,8 @@ class init:
 
 		# Check to see if we're using a jail
 		if self.jaildir:
-			self.chroot_options = " sudo -H %s %s $SHELL" % (self.chroot_path, self.jaildir)
+			# Enter the jail as the builder user (opposed to root as before)
+			self.chroot_options = " sudo -H %s %s sudo -H -u builder $SHELL" % (self.chroot_path, self.jaildir)
 		else:
 			self.chroot_options = ""
 
@@ -61,11 +63,22 @@ class init:
 	# Args: command to execute, and option to print_output
 	#  Will always return output
 	# NOTE: In order to use backticks, you must escape them in the string you pass in
-	def execute(self, command, capture_stderr=1, terminate_reg="", env={}, logger="", output_timeout=0):
+	def execute(self, command, capture_stderr=1, terminate_reg="", env={}, logger="", output_timeout=0, exec_as_root=0):
 		"""Args, command string to execute.  Option args: capture_stderr, and terminate_reg.
 
 		capture_stderr is 1 or 0 (Currently unimplemented)
 		See doc for utils.launch_process for description of terminate_reg. """
+
+		# Execute as root
+		#  If we're logging in as a normal user and we want to execute something as root, put sudo in front of the command
+		if exec_as_root:
+			# Pass if we're already root
+			# There's a jail, so we'll always be the builder user
+			if (os.getuid() == 0 or re.compile("root@").search(self.target_host) ) and not self.jaildir:
+				# we are root already, and this isn't a jail
+				pass
+			else:
+				command = "sudo " + command
 
 		if output_timeout:
 			# Copy some files over
