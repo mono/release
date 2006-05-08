@@ -13,6 +13,7 @@ PPC/OSX		g5-mono		ppc-head		nbuilder / nbuilder
 
 Sparc/Solaris8	mono-sparc				builder / builder
 Sparc/Solaris10	pbartok2.provo.novell.com		
+Sparc/Solaris10 t1000-mono.cam.novell.com
 
 AMD64/Linux	monobuild2	amd-head lane		builder / builder
 
