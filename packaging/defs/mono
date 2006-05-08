@@ -1,4 +1,4 @@
-web_index="0"
+web_index=0
 
 # Possibly use sles-8 as the new base distro?
 BUILD_HOSTS=(
@@ -313,5 +313,4 @@ POSTBUILD_STEP3 () {
 	cd runtime
 	make -k check
 }
-
 

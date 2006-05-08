@@ -1,4 +1,4 @@
-web_index="4"
+web_index=4
 
 BUILD_HOSTS=(
         fedora-3-i386

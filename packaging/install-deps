@@ -94,11 +94,12 @@ else:
 			target_env.ssh.execute('/usr/sbin/rcd -r', exec_as_root=1)
 			print "Waiting for rcd to come alive..."
 			time.sleep(5)
-		(code, output) = target_env.ssh.execute('rug rm -y %s' % rpm_names, exec_as_root=1)
+		target_env.ssh.execute('rug rm -y %s' % rpm_names, exec_as_root=1)
 		(code, output) = target_env.ssh.execute('rug in -y -r /tmp/install-packages/*.rpm', exec_as_root=1)
+		target_env.ssh.execute('rug shutdown', exec_as_root=1)
         else:
 		target_env.ssh.copy_to('remove-rpms', '/tmp')
-		(code, output) = target_env.ssh.execute('/tmp/remove-rpms %s' % rpm_names, exec_as_root=1)
+		target_env.ssh.execute('/tmp/remove-rpms %s' % rpm_names, exec_as_root=1)
 		(code, output) = target_env.ssh.execute('rpm -Uvh /tmp/install-packages/*.rpm', exec_as_root=1)
 
 # Exit with return code...

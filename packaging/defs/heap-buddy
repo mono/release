@@ -1,4 +1,4 @@
-web_index="10"
+web_index=10
 
 BUILD_HOSTS=(
 	redhat-9-i386

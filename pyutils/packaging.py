@@ -15,6 +15,7 @@ import config
 import utils
 import sshutils
 import packaging
+import shell_parse
 
 class buildenv:
 
@@ -59,7 +60,7 @@ class buildenv:
 
 		# Linux distros
 		redhat_distros = "fedora redhat rhel".split()
-		suse_distros = "suse nld sles".split()
+		suse_distros = "suse nld sles sled".split()
 
 		### VERSION, ARCH ###
 		try:
@@ -73,7 +74,7 @@ class buildenv:
 
 		### OS, OS_TYPE, OS_SUBTYPE ###
 		# If our os is either suse or redhat
-		if (redhat_distros + suse_distros).count(os):
+		if (redhat_distros + suse_distros).count(build_os):
 			info['os'] = 'linux'
 			info['os_subtype'] = build_os
 			if build_os in redhat_distros:
@@ -81,7 +82,7 @@ class buildenv:
 			elif build_os in suse_distros:
 				info['os_type'] = 'suse'
 		else:
-			info['os'] = os
+			info['os'] = build_os
 
 		### DISTRO_ALIASES ###
 		if   self.name == 'rhel-3-i386':
@@ -92,23 +93,10 @@ class buildenv:
 
 		# Pull out all vars in the distro conf file
 		conf_file = os.path.join(config.packaging_dir, "conf", self.name)
-		try:	fd = open(conf_file, 'r')
-		except IOError:
-			print "Error opening file: %s" % conf_file
-			sys.exit(1)
-
-		for line in fd:
-			# Skip comments
-			if not re.compile("^#").search(line):
-				try:
-					# Grab key and value from key=value format
-						# Also, ingnore double or single quotes arond the value
-						# the .+ is nongreedy before the equals sign (allows for more than one equals)
-					(key, value) = re.compile('^(.+?)="?\'?(.*?)"?\'?$').search(line).groups()
-					info[key] = value
-					#print "Key: %s, value: %s" %( key, value)
-				except AttributeError:
-					pass
+		conf_info = shell_parse.parse(conf_file)
+		# Copy info from conf file into structure we've been building
+		for k, v in conf_info.iteritems():
+			info[k] = v
 
 		# Some required keys
 		for key in ['target_host']:
@@ -121,8 +109,6 @@ class buildenv:
 		for key in ['USE_ZIP_PKG']:
 			if not info.has_key(key):
 				info[key] = ""
-
-		fd.close()
 
 		self.info = info
 
@@ -173,32 +159,7 @@ class package:
 			print "File not found: %s" % self.def_file
 			sys.exit(1)
 
-
-		# TODO: get the rest of the info in the def file
-		self.info = {}
-
-		# Read in string while removing comments from the file string
-		file_string = ""
-		def_file = open(self.def_file, 'r')
-		for line in def_file:
-			if not re.compile('^\s*#').search(line):
-				file_string += line
-		def_file.close()
-
-		# TODO: abstract out this bash parsing stuff so it's uniform between conf and def files
-		# get vars (var="value")
-		for match in re.compile('^(\w*?)=[^\(](.*?)["\']?$', re.S | re.M).finditer(file_string):
-			self.info[match.group(1)] = match.group(2)
-
-		# get arrays ( var=(value list) )
-		for match in re.compile('^(\w*?)=\((.*?)\)', re.S | re.M).finditer(file_string):
-			items = match.group(2).split()
-			self.info[match.group(1)] = items
-
-		# get Functions ( func () { } )
-		for match in re.compile('^(\w*?) \(\) {(.*?)}', re.S | re.M).finditer(file_string):
-			self.info[match.group(1)] = match.group(2)
-			
+		self.info = shell_parse.parse(self.def_file)
 
 		# if we have a build env
 		if self.package_env:
