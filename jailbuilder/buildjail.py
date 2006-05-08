@@ -19,6 +19,7 @@
 # Typical jail creation (not including collecting the rpms with gatherrpms.py) can be processed in less than 10 minutes
 
 #TODO: add proc filesystem to /etc/fstab (or at least make sure it's there)
+ # Should probably mount proc before running reinstalling all rpms inside chroot (this matters on fedora5)
 
 
 
