@@ -93,7 +93,7 @@ class buildenv:
 
 		# Pull out all vars in the distro conf file
 		conf_file = os.path.join(config.packaging_dir, "conf", self.name)
-		conf_info = shell_parse.parse(conf_file)
+		conf_info = shell_parse.parse_file(conf_file)
 		# Copy info from conf file into structure we've been building
 		for k, v in conf_info.iteritems():
 			info[k] = v
@@ -159,7 +159,7 @@ class package:
 			print "File not found: %s" % self.def_file
 			sys.exit(1)
 
-		self.info = shell_parse.parse(self.def_file)
+		self.info = shell_parse.parse_file(self.def_file)
 
 		# if we have a build env
 		if self.package_env:
