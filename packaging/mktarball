@@ -37,11 +37,11 @@ if sys.argv[2] == "snap":
 	except IndexError:
 		usage()
 		sys.exit(1)
-	RELEASE_or_HEAD = "HEAD"
+	HEAD_or_RELEASE = "HEAD"
 	source_path = "snapshot_sources"
 else:
 	version=sys.argv[2]
-	RELEASE_or_HEAD = "RELEASE"
+	HEAD_or_RELEASE = "RELEASE"
 	source_path = "sources"
 
 
@@ -50,16 +50,14 @@ else:
 repo = datastore.source_file_repo()
 
 # Check to see if this is already there
-if repo.contains(RELEASE_or_HEAD, package, version):
-	print "Source file for %s version %s (%s) exists" % (package, version, RELEASE_or_HEAD) 
+if repo.contains(HEAD_or_RELEASE, package, version):
+	print "Source file for %s version %s (%s) exists" % (package, version, HEAD_or_RELEASE) 
 	sys.exit(1)
 
-LOGFILE = "%s/%s/%s/%s.log" % (config.mktarball_logs, RELEASE_or_HEAD, package, version)
+LOGFILE = "%s/%s/%s/%s.log" % (config.mktarball_logs, HEAD_or_RELEASE, package, version)
 log_obj = logger.Logger(filename=LOGFILE)
 log_obj.log("Sources path: %s\n" % source_path)
 
-package_path = source_path + os.sep + package
-distutils.dir_util.mkpath(package_path)
 
 # Get tarball path from def file
 package_obj = packaging.package("", package)
@@ -68,6 +66,25 @@ if package_obj.info.has_key('MKTARBALL_HOST'):
 else:
 	distro = config.mktarball_host
 log_obj.log("Using distro: %s\n" % distro)
+
+# Create symlink to the real location if it's not there already
+#  (Only do for RELEASE packages, since HEAD configure.in numbers can be inconsistant)
+if package_obj.info.has_key('source_package_path_name') and HEAD_or_RELEASE == "RELEASE":
+	link_path = source_path + os.sep + package
+	log_obj.log("Link path: %s\n" % link_path)
+	if not os.path.islink(link_path):
+		if os.path.exists(link_path):
+			log_obj.log("%s is not a symbolic link (it should be)\n" % link_path)
+			sys.exit(1)
+		try:
+			os.symlink(package_obj.info['source_package_path_name'], link_path)
+		except:
+			log_obj.log("Error creating symlink: %s\n" % link_path)
+			sys.exit(1)
+
+
+package_path = source_path + os.sep + package
+distutils.dir_util.mkpath(package_path)
 
 env = packaging.buildenv(distro, logger=log_obj)
 
@@ -93,7 +110,7 @@ env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
 
 log_obj.log("Starting to build source dist...\n")
 (status, output) = env.ssh.execute('mount /proc &> /dev/null', exec_as_root=1)
-(status, output) = env.ssh.execute('/tmp/do-msvn-tar %s %s %s' % (RELEASE_or_HEAD, package, version) )
+(status, output) = env.ssh.execute('/tmp/do-msvn-tar %s %s %s' % (HEAD_or_RELEASE, package, version) )
 
 if status:
         env.unlock_env()
@@ -108,7 +125,7 @@ tarball = output.split().pop()
 env.ssh.copy_from('/tmp/built-tarball/%s' % tarball, package_path )
 
 # Keep a map of which params produce which tarball
-repo.add_file(RELEASE_or_HEAD, package, version, package_path + os.sep + tarball)
+repo.add_file(HEAD_or_RELEASE, package, version, package_path + os.sep + tarball)
 
 env.unlock_env()
 

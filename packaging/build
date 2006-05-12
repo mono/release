@@ -18,6 +18,7 @@
 import sys
 import glob
 import os.path
+import os
 import distutils.dir_util
 import signal
 
@@ -126,8 +127,25 @@ package_path = package.get_package_path(HEAD_or_RELEASE=HEAD_or_RELEASE)
 
 print package_path
 
-package_version_path = package_path + os.sep + ver_path
+# Create symlink to the real location if it's not there already if this def is configured with 'source_package_path_name'
+#  (Only do for RELEASE packages, since HEAD configure.in numbers can be inconsistant)
+if package.info.has_key('source_package_path_name') and HEAD_or_RELEASE == "RELEASE":
+	link_path = os.path.dirname(package_path) + os.sep + package_name
+	print "Link path: %s" % link_path
+	if not os.path.islink(link_path):
+		if os.path.exists(link_path):
+			print "%s is not a symbolic link (it should be)" % link_path
+			build_env.unlock_env()
+			sys.exit(1)
+		try:
+			os.symlink(package.info['source_package_path_name'], link_path)
+		except:
+			print "Error creating symlink: %s" % link_path
+			build_env.unlock_env()
+			sys.exit(1)
 
+
+package_version_path = package_path + os.sep + ver_path
 
 if os.path.exists(package_version_path):
 	print "The path for this package (%s) already exists. You probably need to bump the revision number" % package_version_path

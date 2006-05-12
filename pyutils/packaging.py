@@ -199,7 +199,24 @@ class package:
 
 		if HEAD_or_RELEASE == "HEAD": packages_dir = "snapshot_" + packages_dir
 
-		return os.path.join(config.packaging_dir, packages_dir, self.destroot, self.name)
+		package_path = os.path.join(config.packaging_dir, packages_dir, self.destroot, self.name)
+
+		# Create symlink if the package dir is there, but not the symlink
+		#  This is normally done in packaging/build, but do here just in case an installer script needs it,
+		#  but the link isn't there
+		if self.info.has_key('source_package_path_name') and HEAD_or_RELEASE == "RELEASE":
+			print "Link path: %s" % package_path
+			if not os.path.islink(package_path):
+				if os.path.exists(package_path):
+					print "%s is not a symbolic link (it should be)" % package_path
+					sys.exit(1)
+				try:
+					os.symlink(self.info['source_package_path_name'], package_path)
+				except:
+					print "Error creating symlink: %s" % package_path
+					sys.exit(1)
+
+		return package_path
 
 
 	# Used for constructing filenames

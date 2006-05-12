@@ -12,7 +12,7 @@ import distutils.dir_util
 
 import packaging
 
-RELEASE_or_HEAD = sys.argv[1]
+HEAD_or_RELEASE = sys.argv[1]
 package = sys.argv[2]
 version = sys.argv[3]
 
@@ -30,7 +30,7 @@ os.chdir('tarball-creation')
 
 # Construct subversion path of location we want to create a tarball from
 svn_paths = []
-if RELEASE_or_HEAD == "HEAD":
+if HEAD_or_RELEASE == "HEAD":
 	rev_arg = "-r " + version
 	if package_obj.info.has_key('HEAD_PATH'):
 		svn_paths += package_obj.info['HEAD_PATH']
@@ -65,11 +65,11 @@ VERSION = version
 print "SVN_SSH: %s" % SVN_SSH
 print "SVNEXPORT: %s" % SVNEXPORT
 print "MONO_ROOT: %s" % MONO_ROOT
-print "RELEASE_or_HEAD: %s" % RELEASE_or_HEAD
+print "HEAD_or_RELEASE: %s" % HEAD_or_RELEASE
 print "SVN_PATHS: %s" % SVN_PATHS
 print "VERSION: %s" % VERSION
 
-env_string = 'export SVN_SSH="%s"; export SVNEXPORT="%s"; export MONO_ROOT="%s"; export RELEASE_or_HEAD="%s"; export SVN_PATHS="%s"; export VERSION="%s"' % (SVN_SSH, SVNEXPORT, MONO_ROOT, RELEASE_or_HEAD, SVN_PATHS, VERSION)
+env_string = 'export SVN_SSH="%s"; export SVNEXPORT="%s"; export MONO_ROOT="%s"; export HEAD_or_RELEASE="%s"; export SVN_PATHS="%s"; export VERSION="%s"' % (SVN_SSH, SVNEXPORT, MONO_ROOT, HEAD_or_RELEASE, SVN_PATHS, VERSION)
 
 # If they don't have any svn_paths, they MUST specify BUILD_DIR
 if package_obj.info.has_key('BUILD_DIR'):
@@ -113,7 +113,7 @@ if package_obj.info.has_key('get_source'):
 	print "Command: %s" % command
 	os.system(command)
 else:
-	cache_dir = "/tmp/src_cache/%s/%s" % (package, RELEASE_or_HEAD)
+	cache_dir = "/tmp/src_cache/%s/%s" % (package, HEAD_or_RELEASE)
 	for path in svn_paths:
 		module = os.path.basename(path)
 
@@ -154,7 +154,7 @@ else:
 os.chdir(build_dir)
 
 # update_version_file (If this is a snapshot build)
-if RELEASE_or_HEAD == "HEAD":
+if HEAD_or_RELEASE == "HEAD":
 	if package_obj.info.has_key('update_version_file'):
 		script = def_file
 	else:

@@ -3,6 +3,7 @@
 # Probably will only build HEAD packages for now...  No reason it couldn't build RELEASE... ?
 
 # TODO: Logging
+# TODO: Prioritize builds: Maybe there should be one thread per jail, and that thread chooses a tarball to build, and prioritizes.  That way, there are no wait times for startup (we'll only sleep when there are no tarballs available to build)
 
 import sys
 import os

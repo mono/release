@@ -47,22 +47,22 @@ class source_file_repo:
                 self.info = {}
 
 
-        def add_file(self, RELEASE_or_HEAD, package_name, version, filename_path):
+        def add_file(self, HEAD_or_RELEASE, package_name, version, filename_path):
 
                 #print "Adding file: %s %s %s %s"  % (package_name, version, snapshot_rev, filename_path)
 
                 self.load_info()
                 # Add to structure
-                key = ":".join([RELEASE_or_HEAD, package_name, version])
+                key = ":".join([HEAD_or_RELEASE, package_name, version])
                 self.info[key] = filename_path
 
                 # Lock file
                 # Write out file
                 self.write_info()
 
-        def contains(self, RELEASE_or_HEAD, package_name, version):
+        def contains(self, HEAD_or_RELEASE, package_name, version):
                 self.load_info()
-                return self.info.has_key(":".join([RELEASE_or_HEAD, package_name, version]))
+                return self.info.has_key(":".join([HEAD_or_RELEASE, package_name, version]))
 
 
         # Probably won't need this...
@@ -110,7 +110,7 @@ class source_file_repo:
 		# Ex: /<full_path>/tarball_logs/RELEASE/libgdiplus-1.1/1.1.13.4.log
 		return config.mktarball_logs + os.sep + key.replace(":", "/") + ".log"
 
-	def get_latest_tarball(self, RELEASE_or_HEAD, package_name):
+	def get_latest_tarball(self, HEAD_or_RELEASE, package_name):
 		self.load_info()
 
 		versions = []
@@ -118,15 +118,15 @@ class source_file_repo:
 		for key in self.info.iterkeys():
 			stuff = key.split(":")
 			# If this is the release and packagename
-			if stuff[0] == RELEASE_or_HEAD and stuff[1] == package_name:
+			if stuff[0] == HEAD_or_RELEASE and stuff[1] == package_name:
 				# If the tarball creation succeeded
-				if self.info[":".join([RELEASE_or_HEAD, package_name, stuff[2]])] != "tarball_creation_failed":
+				if self.info[":".join([HEAD_or_RELEASE, package_name, stuff[2]])] != "tarball_creation_failed":
 					versions.append(stuff[2])
 
 		# TODO: Better error handling here
 		try:
 			latest = utils.version_sort(versions).pop()
-			latest_filename = self.info[":".join([RELEASE_or_HEAD, package_name, latest])]
+			latest_filename = self.info[":".join([HEAD_or_RELEASE, package_name, latest])]
 		except:
 			latest_filename = ""
 
