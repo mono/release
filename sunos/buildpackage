@@ -102,8 +102,8 @@ def build_package(target):
 	files = []
 	for zip in zip_packages_to_include[target]:
 		package = packaging.package(env, zip)
-		files += package.get_latest_files()
-		files += package.get_latest_dep_files()
+		files += package.get_files()
+		files += package.get_dep_files()
 
 	# Remove duplicates
 	files = utils.remove_list_duplicates(files)

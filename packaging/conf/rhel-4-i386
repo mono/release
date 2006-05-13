@@ -1,2 +1,8 @@
 target_host=builder@monobuild1.boston.ximian.com
 jaildir=/jails/rhel-4as-i386-root-0/jail
+
+distro_aliases=(
+	rhel-4as-i386
+	rhel-4ws-i386
+	rhel-4es-i386
+)

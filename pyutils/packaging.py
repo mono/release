@@ -84,12 +84,6 @@ class buildenv:
 		else:
 			info['os'] = build_os
 
-		### DISTRO_ALIASES ###
-		if   self.name == 'rhel-3-i386':
-			info['distro_aliases'] = "rhel-3as-i386 rhel-3ws-i386 rhel-3es-i386".split()
-		elif self.name == 'rhel-4-i386':
-			info['distro_aliases'] = "rhel-4as-i386 rhel-4ws-i386 rhel-4es-i386".split()
-
 
 		# Pull out all vars in the distro conf file
 		conf_file = os.path.join(config.packaging_dir, "conf", self.name)
@@ -111,6 +105,7 @@ class buildenv:
 				info[key] = ""
 
 		self.info = info
+
 
 	# TODO: use fcntl?
 	def lock_env(self):
@@ -141,7 +136,7 @@ class buildenv:
 
 class package:
 
-	def __init__(self, package_env, name):
+	def __init__(self, package_env, name, bundle_obj="", bundle_name=""):
 		"""Args: buildenv object, string name of a file in packaging/defs.
 		"""
 
@@ -161,13 +156,24 @@ class package:
 
 		self.info = shell_parse.parse_file(self.def_file)
 
+		# Handle bundle
+		if bundle_obj and bundle_name:
+			print "Cannot pass bundle_obj and bundle_name to package constructor"
+			sys.exit(1)
+		# Prioritize bundle obj, and then bundle_name
+		if bundle_obj: self.bundle_obj = bundle_obj
+		# Remember, if bundle_name is empty, the BUNDLE var will be used
+		#  and if BUNDLE env var is empty, as well as bundle_name, bundle_obj.exists = False
+		else: self.bundle_obj = bundle(bundle_name)
+
 		# if we have a build env
 		if self.package_env:
 			self.destroot = self.execute_function('get_destroot', 'DEST_ROOT')
 			self.path = self.get_package_path()
 
-		# Initialize for later...
+		# Initialize for later... (for caching)
 		self.version = ""
+		self.latest_version = ""
 
 	def execute_function(self, func_name, var_to_echo=""):
 
@@ -231,9 +237,6 @@ class package:
 			revision = serial + ".novell"
 		return revision
 
-	#TODO;
-	#  functions to get all the deps (urls and mono deps) for a package
-	#  Should this go in the package class or not? Probably should...
 	def get_mono_deps(self):
 		if self.info.has_key('MONO_DEPS'):
 			return self.info['MONO_DEPS']
@@ -256,22 +259,56 @@ class package:
 		else:
 			return []
 
-	def get_latest_files(self):
-		path = self.path + os.sep + self.get_version()
+	def get_files(self):
+		version = self.get_version()
+		path = self.path + os.sep + version
 
 		files = []
-		files += glob.glob(path + os.sep + '*.zip')
-		files += glob.glob(path + os.sep + '*.rpm')
+	
+		if version:
+			files += glob.glob(path + os.sep + '*.zip')
+			files += glob.glob(path + os.sep + '*.rpm')
 
 		return files
 
 	def get_version(self):
+
 		if not self.version:
-			self.version = utils.get_latest_ver(self.path)
+			if not self.latest_version:
+					self.latest_version = utils.get_latest_ver(self.path)
+
+			if self.bundle_obj.version_map_exists:
+				# Cases
+				# 1. version from bundle
+				if self.bundle_obj.version_map.has_key(self.name):
+					self.version = self.bundle_obj.version_map[self.name]
+				# 2. If a package is not listed in bundle, skip it
+				#  TODO: will this have to be handled elsewhere?
+				else:
+					return ""
+
+				# 3. If a package is listed as package="", select the latest version
+				if self.version == "": self.version = self.latest_version
+
+				# 4. If version has a release of x-0, select x (will have to do with selecting sources as well)
+				elif re.compile('([\d\.]*)-0').search(self.version):
+					# Weird comma is because groups() returns tuples
+					self.version, = re.compile('([\d\.]*)-0').search(self.version).groups(1)
+				# 5. If version doesn't have a release (signified by a dash), get the latest release of that version
+				elif not re.compile('[\d\.]*-').search(self.version):
+					self.version = utils.get_latest_ver(self.path, version=self.version)
+
+				if not os.path.exists(self.path + os.sep + self.version):
+					print "Trying to use %s/%s but this path does not exist!" % (self.path, self.version)
+					sys.exit(1)
+
+			else:
+				self.version = self.latest_version
+
 		return self.version
 
-	# Get all url deps, as well as mono_deps latest zip/rpms files, and their url deps
-	def get_latest_dep_files(self):
+	# Get all url deps, as well as mono_deps zip/rpms files, and their url deps
+	def get_dep_files(self):
 		files = []
 
 		url_dest = config.packaging_dir + os.sep + 'external_zip_pkg'
@@ -280,7 +317,7 @@ class package:
 			# Get files for mono deps
 				# Woah, total cheat here, I imported packaging, and am using it!
 			package = packaging.package(self.package_env, dep)
-			files += package.get_latest_files()
+			files += package.get_files()
 
 			# Get url files
 			for url in package.get_distro_zip_deps():
@@ -299,5 +336,27 @@ class package:
 		if self.info['BUILD_HOSTS'].count(platform):
 			return_val = 1
 		return return_val
+
+
+class bundle:
+	def __init__(self, bundle_name=""):
+		"""Args: optional: bundle_name, pointing to a file in packaging/bundles
+		If this is blank, the BUNDLE environment var will be checked with the bundle name
+		If this is blank, no version selection will be used."""
+
+		self.info = {}
+		self.version_map = {}
+		self.bundle_name = bundle_name
+		self.version_map_exists = False
+
+		if not bundle_name and os.environ.has_key('BUNDLE'):
+			self.bundle_name = os.environ['BUNDLE']
+			self.info = shell_parse.parse_file(config.packaging_dir + os.sep + "bundles" + os.sep + self.bundle_name)
+			if self.info.has_key('versions'):
+				self.version_map = shell_parse.parse_string("\n".join(self.info['versions']))
+				self.version_map_exists = True
+		else:
+			print "No bundle specified.  Using latest version of packages..."
+
 
 

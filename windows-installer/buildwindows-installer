@@ -84,7 +84,7 @@ class Selection:
 			self.files = []
 			
 			for package in self.packages:
-				self.files += self.pack_objs[package].get_latest_files()
+				self.files += self.pack_objs[package].get_files()
 
 			for dep in self.deps:
 				self.urls += self.pack_objs[dep].get_distro_zip_deps() + self.pack_objs[dep].get_distro_zip_runtime_deps()

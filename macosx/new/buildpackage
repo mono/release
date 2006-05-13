@@ -46,8 +46,8 @@ def build_package(target):
         for pac in packages_to_include[target]:
                 package = packaging.package(env, pac)
 		versions[pac] = package.get_version()
-                files += package.get_latest_files()
-                files += package.get_latest_dep_files()
+                files += package.get_files()
+                files += package.get_dep_files()
 
 	# Remove duplicates
         files = utils.remove_list_duplicates(files)

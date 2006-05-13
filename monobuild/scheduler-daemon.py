@@ -4,6 +4,7 @@
 
 # TODO: Logging
 # TODO: Prioritize builds: Maybe there should be one thread per jail, and that thread chooses a tarball to build, and prioritizes.  That way, there are no wait times for startup (we'll only sleep when there are no tarballs available to build)
+# Possible TODO: For the slower build platforms, we could check to make sure the build succeeded on i386 before starting... ?
 
 import sys
 import os

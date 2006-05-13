@@ -1,0 +1,46 @@
+# Directory used when created go-mono.com/archive/<archive_version>
+#  This will need to be manually bumped each time... don't forget!!
+archive_version="1.1.13.8"
+
+# One file in this dir can have this option.  For now it denotes which config will have
+#  the repos created for them and which config will generate: go-mono.com/download/<distro>
+#  and go-mono.com/sources
+#main_download=1
+
+
+# Note:  release values are optional
+#   (sources will not be based on release value)
+#   (If a release is specified, select that release, otherwise select the version with the latest release)
+
+# Mantra: don't want to have to backward maintain version_selection_conf files... just specify release of 0 for older versions that you don't want to update
+#	Fetch... release of zero has no release...
+# If a package is available, but not listed here, skip it
+# If a package is listed as package="", select the latest version
+
+#But Dang... different distros might have different releases...  but, if you specify a release, that release had better be there!... or program will exit
+
+#  This is more for a stable release
+#  Populate this based on what a HEAD release went at, and then make minor updates when appropriate
+#  These versions will also be used to select sources
+versions=(
+	mono="1.1.13.8"
+	libgdiplus="1.1.13.6"
+	xsp="1.1.13"
+	mod_mono="1.1.13"
+	gtk-sharp="1.0.10"
+	mono-tools="1.1.11"
+	gecko-sharp="0.6"
+	gecko-sharp-2.0="0.11"
+	gtksourceview-sharp-2.0="0.10"
+	monodevelop="0.9"
+	boo="0.7.0.1921"
+	ikvm="0.22"
+	mono-debugger="0.12"
+	heap-buddy="0.1"
+	cocoa-sharp="0.9.1"
+	gtk-sharp-2.0="2.4.2"
+	gtk-sharp-2.8="2.8.2"
+)
+
+# Installer note: installer versions will be based on the mono version.  But also, the installer scripts will also use these files to select packages... we would need to maintain stable installer versions as well
+

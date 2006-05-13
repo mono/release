@@ -386,22 +386,41 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 	return exit_code, "".join(collected).rstrip()
 
 
-# This isn't buildenv or package specific, leave it here
-def get_latest_ver(dir):
+def get_latest_ver(dir, version=""):
+	"""args: dir, and optional version.
+	If version is specified, the latest release of that version will be selected."""
 
 	if os.path.exists(dir):
 		files = os.listdir(dir)
 	else:
-		print "Path does not exist: %s" % dir
+		print "utils.get_latest_ver: Path does not exist: %s" % dir
 		sys.exit(1)
 
 	if not files:
-		print "No dir entries in %s, exiting..." % dir
+		print "utils.get_latest_ver: No dir entries in %s, exiting..." % dir
 		sys.exit(1)
-		
-        latest_version = version_sort(files).pop()
+
+	# If a version is specified, find latest release of that version
+	if version:
+		candidates = []
+		if os.path.exists(dir + os.sep + version):
+			candidates.append(version)
+
+		for file in files:
+			# If a version is found in 'version-x' format, add it to candidates
+			if file.find(version + "-") != -1:
+				candidates.append(file)
+		files = candidates
+
+		if len(files) == 0:
+			print "utils.Could not find dir entry for '%s/%s', exiting" % (dir, version)
+			sys.exit(1)
+
+	latest_version = version_sort(files).pop()
 
         return latest_version
+
+
 
 # TODO: Might implement this in python later... ?
 def version_sort(my_list):

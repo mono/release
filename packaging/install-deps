@@ -47,12 +47,12 @@ target_env = packaging.buildenv(target, print_output=1)
 files = []
 if build_deps_package != 'none':
 	package = packaging.package(target_env, build_deps_package)
-	files += package.get_latest_dep_files()
+	files += package.get_dep_files()
 
 for dep in deps:
 	package = packaging.package(target_env, dep)
-	files += package.get_latest_files()
-	files += package.get_latest_dep_files()
+	files += package.get_files()
+	files += package.get_dep_files()
 
 
 # Remove duplciates

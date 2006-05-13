@@ -1,0 +1,17 @@
+# Directory used when created go-mono.com/archive/<archive_version>
+#  This will need to be manually bumped each time on head... don't forget!!
+archive_version="1.1.15"
+
+# One file in this dir can have this option.  For now it denotes which config will have
+#  the repos created for them and which config will generate: go-mono.com/download/<distro>
+#  and go-mono.com/sources
+main_download=1
+
+# This is left empty, because versions on HEAD will always be the latest
+#  This is more for a stable release
+#versions=(
+#mono="latest"
+#gtk-sharp="latest"
+#gtk-sharp="latest"
+#)
+
