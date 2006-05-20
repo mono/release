@@ -3,6 +3,8 @@ jaildir=/jails/rhel-3as-i386-duncan-0
 
 distro_aliases=(
 	rhel-3as-i386
-	rhel-3ws-i386
 	rhel-3es-i386
+	rhel-3ws-i386
 )
+
+USE_OC=1

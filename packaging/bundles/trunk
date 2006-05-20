@@ -1,0 +1,15 @@
+# Directory used when created go-mono.com/archive/<archive_version>
+#  This will need to be manually bumped each time on head... don't forget!!
+archive_version="trunk"
+
+bundle_urlname="trunk"
+
+# If this doesn't exist in the bundle, it's assumed to be RELEASE
+#  This is used for installing from snapshot_sources/packages
+HEAD_or_RELEASE="HEAD"
+
+# This is left empty, because versions on HEAD will always be the latest
+#  This is more for a stable release
+#versions=(
+#)
+

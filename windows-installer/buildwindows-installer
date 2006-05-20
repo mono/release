@@ -343,12 +343,11 @@ for selection in selections:
 	# Substitute pkgconfig files
 	parameter_map = {}
 	parameter_map[re.compile('^prefix=.*', re.M)] = "prefix=@@WIN_MONO_INST_DIR@@"
-	qualifier = re.compile('')  # No qualifier
 	
 	if os.path.exists('lib/pkgconfig'):
 		os.chdir('lib/pkgconfig')
 		for file in os.listdir('.'):
-			utils.substitute_parameters_in_file(file, qualifier, parameter_map)
+			utils.substitute_parameters_in_file(file, parameter_map)
 		os.chdir('../..')
 	#
 	#########################################
@@ -374,7 +373,7 @@ for selection in selections:
 	if os.path.exists('bin'):
 		os.chdir('bin')
 		for file in os.listdir('.'):
-			utils.substitute_parameters_in_file(file, qualifier, parameter_map)
+			utils.substitute_parameters_in_file(file, qualifier=qualifier, parameter_map)
 		os.chdir('..')
 
 	#
@@ -396,7 +395,6 @@ for selection in selections:
 
 			shell_match = re.compile('#! ?\/bin\/sh')
 			mono_match = re.compile(r"mono")
-			empty_match = re.compile('')
 
 
 			if shell_match.search(text) and mono_match.search(text):
@@ -428,7 +426,7 @@ for selection in selections:
 					parameter_map[re.compile(r'([cC]:\\cygwin)?\\tmp\\install')] = "@@WIN_MONO_INST_DIR@@"
 					parameter_map[re.compile(r'([cC]:\\cygwin)?\\tmp\\build_deps')] = "@@WIN_MONO_INST_DIR@@"
 
-				utils.substitute_parameters_in_file(bat_file, empty_match, parameter_map)
+				utils.substitute_parameters_in_file(bat_file, parameter_map)
 
 
 		os.chdir('..')
@@ -492,41 +490,41 @@ utils.add_dll_map('mono/etc/mono/config', '<dllmap dll="gtkhtml-3.0" target="lib
 
 parameter_map = {}
 parameter_map[re.compile(r"\\assembler")] = r"\\lib\\monodoc\\assembler"
-utils.substitute_parameters_in_file("monodoc/bin/mdassembler.bat", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("monodoc/bin/mdassembler.bat", parameter_map)
 
 parameter_map = {}
 parameter_map[re.compile(r"\\cs2ecma")] = r"\\lib\\monodoc\\cs2ecma"
-utils.substitute_parameters_in_file("monodoc/bin/mdcs2ecma.bat", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("monodoc/bin/mdcs2ecma.bat", parameter_map)
 
 parameter_map = {}
 parameter_map[re.compile(r"\\normalize")] = r"\\lib\\monodoc\\normalize"
-utils.substitute_parameters_in_file("monodoc/bin/mdnormalizer.bat", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("monodoc/bin/mdnormalizer.bat", parameter_map)
 
 parameter_map = {}
 parameter_map[re.compile(r"\\validate")] = r"\\lib\\monodoc\\validate"
-utils.substitute_parameters_in_file("monodoc/bin/mdvalidater.bat", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("monodoc/bin/mdvalidater.bat", parameter_map)
 
 parameter_map = {}
 parameter_map[re.compile(r"\\mod")] = r"\\lib\\monodoc\\mod"
-utils.substitute_parameters_in_file("monodoc/bin/mod.bat", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("monodoc/bin/mod.bat", parameter_map)
 
 parameter_map = {}
 parameter_map[re.compile(r"\\monodocer")] = r"\\lib\\monodoc\\monodocer"
-utils.substitute_parameters_in_file("monodoc/bin/monodocer.bat", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("monodoc/bin/monodocer.bat", parameter_map)
 
 parameter_map = {}
 parameter_map[re.compile(r"\\monodocs2html")] = r"\\lib\\monodoc\\monodocs2html"
-utils.substitute_parameters_in_file("monodoc/bin/monodocs2html.bat", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("monodoc/bin/monodocs2html.bat", parameter_map)
 
 parameter_map = {}
 parameter_map[re.compile(r"\\monodocs2slashdoc")] = r"\\lib\\monodoc\\monodocs2slashdoc"
-utils.substitute_parameters_in_file("monodoc/bin/monodocs2slashdoc.bat", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("monodoc/bin/monodocs2slashdoc.bat", parameter_map)
 
 
 # From mono-tools
 parameter_map = {}
 parameter_map[re.compile(r"browser.exe")] = r"browser.exe --no-gecko"
-utils.substitute_parameters_in_file("monodoc/bin/monodoc", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("monodoc/bin/monodoc", parameter_map)
 
 parameter_map = {}
 #  Add path so gconf stuff can load
@@ -534,12 +532,12 @@ parameter_map = {}
 parameter_map[re.compile('@"@@')] = 'PATH=@@DOS_MONO_INST_DIR@@\\\\bin;%PATH%\r\n@"@@'
 #  This is weird... but it works
 parameter_map[re.compile('browser.exe"')] = 'lib\monodoc\\\\browser.exe" --no-gecko'
-utils.substitute_parameters_in_file("monodoc/bin/monodoc.bat", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("monodoc/bin/monodoc.bat", parameter_map)
 
 # Substitute the config file to point to the docs
 parameter_map = {}
 parameter_map[re.compile(r"/usr")] = r"@@WIN_MONO_INST_DIR@@"
-utils.substitute_parameters_in_file("monodoc/lib/mono/gac/monodoc/1.0.0.0__0738eb9f132ed756/monodoc.dll.config", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("monodoc/lib/mono/gac/monodoc/1.0.0.0__0738eb9f132ed756/monodoc.dll.config", parameter_map)
 
 #
 ##############################################
@@ -552,13 +550,13 @@ utils.substitute_parameters_in_file("monodoc/lib/mono/gac/monodoc/1.0.0.0__0738e
 # Substitute some etc files
 parameter_map = {}
 parameter_map[re.compile(r"(c:)?\/devel\/target\/gtk\+-2.6.9")] = r"@@WIN_MONO_INST_DIR@@"
-utils.substitute_parameters_in_file("gtk/etc/gtk-2.0/gdk-pixbuf.loaders", re.compile(''), parameter_map)
-utils.substitute_parameters_in_file("gtk/etc/gtk-2.0/gtk.immodules", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("gtk/etc/gtk-2.0/gdk-pixbuf.loaders", parameter_map)
+utils.substitute_parameters_in_file("gtk/etc/gtk-2.0/gtk.immodules", parameter_map)
 
 # Now for pango
 parameter_map = {}
 parameter_map[re.compile(r"c:/devel/target/pango-1.8.2")] = r"@@WIN_MONO_INST_DIR@@"
-utils.substitute_parameters_in_file("gtk/etc/pango/pango.modules", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("gtk/etc/pango/pango.modules", parameter_map)
 
 #
 ##############################################
@@ -588,14 +586,14 @@ parameter_map[re.compile("@@GTK_SHARP_VERSION@@")] = sys.argv[2]
 parameter_map[re.compile("@@MONO_REVISION@@")] = sys.argv[3]
 parameter_map[re.compile("@@MONO_GUID@@")] = guid
 parameter_map[re.compile("@@DATE@@")] = datetime.date.today().strftime('%b %d, %Y')
-utils.substitute_parameters_in_file("Mono.iss", re.compile(''), parameter_map)
-utils.substitute_parameters_in_file('build/mono/ReleaseNotes.txt', re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("Mono.iss", parameter_map)
+utils.substitute_parameters_in_file('build/mono/ReleaseNotes.txt', parameter_map)
 
 # Massage setmonopath.bat
 parameter_map = {}
 parameter_map[re.compile("@@MONO_VERSION@@")] = sys.argv[1]
 parameter_map[re.compile("@@MONO_REVISION@@")] = sys.argv[3]
-utils.substitute_parameters_in_file("build/mono/bin/setmonopath.bat", re.compile(''), parameter_map)
+utils.substitute_parameters_in_file("build/mono/bin/setmonopath.bat", parameter_map)
 
 # Copy everything to windows_build_client 
 print "Cleaning up files from build client..."

@@ -5,3 +5,6 @@ target_command_prefix=". /etc/profile;"
 build_location="/FS/fs0153/builder/tmp"
 
 web_index=4
+
+USE_OC=1
+USE_YAST=1

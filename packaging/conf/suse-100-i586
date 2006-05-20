@@ -1,3 +1,9 @@
 target_host=builder@hardhat.boston.ximian.com
 jaildir=/jails/suse-100-i586/jail
 target_command_prefix=". /etc/profile;"
+
+# Repo conf
+USE_OC=1
+OC_DOWNLOAD_URL="http://primates.ximian.com/~rml/sanitize/"
+USE_YAST=1
+

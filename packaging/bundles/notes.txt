@@ -1,0 +1,21 @@
+Several scripts use methods in packaging.py to select the latest version of a package.
+
+This method will look for an environment variable of the name of a file in version_selection_conf.
+
+The version_selection_conf file will contain mappings to certain versions for certain 'selection_conf's.
+
+This gives many possibilities:
+
+-We can build packages targeted for a previous release
+-We can build different versions of installers based on an environment variable
+-We can publish and generate webpages for different releases, and previously releases can
+ be easily updated
+-We can generate different package repositories based on a version_selection.
+
+version_selections will generally follow maintained branches.
+
+
+TODO:
+Document all the options that are available in a bundle config:
+
+

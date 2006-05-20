@@ -71,7 +71,8 @@ def get_package_objs():
         pack_objs = []
         pack_map = {}
         for package in packages:
-                pack_obj = packaging.package("", package)
+		# Don't try to create the dirs and links because this code is run by the web server
+                pack_obj = packaging.package("", package, create_dirs_links=False)
                 if pack_obj.info.has_key('web_index'):
                         index = pack_obj.info['web_index']
 			print "Index: " + index

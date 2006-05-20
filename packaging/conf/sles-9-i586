@@ -1,2 +1,7 @@
 target_host=builder@hardhat.boston.ximian.com
 jaildir=/jails/sles-9-i586-duncan-0
+
+# Repo conf
+USE_OC=1
+USE_YAST=1
+

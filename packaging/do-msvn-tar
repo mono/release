@@ -20,7 +20,7 @@ version = sys.argv[3]
 os.chdir('/tmp')
 
 dummy_env = ""
-package_obj = packaging.package(dummy_env, package)
+package_obj = packaging.package(dummy_env, package, inside_jail=True)
 
 if os.path.exists('tarball-creation'):
 	shutil.rmtree('tarball-creation')

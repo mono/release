@@ -6,6 +6,7 @@ import os
 import os.path
 import glob
 import fcntl
+import distutils.dir_util
 
 import pdb
 
@@ -86,8 +87,7 @@ class buildenv:
 
 
 		# Pull out all vars in the distro conf file
-		conf_file = os.path.join(config.packaging_dir, "conf", self.name)
-		conf_info = shell_parse.parse_file(conf_file)
+		conf_info = shell_parse.parse_file(self.conf_file)
 		# Copy info from conf file into structure we've been building
 		for k, v in conf_info.iteritems():
 			info[k] = v
@@ -136,12 +136,19 @@ class buildenv:
 
 class package:
 
-	def __init__(self, package_env, name, bundle_obj="", bundle_name=""):
+	def __init__(self, package_env, name, bundle_obj="", bundle_name="", source_basepath="", package_basepath="", inside_jail=False, HEAD_or_RELEASE="", create_dirs_links=True):
 		"""Args: buildenv object, string name of a file in packaging/defs.
+		source/package_basepath: full path to where packages are.  Can be overridden (used for web publishing)
+		inside_jail: this packaging module is used in release/pyutils and /tmp.  If it's in /tmp, that means we're inside the jail
+		   and there are certain things we shouldn't do.
 		"""
 
 		self.package_env = package_env
 		self.name = name
+		self.source_basepath = source_basepath
+		self.package_basepath = package_basepath
+		self.inside_jail = inside_jail
+		self.create_dirs_links = create_dirs_links
 
 		# Default to use the file in the current dir, otherwise look in the defs dir
 		#  (This change was for do-msvn tar)
@@ -151,29 +158,51 @@ class package:
 			self.def_file = os.path.join(config.packaging_dir, "defs", name)
 
 		if not os.path.exists(self.def_file):
-			print "File not found: %s" % self.def_file
+			print "package.__init__(): File not found: %s" % self.def_file
 			sys.exit(1)
 
 		self.info = shell_parse.parse_file(self.def_file)
+
+		# Shell config hack to properly populate USE_HOSTS 
+		if self.info['USE_HOSTS'] == ['${BUILD_HOSTS[@]}']:
+			self.info['USE_HOSTS'] = self.info['BUILD_HOSTS']
 
 		# Handle bundle
 		if bundle_obj and bundle_name:
 			print "Cannot pass bundle_obj and bundle_name to package constructor"
 			sys.exit(1)
-		# Prioritize bundle obj, and then bundle_name
-		if bundle_obj: self.bundle_obj = bundle_obj
+		# Prioritize bundle obj, and then bundle_name, the 'bundle' from def file, and then resort to an empty bundl
+		if bundle_obj:
+			self.bundle_obj = bundle_obj
 		# Remember, if bundle_name is empty, the BUNDLE var will be used
-		#  and if BUNDLE env var is empty, as well as bundle_name, bundle_obj.exists = False
-		else: self.bundle_obj = bundle(bundle_name)
+		#  and if BUNDLE env var is empty, as well as bundle_name, bundle_obj.version_map_exists = False
+		elif bundle_name:
+			self.bundle_obj = bundle(bundle_name=bundle_name)
+		# Check to see if the bundle file exists... (if it doesn't, we may be in a jail, or the config file info is wrong)
+		elif self.info.has_key('bundle') and os.path.exists(os.path.join(config.packaging_dir, 'bundles', self.info['bundle'])):
+			self.bundle_obj = bundle(bundle_name=self.info['bundle'])
+		else:
+			self.bundle_obj = bundle(bundle_name="")
+
+		# What's passed in overrides the bundle conf
+		if HEAD_or_RELEASE:
+			self.HEAD_or_RELEASE = HEAD_or_RELEASE
+		elif self.bundle_obj.info.has_key('HEAD_or_RELEASE'):
+			self.HEAD_or_RELEASE = self.bundle_obj.info['HEAD_or_RELEASE']
+		else:
+			self.HEAD_or_RELEASE = "RELEASE"
 
 		# if we have a build env
 		if self.package_env:
 			self.destroot = self.execute_function('get_destroot', 'DEST_ROOT')
-			self.path = self.get_package_path()
+
+		self.setup_paths()
+		self.setup_symlinks()
 
 		# Initialize for later... (for caching)
 		self.version = ""
 		self.latest_version = ""
+		self.source_filename = ""
 
 	def execute_function(self, func_name, var_to_echo=""):
 
@@ -194,36 +223,63 @@ class package:
 
 		return output
 
-	def get_package_path(self, HEAD_or_RELEASE="RELEASE"):
+	def setup_paths(self):
+		"""Construct basepaths and relative paths for sources and packages."""
 
-		# If it's a zipdir package
-		#  Make an exception for noarch packages
-		if self.package_env.info['USE_ZIP_PKG'] and self.destroot != 'noarch':
-			packages_dir = "zip_packages"
-		else:
-			packages_dir = "packages"
+		# Set up full basepaths
+		if self.package_env and not self.package_basepath:
+			# If it's a zipdir package
+			#  Make an exception for noarch packages
+			if self.package_env.info['USE_ZIP_PKG'] and self.destroot != 'noarch':
+				packages_dir = "zip_packages"
+			else:
+				packages_dir = "packages"
 
-		if HEAD_or_RELEASE == "HEAD": packages_dir = "snapshot_" + packages_dir
+			if self.HEAD_or_RELEASE == "HEAD": packages_dir = "snapshot_" + packages_dir
 
-		package_path = os.path.join(config.packaging_dir, packages_dir, self.destroot, self.name)
+			self.package_basepath = os.path.join(config.packaging_dir, packages_dir)
 
-		# Create symlink if the package dir is there, but not the symlink
-		#  This is normally done in packaging/build, but do here just in case an installer script needs it,
-		#  but the link isn't there
-		if self.info.has_key('source_package_path_name') and HEAD_or_RELEASE == "RELEASE":
-			print "Link path: %s" % package_path
-			if not os.path.islink(package_path):
-				if os.path.exists(package_path):
-					print "%s is not a symbolic link (it should be)" % package_path
-					sys.exit(1)
-				try:
-					os.symlink(self.info['source_package_path_name'], package_path)
-				except:
-					print "Error creating symlink: %s" % package_path
-					sys.exit(1)
+		if not self.source_basepath:
+			if self.HEAD_or_RELEASE == "HEAD":
+				sources_dir = "snapshot_sources"
+			else:
+				sources_dir = "sources"
+			self.source_basepath = config.packaging_dir + os.sep + sources_dir
 
-		return package_path
+		# Set up relative and full paths
+		if self.package_env:
+			self.package_relpath = self.destroot + os.sep + self.name
+			self.package_fullpath = self.package_basepath + os.sep + self.package_relpath
 
+		self.source_relpath = self.name
+		self.source_fullpath = self.source_basepath + os.sep + self.source_relpath
+		
+
+	def setup_symlinks(self):
+		"""Setup alias symlinks for sources and packages."""
+
+		if self.package_env:
+			dirs = [ self.package_fullpath, self.source_fullpath ]
+		else:	dirs = [ self.source_fullpath ]
+
+		# Create source and package symlinks if the dirs are there, but not the symlink
+		if self.info.has_key('source_package_path_name') and self.HEAD_or_RELEASE == "RELEASE" and self.create_dirs_links:
+			print "Link alias: %s" % self.info['source_package_path_name']
+			for dir in (dirs):
+				if not os.path.islink(dir) and not self.inside_jail:
+					if os.path.exists(dir):
+						print "%s is not a symbolic link (it should be)" % dir
+						sys.exit(1)
+					try:
+						os.symlink(self.info['source_package_path_name'], dir)
+					except:
+						print "Error creating symlink: %s" % dir
+						sys.exit(1)
+
+		# Create the paths if it doesn't exist
+		if not self.inside_jail and self.create_dirs_links:
+			for path in (dirs):
+				if not os.path.exists(path): distutils.dir_util.mkpath(path)
 
 	# Used for constructing filenames
 	def get_revision(self, serial):
@@ -259,33 +315,58 @@ class package:
 		else:
 			return []
 
-	def get_files(self):
-		version = self.get_version()
-		path = self.path + os.sep + version
+	def get_files(self, ext=['rpm', 'zip'], fail_on_missing=True):
+		"""call get_files_relpath, then append basepath to the front."""
+
+		files = self.get_files_relpath(ext=ext, fail_on_missing=fail_on_missing)
+		new_files = []
+
+		for file in files:
+			new_files.append(self.package_basepath + os.sep + file)
+	
+		return new_files
+
+	def get_files_relpath(self, ext=['rpm', 'zip'], fail_on_missing=True):
+		"""Get the list of files for this package, relative to the package_basepath."""
+
+		version = self.get_version(fail_on_missing=fail_on_missing)
+		path = self.package_fullpath + os.sep + version
 
 		files = []
 	
 		if version:
-			files += glob.glob(path + os.sep + '*.zip')
-			files += glob.glob(path + os.sep + '*.rpm')
+			current_dir = os.getcwd()
+			os.chdir(self.package_basepath)
+
+			if ext.__class__ == str:
+				ext = [ext]
+
+			for e in ext:
+				files += glob.glob(self.package_relpath + os.sep + version + os.sep + '*.%s' % e)
+
+			os.chdir(current_dir)
 
 		return files
 
-	def get_version(self):
+	def get_version(self, fail_on_missing=True):
 
 		if not self.version:
 			if not self.latest_version:
-					self.latest_version = utils.get_latest_ver(self.path)
+				self.latest_version = utils.get_latest_ver(self.package_fullpath, fail_on_missing=fail_on_missing)
 
 			if self.bundle_obj.version_map_exists:
 				# Cases
 				# 1. version from bundle
-				if self.bundle_obj.version_map.has_key(self.name):
-					self.version = self.bundle_obj.version_map[self.name]
-				# 2. If a package is not listed in bundle, skip it
-				#  TODO: will this have to be handled elsewhere?
+				name = self.name
+				if self.info.has_key('source_package_path_name') and self.HEAD_or_RELEASE == "RELEASE":
+					name = self.info['source_package_path_name']
+				if self.bundle_obj.version_map.has_key(name):
+					self.version = self.bundle_obj.version_map[name]
+				# 2. If a package is not listed in bundle, print warning and skip
 				else:
+					print "* Package %s not available in bundle (%s) ... skipping" % (self.name, self.bundle_obj.bundle_name)
 					return ""
+					#sys.exit(1)
 
 				# 3. If a package is listed as package="", select the latest version
 				if self.version == "": self.version = self.latest_version
@@ -296,16 +377,39 @@ class package:
 					self.version, = re.compile('([\d\.]*)-0').search(self.version).groups(1)
 				# 5. If version doesn't have a release (signified by a dash), get the latest release of that version
 				elif not re.compile('[\d\.]*-').search(self.version):
-					self.version = utils.get_latest_ver(self.path, version=self.version)
+					self.version = utils.get_latest_ver(self.package_fullpath, version=self.version, fail_on_missing=fail_on_missing)
 
-				if not os.path.exists(self.path + os.sep + self.version):
-					print "Trying to use %s/%s but this path does not exist!" % (self.path, self.version)
+				if not os.path.exists(self.package_fullpath + os.sep + self.version):
+					print "Trying to use %s/%s but this path does not exist!" % (self.package_fullpath, self.version)
 					sys.exit(1)
 
 			else:
 				self.version = self.latest_version
 
 		return self.version
+
+	def get_source_file(self, qualifier_reg=""):
+		if not self.source_filename:
+			if qualifier_reg:
+				reg = qualifier_reg
+			elif self.bundle_obj.version_map_exists and self.bundle_obj.version_map.has_key(self.name):
+				# Strip release version if it exists (so that a bundle conf may have a release attached, 
+				#   but that it won't apply to the source)
+				ver_wo_rel, = re.compile("(.*)-?").search(self.bundle_obj.version_map[self.name]).groups(1)
+				# Can't include self.name as part of reg because of cases like gtk-sharp-2.x
+				reg = re.compile(".*?-%s\.(tar\.(bz2|gz)|zip)" % ver_wo_rel)
+			else:
+				reg = re.compile(".*")
+
+			candidates = []
+			for file in os.listdir(self.source_fullpath):
+				if reg.search(file):
+					candidates.append(file)
+			
+			self.source_filename = self.name + os.sep + utils.version_sort(candidates).pop()
+
+		return self.source_filename
+
 
 	# Get all url deps, as well as mono_deps zip/rpms files, and their url deps
 	def get_dep_files(self):
@@ -331,9 +435,15 @@ class package:
 
 		return utils.remove_list_duplicates(files)
 
-	def valid_platform(self, platform):
+	def valid_build_platform(self, platform):
 		return_val = 0
 		if self.info['BUILD_HOSTS'].count(platform):
+			return_val = 1
+		return return_val
+
+	def valid_use_platform(self, platform):
+		return_val = 0
+		if self.info['USE_HOSTS'].count(platform):
 			return_val = 1
 		return return_val
 
@@ -349,12 +459,32 @@ class bundle:
 		self.bundle_name = bundle_name
 		self.version_map_exists = False
 
-		if not bundle_name and os.environ.has_key('BUNDLE'):
+		if self.bundle_name == "" and os.environ.has_key('BUNDLE'):
 			self.bundle_name = os.environ['BUNDLE']
+
+		if self.bundle_name != "":
 			self.info = shell_parse.parse_file(config.packaging_dir + os.sep + "bundles" + os.sep + self.bundle_name)
 			if self.info.has_key('versions'):
-				self.version_map = shell_parse.parse_string("\n".join(self.info['versions']))
+				# Can't do this because shell string vars can't have the '-' char...
+				#self.version_map = shell_parse.parse_string("\n".join(self.info['versions']))
+				self.version_map = {}
+
+				# Note: this ingores single and double quotes around the value
+				#  This was copied from shell_parse, but changed so that a var is .* instead of \w*
+				for match in re.compile('^\s*(.*?)=["\']?([^\(].*?)["\']?$', re.S | re.M).finditer("\n".join(self.info['versions'])):
+					# Weird hack... (easier than fixing the reg...)
+					if match.group(2) == '"':
+						value = ""
+					else:   value = match.group(2)
+					self.version_map[match.group(1)] = value
+
 				self.version_map_exists = True
+
+			# Make sure bundle contains minimum data
+			for key in "bundle_urlname archive_version".split():
+				if not self.info.has_key(key):
+					print "Required key (%s) not found in bundle config file" % key
+					sys.exit(1)
 		else:
 			print "No bundle specified.  Using latest version of packages..."
 

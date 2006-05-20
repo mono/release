@@ -174,7 +174,7 @@ def build_package(target):
 	parameter_map[re.compile("@@MONO_VERSION@@")] = version
 	parameter_map[re.compile("@@MONO_RELEASE@@")] = revision
 	parameter_map[re.compile("@@MONO_PACKAGES@@")] = packages_string
-	utils.substitute_parameters_in_file(pkginfo_file, re.compile(''), parameter_map)
+	utils.substitute_parameters_in_file(pkginfo_file, parameter_map)
 
 	# Create prototype
 	(code, prototype) = env.ssh.execute("cd %s; find . -print | pkgproto | sort" % remote_temp, capture_stderr=0 )

@@ -14,7 +14,7 @@ MONO_ROOT = " svn+ssh://wade@mono-cvs.ximian.com/source"
 #  Must do at startup, opposed to doing this in a function
 module_dir = os.path.dirname(__file__)
 if module_dir != "": module_dir += os.sep
-release_repo_root = packaging_root = os.path.abspath(module_dir + '..')
+release_repo_root = os.path.abspath(module_dir + '..')
 # This gets set to /home/wberrier/wa/msvn/release
 
 

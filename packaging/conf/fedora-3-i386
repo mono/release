@@ -1,2 +1,9 @@
 target_host=builder@monobuild1.boston.ximian.com
 jaildir=/jails/fedora-3-i386-root-0
+
+# Repo conf
+USE_OC=1
+OC_DOWNLOAD_URL="http://www.snorp.net/files/packages/rcd-fc3/"
+
+USE_YUM=1
+

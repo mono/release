@@ -47,6 +47,10 @@ rpmvercmp_path = os.path.abspath(module_dir + "../rpmvercmp/rpmvercmp")
 debug=0
 KILLED_EXIT_CODE=-42
 
+rpm_query_cache = {}
+
+match_all = re.compile('')
+
 # Get vars out of shell scripts (def files)
 def get_env_var(var_name, source):
 
@@ -66,8 +70,15 @@ def get_env_var(var_name, source):
         os.unlink(tmp_script)
 
         return output
-# Extract either tarball, rpm, or zip
-def extract_file(filename, preserve_symlinks=0):
+
+def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
+	"""Extract various file types.
+
+	preserve_symlinks: this option will be passed to copy_tree
+	truncate_path: only files under this dir will be extracted, and the truncate_path will not 
+		be included in extracted files"""
+
+
         print "Extracting: %s" % filename
         (root, ext) = os.path.splitext(filename)
 
@@ -113,14 +124,24 @@ def extract_file(filename, preserve_symlinks=0):
 				print output
 				sys.exit(1)
 
-                os.chdir("usr")
-		distutils.dir_util.copy_tree(".", "../..", preserve_symlinks=preserve_symlinks)
-
                 if status:
                         print "Error massaging files from rpm: %s" % filename
                         sys.exit(1)
 
-                os.chdir("../..")
+		if truncate_path:
+			current = os.getcwd()
+			try:
+				os.chdir(truncate_path)
+			except OSError:
+				print "truncate_path does not exist: %s (note: defaults to usr if nothing specified)" % truncate_path	
+				sys.exit(1)
+			distutils.dir_util.copy_tree(".", current + "/..", preserve_symlinks=preserve_symlinks)
+			os.chdir(current)
+		else:
+			distutils.dir_util.copy_tree(".", "..", preserve_symlinks=preserve_symlinks)
+
+
+                os.chdir("..")
                 shutil.rmtree(tempdir)
 
 	# If it's a .tar.gz or tar.bz2
@@ -190,7 +211,7 @@ def get_url(url,destination):
                 (status, output) = launch_process(command, print_output=debug)
 
 
-def substitute_parameters_in_file(file, qualifier, parameter_map):
+def substitute_parameters_in_file(file, parameter_map, qualifier=match_all):
 
         fd = open(file, 'r')
         text = fd.read()
@@ -251,6 +272,21 @@ def remove_line_matching(file, text_to_remove):
         fd = open(file, 'w')
         fd.write(new_text)
         fd.close()
+
+def append_text_to_files(file_text_map):
+
+        for file in file_text_map.keys():
+                print "Adding text to: " + file
+
+		fd = open(file)
+		text = fd.read()
+		fd.close()
+
+                text += file_text_map[file]
+
+		fd = open(file, 'w')
+		fd.write(text)
+		fd.close()
 
 
 def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg="", logger="", output_timeout=0, kill_process_group=0):
@@ -386,7 +422,7 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 	return exit_code, "".join(collected).rstrip()
 
 
-def get_latest_ver(dir, version=""):
+def get_latest_ver(dir, version="", fail_on_missing=True):
 	"""args: dir, and optional version.
 	If version is specified, the latest release of that version will be selected."""
 
@@ -394,10 +430,6 @@ def get_latest_ver(dir, version=""):
 		files = os.listdir(dir)
 	else:
 		print "utils.get_latest_ver: Path does not exist: %s" % dir
-		sys.exit(1)
-
-	if not files:
-		print "utils.get_latest_ver: No dir entries in %s, exiting..." % dir
 		sys.exit(1)
 
 	# If a version is specified, find latest release of that version
@@ -408,15 +440,18 @@ def get_latest_ver(dir, version=""):
 
 		for file in files:
 			# If a version is found in 'version-x' format, add it to candidates
-			if file.find(version + "-") != -1:
+			if file.count(version + "-"):
 				candidates.append(file)
 		files = candidates
 
-		if len(files) == 0:
-			print "utils.Could not find dir entry for '%s/%s', exiting" % (dir, version)
+		if len(files) == 0 and fail_on_missing:
+			print "utils.get_latest_ver: Could not find dir entry for '%s/%s', exiting" % (dir, version)
 			sys.exit(1)
 
-	latest_version = version_sort(files).pop()
+	if files:
+		latest_version = version_sort(files).pop()
+	else:
+		latest_version = ""
 
         return latest_version
 
@@ -471,4 +506,31 @@ def time_duration_asc(start, finish):
 	# Return minutes of duration
 	return (finish_time - start_time) / 60
 
+def rpm_query(query_format, file):
+
+	marker = "__MONO__"
+
+	# Find if query is a string or list
+	if query_format.__class__ == str:
+		query_format = [ query_format ]
+
+	# Build up query string
+	for i in range(0, len(query_format)):
+		query_format[i] = "%{" + query_format[i] + "}"
+
+	query_string = marker.join(query_format)
+
+	#print "query: " + query_string
+	#print "querying %s for %s" % (file, query_string)
+
+	key = os.path.basename(file) + ":" + query_string
+
+	if rpm_query_cache.has_key(key):
+		#print "Cache hit!"
+		output = rpm_query_cache[key]
+	else:
+		code, output = launch_process("rpm -qp --queryformat \"%s\" %s" % (query_string, file), capture_stderr=0, print_output=0 )
+		rpm_query_cache[key] = output
+
+	return output.split(marker)
 

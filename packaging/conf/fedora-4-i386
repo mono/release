@@ -1,2 +1,4 @@
 target_host=builder@monobuild1.boston.ximian.com
 jaildir=/jails/fedora-4-i386-root-0
+
+USE_YUM=1

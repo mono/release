@@ -1,2 +1,5 @@
 target_host=builder@hardhat.boston.ximian.com
 jaildir=/jails/suse-92-i586-root-0/jail
+
+USE_OC=1
+USE_YAST=1

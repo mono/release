@@ -1,4 +1,5 @@
-target_host=builder@g5-mono.boston.ximian.com
+# We require building on a 10.3 box
+#target_host=builder@g5-mono.boston.ximian.com
 USE_ZIP_PKG=1
 
 # This is for rpm2cpio from:
@@ -6,6 +7,6 @@ USE_ZIP_PKG=1
 target_command_prefix='export PATH=$PATH:/usr/local/bin;  '
 
 # for testing
-#target_host=nds_cm@macbld1.provo.novell.com
+target_host=nds_cm@macbld1.provo.novell.com
 
 web_index=5

@@ -4,3 +4,7 @@ chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"
 
 web_index=2
+
+USE_OC=1
+USE_YAST=1
+

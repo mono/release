@@ -1,3 +1,5 @@
 target_host=builder@monobuild2.boston.ximian.com
 jaildir=/jails/fedora-5-x86_64-root-0
 chroot_path=/usr/bin/chroot
+
+USE_YUM=1

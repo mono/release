@@ -1,11 +1,11 @@
 # Directory used when created go-mono.com/archive/<archive_version>
 #  This will need to be manually bumped each time... don't forget!!
-archive_version="1.1.13.8"
+archive_version="1.1.7.12"
 
 # This is used for web locations for sources, distro download indicies, and for repos
 # Ex: go-mono.com/sources-stable
 #     go-mono.com/download-stable (which contains download index, as well as the repository)
-bundle_urlname="stable"
+bundle_urlname="oldstable"
 
 # Note:  release values are optional
 #   (sources will not be based on release value)
@@ -22,24 +22,7 @@ bundle_urlname="stable"
 #  Populate this based on what a HEAD release went at, and then make minor updates when appropriate
 #  These versions will also be used to select sources
 versions=(
-	mono="1.1.13.8"
-	libgdiplus="1.1.13.6"
-	xsp="1.1.13.7"
-	mod_mono="1.1.13.5"
-	gtk-sharp="1.0.10"
-	monodoc="1.1.13"
-	mono-tools="1.1.11"
-	gecko-sharp="0.6"
-	gecko-sharp-2.0="0.11"
-	gtksourceview-sharp-2.0="0.10"
-	monodevelop="0.9"
-	boo="0.7.0.1921"
-	ikvm="0.22"
-	mono-debugger="0.12"
-	heap-buddy="0.1"
-	cocoa-sharp="0.9.1"
-	gtk-sharp-2.0="2.4.2"
-	gtk-sharp-2.8="2.8.2"
+	mono="1.1.7.12"
 )
 
 # Installer note: installer versions will be based on the mono version.  But also, the installer scripts will also use these files to select packages... we would need to maintain stable installer versions as well

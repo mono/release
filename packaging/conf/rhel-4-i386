@@ -3,6 +3,8 @@ jaildir=/jails/rhel-4as-i386-root-0/jail
 
 distro_aliases=(
 	rhel-4as-i386
-	rhel-4ws-i386
 	rhel-4es-i386
+	rhel-4ws-i386
 )
+
+USE_OC=1

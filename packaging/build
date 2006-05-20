@@ -70,12 +70,29 @@ if serial == "0":
 else:
 	ver_path = version + "-" + serial
 
-build_env = packaging.buildenv(distro)
-package = packaging.package(build_env, package_name)
+# Figure out if this is a snapshot build or not...
+#  Could do this by looking at the tarball map... ? (but ./build parameters would have to change)
+sources = glob.glob("sources/%s/*-%s.tar.gz" % (package_name, version)) + glob.glob("sources/%s/*-%s.zip" % (package_name, version))
+snapshot_sources = glob.glob("snapshot_sources/%s/*-%s.tar.gz" % (package_name, version)) + glob.glob("snapshot_sources/%s/*-%s.zip" % (package_name, version))
+if sources:
+	print "Using release sources and packages"
+	HEAD_or_RELEASE = "RELEASE"
+elif snapshot_sources:
+	print "Using snapshot sources and packages"
+	HEAD_or_RELEASE = "HEAD"
+else:
+	print "Cannot find source file for " + package_name
+	build_env.unlock_env()
+	sys.exit(4)
 
+sources += snapshot_sources
+source_file = sources[0]
+
+build_env = packaging.buildenv(distro)
+package = packaging.package(build_env, package_name, HEAD_or_RELEASE=HEAD_or_RELEASE)
 
 # check to see if this package is a valid build
-if not package.info['BUILD_HOSTS'].count(distro):
+if not package.valid_build_platform(distro):
 	print "%s is not in BUILD_HOSTS" % distro
 	sys.exit(3)
 
@@ -87,7 +104,6 @@ if build_env.is_locked():
 build_env.lock_env()
 
 # Set signal handler
-# TODO: How to fully kill builds on the client side???
 def keyboard_interrupt(signum, frame):
 	print 'Build aborted:', signum
 	build_env.unlock_env()
@@ -101,49 +117,9 @@ if build_env.offline():
 
 revision = package.get_revision(serial)
 
-# Set some defaults of where to find packages/sources
-source_path = "sources"
-
-# Figure out if this is a snapshot build or not...
-#  Could do this by looking at the tarball map... ? (but ./build parameters would have to change)
-sources = glob.glob("sources/%s/*-%s.tar.gz" % (package_name, version)) + glob.glob("sources/%s/*-%s.zip" % (package_name, version))
-snapshot_sources = glob.glob("snapshot_sources/%s/*-%s.tar.gz" % (package_name, version)) + glob.glob("snapshot_sources/%s/*-%s.zip" % (package_name, version))
-if sources:
-	print "Using release sources and packages"
-	HEAD_or_RELEASE = "RELEASE"
-elif snapshot_sources:
-	print "Using snapshot sources and packages"
-	source_path = "snapshot_" + source_path
-	HEAD_or_RELEASE = "HEAD"
-else:
-	print "Cannot find source file for " + package_name
-	build_env.unlock_env()
-	sys.exit(4)
-
-sources += snapshot_sources
-source_file = sources[0]
-
-package_path = package.get_package_path(HEAD_or_RELEASE=HEAD_or_RELEASE)
+package_path = package.package_fullpath
 
 print package_path
-
-# Create symlink to the real location if it's not there already if this def is configured with 'source_package_path_name'
-#  (Only do for RELEASE packages, since HEAD configure.in numbers can be inconsistant)
-if package.info.has_key('source_package_path_name') and HEAD_or_RELEASE == "RELEASE":
-	link_path = os.path.dirname(package_path) + os.sep + package_name
-	print "Link path: %s" % link_path
-	if not os.path.islink(link_path):
-		if os.path.exists(link_path):
-			print "%s is not a symbolic link (it should be)" % link_path
-			build_env.unlock_env()
-			sys.exit(1)
-		try:
-			os.symlink(package.info['source_package_path_name'], link_path)
-		except:
-			print "Error creating symlink: %s" % link_path
-			build_env.unlock_env()
-			sys.exit(1)
-
 
 package_version_path = package_path + os.sep + ver_path
 
@@ -255,8 +231,6 @@ except OSError:
 build_info.update_step("build", state="success", download=os.path.basename('downloads'), finish=utils.get_time())
 
 # Run postbuild steps
-#  TODO: These steps are run as root inside chroot or as the user in conf... they should always be executed as builder
-#  Add support to sshutils' execute: root=1|0 ... ?
 remote_env = {}
 remote_env['HEAD_or_RELEASE'] = "HEAD"
 counter = 1

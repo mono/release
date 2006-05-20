@@ -1,34 +1,31 @@
-#!/usr/bin/perl
+#!/usr/bin/env python
 
-use strict;
-use warnings;
+import sys
+import os
+import os.path
+import shutil
+import distutils.dir_util
+import glob
+import re
 
-use File::Basename;
-use File::Path;
-use File::Copy;
-use Cwd qw( abs_path cwd );
+sys.path += [ '../pyutils' ]
 
-use File::Slurp;
+import packaging
+import utils
 
 # BOO Syntax highlighting is going to take some more porting... look at this file: opt/gnome/share/gtksourceview-1.0/language-specs/boo.lang for steps on how to do this
+# There's a problem with the version of gtksourceview that we use... it is unable to check for *.lang files in the location where the installer installs mono
 
-my $DOWNLOAD_URL = "http://primates.ximian.com/~wberrier/linux-installer";
-my $IB_VER = "3.0.1";
+DOWNLOAD_URL = "http://primates.ximian.com/~wberrier/linux-installer"
+IB_VER = "3.0.1"
 
-my $RPMVERCMP = abs_path(cwd() . "/../rpmvercmp/rpmvercmp");
-
-my $prefix = cwd();
-
-my $buildroot = "$prefix/build";
-my $external_rpms = "$prefix/external_rpms";
-my $mono_rpms = "$prefix/../packaging/packages";
 
 # the readline package is for the debugger (Probably won't need this for the next release of the debugger)
 # libtiff and libungif are for libgdiplus
 
 # include 2 versions of gtkhtml2 because each of our gtk-sharp and gtk-sharp-2.0 are built on different oses
 
-my @external_rpms_list = qw(
+external_rpms_list = """
 	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libstdc++-3.2.2-5.i386.rpm
 	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/linc-1.0.1-1.i386.rpm
 	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/pkgconfig-0.14.0-3.i386.rpm
@@ -38,402 +35,278 @@ my @external_rpms_list = qw(
 	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libungif-4.1.0-15.i386.rpm
 	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libpng-1.2.2-16.i386.rpm
 	ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/libjpeg-6b-26.i386.rpm
+""".split()
 
-);
-
-my @custom_rpms_list = qw(
+custom_rpms_list = """
 	ftp://mirrors.kernel.org/suse/i386/9.3/suse/i586/gtkhtml2-3.6.1-5.i586.rpm
 	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/libgtkhtml3.0_4-3.0.10-0.ximian.6.1.i386.rpm
 	http://www.go-mono.com/archive/1.0.5/redhat-9-i386/gtksourceview-1.0.1-0.ximian.6.1.i386.rpm
 	ftp://ftp.ximian.com/pub/ximian-evolution/redhat-9-i386/libgal2.0_6-1.99.11-0.ximian.6.1.i386.rpm
-);
+""".split()
 
 # rpm locations we build locally
-my @local_rpms = (
-	"$mono_rpms/x86/mono",
-	"$mono_rpms/x86/mono-debugger",
-	"$mono_rpms/x86/heap-buddy",
-	"$mono_rpms/redhat-9-i386/gtk-sharp",
-	"$mono_rpms/redhat-9-i386/libgdiplus",
-	"$mono_rpms/noarch/boo",
-	"$mono_rpms/noarch/xsp",
-	"$mono_rpms/noarch/ikvm",
-	"$mono_rpms/noarch/monodoc",
-	"$mono_rpms/noarch/mono-tools",
-	"$mono_rpms/noarch/monodevelop",
-	"$mono_rpms/noarch/gecko-sharp",
-	"$mono_rpms/noarch/gecko-sharp-2.0",
-	"$mono_rpms/noarch/gtksourceview-sharp-2.0",
-	"$mono_rpms/suse-93-i586/gtk-sharp-2.0",
-);
+local_rpms = [ 
+	{'name': 'redhat-9-i386', 'packages': [
+		"mono",
+		"mono-debugger",
+		"heap-buddy",
+		"gtk-sharp",
+		"libgdiplus",
+		"boo",
+		"xsp",
+		"ikvm",
+		"monodoc",
+		"mono-tools",
+		"monodevelop",
+		"gecko-sharp",
+		"gecko-sharp-2.0",
+		"gtksourceview-sharp-2.0" ] },
+	{'name': 'suse-93-i586', 'packages': [
+		"gtk-sharp-2.0", ] }
+]
+
+prefix = os.getcwd()
+
+buildroot = prefix + "/build"
+external_rpms = prefix + "/external_rpms"
+
+readme_text = ""
+packages_used_text = "RPMS used to create this build:\n\n"
+
+################ Helper routine ##############################
+
+# Recursively change directores to 755
+#  TODO: is this needed?
+def recurse_directories(directory):
+
+	os.chmod(directory, 0755)
+
+	files = glob.glob(directory + "/*")
+
+	for file in files:
+		if os.path.isdir(file):
+			recurse_directories(file)
+		# If it ends in .exe, make it executable (This is a hack for now, because the rpms should already have these permissions set...)
+		elif re.compile("\.exe$").search(file):
+			os.chmod(file, 0755)
+
+##############################################################
 
 
-my $debug = 0;
-
-my $readme_text;
-my $packages_used_text = "RPMS used to create this build:\n\n";
+# Command line arg checking
+if len(sys.argv) < 2:
+	print 
+	print "Usage: buildlinux-installer <mono version> [<release>]"
+	print "  Example: buildlinux-installer 1.1.7"
+	print "  Example: buildlinux-installer 1.1.8.1 1"
+	print 
+	sys.exit(1)
 
 # Version passed in from the command line
-my $mono_version = shift;
-my $mono_release_version = shift;
-$mono_release_version = 0 if(!$mono_release_version);
+mono_version = sys.argv[1]
+if len(sys.argv) > 2:
+	mono_release_version = sys.argv[2]
+else:   mono_release_version = 0
 
-# Argument checking...
-unless($mono_version) {
-	print "";
-	print "Usage: buildlinux-installer <mono version> [<release>]\n";
-	print "  Example: buildlinux-installer 1.1.7\n";
-	print "  Example: buildlinux-installer 1.1.8.1 1\n";
-	print "";
+output = os.path.join(prefix, 'output', mono_version, 'linux-installer', mono_release_version)
 
-	exit 1;
-}
+if os.path.exists(output):
+	print output + " already exists... please remove this dir or bump the package release version"
+	sys.exit(1)
 
-my $output = "$prefix/output/${mono_version}/linux-installer/$mono_release_version/";
-
-if(-e $output) {
-	print "$output already exists... please remove this dir or bump the package release version\n";
-	exit(1);
-}
-
-my $mono_installer_output = "$ENV{HOME}/installbuilder-$IB_VER/output/mono-$mono_version-installer.bin";
+mono_installer_output = os.environ['HOME'] + "/installbuilder-%s/output/mono-%s-installer.bin" % (IB_VER, mono_version)
 
 # check for installer and install if it isn't there
-if ( ! -e "$ENV{HOME}/installbuilder-$IB_VER/bin/builder" ) {
+if not os.path.exists(os.environ['HOME'] + "/installbuilder-%s/bin/builder" % IB_VER):
 	
-	my $installer = "installbuilder-enterprise-$IB_VER-linux-installer.bin";
+	installer = "installbuilder-enterprise-%s-linux-installer.bin" % IB_VER
 
 	# Doesn't redownload if not needed
-	print "Downloading the Bitrock installer...\n";
-	system("wget -c $DOWNLOAD_URL/bitrock/$installer -O /tmp/$installer");
-	chmod (0755, "/tmp/$installer");
+	print "Downloading the Bitrock installer...";
+	utils.get_url(os.path.join(DOWNLOAD_URL, 'bitrock', installer), '/tmp')
+	os.chmod ("/tmp/" + installer, 0755)
 
-	print "Installing the Bitrock installer...\n";
-	system("/tmp/$installer --mode unattended");
-}
+	print "Installing the Bitrock installer..."
+	os.system("/tmp/%s --mode unattended" % installer)
 
 # Check for license file
-if ( ! -e "$ENV{HOME}/installbuilder-$IB_VER/license.xml" ) {
+license_file = os.environ['HOME'] + "/installbuilder-%s/license.xml" % IB_VER
+if not os.path.exists(license_file):
 
-	if ( -e "$prefix/novell.xml" ) { 
-		copy("$prefix/novell.xml", "$ENV{HOME}/installbuilder-$IB_VER/license.xml");
-	} else {
-		print "Please place novell.xml in $prefix or copy license.xml to $ENV{HOME}/installbuilder-$IB_VER/license.xml before proceeding\n";
-		exit(1);
-	}
+	if os.path.exists(prefix + os.sep + "novell.xml"):
+		shutil.copy(prefix + "/novell.xml", license_file)
+	else:
+		print "Please place novell.xml in %s or copy license.xml to %s before proceeding" % (prefix, license_file)
+		sys.exit(1)
 
-	if ( ! -e "$ENV{HOME}/installbuilder-$IB_VER/license.xml" ) {
-		print "Still cannot find $ENV{HOME}/installbuilder-$IB_VER/license.xml\n";
-		exit(1);
-	}
-}
-
-if ( ! -e $buildroot ) {
-	mkdir $buildroot;
-}
-
-cleanUp();
-
-# Download the stock and custom rpms if they don't exist already and then extract them
-my $cwd = cwd();
-if( ! -e $external_rpms) {
-	mkdir $external_rpms;
-}
-
-chdir ($external_rpms);
-
-foreach my $url (@external_rpms_list, @custom_rpms_list) {
-
-	# Get the filename portion from the url
-	my $file = File::Basename::basename($url);
-
-	if ( ! -e $file ) {
-		print "Downloading: $file\n";
-
-		system("wget $url");
-
-		# If it still doesn't exists, die
-		if ( ! -e $file ) {
-			print "Failed to download: $file\n";
-			exit 1;
-		}
-
-	}
-	
-	extract(abs_path($file));
-}
-
-foreach my $base (@local_rpms) {
-
-	my $latest_version = getLatestVersion($base);
-
-	# Send the base and an array of rpms
-	extractRPMs("$base/$latest_version");
-}
+	if not os.path.exists(license_file):
+		print "Still cannot find %s" % license_file
+		sys.exit(1);
 
 
-# Keep record of which packages went into this build...
-mkpath($output);
-write_file("$output/packages_used.txt", $packages_used_text);
+# Cleanup
+shutil.rmtree(buildroot)
+os.mkdir(buildroot)
+
+# Download the stock and custom rpms if they don't exist already and add them to the extraction list
+files = []
+cwd = os.getcwd()
+if not os.path.exists(external_rpms):
+	os.mkdir(external_rpms)
+
+for url in external_rpms_list + custom_rpms_list:
+	utils.get_url(url, external_rpms)
+	files.append(external_rpms + os.sep + os.path.basename(url))
+
+# Collect local rpm files
+for selection in local_rpms:
+
+	env = packaging.buildenv(selection['name'])
+
+	for pack in selection['packages']:
+		pack_obj = packaging.package(env, pack)
+		files += pack_obj.get_files()
+
+# Extract all the rpms
+os.chdir(buildroot)
+packages = []
+for file in files:
+	packages.append( utils.extract_file(file, preserve_symlinks=1, truncate_path="") )
+
+packages.sort()
+packages_used_text += "\n".join(packages) + "\n"
 
 # The tcl version of the this script got the "normalized" full path to the file... this should work
-my $p = $buildroot;
+p = buildroot
 
 # Other permissions that do not get set... gapi_codegen.exe, gapi-fixup.exe, #does this matter?  Probably... because there's that one feature which will invoke mono on certain types of binaries... this should probably happen in the rpm though so it gets fixed in both places...
 
+os.chdir(p)
 
-chdir $p;
-
-# Move files under usr instead of using opt
-`cp -Rf opt/gnome/* usr`; # easier than perl's method...
-rmtree ("opt");
+## Move files under usr instead of using opt
+distutils.dir_util.copy_tree("opt/gnome", "usr", preserve_symlinks=1)
+shutil.rmtree('opt')
 
 # Move etc under usr since we will collect all files under usr for installer
-rmtree ("usr/etc");
-rename ("etc", "usr/etc");
+os.rename("etc", "usr/etc")
 
 # Location substitution for the pkgconfig files...
-foreach my $f (glob "$p/usr/lib/pkgconfig/*.pc") {
+for f in glob.glob(p + "/usr/lib/pkgconfig/*.pc"):
+	utils.substitute_parameters_in_file(f, {'/usr' : '@@BITROCK_MONO_ROOTDIR@@'} )
 
-	substituteParametersInFile($f, '/usr' => '@@BITROCK_MONO_ROOTDIR@@');
-	print "Substituting $f\n";
-}
+executable_wrappers = []
+for f in glob.glob(p + "/usr/bin/*"):
 
-my @executable_wrappers;
-foreach my $f (glob "$p/usr/bin/*") {
-	my $text = read_file($f);
+	fd = open(f)
+	text = fd.read()
+	fd.close()
 
-	if ($text =~ /#! ?\/bin\/sh/) {
-		push @executable_wrappers, File::Basename::basename($f);
+	if re.compile("#! ?\/bin\/sh").search(text):
+		executable_wrappers.append(os.path.basename(f))
 
-	}
-}
 
-foreach my $f (@executable_wrappers) {
-	
-	if(-e "$p/usr/bin/$f") {
-		substituteParametersInFile("$p/usr/bin/$f", 
-			'/usr' 			=> '@@BITROCK_MONO_ROOTDIR@@', 
+for f in executable_wrappers:
+	if os.path.exists(p + "/usr/bin/" + f):
+		utils.substitute_parameters_in_file(p + "/usr/bin/" + f, 
+			{ '/usr' 			: '@@BITROCK_MONO_ROOTDIR@@'
 			# Add full path for these... ?
-			#'exec mono' 		=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono',
+			#'exec mono' 		: 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono',
 			# This was added I believe for the debugger, but don't think it's needed
-			#'mono --debug'	 	=> 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono --debug'
-		);
-		print "Substituting $f\n";
-	} else {
-		print "***Not found $p/usr/bin/$f***\n";
-	}
-}
+			#'mono --debug'	 	: 'exec @@BITROCK_MONO_ROOTDIR@@/bin/mono --debug'
+		} )
+	else:
+		print "***Not found %s/usr/bin/%s***" % (p, f)
 
 # This glob should only return one file...
-substituteParametersInFile( (glob "$p/usr/lib/mono/gac/monodoc/1.0*/monodoc.dll.config"),
-	'/usr' => '@@BITROCK_MONO_ROOTDIR@@');
+utils.substitute_parameters_in_file( glob.glob(p + "/usr/lib/mono/gac/monodoc/1.0*/monodoc.dll.config").pop(),
+	{ '/usr': '@@BITROCK_MONO_ROOTDIR@@' } )
 
 # Add some sections for gtksourceview to integrate boo
 
-my %boo_config_file_additions = (
-	#"$p/usr/share/mime-info/gtksourceview-sharp.keys" => 
-#"text/x-boo
+boo_config_file_additions = {
+#	p + "/usr/share/mime-info/gtksourceview-sharp.keys" :
+#"""text/x-boo
 #	category=Software Development/Source Code
 #	can_be_executable=true
 #	default_action_type=application
 #	description=boo source code
 #	short_list_application_ids_for_novice_user_level=monodevelop,gedit
 #
-#",
-#	"$p/usr/share/mime-info/gtksourceview-sharp.mime" => 
-#"text/x-boo
+#""",
+#	p + "/usr/share/mime-info/gtksourceview-sharp.mime" :
+#"""text/x-boo
 #	ext: boo
-#"
+#"""
 
-	);
+	}
 
-appendTextToFiles(%boo_config_file_additions);
+utils.append_text_to_files(boo_config_file_additions)
 # TODO: Not working quite yet...
 #$readme_text .= "\nYou may need to run 'update-mime-database /usr/share/mime' in order to fully integrate boo syntax highlighting.\n";
 
 # Fix broken tiff package (package should contain this link, but doesn't)
-chdir("usr/lib");
-symlink("libtiff.so.3.5", "libtiff.so.3");
-chdir("../..");
+os.chdir("usr/lib")
+os.symlink("libtiff.so.3.5", "libtiff.so.3")
+os.chdir("../..")
 
-copy("$p/../projects/mono.xml", $p);
-substituteParametersInFile("$p/mono.xml", '@@VERSION@@' => $mono_version);
+shutil.copy(p + "/../projects/mono.xml", p)
+utils.substitute_parameters_in_file(p + "/mono.xml", { '@@VERSION@@': mono_version } )
 
-copy("$p/../projects/mono/readme.gif", "$p/usr/share/pixmaps");
-copy("$p/../projects/mono/monourl.gif", "$p/usr/share/pixmaps");
-copy("$p/../projects/mono/monotm48x48.png", "$p/usr/share/pixmaps");
-copy("$p/../projects/mono/License.txt", "$p/usr/share/doc");
+shutil.copy(p + "/../projects/mono/readme.gif", p + "/usr/share/pixmaps")
+shutil.copy(p + "/../projects/mono/monourl.gif", p + "/usr/share/pixmaps")
+shutil.copy(p + "/../projects/mono/monotm48x48.png", p + "/usr/share/pixmaps")
+shutil.copy(p + "/../projects/mono/License.txt", p + "/usr/share/doc")
 
 # Take care of the Readme file
-$readme_text .= read_file("$p/../projects/Readme.txt") . "\n\n";
-$readme_text .= "$packages_used_text\n";
-write_file("$p/usr/share/doc/Readme.txt", $readme_text);
-substituteParametersInFile("$p/usr/share/doc/Readme.txt", '@@VERSION@@' => $mono_version);
+fd = open(p + "/../projects/Readme.txt")
+readme_text += fd.read() + "\n\n"
+readme_text += packages_used_text + "\n"
+fd.close()
+fd = open(p + "/usr/share/doc/Readme.txt", 'w')
+fd.write(readme_text)
+fd.close()
 
+utils.substitute_parameters_in_file(p + "/usr/share/doc/Readme.txt", {'@@VERSION@@' : mono_version } )
 
-mkdir "$p/html";
+os.mkdir(p + "/html")
 # TODO: Here's another file that changes with each release... need to update it manually for now
-copy("$p/../projects/mono/html/index.html", "$p/html");
+shutil.copy(p + "/../projects/mono/html/index.html", p + "/html")
 
-copy("$p/../projects/mono/html/mono.css", "$p/html");
-copy("$p/../projects/mono/html/bitrock.png", "$p/html");
+shutil.copy(p + "/../projects/mono/html/mono.css", p + "/html")
+shutil.copy(p + "/../projects/mono/html/bitrock.png", p + "/html")
 
 # Generate some stuff in mono.xml
-my $result;
+result = ""
 
 # Get a list of files to substitute
-#foreach my $item (@executable_wrappers, @wrapped_elf_binaries) {
-foreach my $item (@executable_wrappers) {
-	$result .= "*/bin/$item;";
-}
+for item in executable_wrappers:
+	result += "*/bin/%s;" % item
 
-$result .= "*/monodoc.dll.config;*/*.pc";
+result += "*/monodoc.dll.config;*/*.pc"
 
-substituteParametersInFile("$p/mono.xml",
-    '@@SUBST_FILES@@' => $result);
+utils.substitute_parameters_in_file(p + "/mono.xml",
+    { '@@SUBST_FILES@@' : result } )
 
 # Fix RPM directory permissions (chmod to 0755)
-recurseDirectories("$p/usr/");
+recurse_directories(p + "/usr/")
 
 # Run the install
-system("$ENV{HOME}/installbuilder-$IB_VER/bin/builder build $p/mono.xml");
+os.system("%s/installbuilder-%s/bin/builder build %s/mono.xml" % (os.environ['HOME'], IB_VER, p) )
 
 # Move file to the current
-if ( -e $mono_installer_output ) {
+if os.path.exists(mono_installer_output):
+
+	# Keep record of which packages went into this build...
+	distutils.dir_util.mkpath(output)
+	fd = open(output + os.sep + "packages_used.txt", 'w')
+	fd.write(packages_used_text)
+	fd.close()
 
 	# Move the install binary to the current directory
-	rename("$mono_installer_output", "$output/mono-${mono_version}_$mono_release_version-installer.bin");
+	final_output_file = "%s/mono-%s_%s-installer.bin" % (output, mono_version, mono_release_version) 
+	os.rename(mono_installer_output, final_output_file )
 	# Do md5sum generation
-	chdir($output);
-	system("md5sum *.bin > mono-${mono_version}_$mono_release_version-installer.bin.md5");
+	os.chdir(output)
+	os.system("md5sum *.bin > %s.md5" % os.path.basename(final_output_file) )
 
-}
-
-################ Helper Subroutines ##############################
-
-sub cleanUp
-{
-	#unlink("$output/mono-$mono_version-installer.bin");
-	#unlink("$output/packages_used.txt");
-
-	# Takes a reference to a list of files/paths...
-	rmtree([glob "$buildroot/*"]);
-}
-
-sub extract
-{
-
-	my $file = shift;
-
-	my $cwd = cwd();
-
-	chdir($buildroot);
-
-	if ($file =~ /\.rpm$/) { 
-
-		print "Extracting $file\n";
-		$packages_used_text .= basename($file) . "\n";
-		system("rpm2cpio $file | cpio --extract --make-directories");
-		# Verbose...
-		#system("rpm2cpio $file | cpio -v --extract --make-directories");
-	}
-
-	# Go back to the working directory...
-	chdir $cwd;
-}
-
-sub extractRPMs
-{
-	my $package_path = shift;
-
-	foreach my $file (glob "$package_path/*") {
-		extract ($file);
-	}
-}
-
-
-sub substituteParametersInFile
-{
-	my $file = shift;
-	my %parameters = @_;
-
-	my $text = read_file($file);
-
-	$text = substituteParameters($text, %parameters);
-
-	write_file($file, $text);
-
-}
-
-# First arg: text
-# Second arg, hash of key value pairs to swap in the text
-sub substituteParameters
-{
-
-	my $text = shift;
-
-	my %parameters = @_;
-
-	foreach my $old (keys %parameters) {
-		# In the text, substitute the key with the value from the hash
-		$text =~ s/$old/$parameters{$old}/g;
-	}
-
-	return $text;
-
-}
-
-# Recursively change directores to 755
-sub recurseDirectories
-{
-	my $directory = shift;
-
-	chmod(0755, $directory);
-
-	my @files = glob "$directory/*";
-
-	foreach my $file (@files) { 
-		if(-d $file) {
-			recurseDirectories($file);
-		# If it ends in .exe, make it executable (This is a hack for now, because the rpms should already have these permissions set...)
-		} elsif ( $file =~ /\.exe$/) {
-			chmod(0755, $file);
-		}
-	}
-}
-
-
-
-sub appendTextToFiles
-{
-	my %file_text_map = @_;
-
-	foreach my $file (keys %file_text_map) {
-		print "Adding text to: $file\n";
-		my $text = read_file("$file");
-		$text .= $file_text_map{$file};
-
-		write_file($file, $text);
-	}
-}
-
-sub getLatestVersion
-{
-	my $dir = shift;
-
-	opendir(DIR, $dir) or die "Couldn't list files in dir: $dir\n";
-	my @package_versions = readdir(DIR);
-	closedir(DIR);
-	@package_versions = `$RPMVERCMP @package_versions`;
-	my $package_version = pop @package_versions;
-	chomp($package_version);
-
-	if($package_version eq "." || $package_version eq "..") {
-		die "Could not find latest version in $dir\n";
-	}
-
-	return $package_version;
-
-}
 

@@ -1,12 +1,12 @@
 #!/bin/sh
 
-VERSION=$1
+BUNDLE=$1
 DRYRUN=$2
 
 DO_DRYRUN=0
 
-if test x$VERSION = x || test x$VERSION = xdry ; then
-	echo "Usage: ./upload-prod <version> [<dry>]"
+if test x$BUNDLE = x || test x$BUNDLE = xdry ; then
+	echo "Usage: ./upload-prod <bundle> [<dry>]"
 	exit 1
 fi
 
@@ -48,11 +48,10 @@ if test x$DO_DRYRUN = x1 ; then
 	exit
 fi
 
-ssh mono-web@go-mono.com "cp -f release/website/packaging.css   ~/go-mono/"
-ssh mono-web@go-mono.com "release/website/mk-sources.sh 	~/go-mono/sources/ $VERSION"
-ssh mono-web@go-mono.com "release/website/mk-index.sh   	~/go-mono/download/ $VERSION"
-ssh mono-web@go-mono.com "release/website/mk-history-index.sh	~/go-mono/archive/ $VERSION"
-ssh mono-web@go-mono.com "release/website/mk-oc.sh		~/go-mono/download/ official"
-
+ssh mono-web@go-mono.com "cp -f release/website/packaging.css		~/go-mono/"
+ssh mono-web@go-mono.com "cd release/website; ./mk-sources-index.py	$BUNDLE ~/go-mono/sources  ~/go-mono"
+ssh mono-web@go-mono.com "cd release/website; ./mk-distro-index.py	$BUNDLE ~/go-mono/download ~/go-mono"
+ssh mono-web@go-mono.com "cd release/website; ./mk-archive-index.py	$BUNDLE 		   ~/go-mono"
+ssh mono-web@go-mono.com "cd release/website; ./mk-repos.py		$BUNDLE ~/go-mono/download ~/go-mono"
 
 

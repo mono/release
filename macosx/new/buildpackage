@@ -118,7 +118,7 @@ def build_package(target):
 		# Skip directories (.svn in particular)
 		if not os.path.isdir(file):
 			shutil.copy('setup-files' + os.sep + file, temp_dir)
-			utils.substitute_parameters_in_file(temp_dir + os.sep + file, re.compile(''), parameter_map)
+			utils.substitute_parameters_in_file(temp_dir + os.sep + file, parameter_map)
 
 	cwd = os.getcwd()
 	os.chdir(temp_dir)

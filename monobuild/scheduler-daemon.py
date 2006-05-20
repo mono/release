@@ -66,7 +66,7 @@ class build_latest(threading.Thread):
 
 		pack_obj = packaging.package("", package_name)
 
-		if not pack_obj.info['BUILD_HOSTS'].count(distro):
+		if not pack_obj.valid_build_platform(distro):
 			print "%s does not build on %s (BUILD_HOSTS), thread exiting..." % (package_name, distro)
 			return
 

@@ -7,8 +7,6 @@
 #           local packages is packages in the defs dir and/or urls if distro is zip based
 #
 
-# TODO: be able to install from snapshot_packages  (HEAD_or_RELEASE)
-
 
 import os
 import sys
@@ -41,7 +39,6 @@ deps = []
 if len(sys.argv) > 3: deps = sys.argv[3:]
 
 target_env = packaging.buildenv(target, print_output=1)
-
 
 
 files = []

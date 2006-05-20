@@ -7,7 +7,6 @@ import sys
 # How to import these so they are reimported on change?
 import build
 import config
-import packaging
 import datastore
 import utils
 

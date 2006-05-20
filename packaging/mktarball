@@ -38,11 +38,9 @@ if sys.argv[2] == "snap":
 		usage()
 		sys.exit(1)
 	HEAD_or_RELEASE = "HEAD"
-	source_path = "snapshot_sources"
 else:
 	version=sys.argv[2]
 	HEAD_or_RELEASE = "RELEASE"
-	source_path = "sources"
 
 
 ### End of Command line arg handling ###
@@ -56,35 +54,17 @@ if repo.contains(HEAD_or_RELEASE, package, version):
 
 LOGFILE = "%s/%s/%s/%s.log" % (config.mktarball_logs, HEAD_or_RELEASE, package, version)
 log_obj = logger.Logger(filename=LOGFILE)
-log_obj.log("Sources path: %s\n" % source_path)
 
 
 # Get tarball path from def file
-package_obj = packaging.package("", package)
+package_obj = packaging.package("", package, HEAD_or_RELEASE=HEAD_or_RELEASE)
 if package_obj.info.has_key('MKTARBALL_HOST'):
 	distro = package_obj.info['MKTARBALL_HOST']
 else:
 	distro = config.mktarball_host
+
+log_obj.log("Sources path: %s\n" % package_obj.source_fullpath)
 log_obj.log("Using distro: %s\n" % distro)
-
-# Create symlink to the real location if it's not there already
-#  (Only do for RELEASE packages, since HEAD configure.in numbers can be inconsistant)
-if package_obj.info.has_key('source_package_path_name') and HEAD_or_RELEASE == "RELEASE":
-	link_path = source_path + os.sep + package
-	log_obj.log("Link path: %s\n" % link_path)
-	if not os.path.islink(link_path):
-		if os.path.exists(link_path):
-			log_obj.log("%s is not a symbolic link (it should be)\n" % link_path)
-			sys.exit(1)
-		try:
-			os.symlink(package_obj.info['source_package_path_name'], link_path)
-		except:
-			log_obj.log("Error creating symlink: %s\n" % link_path)
-			sys.exit(1)
-
-
-package_path = source_path + os.sep + package
-distutils.dir_util.mkpath(package_path)
 
 env = packaging.buildenv(distro, logger=log_obj)
 
@@ -93,8 +73,6 @@ if env.is_locked():
 	sys.exit(2)
 
 env.lock_env()
-
-package_obj = packaging.package(env, package)
 
 if package_obj.info.has_key('MONO_DEPS'):
 	(status, output) = utils.launch_process('./install-deps %s %s' % (distro, package), logger=log_obj)
@@ -121,11 +99,11 @@ if status:
 tarball = output.split().pop()
 
 # Copy file back
-#  Note: the tarball var is expected to have be in this format, ex:  mono-1.1/mono-1.1.13.4.tar.gz
-env.ssh.copy_from('/tmp/built-tarball/%s' % tarball, package_path )
+#  Note: the tarball var is expected to have be in this format, ex:  mono-1.1.13.4.tar.gz
+env.ssh.copy_from('/tmp/built-tarball/%s' % tarball, package_obj.source_fullpath)
 
 # Keep a map of which params produce which tarball
-repo.add_file(HEAD_or_RELEASE, package, version, package_path + os.sep + tarball)
+repo.add_file(HEAD_or_RELEASE, package, version, package_obj.source_relpath + os.sep + tarball)
 
 env.unlock_env()
 
