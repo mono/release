@@ -18,4 +18,17 @@ version_selections will generally follow maintained branches.
 TODO:
 Document all the options that are available in a bundle config:
 
+version selections:
+-If the version map isn't there, latest package will be used
+-If version map is there, only those packages will be used
+-If a version without a release is specified, that version using the latest
+ release will be used.
+-If a version with a release is used, that exact release will be used and
+ scripts will fail if it's not there.  Specify release of 0 to get a version
+ without a release
+-If the version is "", the latest version for that package will be used
 
+
+HEAD_or_RELEASE can be specified in bundle config.  This defaults to RELEASE
+if not specified.  This would only be useful if we wanted to build an
+installer from trunk.
