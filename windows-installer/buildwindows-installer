@@ -373,7 +373,7 @@ for selection in selections:
 	if os.path.exists('bin'):
 		os.chdir('bin')
 		for file in os.listdir('.'):
-			utils.substitute_parameters_in_file(file, qualifier=qualifier, parameter_map)
+			utils.substitute_parameters_in_file(file, parameter_map, qualifier=qualifier)
 		os.chdir('..')
 
 	#
