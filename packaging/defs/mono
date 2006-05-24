@@ -9,7 +9,7 @@ BUILD_HOSTS=(
 	sles-9-s390
 	sles-9-s390x
 	sunos-8-sparc
-	#sunos-10-sparc
+	sunos-10-x86
 	win-4-i386
 )
 
@@ -108,7 +108,7 @@ sunos_8_sparc_ZIP_DEPS=(
 	# For testing...
 	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/gdb-6.0-sol8-sparc-local.gz
 )
-sunos_10_sparc_ZIP_DEPS=(
+sunos_10_x86_ZIP_DEPS=(
 	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/expat-1.95.5-sol8-sparc-local.gz
 	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libiconv-1.8-sol8-sparc-local.gz
 	#http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libgcc-3.3-0-sunos8.sparc.zip
@@ -156,12 +156,17 @@ sunos_8_sparc_ZIP_BUILD () {
 	/usr/ccs/bin/strip * || true
 }
 
-sunos_10_sparc_ZIP_BUILD () {
+sunos_10_x86_ZIP_BUILD () {
+	# Installed the following packages from solaris cds: python, wget, gmake, gm4, bison, gccruntime, gcc
+	#  From this webpage: http://www.sunfreeware.com/faq.html#q5: SUNWbtool, SUNWsprot, SUNWhea, SUNWarc, SUNWlibm, SUNWlibms, SUNWdfbh, SUNWcg6h, SUNWxwinc, SUNWolinc, SUNWxglh
+	# also from the cds: gnome-common-devel, gnome-common-devel-share, SUNWperl-xml-parser, SUNWopenjade, opensp, SUNWgnome-base-libs-devel
 	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
 	# Only if a non-gnu m4 is in the path
 	export M4=/usr/sfw/bin/gm4
 	export MAKE=/usr/sfw/bin/gmake
-	export PKG_CONFIG=/usr/bin/pkg-config.sun
+
+	# Change offsize from 64 to 32 in configure
+	# Removed -mt option from gthread .pc file
 	
 	#./configure --prefix=/tmp/install
 	./configure --prefix=/opt/mono
@@ -181,7 +186,7 @@ sunos_10_sparc_ZIP_BUILD () {
 	# This is fixed in a later bintuils release... is this enough reason to use blastwave packages?
 	#make install-strip || exit 1
 	#gmake install DESTDIR=/tmp/install || exit 1
-	gmake install-strip DESTDIR=/tmp/install || exit 1
+	#gmake install-strip DESTDIR=/tmp/install || exit 1
 
 	# Make sure to use the solaris version of strip (will this work?
 	#cd /tmp/install/lib
