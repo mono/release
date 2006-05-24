@@ -507,6 +507,14 @@ def time_duration_asc(start, finish):
 	return (finish_time - start_time) / 60
 
 def rpm_query(query_format, file):
+	"""Args: query_format, file.
+	query_format can be a list or a string.
+	Returns: results of query, which can also be a list (if > 1), or a string (if < 2).
+
+	Ex:  name = utils.rpm_query('NAME', 'myrpm.rpm')
+	Ex:  (name, sum) = utils.rpm_query(['NAME', 'SUMMARY'], 'myrpm.rpm')
+
+	This function also utilizes a hash cache to speed up the script generation by a couple of minutes."""
 
 	marker = "__MONO__"
 
@@ -532,5 +540,9 @@ def rpm_query(query_format, file):
 		code, output = launch_process("rpm -qp --queryformat \"%s\" %s" % (query_string, file), capture_stderr=0, print_output=0 )
 		rpm_query_cache[key] = output
 
-	return output.split(marker)
+	results = output.split(marker)
+	if len(results) <= 1:
+		results = output
+
+	return results
 

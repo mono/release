@@ -61,6 +61,12 @@ def get_rpm_install(env_obj, archive=False):
 		<p>""" % (vars['OC_DOWNLOAD_URL'], vars['OC_NOTES'], url_prefix)
 
 
+	repos = [ {'name': 'mono', 'long_name': 'Mono' },
+		{'name': 'gtk-sharp-1.0', 'long_name': 'Gtk# 1.0' },
+		{'name': 'gtk-sharp-2.0', 'long_name': 'Gtk# 2.0' },
+		{'name': 'mono-tools', 'long_name': 'Mono Tools' },
+		{'name': 'mono-deps', 'long_name': 'Mono Dependencies' } ]
+
 	# Generate Yum Text
 	if env_obj.info.has_key('USE_YUM') and env_obj.info['USE_YUM']:
 		return_text += """
@@ -72,11 +78,6 @@ def get_rpm_install(env_obj, archive=False):
 		"""
 
 		fd = open(os.path.join(output_dir, url_prefix, distro_name, 'mono.repo'), 'w')
-		repos = [ {'name': 'mono', 'long_name': 'Mono' },
-			{'name': 'gtk-sharp-1.0', 'long_name': 'Gtk# 1.0' },
-			{'name': 'gtk-sharp-2.0', 'long_name': 'Gtk# 2.0' },
-			{'name': 'mono-tools', 'long_name': 'Mono Tools' },
-			{'name': 'mono-deps', 'long_name': 'Mono Dependencies' } ]
 
 		for repo in repos:
 			fd.write("[%s]\n" % repo['name'])
@@ -87,7 +88,24 @@ def get_rpm_install(env_obj, archive=False):
 
 		fd.close()
 
-	# TODO: Generate some yast and zmd text
+	# Generate yast text
+	if env_obj.info.has_key('USE_YAST') and env_obj.info['USE_YAST']:
+		return_text += """
+		<p>
+		This distro supports installing packages via <tt>YaST</tt>.  Add the following installation
+		sources to <tt>YaST</tt>:
+		<ul>"""
+		for repo in repos:
+			return_text += "<li><tt>http://go-mono.com/%s/%s/%s</tt></li>\n" % (url_prefix, repo['name'], env_obj.name)
+		return_text += """
+		</ul>
+		</p>"""
+
+
+	# TODO: Generate zmd text
+	# Hmm... zmd can use all of the above sources...
+	if env_obj.info.has_key('USE_ZMD') and env_obj.info['USE_ZMD']:
+		pass
 
 	return return_text
 
@@ -118,7 +136,7 @@ def get_external_deps(env_obj, archive=False):
 
 	# For the source RPMS
 	if external_src_rpms:
-		return_text += "<p>Source RPMS:"
+		return_text += "<p>Source RPMS: "
 		for i in external_src_rpms:
 
 			i = os.path.basename(i)
