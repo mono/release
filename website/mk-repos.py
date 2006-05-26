@@ -53,16 +53,7 @@ utils.substitute_parameters_in_file('channel.conf', {
 
 distro_objs = build.get_platform_objs()
 
-# Get packages to make available in servers
-fd = open(config.release_repo_root + os.sep + 'website/repo-config/packages')
-text = fd.read()
-fd.close()
-channel_packages = text.split()
-
 # TODO: maybe we should generate the repo data for all repo types for all distros... ?  That might be just confusing...
-
-# Write headers for .conf files
-
 
 # Create hard links to real packages to use in repo
 for distro_obj in distro_objs:
@@ -86,11 +77,11 @@ for distro_obj in distro_objs:
 
 		rpms = []
 		# Get rpms for this distro
-		for pack in channel_packages:
-			pack_obj = packaging.package(distro_obj, pack, bundle_obj=bundle_conf, package_basepath=package_src_dir)
+		for pack in glob.glob(config.packaging_dir + os.sep + 'defs/*'):
+			pack_obj = packaging.package(distro_obj, os.path.basename(pack), bundle_obj=bundle_conf, package_basepath=package_src_dir)
 
-			# Only if package is valid on this distro
-			if pack_obj.valid_use_platform(distro_obj.name):
+			# Only if package is valid on this distro, and it's not an 'alias' package (Ex: don't process packages whose pack/source dirs are links to others)
+			if pack_obj.valid_use_platform(distro_obj.name) and not pack_obj.info.has_key('source_package_path_name'):
 				rpms += pack_obj.get_files(fail_on_missing=False)
 
 		# Get external rpms
