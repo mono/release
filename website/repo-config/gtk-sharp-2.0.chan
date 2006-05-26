@@ -1,9 +1,0 @@
-ChannelID   "gtk-sharp-2-[[name]]"
-Name        "Gtk# 2"
-Alias       "gtk-sharp-2-[[name]]"
-Description "This channel previews of Gtk# 2. Gtk# 2 is in development and does NOT have a stable API/ABI."
-Priority     100
-IconPath     http://www.ximian.com/foo.png
-
-! gtk-sharp-2.0
-! gtk-sharp-2.8

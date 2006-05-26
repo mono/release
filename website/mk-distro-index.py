@@ -51,21 +51,13 @@ def get_rpm_install(env_obj, archive=False):
 
 		<xmp class='shell'>
 	rug sa http://go-mono.com/%s
-	rug sub mono-official
-	rug sub gtk-sharp-official
-	rug sub mono-tools-official
+	rug sub mono-%s
 	rug in mono-complete gtk-sharp
 		</xmp>
 
 		<p>Note: some versions of Red Carpet frequently have IOError timeouts.  This is a bug in Red Carpet.  If Red Carpet for your distro frequently has this problem, please use another installation method.</p>
-		<p>""" % (vars['OC_DOWNLOAD_URL'], vars['OC_NOTES'], url_prefix)
+		<p>""" % (vars['OC_DOWNLOAD_URL'], vars['OC_NOTES'], url_prefix, bundle_conf.info['bundle_urlname'])
 
-
-	repos = [ {'name': 'mono', 'long_name': 'Mono' },
-		{'name': 'gtk-sharp-1.0', 'long_name': 'Gtk# 1.0' },
-		{'name': 'gtk-sharp-2.0', 'long_name': 'Gtk# 2.0' },
-		{'name': 'mono-tools', 'long_name': 'Mono Tools' },
-		{'name': 'mono-deps', 'long_name': 'Mono Dependencies' } ]
 
 	# Generate Yum Text
 	if env_obj.info.has_key('USE_YUM') and env_obj.info['USE_YUM']:
@@ -77,35 +69,27 @@ def get_rpm_install(env_obj, archive=False):
 		</p>
 		"""
 
-		fd = open(os.path.join(output_dir, url_prefix, distro_name, 'mono.repo'), 'w')
-
-		for repo in repos:
-			fd.write("[%s]\n" % repo['name'])
-			fd.write("name=%s for %s\n" % (repo['long_name'], distro_name) )
-			fd.write("baseurl=http://go-mono.com/%s/mono/%s/\n" % (url_prefix, distro_name) )
-			fd.write("enabled=1\n")
-			fd.write("gpgcheck=0\n\n")
-
-		fd.close()
-
 	# Generate yast text
 	if env_obj.info.has_key('USE_YAST') and env_obj.info['USE_YAST']:
 		return_text += """
 		<p>
 		This distro supports installing packages via <tt>YaST</tt>.  Add the following installation
-		sources to <tt>YaST</tt>:
-		<ul>"""
-		for repo in repos:
-			return_text += "<li><tt>http://go-mono.com/%s/%s/%s</tt></li>\n" % (url_prefix, repo['name'], env_obj.name)
-		return_text += """
+		source to <tt>YaST</tt>:
+		<ul>
+		<li><tt>http://go-mono.com/%s/%s</tt></li>
 		</ul>
-		</p>"""
+		</p>""" % (url_prefix, env_obj.name)
 
 
 	# TODO: Generate zmd text
 	# Hmm... zmd can use all of the above sources...
 	if env_obj.info.has_key('USE_ZMD') and env_obj.info['USE_ZMD']:
 		pass
+
+		#Only select one category, since they're all valid.
+		#if OC
+		#elif yum,
+		#elif yast
 
 	return return_text
 

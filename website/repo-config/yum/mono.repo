@@ -1,0 +1,6 @@
+[mono]
+name=Mono for @DISTRO@ (@BUNDLE_NAME@)
+baseurl=http://go-mono.com/@URL_PREFIX@/@DISTRO@/
+enabled=1
+gpgcheck=0
+

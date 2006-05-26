@@ -7,6 +7,9 @@ archive_version="1.1.13.8"
 #     go-mono.com/download-stable (which contains download index, as well as the repository)
 bundle_urlname="stable"
 
+# This is for the download repos...
+bundle_desc="Latest packages from the 1.1.13 stable branch"
+
 # Note:  release values are optional
 #   (sources will not be based on release value)
 #   (If a release is specified, select that release, otherwise select the version with the latest release)

@@ -1,0 +1,16 @@
+PRODUCT Mono
+VERSION @VERSION@
+LABEL Novell Mono - @BUNDLE_NAME@ - @DISTRO@
+VENDOR Novell, Inc.
+ARCH.i386 i386 noarch
+ARCH.i486 i486 i386 noarch
+ARCH.i586 i586 i486 i386 noarch
+ARCH.i686 i686 i586 i486 i386 noarch
+ARCH.x86_64 x86_64 i686 i586 i486 i386 noarch
+ARCH.s390 s390 noarch
+ARCH.s390x s390x s390 noarch
+ARCH.ia64 ia64 noarch
+ARCH.ppc ppc noarch
+DEFAULTBASE @BASE_ARCH@
+DESCRDIR setup/descr
+DATADIR .

@@ -1,8 +1,0 @@
-ChannelID   "gtk-sharp-[[name]]"
-Name        "Gtk# 1.0.x"
-Alias       "gtk-sharp-[[name]]"
-Description "This channel has Gtk# 1.0.x packages. Gtk# 1.0.x has a stable API/ABI."
-Priority     100
-IconPath     http://www.ximian.com/foo.png
-
-! gtk-sharp
