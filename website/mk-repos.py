@@ -154,7 +154,12 @@ for distro_obj in distro_objs:
 			# The wiki page didn't say this directory.yast was needed, but newer zypp installation sources seem to require it
 			os.system("cd setup/descr ; ls -A1 > directory.yast")
 
-			os.system("ls -A1 > directory.yast; create_package_descr")
+			# Look in the $HOME/bin and if it's not there, rely on it being in the path
+			create_yast_path = os.path.join(os.environ['HOME'], 'bin', 'create_package_descr')
+			if not os.path.exists(create_yast_path):
+				create_yast_path = 'create_package_descr'
+
+			os.system("ls -A1 > directory.yast; " + create_yast_path )
 
 			os.chdir(current)
 			

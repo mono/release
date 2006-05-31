@@ -52,7 +52,7 @@ def get_rpm_install(env_obj, archive=False):
 		<xmp class='shell'>
 	rug sa http://go-mono.com/%s
 	rug sub mono-%s
-	rug in mono-complete gtk-sharp
+	rug in mono-complete gtk-sharp-complete
 		</xmp>
 
 		<p>Note: some versions of Red Carpet frequently have IOError timeouts.  This is a bug in Red Carpet.  If Red Carpet for your distro frequently has this problem, please use another installation method.</p>
@@ -180,7 +180,7 @@ for distro_conf in distros:
 			RPMS = []
 			SPECS = []
 			for package in ARGS:
-				pack_obj = packaging.package(env, package, bundle_obj=bundle_conf)
+				pack_obj = packaging.package(env, package, bundle_obj=bundle_conf, package_basepath=package_src_dir)
 
 				#if pack_obj.name == "gtk-sharp": pdb.set_trace()
 				if not pack_obj.valid_use_platform(env.name):

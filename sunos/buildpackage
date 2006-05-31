@@ -79,12 +79,10 @@ def build_package(target):
 	# Extract noarch rpms
 	for package in rpm_packages_to_include[target]:
 		package = packaging.package(env, package)
-		latest_ver_dir = package.path + os.sep + utils.get_latest_ver(package.path)
 
-		for file in os.listdir(latest_ver_dir):
-			if not re.compile('\.spec').search(file):
-				utils.extract_file(latest_ver_dir + os.sep + file, preserve_symlinks=1)
-				packages_used += [ file ]
+		for file in package.get_files():
+			utils.extract_file(file, preserve_symlinks=1)
+			packages_used += [ os.path.basename(file) ]
 
 
 	print "Cleaning up"
