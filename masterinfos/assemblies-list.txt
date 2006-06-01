@@ -11,6 +11,7 @@ System.Drawing.Design
 System.DirectoryServices
 System.Management
 System.Messaging
+System.ServiceProcess
 System.Web
 System.Web.Services
 Microsoft.VisualBasic
