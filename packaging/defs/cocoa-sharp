@@ -47,6 +47,6 @@ HEAD_PATH=(
 )
 
 RELEASE_PATH=(
-	trunk/cocoa-sharp
+	tags/cocoa-sharp-[[version]]
 )
 

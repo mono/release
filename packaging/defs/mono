@@ -118,9 +118,9 @@ sunos_10_x86_ZIP_DEPS=(
 
 macos_10_ppc_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-	http://primates.ximian.com/~wberrier/macos/deps/gettext-0.14.1-0.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/glib-2.6.3-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/glib-2.6.3-1.macos10.novell.ppc.zip
 	http://primates.ximian.com/~wberrier/macos/deps/pkgconfig-0.15.0-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/gettext-0.14.1-1.macos10.novell.ppc.zip
 )
 
 sunos_8_sparc_ZIP_BUILD () {
@@ -317,5 +317,11 @@ POSTBUILD_STEP3 () {
 	#echo "Skipping..."
 	cd runtime
 	make -k check
+}
+
+POSTBUILD_STEP_NAME4="cleanup"
+POSTBUILD_STEP4 () {
+        #echo "Skipping..."
+        ./runtime/mono-wrapper --wapi=semdel
 }
 

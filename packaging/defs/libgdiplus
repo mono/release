@@ -119,16 +119,16 @@ macos_10_ppc_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
 
 	http://primates.ximian.com/~wberrier/macos/deps/pkgconfig-0.15.0-0.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/glib-2.6.3-0.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/gettext-0.14.1-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/glib-2.6.3-1.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/gettext-0.14.1-1.macos10.novell.ppc.zip
 
 	http://primates.ximian.com/~wberrier/macos/deps/jpeg-6b-0.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/libpng-1.2.8-0.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/libungif-4.1.3-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/libpng-1.2.8-1.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/libungif-4.1.3-1.macos10.novell.ppc.zip
 	http://primates.ximian.com/~wberrier/macos/deps/tiff-3.7.1-0.macos10.novell.ppc.zip
 
 	# Freetype...
-	# Tiger's freetype is too old... panther's is ok.  we need it here
+	# Panther's freetype is too old... Tiger's is ok.  we need it here
 	http://primates.ximian.com/~wberrier/macos/deps/freetype-2.1.10-0.macos10.novell.ppc.zip
 
 )
