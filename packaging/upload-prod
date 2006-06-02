@@ -10,6 +10,11 @@ if test x$BUNDLE = x || test x$BUNDLE = xdry ; then
 	exit 1
 fi
 
+if [ ! -e  bundles/$BUNDLE ] ; then
+	echo "Bundle $BUNDLE does not exist"
+	exit 1
+fi
+
 if test x$DRYRUN = xdry ; then
 	extra_options=n
 	echo "Doing dry run..."

@@ -346,6 +346,9 @@ class package:
 
 			os.chdir(current_dir)
 
+		# Sort the files (for consistency on the web pages)
+		files.sort()
+
 		return files
 
 	def get_version(self, fail_on_missing=True):

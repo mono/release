@@ -139,7 +139,7 @@ if len(sys.argv) != 4:
         sys.exit(1)
 
 bundle = sys.argv[1]
-package_src_dir = sys.argv[2]
+package_src_dir = os.path.abspath(sys.argv[2])
 output_dir = sys.argv[3]
 
 bundle_conf = packaging.bundle(bundle_name=bundle)
@@ -207,11 +207,15 @@ for distro_conf in distros:
 			if os.path.exists(zip_filename):
 				os.unlink(zip_filename)
 
-			# rpms are compressed anyways -- doing any compression is a waste of time
-			print "Creating zip: " + zipname
-			os.system("zip -j -0 %s %s" % (zip_filename, " ".join(RPMS)) )
-			
-			out.write("<p><a href='%s.zip'><img src='/zip-icon.png' />All of these RPMs in a ZIP file</a></p>" % (zipname))
+			# If there are more than one rpms to be in the zip file
+			if len(RPMS) > 1:
+				print "Creating zip: " + zipname
+				# rpms are compressed anyways -- doing any compression is a waste of time
+				os.system("zip -j -0 %s %s" % (zip_filename, " ".join(RPMS)) )
+				
+				out.write("<p><a href='%s.zip'><img src='/zip-icon.png' />All of these RPMs in a ZIP file</a></p>" % (zipname))
+
+
 			out.write("<ul>")
 			arc_out.write("<ul>")
 

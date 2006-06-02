@@ -27,7 +27,7 @@ if len(sys.argv) != 4:
         sys.exit(1)
 
 bundle = sys.argv[1]
-package_src_dir = sys.argv[2]
+package_src_dir = os.path.abspath(sys.argv[2])
 output_dir = sys.argv[3]
 
 bundle_conf = packaging.bundle(bundle_name=bundle)
