@@ -7,6 +7,7 @@ import os
 import glob
 import re
 import distutils.dir_util
+import sys
 
 import pdb
 
@@ -102,13 +103,20 @@ class source_file_repo:
 	def get_log_file(self, source_file):
 		self.load_info()
 		key = ""
+
+		# Remove snapshot_sources/sources from path so we can find a match
+		# (Remove first directory from relative path)
+		source_file = os.sep.join(source_file.split(os.sep)[-2:])
 		for k,v in self.info.iteritems():
 			if v == source_file:
 				key = k
 				break
 
 		# Ex: /<full_path>/tarball_logs/RELEASE/libgdiplus-1.1/1.1.13.4.log
-		return config.mktarball_logs + os.sep + key.replace(":", "/") + ".log"
+		if not key:
+			print "datastore.get_log_file: Could not find source file: %s" % source_file
+			sys.exit(1)
+		return config.mktarball_logs_release_relpath + os.sep + key.replace(":", "/") + ".log"
 
 	def get_latest_tarball(self, HEAD_or_RELEASE, package_name):
 		self.load_info()

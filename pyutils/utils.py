@@ -491,7 +491,8 @@ def remove_list_duplicates(my_list):
 def get_time():
 	#Fri Apr 29 14:20:47
 	#return time.strftime("%a %b %d %H:%M:%S")
-	return time.asctime()
+	# Return GMT instead of the current timezone (so we can store GMT time in info.xml)
+	return time.asctime(time.gmtime())
 
 def time_duration_asc(start, finish):
 	"""Returns number of minutes between times (and times are in time.asctime format)."""

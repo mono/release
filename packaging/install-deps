@@ -21,6 +21,8 @@ import utils
 
 import pdb
 
+is_url = re.compile("^(ftp|http)", re.I)
+
 if len(sys.argv) < 3:
 	print ""
 	print "Usage: ./install-deps TARGET <package> <local packages>"
@@ -47,9 +49,14 @@ if build_deps_package != 'none':
 	files += package.get_dep_files()
 
 for dep in deps:
-	package = packaging.package(target_env, dep)
-	files += package.get_files()
-	files += package.get_dep_files()
+	if is_url.search(dep):
+		utils.get_url(dep, 'external_zip_pkg')
+		files += [ 'external_zip_pkg' + os.sep + os.path.basename(dep) ]
+
+	else:	
+		package = packaging.package(target_env, dep)
+		files += package.get_files()
+		files += package.get_dep_files()
 
 
 # Remove duplciates

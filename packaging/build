@@ -82,7 +82,6 @@ elif snapshot_sources:
 	HEAD_or_RELEASE = "HEAD"
 else:
 	print "Cannot find source file for " + package_name
-	build_env.unlock_env()
 	sys.exit(4)
 
 sources += snapshot_sources
@@ -145,9 +144,10 @@ logfile = repo.get_log_file(source_file)
 
 # Create symbolic link to tarball in 'files' dir
 # Create symbolic link to tarball_log in 'logs' dir
+# Make the symbolic links relative
 try:
-	os.symlink(logfile, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', os.path.basename(logfile) ) )
-	os.symlink(config.packaging_dir + os.sep + source_file, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'files', os.path.basename(source_file) ) )
+	os.symlink("../../../../../../../../" + logfile, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', os.path.basename(logfile) ) )
+	os.symlink("../../../../../../../../packaging/" +source_file, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'files', os.path.basename(source_file) ) )
 except OSError:
 	# Usually means links are already there...
 	pass
@@ -223,7 +223,7 @@ build_env.ssh.copy_from(['%s/builder/built-packages/*' % build_location, '%s/scr
 
 # Create link to packages
 try:
-	os.symlink(package_version_path, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'files', 'downloads' ) )
+	os.symlink(os.path.join("../../../../../../../../packaging/", package.package_base_relpath,  package.package_relpath,  ver_path), os.path.join(config.build_info_dir, build_info.rel_files_dir, 'files', 'downloads' ) )
 except OSError:
 	# Probably already exists...
 	pass

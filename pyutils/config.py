@@ -42,4 +42,5 @@ build_info_dir = web_root_dir + "/builds"
 build_info_url = web_root_url + "/builds"
 
 mktarball_logs = web_root_dir + "/tarball_logs"
+mktarball_logs_release_relpath = 'monobuild/www/tarball_logs'
 

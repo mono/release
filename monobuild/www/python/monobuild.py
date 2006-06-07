@@ -352,10 +352,15 @@ def packagestatus(req, **vars):
 						<td><a href="%s">%s</a></td>
 					 """ % (step['name'], log, step['state'])
 
-				# If there's download info, add it to the html
-				if step['download']:
+				# If there's download info, and it exists, add it to the html
+				#  (It won't exist on the mirrored public site)
+				if step.has_key('download'):
+					temp_rel_path =  os.path.join(build_info.rel_files_dir, "files", step['download'])
+				else:   temp_rel_path = ""
 
-					download_file = os.path.join(config.build_info_url, build_info.rel_files_dir, "files", step['download'])
+				if temp_rel_path and os.path.exists(os.path.join(config.web_root_dir, 'builds', temp_rel_path)):
+
+					download_file = os.path.join(config.build_info_url, temp_rel_path)
 
 					html += """
 							<td><a href="%s">%s</a></td>

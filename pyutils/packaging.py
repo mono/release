@@ -238,6 +238,7 @@ class package:
 			if self.HEAD_or_RELEASE == "HEAD": packages_dir = "snapshot_" + packages_dir
 
 			self.package_basepath = os.path.join(config.packaging_dir, packages_dir)
+			self.package_base_relpath = packages_dir
 
 		if not self.source_basepath:
 			if self.HEAD_or_RELEASE == "HEAD":
@@ -245,6 +246,7 @@ class package:
 			else:
 				sources_dir = "sources"
 			self.source_basepath = config.packaging_dir + os.sep + sources_dir
+			self.source_base_relpath = sources_dir
 
 		# Set up relative and full paths
 		if self.package_env:
@@ -258,9 +260,14 @@ class package:
 	def setup_symlinks(self):
 		"""Setup alias symlinks for sources and packages."""
 
-		if self.package_env:
+		if self.package_env and self.valid_build_platform(self.package_env.name):
 			dirs = [ self.package_fullpath, self.source_fullpath ]
 		else:	dirs = [ self.source_fullpath ]
+
+		# Create the paths if it doesn't exist
+		if not self.inside_jail and self.create_dirs_links:
+			for path in (dirs):
+				if not os.path.exists(path): distutils.dir_util.mkpath(path)
 
 		# Create source and package symlinks if the dirs are there, but not the symlink
 		if self.info.has_key('source_package_path_name') and self.HEAD_or_RELEASE == "RELEASE" and self.create_dirs_links:
@@ -276,10 +283,6 @@ class package:
 						print "Error creating symlink: %s" % dir
 						sys.exit(1)
 
-		# Create the paths if it doesn't exist
-		if not self.inside_jail and self.create_dirs_links:
-			for path in (dirs):
-				if not os.path.exists(path): distutils.dir_util.mkpath(path)
 
 	# Used for constructing filenames
 	def get_revision(self, serial):

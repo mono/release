@@ -104,8 +104,6 @@ for root, dirs, files in os.walk('.'):
 
 
 
-os.chdir('bin')
-
 # Only do this for cygwin (basically for monodoc for gtk-sharp2)
 if os.path.exists('c:/cygwin/usr/'):
 	print "Making cygwin specific massages to bin/* wrappers..."
@@ -113,7 +111,7 @@ if os.path.exists('c:/cygwin/usr/'):
 	parameter_map[re.compile("^prefix=/usr", re.M)] = "prefix=C:/cygwin/usr"
 	parameter_map[re.compile("^monodocdir=/usr", re.M)] = "monodocdir=C:/cygwin/usr"
 
-	for root, dirs, files in os.walk('.'):
+	for root, dirs, files in os.walk('bin'):
 		for file in files:
 			# Search and replace in all files containing #!/bin/sh and /tmp/install
 			utils.substitute_parameters_in_file(os.path.join(root, file), parameter_map, qualifier=re.compile('#!/bin/sh.*/usr', re.M | re.DOTALL))
@@ -132,12 +130,11 @@ parameter_map[re.compile("/opt/mono")] = reloc
 # For packages we consume (noarch rpms)
 parameter_map[re.compile("/usr")] = reloc
 
-for root, dirs, files in os.walk('.'):
+for root, dirs, files in os.walk('bin'):
 	for file in files:
 		# Search and replace in all files containing #!/bin/sh and /tmp/install
 		utils.substitute_parameters_in_file(os.path.join(root, file), parameter_map, qualifier=re.compile('#!/bin/sh.*(/tmp/install|/usr|/Library/Framework|/opt/mono)', re.M | re.DOTALL))
 
-os.chdir('..')
 
 # Relocate files on macos
 print "Relocating dylib files..."
