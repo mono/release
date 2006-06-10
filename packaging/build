@@ -21,6 +21,7 @@ import os.path
 import os
 import distutils.dir_util
 import signal
+import getopt
 
 sys.path += [ '../pyutils' ]
 import packaging
@@ -50,19 +51,25 @@ def get_state(code, test=0):
 	else:
 		return "success"
 
+# Collect optional opts
+skip_steps = False
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_steps" ])
+for option, value in opts:
+	if option == "--skip_steps":
+		 skip_steps = True
 
-if len(sys.argv) < 4:
-	print "Usage is: ./build configuration package version <release>"
+if len(remaining_args) < 3:
+	print "Usage is: ./build [--skip_steps] configuration package version <release>"
         print "  <release> is optional"
 	sys.exit(1)
 
-distro = sys.argv[1]
-package_name = sys.argv[2]
-version = sys.argv[3]
+distro = remaining_args[0]
+package_name = remaining_args[1]
+version = remaining_args[2]
 
 # If serial is passed in
-if len(sys.argv) > 4:
-	serial = sys.argv[4]
+if len(remaining_args) > 3:
+	serial = remaining_args[3]
 else:	serial = "0"
 
 if serial == "0":
@@ -231,28 +238,30 @@ except OSError:
 build_info.update_step("build", state="success", download=os.path.basename('downloads'), finish=utils.get_time())
 
 # Run postbuild steps
-remote_env = {}
-remote_env['HEAD_or_RELEASE'] = "HEAD"
-counter = 1
-while(1):
-	if package.info.has_key('POSTBUILD_STEP_NAME%d' % counter) and package.info.has_key('POSTBUILD_STEP%d' % counter):
-		print "Running step %d!" % counter
-		name = package.info['POSTBUILD_STEP_NAME%d' % counter]
-		LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', '%s.log' % name)
-		log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
-		build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
+if not skip_steps:
+	remote_env = {}
+	remote_env['HEAD_or_RELEASE'] = "HEAD"
+	counter = 1
+	while(1):
+		if package.info.has_key('POSTBUILD_STEP_NAME%d' % counter) and package.info.has_key('POSTBUILD_STEP%d' % counter):
+			print "Running step %d!" % counter
+			name = package.info['POSTBUILD_STEP_NAME%d' % counter]
+			LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', '%s.log' % name)
+			log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
+			build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 
-		(code, output) = build_env.ssh.execute("%s cd %s  " % (step_env_pre_cmd, remote_src_dir + package.info['POSTBUILD_STEP%d' % counter] ), env=remote_env, logger=log_obj, output_timeout=timeout)
-		state = get_state(code, test=1)
-		if code:
-			print "Step %d (%s) failed..." % (counter, package.info['POSTBUILD_STEP_NAME%d' % counter])
-			build_info.update_step(name, state=state, finish=utils.get_time())
+			(code, output) = build_env.ssh.execute("%s cd %s  " % (step_env_pre_cmd, remote_src_dir + package.info['POSTBUILD_STEP%d' % counter] ), env=remote_env, logger=log_obj, output_timeout=timeout)
+			state = get_state(code, test=1)
+			if code:
+				print "Step %d (%s) failed..." % (counter, package.info['POSTBUILD_STEP_NAME%d' % counter])
+				build_info.update_step(name, state=state, finish=utils.get_time())
+			else:
+				build_info.update_step(name, state=state, finish=utils.get_time())
 		else:
-			build_info.update_step(name, state=state, finish=utils.get_time())
-	else:
-		break
+			break
 
-	counter += 1
+		counter += 1
+
 
 state = build_info.get_collective_state()
 build_info.update_build(state=state, finish=utils.get_time())

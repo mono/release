@@ -7,8 +7,6 @@ import time
 import signal
 import threading
 
-import pdb
-
 sys.path += [ '../pyutils' ]
 
 import packaging
@@ -24,19 +22,9 @@ import utils
 max_poll_interval = 5
 #max_poll_interval = 1
 
-# TODO: catch sig quit to allow finishing of last mktarball
-
-
-# Create tarballs starting from this point
-#  Raise or lower this number as we go along...
-#starting_rev = 57790
-#starting_rev = 58100
-starting_rev = 58700
-
 # static list of packages to create tarballs for
 # What packages should these be?
-packages = ['mono', 'mono-1.1.13']
-
+packages = ['mono', 'mono-1.1.13', 'libgdiplus']
 
 src_repo = src_repo_utils.svn(config.MONO_ROOT)
 distfiles = datastore.source_file_repo()
@@ -47,6 +35,7 @@ pack_objs = {}
 for pack in packages:
 	pack_objs[pack] = packaging.package("", pack)
 
+#starting_rev = 61097
 
 class mktarball_loop(threading.Thread):
 
@@ -63,7 +52,7 @@ class mktarball_loop(threading.Thread):
 			latest_tree_rev = src_repo.latest_tree_revision()
 			log.log("Latest tree rev: %d\n" % latest_tree_rev)
 
-			# Only do for the last couple of commits, rather than constantly updating above number
+			# Only do for the last couple of commits, rather than constantly updating a base revision
 			starting_rev = latest_tree_rev - 10
 
 
@@ -105,7 +94,7 @@ class mktarball_loop(threading.Thread):
 
 
 # Signal handler routine
-#  This will let each thread finish when CTRL-C is pushed
+#  This will let the thread finish when CTRL-C is pushed
 def keyboard_interrupt(signum, frame):
         print "*** Signaling thread to finish ***"
         sigint_event.set()
@@ -123,5 +112,4 @@ thread.start()
 while thread.isAlive():
 	#print "Waiting for thread %s ..." % thread.getName()
 	time.sleep(1)
-
 

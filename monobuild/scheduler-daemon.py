@@ -3,7 +3,7 @@
 # Probably will only build HEAD packages for now...  No reason it couldn't build RELEASE... ?
 
 # TODO: Logging
-# TODO: Prioritize builds: Maybe there should be one thread per jail, and that thread chooses a tarball to build, and prioritizes.  That way, there are no wait times for startup (we'll only sleep when there are no tarballs available to build)
+# TODO: Prioritize builds: Maybe there should be one thread per jail, and that thread chooses a tarball to build, and prioritizes.  That way, there are no wait times for startup (we'll only sleep when there are no tarballs available to build) But, if we have jail multiplicity, the current design would be better
 # Possible TODO: For the slower build platforms, we could check to make sure the build succeeded on i386 before starting... ?
 
 import sys
@@ -34,7 +34,7 @@ sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
 # Some of these platforms take much longer, and one platform shouldn't hold them all up
 latest_build_distros = [ 'sles-9-x86_64', 'macos-10-ppc', 'redhat-9-i386', 'win-4-i386', 'sunos-8-sparc', 'sles-9-ia64', 'sles-9-s390', 'sles-9-s390x' ]
 
-latest_build_packages = [ 'mono', 'mono-1.1.13' ]
+latest_build_packages = [ 'mono', 'mono-1.1.13', 'libgdiplus' ]
 
 # regex to grab version out of filename
 # This only follows standards by autotools for now...

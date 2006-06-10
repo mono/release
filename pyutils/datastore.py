@@ -25,6 +25,7 @@ def unlock_file(fd):
 
 
 # tarball datastore
+version_re = re.compile(".*-(.*).(tar.gz|tar.bz2|zip)")
 
 # info for where tarballs are at and what's available
 #  any reason for making this file xml?
@@ -139,6 +140,20 @@ class source_file_repo:
 			latest_filename = ""
 
 		return latest_filename
+
+	def get_tarball_version(self, HEAD_or_RELEASE, package_name, rev):
+		self.load_info()
+
+		source_path = self.info[":".join([HEAD_or_RELEASE, package_name, rev])]
+
+		if source_path == "tarball_creation_failed":
+			version = ""
+		else:
+			filename = os.path.basename(source_path)
+			version, ext = version_re.search(filename).groups()
+
+		return version
+
 
 
 # XML data store

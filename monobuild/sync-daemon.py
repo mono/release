@@ -12,13 +12,13 @@ import config
 import build
 import utils
 
-# Use rsync to synchronize the last 10 builds
+# Use rsync to synchronize the last n builds
 
 # TODO: Run a later cronjob on mono.ximian.com that deletes all but the latest n builds (probably 10 or 20)
 
 # Target information
-host = 'root@mono.ximian.com'
-target_dir = '/root/builds'
+#host = 'root@mono.ximian.com'
+#target_dir = '/root/builds'
 
 # Testing
 host = 'wberrier@wblinux.provo.novell.com'
@@ -38,7 +38,7 @@ def sync_dirs():
 			for component in os.listdir(config.build_info_dir + os.sep + i + os.sep + distro):
 				# Get the last 'num_builds' number of elements from the list
 				versions = build.get_versions(i, distro, component)[-num_builds:]
-				for j in versions[:num_builds]:
+				for j in versions:
 					dirs.append(os.path.join(i, distro, component, j))
 
 
@@ -46,11 +46,12 @@ def sync_dirs():
 
 	#  For some reason the --delete option crashes when running the second time to go-mono.com and mono.ximian.com ... ?
 	# rsync all files over, and don't include the builds... just logs and info.xml
-	status, output = utils.launch_process('rsync -avzR -e ssh --copy-links  --exclude=files %s %s:%s' % (" ".join(dirs), host, target_dir))
+	status, output = utils.launch_process('rsync -avzR -e ssh --copy-links --exclude=files %s %s:%s' % (" ".join(dirs), host, target_dir))
 
 
 while(1):
 	print " *** Syncing ***"
 	sync_dirs()
+	print " *** Sleeping ***"
 	time.sleep(10)
 
