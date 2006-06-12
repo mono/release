@@ -27,6 +27,7 @@ import calendar
 import popen2
 import signal
 import fcntl
+import smtplib
 
 # Catch this error, and then die later on if the namespace isn't found
 #  (Allows us to use launch_process without having python-devel rpm installed on SuSE type machines)
@@ -546,4 +547,13 @@ def rpm_query(query_format, file):
 		results = output
 
 	return results
+
+
+def send_mail(fr, to, subject, body):
+        header = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (fr, to, subject)
+
+        msg = header + body
+        server = smtplib.SMTP('mail.novell.com')
+        server.sendmail(fr, to, msg)
+        server.quit()
 

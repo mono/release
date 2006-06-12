@@ -86,7 +86,7 @@ def build_package(target):
 
 
 	print "Cleaning up"
-	env.ssh.execute("rm -Rf %s; mkdir -p -m777 %s " % ( remote_temp, remote_temp))
+	env.ssh.execute("rm -Rf /tmp/install-packages; mkdir /tmp/install-packages; rm -Rf %s; mkdir -p -m777 %s " % ( remote_temp, remote_temp))
 
 	print "Copying files to remote..."
 	env.ssh.copy_to("*", remote_temp, mode='tar');
@@ -111,6 +111,7 @@ def build_package(target):
 
 	# Also copy script to relocate and unpack the packages
 	files += [config.packaging_dir + os.sep + 'do-install-zip-pkgs']
+	files += [config.packaging_dir + os.sep + '../pyutils/utils.py' ]
 	
 	# Copy them over...
 	env.ssh.copy_to(files, '/tmp/install-packages', mode='scp', compress=0)
