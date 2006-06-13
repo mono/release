@@ -9,11 +9,16 @@ import build
 import config
 import datastore
 import utils
+import www_utils
+
 
 def index(req, **vars):
 
 	# Debug to see what's available in req
 	#return("\n".join(dir(req)))
+
+	# Validate/sanitize args to catch some common security errors
+	vars = www_utils.sanitize_args(vars)
 
 	# Default to HEAD if it's not specified
 	if vars.has_key('HEAD_or_RELEASE'):
@@ -255,6 +260,9 @@ def index(req, **vars):
 
 # List all builds for a platform/package combination
 def packagestatus(req, **vars):
+
+	# Validate/sanitize args to catch some common security errors
+        vars = www_utils.sanitize_args(vars)
 
 
 	try:
