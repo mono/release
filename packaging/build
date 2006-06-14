@@ -146,8 +146,12 @@ build_info.update_build(state='inprogress', buildhost=build_env.info['target_hos
 #steps = build_info.get_steps_info()
 
 # Update step: Add link to mktarball log
+# Check for package aliases
 repo = datastore.source_file_repo()
-logfile = repo.get_log_file(source_file)
+if package.info.has_key('source_package_path_name'):
+	alias = package.info['source_package_path_name']
+else:	alias = ""
+logfile = repo.get_log_file(source_file, package_name_alias=alias)
 
 # Create symbolic link to tarball in 'files' dir
 # Create symbolic link to tarball_log in 'logs' dir
