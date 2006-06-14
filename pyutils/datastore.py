@@ -121,8 +121,9 @@ class source_file_repo:
 
 		# Ex: /<full_path>/tarball_logs/RELEASE/libgdiplus-1.1/1.1.13.4.log
 		if not key:
-			print "datastore.get_log_file: Could not find source file: %s" % source_file
-			sys.exit(1)
+			print "datastore.get_log_file: Could not find source file in tarball_map: %s" % source_file
+			print "   (Meaning, cannot do reverse lookup on mktarball parameters based on sourcefile)"
+			return ""
 		return config.mktarball_logs_release_relpath + os.sep + key.replace(":", "/") + ".log"
 
 	def get_latest_tarball(self, HEAD_or_RELEASE, package_name):

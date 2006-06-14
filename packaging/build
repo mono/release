@@ -153,17 +153,18 @@ if package.info.has_key('source_package_path_name'):
 else:	alias = ""
 logfile = repo.get_log_file(source_file, package_name_alias=alias)
 
-# Create symbolic link to tarball in 'files' dir
-# Create symbolic link to tarball_log in 'logs' dir
-# Make the symbolic links relative
-try:
-	os.symlink("../../../../../../../../" + logfile, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', os.path.basename(logfile) ) )
-	os.symlink("../../../../../../../../packaging/" +source_file, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'files', os.path.basename(source_file) ) )
-except OSError:
-	# Usually means links are already there...
-	pass
+if logfile:
+	# Create symbolic link to tarball in 'files' dir
+	# Create symbolic link to tarball_log in 'logs' dir
+	# Make the symbolic links relative
+	try:
+		os.symlink("../../../../../../../../" + logfile, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', os.path.basename(logfile) ) )
+		os.symlink("../../../../../../../../packaging/" +source_file, os.path.join(config.build_info_dir, build_info.rel_files_dir, 'files', os.path.basename(source_file) ) )
+	except OSError:
+		# Usually means links are already there...
+		pass
 
-build_info.update_step("mktarball", state='success', log=os.path.basename(logfile), download=os.path.basename(source_file))
+	build_info.update_step("mktarball", state='success', log=os.path.basename(logfile), download=os.path.basename(source_file))
 
 # Update step: installing deps
 LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', 'install-deps.log')

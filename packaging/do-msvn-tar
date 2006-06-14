@@ -106,6 +106,9 @@ fd.close()
 ### Execute the source creating functions ###
 def_file = "/tmp/" + package
 
+# Clean up bb_ssh dirs, otherwise, collisions happen, causing svn commands to fail
+os.system("rm -Rf /tmp/bb_ssh*")
+
 # get_source
 if package_obj.info.has_key('get_source'):
 	script = def_file
