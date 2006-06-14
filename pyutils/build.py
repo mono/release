@@ -54,9 +54,8 @@ def get_packages():
 
 	for entry in os.listdir(config.def_dir):
 	
-		# For some reason... .svn fails the -d perl test...???
 		#  Ignore all dot files
-		if not os.path.isdir(entry) and not re.compile('^\.').search(entry):
+		if not os.path.isdir(config.def_dir + os.sep + entry) and not re.compile('^\.').search(entry):
 			packages.append(entry)
 
 	packages.sort()

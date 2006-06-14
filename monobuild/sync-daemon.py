@@ -17,12 +17,12 @@ import utils
 # TODO: Run a later cronjob on mono.ximian.com that deletes all but the latest n builds (probably 10 or 20)
 
 # Target information
-#host = 'root@mono.ximian.com'
-#target_dir = '/root/builds'
+host = 'mono-web@mono.ximian.com'
+target_dir = 'release/monobuild/www/builds'
 
 # Testing
-host = 'wberrier@wblinux.provo.novell.com'
-target_dir = 'wa/msvn/release/monobuild/www/builds'
+#host = 'wberrier@wblinux.provo.novell.com'
+#target_dir = 'wa/msvn/release/monobuild/www/builds'
 
 #num_builds = 50 # 880 MB in one test...
 #num_builds = 20 # 434 MB in one test...
