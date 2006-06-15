@@ -1,12 +1,14 @@
 # We require building on a 10.3 box
-#target_host=builder@g5-mono.boston.ximian.com
+#  So use the 10.3 sdk
+target_host=builder@g5-mono.boston.ximian.com
 USE_ZIP_PKG=1
 
 # This is for rpm2cpio from:
 # http://www-jlc.kek.jp/~fujiik/macosx/10.2.X/memo/RPMonX.html
-target_command_prefix='export PATH=$PATH:/usr/local/bin;  '
+# and set CC to make sure we build with the 10.3 sdk
+target_command_prefix="export PATH=$PATH:/usr/local/bin; export CC='gcc -isysroot /Developer/SDKs/MacOSX10.3.9.sdk'; "
 
 # for testing
-target_host=nds_cm@macbld1.provo.novell.com
+#target_host=nds_cm@macbld1.provo.novell.com
 
 web_index=5
