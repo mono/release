@@ -51,16 +51,19 @@ fi
 
 cd $component_name_ver
 
-# Apply patches
-for i in `ls  ../*.patch | sort -n` ; do
-	patch -p1 < $i			|| exit 1
-done
-
 # Load environment for deps
 . /tmp/build_deps/env.sh
 
 # Call the function for this destroot
 . /tmp/scratch/$package
+
+# Apply patches (if the def file has USE_PATCHES in it)
+if [ x$USE_PATCHES == "x1" ] ; then
+	for i in `ls  ../*.patch | sort -n` ; do
+		patch -p1 < $i			|| exit 1
+	done
+fi
+
 DISTRO_UNDERSCORES=${distro//-/_}
 ${DISTRO_UNDERSCORES}_ZIP_BUILD || exit 1
 # TODO:  For some reason the above exit isn't being called on failures

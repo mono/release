@@ -87,7 +87,9 @@ class mktarball_loop(threading.Thread):
 							log.log("Tarball creation failed...\n")
 							distfiles.add_file('HEAD', pack_name, str(latest_for_package), "tarball_creation_failed")
 
-							utils.send_mail('wberrier@novell.com', 'wberrier@novell.com', 'mktarball failed (%s %d)' % (pack_name, latest_for_package), "mktarball has failed for package %s revision %d" % (pack_name, latest_for_package))
+							# Send out the log with the tarball, or at least a link... ?
+							link = "http://monobuild1.boston.ximian.com/tarball_logs/HEAD/%s/%d.log" % (pack_name, latest_for_package)
+							utils.send_mail('wberrier@novell.com', 'wberrier@novell.com', 'mktarball failed (%s %d)' % (pack_name, latest_for_package), "mktarball has failed for package %s revision %d\n\n%s" % (pack_name, latest_for_package, link))
 
 			# TODO: Don't sleep if the above loop took longer than max_poll_interval
 			if not sigint_event.isSet():

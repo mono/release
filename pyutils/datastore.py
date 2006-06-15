@@ -102,6 +102,7 @@ class source_file_repo:
                 fd.close()
 
 	def get_log_file(self, source_file, package_name_alias=""):
+		"""Find a key (mktarball parameters) based on a source filename."""
 		self.load_info()
 		key = ""
 
@@ -127,6 +128,7 @@ class source_file_repo:
 		return config.mktarball_logs_release_relpath + os.sep + key.replace(":", "/") + ".log"
 
 	def get_latest_tarball(self, HEAD_or_RELEASE, package_name):
+		"""Find latest tarball filename for a component."""
 		self.load_info()
 
 		versions = []
@@ -149,6 +151,7 @@ class source_file_repo:
 		return latest_filename
 
 	def get_tarball_version(self, HEAD_or_RELEASE, package_name, rev):
+		"""Grab version from tarball filename."""
 		self.load_info()
 
 		source_path = self.info[":".join([HEAD_or_RELEASE, package_name, rev])]
@@ -161,6 +164,36 @@ class source_file_repo:
 
 		return version
 
+	def get_tarball_state_info(self, HEAD_or_RELEASE, component, read_info=True):
+		"""Get info map for the monobuild web view.
+
+		Returns a map with the following keys: name, revisions, state.  revisions is a reverse
+		sorted array.  Status is another map with revisions as keys and successs or failure as values
+		You can set read_info=False if you don't want to read in the data again.
+		"""
+
+		if read_info:
+			self.load_info()
+
+		info = {}
+		info['name'] = component
+		info['revisions'] = []
+		info['state'] = {}
+
+		for key in self.info.iterkeys():
+			H_or_R, name, revision = key.split(":")
+			if H_or_R == HEAD_or_RELEASE and name == component:
+				if self.info[key] == "tarball_creation_failed":
+					state = "failure"
+				else:   state = "success"
+
+				info['revisions'].append(revision)
+				info['state'][revision] = state
+
+		info['revisions'].sort()
+		info['revisions'].reverse()
+
+		return info
 
 
 # XML data store

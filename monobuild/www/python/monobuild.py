@@ -35,10 +35,7 @@ def index(req, **vars):
 	plat_objs = build.get_platform_objs()
 	pack_objs = build.get_package_objs()
 
-	schedule_flag = ""
-	if vars.has_key("schedule"): schedule_flag = vars["schedule"]
-
-	req.content_type = "text/html"
+        req.content_type = "text/html"
 
 	req.write( """
 	<HTML>
@@ -51,18 +48,7 @@ def index(req, **vars):
 
 	<H1>Mono Build Status - %s</H1>
 
-	<FORM name=buildform action="%s/schedulebuild" method=get enctype="multipart/form-data">
-
-	""" % (HEAD_or_RELEASE, config.web_root_url, config.web_root_url, HEAD_or_RELEASE, scriptname))
-
-	if schedule_flag:
-		req.write("""<p><INPUT type=submit Value="Build Selected Packages"></p>""")
-
-
-	checkbox_html = ""
-
-	if schedule_flag:
-		checkbox_html = """Select All <INPUT type=checkbox name=linux onClick=toggleCheckBoxes(document.buildform.build)>"""
+	""" % (HEAD_or_RELEASE, config.web_root_url, config.web_root_url, HEAD_or_RELEASE))
 
 	 
 	req.write("""
@@ -101,15 +87,56 @@ def index(req, **vars):
 
 	count = 0
 
+	# Only read once here
+	src = datastore.source_file_repo()
+	src.load_info()
+
 	# Iterate through arch packages, and then noarch packages
 	for (platforms, packs) in  [ (plat_objs, pack_objs), (['noarch'], noarch_pack_objs) ]:
 		
-		req.write("<thead><tr><td>%s</td>\n" % checkbox_html)
+		req.write("<thead><tr><td></td>\n")
 
 		for obj in packs:
 			req.write("<th>%s</th>\n" % obj.name)
 
 		req.write("</tr></thead>\n<tbody>\n")
+
+		# Add row for mktarball status
+		req.write("<tr><th>mktarball</th>\n")
+		for package in packs:
+			info = src.get_tarball_state_info(HEAD_or_RELEASE, package.name, read_info=False)
+
+			revision = ""
+			revision2 = ""
+			state = ""
+			state2 = ""
+			if len(info['revisions']) > 0:
+				revision = info['revisions'][0]
+				state = info['state'][revision]
+
+				link = "<a href=%s/tarball_logs/%s/%s/%s.log>%s</a>" % (config.web_root_url, HEAD_or_RELEASE, package.name, revision, revision)
+
+				if len(info['revisions']) > 1:
+					revision2 = info['revisions'][1]
+					state2 = info['state'][revision2]
+
+				if revision2:
+					req.write("<td class=%s>" % state2)
+					req.write("<center><table class=%s><td>" % (state))
+					req.write(link)
+					req.write("</td></table></center>")
+					req.write("</td>\n")
+				else:
+					req.write("<td class=%s>" % state)
+					req.write(link)
+					req.write("</td>\n")
+
+			else:
+				req.write("<td class=new>")
+				req.write("</td>\n")
+
+		req.write("</tr>\n")
+		# End of mktarball row
 
 		# list out non-noarch packages
 		for platform in platforms:
@@ -125,7 +152,7 @@ def index(req, **vars):
 			
 				# if this is a valid package for this platform...	
 				if package.info['BUILD_HOSTS'].count(platform_name):
-					# todo: show the last two builds (otherwise, it's going to mostly be showing yellow)
+					# show the last two builds (otherwise, it's going to mostly be showing yellow)
 					versions = build.get_versions(HEAD_or_RELEASE, platform_name, package.name) # in <num> format
 
 					version = ""
@@ -154,9 +181,9 @@ def index(req, **vars):
 					# if there's a previous version, print a container table
 					if version2:
 						req.write("<td class=%s>" % state2)
-						req.write("<table class=%s><td>" % (state))
+						req.write("<center><table class=%s><td>" % (state))
 						req.write(link)
-						req.write("</td></table>")
+						req.write("</td></table></center>")
 						req.write("</td>\n")
 					else:
 						req.write("<td class=%s>" % state)
@@ -180,68 +207,37 @@ def index(req, **vars):
 
 	req.write("</table>\n</p>")
 
-        # Old Legend
-	if 0:
-		req.write("""
+        # Legend
+	req.write("""
 
-		<h3>Legend</h3>
-		<p>
-		<table class=legend>
+	<h3>Legend</h3>
+	<p>
+	<table class=legend>
 
-		<tbody>
-		<tr><th>In Progress</th><td class=inprogress></td></tr>
-		<tr><th>Success</td><td class=success></td></tr>
-		<tr><th>Failed</td><td class=failure></td></tr>
-		<tr><th>Tests Failed</td><td class=testfailure></td></tr>
-		<tr><th>Timed Out</td><td class=timeout></td></tr>
-		<tr><th>Queued</td><td class=queued></td></tr>
-		<tr><th>New</td><td class=new></td></tr>
+	<tbody>
+	<tr>
+	<th>In Progress</th>
+	<th>Success</th>
+	<th>Failed</th>
+	<th>Tests Failed</th>
+	<th>Timed Out</td>
+	<th>Queued</th>
+	<th>New</th>
+	</tr>
 
-		</tbody>
-		</table>
-		</p>
+	<td class=inprogress></td>
+	<td class=success></td>
+	<td class=failure></td>
+	<td class=testfailure></td>
+	<td class=timeout></td>
+	<td class=queued></td>
+	<td class=new></td>
 
-		""")
+	</tbody>
+	</table>
+	</p>
 
-        # New Legend
-	else:
-		req.write("""
-
-		<h3>Legend</h3>
-		<p>
-		<table class=legend>
-
-		<tbody>
-		<tr>
-		<th>In Progress</th>
-		<th>Success</th>
-		<th>Failed</th>
-		<th>Tests Failed</th>
-		<th>Timed Out</td>
-		<th>Queued</th>
-		<th>New</th>
-		</tr>
-
-		<td class=inprogress></td>
-		<td class=success></td>
-		<td class=failure></td>
-		<td class=testfailure></td>
-		<td class=timeout></td>
-		<td class=queued></td>
-		<td class=new></td>
-
-		</tbody>
-		</table>
-		</p>
-
-		""")
-
-
-	if schedule_flag:
-		req.write("""<p><a href="%s">Build Status</a></p>""" % scriptname)
-	else:
-		#req.write("""<p><a href="%s?schedule=true">Schedule Builds</a></p>""" % scriptname)
-		pass
+	""")
 
 	# Link to toggle between HEAD and RELEASE
 	if HEAD_or_RELEASE == "RELEASE":
@@ -406,59 +402,4 @@ def packagestatus(req, **vars):
 	</body>
 	</html>""" % (config.web_root_url, html))
 
-
-
-def schedulebuild(req, **vars):
-
-	builds = ""
-	scriptname = os.path.basename(req.canonical_filename)
-
-	# Only select keys if they exist, and make sure the args are always treated as lists
-	if vars.has_key('build'):
-		builds = vars['build']
-		if builds.__class__ != list:
-			builds = [ builds ]
-		
-
-	html = """
-		<HTML>
-		<HEAD>
-			<TITLE>Mono Build Control</TITLE>
-			<link rel="stylesheet" href="%s/build.css" type="text/css">
-		</HEAD>
-		<BODY>
-
-		<H1>Mono Build Control</H1>
-
-		<H3>Scheduled the following builds</H3>
-
-		<p>""" % config.web_root_url
-
-	#latest_rev = Mono.Build.getLatestTreeRevision()
-	latest_rev = "57777"
-	latest_rev = "57635"
-
-	#if latest_rev:
-	#	html += "Error scheduling build<br>"
-
-	html += "Tree revision: %s<br>" % latest_rev
-
-	for build in builds:
-		#html += "Build: " + build + "<br>"
-
-		(platform, package) = build.split(":")
-		html += "Platform: %s, package: %s<br>" % (platform, package)
-		Mono.Build.scheduleBuild(platform, package, latest_rev)
-
-	html += """
-
-		<a href=../%s>Back</a>
-
-		</p>
-
-		</BODY>
-		</HTML>""" % scriptname
-
-	req.content_type = "text/html"
-	req.write(html)
 
