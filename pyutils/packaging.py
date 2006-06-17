@@ -270,15 +270,15 @@ class package:
 				if not os.path.exists(path): distutils.dir_util.mkpath(path)
 
 		# Create source and package symlinks if the dirs are there, but not the symlink
-		if self.info.has_key('source_package_path_name') and self.HEAD_or_RELEASE == "RELEASE" and self.create_dirs_links:
-			print "Link alias: %s" % self.info['source_package_path_name']
+		if self.info.has_key('def_alias') and self.HEAD_or_RELEASE == "RELEASE" and self.create_dirs_links:
+			print "Link alias: %s" % self.info['def_alias']
 			for dir in (dirs):
 				if not os.path.islink(dir) and not self.inside_jail:
 					if os.path.exists(dir):
 						print "%s is not a symbolic link (it should be)" % dir
 						sys.exit(1)
 					try:
-						os.symlink(self.info['source_package_path_name'], dir)
+						os.symlink(self.info['def_alias'], dir)
 					except:
 						print "Error creating symlink: %s" % dir
 						sys.exit(1)
@@ -364,8 +364,8 @@ class package:
 				# Cases
 				# 1. version from bundle
 				name = self.name
-				if self.info.has_key('source_package_path_name') and self.HEAD_or_RELEASE == "RELEASE":
-					name = self.info['source_package_path_name']
+				if self.info.has_key('def_alias') and self.HEAD_or_RELEASE == "RELEASE":
+					name = self.info['def_alias']
 				if self.bundle_obj.version_map.has_key(name):
 					self.version = self.bundle_obj.version_map[name]
 				# 2. If a package is not listed in bundle, print warning and skip

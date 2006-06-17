@@ -47,7 +47,9 @@ def parse_string(shell_string):
 		info[match.group(1)] = items
 
 	# get Functions ( func () { } )
-	for match in re.compile('^(\w*?) \(\) {(.*?)}', re.S | re.M).finditer(string_no_comments):
+	# Note: because of libgdiplus generating the .pc file which includes { and }, the ^} had to be
+	# 	added, so just remember that } on a newline always means the end of the function
+	for match in re.compile('^(\w*?) \(\) {(.*?)^}', re.S | re.M).finditer(string_no_comments):
 		info[match.group(1)] = match.group(2)
 
 	return info

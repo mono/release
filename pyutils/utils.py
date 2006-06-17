@@ -200,13 +200,15 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
         return os.path.basename(filename)
 
 # Download url into cache (Don't redownload if file exists)
-def get_url(url,destination):
+def get_url(url, destination):
 
 	filename = os.path.basename(url)
 
         # Download if not in cache
         if not os.path.exists(destination + os.sep + filename):
                 print "Downloading: %s ..." % url
+		if not os.path.exists(destination):
+			distutils.dir_util.mkpath(destination)
                 command = "wget -c %s -O %s" % (url, destination + os.sep + filename)
                 #print command
                 (status, output) = launch_process(command, print_output=debug)

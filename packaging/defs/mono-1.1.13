@@ -1,6 +1,6 @@
 web_index=1
 
-source_package_path_name="mono"
+def_alias="mono"
 bundle="1.1.13"
 
 BUILD_HOSTS=(

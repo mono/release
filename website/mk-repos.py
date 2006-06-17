@@ -81,7 +81,7 @@ for distro_obj in distro_objs:
 			pack_obj = packaging.package(distro_obj, os.path.basename(pack), bundle_obj=bundle_conf, package_basepath=package_src_dir)
 
 			# Only if package is valid on this distro, and it's not an 'alias' package (Ex: don't process packages whose pack/source dirs are links to others)
-			if pack_obj.valid_use_platform(distro_obj.name) and not pack_obj.info.has_key('source_package_path_name'):
+			if pack_obj.valid_use_platform(distro_obj.name) and not pack_obj.info.has_key('def_alias'):
 				rpms += pack_obj.get_files(fail_on_missing=False)
 
 		# Get external rpms

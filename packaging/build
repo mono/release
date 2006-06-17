@@ -148,8 +148,8 @@ build_info.update_build(state='inprogress', buildhost=build_env.info['target_hos
 # Update step: Add link to mktarball log
 # Check for package aliases
 repo = datastore.source_file_repo()
-if package.info.has_key('source_package_path_name'):
-	alias = package.info['source_package_path_name']
+if package.info.has_key('def_alias'):
+	alias = package.info['def_alias']
 else:	alias = ""
 logfile = repo.get_log_file(source_file, package_name_alias=alias)
 
@@ -206,7 +206,7 @@ else:
 
 # Files for zip build system and build command
 if build_env.info['USE_ZIP_PKG']:
-	files_to_copy += ['do-zip-build', '../conf/%s/*.patch' % package_name, 'defs/%s' % package_name]
+	files_to_copy += ['do-zip-build', '../pyutils/shell_parse.py', '../conf/%s/*.patch' % package_name, 'defs/%s' % package_name, 'defs/' + alias ]
 	build_command = '%s/do-zip-build %s %s %s %s' % (build_location, revision, package_name, distro, version)
 	remote_src_dir = "%s/scratch/%s" % (build_location, build_dir)
 	step_env_pre_cmd = ". %s/build_deps/env.sh; " % build_location
