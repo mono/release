@@ -4,7 +4,7 @@ import sys
 import os
 import libxml2
 
-xmlfile = open('../info.xml_new', 'r')
+xmlfile = open('../../monobuild/info.xml_new', 'r')
 
 text = xmlfile.read()
 
@@ -18,7 +18,7 @@ doc = libxml2.parseMemory(text, len(text) )
 #print "\n".join(dir(doc))
 
 # Modify some stuff
-doc.xpathEval("build/steps/step/name")[0].setContent("test build!")
+doc.xpathEval("build/distro")[0].setContent("redhat-9-i386")
 
 # Write out a new xml doc
 file = open('test.xml', 'w')
