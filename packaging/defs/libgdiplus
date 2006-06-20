@@ -7,6 +7,7 @@ BUILD_HOSTS=(
         fedora-5-i386
         fedora-5-x86_64
 	macos-10-ppc
+	macos-10-x86
         nld-9-i586
         nld-9-x86_64
         redhat-9-i386
@@ -91,7 +92,7 @@ sunos_8_sparc_ZIP_DEPS=(
 
 )
 
-macos_10_ppc_ZIP_BUILD () {
+macos_10_ZIP_BUILD () {
 
 	# Mac OS doesn't come with a fontconfig.pc ... generate one
 	#  (libgdiplus supports using fontconfig-config, but mac also doesn't ship with that)
@@ -130,6 +131,25 @@ macos_10_ppc_ZIP_DEPS=(
 	# Freetype...
 	# Panther's freetype is too old... Tiger's is ok.  we need it here
 	http://primates.ximian.com/~wberrier/macos/deps/freetype-2.1.10-0.macos10.novell.ppc.zip
+
+)
+
+macos_10_x86_ZIP_DEPS=(
+
+	# See http://primates.ximian.com/~wberrier/macos/deps/README
+
+	http://primates.ximian.com/~wberrier/macos/deps/x86/pkgconfig-0.15.0-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.6.3-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.14.1-0.macos10.novell.x86.zip
+
+	http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-6b-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.8-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/libungif-4.1.3-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.7.1-0.macos10.novell.x86.zip
+
+	# Freetype...
+	# Panther's freetype is too old... Tiger's is ok.  we need it here
+	http://primates.ximian.com/~wberrier/macos/deps/x86/freetype-2.1.10-0.macos10.novell.x86.zip
 
 )
 

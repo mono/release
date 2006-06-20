@@ -7,12 +7,19 @@ import glob
 import re
 import distutils.dir_util
 
-import shell_parse
+import utils
+import packaging
 
 rev = sys.argv[1]
 package = sys.argv[2]
 distro = sys.argv[3]
 version = sys.argv[4]
+
+os.chdir('/tmp')
+
+# Load def info
+env = packaging.buildenv(distro)
+pack_def = packaging.package(env, package, inside_jail=True)
 
 for d in [ '/tmp/builder/built-packages', '/tmp/scratch', '/tmp/install' ]:
 	if os.path.exists(d):
@@ -21,64 +28,39 @@ for d in [ '/tmp/builder/built-packages', '/tmp/scratch', '/tmp/install' ]:
 os.mkdir('/tmp/scratch')
 os.chdir('/tmp/scratch')
 
-zip_sources = glob.glob('../*.zip')
-tar_gz_sources = glob.glob('../*.tar.gz')
-tar_bz2_sources = glob.glob('../*.tar.bz2')
+sources = glob.glob('../*.zip')
+sources += glob.glob('../*.tar.gz')
+sources += glob.glob('../*.tar.bz2')
 patches = glob.glob('../*.patch')
 patches.sort()
 
-for f in zip_sources + tar_gz_sources + tar_bz2_sources + patches + ['../' + package]:
+for f in sources + patches + ['../' + package, '../' + distro ]:
 	shutil.move(f, '.')
 
-# Load def info
-pack_def = shell_parse.parse_file(package)
 
 # Find type of source
-if zip_sources:
-	command = "unzip -q %s" % os.path.basename(zip_sources[0])
-elif tar_gz_sources:
-	command = "gzip -dc %s | tar -x " % os.path.basename(tar_gz_sources[0])
-elif tar_bz2_sources:
-	command = "bzip2 -dc %s | tar -x " % os.path.basename(tar_bz2_sources[0])
+source_dir = utils.unpack_source(os.path.basename(sources[0]))
 
-current_files = os.listdir('.')
-
-# Extract source
-if(os.system(command)):
-	print 'Failed unpacking source: ' + command + filename
-	sys.exit(1)
-
-new_files = os.listdir('.')
-
-# Difference (set command)
-#  (Would use sets, but they are new in ... python 2.4?)
-for f in new_files:
-	if not current_files.count(f):
-		source_dir = f
-
-arch = re.compile('.*?-.*?-').sub("", distro) 
+arch = pack_def.package_env.info['arch']
 
 os.chdir(source_dir)
 
 # Apply patches if this package defines it
-if pack_def.has_key('USE_PATCHES') and pack_def['USE_PATCHES'] == "1":
+if pack_def.get_info_var('USE_PATCHES'):
 	for patch in patches:
 		if(os.system("patch -p1 < " + patch)):
 			print "Failed applying patch: " + os.path.basename(patch)
 			sys.exit(1)
 
-# This is because bash can't have hyphens in var names
-shell_snipet_name = distro.replace("-", "_") + "_ZIP_BUILD"
+# Get code from def file
+shell_code = pack_def.get_zip_build_commands()
 
-# If this pack def doesn't have it, try getting it from the alias pack def
-pack2_def_file = ""
-if pack_def.has_key(shell_snipet_name):
-	shell_code = pack_def[shell_snipet_name]
-elif pack_def.has_key('def_alias'):
-	pack2_def_file = '/tmp/' + pack_def['def_alias']
-	pack2_def = shell_parse.parse_file(pack2_def_file)
-	shell_code = pack2_def[shell_snipet_name]
+# Move def file so it gets cleaned up, and also saved with successful build
+pack2_def_file = pack_def.get_info_var('def_alias')
+if pack2_def_file:
+	pack2_def_file = '/tmp/' + pack2_def_file
 	shutil.move(pack2_def_file, '..')
+
 
 
 # set version var, load up environment for deps, and execute build command
@@ -94,7 +76,8 @@ if(os.system(build_command)):
 os.chdir('/tmp/install')
 distutils.dir_util.mkpath('/tmp/builder/built-packages')
 os.system('zip -yr /tmp/builder/built-packages/%s-%s-%s.%s.zip *' % (package, version, rev, arch) )
-# Keep a copy of the "spec" file
+# Keep a copy of the "spec" file and distro conf file
 shutil.copy('/tmp/scratch/' + package, '/tmp/builder/built-packages')
+shutil.copy('/tmp/scratch/' + distro, '/tmp/builder/built-packages')
 if pack2_def_file: shutil.copy('/tmp/scratch/' + os.path.basename(pack2_def_file), '/tmp/builder/built-packages')
 

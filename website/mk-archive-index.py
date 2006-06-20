@@ -40,15 +40,22 @@ sources = "<p> <a href='../sources'>Sources</a> </p>"
 installer_info = [
 	{ 'dir_name': 'linux-installer',   'name': 'Linux Installer',         'ext': 'bin'},
 	{ 'dir_name': 'windows-installer', 'name': 'Windows Installer',       'ext': 'exe'},
-	{ 'dir_name': 'macos-10-ppc',      'name': 'Mac OSX Installer',       'ext': 'dmg'},
+	{ 'dir_name': 'macos-10-ppc',      'name': 'Mac OSX Installer (ppc)', 'ext': 'dmg'},
+	{ 'dir_name': 'macos-10-x86',      'name': 'Mac OSX Installer (x86)', 'ext': 'dmg'},
 	{ 'dir_name': 'sunos-8-sparc',     'name': 'Solaris 8 SPARC Package', 'ext': 'pkg.gz'}
 ]
 
 installers = ""
 for installer_map in installer_info:
-		
-	revision = utils.get_latest_ver(os.path.join(output_dir, 'archive', version, installer_map['dir_name']))
-	installer_dir = os.path.join(output_dir, 'archive', version, installer_map['dir_name'], revision)
+
+	my_dir = os.path.join(output_dir, 'archive', version, installer_map['dir_name'])
+
+	# Skip if the installer doesn't exist for this release
+	if not os.path.exists(my_dir):
+		continue
+
+	revision = utils.get_latest_ver(my_dir)
+	installer_dir = my_dir + os.sep + revision
 	ref_dir = "../%s/%s" % (installer_map['dir_name'], revision)
 
 	filename = os.path.basename(glob.glob(installer_dir + os.sep + '*.%s' % installer_map['ext']).pop())

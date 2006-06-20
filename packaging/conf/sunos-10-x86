@@ -7,4 +7,4 @@ target_command_prefix='export PATH=/usr/sfw/bin:$PATH; '
 
 #jail_strip_path=/usr/ccs/bin/strip
 
-web_index=7
+web_index=8

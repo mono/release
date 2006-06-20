@@ -28,6 +28,7 @@ import popen2
 import signal
 import fcntl
 import smtplib
+import urllib
 
 # Catch this error, and then die later on if the namespace isn't found
 #  (Allows us to use launch_process without having python-devel rpm installed on SuSE type machines)
@@ -44,6 +45,7 @@ import pdb
 module_dir = os.path.dirname(__file__)
 if module_dir != "": module_dir += os.sep
 rpmvercmp_path = os.path.abspath(module_dir + "../rpmvercmp/rpmvercmp")
+rpm2cpio_py_path = os.path.abspath(module_dir + "rpm2cpio.py")
 
 debug=0
 KILLED_EXIT_CODE=-42
@@ -103,14 +105,22 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
                 os.mkdir(tempdir)
                 os.chdir(tempdir)
 
-                command = "rpm2cpio %s | cpio -idv" % filename
+		# Use python version of rpm2cpio by default
+                command = rpm2cpio_py_path + " %s | cpio -idv" % filename
+
+		try:
+			import bz2
+		except ImportError:
+			print "bz2 module not found... falling back to native rpm2cpio"
+			command = "rpm2cpio %s | cpio -idv" % filename
+
                 (status, output) = launch_process(command, print_output=debug)
                 #print output
                 #print "Status: %d" % status
                 if status:
 
 			# Weirdness for macosx...
-			#  This is a huge hack, because rpm2cpio doesn't come with macosx...
+			#  cpio on mac fails because it can't set the owner... just ignore this message
 			if re.compile('Unable to set file uid\/gid').search(output):
 				# The files were extracted, it should be ok, try again
 				(status, output) = launch_process(command, print_output=debug)
@@ -209,10 +219,8 @@ def get_url(url, destination):
                 print "Downloading: %s ..." % url
 		if not os.path.exists(destination):
 			distutils.dir_util.mkpath(destination)
-                command = "wget -c %s -O %s" % (url, destination + os.sep + filename)
-                #print command
-                (status, output) = launch_process(command, print_output=debug)
-
+		# Use this lib instead of wget for better portability (macos doesn't have wget by default)
+		(filename, headers) = urllib.urlretrieve(url, destination + os.sep + filename)
 
 def substitute_parameters_in_file(file, parameter_map, qualifier=match_all):
 
@@ -559,3 +567,43 @@ def send_mail(fr, to, subject, body):
         server.sendmail(fr, to, msg)
         server.quit()
 
+def unpack_source(filename):
+	"""Args: filename to extract
+	Returns: directory of extracted source."""
+	
+	if re.compile('\.zip$').search(filename):
+		command = "unzip -q %s" % filename
+	elif re.compile('\.tar\.bz2$').search(filename):
+		command = "bzip2 -dc %s | tar -x " % filename
+	elif re.compile('\.tar\.gz$').search(filename):
+		command = "gzip -dc %s | tar -x " % filename
+	else:
+		print "Unknown filetype: " + filename
+		sys.exit(1)
+
+	current_files = os.listdir('.')
+
+	# Extract source
+	(code, output) = launch_process(command)
+
+	if code:
+		print 'Failed unpacking source: ' + command + filename
+		sys.exit(1)
+
+	new_files = os.listdir('.')
+	# Difference (set command)
+	#  (Would use sets, but they are new in ... python 2.4?)
+	for f in new_files:
+		if not current_files.count(f):
+			source_dir = f 
+
+	return source_dir
+
+def get_dict_var(key, dict_hash):
+	"""Get var from info dict if key exists, otherwise return empty string (or false?)"""
+
+	return_val = ""
+	if dict_hash.has_key(key):
+		return_val = dict_hash[key]
+	return return_val
+ 

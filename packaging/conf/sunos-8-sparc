@@ -8,4 +8,4 @@ USE_ZIP_PKG=1
 #jaildir=/export/home/builder/wade/jail
 jail_strip_path=/usr/ccs/bin/strip
 
-web_index=6
+web_index=7

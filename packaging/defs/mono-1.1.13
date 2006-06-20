@@ -32,10 +32,6 @@ MONO_DEPS=(
 	mono-1.1.13
 )
 
-get_destroot () {
-	DEST_ROOT=$ARCH
-}
-
 HEAD_PATH=(
 	branches/mono-1-1-13/mono
 	branches/mono-1-1-13/mcs
@@ -44,16 +40,6 @@ RELEASE_PATH=(
 	tags/mono-[[version]]/mono
 	tags/mono-[[version]]/mcs
 )
-
-make_dist () {
-        . /etc/profile
-        ./autogen.sh
-	if [ $HEAD_or_RELEASE == "HEAD" ] ; then
-		make dist-zip MCS=mcs RESGEN=resgen
-	else
-		make dist MCS=mcs RESGEN=resgen
-	fi
-}
 
 POSTBUILD_STEP_NAME1="test-runtime"
 POSTBUILD_STEP1 () {

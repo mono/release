@@ -22,6 +22,8 @@ packages_to_include = {}
 
 packages_to_include['macos-10-ppc'] = ['mono', 'cocoa-sharp', 'libgdiplus', 'xsp', 'monodoc', 'boo', 'ikvm' ]
 
+packages_to_include['macos-10-x86'] = ['mono', 'cocoa-sharp', 'libgdiplus', 'xsp', 'monodoc', 'boo', 'ikvm' ]
+
 debug=1
 
 
@@ -61,6 +63,7 @@ def build_package(target):
 	# Add helper files to the list
         files += [config.packaging_dir + '/do-install-zip-pkgs']
         files += [config.packaging_dir + '/../pyutils/utils.py']
+        files += [config.packaging_dir + '/../pyutils/rpm2cpio.py']
 
 	for file in files:
 		print file

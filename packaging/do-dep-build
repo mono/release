@@ -1,0 +1,120 @@
+#!/usr/bin/env python
+
+
+#  This is designed to be used in the jail or on the build machine, not on the server build machine.
+#    Only because this step isn't done very often, but it's necessary that it's automated only for
+#    reproducability or updates
+
+
+# dep_def file has name, source, and build can be overridden if something other than:
+#  ./configure --prefix=/tmp/install ; make ; make install
+#  needs to be done
+
+
+import sys
+import shutil
+import os.path
+import os
+import distutils.dir_util
+import re
+
+import utils
+
+if len(sys.argv) < 4:
+	print "Usage: ./do-dep-build <arch> <def filename> <release>"
+	sys.exit(1)
+
+arch = sys.argv[1]
+def_filename = sys.argv[2]
+release = sys.argv[3]
+
+os.chdir('/tmp')
+
+# Load in package info
+execfile(def_filename)
+
+# Make sure this is a valid arch that was passed in
+if not archs.count(arch):
+	print "Valid archs: " + ",".join(archs)
+	sys.exit(1)
+
+built_packages = []
+
+current_dir = os.getcwd()
+
+if os.path.exists('/tmp/builder/built-packages'): shutil.rmtree('/tmp/builder/built-packages')
+distutils.dir_util.mkpath('/tmp/builder/built-packages')
+if not os.path.exists('/tmp/sources'): os.mkdir('/tmp/sources')
+
+for pack in packages:
+
+	# Gather build info
+	if pack.has_key('version'):
+		version = pack['version']
+	else:
+		version = re.compile('(\w+)-(.*)(\.tar\.gz|\.tar\.bz2|\.zip)').search(os.path.basename(pack['source'])).group(2)
+
+
+	if pack.has_key('build'):
+		script = pack['build']
+	else:
+		script = """
+			./configure --prefix=/tmp/install || exit 1
+			make || exit 1
+			make install || exit 1
+			"""
+
+	filename = os.path.join('/tmp/builder/built-packages', "-".join([pack['name'], version, release]) + "." + ".".join([build_os, 'novell', arch, 'zip']) )
+
+	# Check for existing build...
+	if utils.get_dict_var('skip', pack):
+		print pack['name'] + " has been configured to be skipped!..."
+		continue
+	elif os.path.exists(filename):
+		print pack['name'] + " has already been built!, using existing build..."
+
+	# Build if we don't have this filename already
+	else:
+
+		print " --- Cleaning/Setting up for: " + pack['name'] + " ---"
+		# Clean out areas
+		for path in ['/tmp/build_deps', '/tmp/install', '/tmp/scratch']:
+			if os.path.exists(path):
+				shutil.rmtree(path)
+
+		# Install deps
+		env_string = ""
+		if built_packages:
+			package_string = " ".join(built_packages)
+			utils.launch_process('/tmp/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps ' + package_string)
+			env_string = ". /tmp/build_deps/env.sh; "
+
+		os.mkdir('/tmp/scratch')
+		os.chdir('/tmp/scratch')
+
+		# Get and unpack the source
+		print " --- Unpacking : " + pack['name'] + " ---"
+		utils.get_url(pack['source'], '../sources')
+		source = utils.unpack_source('../sources/' + os.path.basename(pack['source']))
+		os.chdir(source)
+
+		print " --- Building: " + pack['name'] + " ---"
+		code, output = utils.launch_process(env_string + script)
+
+		if code:
+			print "Error building " + pack['name']
+			sys.exit(1)
+
+
+		os.chdir('/tmp/install')
+		
+		print " --- Archiving: " + pack['name'] + " ---"
+		code, output = utils.launch_process('zip -ry %s *' % filename)
+
+		os.chdir(current_dir)
+
+	built_packages.append(filename)
+
+
+print " --- Done! ---"
+

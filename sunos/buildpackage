@@ -112,6 +112,7 @@ def build_package(target):
 	# Also copy script to relocate and unpack the packages
 	files += [config.packaging_dir + os.sep + 'do-install-zip-pkgs']
 	files += [config.packaging_dir + os.sep + '../pyutils/utils.py' ]
+	files += [config.packaging_dir + os.sep + '../pyutils/rpm2cpio.py' ]
 	
 	# Copy them over...
 	env.ssh.copy_to(files, '/tmp/install-packages', mode='scp', compress=0)

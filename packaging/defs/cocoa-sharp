@@ -1,5 +1,6 @@
 BUILD_HOSTS=(
 	macos-10-ppc
+	macos-10-x86
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -12,7 +13,7 @@ MONO_DEPS=(
 	monodoc
 )
 
-macos_10_ppc_ZIP_BUILD () {
+macos_10_ZIP_BUILD () {
 
 	# This is so we can use the relocated mono (Will probably have to do this for all builds on mac)
 	export  MONO_GAC_PREFIX=/tmp/build_deps

@@ -23,8 +23,14 @@ class buildenv:
 	def __init__(self, conf_file_name, print_output=1, logger=""):
 
                 self.name = conf_file_name
-                self.conf_file = os.path.join(config.packaging_dir, 'conf', conf_file_name)
                 self.print_output = print_output
+
+		# Look in the current dir and then in conf dir
+		#  (This is so that these classes can be used in /tmp on remote machines)
+		if os.path.exists(conf_file_name) and os.path.isfile(conf_file_name):
+			self.conf_file = conf_file_name
+		else:
+			self.conf_file = os.path.join(config.packaging_dir, 'conf', conf_file_name)
 
 		# Always turn this off if a logger is used
 		if logger: print_output =0
@@ -98,12 +104,6 @@ class buildenv:
 				print "conf file must contain: %s" % key
 				sys.exit(1)
 
-		# Some default keys (Even if they are blank) 
-		#  (Easier to do this here then multiple places later)
-		for key in ['USE_ZIP_PKG']:
-			if not info.has_key(key):
-				info[key] = ""
-
 		self.info = info
 
 
@@ -133,6 +133,10 @@ class buildenv:
 
 		if code: return 1
 		else:    return 0
+
+
+	def get_info_var(self, key):
+		return utils.get_dict_var(key, self.info)
 
 class package:
 
@@ -166,6 +170,16 @@ class package:
 		# Shell config hack to properly populate USE_HOSTS 
 		if self.info['USE_HOSTS'] == ['${BUILD_HOSTS[@]}']:
 			self.info['USE_HOSTS'] = self.info['BUILD_HOSTS']
+
+		# Check alias package so we include any information from it that we don't include in this package (reduces maintenance redundancy)
+		if self.get_info_var('def_alias'):
+			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'))
+			for k, v in self.alias_pack_obj.info.iteritems():
+				# There's some type of data we don't want to copy: def_alias to avoid recursive loops...
+				if k != 'def_alias':
+					# If we don't have the key, grab info from alias def
+					if not self.info.has_key(k):
+						self.info[k] = v
 
 		# Handle bundle
 		if bundle_obj and bundle_name:
@@ -212,7 +226,7 @@ class package:
 		my_script = open(tmp_script, 'w')
 		my_script.write("DISTRO=%s\n" % self.package_env.info['distro'])
 		my_script.write("ARCH=%s\n" % self.package_env.info['arch'])
-		my_script.write("USE_ZIP_PKG=%s\n" % self.package_env.info['USE_ZIP_PKG'])
+		my_script.write("USE_ZIP_PKG=%s\n" % self.package_env.get_info_var('USE_ZIP_PKG') )
 		my_script.write(self.info[func_name])
 		if var_to_echo: my_script.write("echo ${%s}\n" % var_to_echo)
 		my_script.close()
@@ -230,7 +244,7 @@ class package:
 		if self.package_env and not self.package_basepath:
 			# If it's a zipdir package
 			#  Make an exception for noarch packages
-			if self.package_env.info['USE_ZIP_PKG'] and self.destroot != 'noarch':
+			if self.package_env.get_info_var('USE_ZIP_PKG') and self.destroot != 'noarch':
 				packages_dir = "zip_packages"
 			else:
 				packages_dir = "packages"
@@ -264,8 +278,8 @@ class package:
 			dirs = [ self.package_fullpath, self.source_fullpath ]
 		else:	dirs = [ self.source_fullpath ]
 
-		# Create the paths if it doesn't exist
-		if not self.inside_jail and self.create_dirs_links:
+		# Create the paths if it doesn't exist (and if this isn't an alias pack)
+		if not self.inside_jail and self.create_dirs_links and not self.get_info_var('def_alias'):
 			for path in (dirs):
 				if not os.path.exists(path): distutils.dir_util.mkpath(path)
 
@@ -453,6 +467,23 @@ class package:
 			return_val = 1
 		return return_val
 
+	def get_zip_build_commands(self):
+		"""Get build code.  First check for that os, then os-ver, and then os-version-arch."""
+
+		my_os = self.package_env.info['os']
+		my_os_version = my_os + "-" + self.package_env.info['version']
+		my_distro = self.package_env.info['distro']
+
+		for key in [my_os, my_os_version, my_distro]:
+			new_key = key.replace("-", "_") + "_ZIP_BUILD"
+			shell_code = self.get_info_var(new_key)
+			if shell_code: break
+
+		return shell_code
+
+	def get_info_var(self, key):
+		return utils.get_dict_var(key, self.info)
+		
 
 class bundle:
 	def __init__(self, bundle_name=""):

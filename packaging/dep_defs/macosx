@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+
+build_os = "macos10"
+
+archs = ['ppc', 'x86']
+
+packages = [
+	{
+		'name': 'pkgconfig', 
+		'source': 'http://pkgconfig.freedesktop.org/releases/pkgconfig-0.15.0.tar.gz'
+	},
+	{
+		'name': 'gettext', 
+		'source': 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.14.1.tar.gz'
+	},
+	{
+		'name': 'glib', 
+		'source': 'ftp://ftp.gtk.org/pub/gtk/v2.6/glib-2.6.3.tar.bz2'
+	},
+	{
+		'name': 'jpeg', 
+		'version': '6b',
+		'source': 'ftp://ftp.uu.net/graphics/jpeg/jpegsrc.v6b.tar.gz',
+		'build':
+			"""ln -s `which glibtool` ./libtool
+
+			./configure --enable-shared --enable-static --enable-freetype --prefix=/tmp/install
+			make || exit 1
+			mkdir -p /tmp/install/lib
+			mkdir -p /tmp/install/include
+			make install-lib || exit 1
+			"""
+	},
+	{
+		'name': 'tiff', 
+		'source': 'ftp://ftp.freebsd.org/pub/FreeBSD/ports/distfiles/tiff-3.7.1.tar.gz',
+		'build':
+			"""./configure --prefix=/tmp/install --mandir=/tmp/install/share/man \
+				--with-jpeg-include-dir=/tmp/build_deps/include --with-jpeg-lib-dir=/tmp/build_deps/lib
+			make || exit 1
+			cd libtiff
+			make install || exit 1
+			"""
+	},
+	{
+		'name': 'libpng',
+		# Otherwise version turns out to be 1.2.8-config 
+		'version': '1.2.8', 
+		'source': 'http://easynews.dl.sourceforge.net/sourceforge/libpng/libpng-1.2.8-config.tar.gz'
+	},
+	{
+		'name': 'libungif', 
+		'source': 'http://easynews.dl.sourceforge.net/sourceforge/libungif/libungif-4.1.3.tar.gz'
+	},
+	{
+		'name': 'freetype', 
+		'source': 'http://download.savannah.gnu.org/releases/freetype/freetype-2.1.10.tar.gz'
+	}
+]
+
