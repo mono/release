@@ -161,7 +161,7 @@ for distro_conf in distros:
 	print "*** Generating pages for: %s" % env.name
 
 	# Skip the distros that use zip packaging system
-	if env.info['USE_ZIP_PKG']: continue
+	if utils.get_dict_var('USE_ZIP_PKG', env.info): continue
 
 	distro_out_dir = os.path.join(output_dir, url_prefix, env.name)
 	out_file = distro_out_dir + os.sep + 'index.html'

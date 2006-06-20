@@ -59,7 +59,7 @@ distro_objs = build.get_platform_objs()
 for distro_obj in distro_objs:
 
 	# TODO: Come up with repo system for zip system
-	if distro_obj.info['USE_ZIP_PKG']:
+	if utils.get_dict_var('USE_ZIP_PKG', distro_obj.info):
 		pass
 
 	# Only non-zip distros and valid distros for this package

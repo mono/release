@@ -72,7 +72,7 @@ for distro_conf in glob.glob(config.packaging_dir + os.sep + 'conf/*-*-*'):
 
 	env = packaging.buildenv(os.path.basename(distro_conf))
 	# Skip the distros that use zip packaging system
-	if not env.info['USE_ZIP_PKG']:
+	if not utils.get_dict_var('USE_ZIP_PKG', env.info):
 		packages += "<li><a href='%s'>%s</a></li>" % (env.name, env.name)
 
 packages += "</ul>"
