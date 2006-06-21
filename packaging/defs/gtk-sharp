@@ -77,23 +77,12 @@ win_4_i386_ZIP_RUNTIME_DEPS=(
 
 win_4_i386_ZIP_DEPS=(
 
-	# These are specific to gtk-sharp
-	#ftp://ftp.gtk.org/pub/gtk/v2.6/win32/gtk+-2.6.9.zip
-	#ftp://ftp.gtk.org/pub/gtk/v2.6/win32/gtk+-dev-2.6.9.zip
-	#ftp://ftp.gtk.org/pub/gtk/v2.6/win32/atk-1.9.0.zip
-	#ftp://ftp.gtk.org/pub/gtk/v2.6/win32/atk-dev-1.9.0.zip
-	#ftp://ftp.gtk.org/pub/gtk/v2.6/win32/pango-1.8.2.zip
-	#ftp://ftp.gtk.org/pub/gtk/v2.6/win32/pango-dev-1.8.2.zip
-
 	http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2-2.6.20-1-mono.win32.zip
 
 	# for libxml2 and other image deps
 	http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-bin.zip
 	http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-lib.zip
 
-	# For some extra dll's (art-sharp, glade-sharp, rsvg-sharp)
-	#http://www.gimp.org/~tml/gimp/win32/libart_lgpl-2.3.14.zip
-	#http://www.gimp.org/~tml/gimp/win32/libart_lgpl-dev-2.3.14.zip
 
 	http://www.gimp.org/~tml/gimp/win32/librsvg-2.4.0.zip
 	http://www.gimp.org/~tml/gimp/win32/librsvg-dev-2.4.0.zip
@@ -121,6 +110,7 @@ win_4_i386_ZIP_DEPS=(
 	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/ORBit2-2.13.2.zip
 	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/ORBit2-dev-2.13.2.zip
 
+	# For some extra dll's (art-sharp, glade-sharp, rsvg-sharp)
 	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libart_lgpl-2.3.17.zip
 	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/libart_lgpl-dev-2.3.17.zip
 
@@ -186,9 +176,6 @@ win_4_i386_ZIP_BUILD () {
 
 	# Windows convention to have .dll files in the bin dir instead of lib
 	mv /tmp/install/lib/*.dll /tmp/install/bin
-
-	cd /tmp/install/bin
-	strip --strip-unneeded *.dll *.exe
 
 }
 

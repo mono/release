@@ -186,7 +186,6 @@ win_4_i386_ZIP_BUILD () {
         mkdir -p /tmp/temp_install
         mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/temp_install
 
-
         # TODO: Should I be using mono's gacutil instead to install these files?  yes!
 
 	# Do some path manipulation so that "." is removed from the path.  This allows execdir to work
@@ -194,13 +193,6 @@ win_4_i386_ZIP_BUILD () {
 	export PATH=/tmp/build_deps/bin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS
         find /tmp/temp_install -name "*.dll" -execdir /tmp/build_deps/bin/gacutil /i {} /f /package gtk-sharp-2.0 /gacdir `cygpath -m /tmp/install/lib` \;
 	export PATH=$OLD_PATH
-
-
-        ## Copy the rest of the files into their other location (would be symlink on unix, not on cygwin though...)
-        ##  Should this be a symlink?  Seems like cygwin handles them...
-        #mkdir -p /tmp/install/lib/mono/gtk-sharp-2.0
-        #cd /tmp/install/lib/mono/gac
-        #find . -name "*.dll" -exec cp -f '{}' /tmp/install/lib/mono/gtk-sharp-2.0/ \;
 
 	# Remove some uneeded files
         #  exit on the first failure, usually means windows find was used instead of cygwin's find
@@ -215,10 +207,6 @@ win_4_i386_ZIP_BUILD () {
 
         # Windows convention to have .dll files in the bin dir instead of lib
         mv /tmp/install/lib/*.dll /tmp/install/bin
-
-        cd /tmp/install/bin
-        strip --strip-unneeded *.dll *.exe
-
 
 }
 

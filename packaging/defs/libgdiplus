@@ -57,9 +57,6 @@ sunos_8_sparc_ZIP_BUILD () {
         make || exit 1
         make install || exit 1
 
-        # Make sure to use the solaris version of strip
-        cd /tmp/install/lib
-        /usr/ccs/bin/strip * || true  # just so it doesn't bail out
 }
 
 sunos_8_sparc_ZIP_DEPS=(
