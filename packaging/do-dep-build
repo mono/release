@@ -105,6 +105,16 @@ for pack in packages:
 			print "Error building " + pack['name']
 			sys.exit(1)
 
+		# Run a post command if there is one
+		post_command = utils.get_dict_var('post', pack)
+		if post_command:
+			print " --- Post Build: " + pack['name'] + " ---"
+			code, output = utils.launch_process(env_string + post_command)
+
+			if code:
+				print "Error running post command for " + pack['name']
+				sys.exit(1)
+
 
 		os.chdir('/tmp/install')
 		
