@@ -22,7 +22,7 @@ tar zxpf masterinfos-$VERSION.tar.gz
 PROFILE=nonesuch
 case $VERSION in
 1.1) PROFILE=default ;;
-2.0) PROFILE=net_2_0 ; export SECTIONS="$SECTIONS Microsoft.Build.Engine Microsoft.Build.Framework Microsoft.Build.Tasks Microsoft.Build.Utilities System.Configuration System.Transactions" ;;
+2.0) PROFILE=net_2_0 ; export SECTIONS="$SECTIONS Microsoft.Build.Engine Microsoft.Build.Framework Microsoft.Build.Tasks Microsoft.Build.Utilities System.Configuration System.Transactions System.ServiceProcess" ;;
 esac
 
 #
