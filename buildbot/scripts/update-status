@@ -54,5 +54,7 @@ done
 #
 # Upload the templates and files
 #
+chmod 644 src/*.html index.html
 scp -o "StrictHostKeyChecking no" -C -q src/*.html index.html $DEST
+chmod 644 deploy/cm/*
 scp -o "StrictHostKeyChecking no" -q deploy/cm/* $DEST/cm/
