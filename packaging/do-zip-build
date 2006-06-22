@@ -61,7 +61,7 @@ for f in pack_def.get_aliases():
 
 # set version var, load up environment for deps, and execute build command
 os.environ['version'] = version
-build_command = ". /tmp/build_deps/env.sh ; %s'" % shell_code
+build_command = ". /tmp/build_deps/env.sh ; %s" % shell_code
 
 # TODO:  For some reason the above exit isn't being called on failures
 #  (Still an issue... ?)
