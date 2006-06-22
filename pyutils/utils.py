@@ -433,9 +433,13 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 	return exit_code, "".join(collected).rstrip()
 
 
-def get_latest_ver(dir, version="", fail_on_missing=True):
+def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
 	"""args: dir, and optional version.
-	If version is specified, the latest release of that version will be selected."""
+	If version is specified, the latest release of that version will be selected.
+
+	version_reg: select version only based on files matching regular expression,
+		but verion has high precedence than version_reg.
+	"""
 
 	if os.path.exists(dir):
 		files = os.listdir(dir)
@@ -444,6 +448,7 @@ def get_latest_ver(dir, version="", fail_on_missing=True):
 		sys.exit(1)
 
 	# If a version is specified, find latest release of that version
+	#  and also take precedence over a version_reg
 	if version:
 		candidates = []
 		if os.path.exists(dir + os.sep + version):
@@ -458,6 +463,14 @@ def get_latest_ver(dir, version="", fail_on_missing=True):
 		if len(files) == 0 and fail_on_missing:
 			print "utils.get_latest_ver: Could not find dir entry for '%s/%s', exiting" % (dir, version)
 			sys.exit(1)
+
+	# Or if a version reg is specified, only select versions matching it
+	elif version_reg:
+		candidates = []
+		for file in files:
+			if re.compile(version_reg).search(file):
+				candidates.append(file)
+		files = candidates
 
 	if files:
 		latest_version = version_sort(files).pop()

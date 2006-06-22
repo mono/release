@@ -16,7 +16,6 @@ HEAD_or_RELEASE = sys.argv[1]
 package = sys.argv[2]
 version = sys.argv[3]
 
-
 os.chdir('/tmp')
 
 dummy_env = ""
@@ -49,9 +48,6 @@ else:
 		svn_paths[i] = svn_paths[i].replace('[[versiondot]]', version_dot)
 		svn_paths[i] = svn_paths[i].replace('[[version]]', version_hyphen)
 
-		# TODO where to handle gtk-sharp?
-
-
 
 # use the key in /usr/share/ximian-build-system/conf/ssh
 # This needs to be exported to the environment
@@ -69,7 +65,13 @@ print "HEAD_or_RELEASE: %s" % HEAD_or_RELEASE
 print "SVN_PATHS: %s" % SVN_PATHS
 print "VERSION: %s" % VERSION
 
-env_string = 'export SVN_SSH="%s"; export SVNEXPORT="%s"; export MONO_ROOT="%s"; export HEAD_or_RELEASE="%s"; export SVN_PATHS="%s"; export VERSION="%s"' % (SVN_SSH, SVNEXPORT, MONO_ROOT, HEAD_or_RELEASE, SVN_PATHS, VERSION)
+# set env
+os.environ['SVN_SSH'] = SVN_SSH
+os.environ['SVNEXPORT'] = SVNEXPORT
+os.environ['MONO_ROOT'] = MONO_ROOT
+os.environ['HEAD_or_RELEASE'] = HEAD_or_RELEASE
+os.environ['SVN_PATHS'] = SVN_PATHS
+os.environ['VERSION'] = VERSION
 
 # If they don't have any svn_paths, they MUST specify BUILD_DIR
 if package_obj.info.has_key('BUILD_DIR'):
@@ -82,24 +84,22 @@ else:
 		sys.exit(1)
 
 # Maybe we'll eventually use python code in the def file someday...
-default_script = """
-update_version_file () {
+update_version_file = package_obj.get_info_var('update_version_file')
+if not update_version_file:
+	update_version_file = """
 	sed -i "s/\(AM_INIT_AUTOMAKE.*\\))/\\1.$VERSION)/" configure.in
-}
+"""
 
-make_dist () {
+make_dist = package_obj.get_info_var('make_dist')
+if not make_dist:
+	make_dist = """
 	# profile is needed on suse systems with gnome in /opt
 	. /etc/profile
         ./autogen.sh
         make dist
-}
 """
 
-
-shell_script = tempfile.mktemp()
-fd = open(shell_script, 'w')
-fd.write(default_script)
-fd.close()
+get_source = package_obj.get_info_var('get_source')
 
 # pwd: /tmp/tarball-creation
 
@@ -110,11 +110,9 @@ def_file = "/tmp/" + package
 os.system("rm -Rf /tmp/bb_ssh*")
 
 # get_source
-if package_obj.info.has_key('get_source'):
-	script = def_file
-	command = '%s; . %s ; get_source' % (env_string, script)
-	print "Command: %s" % command
-	os.system(command)
+if get_source:
+	print "Command: %s" % get_source
+	os.system(get_source)
 else:
 	cache_dir = "/tmp/src_cache/%s/%s" % (package, HEAD_or_RELEASE)
 	for path in svn_paths:
@@ -123,7 +121,7 @@ else:
 		# Do we have a working copy already?
 		if os.path.exists("%s/%s" % (cache_dir, module)):
 			# svn switch  (will update update if the path in the working copy hasn't changed, this ensures have the right path)
-			command = '%s; cd %s/%s; svn switch %s %s/%s' % (env_string, cache_dir, module, rev_arg, MONO_ROOT, path)
+			command = 'cd %s/%s; svn switch %s %s/%s' % (cache_dir, module, rev_arg, MONO_ROOT, path)
 			print "Executing: " + command
 			if os.system(command):
 				print "*** Error *** updating cached copy failed (this is usually because of a malformed url, ex: invalid version, or bb_ssh failed)"
@@ -132,17 +130,17 @@ else:
 			# create cache dir
 			if not os.path.exists(cache_dir): distutils.dir_util.mkpath(cache_dir)
 			#check out working copy
-			command = "%s; cd %s; svn checkout -q %s %s/%s" % (env_string, cache_dir, rev_arg, MONO_ROOT, path)
+			command = "cd %s; svn checkout -q %s %s/%s" % (cache_dir, rev_arg, MONO_ROOT, path)
 			print command
 			os.system(command)
 
 
 		# svn export from working copy
-		#command = "%s; %s %s/%s" % (env_string, SVNEXPORT, MONO_ROOT, path)
-		#command = "%s; %s %s/%s" % (env_string, SVNEXPORT, cache_dir, module)
+		#command = "%s %s/%s" % (SVNEXPORT, MONO_ROOT, path)
+		#command = "%s %s/%s" % (SVNEXPORT, cache_dir, module)
 		# Note: using -r rev with svn export from a local cache dir will connect to the svn server... bad
 
-		#command = "%s; svn export -q %s/%s" % (env_string, cache_dir, module)
+		#command = "svn export -q %s/%s" % (cache_dir, module)
 		#  svn export from a working dir pegs the processor at 99%!!  also bad... it also takes longer (3 minutes... ?)
 
 		#  Use rsync instead?  probably...
@@ -158,50 +156,27 @@ os.chdir(build_dir)
 
 # update_version_file (If this is a snapshot build)
 if HEAD_or_RELEASE == "HEAD":
-	if package_obj.info.has_key('update_version_file'):
-		script = def_file
-	else:
-		script = shell_script
-	os.system('%s; . %s ; update_version_file' % (env_string, script) )
+	os.system(update_version_file )
 
 # pwd: /tmp/tarball-creation/$build_dir
 
 # make_dist
-if package_obj.info.has_key('make_dist'):
-	script = def_file
-else:
-	script = shell_script
-os.system('%s; . %s ; make_dist' % (env_string, script) )
+os.system(make_dist)
 
 ### End of source creating functions ###
-
-# clean up shell files
-os.unlink(shell_script)
-
-# TODO
-# Remove bb.ssh /tmp files?
 
 ### Finish moving things around
 shutil.rmtree('/tmp/built-tarball')
 os.mkdir('/tmp/built-tarball')
 
 found_source_file = 0
+source_files = glob.glob('*.zip') + glob.glob('*.tar.gz') + glob.glob('*.tar.bz2')
 
-# Move zip file
-source_file = glob.glob('*.zip')
-if len(source_file) == 1:
-	os.rename(source_file[0], '/tmp/built-tarball/%s' % source_file[0])
+if len(source_files) == 1:
+	os.rename(source_files[0], '/tmp/built-tarball/%s' % source_files[0])
 	found_source_file = 1
 	print "print source filename..."
-	print source_file[0]
-
-# Move tar file
-source_file = glob.glob('*.tar.gz')
-if len(source_file) == 1:
-	os.rename(source_file[0], '/tmp/built-tarball/%s' % source_file[0])
-	found_source_file = 1
-	print "print source filename..."
-	print source_file[0]
+	print source_files[0]
 
 # Clean up
 os.chdir('/tmp')

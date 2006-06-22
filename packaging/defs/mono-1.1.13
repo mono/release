@@ -1,7 +1,7 @@
 web_index=1
 
 def_alias="mono"
-bundle="1.1.13"
+version_selection_reg="1\.1\.13\.\d+"
 
 BUILD_HOSTS=(
         redhat-9-i386

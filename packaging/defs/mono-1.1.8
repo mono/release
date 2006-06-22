@@ -1,6 +1,7 @@
 web_index=3
 
 def_alias="mono"
+version_selection_reg="1\.1\.8\.\d+"
 
 BUILD_HOSTS=(
         redhat-9-i386
@@ -21,13 +22,11 @@ USE_HOSTS=(
 	suse-93-x86_64
 )
 
+# 1.1.7 for now... (until we have a 1.1.8)
 MONO_DEPS=(
-#	mono-1.1.7
+	#mono-1.1.8
+	mono-1.1.7
 )
-
-get_destroot () {
-	DEST_ROOT=$ARCH
-}
 
 HEAD_PATH=(
 	branches/mono-1-1-8/mono
@@ -37,14 +36,4 @@ RELEASE_PATH=(
 	tags/mono-[[version]]/mono
 	tags/mono-[[version]]/mcs
 )
-
-make_dist () {
-        . /etc/profile
-        ./autogen.sh
-	if [ $HEAD_or_RELEASE == "HEAD" ] ; then
-		make dist-zip MCS=mcs RESGEN=resgen
-	else
-		make dist MCS=mcs RESGEN=resgen
-	fi
-}
 

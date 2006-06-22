@@ -1,5 +1,7 @@
 web_index=5
 
+version_selection_reg="1\.0\.\d+"
+
 BUILD_HOSTS=(
 	fedora-3-i386
 	fedora-4-i386

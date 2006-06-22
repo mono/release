@@ -172,11 +172,13 @@ class package:
 			self.info['USE_HOSTS'] = self.info['BUILD_HOSTS']
 
 		# Check alias package so we include any information from it that we don't include in this package (reduces maintenance redundancy)
+		self.alias_pack_obj = ""
 		if self.get_info_var('def_alias'):
-			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'))
+			# TODO: pass all contructor vars to this new object?
+			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'), inside_jail=inside_jail)
 			for k, v in self.alias_pack_obj.info.iteritems():
 				# There's some type of data we don't want to copy: def_alias to avoid recursive loops...
-				if k != 'def_alias':
+				if k != 'def_alias' and k != 'version_selection_reg':
 					# If we don't have the key, grab info from alias def
 					if not self.info.has_key(k):
 						self.info[k] = v
@@ -372,7 +374,7 @@ class package:
 
 		if not self.version:
 			if not self.latest_version:
-				self.latest_version = utils.get_latest_ver(self.package_fullpath, fail_on_missing=fail_on_missing)
+				self.latest_version = utils.get_latest_ver(self.package_fullpath, fail_on_missing=fail_on_missing, version_reg=self.get_info_var('version_selection_reg'))
 
 			if self.bundle_obj.version_map_exists:
 				# Cases
@@ -391,7 +393,7 @@ class package:
 				# 3. If a package is listed as package="", select the latest version
 				if self.version == "": self.version = self.latest_version
 
-				# 4. If version has a release of x-0, select x (will have to do with selecting sources as well)
+				# 4. If version has a release of x-0, select x
 				elif re.compile('([\d\.]*)-0').search(self.version):
 					# Weird comma is because groups() returns tuples
 					self.version, = re.compile('([\d\.]*)-0').search(self.version).groups(1)
@@ -408,11 +410,9 @@ class package:
 
 		return self.version
 
-	def get_source_file(self, qualifier_reg=""):
+	def get_source_file(self):
 		if not self.source_filename:
-			if qualifier_reg:
-				reg = qualifier_reg
-			elif self.bundle_obj.version_map_exists and self.bundle_obj.version_map.has_key(self.name):
+			if self.bundle_obj.version_map_exists and self.bundle_obj.version_map.has_key(self.name):
 				# Strip release version if it exists (so that a bundle conf may have a release attached, 
 				#   but that it won't apply to the source)
 				ver_wo_rel, = re.compile("(.*)-?").search(self.bundle_obj.version_map[self.name]).groups(1)
@@ -423,7 +423,8 @@ class package:
 
 			candidates = []
 			for file in os.listdir(self.source_fullpath):
-				if reg.search(file):
+				# Also match against the version selection reg for this pack def
+				if reg.search(file) and re.compile(self.get_info_var('version_selection_reg')).search(file):
 					candidates.append(file)
 			
 			self.source_filename = self.name + os.sep + utils.version_sort(candidates).pop()
@@ -483,6 +484,16 @@ class package:
 
 	def get_info_var(self, key):
 		return utils.get_dict_var(key, self.info)
+		
+	def get_aliases(self):
+		"""Return all names of alises, recursively.
+
+		This was being done in the packaging scripts to copy stuff over.  Was put here for consolidation.
+		"""
+		if self.alias_pack_obj:
+			return [ self.get_info_var('def_alias') ] + self.alias_pack_obj.get_aliases()
+		else:
+			return []
 		
 
 class bundle:

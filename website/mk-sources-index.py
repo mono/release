@@ -42,11 +42,7 @@ for line in template:
 		tarballs = []
 		for pack in args:
 			pack_obj = packaging.package("", pack, bundle_obj=bundle_conf, source_basepath=sources_dir)
-			# TODO: move package specific out of of here and info the bundle conf somehow
-			if pack == "gtk-sharp-2.0":
-				tarballs.append(pack_obj.get_source_file(qualifier_reg=re.compile('gtk-sharp-2\.4\..*\.tar.gz')))
-			else:
-				tarballs.append(pack_obj.get_source_file())
+			tarballs.append(pack_obj.get_source_file())
 
 		print tarballs
 

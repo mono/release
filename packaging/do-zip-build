@@ -56,15 +56,12 @@ if pack_def.get_info_var('USE_PATCHES'):
 shell_code = pack_def.get_zip_build_commands()
 
 # Move def file so it gets cleaned up, and also saved with successful build
-pack2_def_file = pack_def.get_info_var('def_alias')
-if pack2_def_file:
-	pack2_def_file = '/tmp/' + pack2_def_file
-	shutil.move(pack2_def_file, '..')
-
-
+for f in pack_def.get_aliases():
+	shutil.move('/tmp/' + f, '..')
 
 # set version var, load up environment for deps, and execute build command
-build_command = "export version=%s; . /tmp/build_deps/env.sh ; %s" % (version, shell_code)
+os.environ['version'] = version
+build_command = ". /tmp/build_deps/env.sh ; %s'" % shell_code
 
 # TODO:  For some reason the above exit isn't being called on failures
 #  (Still an issue... ?)
@@ -79,5 +76,8 @@ os.system('zip -yr /tmp/builder/built-packages/%s-%s-%s.%s.zip *' % (package, ve
 # Keep a copy of the "spec" file and distro conf file
 shutil.copy('/tmp/scratch/' + package, '/tmp/builder/built-packages')
 shutil.copy('/tmp/scratch/' + distro, '/tmp/builder/built-packages')
-if pack2_def_file: shutil.copy('/tmp/scratch/' + os.path.basename(pack2_def_file), '/tmp/builder/built-packages')
+
+# Save alias files
+for f in pack_def.get_aliases():
+	shutil.copy('/tmp/scratch/' + f, '/tmp/builder/built-packages')
 

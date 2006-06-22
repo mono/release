@@ -101,7 +101,7 @@ class source_file_repo:
                         fd.write('%s=%s\n' % (key, self.info[key]))
                 fd.close()
 
-	def get_log_file(self, source_file, package_name_alias=""):
+	def get_log_file(self, source_file, package_name_aliases=[]):
 		"""Find a key (mktarball parameters) based on a source filename."""
 		self.load_info()
 		key = ""
@@ -111,12 +111,14 @@ class source_file_repo:
 		source_file = os.sep.join(source_file.split(os.sep)[-2:])
 
 		# Also search the alias
-		parts = source_file.split(os.sep)
-		parts[0] = package_name_alias
-		alias_source_file = os.sep.join(parts)
+		alias_source_files = []
+		for f in package_name_aliases:
+			parts = source_file.split(os.sep)
+			parts[0] = f
+			alias_source_files.append(os.sep.join(parts))
 
 		for k,v in self.info.iteritems():
-			if v == source_file or (package_name_alias and v == alias_source_file):
+			if v == source_file or (package_name_aliases and alias_source_files.count(v)):
 				key = k
 				break
 

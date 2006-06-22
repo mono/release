@@ -606,6 +606,10 @@ if code:
 print "Copying files to build client..."
 installer_env.ssh.copy_to(["build", "Mono.iss", "setup-files"], '/tmp/windows-installer', compress=1, mode='tar')
 
+# Strip binaries for each selection
+for sel in selections:
+	(code, output) = installer_env.ssh.execute('cd /tmp/windows-installer/build/%s/bin; strip --strip-unneeded *.dll *.exe ; cd ../lib; strip --strip-unneeded *.a' % sel.name)
+
 # Run installer on windows
 (code, output) = installer_env.ssh.execute('export PATH="$PATH:/cygdrive/c/PROGRA~1/INNOSE~1:C:\Program Files\Inno Setup5"; cd /tmp/windows-installer; ISCC.exe Mono.iss')
 

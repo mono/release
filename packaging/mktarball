@@ -83,7 +83,10 @@ if package_obj.info.has_key('MONO_DEPS'):
 
 
 # Copy some files over and execute!
+# Also copy over def_alias files
 files_to_copy = [ 'do-msvn-tar', 'defs/%s' % package] + glob.glob('../pyutils/*.py') 
+for f in package_obj.get_aliases():
+	files_to_copy += ['defs/' + f ]
 env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
 
 log_obj.log("Starting to build source dist...\n")

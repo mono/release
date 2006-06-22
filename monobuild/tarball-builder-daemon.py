@@ -25,7 +25,7 @@ max_poll_interval = 5
 
 # static list of packages to create tarballs for
 # What packages should these be?
-packages = ['mono', 'mono-1.1.13', 'libgdiplus']
+packages = ['mono', 'mono-1.1.13', 'mono-1.1.7', 'mono-1.1.8', 'libgdiplus']
 
 src_repo = src_repo_utils.svn(config.MONO_ROOT)
 distfiles = datastore.source_file_repo()
