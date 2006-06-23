@@ -180,7 +180,7 @@ class package:
 		self.alias_pack_obj = ""
 		if self.get_info_var('def_alias'):
 			# TODO: pass all contructor vars to this new object?
-			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'), inside_jail=inside_jail)
+			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'), source_basepath=source_basepath, package_basepath=package_basepath, inside_jail=inside_jail, create_dirs_links=create_dirs_links)
 			for k, v in self.alias_pack_obj.info.iteritems():
 				# There's some type of data we don't want to copy: def_alias to avoid recursive loops...
 				#   Ignore POSTBUILD stuff.... sort of a hack, but ignoring reduces the amount of redundancy

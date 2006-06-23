@@ -37,6 +37,9 @@ base_dir = output_dir + os.sep + url_prefix
 distutils.dir_util.mkpath(base_dir)
 os.chdir(base_dir)
 
+# Load up packages to include in repository (packages_in_repo)
+execfile(os.path.join(config.release_repo_root, 'website', 'repo-config', 'config.py') )
+
 shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/oc/distributions.xml', ".")
 shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/oc/server.conf', ".")
 shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/oc/channel.conf', ".")
@@ -77,11 +80,11 @@ for distro_obj in distro_objs:
 
 		rpms = []
 		# Get rpms for this distro
-		for pack in glob.glob(config.packaging_dir + os.sep + 'defs/*'):
+		for pack in packages_in_repo:
 			pack_obj = packaging.package(distro_obj, os.path.basename(pack), bundle_obj=bundle_conf, package_basepath=package_src_dir)
 
-			# Only if package is valid on this distro, and it's not an 'alias' package (Ex: don't process packages whose pack/source dirs are links to others)
-			if pack_obj.valid_use_platform(distro_obj.name) and not pack_obj.info.has_key('def_alias'):
+			# Only if package is valid on this distro
+			if pack_obj.valid_use_platform(distro_obj.name):
 				rpms += pack_obj.get_files(fail_on_missing=False)
 
 		# Get external rpms

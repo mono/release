@@ -1,0 +1,20 @@
+packages_in_repo = """
+boo
+cocoa-sharp
+gecko-sharp
+gecko-sharp-2.0
+gtk-sharp
+gtk-sharp-2.0
+gtk-sharp-2.8
+gtksourceview-sharp-2.0
+heap-buddy
+ikvm
+libgdiplus
+mod_mono
+mono
+monodevelop
+monodoc
+mono-debugger
+mono-tools
+xsp
+""".split()
