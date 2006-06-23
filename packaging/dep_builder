@@ -20,9 +20,9 @@ env = packaging.buildenv(jail)
 
 #pdb.set_trace()
 
-env.ssh.copy_to(['do-dep-build', 'dep_defs/' + def_filename, '../pyutils/utils.py', 'do-install-zip-pkgs', '../pyutils/rpm2cpio.py'], '/tmp')
+env.ssh.copy_to(['do-dep-build', 'dep_defs/' + def_filename, '../pyutils/*.py', 'do-install-zip-pkgs', '../pyutils/rpm2cpio.py', 'conf/' + jail], '/tmp')
 
-code, output = env.ssh.execute('/tmp/do-dep-build %s %s %s' % (env.info['arch'], def_filename, release) )
+code, output = env.ssh.execute('/tmp/do-dep-build %s %s %s' % (jail, def_filename, release) )
 
 if code:
 	print "Error building deps..."

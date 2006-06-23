@@ -18,39 +18,38 @@ import datastore
 import logger
 import utils
 
-
-# Minutes
-max_poll_interval = 5
-#max_poll_interval = 1
-
-# static list of packages to create tarballs for
-# What packages should these be?
-packages = ['mono', 'mono-1.1.13', 'mono-1.1.7', 'mono-1.1.8', 'libgdiplus']
-
-src_repo = src_repo_utils.svn(config.MONO_ROOT)
-distfiles = datastore.source_file_repo()
-
 log = logger.Logger(filename='tarball_builder.log')
-
-pack_objs = {}
-for pack in packages:
-	pack_objs[pack] = packaging.package("", pack)
-
-#starting_rev = 61097
 
 class mktarball_loop(threading.Thread):
 
         def __init__(self):
                 threading.Thread.__init__(self)
 
+	def load_info(self):
+
+		# reload list of packages (allows us to update the list without restarting the daemon)
+		reload(config)
+
+		self.max_poll_interval = config.td_max_poll_interval
+
+		self.src_repo = src_repo_utils.svn(config.MONO_ROOT)
+		self.distfiles = datastore.source_file_repo()
+
+		self.pack_objs = {}
+		for pack in config.td_packages:
+			self.pack_objs[pack] = packaging.package("", pack)
+		
+
         def run(self):
 
 		while not sigint_event.isSet():
 
+			self.load_info()
+
 			# routinely check for updates (sleep every so often)
 
 			# get latest version from the tree
-			latest_tree_rev = src_repo.latest_tree_revision()
+			latest_tree_rev = self.src_repo.latest_tree_revision()
 			log.log("Latest tree rev: %d\n" % latest_tree_rev)
 
 			# Only do for the last couple of commits, rather than constantly updating a base revision
@@ -61,10 +60,10 @@ class mktarball_loop(threading.Thread):
 			#  The + 1 is so that the latest tree revision will be checked (range func does not include the last number in the sequence)
 			for i in range(starting_rev, latest_tree_rev + 1):
 
-				for pack_name, pack_obj in pack_objs.iteritems():
+				for pack_name, pack_obj in self.pack_objs.iteritems():
 
-					latest_for_package = src_repo.latest_path_revision(pack_obj.info['HEAD_PATH'], revision=i)
-					if not distfiles.contains('HEAD', pack_name, str(latest_for_package)) and not sigint_event.isSet():
+					latest_for_package = self.src_repo.latest_path_revision(pack_obj.info['HEAD_PATH'], revision=i)
+					if not self.distfiles.contains('HEAD', pack_name, str(latest_for_package)) and not sigint_event.isSet():
 						command = "cd %s; ./mktarball %s snap %d" % (config.packaging_dir, pack_name, latest_for_package)
 						log.log("Executing: %s\n" % command)
 						# TODO: Logging
@@ -83,9 +82,9 @@ class mktarball_loop(threading.Thread):
 							print "Jail busy, retrying later..."
 
 						# Handle failed tarballs...
-						elif not distfiles.contains('HEAD', pack_name, str(latest_for_package)):
+						elif not self.distfiles.contains('HEAD', pack_name, str(latest_for_package)):
 							log.log("Tarball creation failed...\n")
-							distfiles.add_file('HEAD', pack_name, str(latest_for_package), "tarball_creation_failed")
+							self.distfiles.add_file('HEAD', pack_name, str(latest_for_package), "tarball_creation_failed")
 
 							# Send out the log with the tarball, or at least a link... ?
 							link = "http://monobuild1.boston.ximian.com/tarball_logs/HEAD/%s/%d.log" % (pack_name, latest_for_package)
@@ -93,8 +92,8 @@ class mktarball_loop(threading.Thread):
 
 			# TODO: Don't sleep if the above loop took longer than max_poll_interval
 			if not sigint_event.isSet():
-				log.log("Sleeping for %d minute(s)...\n" % max_poll_interval)
-				time.sleep(60 * max_poll_interval)
+				log.log("Sleeping for %d minute(s)...\n" % self.max_poll_interval)
+				time.sleep(60 * self.max_poll_interval)
 
 
 # Signal handler routine

@@ -31,6 +31,7 @@ snapshot_packages_dir = packaging_dir + "/snapshot_packages"
 sources_dir = packaging_dir + "/sources"
 snapshot_sources_dir = packaging_dir + "/snapshot_sources"
 
+
 # Url path from view of webserver
 web_root_url = ""
 web_root_dir = release_repo_root + "/monobuild/www"
@@ -43,4 +44,35 @@ build_info_url = web_root_url + "/builds"
 
 mktarball_logs = web_root_dir + "/tarball_logs"
 mktarball_logs_release_relpath = 'monobuild/www/tarball_logs'
+
+# Can set this to a full path if needed
+tar_path="tar"
+
+# Tarball daemon config info
+##############################################
+# Minutes
+td_max_poll_interval = 5
+#td_max_poll_interval = 1
+
+# static list of packages to create tarballs for
+td_packages = ['mono', 'mono-1.1.13', 'mono-1.1.7', 'mono-1.1.8', 'libgdiplus']
+
+##############################################
+
+
+# Scheduler daemon config info
+##############################################
+#  (auto reloading only works for the wakeup_interval on the scheduler daemon)
+#sd_wakeup_interval = 1
+sd_wakeup_interval = 10
+
+# Currently not used...
+sd_sequential_build_distros = [ 'redhat-9-i386' ]
+sd_sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
+
+# List of platforms/packages
+sd_latest_build_distros = [ 'sles-9-x86_64', 'redhat-9-i386', 'win-4-i386', 'macos-10-ppc', 'macos-10-x86', 'sunos-8-sparc', 'sles-9-ia64', 'sles-9-s390', 'sles-9-s390x' ]
+sd_latest_build_packages = td_packages
+##############################################
+
 

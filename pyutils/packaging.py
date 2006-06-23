@@ -45,7 +45,7 @@ class buildenv:
 		args['print_output'] = self.print_output
 		args['logger'] = logger
 
-		for i in "jaildir chroot_path remote_tar_path local_tar_path target_command_prefix build_location".split():
+		for i in "jaildir chroot_path tar_path target_command_prefix build_location".split():
 			if self.info.has_key(i):
 				args[i] = self.info[i]
 	
@@ -171,6 +171,11 @@ class package:
 		if self.info['USE_HOSTS'] == ['${BUILD_HOSTS[@]}']:
 			self.info['USE_HOSTS'] = self.info['BUILD_HOSTS']
 
+		# keys (regs) to grab from the def_alias if they are not in this def file
+		valid_alias_key_regs = []
+		for reg in ['make_dist', 'HEAD_PATH', 'get_destroot', '_ZIP_']:
+			valid_alias_key_regs.append(re.compile(reg))
+
 		# Check alias package so we include any information from it that we don't include in this package (reduces maintenance redundancy)
 		self.alias_pack_obj = ""
 		if self.get_info_var('def_alias'):
@@ -178,10 +183,15 @@ class package:
 			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'), inside_jail=inside_jail)
 			for k, v in self.alias_pack_obj.info.iteritems():
 				# There's some type of data we don't want to copy: def_alias to avoid recursive loops...
-				if k != 'def_alias' and k != 'version_selection_reg':
-					# If we don't have the key, grab info from alias def
-					if not self.info.has_key(k):
-						self.info[k] = v
+				#   Ignore POSTBUILD stuff.... sort of a hack, but ignoring reduces the amount of redundancy
+				valid_key = False
+				for reg in valid_alias_key_regs:
+					if reg.search(k):
+						valid_key = True
+
+				# If we don't have the key, grab info from alias def
+				if valid_key and not self.info.has_key(k):
+					self.info[k] = v
 
 		# Handle bundle
 		if bundle_obj and bundle_name:

@@ -1,4 +1,5 @@
-target_host=builder@pbartok2.provo.novell.com
+#target_host=builder@pbartok2.provo.novell.com
+target_host=t1000-mono.cam.novell.com
 USE_ZIP_PKG=1
 #target_command_prefix="export PATH=/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:$PATH; "
 #target_command_prefix="export PATH=/usr/local/bin:/usr/sfw/bin:/usr/ccs/bin:$PATH; "
@@ -7,4 +8,5 @@ USE_ZIP_PKG=1
 #  Plus, sunfreeware doesn't have an updated binutils for solaris10 sparc
 target_command_prefix="export PATH=/opt/csw/bin:$PATH; "
 
-jail_strip_path=/usr/ccs/bin/strip
+strip_path=/usr/ccs/bin/strip
+tar_path=/usr/sfw/bin/gtar

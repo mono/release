@@ -22,20 +22,6 @@ import datastore
 import packaging
 import utils
 
-#wakeup_interval = 60
-wakeup_interval = 600
-
-# Probably have to start a separate thread for each of these cases...
-# Build every tarball that is popped out
-sequential_build_distros = [ 'redhat-9-i386' ]
-sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
-
-# Only build the latest tarball available
-# Some of these platforms take much longer, and one platform shouldn't hold them all up
-latest_build_distros = [ 'sles-9-x86_64', 'macos-10-ppc', 'redhat-9-i386', 'win-4-i386', 'sunos-8-sparc', 'sles-9-ia64', 'sles-9-s390', 'sles-9-s390x' ]
-
-latest_build_packages = [ 'mono', 'mono-1.1.13', 'mono-1.1.8', 'mono-1.1.7', 'libgdiplus' ]
-
 # regex to grab version out of filename
 # This only follows standards by autotools for now...
 version_re = re.compile(".*-(.*).(tar.gz|tar.bz2|zip)")
@@ -71,6 +57,8 @@ class build_latest(threading.Thread):
 			return
 
 		while not self.done:
+			# Reload config info (only useful for wakeup)
+			reload(config)
 			started_build = 0
 
 			# Check to see what the latest tarball is
@@ -78,9 +66,9 @@ class build_latest(threading.Thread):
 
 			if not tarball_filename:
 				print "*** Error getting latest tarball (%s, %s) (Probably doesn't exist...)!!!" % (distro, package_name)
-				print "Sleeping %d seconds..." % wakeup_interval
+				print "Sleeping %d minute(s)..." % config.sd_wakeup_interval
 
-				time.sleep(wakeup_interval)
+				time.sleep(config.sd_wakeup_interval * 60)
 
 				# Break out of the while loop and finish if CTRL-C is pushed
 				if sigint_event.isSet():
@@ -123,8 +111,8 @@ class build_latest(threading.Thread):
 
 
 			if not started_build:
-				print "Sleeping %d seconds..." % wakeup_interval
-				time.sleep(wakeup_interval)
+				print "Sleeping %d minute(s)..." % config.sd_wakeup_interval
+				time.sleep(config.sd_wakeup_interval * 60)
 
 			# Break out of the while loop and finish if CTRL-C is pushed
 			if sigint_event.isSet():
@@ -145,8 +133,8 @@ sigint_event = threading.Event()
 signal.signal(signal.SIGINT, keyboard_interrupt)
 threads = []
 
-for distro in latest_build_distros:
-	for package in latest_build_packages:
+for distro in config.sd_latest_build_distros:
+	for package in config.sd_latest_build_packages:
 		thread = build_latest(distro,package)
 		thread.start()
 

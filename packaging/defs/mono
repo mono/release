@@ -43,8 +43,14 @@ USE_HOSTS=(
 
 # Having this ensures that the wrong mono isn't in the jail
 #  (Or that mono is present for the snapshot builds)
+# libgdiplus is here only for System.Drawing tests (Hmm... this will fail the build on windows, solution?)
 MONO_DEPS=(
 	mono
+)
+
+# This way? and then install runtime deps before running the additional steps... ?  runtime and build?  Reinstall them all over again?
+MONO_RUNTIME_DEPS=(
+	libgdiplus
 )
 
 win_4_i386_ZIP_RUNTIME_DEPS=(
@@ -105,9 +111,9 @@ sunos_8_sparc_ZIP_DEPS=(
 
 macos_10_ppc_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-	http://primates.ximian.com/~wberrier/macos/deps/glib-2.6.3-1.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/pkgconfig-0.15.0-0.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/gettext-0.14.1-1.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.6.3-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/pkgconfig-0.15.0-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.14.1-0.macos10.novell.ppc.zip
 )
 
 macos_10_x86_ZIP_DEPS=(
@@ -121,7 +127,8 @@ sunos_8_sparc_ZIP_BUILD () {
 	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
 
 	# Only if a non-gnu m4 is in the path
-	export M4=/usr/local/bin/m4
+	M4=/usr/local/bin/m4
+	export M4
 
 	# Do this to make sure libgcc is found.  Won't be needed when we install libgcc into build_deps
 	#export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
@@ -146,8 +153,9 @@ sunos_10_x86_ZIP_BUILD () {
 	# also from the cds: gnome-common-devel, gnome-common-devel-share, SUNWperl-xml-parser, SUNWopenjade, opensp, SUNWgnome-base-libs-devel
 	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
 	# Only if a non-gnu m4 is in the path
-	export M4=/usr/sfw/bin/gm4
-	export MAKE=/usr/sfw/bin/gmake
+	M4=/usr/sfw/bin/gm4
+	MAKE=/usr/sfw/bin/gmake
+	export M4 MAKE
 
 	# Change offsize from 64 to 32 in configure
 	# Removed -mt option from gthread .pc file
@@ -272,8 +280,15 @@ POSTBUILD_STEP3 () {
 	make -k check
 }
 
-POSTBUILD_STEP_NAME4="cleanup"
+POSTBUILD_STEP_NAME4="test-cas"
 POSTBUILD_STEP4 () {
+	cd mono/tests/cas
+	#make -k check
+	make test
+}
+
+POSTBUILD_STEP_NAME5="cleanup"
+POSTBUILD_STEP5 () {
         #echo "Skipping..."
         ./runtime/mono-wrapper --wapi=semdel
 }

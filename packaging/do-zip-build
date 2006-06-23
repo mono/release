@@ -39,7 +39,7 @@ for f in sources + patches + ['../' + package, '../' + distro ]:
 
 
 # Find type of source
-source_dir = utils.unpack_source(os.path.basename(sources[0]))
+source_dir = utils.unpack_source(os.path.basename(sources[0]), tar_path=utils.get_dict_var('jail_tar_path', env.info) )
 
 arch = pack_def.package_env.info['arch']
 

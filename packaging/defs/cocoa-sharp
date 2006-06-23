@@ -5,8 +5,6 @@ BUILD_HOSTS=(
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
-# Note!!  Had to install rpm from here to be able to use the monodoc rpm:
-#http://www-jlc.kek.jp/~fujiik/macosx/10.2.X/memo/RPMonX.html
 MONO_DEPS=(
 	mono
 	libgdiplus

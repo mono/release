@@ -23,7 +23,7 @@ import pdb
 
 class init:
 	
-	def __init__(self, target_host, print_output=1, jaildir="", chroot_path="/usr/sbin/chroot", remote_tar_path="tar", local_tar_path="tar", target_command_prefix="", execute_command=1, print_command=0, logger="", build_location="/tmp"):
+	def __init__(self, target_host, print_output=1, jaildir="", chroot_path="/usr/sbin/chroot", tar_path="tar", target_command_prefix="", execute_command=1, print_command=0, logger="", build_location="/tmp"):
 
 		self.target_host = target_host
 
@@ -31,8 +31,8 @@ class init:
 		self.print_output = print_output
 		self.jaildir = jaildir
 		self.chroot_path = chroot_path
-		self.remote_tar_path = remote_tar_path
-		self.local_tar_path = local_tar_path
+		self.remote_tar_path = tar_path
+		self.local_tar_path = config.tar_path
 		self.target_command_prefix = target_command_prefix
 		self.logger = logger
 		self.build_location = build_location
@@ -146,8 +146,13 @@ class init:
 		Note, in scp mode, recursive is on by default
 		src can be a string or a list of strings"""
 
-		if compress: compress_option = ' -o "Compression yes" '
-		else:	     compress_option = ""
+		if compress:
+			# CompressionLevel only works for protocol 1... (bummer)
+			compress_option = ' -o "Compression yes" -o "CompressionLevel 9" '
+			compress_tar_option = "j"
+		else:
+			compress_option = ""
+			compress_tar_option = ""
 
 		# Concatenate for src if it's a list
 		if src.__class__ == list:
@@ -160,7 +165,7 @@ class init:
 			# Note: the -f - option to the remote tar is required for solaris tar, otherwise it tries to read from a tape
 			if self.jaildir:
 				dest = self.jaildir + os.sep + dest
-		        command = "%s -pc %s | ssh %s %s 'cd %s ; %s -pvxf - ' " % (self.local_tar_path, src, self.options + compress_option, self.target_host, dest, self.remote_tar_path )
+		        command = "%s -%spc %s | ssh %s %s 'cd %s ; %s -%spvxf - ' " % (self.local_tar_path, compress_tar_option, src, self.options, self.target_host, dest, self.remote_tar_path, compress_tar_option )
 		else:
 			self.log("Invalid copy_to mode: %s\n" % mode)
 			sys.exit(1)
@@ -181,8 +186,14 @@ class init:
 		if src.__class__ == str:
 			src = [ src ]
 
-		if compress: compress_option = ' -o "Compression yes" '
-		else:	     compress_option = ""
+		if compress:
+			# CompressionLevel only works for protocol 1... (bummer)
+			compress_option = ' -o "Compression yes" -o "CompressionLevel 9" '
+			compress_tar_option = "j"
+		else:
+			compress_option = ""
+			compress_tar_option = ""
+
 
 		files = ""
 
@@ -199,7 +210,7 @@ class init:
 				tar_dir_options = "-C %s" % os.path.dirname(self.jaildir)
 				
 			# Note: the -f - option to the remote tar is required for solaris tar, otherwise it tries to read from a tape
-		        command = "cd %s; ssh %s %s ' %s %s -pcf - %s ' | %s -pvxf - " % (dest, self.options + compress_option, self.target_host, self.remote_tar_path, tar_dir_options, files, self.local_tar_path )
+		        command = "cd %s; ssh %s %s ' %s %s -%spcf - %s ' | %s -%spvxf - " % (dest, self.options, self.target_host, self.remote_tar_path, compress_tar_option, tar_dir_options, files, self.local_tar_path, compress_tar_option )
 
 		else:
 			self.log("Invalid copy_from mode: %s\n" % mode)

@@ -55,7 +55,7 @@ def build_package(target):
 
 	remote_temp = "/tmp/packaging"
 
-	remote_strip_loc = env.info['jail_strip_path']
+	remote_strip_loc = env.info['strip_path']
 
 	output_dir = os.path.join("output", version, target, release) 
 

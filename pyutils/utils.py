@@ -580,16 +580,20 @@ def send_mail(fr, to, subject, body):
         server.sendmail(fr, to, msg)
         server.quit()
 
-def unpack_source(filename):
+def unpack_source(filename, tar_path="tar"):
 	"""Args: filename to extract
 	Returns: directory of extracted source."""
-	
+
+	# Our tarballs require gnu tar, so allow this to be overridden
+	# Make it possible to pass in an empty string
+	if not tar_path: tar_path = "tar"
+
 	if re.compile('\.zip$').search(filename):
 		command = "unzip -q %s" % filename
 	elif re.compile('\.tar\.bz2$').search(filename):
-		command = "bzip2 -dc %s | tar -x " % filename
+		command = "%s -jxf %s" % (tar_path, filename)
 	elif re.compile('\.tar\.gz$').search(filename):
-		command = "gzip -dc %s | tar -x " % filename
+		command = "%s -zxf %s" % (tar_path, filename)
 	else:
 		print "Unknown filetype: " + filename
 		sys.exit(1)
