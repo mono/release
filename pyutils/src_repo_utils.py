@@ -25,7 +25,11 @@ class svn:
 		versions = []
 		for line in output.split('\n'):
 			list = line.split()
-			versions.append(int(list[0]))
+			# Catch network/ssh errors
+			try:
+				versions.append(int(list[0]))
+			except:
+				return 0
 
 		versions.sort()
 

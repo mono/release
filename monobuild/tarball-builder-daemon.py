@@ -52,8 +52,18 @@ class mktarball_loop(threading.Thread):
 			latest_tree_rev = self.src_repo.latest_tree_revision()
 			log.log("Latest tree rev: %d\n" % latest_tree_rev)
 
+			if not latest_tree_rev:
+				log.log("Error getting latest tree rev, trying later...\n")
+				
+				log.log("Sleeping for %d minute(s)...\n" % self.max_poll_interval)
+				time.sleep(60 * self.max_poll_interval)
+				continue
+
 			# Only do for the last couple of commits, rather than constantly updating a base revision
-			starting_rev = latest_tree_rev - 10
+			if latest_tree_rev <= 10:
+				starting_rev = 1
+			else:
+				starting_rev = latest_tree_rev - 10
 
 
 			# Pretty much do every commit (for binary search on regressions) (should be adjustable)
