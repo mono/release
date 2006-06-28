@@ -69,7 +69,7 @@ td_sequential = False
 
 # Scheduler daemon config info
 ##############################################
-#  (auto reloading only works for the wakeup_interval on the scheduler daemon)
+#  (auto reloading only works for the wakeup_interval and latest_build_packages on the scheduler daemon)
 # seconds
 sd_wakeup_interval = 60
 #sd_wakeup_interval = 300

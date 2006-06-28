@@ -96,6 +96,7 @@ parameter_map[re.compile("^libdir=.*", re.M)] = "libdir='" + reloc + "/lib'"
 parameter_map[re.compile("/usr/local")] = reloc
 parameter_map[re.compile("/opt/csw")] = reloc
 parameter_map[re.compile("/tmp/install")] = reloc
+parameter_map[re.compile("/tmp/build_deps")] = reloc
 
 for root, dirs, files in os.walk('.'):
 	for file in files:
