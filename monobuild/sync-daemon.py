@@ -36,6 +36,7 @@ def sync_dirs():
 	# Add tarball_map
 	dirs += ['../../../packaging/tarball_map']
 
+	print " *** Gathering dirs ***"
 	# Gather dirs to synchronize
 	for i in ['HEAD', 'RELEASE']:
 		for distro in os.listdir(config.build_info_dir + os.sep + i):
@@ -56,13 +57,13 @@ def sync_dirs():
 
 	os.chdir(config.build_info_dir)
 
+	print " *** Syncing ***"
 	#  For some reason the --delete option crashes when running the second time to go-mono.com and mono.ximian.com ... ?
 	# rsync all files over, and don't include the builds... just logs and info.xml
 	status, output = utils.launch_process('rsync -avzR -e ssh --exclude=files %s %s:%s' % (" ".join(dirs), host, target_dir))
 
 
 while(1):
-	print " *** Syncing ***"
 	sync_dirs()
 	print " *** Sleeping ***"
 	time.sleep(10)

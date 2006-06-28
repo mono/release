@@ -80,11 +80,20 @@ class init:
 			else:
 				command = "sudo " + command
 
-		if output_timeout:
+		if output_timeout or terminate_reg:
 			# Copy some files over
 			self.copy_to([ config.packaging_dir + "/../pyutils/utils.py", config.packaging_dir + "/../pyutils/launch_process.py" ], self.build_location)
+
+			term_portion = ""
+			if terminate_reg:
+				term_portion = "--terminate_reg=%s" % terminate_reg
+
+			output_portion = ""
+			if output_timeout:
+				output_portion = "--output_timeout=%s" % output_timeout
+
 			# Surround command with escaped double quotes in order to run multiline commands
-			command = "%s/launch_process.py --kill_process_group --output_timeout=%s \\\"%s\\\" " % (self.build_location, output_timeout, command)
+			command = "%s/launch_process.py --kill_process_group %s %s \\\"%s\\\" " % (self.build_location, term_portion, output_portion, command)
 
 		if self.target_command_prefix:
 			command = self.target_command_prefix + command
@@ -122,7 +131,7 @@ class init:
 		if self.print_command: self.log("Executing %s\n" % command_string)
 
 		if self.execute_command:
-			(code, output) = utils.launch_process(command_string, print_output=self.print_output, terminate_reg=terminate_reg, logger=self.logger)
+			(code, output) = utils.launch_process(command_string, print_output=self.print_output, logger=self.logger)
 		# restore logger
 		if logger:
 			self.logger = primary_logger

@@ -50,12 +50,19 @@ tar_path="tar"
 
 # Tarball daemon config info
 ##############################################
-# Minutes
-td_max_poll_interval = 5
-#td_max_poll_interval = 1
+# Seconds
+td_network_error_interval = 60
+td_max_poll_interval = 30
+#td_max_poll_interval = 10
+
+# How many revisions to go back when starting to build sequential tarballs
+td_num_sequential = 10
 
 # static list of packages to create tarballs for
 td_packages = ['mono', 'mono-1.1.13', 'mono-1.1.7', 'mono-1.1.8', 'libgdiplus']
+
+# builds each and every checkin if true, otherwise, only build the latest checkin
+td_sequential = False
 
 ##############################################
 
@@ -63,8 +70,9 @@ td_packages = ['mono', 'mono-1.1.13', 'mono-1.1.7', 'mono-1.1.8', 'libgdiplus']
 # Scheduler daemon config info
 ##############################################
 #  (auto reloading only works for the wakeup_interval on the scheduler daemon)
-#sd_wakeup_interval = 1
-sd_wakeup_interval = 10
+# seconds
+sd_wakeup_interval = 60
+#sd_wakeup_interval = 300
 
 # Currently not used...
 sd_sequential_build_distros = [ 'redhat-9-i386' ]

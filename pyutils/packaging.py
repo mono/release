@@ -297,7 +297,7 @@ class package:
 
 		# Create source and package symlinks if the dirs are there, but not the symlink
 		if self.info.has_key('def_alias') and self.HEAD_or_RELEASE == "RELEASE" and self.create_dirs_links:
-			print "Link alias: %s" % self.info['def_alias']
+			#print "Link alias: %s" % self.info['def_alias']
 			for dir in (dirs):
 				if not os.path.islink(dir) and not self.inside_jail:
 					if os.path.exists(dir):
@@ -544,7 +544,6 @@ class bundle:
 					print "Required key (%s) not found in bundle config file" % key
 					sys.exit(1)
 		else:
-			print "No bundle specified.  Using latest version of packages..."
-
-
+			#print "No bundle specified.  Using latest version of packages..."
+			pass
 

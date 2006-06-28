@@ -160,7 +160,6 @@ sunos_10_x86_ZIP_BUILD () {
 	# Change offsize from 64 to 32 in configure
 	# Removed -mt option from gthread .pc file
 	
-	#./configure --prefix=/tmp/install
 	./configure --prefix=/opt/mono
 	gmake || exit 1
 
@@ -282,9 +281,13 @@ POSTBUILD_STEP3 () {
 
 POSTBUILD_STEP_NAME4="test-cas"
 POSTBUILD_STEP4 () {
-	cd mono/tests/cas
-	#make -k check
-	make test
+	# These hang the tests on sles-9-ia64, so skip for now...
+	if [ $DISTRO != "sles-9-ia64" ] ; then
+		cd mono/tests/cas
+		make -k test
+	else
+		echo "Skipping..."
+	fi
 }
 
 POSTBUILD_STEP_NAME5="cleanup"

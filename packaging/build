@@ -248,6 +248,7 @@ build_info.update_step("build", state="success", download=os.path.basename('down
 if not skip_steps:
 	remote_env = {}
 	remote_env['HEAD_or_RELEASE'] = "HEAD"
+	remote_env['DISTRO'] = distro
 	counter = 1
 	while(1):
 		if package.info.has_key('POSTBUILD_STEP_NAME%d' % counter) and package.info.has_key('POSTBUILD_STEP%d' % counter):

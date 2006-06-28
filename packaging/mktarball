@@ -74,6 +74,9 @@ if env.is_locked():
 
 env.lock_env()
 
+# Update tarball status to "inprogress"
+repo.add_file(HEAD_or_RELEASE, package, version, "inprogress")
+
 if package_obj.info.has_key('MONO_DEPS'):
 	(status, output) = utils.launch_process('./install-deps %s %s' % (distro, package), logger=log_obj)
 	if status:
@@ -96,6 +99,7 @@ log_obj.log("Starting to build source dist...\n")
 if status:
         env.unlock_env()
         log_obj.log("Source dist file creation failed\n")
+	repo.add_file(HEAD_or_RELEASE, package, version, "failure")
         sys.exit(1)
 
 # get tarball filename

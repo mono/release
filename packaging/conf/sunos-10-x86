@@ -1,11 +1,13 @@
 target_host=builder@amd-mono.boston.ximian.com
 USE_ZIP_PKG=1
-#target_command_prefix='export PATH=/opt/csw/bin:/opt/csw/gcc4/bin:$PATH; '
 
-# Use the gnu andopensource software
-target_command_prefix='export PATH=/usr/sfw/bin:$PATH; '
+# Use the gnu and opensource software
+target_command_prefix='export PATH=/usr/sfw/bin:/usr/ccs/bin:$PATH; '
 
-#strip_path=/usr/ccs/bin/strip
+# Notes about this arch:
+# Removed -mt option from gthread .pc file
+
+strip_path=/usr/ccs/bin/strip
 tar_path=/usr/sfw/bin/gtar
 
 web_index=8

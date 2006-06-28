@@ -39,7 +39,7 @@ for f in sources + patches + ['../' + package, '../' + distro ]:
 
 
 # Find type of source
-source_dir = utils.unpack_source(os.path.basename(sources[0]), tar_path=utils.get_dict_var('jail_tar_path', env.info) )
+source_dir = utils.unpack_source(os.path.basename(sources[0]), tar_path=utils.get_dict_var('tar_path', env.info) )
 
 arch = pack_def.package_env.info['arch']
 
@@ -63,9 +63,16 @@ for f in pack_def.get_aliases():
 os.environ['version'] = version
 build_command = shell_code
 
-# Trying to load this missing file fails on solaris 10... ? So, only load if it exists.
-if os.path.exists('/tmp/build_deps/env.sh'):
-	build_command = ". /tmp/build_deps/env.sh ; " + build_command
+# Trying to load this missing file fails on solaris 10... ?
+# Create an empty file if it's not there
+if not os.path.exists('/tmp/build_deps'):
+	os.mkdir('/tmp/build_deps')
+if not os.path.exists('/tmp/build_deps/env.sh'):
+	fd = open('/tmp/build_deps/env.sh', 'w')
+	fd.write("")
+	fd.close()
+
+build_command = ". /tmp/build_deps/env.sh ; " + build_command
 
 # TODO:  For some reason the above exit isn't being called on failures
 #  (Still an issue... ?)

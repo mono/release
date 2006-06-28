@@ -1,3 +1,20 @@
+// Set a cookie for the users timezone
+
+var today = new Date ()
+var inaweek = new Date ()
+
+// In seconds
+var monobuild_tzo = today.getTimezoneOffset()*60*(-1)
+
+inaweek.setTime (today.getTime () + (1000 * 60 * 60 * 24 * 7))
+var expires = "; expires=" + inaweek.toGMTString ()
+
+document.cookie = "monobuild_tzo=" + monobuild_tzo + expires
+
+// Testing...
+//document.write(monobuild_tzo)
+
+
 // Figure out which set of check boxes to toggle and then toggle them all
 function toggleCheckBoxes(checkboxName)
 {

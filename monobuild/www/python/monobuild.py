@@ -268,6 +268,8 @@ def packagestatus(req, **vars):
 	except KeyError:
 		return "Invalid arguments"
 
+	timezone_offset = www_utils.get_tz_cookie(req.headers_in)
+
 	versions = build.get_versions(HEAD_or_RELEASE, platform, package)
 	versions = utils.version_sort(versions)
 	versions.reverse()
@@ -312,7 +314,11 @@ def packagestatus(req, **vars):
 				duration = "Running for %s" % utils.time_duration_asc(values['start'], utils.get_time())
 			else:
 				duration = "?"
-		
+
+			# New times based on clients timezone (accurrate?)
+			tz_start = utils.adjust_for_timezone(timezone_offset, values['start'])
+			tz_finish = utils.adjust_for_timezone(timezone_offset, values['finish'])
+
 			html += """
 
 				<h3>Build status - %s</h3>
@@ -343,7 +349,7 @@ def packagestatus(req, **vars):
 				<h4>Build Steps</h4>
 				<p>
 				<table>
-				<tbody>""" % (version, values['start'], values['finish'], duration, values['buildhost'])
+				<tbody>""" % (version, tz_start, tz_finish, duration, values['buildhost'])
 
 			# Start through the build steps...	
 			for step in build_info.get_steps_info(read_info=0):

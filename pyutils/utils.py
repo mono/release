@@ -531,6 +531,17 @@ def time_duration_asc(start, finish):
 	# Return minutes of duration
 	return (finish_time - start_time) / 60
 
+def adjust_for_timezone(tzo_seconds, time_string):
+
+	return_string = time_string
+	if time_string:
+		seconds_past_epoch = calendar.timegm(time.strptime(time_string))
+		seconds_past_epoch += int(tzo_seconds)
+		return_string = time.asctime(time.gmtime(seconds_past_epoch))
+
+	return return_string
+
+
 def rpm_query(query_format, file):
 	"""Args: query_format, file.
 	query_format can be a list or a string.

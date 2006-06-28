@@ -1,5 +1,9 @@
 import re
 
+import Cookie
+import time
+import calendar
+
 # all the arguments should be validated to only contain letters, a dash and numbers
 # Any characters outside of that range should be changed to '.'
 
@@ -16,4 +20,16 @@ def sanitize_args(args):
 	return new_args
 		
 
-	
+def get_tz_cookie(headers_in):
+	"""Returns 0 if timezone isn't set, otherwise, return seconds difference for that timezone"""
+
+	return_val = 0
+        my_cookie = Cookie.SimpleCookie()
+
+        if headers_in.has_key('Cookie'):
+                my_cookie.load(headers_in['Cookie'])
+                return_val = my_cookie['monobuild_tzo'].value
+
+        return return_val
+
+

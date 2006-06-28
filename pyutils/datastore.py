@@ -140,7 +140,8 @@ class source_file_repo:
 			# If this is the release and packagename
 			if stuff[0] == HEAD_or_RELEASE and stuff[1] == package_name:
 				# If the tarball creation succeeded
-				if self.info[":".join([HEAD_or_RELEASE, package_name, stuff[2]])] != "tarball_creation_failed":
+				key2 = self.info[":".join([HEAD_or_RELEASE, package_name, stuff[2]])]
+				if key2 != "failure" and key2 != "inprogress":
 					versions.append(stuff[2])
 
 		# TODO: Better error handling here
@@ -148,6 +149,7 @@ class source_file_repo:
 			latest = utils.version_sort(versions).pop()
 			latest_filename = self.info[":".join([HEAD_or_RELEASE, package_name, latest])]
 		except:
+			print "Error getting latest tarball (%s, %s, %s)..." % (HEAD_or_RELEASE, package_name, latest)
 			latest_filename = ""
 
 		return latest_filename
@@ -158,7 +160,7 @@ class source_file_repo:
 
 		source_path = self.info[":".join([HEAD_or_RELEASE, package_name, rev])]
 
-		if source_path == "tarball_creation_failed":
+		if source_path == "failure" or source_path == "inprogress":
 			version = ""
 		else:
 			filename = os.path.basename(source_path)
@@ -185,9 +187,10 @@ class source_file_repo:
 		for key in self.info.iterkeys():
 			H_or_R, name, revision = key.split(":")
 			if H_or_R == HEAD_or_RELEASE and name == component:
-				if self.info[key] == "tarball_creation_failed":
-					state = "failure"
-				else:   state = "success"
+				state = self.info[key]
+
+				if state != "failure" and state != "inprogress":
+					state = "success"
 
 				info['revisions'].append(revision)
 				info['state'][revision] = state
