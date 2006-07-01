@@ -26,12 +26,18 @@
 
 import sys
 import os
-import commands
 import re
 import string
 import tempfile
 import shutil
+import pickle
+
 import pdb
+
+sys.path+=['../pyutils']
+
+import utils
+
 
 
 class Package:
@@ -74,9 +80,8 @@ class Package:
 
 	# Get metadata for an rpm
 	# (Reference website: http://rikers.org/rpmbook/node30.html)
-	# TODO: do a hash of the filename, and check a cache for the data before reloading
 	def load_package_info(self):
-		(status, output) = commands.getstatusoutput("""rpm -qp --queryformat "____NAME\n%{NAME}\n____ARCH\n%{ARCH}\n____FILELIST\n[%{FILENAMES}\n]" --queryformat "____REQUIRES\n" --requires --queryformat "____PROVIDES\n" --provides """ + self.full_path)
+		(status, output) = utils.launch_process("""rpm -qp --queryformat "____NAME\n%{NAME}\n____ARCH\n%{ARCH}\n____FILELIST\n[%{FILENAMES}\n]" --queryformat "____REQUIRES\n" --requires --queryformat "____PROVIDES\n" --provides """ + self.full_path, print_output=0)
 
 		#print output
 
@@ -118,6 +123,47 @@ class Package:
 		else:
 			return 0
 
+class rpm_query_cache:
+	"""Front loader to the Package class, checking a cached version first."""
+
+	def __init__(self):
+
+		# Filename to pickle load/unload
+		self.cache_dir = 'rpm_cache'
+
+		if not os.path.exists(self.cache_dir):
+			os.mkdir(self.cache_dir)
+
+	def retrieve(self, dir_and_filename):
+		"""Load Package object from cache, otherwise create a new one, store it in the cache,
+		and return the new object."""
+
+		filename = os.path.basename(dir_and_filename)
+
+		pickle_path = self.cache_dir + os.sep + filename + ".Package.pickle"
+
+		load_success = False
+		if os.path.exists(pickle_path):
+			pickle_fd = open(pickle_path, 'r')
+			try:
+				package = pickle.load(pickle_fd)
+				pickle_fd.close()
+				load_success = True
+				print dir_and_filename + " (*Cache hit*)"
+			except:
+				#Pickling failed... remove .pickle
+				pickle_fd.close()
+				os.unlink(pickle_path)
+
+		# Load new package
+		if not load_success:
+			package = Package(dir_and_filename)
+			pickle_fd = open(pickle_path, 'w')
+			pickle.dump(package, pickle_fd)
+			pickle_fd.close()
+
+		return package
+
 
 class Jail:
 
@@ -127,6 +173,8 @@ class Jail:
 
 		if not os.path.exists(self.jail_location):
 			os.mkdir(self.jail_location)
+
+		self.cache = rpm_query_cache()
 
 		# These are base names of rpms
 		#    for rpm based distros, you must add the rpm dep since we are ignoring rpmlib requirements
@@ -173,7 +221,9 @@ class Jail:
 
 
 		for rpm_filename in files:
-			my_package = Package(
+
+			
+			my_package = self.cache.retrieve(
 				os.path.join(self.config.get_rpm_repository_path(), rpm_filename))
 				
 
@@ -228,7 +278,7 @@ class Jail:
 					print "ERROR!: need requirement '%s' but do not have a package to satisfy it!" % req
 					print "\tmake sure you have the correct arch types in valid_arch in your jail config"
 					print "Current Distro Hint:"
-					(status, output) = commands.getstatusoutput("""rpm -q --whatprovides '%s' """ % req)
+					(status, output) = utils.launch_process("""rpm -q --whatprovides '%s' """ % req)
 					print output
 					sys.exit(1)
 
@@ -263,14 +313,14 @@ class Jail:
 
 		# Blow away the directory
 		# Unmount the possible proc dir just in case
-		commands.getstatusoutput("umount %s" % self.jail_location + os.sep + "proc")
+		utils.launch_process("umount %s" % self.jail_location + os.sep + "proc")
 		print "Removing jail target dir..."
 		shutil.rmtree(self.jail_location)
 		
 		os.makedirs(self.jail_location + os.sep + "var/lib/rpm") # Needed for rpm version 3
 		command = """rpm --root %s --initdb""" % self.jail_location
 		print command
-		(status, output) = commands.getstatusoutput(command)
+		(status, output) = utils.launch_process(command)
 		if status:
 			print "Error initializing the rpm database inside the jail"
 			sys.exit(1)
@@ -290,7 +340,7 @@ class Jail:
 		# This will work (using a manifest filename) as long as you're using rpm version 4 and above on the host machine
 		command = """rpm --root %s -i %s""" % (self.jail_location, manifest_filename)
 		print command
-		(status, output) = commands.getstatusoutput(command)
+		(status, output) = utils.launch_process(command)
 		print output
 		if status:
 			print "Error installing rpms inside the jail!!!"
@@ -327,7 +377,7 @@ class Jail:
 		# Reinitialize the rpm database with the jail's version of rpm	
 		command = "chroot %s env %s rpm --initdb" % (self.jail_location, self.environment)
 		print command
-		(status, output) = commands.getstatusoutput(command)
+		(status, output) = utils.launch_process(command)
 		print "Status: %d" % status
 		print "Output: " + output
 
@@ -338,7 +388,7 @@ class Jail:
 		# But, this method may be a problem because of the length of the arguments
 		command = "chroot %s env %s rpm --force -U %s" % (self.jail_location, self.environment, rpm_list)
 		print command
-		(status, output) = commands.getstatusoutput(command)
+		(status, output) = utils.launch_process(command)
 		print "Status: %d" % status
 		print "Output: " + output
 

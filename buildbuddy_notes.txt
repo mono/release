@@ -1,26 +1,38 @@
-Get the bb source tarball
+Get the bb source tarball (TODO: add link to tarball of 1.6 branch and my
+additional patches, files)
+
+Add distro and/or arch to conf/os.conf if it's not there
+
+Copy all files (if working from a subversion work area):
+svn export . bb
+
+tar up bb and copy to build machine
+
+Extract, then:
 
 perl Makefile.PL
 make
 sudo su
 make install
 
-Install XML::Simple
-
+Install XML::Simple (or XML::Parser if using the bb 1.6 branch)
 Possibly from cpan...
 
-Copy these scripts from a closely related distro (under /usr/share/ximian-build-system):
+Inside jail, from inside the unpacked tarball, as root (copy and paste):
 
-conf/os.conf
-scripts/*.guess
-conf/bb.conf
-conf/packsys.conf
-packsys/rpm/*
+---------------------
+export DEST=/usr/share/ximian-build-system
 
-Command to tar up:
-tar -zcvf bb_conf.tar.gz conf/os.conf scripts/*.guess conf/bb.conf conf/packsys.conf packsys/rpm/*
+mkdir -p $DEST/conf
 
-Add distro and/or arch to conf/os.conf
+cp -f conf/os.conf $DEST/conf
+cp -f conf/bb.conf $DEST/conf
+cp -f conf/packsys.conf $DEST/conf
 
-Fedora 4 and up specifics:
--Need to change Copyright to License in /usr/bin/bb_do
+cp -Rf packsys $DEST
+
+mkdir -p $DEST/scripts
+cp -f scripts/distribution.guess $DEST/scripts
+cp -f scripts/config.guess $DEST/scripts
+---------------------
+
