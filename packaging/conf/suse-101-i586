@@ -1,0 +1,8 @@
+target_host=builder@monobuild1.boston.ximian.com
+jaildir=/jails/suse-101-i586/jail
+target_command_prefix=". /etc/profile;"
+
+# Repo conf
+USE_ZMD=1
+USE_YAST=1
+
