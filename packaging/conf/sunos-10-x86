@@ -9,5 +9,8 @@ target_command_prefix='export PATH=/usr/sfw/bin:/usr/ccs/bin:$PATH; '
 
 strip_path=/usr/ccs/bin/strip
 tar_path=/usr/sfw/bin/gtar
+make_path=/usr/sfw/bin/gmake
+
+build_location=/export/home/builder/tmp
 
 web_index=8

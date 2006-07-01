@@ -83,4 +83,13 @@ sd_latest_build_distros = [ 'sles-9-x86_64', 'redhat-9-i386', 'win-4-i386', 'mac
 sd_latest_build_packages = td_packages
 ##############################################
 
+##############################################
+# Default environment (used by sshutils and packaging.buildenv)
+env_vars = {
+	'chroot_path':		'/usr/sbin/chroot',
+	'strip_path':		'strip',
+	'tar_path':		'tar',
+	'make_path':		'make',
+	'build_location':	'/tmp'
+}
 

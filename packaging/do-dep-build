@@ -98,7 +98,7 @@ for pack in packages:
 		# Get and unpack the source
 		print " --- Unpacking : " + pack['name'] + " ---"
 		utils.get_url(pack['source'], '../sources')
-		source = utils.unpack_source('../sources/' + os.path.basename(pack['source']), tar_path=utils.get_dict_var('tar_path', env.info))
+		source = utils.unpack_source('../sources/' + os.path.basename(pack['source']), tar_path=env.get_info_var('tar_path'))
 		os.chdir(source)
 
 		print " --- Building: " + pack['name'] + " ---"

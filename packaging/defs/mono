@@ -163,13 +163,13 @@ sunos_10_x86_ZIP_BUILD () {
 	./configure --prefix=/opt/mono
 	gmake || exit 1
 
-	rm -Rf /tmp/temp_install
-	gmake install DESTDIR=/tmp/temp_install || exit 1
+	rm -Rf $build_location/tmp/temp_install
+	gmake install DESTDIR=$build_location/tmp/temp_install || exit 1
 
 	# Do this so all the zip files have the same base, and we can lay them back here later
-	mkdir -p /tmp/install
-	cd /tmp/temp_install/opt/mono
-	mv * /tmp/install
+	mkdir -p $build_location/install
+	cd $build_location/tmp/temp_install/opt/mono
+	mv * $build_location/install
 
 }
 
@@ -264,7 +264,7 @@ POSTBUILD_STEP_NAME1="test-runtime"
 POSTBUILD_STEP1 () {
 	#echo "Skipping..."
 	cd mono
-	make -k check
+	$make_path -k check
 }
 
 POSTBUILD_STEP_NAME2="test-aot"
@@ -276,7 +276,7 @@ POSTBUILD_STEP_NAME3="test-profiles"
 POSTBUILD_STEP3 () {
 	#echo "Skipping..."
 	cd runtime
-	make -k check
+	$make_path -k check
 }
 
 POSTBUILD_STEP_NAME4="test-cas"
@@ -284,7 +284,7 @@ POSTBUILD_STEP4 () {
 	# These hang the tests on sles-9-ia64, so skip for now...
 	if [ $DISTRO != "sles-9-ia64" ] ; then
 		cd mono/tests/cas
-		make -k test
+		$make_path -k test
 	else
 		echo "Skipping..."
 	fi

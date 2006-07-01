@@ -197,10 +197,7 @@ build_dir = os.path.basename(source_file).replace('.tar.gz', '')
 build_dir = build_dir.replace('.zip', '')
 
 # Set optional custom build_location
-if build_env.info.has_key('build_location'):
-	build_location = build_env.info['build_location']
-else:
-	build_location = "/tmp"
+build_location = build_env.env_vars['build_location']
 
 # Files for zip build system and build command
 if build_env.get_info_var('USE_ZIP_PKG'):
@@ -209,9 +206,10 @@ if build_env.get_info_var('USE_ZIP_PKG'):
 	for f in aliases:
 		files_to_copy += ['defs/' + f]
 	files_to_copy += ['do-zip-build', 'conf/' + distro, '../conf/%s/*.patch' % package_name, 'defs/%s' % package_name ]
-	build_command = '%s/do-zip-build %s %s %s %s' % (build_location, revision, package_name, distro, version)
+	build_command = '%s/do-zip-build %s %s %s %s %s' % (build_location, revision, package_name, distro, version, build_location)
 	remote_src_dir = "%s/scratch/%s" % (build_location, build_dir)
-	step_env_pre_cmd = ". %s/build_deps/env.sh; " % build_location
+	# This will never be at build_location, always at /tmp/build_deps so do-zip-install-pkgs will correctly relocate
+	step_env_pre_cmd = ". /tmp/build_deps/env.sh; "
 
 else:
 	files_to_copy += ['do-build', '../conf/%s/*' % package_name ]
@@ -222,7 +220,11 @@ else:
 
 build_env.ssh.copy_to(files_to_copy, build_location, mode='scp')
 
-(code, output) = build_env.ssh.execute(build_command, logger=log_obj, output_timeout=timeout)
+# Set up env for the build and for tests
+build_env.env_vars['HEAD_or_RELEASE'] = "HEAD"
+build_env.env_vars['DISTRO'] = distro
+
+(code, output) = build_env.ssh.execute(build_command, env=build_env.env_vars, logger=log_obj, output_timeout=timeout)
 #code = 0
 if code:
 	build_env.unlock_env()
@@ -246,9 +248,6 @@ build_info.update_step("build", state="success", download=os.path.basename('down
 
 # Run postbuild steps
 if not skip_steps:
-	remote_env = {}
-	remote_env['HEAD_or_RELEASE'] = "HEAD"
-	remote_env['DISTRO'] = distro
 	counter = 1
 	while(1):
 		if package.info.has_key('POSTBUILD_STEP_NAME%d' % counter) and package.info.has_key('POSTBUILD_STEP%d' % counter):
@@ -258,7 +257,7 @@ if not skip_steps:
 			log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
 			build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 
-			(code, output) = build_env.ssh.execute("%s cd %s  " % (step_env_pre_cmd, remote_src_dir + package.info['POSTBUILD_STEP%d' % counter] ), env=remote_env, logger=log_obj, output_timeout=timeout)
+			(code, output) = build_env.ssh.execute("%s cd %s  " % (step_env_pre_cmd, remote_src_dir + package.info['POSTBUILD_STEP%d' % counter] ), env=build_env.env_vars, logger=log_obj, output_timeout=timeout)
 			state = get_state(code, test=1)
 			if code:
 				print "Step %d (%s) failed..." % (counter, package.info['POSTBUILD_STEP_NAME%d' % counter])

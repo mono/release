@@ -23,19 +23,20 @@ import pdb
 
 class init:
 	
-	def __init__(self, target_host, print_output=1, jaildir="", chroot_path="/usr/sbin/chroot", tar_path="tar", target_command_prefix="", execute_command=1, print_command=0, logger="", build_location="/tmp"):
+	def __init__(self, target_host, print_output=1, jaildir="", target_command_prefix="", env=config.env_vars, execute_command=1, print_command=0, logger=""):
 
 		self.target_host = target_host
 
 		# Optional...
 		self.print_output = print_output
 		self.jaildir = jaildir
-		self.chroot_path = chroot_path
-		self.remote_tar_path = tar_path
+		self.env = env
+		self.chroot_path = env['chroot_path']
+		self.remote_tar_path = env['tar_path']
 		self.local_tar_path = config.tar_path
 		self.target_command_prefix = target_command_prefix
 		self.logger = logger
-		self.build_location = build_location
+		self.build_location = env['build_location']
 
 		# Options for debugging
 		self.execute_command=execute_command

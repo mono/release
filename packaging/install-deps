@@ -68,22 +68,25 @@ if len(files) == 0:
 	print "No packages found..."
 	sys.exit()
 
+build_location = target_env.env_vars['build_location']
+
 # Clean out deps area
-(code, output) = target_env.ssh.execute("rm -rf /tmp/install-packages /tmp/build_deps")
+(code, output) = target_env.ssh.execute("rm -rf %s/install-packages %s/build_deps" % (build_location, build_location) )
 if code:
 	print "Error cleaning up... exiting"
 	sys.exit(1)
-target_env.ssh.execute("mkdir -p -m777 /tmp/install-packages")
+target_env.ssh.execute("mkdir -p -m777 %s/install-packages" % build_location)
 
 # copy packages
 # It would be nice to see the output...
-target_env.ssh.copy_to(files, '/tmp/install-packages', mode='scp', compress=0)
+target_env.ssh.copy_to(files, '%s/install-packages' % build_location, mode='scp', compress=0)
 
 # Install the packages with rpm/rcd
 if target_env.get_info_var('USE_ZIP_PKG'):
 
-	target_env.ssh.copy_to(['do-install-zip-pkgs', '../pyutils/utils.py', '../pyutils/rpm2cpio.py'], '/tmp/install-packages', mode='scp')
-        (code, output) = target_env.ssh.execute( "/tmp/install-packages/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps /tmp/install-packages/*")
+	target_env.ssh.copy_to(['do-install-zip-pkgs', '../pyutils/utils.py', '../pyutils/rpm2cpio.py'], '%s/install-packages' % build_location, mode='scp')
+	# These must NOT be in the build_location, otherwise it will throw off the relocation
+        (code, output) = target_env.ssh.execute( "%s/install-packages/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps %s/install-packages/*" % (build_location, build_location) )
 
 else:
 
@@ -99,12 +102,12 @@ else:
 			print "Waiting for rcd to come alive..."
 			time.sleep(5)
 		target_env.ssh.execute('rug rm -y %s' % rpm_names, exec_as_root=1)
-		(code, output) = target_env.ssh.execute('rug in -y -r /tmp/install-packages/*.rpm', exec_as_root=1)
+		(code, output) = target_env.ssh.execute('rug in -y -r %s/install-packages/*.rpm' % build_location, exec_as_root=1)
 		target_env.ssh.execute('rug shutdown', exec_as_root=1)
         else:
-		target_env.ssh.copy_to('remove-rpms', '/tmp')
-		target_env.ssh.execute('/tmp/remove-rpms %s' % rpm_names, exec_as_root=1)
-		(code, output) = target_env.ssh.execute('rpm -Uvh /tmp/install-packages/*.rpm', exec_as_root=1)
+		target_env.ssh.copy_to('remove-rpms', build_location)
+		target_env.ssh.execute('%s/remove-rpms %s' % (build_location, rpm_names), exec_as_root=1)
+		(code, output) = target_env.ssh.execute('rpm -Uvh %s/install-packages/*.rpm' % build_location, exec_as_root=1)
 
 # Exit with return code...
 sys.exit(code)

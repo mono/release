@@ -14,19 +14,25 @@ rev = sys.argv[1]
 package = sys.argv[2]
 distro = sys.argv[3]
 version = sys.argv[4]
+build_location = sys.argv[5]
 
-os.chdir('/tmp')
+# Make sure it exists
+if not os.path.exists(build_location):
+	distutils.dir_util.mkpath(build_location)
+
+os.chdir(build_location)
 
 # Load def info
 env = packaging.buildenv(distro)
 pack_def = packaging.package(env, package, inside_jail=True)
 
-for d in [ '/tmp/builder/built-packages', '/tmp/scratch', '/tmp/install' ]:
+
+for d in [ 'builder/built-packages', 'scratch', 'install' ]:
 	if os.path.exists(d):
 		shutil.rmtree(d)
 
-os.mkdir('/tmp/scratch')
-os.chdir('/tmp/scratch')
+os.mkdir('scratch')
+os.chdir('scratch')
 
 sources = glob.glob('../*.zip')
 sources += glob.glob('../*.tar.gz')
@@ -39,7 +45,7 @@ for f in sources + patches + ['../' + package, '../' + distro ]:
 
 
 # Find type of source
-source_dir = utils.unpack_source(os.path.basename(sources[0]), tar_path=utils.get_dict_var('tar_path', env.info) )
+source_dir = utils.unpack_source(os.path.basename(sources[0]), tar_path=env.get_info_var('tar_path') )
 
 arch = pack_def.package_env.info['arch']
 
@@ -57,7 +63,7 @@ shell_code = pack_def.get_zip_build_commands()
 
 # Move def file so it gets cleaned up, and also saved with successful build
 for f in pack_def.get_aliases():
-	shutil.move('/tmp/' + f, '..')
+	shutil.move(build_location + os.sep + f, '..')
 
 # set version var, load up environment for deps, and execute build command
 os.environ['version'] = version
@@ -81,14 +87,14 @@ if(os.system(build_command)):
 	sys.exit(1)
 
 # Package up the build
-os.chdir('/tmp/install')
-distutils.dir_util.mkpath('/tmp/builder/built-packages')
-os.system('zip -yr /tmp/builder/built-packages/%s-%s-%s.%s.zip *' % (package, version, rev, arch) )
+os.chdir(build_location + '/install')
+distutils.dir_util.mkpath(build_location + '/builder/built-packages')
+os.system('zip -yr %s/builder/built-packages/%s-%s-%s.%s.zip *' % (build_location, package, version, rev, arch) )
 # Keep a copy of the "spec" file and distro conf file
-shutil.copy('/tmp/scratch/' + package, '/tmp/builder/built-packages')
-shutil.copy('/tmp/scratch/' + distro, '/tmp/builder/built-packages')
+shutil.copy(build_location + '/scratch/' + package, build_location + '/builder/built-packages')
+shutil.copy(build_location + '/scratch/' + distro, build_location + '/builder/built-packages')
 
 # Save alias files
 for f in pack_def.get_aliases():
-	shutil.copy('/tmp/scratch/' + f, '/tmp/builder/built-packages')
+	shutil.copy(build_location + '/scratch/' + f, build_location + '/builder/built-packages')
 

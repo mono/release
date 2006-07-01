@@ -39,13 +39,25 @@ class buildenv:
 
 		self.load_info()
 
+		# Default environment
+		self.env_vars = {}
+		# Make a copy
+		for k, v in config.env_vars.iteritems():
+			self.env_vars[k] = v
+
+		# Allow override from the conf file
+		for key in self.env_vars.keys():
+			if self.info.has_key(key):
+				self.env_vars[key] = self.info[key]
+
 		# Construct arguments
 		args = {}
 		args['target_host'] = self.info['target_host']
 		args['print_output'] = self.print_output
 		args['logger'] = logger
+		args['env'] = self.env_vars
 
-		for i in "jaildir chroot_path tar_path target_command_prefix build_location".split():
+		for i in "jaildir target_command_prefix".split():
 			if self.info.has_key(i):
 				args[i] = self.info[i]
 	
@@ -140,11 +152,14 @@ class buildenv:
 
 class package:
 
-	def __init__(self, package_env, name, bundle_obj="", bundle_name="", source_basepath="", package_basepath="", inside_jail=False, HEAD_or_RELEASE="", create_dirs_links=True):
+	def __init__(self, package_env, name, bundle_obj="", bundle_name="", source_basepath="", package_basepath="", inside_jail=False, HEAD_or_RELEASE="", create_dirs_links=True, has_parent_pack=False):
 		"""Args: buildenv object, string name of a file in packaging/defs.
 		source/package_basepath: full path to where packages are.  Can be overridden (used for web publishing)
 		inside_jail: this packaging module is used in release/pyutils and /tmp.  If it's in /tmp, that means we're inside the jail
 		   and there are certain things we shouldn't do.
+
+		has_parent_pack: used internally.  Set this flag when creating new package objects within the package constructor.  This
+		lets us know to create the dir structure, even if our buildenv isn't valid for this pack (used by def_alias packages).
 		"""
 
 		self.package_env = package_env
@@ -153,6 +168,8 @@ class package:
 		self.package_basepath = package_basepath
 		self.inside_jail = inside_jail
 		self.create_dirs_links = create_dirs_links
+
+		self.has_parent_pack = has_parent_pack
 
 		# Default to use the file in the current dir, otherwise look in the defs dir
 		#  (This change was for do-msvn tar)
@@ -180,7 +197,8 @@ class package:
 		self.alias_pack_obj = ""
 		if self.get_info_var('def_alias'):
 			# TODO: pass all contructor vars to this new object?
-			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'), source_basepath=source_basepath, package_basepath=package_basepath, inside_jail=inside_jail, create_dirs_links=create_dirs_links)
+			# has_parent_pack must always be true so that def_aliased packages create their dir structure
+			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'), source_basepath=source_basepath, package_basepath=package_basepath, inside_jail=inside_jail, create_dirs_links=create_dirs_links, has_parent_pack=True)
 			for k, v in self.alias_pack_obj.info.iteritems():
 				# There's some type of data we don't want to copy: def_alias to avoid recursive loops...
 				#   Ignore POSTBUILD stuff.... sort of a hack, but ignoring reduces the amount of redundancy
@@ -286,7 +304,7 @@ class package:
 	def setup_symlinks(self):
 		"""Setup alias symlinks for sources and packages."""
 
-		if self.package_env and self.valid_build_platform(self.package_env.name):
+		if self.package_env and (self.valid_build_platform(self.package_env.name) or self.has_parent_pack):
 			dirs = [ self.package_fullpath, self.source_fullpath ]
 		else:	dirs = [ self.source_fullpath ]
 
