@@ -20,6 +20,8 @@ BUILD_HOSTS=(
 	suse-93-x86_64
 	suse-100-i586
 	suse-100-x86_64
+	suse-101-i586
+	suse-101-x86_64
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
