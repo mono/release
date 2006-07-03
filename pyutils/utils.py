@@ -460,10 +460,6 @@ def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
 				candidates.append(file)
 		files = candidates
 
-		if len(files) == 0 and fail_on_missing:
-			print "utils.get_latest_ver: Could not find dir entry for '%s/%s', exiting" % (dir, version)
-			sys.exit(1)
-
 	# Or if a version reg is specified, only select versions matching it
 	elif version_reg:
 		candidates = []
@@ -472,10 +468,14 @@ def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
 				candidates.append(file)
 		files = candidates
 
-	if files:
-		latest_version = version_sort(files).pop()
-	else:
+	if len(files) == 0:
 		latest_version = ""
+		if fail_on_missing:
+			print "utils.get_latest_ver: No candidates for dir entry for '%s/%s', exiting" % (dir, version)
+			sys.exit(1)
+
+	else:
+		latest_version = version_sort(files).pop()
 
         return latest_version
 

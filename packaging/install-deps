@@ -13,6 +13,7 @@ import sys
 import re
 import glob
 import time
+import getopt
 
 sys.path += ['../pyutils']
 
@@ -23,9 +24,19 @@ import pdb
 
 is_url = re.compile("^(ftp|http)", re.I)
 
-if len(sys.argv) < 3:
+# Default to RELEASE
+HEAD_or_RELEASE = "RELEASE"
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "HEAD_or_RELEASE=" ])
+for option, value in opts:
+        if option == "--HEAD_or_RELEASE":
+		if value != "HEAD" and value != "RELEASE":
+			print "HEAD_or_RELEASE must be either HEAD or RELEASE ..."
+			sys.exit(1)
+		HEAD_or_RELEASE = value
+
+if len(remaining_args) < 2:
 	print ""
-	print "Usage: ./install-deps TARGET <package> <local packages>"
+	print "Usage: ./install-deps [ --HEAD_OR_RELEASE=[HEAD|RELEASE] ] TARGET <package> <local packages>"
 	print " where:"
         print "   package is package to build to install deps for (can also be 'none')"
         print "   local packages is packages in the defs dir and/or urls if distro is zip based"
@@ -33,19 +44,19 @@ if len(sys.argv) < 3:
 	sys.exit(1)
 
 
-target = sys.argv[1]
-build_deps_package = sys.argv[2]
+target = remaining_args[0]
+build_deps_package = remaining_args[1]
 
 
 deps = []
-if len(sys.argv) > 3: deps = sys.argv[3:]
+if len(remaining_args) > 2: deps = remaining_args[2:]
 
 target_env = packaging.buildenv(target, print_output=1)
 
 
 files = []
 if build_deps_package != 'none':
-	package = packaging.package(target_env, build_deps_package)
+	package = packaging.package(target_env, build_deps_package, HEAD_or_RELEASE=HEAD_or_RELEASE)
 	files += package.get_dep_files()
 
 for dep in deps:
@@ -54,7 +65,7 @@ for dep in deps:
 		files += [ 'external_zip_pkg' + os.sep + os.path.basename(dep) ]
 
 	else:	
-		package = packaging.package(target_env, dep)
+		package = packaging.package(target_env, dep, HEAD_or_RELEASE=HEAD_or_RELEASE)
 		files += package.get_files()
 		files += package.get_dep_files()
 

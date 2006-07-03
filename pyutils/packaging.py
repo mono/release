@@ -469,7 +469,7 @@ class package:
 		for dep in self.get_mono_deps():
 			# Get files for mono deps
 				# Woah, total cheat here, I imported packaging, and am using it!
-			package = packaging.package(self.package_env, dep)
+			package = packaging.package(self.package_env, dep, HEAD_or_RELEASE=self.HEAD_or_RELEASE)
 			files += package.get_files()
 
 			# Get url files

@@ -170,7 +170,7 @@ log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
 build_info.update_step("install-deps", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 
 print "Installing dependencies..."
-(code, output) = utils.launch_process("./install-deps %s %s" % (distro, package_name), logger=log_obj)
+(code, output) = utils.launch_process("./install-deps --HEAD_or_RELEASE=%s %s %s" % (HEAD_or_RELEASE, distro, package_name), logger=log_obj)
 if code:
 	build_env.unlock_env()
 	build_info.update_step("install-deps", state="failure", finish=utils.get_time())

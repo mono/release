@@ -6,6 +6,7 @@ target_command_prefix='export PATH=/usr/sfw/bin:/usr/ccs/bin:$PATH; '
 
 # Notes about this arch:
 # Removed -mt option from gthread .pc file
+# created symlink cc -> gcc for runtime test
 
 strip_path=/usr/ccs/bin/strip
 tar_path=/usr/sfw/bin/gtar
