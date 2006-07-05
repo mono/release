@@ -81,6 +81,11 @@ class tarball_builder(threading.Thread):
 				for i in range(starting_rev, latest_tree_rev + 1):
 
 					latest_for_package = self.src_repo.latest_path_revision(pack_obj.info['HEAD_PATH'], revision=i)
+					if not latest_for_package:
+						log.log("Error getting revision %d, trying later... (%s)\n" % (i, pack_name) )
+						# Skip to next pack...
+						break
+
 					if not self.distfiles.contains('HEAD', pack_name, str(latest_for_package)) and not sigint_event.isSet():
 						command = "cd %s; ./mktarball %s snap %d" % (config.packaging_dir, pack_name, latest_for_package)
 						log.log("Executing: %s\n" % (command) )

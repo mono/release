@@ -58,7 +58,13 @@ class svn:
 
 			for line in output.split('\n'):
 				list = line.split()
-				version = int(list[0])
+
+				# Catch network/ssh errors
+				try: 
+					version = int(list[0])
+				except:
+					return 0
+
 				tmp_module = os.path.dirname(list.pop())
 
 				if tmp_module == module:

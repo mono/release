@@ -503,10 +503,14 @@ class package:
 		my_os_version = my_os + "-" + self.package_env.info['version']
 		my_distro = self.package_env.info['distro']
 
+		shell_code = ""
 		for key in [my_os, my_os_version, my_distro]:
 			new_key = key.replace("-", "_") + "_ZIP_BUILD"
 			shell_code = self.get_info_var(new_key)
 			if shell_code: break
+
+		if not shell_code:
+			print "Warning... could not find shell code..."
 
 		return shell_code
 
