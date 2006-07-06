@@ -190,7 +190,7 @@ class package:
 
 		# keys (regs) to grab from the def_alias if they are not in this def file
 		valid_alias_key_regs = []
-		for reg in ['make_dist', 'HEAD_PATH', 'get_destroot', '_ZIP_']:
+		for reg in ['make_dist', 'HEAD_PATH', 'RELEASE_PATH', 'get_destroot', '_ZIP_', 'get_source']:
 			valid_alias_key_regs.append(re.compile(reg))
 
 		# Check alias package so we include any information from it that we don't include in this package (reduces maintenance redundancy)

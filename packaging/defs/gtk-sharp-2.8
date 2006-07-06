@@ -25,19 +25,6 @@ get_destroot () {
 	DEST_ROOT=$DISTRO
 }
 
-HEAD_PATH=(
-	trunk/gtk-sharp
-)
-RELEASE_PATH=(
-	#tags/gtk-sharp/[[versiondot]]/gtk-sharp
-	tags/gtk-sharp/2.x.2/gtk-sharp
-)
-
-get_source () {
-	# substitute version dot with digit.x.digit
-        $SVNEXPORT $MONO_ROOT/$SVN_PATHS
-}
-
 # this probably isn't getting escaped correctly... done
 update_version_file () {
         sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$VERSION/" bootstrap-2.8

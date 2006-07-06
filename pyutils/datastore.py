@@ -149,7 +149,7 @@ class source_file_repo:
 			latest = utils.version_sort(versions).pop()
 			latest_filename = self.info[":".join([HEAD_or_RELEASE, package_name, latest])]
 		except:
-			print "Error getting latest tarball (%s, %s, %s)..." % (HEAD_or_RELEASE, package_name, latest)
+			print "Error getting latest tarball (%s, %s)..." % (HEAD_or_RELEASE, package_name)
 			latest_filename = ""
 
 		return latest_filename
