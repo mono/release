@@ -86,7 +86,8 @@ def build_package(target):
 	# Strip files to save space
 	# These were in the old script as "cleanup"
 	env.ssh.print_command=1
-	env.ssh.execute("cd %s%s; strip bin/*  " % (remote_PKGROOT, prefix ) )
+	# Hmm... stripping all dylibs causes issues on mac x86 as well as for libgdiplus on both plats, only strip some
+	env.ssh.execute("cd %s%s/bin; strip * ; cd ../lib; strip *.a libmono*.dylib " % (remote_PKGROOT, prefix ) )
 
 	if os.path.exists(temp_dir): shutil.rmtree(temp_dir)
 	distutils.dir_util.mkpath(temp_dir)
@@ -212,7 +213,11 @@ else:
 threads = []
 for target in targets:
 	thread = threading.Thread(target=build_package, args=(target,))
-	thread.run()
+
+	# Run one at a time...
+	#thread.run()
+
+	thread.start()
 	
 	threads.append(thread)
 

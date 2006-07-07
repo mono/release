@@ -35,15 +35,11 @@ import packaging
 import config
 
 # Constants
-# Which noarch packages to include in the various packages
-rpm_packages_to_include = {}
-zip_packages_to_include = {}
+packages_to_include = {}
 
-zip_packages_to_include['sunos-8-sparc'] = ['mono', 'libgdiplus' ]
-rpm_packages_to_include['sunos-8-sparc'] = ['xsp', 'ikvm', 'boo', 'monodoc' ]
+packages_to_include['sunos-8-sparc']  = ['mono', 'libgdiplus', 'xsp', 'ikvm', 'boo', 'monodoc' ]
 
-zip_packages_to_include['sunos-10-sparc'] = ['mono', 'libgdiplus', 'gtk-sharp-2.0', 'gtk-sharp' ]
-rpm_packages_to_include['sunos-10-sparc'] = ['xsp', 'ikvm', 'boo', 'monodoc', 'mono-tools', 'monodevelop', 'gtksourceview-sharp-2.0' ]
+packages_to_include['sunos-10-sparc'] = ['mono', 'libgdiplus', 'xsp', 'ikvm', 'boo', 'monodoc', 'gtk-sharp-2.0', 'gtk-sharp', 'mono-tools', 'monodevelop', 'gtksourceview-sharp-2.0' ]
 
 debug=1
 
@@ -64,42 +60,20 @@ def build_package(target):
 		sys.exit(1)
 
 	temp_dir = "build" + os.sep + target
-	unpacking_dir = temp_dir + os.sep + "temp"
-
-	cwd = os.getcwd()
-
-	if os.path.exists(temp_dir): shutil.rmtree(temp_dir)
-	distutils.dir_util.mkpath(unpacking_dir)
-	os.chdir(unpacking_dir)
 
 	# Keep list of files used to build this package
 	packages_used = []
 
-	# Gotta do this here because rpm2cpio on solaris doesn't always work
-	# Extract noarch rpms
-	for package in rpm_packages_to_include[target]:
-		package = packaging.package(env, package)
-
-		for file in package.get_files():
-			utils.extract_file(file, preserve_symlinks=1)
-			packages_used += [ os.path.basename(file) ]
-
-
 	print "Cleaning up"
 	env.ssh.execute("rm -Rf /tmp/install-packages; mkdir /tmp/install-packages; rm -Rf %s; mkdir -p -m777 %s " % ( remote_temp, remote_temp))
-
-	print "Copying files to remote..."
-	env.ssh.copy_to("*", remote_temp, mode='tar');
-
-	os.chdir(cwd)
 
 	print "Installing mono to build env..."
 	# Install the rest of mono
 
 	# Get all files needed for the zip packages to include
 	files = []
-	for zip in zip_packages_to_include[target]:
-		package = packaging.package(env, zip)
+	for file in packages_to_include[target]:
+		package = packaging.package(env, file)
 		files += package.get_files()
 		files += package.get_dep_files()
 
@@ -121,26 +95,43 @@ def build_package(target):
 	env.ssh.print_output=debug
 	env.ssh.execute("/tmp/install-packages/do-install-zip-pkgs %s /opt/mono /tmp/install-packages/* " % (remote_temp))
 
+	prune_files = """
+		bin/msg*
+		bin/*gettext*
+		bin/gobject-query
+		bin/*jpeg*
+		bin/libpng*
+		bin/*tiff*
+		bin/*rgb*
+		bin/fax*
+		bin/*gif*
+		doc
+		info
+		man/man1/*fax*
+		man/man1/*jpeg*
+		man/man1/*rgb*
+		man/man1/*tiff*
+		man/man3
+		man/man5
+		share/doc
+		share/emacs
+		share/gettext
+		share/gtk-doc
+		share/man/man1/msg*
+		share/man/man1/*gettext*
+		share/man/man3
+		""".split()
+
+	# Delete some stuff (docs, unnecessary programs, etc...) (save msgfmt for glib building, even though we don't use it)
+	env.ssh.execute("cd %s; mv bin/msgfmt .; rm -Rf %s ; mv msgfmt bin " % (remote_temp, " ".join(prune_files) ) )
+
 	# Strip files to save space
+	# Is this causing problems with libgdiplus? (works over an sshd tunnel...)
 	env.ssh.execute("cd %s/bin; %s *; cd ../lib; %s * " % (remote_temp, remote_strip_loc, remote_strip_loc))
 	env.ssh.print_output=debug
 
-	print "Appending to startup environment..."
-	# Add MONO_GAC_PREFIX to environment files
-	# and rename env.sh to setup.sh
+	print "Set up environment files..."
 
-	# Probably don't need this anymore since we use /opt/mono as build prefix...
-#	vars = {}
-#	vars['MONO_GAC_PREFIX'] = '/opt/mono'
-#	vars['MONO_PREFIX'] = '/opt/mono'
-#	vars['MONO_CFG_DIR'] = '/opt/mono/etc'
-#	vars['MONO_PATH'] = '/opt/mono/lib'
-#
-#	for k,v in vars.iteritems():
-#		env.ssh.execute("cd %s; echo '%s=%s' >>  env.sh; echo 'setenv %s %s' >> env.csh" % (remote_temp, k, v, k, v))
-#
-#	env.ssh.execute("cd %s; export %s >>  env.sh" % (remote_temp, " ".join(vars.keys()) ) )
-		
 	# Rename environment files
 	env.ssh.execute("cd %s; mv env.sh  setup.sh " % (remote_temp))
 	env.ssh.execute("cd %s; mv env.csh setup.csh " % (remote_temp))
@@ -166,7 +157,7 @@ def build_package(target):
 	revision = mono_package.get_revision(release)
 
 	# Get string of packages
-	packages =  rpm_packages_to_include[target] + zip_packages_to_include[target]
+	packages =  packages_to_include[target]
 	packages.sort()
 	packages_string = " ".join( packages )
 
@@ -260,7 +251,7 @@ else:
 threads = []
 for target in targets:
 	thread = threading.Thread(target=build_package, args=(target,))
-	thread.run()
+	thread.start()
 	
 	threads.append(thread)
 

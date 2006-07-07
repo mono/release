@@ -81,8 +81,8 @@ if len(files) == 0:
 
 build_location = target_env.env_vars['build_location']
 
-# Clean out deps area
-(code, output) = target_env.ssh.execute("rm -rf %s/install-packages %s/build_deps" % (build_location, build_location) )
+# Clean out deps area (/tmp/build_deps does not use build_location for relocation purposes)
+(code, output) = target_env.ssh.execute("rm -rf %s/install-packages /tmp/build_deps" % (build_location) )
 if code:
 	print "Error cleaning up... exiting"
 	sys.exit(1)

@@ -22,14 +22,15 @@ import utils
 import packaging
 
 if len(sys.argv) < 4:
-	print "Usage: ./do-dep-build <distro> <def filename> <release>"
+	print "Usage: ./do-dep-build <distro> <def filename> <release> <build_location>"
 	sys.exit(1)
 
 distro = sys.argv[1]
 def_filename = sys.argv[2]
 release = sys.argv[3]
+build_location = sys.argv[4]
 
-os.chdir('/tmp')
+os.chdir(build_location)
 
 env = packaging.buildenv(distro)
 
@@ -43,11 +44,9 @@ if not BUILD_HOSTS.count(distro):
 
 built_packages = []
 
-current_dir = os.getcwd()
-
-if os.path.exists('/tmp/builder/built-packages'): shutil.rmtree('/tmp/builder/built-packages')
-distutils.dir_util.mkpath('/tmp/builder/built-packages')
-if not os.path.exists('/tmp/sources'): os.mkdir('/tmp/sources')
+if os.path.exists('builder/built-packages'): shutil.rmtree('builder/built-packages')
+distutils.dir_util.mkpath('builder/built-packages')
+if not os.path.exists('sources'): os.mkdir('sources')
 
 for pack in packages:
 
@@ -67,7 +66,7 @@ for pack in packages:
 			make install || exit 1
 			"""
 
-	filename = os.path.join('/tmp/builder/built-packages', "-".join([pack['name'], version, release]) + "." + ".".join([build_os, 'novell', env.info['arch'], 'zip']) )
+	filename = os.path.join(build_location + '/builder/built-packages', "-".join([pack['name'], version, release]) + "." + ".".join([build_os, 'novell', env.info['arch'], 'zip']) )
 
 	# Check for existing build...
 	if utils.get_dict_var('skip', pack):
@@ -81,7 +80,7 @@ for pack in packages:
 
 		print " --- Cleaning/Setting up for: " + pack['name'] + " ---"
 		# Clean out areas
-		for path in ['/tmp/build_deps', '/tmp/install', '/tmp/scratch']:
+		for path in ['/tmp/build_deps', '/tmp/install', 'scratch']:
 			if os.path.exists(path):
 				shutil.rmtree(path)
 
@@ -89,11 +88,11 @@ for pack in packages:
 		env_string = ""
 		if built_packages:
 			package_string = " ".join(built_packages)
-			utils.launch_process('/tmp/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps ' + package_string)
+			utils.launch_process(build_location + '/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps ' + package_string)
 			env_string = ". /tmp/build_deps/env.sh; "
 
-		os.mkdir('/tmp/scratch')
-		os.chdir('/tmp/scratch')
+		os.mkdir('scratch')
+		os.chdir('scratch')
 
 		# Get and unpack the source
 		print " --- Unpacking : " + pack['name'] + " ---"
@@ -124,7 +123,7 @@ for pack in packages:
 		print " --- Archiving: " + pack['name'] + " ---"
 		code, output = utils.launch_process('zip -ry %s *' % filename)
 
-		os.chdir(current_dir)
+		os.chdir(build_location)
 
 	built_packages.append(filename)
 

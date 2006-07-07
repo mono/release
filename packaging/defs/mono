@@ -163,13 +163,13 @@ sunos_10_x86_ZIP_BUILD () {
 	./configure --prefix=/opt/mono
 	gmake || exit 1
 
-	rm -Rf $build_location/tmp/temp_install
-	gmake install DESTDIR=$build_location/tmp/temp_install || exit 1
+	rm -Rf $build_location/temp_install
+	gmake install DESTDIR=$build_location/temp_install || exit 1
 
 	# Do this so all the zip files have the same base, and we can lay them back here later
-	mkdir -p $build_location/install
-	cd $build_location/tmp/temp_install/opt/mono
-	mv * $build_location/install
+	mkdir /tmp/install
+	cd $build_location/temp_install/opt/mono
+	mv * /tmp/install
 
 }
 

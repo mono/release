@@ -47,7 +47,7 @@ get_source () {
 	# Handle the new gtk-sharp2 tag namaing standard (example tag version: 2.x.2)
 	# turn 2.8.2 into 2.x.2, and replace gtksharp2ver with it
 	gtksharp2ver_match=\\[\\[gtksharp2ver\\]\\]
-	new_version=`echo $VERSION | sed s/\.[1234567890]\./\.x\./`
+	new_version=`echo $VERSION | sed s/\.[0-9]\./\.x\./`
 	new_path=${SVN_PATHS//$gtksharp2ver_match/${new_version}}
 
 	echo "New path: $new_path"

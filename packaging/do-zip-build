@@ -27,7 +27,7 @@ env = packaging.buildenv(distro)
 pack_def = packaging.package(env, package, inside_jail=True)
 
 
-for d in [ 'builder/built-packages', 'scratch', 'install' ]:
+for d in [ 'builder/built-packages', 'scratch', '/tmp/install' ]:
 	if os.path.exists(d):
 		shutil.rmtree(d)
 
@@ -86,8 +86,8 @@ if(os.system(build_command)):
 	print "Build failed..."
 	sys.exit(1)
 
-# Package up the build
-os.chdir(build_location + '/install')
+# Package up the build (must not use build_location here for relocation correctness)
+os.chdir('/tmp/install')
 distutils.dir_util.mkpath(build_location + '/builder/built-packages')
 os.system('zip -yr %s/builder/built-packages/%s-%s-%s.%s.zip *' % (build_location, package, version, rev, arch) )
 # Keep a copy of the "spec" file and distro conf file
