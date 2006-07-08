@@ -19,6 +19,7 @@ BUILD_HOSTS=(
         sles-9-s390x
         sles-9-x86_64
         sunos-8-sparc
+        sunos-10-x86
         suse-92-i586
         suse-93-i586
 	suse-93-x86_64
@@ -48,9 +49,6 @@ sunos_8_sparc_ZIP_BUILD () {
         M4=/usr/local/bin/m4
 	export M4
 
-        # Do this to make sure libgcc is found.  Won't be needed when we install libgcc into build_deps
-        #export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-
 	# .la file missing a library
 	#search for 'libexpat.la' and replace it with 'libexpat.la -liconv'
 	file=/tmp/build_deps/lib/libfontconfig.la
@@ -61,6 +59,31 @@ sunos_8_sparc_ZIP_BUILD () {
         make install || exit 1
 
 }
+sunos_10_ZIP_BUILD () {
+        # Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
+
+        # Only if a non-gnu m4 is in the path
+        M4=/usr/sfw/bin/gm4
+	export M4
+
+	# Hack for building cairo on solaris 10: turn off visibility for: cairo/src/cairoint.h, cairo/pixman/src/slim_internal.h
+	# http://lists.freedesktop.org/archives/cairo/2006-May/006890.html
+	sed  s/__attribute__\(\(__visibility__\(\"hidden\"\)\)\)//g cairo/src/cairoint.h > cairoint.h; mv cairoint.h cairo/src
+	sed  s/__attribute__\(\(__visibility__\(\"hidden\"\)\)\)//g cairo/pixman/src/slim_internal.h > slim_internal.h ; mv slim_internal.h cairo/pixman/src
+
+        ./configure --prefix=/tmp/install || exit 1
+        $make_path || exit 1
+        $make_path install || exit 1
+
+}
+
+sunos_10_x86_ZIP_DEPS=(
+	# SUNWTiff-devel, SUNWpng-devel
+
+	# jpeg, gif
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/intel/10/jpeg-6b-sol10-intel-local.gz
+	http://primates.ximian.com/~wberrier/sunos/deps/x86/libungif-4.1.3-0.sunos10.novell.x86.zip
+)
 
 sunos_8_sparc_ZIP_DEPS=(
 

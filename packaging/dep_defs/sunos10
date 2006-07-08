@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+
+BUILD_HOSTS = ['sunos-10-x86']
+
+packages = [
+	{
+		'name': 'libungif', 
+		'source': 'http://easynews.dl.sourceforge.net/sourceforge/libungif/libungif-4.1.3.tar.gz',
+		'post':"""
+			rm -Rf /tmp/install/bin/*
+			"""
+	}
+]
+

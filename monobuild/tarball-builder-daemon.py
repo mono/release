@@ -107,7 +107,7 @@ class tarball_builder(threading.Thread):
 							log.log("Tarball creation failed...(%s)\n" %pack_name)
 
 							# Send out the log with the tarball, or at least a link... ?
-							link = "http://monobuild1.boston.ximian.com/tarball_logs/HEAD/%s/%d.log" % (pack_name, latest_for_package)
+							link = "http://mono.ximian.com/monobuild/tarball_logs/HEAD/%s/%d.log" % (pack_name, latest_for_package)
 							utils.send_mail('wberrier@novell.com', 'wberrier@novell.com', 'mktarball failed (%s %d)' % (pack_name, latest_for_package), "mktarball has failed for package %s revision %d\n\n%s" % (pack_name, latest_for_package, link))
 
 			time_duration = utils.time_duration_asc(start_time, utils.get_time()) * 60
