@@ -441,11 +441,14 @@ def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
 		but verion has high precedence than version_reg.
 	"""
 
+	files = []
 	if os.path.exists(dir):
 		files = os.listdir(dir)
-	else:
+	elif fail_on_missing:
 		print "utils.get_latest_ver: Path does not exist: %s" % dir
 		sys.exit(1)
+	else:
+		print "utils.py: get_latest_ver: fail_on_missing=False, Warning: path does not exist: " + dir
 
 	# If a version is specified, find latest release of that version
 	#  and also take precedence over a version_reg

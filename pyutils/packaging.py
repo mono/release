@@ -309,7 +309,8 @@ class package:
 		else:	dirs = [ self.source_fullpath ]
 
 		# Create the paths if it doesn't exist (and if this isn't an alias pack)
-		if not self.inside_jail and self.create_dirs_links and not self.get_info_var('def_alias'):
+		#  But create the dirs anyway if we're building a HEAD tarball, even if this is a def_alias package
+		if not self.inside_jail and self.create_dirs_links and (not self.get_info_var('def_alias') or self.HEAD_or_RELEASE == "HEAD"):
 			for path in (dirs):
 				if not os.path.exists(path): distutils.dir_util.mkpath(path)
 
@@ -343,6 +344,12 @@ class package:
 	def get_mono_deps(self):
 		if self.info.has_key('MONO_DEPS'):
 			return self.info['MONO_DEPS']
+		else:
+			return []
+
+	def get_mono_recommend_deps(self):
+		if self.info.has_key('MONO_RECOMMEND_DEPS'):
+			return self.info['MONO_RECOMMEND_DEPS']
 		else:
 			return []
 
@@ -466,11 +473,18 @@ class package:
 
 		url_dest = config.packaging_dir + os.sep + 'external_zip_pkg'
 
-		for dep in self.get_mono_deps():
+		for dep in self.get_mono_deps() + self.get_mono_recommend_deps():
 			# Get files for mono deps
 				# Woah, total cheat here, I imported packaging, and am using it!
 			package = packaging.package(self.package_env, dep, HEAD_or_RELEASE=self.HEAD_or_RELEASE)
-			files += package.get_files()
+
+			# If this is a recommended package, don't fail if missing
+			if self.get_mono_recommend_deps().count(package.name):
+				fail_flag = False
+			else:
+				fail_flag = True
+
+			files += package.get_files(fail_on_missing=fail_flag)
 
 			# Get url files
 			for url in package.get_distro_zip_deps():
