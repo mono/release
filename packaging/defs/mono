@@ -51,7 +51,7 @@ MONO_DEPS=(
 )
 
 # This way? and then install runtime deps before running the additional steps... ?  runtime and build?  Reinstall them all over again?
-MONO_RUNTIME_DEPS=(
+MONO_RECOMMEND_DEPS=(
 	libgdiplus
 )
 
@@ -292,9 +292,20 @@ POSTBUILD_STEP4 () {
 	fi
 }
 
-POSTBUILD_STEP_NAME5="cleanup"
+POSTBUILD_STEP_NAME5="test-swf"
 POSTBUILD_STEP5 () {
+	#echo "Skipping..."
+	DISPLAY=monobuild1.boston.ximian.com:1
+	export DISPLAY
+	cd mcs/class/Managed.Windows.Forms
+	$make_path run-test
+	#./tests.sh all
+}
+
+POSTBUILD_STEP_NAME6="cleanup"
+POSTBUILD_STEP6 () {
         #echo "Skipping..."
         ./runtime/mono-wrapper --wapi=semdel
 }
+
 
