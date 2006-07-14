@@ -78,7 +78,10 @@ def get_rpm_install(env_obj, archive=False):
 		<ul>
 		<li><tt>http://go-mono.com/%s/%s</tt></li>
 		</ul>
-		</p>""" % (url_prefix, env_obj.name)
+		</p>
+		<p>For assistance with using repositories and installing packages with YaST, visit this link: 
+		<a href="http://en.opensuse.org/Add_Package_Repositories_to_YaST">[1]</a>
+                </p>""" % (url_prefix, env_obj.name)
 
 
 	# TODO: Generate zmd text

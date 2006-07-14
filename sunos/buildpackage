@@ -50,6 +50,8 @@ def build_package(target):
 	env = packaging.buildenv(target, print_output=debug)
 
 	remote_temp = "/tmp/packaging"
+	remote_root = remote_temp + os.sep + "root"
+	remote_package_loc = remote_temp + os.sep + "install-packages"
 
 	remote_strip_loc = env.info['strip_path']
 
@@ -65,7 +67,7 @@ def build_package(target):
 	packages_used = []
 
 	print "Cleaning up"
-	env.ssh.execute("rm -Rf /tmp/install-packages; mkdir /tmp/install-packages; rm -Rf %s; mkdir -p -m777 %s " % ( remote_temp, remote_temp))
+	env.ssh.execute("rm -Rf %s; mkdir -p -m777 %s %s " % ( remote_temp, remote_package_loc, remote_root))
 
 	print "Installing mono to build env..."
 	# Install the rest of mono
@@ -89,11 +91,11 @@ def build_package(target):
 	files += [config.packaging_dir + os.sep + '../pyutils/rpm2cpio.py' ]
 	
 	# Copy them over...
-	env.ssh.copy_to(files, '/tmp/install-packages', mode='scp', compress=0)
+	env.ssh.copy_to(files, remote_package_loc, mode='scp', compress=0)
 
 	# This will unpack and do all the substitution, including the noarch rpms
 	env.ssh.print_output=debug
-	env.ssh.execute("/tmp/install-packages/do-install-zip-pkgs %s /opt/mono /tmp/install-packages/* " % (remote_temp))
+	env.ssh.execute("%s/do-install-zip-pkgs %s /opt/mono %s/* " % (remote_package_loc, remote_root, remote_package_loc))
 
 	prune_files = """
 		bin/msg*
@@ -123,18 +125,18 @@ def build_package(target):
 		""".split()
 
 	# Delete some stuff (docs, unnecessary programs, etc...) (save msgfmt for glib building, even though we don't use it)
-	env.ssh.execute("cd %s; mv bin/msgfmt .; rm -Rf %s ; mv msgfmt bin " % (remote_temp, " ".join(prune_files) ) )
+	env.ssh.execute("cd %s; mv bin/msgfmt .; rm -Rf %s ; mv msgfmt bin " % (remote_root, " ".join(prune_files) ) )
 
 	# Strip files to save space
 	# Is this causing problems with libgdiplus? (works over an sshd tunnel...)
-	env.ssh.execute("cd %s/bin; %s *; cd ../lib; %s * " % (remote_temp, remote_strip_loc, remote_strip_loc))
+	env.ssh.execute("cd %s/bin; %s *; cd ../lib; %s * " % (remote_root, remote_strip_loc, remote_strip_loc))
 	env.ssh.print_output=debug
 
 	print "Set up environment files..."
 
 	# Rename environment files
-	env.ssh.execute("cd %s; mv env.sh  setup.sh " % (remote_temp))
-	env.ssh.execute("cd %s; mv env.csh setup.csh " % (remote_temp))
+	env.ssh.execute("cd %s; mv env.sh  setup.sh " % (remote_root))
+	env.ssh.execute("cd %s; mv env.csh setup.csh " % (remote_root))
 
 
 	# Print out packages_used
@@ -168,7 +170,7 @@ def build_package(target):
 	utils.substitute_parameters_in_file(pkginfo_file, parameter_map)
 
 	# Create prototype
-	(code, prototype) = env.ssh.execute("cd %s; find . -print | pkgproto | sort" % remote_temp, capture_stderr=0 )
+	(code, prototype) = env.ssh.execute("cd %s; find . -print | pkgproto | sort" % remote_root, capture_stderr=0 )
 
 	#print prototype
 
@@ -196,13 +198,13 @@ def build_package(target):
 
 	print "Copy pkginfo, prototype, packages_used, and ChangeLog to host..."
 	# Use scp mode because we don't want paths to be included in the destination
-	env.ssh.copy_to([pkginfo_file, prototype_file, temp_dir + os.sep + 'packages_used.txt', 'ChangeLog'], remote_temp, mode='scp')
+	env.ssh.copy_to([pkginfo_file, prototype_file, temp_dir + os.sep + 'packages_used.txt', 'ChangeLog'], remote_root, mode='scp')
 
 
 	# Actually build the package
 	print "Building package..."
 	package_filename = "mono-%s_%s.%s.pkg" % (version, revision, env.info['arch'])
-	(code, output) = env.ssh.execute("cd %s; pkgmk -d . -b \`pwd\`  &&  pkgtrans -s \`pwd\` %s all; gzip %s" % (remote_temp, package_filename, package_filename ))
+	(code, output) = env.ssh.execute("cd %s; pkgmk -d . -b \`pwd\`  &&  pkgtrans -s \`pwd\` %s all; gzip %s" % (remote_root, package_filename, package_filename ))
 	if code:
 		print "%s: Error in creating package" % target
 		sys.exit(1)
@@ -210,9 +212,9 @@ def build_package(target):
 	distutils.dir_util.mkpath(output_dir)
 
 	print "Copy package back..."
-	# Have to use scp mode here, because I don't want the remote_temp dir in the filename
+	# Have to use scp mode here, because I don't want the remote_root dir in the filename
 	# Also, use no compression, since file is already compressed
-	env.ssh.copy_from("%s/%s.gz" % (remote_temp, package_filename), output_dir, mode='scp', compress=0)
+	env.ssh.copy_from("%s/%s.gz" % (remote_root, package_filename), output_dir, mode='scp', compress=0)
 
 	# Create md5
 	print "Create md5..."
