@@ -18,10 +18,12 @@ mkdir scratch && cd scratch 				|| exit 1
 $EXEC_AS_ROOT mv ../ximian-build.conf .
 $EXEC_AS_ROOT mv ../*.patch .
 $EXEC_AS_ROOT mv ../*.tar.gz .
+$EXEC_AS_ROOT mv ../*.tar.bz2 .
 $EXEC_AS_ROOT mv ../*.zip .
 
 # rpm needs this to be happy
 $EXEC_AS_ROOT chown root:root *.tar.gz
+$EXEC_AS_ROOT chown root:root *.tar.bz2
 $EXEC_AS_ROOT chown root:root *.zip
 $EXEC_AS_ROOT chown root:root *.patch
 
@@ -29,7 +31,8 @@ archive_dir="$build_location/builder/built-packages"
 
 bb_lint -g prebuild -V $version -R $rev -S ''		|| exit 1
 bb_unpack apply						|| exit 1
-bb_do -V $version -R $rev -S '' -a $archive_dir 	|| exit 1
+# flexible_tardir is for packages like nant, boo, etc...
+bb_do -V $version -R $rev -S '' -a $archive_dir --flexible_tardir 	|| exit 1
 bb_lint -V $version -R $rev -S ''			|| exit 1
 
 rm -rf $archive_dir/*.src.rpm

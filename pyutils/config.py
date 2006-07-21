@@ -93,3 +93,18 @@ env_vars = {
 	'build_location':	'/tmp'
 }
 
+######################################
+# Common place for source extensions, which can be compiled to reg later
+# Ennumerate to make it simpler...
+source_extensions = """
+        .tar.gz
+        -src.tar.gz
+        .tar.bz2
+        -src.tar.bz2
+        .zip
+        -src.zip
+""".split()
+
+sources_ext_re_string = "(\.tar\.gz|-src\.tar\.gz|\.tar\.bz2|-src\.tar\.bz2|\.zip|-src\.zip)"
+######################################
+

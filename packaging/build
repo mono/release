@@ -79,8 +79,16 @@ else:
 
 # Figure out if this is a snapshot build or not...
 #  Could do this by looking at the tarball map... ? (but ./build parameters would have to change)
-sources = glob.glob("sources/%s/*-%s.tar.gz" % (package_name, version)) + glob.glob("sources/%s/*-%s.zip" % (package_name, version))
-snapshot_sources = glob.glob("snapshot_sources/%s/*-%s.tar.gz" % (package_name, version)) + glob.glob("snapshot_sources/%s/*-%s.zip" % (package_name, version))
+
+sources = []
+snapshot_sources = []
+
+for ext in config.source_extensions:
+	sources += glob.glob("sources/%s/*-%s%s" % (package_name, version, ext))
+
+for ext in config.source_extensions:
+	snapshot_sources += glob.glob("snapshot_sources/%s/*-%s%s" % (package_name, version, ext))
+
 if sources:
 	print "Using release sources and packages"
 	HEAD_or_RELEASE = "RELEASE"
@@ -193,6 +201,7 @@ files_to_copy = [ source_file ]
 
 # Get the dir that tarball unpacks
 #   Will this work with all tarballs?  This is what we do for do-zip-build...
+# TODO: this needs some work (will break if tarball isn't just right...)
 build_dir = os.path.basename(source_file).replace('.tar.gz', '')
 build_dir = build_dir.replace('.zip', '')
 
@@ -212,13 +221,15 @@ if build_env.get_info_var('USE_ZIP_PKG'):
 	step_env_pre_cmd = ". /tmp/build_deps/env.sh; "
 
 else:
+	# Some 3rd party modules use '-' in their versions
+	rpm_version = version.replace('-', '_')
 	files_to_copy += ['do-build', '../conf/%s/*' % package_name ]
-	build_command = '%s/do-build %s %s %s' % (build_location, version, revision, build_location)
+	build_command = '%s/do-build %s %s %s' % (build_location, rpm_version, revision, build_location)
 	remote_src_dir = "%s/scratch/BUILD/%s" % (build_location, build_dir)
 	step_env_pre_cmd = ""
 
 
-build_env.ssh.copy_to(files_to_copy, build_location, mode='scp')
+build_env.ssh.copy_to(files_to_copy, build_location, mode='scp', compress=0)
 
 # Set up env for the build and for tests
 build_env.env_vars['HEAD_or_RELEASE'] = "HEAD"
