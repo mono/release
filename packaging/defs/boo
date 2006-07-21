@@ -30,6 +30,7 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono
+	nant
 )
 
 get_destroot () {
@@ -38,14 +39,8 @@ get_destroot () {
 
 BUILD_DIR="/tmp"
 
-#get_source () {
-#}
-
-#update_version_file () {
-#}
-
 make_dist () {
-	wget http://primates.ximian.com/~wberrier/packaging/sources/boo/boo-$VERSION.tar.gz -O /tmp/built-tarball/boo-$VERSION.tar.gz
+	export filename="boo-$VERSION-src.tar.bz2"
+	curl http://dist.codehaus.org/boo/distributions/$filename > $filename
 }
-
 

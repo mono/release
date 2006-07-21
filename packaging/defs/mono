@@ -306,6 +306,12 @@ POSTBUILD_STEP_NAME6="cleanup"
 POSTBUILD_STEP6 () {
         #echo "Skipping..."
         ./runtime/mono-wrapper --wapi=semdel
+
+	# Clean up tmp files
+	cd /tmp
+	rm ipc*
+	rm tmp*tmp
+	rm *.exe
 }
 
 

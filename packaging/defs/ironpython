@@ -1,5 +1,5 @@
 BUILD_HOSTS=(
-	suse-93-i586
+	fedora-3-i386
 )
 
 USE_HOSTS=(
@@ -30,23 +30,18 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono
-	nant
 )
-
-BUILD_DIR="/tmp"
 
 get_destroot () {
 	DEST_ROOT=noarch
 }
 
-#get_source () {
-#}
-
-#update_version_file () {
-#}
+BUILD_DIR="/tmp"
 
 make_dist () {
-        export filename="ikvm-$VERSION.zip"
-        curl http://easynews.dl.sourceforge.net/sourceforge/ikvm/$filename > $filename
+	# Downloaded from http://www.codeplex.com/Project/FileDownload.aspx?ProjectName=IronPython&DownloadId=557
+	# But no direct link, so providing one on primates
+	export filename="IronPython-$VERSION.zip"
+        curl http://primates.ximian.com/~wberrier/packaging/sources/ironpython/$filename > $filename
 }
 

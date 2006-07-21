@@ -1,5 +1,5 @@
 BUILD_HOSTS=(
-	suse-93-i586
+	fedora-3-i386
 )
 
 USE_HOSTS=(
@@ -28,25 +28,22 @@ USE_HOSTS=(
 	win-4-i386
 )
 
+# Should we build all this noarch stuff on the 1.1.13 bundle?
+#bundle="1.1.13"
+
 MONO_DEPS=(
 	mono
-	nant
 )
-
-BUILD_DIR="/tmp"
 
 get_destroot () {
 	DEST_ROOT=noarch
 }
 
-#get_source () {
-#}
-
-#update_version_file () {
-#}
+BUILD_DIR="/tmp"
 
 make_dist () {
-        export filename="ikvm-$VERSION.zip"
-        curl http://easynews.dl.sourceforge.net/sourceforge/ikvm/$filename > $filename
+	export filename="nant-$VERSION-src.tar.gz"
+	# wget doesn't work for some reason...
+        curl http://easynews.dl.sourceforge.net/sourceforge/nant/$filename > $filename
 }
 
