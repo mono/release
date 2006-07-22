@@ -4,5 +4,4 @@ target_command_prefix=". /etc/profile;"
 
 # Repo conf
 USE_ZMD=1
-USE_YAST=1
 

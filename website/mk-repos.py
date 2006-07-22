@@ -103,7 +103,7 @@ for distro_obj in distro_objs:
 
 		# Start creating repositories
 
-		if distro_obj.info.has_key('USE_OC') and distro_obj.info['USE_OC']:
+		if utils.get_dict_var('USE_OC', distro_obj.info):
 			if distro_obj.info.has_key('distro_aliases'):
 				DISTRO_STRING = ":".join([distro_obj.name] + distro_obj.info['distro_aliases'])
 			else:
@@ -111,22 +111,24 @@ for distro_obj in distro_objs:
 		
 			utils.append_text_to_files( {'channel.conf': 'AddDistro %s %s\n' % (DISTRO_STRING, distro_obj.name) } )
 
-		if distro_obj.info.has_key('USE_YUM') and distro_obj.info['USE_YUM']:
+		if utils.get_dict_var('USE_YUM', distro_obj.info) or utils.get_dict_var('USE_ZMD', distro_obj.info):
 			os.system("createrepo " + distro_obj.name)
-			shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/yum/mono.repo', distro_obj.name)
 
-			utils.substitute_parameters_in_file(distro_obj.name + os.sep + 'mono.repo', { 
-				'@DISTRO@': distro_obj.name, 
-				'@URL_PREFIX@': url_prefix,
-				'@BUNDLE_NAME@': bundle_conf.info['bundle_urlname'],
-			} )
+			if utils.get_dict_var('USE_YUM', distro_obj.info):
+				shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/yum/mono.repo', distro_obj.name)
+
+				utils.substitute_parameters_in_file(distro_obj.name + os.sep + 'mono.repo', { 
+					'@DISTRO@': distro_obj.name, 
+					'@URL_PREFIX@': url_prefix,
+					'@BUNDLE_NAME@': bundle_conf.info['bundle_urlname'],
+				} )
 
 
 		# Instructions about how to create a yast repo:
 		#http://en.opensuse.org/SDB%3AGenerating_YaST_Installation_Sources
 			# Plain cache generated with genIS_PLAINcache in yast2-packagemanager package (also liby2util)
 			# REAL yast repo created with create_package_descr in autoyast2-utils package
-		if distro_obj.info.has_key('USE_YAST') and distro_obj.info['USE_YAST']:
+		if utils.get_dict_var('USE_YAST', distro_obj.info):
 			# The PLAINcache file is not cross platform... try a 'real' yast source
 			#os.system("cd %s; /home/wberrier/yast_install/bin/genIS_PLAINcache -f -r .; gzip IS_PLAINcache ;  cd - " % i)
 
