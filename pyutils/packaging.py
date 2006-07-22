@@ -452,7 +452,7 @@ class package:
 				#   but that it won't apply to the source)
 				ver_wo_rel, = re.compile("(.*)-?").search(self.bundle_obj.version_map[self.name]).groups(1)
 				# Can't include self.name as part of reg because of cases like gtk-sharp-2.x
-				reg = re.compile(".*?-%s\.(tar\.(bz2|gz)|zip)" % ver_wo_rel)
+				reg = re.compile(".*?-%s%s" % (ver_wo_rel, config.sources_ext_re_string) )
 			else:
 				reg = re.compile(".*")
 
@@ -461,7 +461,8 @@ class package:
 				# Also match against the version selection reg for this pack def
 				if reg.search(file) and re.compile(self.get_info_var('version_selection_reg')).search(file):
 					candidates.append(file)
-			
+
+			# TODO: need to use rpm sorting on this?
 			self.source_filename = self.name + os.sep + utils.version_sort(candidates).pop()
 
 		return self.source_filename

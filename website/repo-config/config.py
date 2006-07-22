@@ -9,6 +9,7 @@ gtk-sharp-2.8
 gtksourceview-sharp-2.0
 heap-buddy
 ikvm
+ironpython
 libgdiplus
 mod_mono
 mono
@@ -16,5 +17,6 @@ monodevelop
 monodoc
 mono-debugger
 mono-tools
+nant
 xsp
 """.split()
