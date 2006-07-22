@@ -39,7 +39,7 @@ def get_rpm_install(env_obj, archive=False):
 			vars[i] = env_obj.info[i]
 
 	# Generate OC text
-	if utils.get_dict_var('USE_OC', env_obj):
+	if utils.get_dict_var('USE_OC', env_obj.info):
 		return_text += """
 		<p>
 		This distro supports installing Mono using Novell's Red Carpet.
@@ -60,7 +60,7 @@ def get_rpm_install(env_obj, archive=False):
 
 
 	# Generate Yum Text
-	if utils.get_dict_var('USE_YUM', env_obj):
+	if utils.get_dict_var('USE_YUM', env_obj.info):
 		return_text += """
 		<p>
 		This distro supports installing packages via <tt>yum</tt>. Putting the
@@ -70,7 +70,7 @@ def get_rpm_install(env_obj, archive=False):
 		"""
 
 	# Generate yast text
-	if utils.get_dict_var('USE_YAST', env_obj) or utils.get_dict_var('USE_ZMD', env_obj):
+	if utils.get_dict_var('USE_YAST', env_obj.info) or utils.get_dict_var('USE_ZMD', env_obj.info):
 		return_text += """
 		<p>
 		This distro supports installing packages via <tt>YaST</tt>.  Add the following installation
@@ -86,7 +86,7 @@ def get_rpm_install(env_obj, archive=False):
 
 	# TODO: Generate zmd text
 	# Hmm... zmd can use all of the above sources...
-	if utils.get_dict_var('USE_ZMD', env_obj):
+	if utils.get_dict_var('USE_ZMD', env_obj.info):
 		pass
 
 		#Only select one category, since they're all valid.

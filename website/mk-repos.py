@@ -128,7 +128,7 @@ for distro_obj in distro_objs:
 		#http://en.opensuse.org/SDB%3AGenerating_YaST_Installation_Sources
 			# Plain cache generated with genIS_PLAINcache in yast2-packagemanager package (also liby2util)
 			# REAL yast repo created with create_package_descr in autoyast2-utils package
-		if utils.get_dict_var('USE_YAST', distro_obj.info):
+		if utils.get_dict_var('USE_YAST', distro_obj.info):# or utils.get_dict_var('USE_ZMD', distro_obj.info):
 			# The PLAINcache file is not cross platform... try a 'real' yast source
 			#os.system("cd %s; /home/wberrier/yast_install/bin/genIS_PLAINcache -f -r .; gzip IS_PLAINcache ;  cd - " % i)
 
