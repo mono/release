@@ -50,6 +50,28 @@ def index(req, **vars):
 
 	""" % (HEAD_or_RELEASE, config.web_root_url, config.web_root_url, HEAD_or_RELEASE))
 
+	legend_html = """
+	
+	<h3>Legend</h3>
+	<p>
+	<table class=legend>
+
+	<tbody>
+	<tr>
+	<th class=inprogress>In Progress</th>
+	<th class=success>Success</th>
+	<th class=failure>Failed</th>
+	<th class=testfailure>Tests Failed</th>
+	<th class=timeout>Timed Out</td>
+	<th class=queued>Queued</th>
+	<th class=new>New</th>
+	</tr>
+
+	</tbody>
+	</table>
+	</p>"""
+
+	req.write(legend_html)
 	 
 	req.write("""
 	<h3>Build Matrix</h3>
@@ -208,36 +230,7 @@ def index(req, **vars):
 	req.write("</table>\n</p>")
 
         # Legend
-	req.write("""
-
-	<h3>Legend</h3>
-	<p>
-	<table class=legend>
-
-	<tbody>
-	<tr>
-	<th>In Progress</th>
-	<th>Success</th>
-	<th>Failed</th>
-	<th>Tests Failed</th>
-	<th>Timed Out</td>
-	<th>Queued</th>
-	<th>New</th>
-	</tr>
-
-	<td class=inprogress></td>
-	<td class=success></td>
-	<td class=failure></td>
-	<td class=testfailure></td>
-	<td class=timeout></td>
-	<td class=queued></td>
-	<td class=new></td>
-
-	</tbody>
-	</table>
-	</p>
-
-	""")
+	req.write(legend_html)
 
 	# Link to toggle between HEAD and RELEASE
 	if HEAD_or_RELEASE == "RELEASE":
