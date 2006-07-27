@@ -4,89 +4,27 @@
 
 # Usage: ./remove-rpms rpm1 rpm2 rpm3
 
-import re
 import sys
-import commands
 import os
 
-#rpm_flags = "--test"
-rpm_flags = ""
+sys.path.append("../pyutils")
 
-# TODO: make sure we have root perms so it does go over and over again...
-#  Or, could check return codes to see (dep error versus don't have permission error)
+import rpm_utils
 
-child_rpm_match = re.compile("is needed by \(installed\) (\S+)")
+# Make sure we are root
+if not os.getuid() == 0:
+	print "Must be super user to run this script..."
+	sys.exit(1)
 
-def rpm_is_installed(rpm_name):
+if len(sys.argv) < 2:
+	print "Usage: ./remove-rpms rpm1 rpm2 ..."
+	sys.exit(1)
 
-	(status, output) = commands.getstatusoutput("rpm -q " + rpm_name)
+rpms = sys.argv[1:]
 
-	if status:
-		return 0
-	else:
-		return 1
+removed_rpms = rpm_utils.remove_rpms(rpms)
 
-# Parse rpm -e output to see what other rpms depend on the ones we're trying to remove
-def get_dependent_rpms(command_output):
+print "\nRemoved the following rpms:\n\n" + "\n".join(removed_rpms)
+print "\n -- RPM removal Complete! -- \n"
 
-	rpms = []
-
-	for line in command_output.split('\n'):
-		if child_rpm_match.search(line):
-			rpm = child_rpm_match.search(line).group(1)
-
-			rpms.append(rpm)
-
-	#print "*Dependent rpms: " + " ".join(rpms)
-
-	return rpms
-
-def remove_rpms(rpms):
-
-	installed_rpms = []
-
-	for rpm in rpms:
-		if rpm_is_installed(rpm):
-			installed_rpms.append(rpm)
-	status = 1
-
-	while status and installed_rpms:
-		command = "rpm %s -e %s" % (rpm_flags, ' '.join(installed_rpms) )
-		(status, output) = commands.getstatusoutput(command)
-
-		if not status:
-			installed_rpms.sort()
-			break
-		else:
-			new_rpms = get_dependent_rpms(output)
-
-			# Only add duplicates
-			for rpm in new_rpms:
-				if not installed_rpms.count(rpm):
-					installed_rpms.append(rpm)
-
-	return installed_rpms
-
-
-def commandline():
-
-	# Make sure we are root
-	if not os.getuid() == 0:
-		print "Must be super user to run this script..."
-		sys.exit(1)
-
-	if len(sys.argv) < 2:
-		print "Usage: ./remove-rpms rpm1 rpm2 ..."
-		sys.exit(1)
-
-	rpms = sys.argv[1:]
-
-	removed_rpms = remove_rpms(rpms)
-
-	print "\nRemoved the following rpms:\n\n" + "\n".join(removed_rpms)
-	print "\n -- RPM removal Complete! -- \n"
-
-
-if __name__ == "__main__":
-        commandline()
 

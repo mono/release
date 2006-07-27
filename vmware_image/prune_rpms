@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+
+import sys
+import os
+import re
+
+sys.path += ['../pyutils']
+
+import utils
+import rpm_utils
+
+# Make sure we are root
+if not os.getuid() == 0:
+	print "Must be super user to run this script..."
+	sys.exit(1)
+
+try:
+	execfile(sys.argv[1])
+except:
+	print "Usage: prune_rpms <file with rpms to keep>"
+	sys.exit(1)
+
+code, output = utils.launch_process('rpm -qa', print_output=0)
+
+locked_regs = []
+for l in locked_packages:
+	locked_regs.append(re.compile(l))
+	
+installed_rpms = output.split()
+installed_rpms.sort()
+
+#print installed_rpms
+
+def packs_are_locked(names):
+	found = False
+	for reg in locked_regs:
+		for name in names:
+			if reg.search(name):
+				found = True
+				break
+	return found
+
+rpms_to_uninstall = []
+
+for rpm in installed_rpms:
+
+	print "Trying to remove: " + rpm
+
+	rpms = []
+	if not packs_are_locked([rpm]):
+		rpms = remove_rpms.remove_rpms([rpm], test=True)
+	else:
+		continue
+
+	if len(rpms) > 0 and not packs_are_locked(rpms):
+
+
+		print "---------------------------------------"
+		print "\n".join(rpms)
+		print "---------------------------------------"
+		print "Adding rpms to be uninstalled..."
+		rpms_to_uninstall += rpms
+
+rpms_to_uninstall.sort()
+rpms_to_uninstall = utils.remove_list_duplicates(rpms_to_uninstall)
+
+print "---------------------------------------"
+print "\n".join(rpms_to_uninstall)
+print "---------------------------------------"
+print "Remove these rpms?"
+input = raw_input()
+
+if input == "y":
+	rpms = remove_rpms.remove_rpms(rpms_to_uninstall, test=False)
+
+
