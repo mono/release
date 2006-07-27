@@ -138,7 +138,7 @@ print package_path
 package_version_path = package_path + os.sep + ver_path
 
 if os.path.exists(package_version_path):
-	print "The path for this package (%s) already exists. You probably need to bump the revision number" % package_version_path
+	print "The path for this package (%s) already exists. You probably need to bump the revision number." % package_version_path
 	build_env.unlock_env()
 	sys.exit(5)
 
