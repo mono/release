@@ -53,13 +53,17 @@ def get_state(code, test=0):
 
 # Collect optional opts
 skip_steps = False
-opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_steps" ])
+# This is to specify installing release packages even when building a package from head
+install_release_packages = False
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_steps", "install_release_packages" ])
 for option, value in opts:
 	if option == "--skip_steps":
 		 skip_steps = True
+	if option == "--install_release_packages":
+		 install_release_packages = True
 
 if len(remaining_args) < 3:
-	print "Usage is: ./build [--skip_steps] configuration package version <release>"
+	print "Usage is: ./build [--skip_steps] [--install_release_packages] configuration package version <release>"
         print "  <release> is optional"
 	sys.exit(1)
 
@@ -177,8 +181,12 @@ LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', 
 log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
 build_info.update_step("install-deps", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 
+if install_release_packages:
+	install_deps_H_or_R = "RELEASE"
+else:
+	install_deps_H_or_R = HEAD_or_RELEASE
 print "Installing dependencies..."
-(code, output) = utils.launch_process("./install-deps --HEAD_or_RELEASE=%s %s %s" % (HEAD_or_RELEASE, distro, package_name), logger=log_obj)
+(code, output) = utils.launch_process("./install-deps --HEAD_or_RELEASE=%s %s %s" % (install_deps_H_or_R, distro, package_name), logger=log_obj)
 if code:
 	build_env.unlock_env()
 	build_info.update_step("install-deps", state="failure", finish=utils.get_time())
