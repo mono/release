@@ -201,7 +201,7 @@ cat <<EOF > mcs/class/lib/default/System.Drawing.dll.config
         <dllmap dll="gdiplus.dll" target="$MONO_PREFIX/lib/libgdiplus.dylib" />
 </configuration>
 EOF
-
+	cp mcs/class/lib/default/System.Drawing.dll.config mcs/class/lib/net_2_0/
 
 cat <<EOF > mcs/class/lib/default/System.Windows.Forms.dll.config
 <configuration>
@@ -209,11 +209,14 @@ cat <<EOF > mcs/class/lib/default/System.Windows.Forms.dll.config
         <dllmap dll="libX11" target="/usr/X11R6/lib/libX11.dylib" />
 </configuration>
 EOF
+	cp mcs/class/lib/default/System.Windows.Forms.dll.config mcs/class/lib/net_2_0/
+
 cat<<EOF > mcs/class/lib/default/Mono.Posix.dll.config
 <configuration>
         <dllmap dll="MonoPosixHelper" target="$MONO_PREFIX/lib/libMonoPosixHelper.dylib"/>
 </configuration>
 EOF
+	cp mcs/class/lib/default/Mono.Posix.dll.config mcs/class/lib/net_2_0/
 
 	# Need a version here...
 	./configure --prefix=$MONO_PREFIX --with-preview=yes
