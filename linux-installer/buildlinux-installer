@@ -60,7 +60,9 @@ local_rpms = [
 		"monodevelop",
 		"gecko-sharp",
 		"gecko-sharp-2.0",
-		"gtksourceview-sharp-2.0" ] },
+		"gtksourceview-sharp-2.0",
+		"nant",
+		"ironpython" ] },
 	{'name': 'suse-93-i586', 'packages': [
 		"gtk-sharp-2.0", ] }
 ]
