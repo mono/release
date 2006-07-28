@@ -82,4 +82,16 @@ locked_packages = """
 	libgphoto2
 	nautilus-open-terminal
 	yast2-sound
+	yast2-firewall
+	mysql
+	subversion
+	xntp
+	tcl
+	postgresql-server
+	postgresql
+	rpm-python
+	python-elementtree
+	phpMyAdmin
 """.split()
+
+
