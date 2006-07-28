@@ -1,0 +1,178 @@
+<html>
+<head>
+<title>ASP.NET Demos running on this machine</title>
+<style>
+h1 {
+        color: #efefef;
+        font-size: 14pt;
+        font-family: "Trebuchet MS";
+        border: 0;
+        margin: 0;
+        padding: 1em;
+        background: #666666;
+}
+
+body, table {
+        background-color: #ffffff;
+        font-family: Verdana, sans-serif;
+        color: black;
+        margin-left: 100pt;
+	width: 400pt;
+	margin-right: 100pt;
+        padding: 0;
+        border: 0;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>Mono ASP.NET Sampler</h2>
+
+	<p>This is a sampler of a few ASP.NET applications that have
+	been installed in this virtual machine.  These applications have
+	been modified to run in Linux.   See the section on <a
+	href="#porting">"Source Code"</a> for details about the changes made
+	to the software to run on Linux.
+
+	<p>To learn more about Mono, visit <a
+	href="http://www.mono-project.com/">www.mono-project.com</a>.
+	
+	<p>Today Mono has complete support for ASP.NET 1.0 and 1.1,
+	and only partial support for ASP.NET 2.0.  Support for ASP.NET
+	2.0 is being worked on, and will be ready in early 2007. 
+	
+	<ul>
+
+		<li><a
+		href="http://localhost/AmazonPortal/AmazonPortalForm.aspx">AmazonPortal</a>
+		application.
+
+		<li><a
+		href="http://localhost/DasBlog/newtelligence.DasBlog.Web">DasBlog</a>:
+		A port of DasBlog blogging software.
+
+		<li><a
+		href="http://localhost/NGallery/">NGallery</a>
+		photo management application.
+		<br>
+		To admin the application, go <a
+		href="http://localhost/NGallery/admin">here</a> and login as
+		"admin", password "changeme".
+
+		<li><a
+		href="http://localhost/PetShop2.Mono/Web">PetShop2</a>
+		application on Mono.
+	</ul>
+
+<a name="porting">
+<h2>Source Code</h2>
+
+	<p>The source code for all the applications demostrated here
+	are located on the <a
+	href="file:///home/mono/public_html">public_html</a> directory
+	of the user's home directory.
+
+	<p>A link has been placed on the desktop to help you locate
+	it, you can use this source code as a reference to find out
+	what kind of changes we have done to make ASP.NET applications
+	work on Linux.
+	
+<h3>Trying out your own code</h3>
+
+	<p>Mono currently does not have an ASP.NET designer that will
+	run on Linux, but you can use the code that you produce with
+	Visual Studio 2003.
+
+	<p>You can try your own applications by creating a directory
+	with your code in the <a
+	href="file:///home/mono/public_html">public_html</a>
+	directory.  You can do this by connecting with the file
+	manager to your machine hosting the software and copying the
+	directory containing your application here, and then visiting
+	the following url:
+
+	<p><center>
+	 <b>http://localhost/directoryname/page.aspx</b>
+	</center>
+
+	<p>Where <i>directoryname</i> is the directory where you deployed
+	your application, and <i>page.aspx</i> is the initial page for your
+	software, typically Default.aspx.
+
+<h3>Porting your ASP.NET application to Linux</h3>
+
+	<p>Porting ASP.NET applications from Windows to Linux is
+	relatively easy.  These are some useful hints that you can use
+	when developing cross platform applications:
+
+	<ul>
+		<li><b>Linux file system is case sensitive:</b>
+		On Linux the files "readme" and "README" are two
+		different files, that is, Linux has a case-sensitive
+		file system.
+		<br>
+		This is an important distinction for many applications
+		because you might have created a "Login.aspx" page,
+		but you reference the page as "login.aspx" or
+		"LOGIN.ASPX" from your source code.   You must make
+		sure that all references use the same file name
+		casing.
+
+		<li><b>Path Separator is different:</b>  On Windows,
+		the path separator is "\" while on Linux it is "/", it
+		is possible to create files that contain a "\" in
+		their names on Linux.
+		<br>
+		To write portable software, you must make sure that
+		you use the System.IO.Path.PathSeparator character
+		when you must concatenate paths, or even better, use
+		the <tt>System.IO.Path.Combine</tt> method to combine
+		pathnames.
+
+		<li><b>Mono lacks EnterpriseServices:</b> If your
+		application requires EnterpriseServices, your software
+		will not likely run on Mono as we have not implemented
+		it.
+
+		<li><b>Mono lacks cross-process transactions:</b> Mono
+		currently supports only local-process transactions.
+	</ul>
+
+	<p>The following are a few resources that might be helpful:
+	
+	<ul>
+
+		<li>Mono's <a
+		href="http://www.mono-project.com/FAQ:_ASP.NET">ASP.NET
+		FAQ</a>.
+
+		<li>Mono's <a
+		href="http://www.mono-project.com/FAQ:_General">General
+		FAQ</a>.
+
+		<li>Mono's <a
+		href="http://www.mono-project.com/FAQ:_Technical">Technical
+		FAQ</a>.
+	</ul>
+
+	<p>We also have a number of mailing lists available, see <a
+	href="http://www.mono-project.com/Mailing_Lists">the list of
+	available lists</a>.
+
+<h3>Databases</h3>
+
+	<p>You can continue using your SQL Server database with Mono,
+	you do not have to migrate this.  But if you want to replace
+	SQL server with another database, Mono provides an extensive
+	set of database connetors for MySQL, Postgress, Sybase,
+	Oracle, IBM's DB2 and also the embedded SQLite database. 
+	
+	<p>If you have questions about porting your software to Mono
+	with ASP.NET, you can use the following resources:
+
+
+</body>
+
+</html>
