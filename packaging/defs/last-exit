@@ -1,0 +1,29 @@
+BUILD_HOSTS=(
+	suse-101-i586
+)
+
+USE_HOSTS=(
+        suse-101-i586
+        suse-101-x86_64
+)
+
+MONO_DEPS=(
+	mono
+	gtk-sharp-2.8
+	mono-tools
+	gtk-sharp
+	gecko-sharp
+	monodoc
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+BUILD_DIR="/tmp"
+
+make_dist () {
+	export filename="last-exit-$VERSION.tar.bz2"
+        curl http://www.o-hand.com/~iain/last-exit/$filename > $filename
+}
+
