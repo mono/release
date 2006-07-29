@@ -117,7 +117,7 @@ else:
 		target_env.ssh.execute('rug shutdown', exec_as_root=1)
         else:
 		target_env.ssh.copy_to(['remove-rpms', '../pyutils/rpm_utils.py'], build_location)
-		target_env.ssh.execute('%s/remove_rpms.py %s' % (build_location, rpm_names), exec_as_root=1)
+		target_env.ssh.execute('%s/remove-rpms %s' % (build_location, rpm_names), exec_as_root=1)
 		(code, output) = target_env.ssh.execute('rpm -Uvh %s/install-packages/*.rpm' % build_location, exec_as_root=1)
 
 # Exit with return code...

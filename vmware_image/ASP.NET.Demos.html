@@ -23,10 +23,32 @@ body, table {
         border: 0;
 }
 
+h1.header {
+	color: #fff;
+	background: #555;
+	font-weight: bolder;
+}
+
+h2.header {
+	font-size: 14px;
+	font-weight: bold;
+	color: #dcdedc;
+	background: #555;
+	vertical-align: top;
+	margin-left: 70px;
+	margin-top: 0;
+	border-top: 2px solid;
+	padding: 0;
+}
 </style>
 </head>
 
 <body>
+<div class="header">
+<h1 class="header">
+Welcome to Mono's ASP.NET Sampler!
+</h1>
+</div>
 
 <h2>Mono ASP.NET Sampler</h2>
 
@@ -46,33 +68,40 @@ body, table {
 	<ul>
 
 		<li><a
-		href="http://localhost/AmazonPortal/AmazonPortalForm.aspx">AmazonPortal</a>
+		href="/AmazonPortal/AmazonPortalForm.aspx">AmazonPortal</a>
 		application.
 
 		<li><a
-		href="http://localhost/DasBlog/newtelligence.DasBlog.Web">DasBlog</a>:
-		A port of DasBlog blogging software.
-
-		<li><a
-		href="http://localhost/NGallery/">NGallery</a>
+		href="/nGallery/">NGallery</a>
 		photo management application.
 		<br>
 		To admin the application, go <a
-		href="http://localhost/NGallery/admin">here</a> and login as
-		"admin", password "changeme".
+		href="/nGallery/admin">here</a> and login as
+		<b>admin</b>, password <b>changeme</b>.
 
 		<li><a
-		href="http://localhost/PetShop2.Mono/Web">PetShop2</a>
+		href="/PetShop2.Mono/Web">PetShop2</a>
 		application on Mono.
+
+		<li><a href="/xsp/index2.aspx">XSP Sample Programs</a>
+		<br>
+		These are very simple small programs that test
+		different bits of ASP.NET on Mono.
+		
+<!-- 		<li><a -->
+<!-- 		href="/DasBlog/newtelligence.DasBlog.Web">DasBlog</a>: -->
+<!-- 		A port of DasBlog blogging software. -->
+
 	</ul>
 
 <a name="porting">
 <h2>Source Code</h2>
 
 	<p>The source code for all the applications demostrated here
-	are located on the <a
-	href="file:///home/mono/public_html">public_html</a> directory
-	of the user's home directory.
+	are located in 
+	/srv/www/htdocs .
+	The XSP tests are located in
+	/usr/lib/xsp/test .
 
 	<p>A link has been placed on the desktop to help you locate
 	it, you can use this source code as a reference to find out
@@ -86,9 +115,9 @@ body, table {
 	Visual Studio 2003.
 
 	<p>You can try your own applications by creating a directory
-	with your code in the <a
-	href="file:///home/mono/public_html">public_html</a>
-	directory.  You can do this by connecting with the file
+	with your code in 
+	/srv/www/htdocs .
+	You can do this by connecting with the file
 	manager to your machine hosting the software and copying the
 	directory containing your application here, and then visiting
 	the following url:
@@ -171,6 +200,11 @@ body, table {
 	
 	<p>If you have questions about porting your software to Mono
 	with ASP.NET, you can use the following resources:
+
+	<ul>
+		<li><a href="http://www.mono-project.com/ASP.NET">www.mono-project.com/ASP.NET</a></li>
+		<li><a href="http://www.mono-project.com/FAQ:_ASP.NET">www.mono-project.com/FAQ:_ASP.NET</a></li>
+	</ul>	
 
 
 </body>
