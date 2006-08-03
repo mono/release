@@ -1,11 +1,9 @@
 BUILD_HOSTS=(
 	suse-101-i586
-)
-
-USE_HOSTS=(
-        suse-101-i586
         suse-101-x86_64
 )
+
+USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
 	mono
@@ -17,7 +15,7 @@ MONO_DEPS=(
 )
 
 get_destroot () {
-	DEST_ROOT=noarch
+	DEST_ROOT=$DISTRO
 }
 
 BUILD_DIR="/tmp"

@@ -297,12 +297,16 @@ POSTBUILD_STEP4 () {
 
 POSTBUILD_STEP_NAME5="test-swf"
 POSTBUILD_STEP5 () {
-	#echo "Skipping..."
 	DISPLAY=monobuild1.boston.ximian.com:1
 	export DISPLAY
-	cd mcs/class/Managed.Windows.Forms
+
+	cd mcs/class/System.Drawing
 	$make_path run-test
-	#./tests.sh all
+	$make_path run-test PROFILE=net_2_0
+
+	cd ../Managed.Windows.Forms
+	$make_path run-test
+
 }
 
 POSTBUILD_STEP_NAME6="cleanup"
@@ -316,5 +320,4 @@ POSTBUILD_STEP6 () {
 	rm tmp*tmp
 	rm *.exe
 }
-
 
