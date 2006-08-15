@@ -71,7 +71,8 @@ sunos_10_ZIP_BUILD () {
 	sed  s/__attribute__\(\(__visibility__\(\"hidden\"\)\)\)//g cairo/src/cairoint.h > cairoint.h; mv cairoint.h cairo/src
 	sed  s/__attribute__\(\(__visibility__\(\"hidden\"\)\)\)//g cairo/pixman/src/slim_internal.h > slim_internal.h ; mv slim_internal.h cairo/pixman/src
 
-        ./configure --prefix=/tmp/install || exit 1
+	# Sun's libexif package is broken (missing headers)
+        ./configure --prefix=/tmp/install --without-libexif || exit 1
         $make_path || exit 1
         $make_path install || exit 1
 
