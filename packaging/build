@@ -84,6 +84,10 @@ else:
 # Figure out if this is a snapshot build or not...
 #  Could do this by looking at the tarball map... ? (but ./build parameters would have to change)
 
+if not os.path.exists("defs/" + package_name):
+        print "Error, file not found: defs/" + package_name
+	sys.exit(1)
+
 sources = []
 snapshot_sources = []
 
@@ -183,6 +187,7 @@ build_info.update_step("install-deps", state="inprogress", log=os.path.basename(
 
 if install_release_packages:
 	install_deps_H_or_R = "RELEASE"
+	print "Overriding to use release packages..."
 else:
 	install_deps_H_or_R = HEAD_or_RELEASE
 print "Installing dependencies..."

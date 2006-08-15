@@ -27,9 +27,11 @@ def unlock_file(fd):
 # tarball datastore
 version_re = re.compile(".*-(.*).(tar.gz|tar.bz2|zip)")
 
-# info for where tarballs are at and what's available
-#  any reason for making this file xml?
 class source_file_repo:
+	"""info for where tarballs are at and what's available
+	any reason for making this file xml?
+	Note: this class isn't threadsafe
+	"""
 
         def __init__(self):
                 self.data_store_filename = config.packaging_dir + os.sep + 'tarball_map'
@@ -140,9 +142,14 @@ class source_file_repo:
 			# If this is the release and packagename
 			if stuff[0] == HEAD_or_RELEASE and stuff[1] == package_name:
 				# If the tarball creation succeeded
-				key2 = self.info[":".join([HEAD_or_RELEASE, package_name, stuff[2]])]
-				if key2 != "failure" and key2 != "inprogress":
-					versions.append(stuff[2])
+				try:
+					key2 = self.info[":".join([HEAD_or_RELEASE, package_name, stuff[2]])]
+					if key2 != "failure" and key2 != "inprogress":
+						versions.append(stuff[2])
+				except:
+					print "datastore - src_file_repo: corruption, offending data:"
+					print key
+					print stuff
 
 		# TODO: Better error handling here
 		try:

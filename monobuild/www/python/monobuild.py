@@ -43,6 +43,7 @@ def index(req, **vars):
 	<TITLE>Mono Build Status - %s</TITLE>
 	<link rel="stylesheet" href="%s/build.css" type="text/css">
 	<script language="javascript" src="%s/build.js"></script>
+	<meta http-equiv="refresh" content="60">
 	</HEAD>
 	<BODY>
 
@@ -389,9 +390,13 @@ def packagestatus(req, **vars):
 		html += "<p>No information found: %s -- %s -- %s</p>" % (package, platform, HEAD_or_RELEASE) 
 
 
+	refresh_html = ""
+	if not showall:
+		refresh_html = """<meta http-equiv="refresh" content="60">"""
+
 	req.write("""
 	<html><head>
-
+	%s
 	<title>Mono Build Status</title><link rel="stylesheet" href="%s/build.css" type="text/css"></head>
 
 	<body>
@@ -399,6 +404,6 @@ def packagestatus(req, **vars):
 	%s
 
 	</body>
-	</html>""" % (config.web_root_url, html))
+	</html>""" % (refresh_html, config.web_root_url, html))
 
 

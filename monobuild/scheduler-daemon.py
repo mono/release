@@ -21,13 +21,13 @@ import config
 import datastore
 import packaging
 import utils
+import logger
 
 # regex to grab version out of filename
 # This only follows standards by autotools for now...
 version_re = re.compile(".*-(.*).(tar.gz|tar.bz2|zip)")
 
 tarballs = datastore.source_file_repo()
-
 
 class jail_scheduler(threading.Thread):
 
@@ -41,13 +41,13 @@ class jail_scheduler(threading.Thread):
 	def exit_if_interrupted(self):
 		if sigint_event.isSet():
 			# TODO: what's the best way to exit a thread? _exit?  return?
-			print "%s:\tExiting because of user interruption" % self.distro
+			log.log("%s:\tExiting because of user interruption\n" % self.distro)
 			sys.exit(1)
 
 	def run(self):
 
 		distro = self.distro
-		print "%s:\tStarting scheduler" % (distro)
+		log.log("%s:\tStarting scheduler\n" % (distro) )
 
 		while True:
 			# Reload config info (only useful for sleep times and which packages to build for a distro)
@@ -68,10 +68,13 @@ class jail_scheduler(threading.Thread):
 				self.exit_if_interrupted()
 
 				# Check to see what the latest tarball is
+				# The src_repo class is not threadsafe, so provide a mutex here
+				tarball_lock.acquire()
 				tarball_filename = tarballs.get_latest_tarball("HEAD", package_name)
+				tarball_lock.release()
 
 				if not tarball_filename:
-					print "%s:\t*** Error getting latest tarball (%s) (Probably doesn't exist...)!!!" % (distro, package_name)
+					log.log("%s:\t*** Error getting latest tarball (%s) (Probably doesn't exist...)!!!\n" % (distro, package_name) )
 
 				else:
 
@@ -85,7 +88,7 @@ class jail_scheduler(threading.Thread):
 					# Build if the build doesn't exist already
 					if not info.exists:
 						command = "cd %s; ./build %s %s %s" % (config.packaging_dir, distro, package_name, version)
-						print "%s:\t%s" % (distro, command)
+						log.log("%s:\t%s\n" % (distro, command) )
 
 						num_started_builds += 1
 						# TODO: hmm... is this not blocking?  Seems this code continues before being able to run tests?
@@ -96,19 +99,19 @@ class jail_scheduler(threading.Thread):
 						# Is the jail busy?  if so, just repeat this loop (and select a new tarball if a newer one exists)	
 						# Hmm... this really shouldn't happen, as much at least
 						if code == 2:
-							print "%s:\tJail is busy or offline... will retry again (%s)" % (distro, package_name)
+							log.log("%s:\tJail is busy or offline... will retry again (%s)\n" % (distro, package_name) )
 							num_started_builds -= 1
 
 						if code == 5:
-							print "%s:\tbuild info is missing, but packages exist... ?? will retry again (%s)" % (distro, package_name)
+							log.log("%s:\tbuild info is missing, but packages exist... ?? will retry again (%s)\n" % (distro, package_name) )
 							num_started_builds -= 1
 					else:
-						print "%s:\tSkipping existing build (%s, %s)" % (distro, package_name, version)
+						log.log("%s:\tSkipping existing build (%s, %s)\n" % (distro, package_name, version) )
 
 
 			time_duration = utils.time_duration_asc(start_time, utils.get_time() ) * 60
 			if num_started_builds == 0 and time_duration < config.sd_wakeup_interval:
-				print "%s:\tSleeping %d seconds..." % (distro, config.sd_wakeup_interval - time_duration)
+				log.log("%s:\tSleeping %d seconds...\n" % (distro, config.sd_wakeup_interval - time_duration) )
 				time.sleep(config.sd_wakeup_interval - time_duration)
 
 
@@ -116,6 +119,7 @@ class jail_scheduler(threading.Thread):
 # Signal handler routine
 #  This will let each thread finish when CTRL-C is pushed
 def keyboard_interrupt(signum, frame):
+	log.log("*** Signaling threads to finish ***\n")
 	print "*** Signaling threads to finish ***"
 	sigint_event.set()
 
@@ -125,6 +129,13 @@ sigint_event = threading.Event()
 # Set signal handler
 signal.signal(signal.SIGINT, keyboard_interrupt)
 threads = []
+
+# Set up log file
+#log = logger.Logger('scheduler.log', print_screen=0)
+log = logger.Logger('/dev/null', print_screen=1)
+
+# Set the lock object
+tarball_lock = threading.Lock()
 
 for distro in config.sd_latest_build_distros:
 	thread = jail_scheduler(distro)
