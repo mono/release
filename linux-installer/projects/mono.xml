@@ -67,22 +67,6 @@
              <platforms>linux</platforms>
            </fileShortcut>
            <shortcut>
-             <comment>Mono Develop</comment>
-             <exec>${installdir}/bin/monodevelop</exec>
-             <icon>${installdir}/share/pixmaps/monodevelop.png</icon>
-             <name>MonoDevelop</name>
-             <path>${installdir}/bin</path>
-             <platforms>linux</platforms>
-           </shortcut>
-           <shortcut>
-             <comment>Mono Documentacion</comment>
-             <exec>${installdir}/bin/monodoc</exec>
-             <icon>${installdir}/share/pixmaps/monodoc.png</icon>
-             <name>MonoDoc</name>
-             <path>${installdir}/bin</path>
-             <platforms>linux</platforms>
-           </shortcut>
-           <shortcut>
              <comment>Uninstall</comment>
              <exec>${installdir}/uninstall</exec>
              <icon>${installdir}/html/bitrock.png</icon>
