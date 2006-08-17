@@ -139,6 +139,26 @@ for root, dirs, files in os.walk('bin'):
 		# Search and replace in all files containing #!/bin/sh and /tmp/install
 		utils.substitute_parameters_in_file(os.path.join(root, file), parameter_map, qualifier=re.compile('#!/bin/sh.*(/tmp/install|/usr|/Library/Framework|/opt/mono)', re.M | re.DOTALL))
 
+# Relocate any .config files with our custom prefix
+#  (This was done so that the swf and sd .config files on mac could be used both in testing sd/swf inside monobuild as well as in the installer)
+print "Relocating .config files..."
+
+reloc_lib = reloc + "/lib"
+parameter_map = {
+	# For packages we build
+	re.compile("/tmp/install/lib"): reloc_lib,
+	# For mac builds
+	re.compile(mac_prefix_regex + "/lib"): reloc_lib,
+	# For solaris builds
+	re.compile("/opt/mono/lib"): reloc_lib,
+	# For packages we consume (noarch rpms)
+	re.compile("/usr/lib"): reloc_lib,
+}
+
+for root, dirs, files in os.walk('.'):
+	for file in files:
+		if re.compile('\.config$').search(file):
+			utils.substitute_parameters_in_file(os.path.join(root, file), parameter_map)
 
 # Relocate files on macos
 print "Relocating dylib files..."

@@ -36,7 +36,7 @@ for option, value in opts:
 
 if len(remaining_args) < 2:
 	print ""
-	print "Usage: ./install-deps [ --HEAD_OR_RELEASE=[HEAD|RELEASE] ] TARGET <package> <local packages>"
+	print "Usage: ./install-deps [ --HEAD_or_RELEASE=[HEAD|RELEASE] ] TARGET <package> <local packages>"
 	print " where:"
         print "   package is package to build to install deps for (can also be 'none')"
         print "   local packages is packages in the defs dir and/or urls if distro is zip based"
