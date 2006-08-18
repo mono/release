@@ -44,12 +44,22 @@ class jail_scheduler(threading.Thread):
 			log.log("%s:\tExiting because of user interruption\n" % self.distro)
 			sys.exit(1)
 
+	# We can unschedule this platform by removing it from the list in pyutils/config.py
+	def scheduled(self):
+		# reload python module
+		reload(config)
+
+		if config.sd_latest_build_distros.count(self.distro):
+			return True
+		else:
+			return False
+
 	def run(self):
 
 		distro = self.distro
 		log.log("%s:\tStarting scheduler\n" % (distro) )
 
-		while True:
+		while self.scheduled():
 			# Reload config info (only useful for sleep times and which packages to build for a distro)
 			reload(config)
 
@@ -114,7 +124,8 @@ class jail_scheduler(threading.Thread):
 				log.log("%s:\tSleeping %d seconds...\n" % (distro, config.sd_wakeup_interval - time_duration) )
 				time.sleep(config.sd_wakeup_interval - time_duration)
 
-
+		# Exiting because we've been removed from the configuration
+		log.log("%s:\tExiting upon user request...\n" % distro)
 
 # Signal handler routine
 #  This will let each thread finish when CTRL-C is pushed
@@ -128,7 +139,6 @@ sigint_event = threading.Event()
 
 # Set signal handler
 signal.signal(signal.SIGINT, keyboard_interrupt)
-threads = []
 
 # Set up log file
 #log = logger.Logger('scheduler.log', print_screen=0)
@@ -137,22 +147,39 @@ log = logger.Logger('/dev/null', print_screen=1)
 # Set the lock object
 tarball_lock = threading.Lock()
 
-for distro in config.sd_latest_build_distros:
-	thread = jail_scheduler(distro)
-	thread.start()
-
-	# For debugging (This will run each thread one at a time)
-	#thread.run()
-
-	threads.append(thread)
-
 # Sleep if threads are still alive
 #  Wow... here was the key... the main thread would exit, but pressing ctrl-c would go to the main thread (which had already exited)
 #  source: http://groups.google.com/group/comp.lang.python/browse_thread/thread/bb177d4cff9cde4e/d39dbc7e71a897c2?lnk=st&q=threading+sigint+group%3Acomp.lang.python&rnum=4&hl=en#d39dbc7e71a897c2
-for thread in threads:
-	while thread.isAlive():
-		#print "Waiting for thread %s ..." % thread.getName()
-		time.sleep(1)
+
+threads = []
+
+# Start the threads, as well as allow changes to config.sd_latest_build_distros to start and stop platforms
+firstrun = True  # emulate dowhile
+while threading.activeCount() > 0 or firstrun:
+	firstrun = False
+	# Check for newly activated threads
+	reload(config)
+
+	for distro in config.sd_latest_build_distros:
+		found = False
+		for thread in threads:
+			# If this thread has quit, remove from the list
+			if not thread.isAlive():
+				threads.remove(thread)
+
+			# Found an existing thread, don't start a new one
+			elif thread.getName() == distro:
+				found = True
+
+		# Start this thread if it isn't running and if sigint hasn't been triggered
+		if not found and not sigint_event.isSet():
+			thread = jail_scheduler(distro)
+			thread.start()
+			threads.append(thread)
+
+	# Wait for threads to die
+	time.sleep(1)
+
 
 # Wrong!!
 # This results blocks the main thread (and thus sigint gets ignored)
