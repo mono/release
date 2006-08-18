@@ -5,9 +5,12 @@ USE_ZIP_PKG=1
 target_host=builder@g5-mono.boston.ximian.com
 # set CC to make sure we build with the 10.3 sdk
 # These extra defines are needed when building on 10.4 with 10.3 sdk (not needed when building on 10.3)
-target_command_prefix="export CC='gcc -isysroot /Developer/SDKs/MacOSX10.3.9.sdk -DSYS_POLL_NO_WARN -DPOLL_NO_WARN'; export MACOSX_DEPLOYMENT_TARGET=10.3;  "
+# headerpad_max_install_names helps with relocating binaries to a destination of a very large pathname
+#  (See http://lists.apple.com/archives/darwin-development/2003/Sep/msg00274.html)
+target_command_prefix="export CC='gcc -isysroot /Developer/SDKs/MacOSX10.3.9.sdk -DSYS_POLL_NO_WARN -DPOLL_NO_WARN'; export MACOSX_DEPLOYMENT_TARGET=10.3; export LDFLAGS=' -headerpad_max_install_names '; "
 
-# for testing (Also, the deps aparrently must be built on 10.3)
+# for testing
 #target_host=nds_cm@macbld1.provo.novell.com
+#target_command_prefix="export LDFLAGS=' -headerpad_max_install_names '; "
 
 web_index=5

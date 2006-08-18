@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
 # Hmm... pkgconfig fails when building with 10.3 sdk on 10.4... build the ppc deps on 10.3 for now.
+# Ok, pkg is building, but now glib fails... fixed with LDFLAGS fixes in do-install-zip-pkgs
+# Now build is failing on 10.4 with 10.3 sdk because we can't find /Developer/SDKs/MacOSX10.3.9.sdk glib stuff
+#  Ugh.. had to do a symlink from /Developer/SDKs/MacOSX10.3.9.sdk/tmp to /tmp as a workaround
+
 BUILD_HOSTS = ['macos-10-ppc', 'macos-10-x86']
 
 packages = [
@@ -74,12 +78,24 @@ packages = [
 			rm -Rf /tmp/install/bin/*
 			"""
 	},
+	# Include this because macosx freetype is too old for the new cairo
+	# (Tiger's used to be sufficient, but it looks like the new cairo needs newer than Tiger's)
 	{
 		'name': 'freetype', 
 		'source': 'http://download.savannah.gnu.org/releases/freetype/freetype-2.1.10.tar.gz',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
-	}
+	},
+	# Include our own because 10.3 and 10.4 ppc have differing expat versions
+	{
+		'name': 'expat', 
+		'source': 'http://easynews.dl.sourceforge.net/sourceforge/expat/expat-1.95.8.tar.gz',
+		'post':"""
+			rm -Rf /tmp/install/bin
+			rm -Rf /tmp/install/man
+			"""
+	},
 ]
+
 
