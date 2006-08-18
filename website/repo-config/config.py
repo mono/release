@@ -10,6 +10,7 @@ gtksourceview-sharp-2.0
 heap-buddy
 ikvm
 ironpython
+last-exit
 libgdiplus
 mod_mono
 mono

@@ -23,6 +23,9 @@
 	<h3>Gtk# 2</h3>
 #	gtk-sharp-2.0 gtk-sharp-2.0 gtk-sharp-2.8
 
+	<h3>Other</h3>
+#	mono-other last-exit
+
 !	get_external_deps
 
 </body>
