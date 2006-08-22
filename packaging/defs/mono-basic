@@ -1,0 +1,118 @@
+BUILD_HOSTS=(
+        fedora-3-i386
+	win-4-i386
+)
+
+USE_HOSTS=(
+        fedora-3-i386
+        fedora-4-i386
+        fedora-4-x86_64
+        fedora-5-i386
+        fedora-5-x86_64
+        nld-9-i586
+        nld-9-x86_64
+        redhat-9-i386
+        rhel-3-i386
+        rhel-4-i386
+        sles-9-i586
+        sles-9-ia64
+        sles-9-s390
+        sles-9-s390x
+        sles-9-x86_64
+        suse-92-i586
+        suse-93-i586
+        suse-93-x86_64
+        suse-100-i586
+        suse-100-x86_64
+        suse-101-i586
+        suse-101-x86_64
+        win-4-i386
+)
+
+MONO_DEPS=(
+	mono
+)
+
+get_destroot () {
+        if [ $DISTRO == "win-4-i386" ] ; then
+                DEST_ROOT=$DISTRO
+        else
+		DEST_ROOT=noarch
+	fi
+}
+
+HEAD_PATH=(
+	trunk/mono-basic
+)
+RELEASE_PATH=(
+	tags/mono-basic/[[version]]
+)
+
+update_version_file () {
+	echo "Not needed..."
+}
+
+make_dist () {
+	cd ..
+	mv mono-basic mono-basic-$VERSION
+	zip -r mono-basic-$VERSION.zip mono-basic-$VERSION
+	mv mono-basic-$VERSION.zip mono-basic-$VERSION
+}
+
+win_4_i386_ZIP_BUILD () {
+
+	cd vbruntime
+
+	OLDPATH=$PATH
+
+	# compiler croaks if this isn't here...
+	mkdir bin
+
+	########################## 1.0 build #################################
+        CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322`
+        CSC=`cygpath -a $CSC`
+
+        # Add MS SDK to path for ilasm and ildasm
+        SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin"`
+        SDK=`cygpath -a $SDK`
+        export PATH=$SDK:$CSC:$OLDPATH
+
+	cmd /c VB.build.bat 1 release
+
+	# Install
+	export PATH=$OLDPATH
+	cd bin
+	gacutil -i Microsoft.VisualBasic.dll -root `cygpath -m /tmp/install/lib`
+	cd ..
+
+	########################## 2.0 build #################################
+        CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v2.0.50727`
+        CSC=`cygpath -a $CSC`
+
+        # Add MS SDK to path for ilasm and ildasm
+        SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v2.0/Bin"`
+        SDK=`cygpath -a $SDK`
+        export PATH=$SDK:$CSC:$OLDPATH
+
+	cmd /c VB.build.bat 2 release
+
+	# Install
+	export PATH=$OLDPATH
+	cd bin
+	gacutil -i Microsoft.VisualBasic.dll -root `cygpath -m /tmp/install/lib`
+	cd ..
+
+	########################## Links ####################################
+	# Makes copies since we're on win32
+	cd /tmp/install/lib/mono
+	mkdir -p 1.0 2.0
+	cd 1.0
+	#ln -s ../gac/Microsoft.VisualBasic/7.0.5000.0__b03f5f7f11d50a3a/Microsoft.VisualBasic.dll Microsoft.VisualBasic.dll
+	cp ../gac/Microsoft.VisualBasic/7.0.5000.0__b03f5f7f11d50a3a/Microsoft.VisualBasic.dll Microsoft.VisualBasic.dll
+
+	cd ../2.0
+	#ln -s ../gac/Microsoft.VisualBasic/8.0.0.0__b03f5f7f11d50a3a/Microsoft.VisualBasic.dll Microsoft.VisualBasic.dll
+	cp ../gac/Microsoft.VisualBasic/8.0.0.0__b03f5f7f11d50a3a/Microsoft.VisualBasic.dll Microsoft.VisualBasic.dll
+
+}
+
