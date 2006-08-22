@@ -1,3 +1,5 @@
+web_index=0
+
 BUILD_HOSTS=(
         fedora-3-i386
 	win-4-i386

@@ -1,3 +1,5 @@
+web_index=1
+
 BUILD_HOSTS=(
 	nld-9-i586
 )

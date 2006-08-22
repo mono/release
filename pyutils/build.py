@@ -64,26 +64,43 @@ def get_packages():
 
 
 def get_package_objs():
+	"""Returns two lists: packages, noarch_packages."""
 
 	packages = get_packages()
 
         pack_objs = []
         pack_map = {}
+        noarch_pack_objs = []
+	noarch_pack_map = {}
+
         for package in packages:
 		# Don't try to create the dirs and links because this code is run by the web server
                 pack_obj = packaging.package("", package, create_dirs_links=False)
+
+		# Handle normal package
+		if pack_obj.info['get_destroot'].find('noarch') == -1:
+			map_ptr = pack_map
+			obj_ptr = pack_objs
+
+		# It's noarch
+		else:
+			map_ptr = noarch_pack_map
+			obj_ptr = noarch_pack_objs
+
                 if pack_obj.info.has_key('web_index'):
                         index = pack_obj.info['web_index']
-			print "Index: " + index
-                        pack_map[index] = pack_obj
+                        map_ptr[index] = pack_obj
                 else:
-                        pack_objs.append(pack_obj)
+                        obj_ptr.append(pack_obj)
 
         # Insert ordered packages to the beginning of the list
         for i in range(0, len(pack_map.keys())):
                 pack_objs.insert(i, pack_map[str(i)])
 
-        return pack_objs
+        for i in range(0, len(noarch_pack_map.keys())):
+                noarch_pack_objs.insert(i, noarch_pack_map[str(i)])
+
+        return pack_objs, noarch_pack_objs
 
 
 def get_latest_version(HEAD_or_RELEASE, platform, package):

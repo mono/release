@@ -33,7 +33,7 @@ def index(req, **vars):
 
 	# Pull this in from the release repo
 	plat_objs = build.get_platform_objs()
-	pack_objs = build.get_package_objs()
+	pack_objs, noarch_pack_objs = build.get_package_objs()
 
         req.content_type = "text/html"
 
@@ -94,20 +94,6 @@ def index(req, **vars):
 			plat_objs.pop(i - num_removed)
 			num_removed += 1
 	
-
-	# Separate noarch packages
-	noarch_pack_objs = []
-	num_removed = 0
-	for i in range(0, len(pack_objs)):
-		# If it's a noarch package
-		# get_destroot': '\n\tDEST_ROOT=noarch\n'
-		if pack_objs[i - num_removed].info['get_destroot'].find('noarch') != -1:
-			#req.write(pack_objs[i - num_removed].info['get_destroot'])
-			noarch_pack_objs.append(pack_objs[i - num_removed])
-			pack_objs.pop(i - num_removed)
-			num_removed += 1
-	
-
 	count = 0
 
 	# Only read once here
