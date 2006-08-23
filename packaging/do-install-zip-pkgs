@@ -147,6 +147,7 @@ reloc_lib = reloc + "/lib"
 parameter_map = {
 	# For packages we build
 	re.compile("/tmp/install/lib"): reloc_lib,
+	re.compile("/tmp/build_deps/lib"): reloc_lib,
 	# For mac builds
 	re.compile(mac_prefix_regex + "/lib"): reloc_lib,
 	# For solaris builds

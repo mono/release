@@ -82,6 +82,7 @@ if package_obj.info.has_key('MONO_DEPS'):
 	if status:
 		env.unlock_env()
 		log_obj.log("Dependency installation failed\n")
+		repo.add_file(HEAD_or_RELEASE, package, version, "failure")
 		sys.exit(3)
 
 
