@@ -14,6 +14,7 @@ last-exit
 libgdiplus
 mod_mono
 mono
+mono-basic
 monodevelop
 monodoc
 mono-debugger

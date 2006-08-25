@@ -18,7 +18,7 @@
 #	gtk-sharp-1.0 gtk-sharp
 	
 	<h3>Development Tools</h3>
-#	devtools monodoc mono-tools gecko-sharp gecko-sharp-2.0 gtksourceview-sharp-2.0 monodevelop boo ikvm mono-debugger heap-buddy nant ironpython
+#	devtools monodoc mono-tools gecko-sharp gecko-sharp-2.0 gtksourceview-sharp-2.0 monodevelop boo ikvm mono-debugger heap-buddy nant ironpython mono-basic
 
 	<h3>Gtk# 2</h3>
 #	gtk-sharp-2.0 gtk-sharp-2.0 gtk-sharp-2.8
