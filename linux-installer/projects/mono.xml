@@ -74,6 +74,22 @@
              <path>${installdir}</path>
              <platforms>linux</platforms>
            </shortcut>
+           <shortcut>
+             <comment>Mono Develop</comment>
+             <exec>${installdir}/bin/monodevelop</exec>
+             <icon>${installdir}/share/pixmaps/monodevelop.png</icon>
+             <name>MonoDevelop</name>
+             <path>${installdir}/bin</path>
+             <platforms>linux</platforms>
+           </shortcut>
+           <shortcut>
+             <comment>Mono Documentacion</comment>
+             <exec>${installdir}/bin/monodoc</exec>
+             <icon>${installdir}/share/pixmaps/monodoc.png</icon>
+             <name>MonoDoc</name>
+             <path>${installdir}/bin</path>
+             <platforms>linux</platforms>
+           </shortcut>
            <linkShortcut>
              <comment>Mono Project Website</comment>
              <icon>${installdir}/share/pixmaps/monourl.gif</icon>

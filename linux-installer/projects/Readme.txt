@@ -2,12 +2,14 @@ Visit http://go-mono.com/archive/@@VERSION@@ for release details.
 
 Please file any bugs or issues at http://bugzilla.ximian.com
 
+Warning: gtk-sharp apps (Monodoc, MonoDevelop, etc...)
+  may not work on all distros.  This is due to differing
+  gtk+ versions.  Also, if you want to run MonoDevelop,
+  you must have the Gnome libraries installed.
+
 Installer changes:
 
 1.1.17:
-- Remove gtk# and related apps, since running them from the
-  installer was not reliable across distros because of missing
-  libraries.
 - Add some libgdiplus deps, as well as some other base deps.  
   These deps may be on most installations, but include them to 
   make sure.

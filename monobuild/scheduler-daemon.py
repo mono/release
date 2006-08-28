@@ -154,8 +154,9 @@ tarball_lock = threading.Lock()
 threads = []
 
 # Start the threads, as well as allow changes to config.sd_latest_build_distros to start and stop platforms
+#  (Main execution counts as a thread)
 firstrun = True  # emulate dowhile
-while threading.activeCount() > 0 or firstrun:
+while threading.activeCount() > 1 or firstrun:
 	firstrun = False
 	# Check for newly activated threads
 	reload(config)
@@ -178,7 +179,7 @@ while threading.activeCount() > 0 or firstrun:
 			threads.append(thread)
 
 	# Wait for threads to die
-	time.sleep(1)
+	time.sleep(5)
 
 
 # Wrong!!

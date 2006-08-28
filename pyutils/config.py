@@ -59,7 +59,7 @@ td_max_poll_interval = 30
 td_num_sequential = 10
 
 # static list of packages to create tarballs for
-td_packages = ['mono', 'mono-1.1.13', 'mono-1.1.7', 'mono-1.1.8', 'libgdiplus']
+td_packages = ['mono', 'mono-1.1.13', 'mono-1.1.7', 'mono-1.1.8', 'libgdiplus', 'mono-basic', 'mono-tools', 'monodevelop', 'monodoc', 'xsp', 'gecko-sharp-2.0', 'gtksourceview-sharp-2.0', 'mono-debugger', 'gtk-sharp', 'mod_mono' ]
 
 # builds each and every checkin if true, otherwise, only build the latest checkin
 td_sequential = False
@@ -79,7 +79,7 @@ sd_sequential_build_distros = [ 'redhat-9-i386' ]
 sd_sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
 
 # List of platforms/packages
-sd_latest_build_distros = [ 'sles-9-x86_64', 'redhat-9-i386', 'win-4-i386', 'macos-10-ppc', 'macos-10-x86', 'sunos-8-sparc', 'sunos-10-x86', 'sles-9-ia64', 'sles-9-s390', 'sles-9-s390x' ]
+sd_latest_build_distros = [ 'redhat-9-i386', 'sles-9-x86_64', 'win-4-i386', 'macos-10-ppc', 'macos-10-x86', 'sunos-8-sparc', 'sunos-10-x86', 'sles-9-ia64', 'sles-9-s390', 'sles-9-s390x', 'fedora-3-i386', 'nld-9-i586', 'suse-93-i586' ]
 sd_latest_build_packages = td_packages
 ##############################################
 

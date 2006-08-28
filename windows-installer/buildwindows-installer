@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# TODO: gnome doesn't keep their win32 builds on deps around... hmm...
+
 # Collect list of files/rpms for each install group:
 #  Mono (glib)
 #  Gtk
@@ -125,7 +127,7 @@ if os.path.exists(output_dir):
 files_used_in_installer = []
 selections = []
 
-selections += [ Selection('mono', packages = "mono boo ikvm nant ironpython".split(), deps=['mono'] ) ]
+selections += [ Selection('mono', packages = "mono boo ikvm nant ironpython mono-basic".split(), deps=['mono'] ) ]
 
 # TODO: try out gtk-sharp-2.8
 #  Everything works except monodoc browser... fails on glade-sharp glade 2.5 seems to be killing this

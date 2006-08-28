@@ -189,27 +189,18 @@ macos_10_ZIP_BUILD () {
 
 	# This really should go in the autotooled build... ?
 	#Create gacutil config files specific to OS X
-cat <<EOF > mcs/class/lib/default/System.Drawing.dll.config
-<configuration>
-        <dllmap dll="gdiplus.dll" target="$MONO_PREFIX/lib/libgdiplus.dylib" />
-</configuration>
-EOF
-	cp mcs/class/lib/default/System.Drawing.dll.config mcs/class/lib/net_2_0/
+	# New approach (site wide changes instead of for assemblies)
+	# The X11 dllmap needs to be a full path
+ 	python -c 'fd = open("data/config.in", "r+")
+text = fd.read()
+text = text.replace("libMonoPosixHelper", "/tmp/build_deps/lib/libMonoPosixHelper")
+text = text.replace("@X11@", "/usr/X11R6/lib/libX11.dylib")
 
-cat <<EOF > mcs/class/lib/default/System.Windows.Forms.dll.config
-<configuration>
-        <dllmap dll="gdiplus" target="$MONO_PREFIX/lib/libgdiplus.dylib" />
-        <dllmap dll="libX11" target="/usr/X11R6/lib/libX11.dylib" />
-</configuration>
-EOF
-	cp mcs/class/lib/default/System.Windows.Forms.dll.config mcs/class/lib/net_2_0/
-
-cat<<EOF > mcs/class/lib/default/Mono.Posix.dll.config
-<configuration>
-        <dllmap dll="MonoPosixHelper" target="$MONO_PREFIX/lib/libMonoPosixHelper.dylib"/>
-</configuration>
-EOF
-	cp mcs/class/lib/default/Mono.Posix.dll.config mcs/class/lib/net_2_0/
+text = text.replace("</configuration>", """\t<dllmap dll="gdiplus.dll" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+</configuration>""")
+fd.seek(0)
+fd.write(text)
+fd.close()'
 
 	# Need a version here...
 	./configure --prefix=$MONO_PREFIX --with-preview=yes
@@ -267,7 +258,11 @@ POSTBUILD_STEP1 () {
 
 POSTBUILD_STEP_NAME2="test-aot"
 POSTBUILD_STEP2 () {
-	echo "Skipping..."
+	#echo "Skipping..."
+	cd mono/mini
+	$make_path aotcheck
+	cd ../tests
+	$make_path testaot
 }
 
 POSTBUILD_STEP_NAME3="test-profiles"
@@ -307,10 +302,10 @@ POSTBUILD_STEP6 () {
         #echo "Skipping..."
         ./runtime/mono-wrapper --wapi=semdel
 
-	# Clean up tmp files
+	# Clean up tmp files, but don't fail if they are missing
 	cd /tmp
-	rm ipc*
-	rm tmp*tmp
-	rm *.exe
+	rm ipc* || true
+	rm tmp*tmp || true
+	rm *.exe || true
 }
 

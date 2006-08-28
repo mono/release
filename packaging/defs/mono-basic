@@ -47,7 +47,7 @@ HEAD_PATH=(
 	trunk/mono-basic
 )
 RELEASE_PATH=(
-	tags/mono-basic/[[version]]
+	tags/mono-[[version]]/mono-basic
 )
 
 update_version_file () {

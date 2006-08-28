@@ -20,7 +20,7 @@ import packaging
 # Which noarch packages to include in the various packages
 packages_to_include = {}
 
-packages_to_include['macos-10-ppc'] = ['mono', 'cocoa-sharp', 'libgdiplus', 'xsp', 'monodoc', 'boo', 'ikvm', 'nant', 'ironpython' ]
+packages_to_include['macos-10-ppc'] = ['mono', 'cocoa-sharp', 'libgdiplus', 'xsp', 'monodoc', 'boo', 'ikvm', 'nant', 'ironpython', 'mono-basic' ]
 
 packages_to_include['macos-10-x86'] = packages_to_include['macos-10-ppc']
 

@@ -166,7 +166,8 @@ os.system(make_dist)
 ### End of source creating functions ###
 
 ### Finish moving things around
-shutil.rmtree('/tmp/built-tarball')
+if os.path.exists('/tmp/built-tarball'):
+	shutil.rmtree('/tmp/built-tarball')
 os.mkdir('/tmp/built-tarball')
 
 found_source_file = 0

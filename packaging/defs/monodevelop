@@ -33,6 +33,7 @@ MONO_DEPS=(
 	gtk-sharp
 	gecko-sharp
 	nant
+	mono-basic
 )
 
 # The above gtk# 1 deps had to be added because of the gtk-sharp-2.0 -> mono-tools req
