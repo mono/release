@@ -1,3 +1,4 @@
 target_host=builder@hardhat.boston.ximian.com
 jaildir=/jails/scratchbox-0.9.8-arm
 
+USE_ZIP_PKG=1
