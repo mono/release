@@ -7,7 +7,7 @@
 <h1>Mono [[version]] Sources</h1>
 
 	<h3>Mono</h3> 
-#	mono libgdiplus
+#	mono mono-basic libgdiplus
 	
 	<h3>XSP/mod_mono</h3>
 #	xsp mod_mono
@@ -16,7 +16,7 @@
 #	gtk-sharp
 
 	<h3>Development Tools</h3>
-#	monodoc mono-tools gecko-sharp gecko-sharp-2.0 gtksourceview-sharp-2.0 monodevelop boo ikvm mono-debugger heap-buddy cocoa-sharp nant ironpython mono-basic
+#	monodoc mono-tools gecko-sharp gecko-sharp-2.0 gtksourceview-sharp-2.0 monodevelop boo ikvm mono-debugger heap-buddy cocoa-sharp nant ironpython
 
 	<h3>Gtk# 2</h3>
 #	gtk-sharp-2.0 gtk-sharp-2.8

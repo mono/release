@@ -452,7 +452,17 @@ class package:
 				#   but that it won't apply to the source)
 				ver_wo_rel, = re.compile("(.*)-?").search(self.bundle_obj.version_map[self.name]).groups(1)
 				# Can't include self.name as part of reg because of cases like gtk-sharp-2.x
+
+				# Account for empty string versions, ex:  gtk-sharp=""
+				if ver_wo_rel == "":
+					ver_wo_rel = ".*?"
+
 				reg = re.compile(".*?-%s%s" % (ver_wo_rel, config.sources_ext_re_string) )
+
+			# There's a version map, but this component isn't listed, return nothing
+			elif self.bundle_obj.version_map_exists:
+				return ""
+			# There's no version map, get the latest
 			else:
 				reg = re.compile(".*")
 

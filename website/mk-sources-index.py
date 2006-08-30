@@ -42,7 +42,10 @@ for line in template:
 		tarballs = []
 		for pack in args:
 			pack_obj = packaging.package("", pack, bundle_obj=bundle_conf, source_basepath=sources_dir)
-			tarballs.append(pack_obj.get_source_file())
+			source_file = pack_obj.get_source_file()
+			# Skip if there is no source for this bundle
+			if source_file:
+				tarballs.append(source_file)
 
 		print tarballs
 
