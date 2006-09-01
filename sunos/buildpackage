@@ -67,6 +67,12 @@ def build_package(target):
 	packages_used = []
 
 	print "Cleaning up"
+	# local
+	if os.path.exists(temp_dir):
+		shutil.rmtree(temp_dir)
+	distutils.dir_util.mkpath(temp_dir)
+
+	# remote
 	env.ssh.execute("rm -Rf %s; mkdir -p -m777 %s %s " % ( remote_temp, remote_package_loc, remote_root))
 
 	print "Installing mono to build env..."
@@ -94,7 +100,7 @@ def build_package(target):
 	env.ssh.copy_to(files, remote_package_loc, mode='scp', compress=0)
 
 	# This will unpack and do all the substitution, including the noarch rpms
-	env.ssh.print_output=debug
+	env.ssh.print_output = debug
 	env.ssh.execute("%s/do-install-zip-pkgs %s /opt/mono %s/* " % (remote_package_loc, remote_root, remote_package_loc))
 
 	prune_files = """
@@ -130,14 +136,50 @@ def build_package(target):
 	# Strip files to save space
 	# Is this causing problems with libgdiplus? (works over an sshd tunnel...)
 	env.ssh.execute("cd %s/bin; %s *; cd ../lib; %s * " % (remote_root, remote_strip_loc, remote_strip_loc))
-	env.ssh.print_output=debug
+	env.ssh.print_output = debug
 
 	print "Set up environment files..."
 
 	# Rename environment files
-	env.ssh.execute("cd %s; mv env.sh  setup.sh " % (remote_root))
-	env.ssh.execute("cd %s; mv env.csh setup.csh " % (remote_root))
+	env.ssh.execute("cd %s; mv env.sh  setup.sh " % remote_root)
+	env.ssh.execute("cd %s; mv env.csh setup.csh " % remote_root)
 
+	# env.sh
+	env.ssh.print_output = 0
+	(code, output) = env.ssh.execute("cd %s; cat setup.sh" % remote_root)
+	lines = output.split("\n")
+	export_line = lines.pop()
+	lines += ['FONTCONFIG_PATH="/opt/mono/etc/fonts"',
+		export_line + " FONTCONFIG_PATH",
+		""]
+	output = "\n".join(lines)
+	fd = open(temp_dir + '/setup.sh', 'w')
+	fd.write(output)
+	fd.close()
+	os.chmod(temp_dir + '/setup.sh', config.shell_perms)
+
+	# env.csh
+	(code, output) = env.ssh.execute("cd %s; cat setup.csh" % remote_root)
+	output += '\nsetenv FONTCONFIG_PATH "/opt/mono/etc/fonts"\n'
+	fd = open(temp_dir + '/setup.csh', 'w')
+	fd.write(output)
+	fd.close()
+	os.chmod(temp_dir + '/setup.csh', config.shell_perms)
+
+	# Add fonts dir to local.conf
+	# <dir>/usr/openwin/lib/X11/fonts</dir>
+	(code, output) = env.ssh.execute("cd %s/etc/fonts; cat local.conf" % remote_root)
+
+	output = output.replace("</fontconfig>", " <dir>/usr/openwin/lib/X11/fonts</dir>\n</fontconfig>\n")
+	fd = open(temp_dir + '/local.conf', 'w')
+	fd.write(output)
+	fd.close()
+	os.chmod(temp_dir + '/local.conf', config.data_perms)
+	env.ssh.print_output = debug
+
+	# Copy locally modified config files
+	env.ssh.copy_to([temp_dir + '/setup.csh', temp_dir + '/setup.sh'], remote_root, mode='scp')
+	env.ssh.copy_to([temp_dir + '/local.conf'], remote_root + '/etc/fonts', mode='scp')
 
 	# Print out packages_used
 	print "Saving list of packages..."

@@ -1,3 +1,7 @@
+2006-08-31  Wade Berrier <wberrier@novell.com>
+
+	* Setup environment for fontconfig so swf apps can run (fixes #77937)
+
 2006-02-28  Wade Berrier <wberrier@novell.com>
 
 	* Use --prefix=/opt/mono for builds so relocation scripts are less critical

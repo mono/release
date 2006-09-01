@@ -2,7 +2,6 @@
 import xml.xpath
 import xml.dom.minidom
 import fcntl
-import stat
 import os
 import glob
 import re
@@ -14,7 +13,6 @@ import pdb
 import config
 import utils
 
-all_rwx = stat.S_IRWXO | stat.S_IRWXG | stat.S_IRWXU
 
 # Locking wrappers
 def lock_file(fd):
@@ -280,7 +278,7 @@ class build_info:
 		# Make it world writable (0x777)
 		# Only do this if it's not already all_rwx
 		try:
-			os.chmod(self.xml_file, all_rwx)
+			os.chmod(self.xml_file, config.all_rwx)
 		except OSError:
 			pass
 

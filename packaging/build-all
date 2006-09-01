@@ -21,7 +21,7 @@ PIDS=()
 
 for distro in  ${BUILD_HOSTS[@]}; do
 	echo Starting $distro
-	./build $distro $package $version $release > logs/build-all.$distro.$package.$version-$release 2>&1 &
+	./build --skip_steps $distro $package $version $release > logs/build-all.$distro.$package.$version-$release 2>&1 &
 	PIDS=(${PIDS[@]} $!)
 done
 

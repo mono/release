@@ -1,6 +1,7 @@
 # Config vars
 import os
 
+import stat
 
 # Default distro to make tarballs on (can be overridden in def file)
 mktarball_host = "suse-93-i586"
@@ -96,6 +97,7 @@ env_vars = {
 ######################################
 # Common place for source extensions, which can be compiled to reg later
 # Ennumerate to make it simpler...
+#  (Src.zip for IronPython)
 source_extensions = """
         .tar.gz
         -src.tar.gz
@@ -103,8 +105,18 @@ source_extensions = """
         -src.tar.bz2
         .zip
         -src.zip
+        -Src.zip
 """.split()
 
-sources_ext_re_string = "(\.tar\.gz|-src\.tar\.gz|\.tar\.bz2|-src\.tar\.bz2|\.zip|-src\.zip)"
+sources_ext_re_string = "(\.tar\.gz|-src\.tar\.gz|\.tar\.bz2|-src\.tar\.bz2|\.zip|-src\.zip|-Src\.zip)"
+######################################
+
+######################################
+# Commonly used permission settings
+
+all_rwx = stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO # 777
+shell_perms = stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH # 755
+data_perms = stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH # 644
+
 ######################################
 
