@@ -1,5 +1,7 @@
 web_index=0
 
+#USE_PATCHES=1
+
 # Possibly use sles-8 as the new base distro?
 BUILD_HOSTS=(
 	macos-10-ppc
@@ -72,6 +74,12 @@ win_4_i386_ZIP_DEPS=(
 	# This pkg-config expects win32 names... not cygwin names...
 	#ftp://ftp.gtk.org/pub/gtk/v2.8/win32/dependencies/pkg-config-0.20.zip
 	http://www.gimp.org/~tml/gimp/win32/pkgconfig-0.15.zip
+
+	# zlib used to be in gtk-sharp deps, move to mono so libMonoPosixHelper
+	#  can use it (#79267)
+        # for libxml2 and other image deps
+        http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-bin.zip
+        http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-lib.zip
 
 )
 
@@ -304,8 +312,13 @@ POSTBUILD_STEP6 () {
 
 	# Clean up tmp files, but don't fail if they are missing
 	cd /tmp
-	rm ipc* || true
-	rm tmp*tmp || true
-	rm *.exe || true
+	rm -f ipc* || true
+	rm -Rf tmp*tmp || true
+	rm -f *.exe || true
+
+	# for ia64
+	rm -f tmp*tmp.o || true
+	# For s390
+	rm -f mono_aot_* || true
 }
 

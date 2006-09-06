@@ -562,6 +562,56 @@ utils.substitute_parameters_in_file("gtk/etc/pango/pango.modules", parameter_map
 #
 ##############################################
 
+##############################################
+# Clean up some unneeded files
+print "Cleaning up unnecessary files..."
+
+prune_files = """
+	README.libiconv
+	bin/*gettext*exe
+	bin/iconv.exe
+	bin/gobject-query*exe
+	bin/msg*
+	contrib
+	manifest
+	man/cat3
+	share/doc/gettext
+	share/emacs
+	share/gtk-doc
+	share/man/man1
+	share/man/man3
+	""".split()
+commands.getoutput("cd mono; mv bin/msgfmt.exe . ; rm -Rf %s ; mv msgfmt.exe bin" % " ".join(prune_files) )
+
+prune_files = """
+	bin/*jpeg*exe
+	bin/*jpg*exe
+	bin/*png*exe
+	bin/*tiff*exe
+	bin/*rgb*exe
+	bin/fax*exe
+	bin/fc*exe
+	bin/ft*exe
+	bin/*gif*exe
+	bin/gif*
+	bin/xml*exe
+	contrib
+	man/cat1
+	man/cat3
+	man/cat5
+	man/man1/fc*
+	man/man3
+	man/man5
+	manifest
+	readme.txt
+	share/doc
+	share/gtk-2.0
+	share/gtk-doc
+	""".split()
+commands.getoutput("cd gtk; rm -Rf %s " % " ".join(prune_files) )
+
+#
+##############################################
 
 # Go out of build
 os.chdir('..')
@@ -633,5 +683,5 @@ installer_env.ssh.copy_from("/tmp/windows-installer/Output/*", output_dir, mode=
 
 # Generate the md5sum of the final installer
 output_filename = os.path.basename(glob.glob(output_dir + os.sep + "*.exe").pop())
-os.system("cd %s; md5sum *.exe > %s.md5 " % (output_dir, output_filename))
+commands.getoutput("cd %s; md5sum *.exe > %s.md5 " % (output_dir, output_filename))
 

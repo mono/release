@@ -2,6 +2,8 @@ web_index=5
 
 version_selection_reg="1\.0\.\d+"
 
+USE_PATCHES=1
+
 BUILD_HOSTS=(
 	fedora-3-i386
 	fedora-4-i386
@@ -82,11 +84,6 @@ win_4_i386_ZIP_RUNTIME_DEPS=(
 win_4_i386_ZIP_DEPS=(
 
 	http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2-2.6.20-1-mono.win32.zip
-
-	# for libxml2 and other image deps
-	http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-bin.zip
-	http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-lib.zip
-
 
 	http://www.gimp.org/~tml/gimp/win32/librsvg-2.4.0.zip
 	http://www.gimp.org/~tml/gimp/win32/librsvg-dev-2.4.0.zip

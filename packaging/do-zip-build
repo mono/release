@@ -94,6 +94,11 @@ os.system('zip -yr %s/builder/built-packages/%s-%s-%s.%s.zip *' % (build_locatio
 shutil.copy(build_location + '/scratch/' + package, build_location + '/builder/built-packages')
 shutil.copy(build_location + '/scratch/' + distro, build_location + '/builder/built-packages')
 
+# Keep the patches if they are used
+if pack_def.get_info_var('USE_PATCHES'):
+	for patch in patches:
+		shutil.copy(build_location + '/scratch/' + os.path.basename(patch), build_location + '/builder/built-packages')
+
 # Save alias files
 for f in pack_def.get_aliases():
 	shutil.copy(build_location + '/scratch/' + f, build_location + '/builder/built-packages')
