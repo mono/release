@@ -17,10 +17,6 @@ export PKG_CONFIG_PATH=/opt/gnome/lib/pkgconfig
 export MSVN="svn://svn.myrealbox.com/source"
 export LOGFILE="$HOMEDIR/src/$DATE.log"
 
-#export LOGGER="|tee -a $LOGFILE"
-# No need to output to stdout (cron mail stdout to the user) since there's a log file
-export LOGGER="> $LOGFILE"
-
 # Clean up and set up new dir
 rm -Rf $DAILY_BUILDIR
 rm -Rf $PREFIX
@@ -33,36 +29,37 @@ echo > $LOGFILE
 if [ ! -e $REPO ] ; then
 	mkdir -p $REPO
 	cd $REPO
-	echo Check out mono and mcs
-	svn co -q $MSVN/trunk/mono $LOGGER || exit 1
-	svn co -q $MSVN/trunk/mcs $LOGGER || exit 1
+	echo "Check out mono and mcs" >> $LOGFILE 2>&1
+	svn co -q $MSVN/trunk/mono >> $LOGFILE 2>&1 || exit 1
+	svn co -q $MSVN/trunk/mcs >> $LOGFILE 2>&1 || exit 1
 
 # Otherwise update the repo
 else
-	echo Updating repo
+	echo "Updating repo" >> $LOGFILE 2>&1
 	cd $REPO/mono
-	svn switch $MSVN/trunk/mono $LOGGER || exit 1
+	svn switch $MSVN/trunk/mono >> $LOGFILE 2>&1 || exit 1
 	cd ../mcs
-	svn switch $MSVN/trunk/mcs $LOGGER || exit 1
+	svn switch $MSVN/trunk/mcs >> $LOGFILE 2>&1 || exit 1
 fi
 
 # rsync the clean source
+echo "Copy fresh source..." >> $LOGFILE 2>&1
 cd $DAILY_BUILDIR
 rsync -a --exclude '.svn/' $REPO/* .
 
 # Bump mono version number
-#echo Bump mono version number $LOGGER
-(cd $DAILY_BUILDIR/mono && cat configure.in | sed "s/\(AM_INIT_AUTOMAKE.*\))/\1.$DATE)/" > configure.tmp && mv configure.tmp configure.in ) $LOGGER
+echo "Bump mono version number" >> $LOGFILE 2>&1
+(cd $DAILY_BUILDIR/mono && cat configure.in | sed "s/\(AM_INIT_AUTOMAKE.*\))/\1.$DATE)/" > configure.tmp && mv configure.tmp configure.in ) >> $LOGFILE 2>&1
 
 # Build mono
-echo Building MONO $LOGGER
-(cd $DAILY_BUILDIR/mono && ./autogen.sh --prefix=$PREFIX || exit 1 ) $LOGGER
+echo "Building MONO" >> $LOGFILE 2>&1
+(cd $DAILY_BUILDIR/mono && ./autogen.sh --prefix=$PREFIX || exit 1 ) >> $LOGFILE 2>&1
 
-(cd $DAILY_BUILDIR/mono && make || exit 1 ) $LOGGER
+(cd $DAILY_BUILDIR/mono && make || exit 1 ) >> $LOGFILE 2>&1
 
 # Install mono
-echo Installing mono $LOGGER
-(cd $DAILY_BUILDIR/mono && make install || exit 1 ) $LOGGER
+echo "Installing mono" >> $LOGFILE 2>&1
+(cd $DAILY_BUILDIR/mono && make install || exit 1 ) >> $LOGFILE 2>&1
 
 LIBSDIR=$DAILY_BUILDIR/mcs/class/lib/net_1_1_bootstrap
 cd $DAILY_BUILDIR
@@ -70,7 +67,7 @@ cd $DAILY_BUILDIR
 mkdir $DAILY_BUILDIR/monolite-$DATE
 cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/Mono.Security.dll $LIBSDIR/System.Xml.dll $LIBSDIR/mcs.exe $DAILY_BUILDIR/monolite-$DATE
 
-tar zcvpf monolite-$DATE.tar.gz monolite-$DATE/ $LOGGER
+tar zcvpf monolite-$DATE.tar.gz monolite-$DATE/ >> $LOGFILE 2>&1
 
 # make monocharge tarball
 mkdir $DAILY_BUILDIR/monocharge-$DATE
@@ -88,22 +85,22 @@ mkdir -p $DAILY_BUILDIR/monocharge-$DATE/2.0
 cp $PREFIX/lib/mono/2.0/*.exe $DAILY_BUILDIR/monocharge-$DATE/2.0
 cp $DAILY_BUILDIR/mcs/class/lib/net_2_0/*.dll $DAILY_BUILDIR/monocharge-$DATE/2.0
 
-tar zcvpf monocharge-$DATE.tar.gz monocharge-$DATE/ $LOGGER
+tar zcvpf monocharge-$DATE.tar.gz monocharge-$DATE/ >> $LOGFILE 2>&1
 
 # Make mono tarball and check
-#(cd $DAILY_BUILDIR/mono && make distcheck || exit 1 ) $LOGGER
-(cd $DAILY_BUILDIR/mono && make dist || exit 1 ) $LOGGER
+#(cd $DAILY_BUILDIR/mono && make distcheck || exit 1 ) >> $LOGFILE 2>&1
+(cd $DAILY_BUILDIR/mono && make dist || exit 1 ) >> $LOGFILE 2>&1
 
 # Copy resulting tarball to top-level dir
-echo Copy resulting tarball to top-level dir $LOGGER
+echo "Copy resulting tarball to top-level dir" >> $LOGFILE 2>&1
 (cd $DAILY_BUILDIR/mono && cp *.tar.gz $DAILY_BUILDIR )
 # Not sure what this is for
 #(cd $DAILY_BUILDIR/mono && cp *mono-$DATE* $DAILY_BUILDIR )
 
-scp -i $HOMEDIR/../key/cron_key  *.tar.gz  mono-web@mono.ximian.com:go-mono/daily $LOGGER
+scp -i $HOMEDIR/../key/cron_key  *.tar.gz  mono-web@mono.ximian.com:go-mono/daily >> $LOGFILE 2>&1
 
 # Run command to update webpage
-ssh -i $HOMEDIR/../key/cron_key mono-web@mono.ximian.com "go-mono/daily/make-html" $LOGGER
+ssh -i $HOMEDIR/../key/cron_key mono-web@mono.ximian.com "go-mono/daily/make-html" >> $LOGFILE 2>&1
 
 # Keep log around, but compress it
 bzip $LOGFILE
