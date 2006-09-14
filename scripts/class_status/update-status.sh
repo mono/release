@@ -21,7 +21,7 @@ SECTIONS=(
 	System.ServiceProcess
 	System.Web
 	System.Web.Services
-	Microsoft.VisualBasic
+#	Microsoft.VisualBasic
 	System.EnterpriseServices
 	System.Runtime.Remoting
 	System.Windows.Forms
@@ -29,7 +29,7 @@ SECTIONS=(
 	System.Security
 )
 
-DEST="mono-web@mono.ximian.com:go-mono/class-status/$NAME/"
+DEST="mono-web@mono.ximian.com:go-mono/class-status/$NAME"
 
 CLASS_STATUS_DIR=$(dirname $(which $0))
 SCRIPTS_DIR=$(dirname $(which $0))/..
@@ -94,7 +94,7 @@ done
 #
 echo "Upload template"
 chmod 644 src/*.html index.html
-scp -i $SCRIPTS_DIR/key/cron_key -o "StrictHostKeyChecking no" -C -q src/*.html index.html $DEST
+scp -i $SCRIPTS_DIR/key/cron_key -o "StrictHostKeyChecking no" -C -q src/*.html index.html $DEST/
 chmod 644 deploy/cm/*
 scp -i $SCRIPTS_DIR/key/cron_key -o "StrictHostKeyChecking no" -q deploy/cm/* $DEST/cm/
 
