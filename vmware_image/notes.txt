@@ -1,0 +1,10 @@
+General steps:
+
+-Did default install,
+-installed the latest mono from go-mono.com,
+-ran prune_rpms to remove all unnecessary rpms
+-disable zen-updater
+
+(Had to install apache2 from suse 10.1 since SLED doesn't come with apache2)
+apache2 apache2-prefork, libapr, libapr-util
+
