@@ -415,8 +415,12 @@ class package:
 				# Cases
 				# 1. version from bundle
 				name = self.name
-				if self.info.has_key('def_alias') and self.HEAD_or_RELEASE == "RELEASE":
-					name = self.info['def_alias']
+
+				# Why was this done?  I don't think def_alias should apply to bundle versioning
+				#  (Ex: 1.1.13 bundle: gtk-sharp-2.0 picks 1.0.10 stuff even though bundle says 2.4.2)
+				#if self.info.has_key('def_alias') and self.HEAD_or_RELEASE == "RELEASE":
+				#	name = self.info['def_alias']
+
 				if self.bundle_obj.version_map.has_key(name):
 					self.version = self.bundle_obj.version_map[name]
 				# 2. If a package is not listed in bundle, print warning and skip
