@@ -123,6 +123,10 @@ for distro_obj in distro_objs:
 					'@BUNDLE_NAME@': bundle_conf.info['bundle_urlname'],
 				} )
 
+			# Sign repo
+			os.system("gpg -a --detach-sign %s/repodata/repomd.xml" % distro_obj.name)
+			os.system("gpg -a --export E1C55E73 > %s/repodata/repomd.xml.key" % distro_obj.name)
+
 
 		# Instructions about how to create a yast repo:
 		#http://en.opensuse.org/SDB%3AGenerating_YaST_Installation_Sources
