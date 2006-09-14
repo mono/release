@@ -1,3 +1,7 @@
+2006-09-13  Wade Berrier  <wberrier@novell.com>
+	* Integrate class status updates to daily build
+	(Copied necessary scripts in class_status dir from release/buildbot/scripts)
+
 2005-11-17  Wade Berrier  <wberrier@novell.com>
 	* Updated scripts from Ritvik
 

@@ -1,0 +1,33 @@
+<p>
+  Here is the index to the status of the different assemblies:
+  <ul>
+    <li><a href="class-status-mscorlib.html">mscorlib</a></li>
+    <li><a href="class-status-cscompmgd.html">cscompmgd</a></li>
+    <li><a href="class-status-System.html">System</a></li>
+    <li><a href="class-status-System.Xml.html">System.Xml</a></li>
+    <li><a href="class-status-System.Configuration.html">System.Configuration</a></li>
+    <li><a href="class-status-System.Configuration.Install.html">System.Configuration.Install</a></li>
+    <li><a href="class-status-System.Data.html">System.Data</a></li>
+    <li><a href="class-status-System.Data.OracleClient.html">System.Data.OracleClient</a></li>
+    <li><a href="class-status-System.Design.html">System.Design</a></li>
+    <li><a href="class-status-System.Drawing.html">System.Drawing</a></li>
+    <li><a href="class-status-System.Drawing.Design.html">System.Drawing.Design</a></li>
+    <li><a href="class-status-System.DirectoryServices.html">System.DirectoryServices</a></li>
+    <li><a href="class-status-System.Management.html">System.Management</a></li>
+    <li><a href="class-status-System.Messaging.html">System.Messaging</a></li>
+    <li><a href="class-status-System.ServiceProcess.html">System.ServiceProcess</a></li>
+    <li><a href="class-status-System.Transactions.html">System.Transactions</a></li>
+    <li><a href="class-status-System.Web.html">System.Web</a></li>
+    <li><a href="class-status-System.Web.Services.html">System.Web.Services</a></li>
+    <li><a href="class-status-Microsoft.VisualBasic.html">Microsoft.VisualBasic</a></li>
+    <li><a href="class-status-System.EnterpriseServices.html">System.EnterpriseServices</a></li>
+    <li><a href="class-status-System.Runtime.Remoting.html">System.Runtime.Remoting</a></li>
+    <li><a href="class-status-System.Windows.Forms.html">Windows.Forms</a></li>
+    <li><a href="class-status-System.Runtime.Serialization.Formatters.Soap.html">System.Runtime.Serialization.Formatters.Soap</a></li>
+    <li><a href="class-status-System.Security.html">System.Security</a></li>
+    <li><a href="class-status-Microsoft.Build.Engine.html">Microsoft.Build.Engine</a></li>
+    <li><a href="class-status-Microsoft.Build.Framework.html">Microsoft.Build.Framework</a></li>
+    <li><a href="class-status-Microsoft.Build.Tasks.html">Microsoft.Build.Tasks</a></li>
+    <li><a href="class-status-Microsoft.Build.Utilities.html">Microsoft.Build.Utilities</a></li>
+  </ul>
+</p>
