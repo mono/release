@@ -199,16 +199,50 @@ macos_10_ZIP_BUILD () {
 	#Create gacutil config files specific to OS X
 	# New approach (site wide changes instead of for assemblies)
 	# The X11 dllmap needs to be a full path
+
+	# Both gdiplus.dll and gdiplus are dllimported, provide both
+	 #  Add both
  	python -c 'fd = open("data/config.in", "r+")
 text = fd.read()
 text = text.replace("libMonoPosixHelper", "/tmp/build_deps/lib/libMonoPosixHelper")
 text = text.replace("@X11@", "/usr/X11R6/lib/libX11.dylib")
 
 text = text.replace("</configuration>", """\t<dllmap dll="gdiplus.dll" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+\t<dllmap dll="gdiplus" target="/tmp/build_deps/lib/libgdiplus.dylib" />
 </configuration>""")
 fd.seek(0)
 fd.write(text)
 fd.close()'
+
+
+	# It appears that xsp doesn't use /etc/mono/config, so still provide 
+	#  these mappings with the assemblies like we used to
+	cat <<EOF > mcs/class/lib/default/System.Drawing.dll.config
+<configuration>
+        <dllmap dll="gdiplus" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+        <dllmap dll="gdiplus.dll" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+</configuration>
+EOF
+	cp mcs/class/lib/default/System.Drawing.dll.config mcs/class/lib/net_2_0/
+
+
+	cat <<EOF > mcs/class/lib/default/System.Windows.Forms.dll.config
+<configuration>
+        <dllmap dll="gdiplus" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+        <dllmap dll="gdiplus.dll" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+        <dllmap dll="libX11" target="/usr/X11R6/lib/libX11.dylib" />
+</configuration>
+EOF
+	cp mcs/class/lib/default/System.Windows.Forms.dll.config mcs/class/lib/net_2_0/
+
+
+	cat<<EOF > mcs/class/lib/default/Mono.Posix.dll.config
+<configuration>
+        <dllmap dll="MonoPosixHelper" target="/tmp/build_deps/lib/libMonoPosixHelper.dylib"/>
+</configuration>
+EOF
+	cp mcs/class/lib/default/Mono.Posix.dll.config mcs/class/lib/net_2_0/
+
 
 	# Need a version here...
 	./configure --prefix=$MONO_PREFIX --with-preview=yes

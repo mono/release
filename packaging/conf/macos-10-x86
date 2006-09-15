@@ -1,4 +1,4 @@
-target_host=builder@mono-mac-x86.dnsdhcp.provo.novell.com
+target_host=builder@mono-mac-x86.provo.novell.com
 USE_ZIP_PKG=1
 
 # Helps with relocating binaries
