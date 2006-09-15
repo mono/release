@@ -21,7 +21,6 @@ get_destroot () {
 BUILD_DIR="/tmp"
 
 make_dist () {
-	export filename="last-exit-$VERSION.tar.bz2"
-        curl http://www.o-hand.com/~iain/last-exit/$filename > $filename
+        curl -O http://www.o-hand.com/~iain/last-exit/last-exit-$VERSION.tar.bz2
 }
 

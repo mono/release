@@ -40,7 +40,6 @@ get_destroot () {
 BUILD_DIR="/tmp"
 
 make_dist () {
-	export filename="boo-$VERSION-src.tar.bz2"
-	curl http://dist.codehaus.org/boo/distributions/$filename > $filename
+	curl -O http://dist.codehaus.org/boo/distributions/boo-$VERSION-src.tar.bz2
 }
 

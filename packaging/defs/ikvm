@@ -46,9 +46,8 @@ get_destroot () {
 #}
 
 make_dist () {
-        #export filename="ikvm-$VERSION.zip"
+        #curl -O http://easynews.dl.sourceforge.net/sourceforge/ikvm/ikvm-$VERSION.zip
 	# Had troubles building the source, so use prebuilt
-	export filename="ikvmbin-$VERSION.zip"
-        curl http://easynews.dl.sourceforge.net/sourceforge/ikvm/$filename > $filename
+        curl -O http://easynews.dl.sourceforge.net/sourceforge/ikvm/ikvmbin-$VERSION.zip
 }
 

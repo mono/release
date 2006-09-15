@@ -42,8 +42,7 @@ get_destroot () {
 BUILD_DIR="/tmp"
 
 make_dist () {
-	export filename="nant-$VERSION-src.tar.gz"
 	# wget doesn't work for some reason...
-        curl http://easynews.dl.sourceforge.net/sourceforge/nant/$filename > $filename
+        curl -O http://easynews.dl.sourceforge.net/sourceforge/nant/nant-$VERSION-src.tar.gz
 }
 

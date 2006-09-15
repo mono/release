@@ -41,7 +41,6 @@ BUILD_DIR="/tmp"
 make_dist () {
 	# Downloaded from http://www.codeplex.com/Project/FileDownload.aspx?ProjectName=IronPython&DownloadId=557
 	# But no direct link, so providing one on primates
-	export filename="IronPython-$VERSION.zip"
-        curl http://primates.ximian.com/~wberrier/packaging/sources/ironpython/$filename > $filename
+        curl -O http://primates.ximian.com/~wberrier/packaging/sources/ironpython/IronPython-$VERSION.zip
 }
 
