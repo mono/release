@@ -247,6 +247,8 @@ build_env.ssh.copy_to(files_to_copy, build_location, mode='scp', compress=0)
 # Set up env for the build and for tests
 build_env.env_vars['HEAD_or_RELEASE'] = "HEAD"
 build_env.env_vars['DISTRO'] = distro
+build_env.env_vars['BUILD_OS'] = build_env.info['os']
+build_env.env_vars['BUILD_ARCH'] = build_env.info['arch']
 
 (code, output) = build_env.ssh.execute(build_command, env=build_env.env_vars, logger=log_obj, output_timeout=timeout)
 #code = 0

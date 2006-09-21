@@ -300,11 +300,19 @@ POSTBUILD_STEP1 () {
 
 POSTBUILD_STEP_NAME2="test-aot"
 POSTBUILD_STEP2 () {
-	#echo "Skipping..."
-	cd mono/mini
-	$make_path aotcheck
-	cd ../tests
-	$make_path testaot
+	# Only run on linux x86 and x86_64
+	if [ $BUILD_OS == "linux" ] ; then
+		if [ $BUILD_ARCH == "x86" ] || [ $BUILD_ARCH == "x86_64" ] ; then
+			cd mono/mini
+			$make_path aotcheck
+			cd ../tests
+			$make_path testaot
+		else
+			echo "Skipping..."
+		fi
+	else
+		echo "Skipping..."
+	fi
 }
 
 POSTBUILD_STEP_NAME3="test-profiles"
