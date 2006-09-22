@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+
+import glob
+import sys
+import os
+
+sys.path.append("../pyutils")
+
+import packaging
+
+try:
+	(script, distros) = sys.argv
+except:
+	print "Usage: ./push_build_buddy <distros>"
+	print "  where <distros> can be a single distro, a comma separated list, or 'all'"
+	sys.exit(1)
+
+if distros == "all":
+	envs = map(os.path.basename, glob.glob("../packaging/conf/*-*-*"))
+else:
+	envs = distros.split(',')
+
+problem_distros = []
+
+# Distros that need the source environment
+source_envs = ['suse-93-i586', 'suse-100-i586']
+
+for e in envs:
+	env = packaging.buildenv(os.path.basename(e))
+
+	# If using rpm
+	if not env.get_info_var("USE_ZIP_PKG"):
+		name = env.info['distro']
+
+		print name
+		rpms = [ "build-buddy" ]
+
+		# Install the ssh keys if they are source distros
+		if source_envs.count(name):
+			rpms.append("ximian-build-system-config")
+
+		for rpm in rpms:
+			print "RPM: " + rpm
+			rpm_glob = rpm + "-*.rpm"
+			# Clean up existing rpms
+			env.ssh.execute("rm -Rf /tmp/" + rpm_glob, exec_as_root=1)
+			# Copy rpm over
+			env.ssh.copy_to(rpm_glob, "/tmp")
+			# Remove current rpm
+			env.ssh.execute("rpm -e " + rpm, exec_as_root=1)
+			# Install new rpm
+			(code, output) = env.ssh.execute("rpm -Uvh /tmp/" + rpm_glob, exec_as_root=1)
+			if code:
+				problem_distros.append(name)
+
+			# Clean up
+			env.ssh.execute("rm -Rf /tmp/" + rpm_glob, exec_as_root=1)
+
+if len(problem_distros):
+	print "Error installing buildbuddy on these distros:"
+	print problem_distros
+
