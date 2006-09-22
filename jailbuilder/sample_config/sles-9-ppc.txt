@@ -1,0 +1,19 @@
+# Format: <name>=<value>
+
+jail_name=sles-9-ppc
+
+rpm_repository_path=rpms/sles9-ppc
+
+# Only accept packages with these arches
+valid_arch=ppc noarch
+
+required_rpms=autoconf automake vim rug iputils util-linux sles-release mktemp procps aaa_base aaa_skel sudo pwdutils tar file XFree86-devel XFree86-libs apache2 apache2-devel apache2-prefork bison expat fontconfig fontconfig-devel freetype2 freetype2-devel gcc glib2 glib2-devel glibc-devel libapr0 libjpeg libpng libpng-devel libtiff libungif m4 make perl-XML-Parser pkgconfig unzip zlib-devel
+
+# Environment to set before executing things inside the jail (format: var=value var2=value2, etc...)
+environment=
+
+# Other various/optional post jail settings:
+nameservers=130.57.22.5
+users=builder
+
+

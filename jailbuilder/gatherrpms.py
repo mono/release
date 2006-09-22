@@ -312,10 +312,17 @@ def commandline():
 	# Collect args
 	method = sys.argv[1]
 	destdir = sys.argv[2]
-	# Get everything from index 2 on
+
+	if os.path.exists(destdir) and not os.path.isdir(destdir):
+		print "%s exists, but is not a directory, exiting..." % destdir
+		sys.exit(1)
+
+	if not os.path.exists(destdir):
+		os.mkdir(destdir)
 
 	if method == "iso":
 		fetch = get_from_cd
+		# Get everything from index 2 on
 		source = sys.argv[3:]
 	elif method == "http":
 		fetch = get_from_web
