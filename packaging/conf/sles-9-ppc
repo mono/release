@@ -1,0 +1,10 @@
+target_host=builder@137.65.65.18
+jaildir=/jails/sles-9-ppc
+chroot_path=/usr/bin/chroot
+target_command_prefix=". /etc/profile;"
+
+web_index=3
+
+USE_OC=1
+USE_YAST=1
+

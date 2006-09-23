@@ -4,5 +4,5 @@ USE_ZIP_PKG=1
 # Helps with relocating binaries
 target_command_prefix="export LDFLAGS=' -headerpad_max_install_names '; "
 
-web_index=6
+web_index=7
 

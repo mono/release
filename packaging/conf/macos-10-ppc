@@ -13,4 +13,4 @@ target_command_prefix="export CC='gcc -isysroot /Developer/SDKs/MacOSX10.3.9.sdk
 #target_host=nds_cm@macbld1.provo.novell.com
 #target_command_prefix="export LDFLAGS=' -headerpad_max_install_names '; "
 
-web_index=5
+web_index=6
