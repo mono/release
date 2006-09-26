@@ -521,7 +521,7 @@ class package:
 
 	def valid_use_platform(self, platform):
 		return_val = 0
-		if self.info['USE_HOSTS'].count(platform):
+		if self.info['USE_HOSTS'].count(platform) or self.info['USE_HOSTS'].count("ALL"):
 			return_val = 1
 		return return_val
 
