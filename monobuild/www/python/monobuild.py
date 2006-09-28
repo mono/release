@@ -268,18 +268,31 @@ def packagestatus(req, **vars):
 	if not showall and len(versions) > 10:
 		versions = versions[:10]
 
-	html = ""
+	refresh_html = ""
+	if not showall:
+		refresh_html = """<meta http-equiv="refresh" content="60">"""
+
 	req.content_type = "text/html"
 
+	req.write("""
+	<html>
+	<head>
+	%s
+	<title>Mono Build Status</title>
+	<link rel="stylesheet" href="%s/build.css" type="text/css">
+	</head>
+
+	<body>""" % (refresh_html, config.web_root_url) )
+
 	if versions:
-		html += "<h1>%s -- %s -- %s</h1>" % (package, platform, HEAD_or_RELEASE)
+		req.write("<h1>%s -- %s -- %s</h1>" % (package, platform, HEAD_or_RELEASE))
 
 		# Print out links...
 		if show_links:
 			if showall:
-				html += "<p><a href='packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s'>Show Latest 10 Builds</a></p>" % (platform, package, HEAD_or_RELEASE) 
+				req.write("<p><a href='packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s'>Show Latest 10 Builds</a></p>" % (platform, package, HEAD_or_RELEASE) )
 			else:
-				html += "<p><a href='packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s&showall=1'>Show Full Build History</a></p>" % (platform, package, HEAD_or_RELEASE) 
+				req.write("<p><a href='packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s&showall=1'>Show Full Build History</a></p>" % (platform, package, HEAD_or_RELEASE) )
 
 		counter = 0
 
@@ -299,48 +312,48 @@ def packagestatus(req, **vars):
 			tz_start = utils.adjust_for_timezone(timezone_offset, values['start'])
 			tz_finish = utils.adjust_for_timezone(timezone_offset, values['finish'])
 
-			html += """
+			req.write("""
 
-				<h3>Build status - %s</h3>
+			<h3>Build status - %s</h3>
 
-				<p>
-				<table>
-				<tbody>
-				<tr>
-				<th>Build started:</th>
+			<p>
+			<table>
+			<tbody>
+			<tr>
+			<th>Build started:</th>
 
-				<td>%s</td>
+			<td>%s</td>
 
-				<th>Build completed:</th>
-				<td>%s</td>
+			<th>Build completed:</th>
+			<td>%s</td>
 
-				<th>Duration:</th>
-				<td>%s min(s)</td>
+			<th>Duration:</th>
+			<td>%s min(s)</td>
 
-				</tr>
+			</tr>
 
-				<tr>
-				<th>Build host:</th>
-				<td>%s</td>
+			<tr>
+			<th>Build host:</th>
+			<td>%s</td>
 
-				</tr>
-				</tbody></table>
+			</tr>
+			</tbody></table>
 
-				<h4>Build Steps</h4>
-				<p>
-				<table>
-				<tbody>""" % (version, tz_start, tz_finish, duration, values['buildhost'])
+			<h4>Build Steps</h4>
+			<p>
+			<table>
+			<tbody>""" % (version, tz_start, tz_finish, duration, values['buildhost']) )
 
 			# Start through the build steps...	
 			for step in build_info.get_steps_info(read_info=0):
 
 				log = os.path.join(config.build_info_url, build_info.rel_files_dir, 'logs', step['log'])
 
-				html += """
-						<tr>
-						<th>%s</th>
-						<td><a href="%s">%s</a></td>
-					 """ % (step['name'], log, step['state'])
+				req.write("""
+				<tr>
+				<th>%s</th>
+				<td><a href="%s">%s</a></td>
+				""" % (step['name'], log, step['state']) )
 
 				# If there's download info, and it exists, add it to the html
 				#  (It won't exist on the mirrored public site)
@@ -352,44 +365,31 @@ def packagestatus(req, **vars):
 
 					download_file = os.path.join(config.build_info_url, temp_rel_path)
 
-					html += """
-							<td><a href="%s">%s</a></td>
-						""" % (download_file, step['download'])
+					req.write("""
+					<td><a href="%s">%s</a></td>
+					""" % (download_file, step['download']) )
 				else:
-					html += "<td></td>"
+					req.write("<td></td>")
 
 				if step['start'] and step['finish']:
-					html += "<td>[ %s min(s) ] </td>" % utils.time_duration_asc(step['start'], step['finish'])
+					req.write("<td>[ %s min(s) ] </td>" % utils.time_duration_asc(step['start'], step['finish']) )
 				elif step['start'] and counter == 0:
-					html += "<td>[ Running for %s min(s) ] </td>" % utils.time_duration_asc(step['start'], utils.get_time())
-				html += "</tr>"
+					req.write("<td>[ Running for %s min(s) ] </td>" % utils.time_duration_asc(step['start'], utils.get_time()) )
+				req.write("</tr>")
 
 				
-			html += "</tbody></table></p><br>"
+			req.write("</tbody></table></p><br>")
 
 			# Update version counter
 			counter += 1
 
 
 	else:
-		html += "<h1>Mono Build Status</h1>"
-		html += "<p>No information found: %s -- %s -- %s</p>" % (package, platform, HEAD_or_RELEASE) 
+		req.write("<h1>Mono Build Status</h1>")
+		req.write("<p>No information found: %s -- %s -- %s</p>" % (package, platform, HEAD_or_RELEASE) )
 
-
-	refresh_html = ""
-	if not showall:
-		refresh_html = """<meta http-equiv="refresh" content="60">"""
 
 	req.write("""
-	<html><head>
-	%s
-	<title>Mono Build Status</title><link rel="stylesheet" href="%s/build.css" type="text/css"></head>
-
-	<body>
-
-	%s
-
 	</body>
-	</html>""" % (refresh_html, config.web_root_url, html))
-
+	</html>""")
 
