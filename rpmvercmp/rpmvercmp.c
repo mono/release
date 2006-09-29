@@ -12,7 +12,7 @@
 #include <glib-2.0/glib.h>
 
 /* Uses rpmvercmp but fixes it's brokenness */
-int version_compare(const char *string1, const char *string2)
+gint version_compare(const gchar *string1, const gchar *string2)
 {
 	gchar **string1_list;
 	gchar **string2_list;
@@ -66,64 +66,34 @@ int version_compare(const char *string1, const char *string2)
 
 }
 
-
-/* Simple bubble sort */
-/* Args: array of strings, map to signify order, size, and function pointer to use for comparison */
-void sort(char **text, int *index_map, int size, int (compare_func)(const char *, const char*))
+void print_num(gchar *string, gpointer *user_data)
 {
-	int swap_made = 1;
-	int i;
-	int temp_index;
-
-	while(swap_made) {
-
-		swap_made = 0;
-
-		for(i = 0; i < size - 1; i++) {
-			
-			/* If the first is of higher precedence than the second */	
-			if(compare_func(text[index_map[i]], text[index_map[i + 1]]) == 1) {
-			
-				temp_index = index_map[i];
-				index_map[i] = index_map[i + 1];
-				index_map[i + 1] = temp_index;
-
-				swap_made = 1;
-			}
-
-		}
-	}
+	printf("%s\n", string);
 }
 
-void print_list(char **text, int *index_map, int size)
+gint main(int argc, char *argv[])
 {
-	int i = 0;
-	for(i = 0; i < size; i++)
-		printf("%s\n", text[index_map[i]]);
-}
+	gint i = 1;
 
-
-int main(int argc, char *argv[])
-{
-	int return_val;
-	int i = 0;
-
-	int index_map[argc];
+	GList *list = NULL;
 
 	if(argc < 2) {
 		/* Return 0 here signifying an empty list */
 		exit(0);
 	}
 
-	/* Init map */
-	for(i = 0; i < argc; i++)
-		index_map[i] = i;
+	/* Load list */
+	for(i = 1; i < argc; i++) {
+		list = g_list_append(list, argv[i]);
+	}
 
-	sort(&argv[1], index_map, argc - 1, &version_compare);
+	list = g_list_sort(list, (GCompareFunc)version_compare);
+	g_list_foreach(list, (GFunc)print_num, NULL);
 
-	print_list(&argv[1], index_map, argc - 1);
+	g_list_free(list);
 
 	exit(0);
 
 }
+
 

@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+
+import os
+
+versions = os.listdir("../monobuild/www/builds/HEAD/redhat-9-i386/mono")
+
+#print versions
+
+os.system("time ./rpmvercmp %s > out" % " ".join(versions))
+
