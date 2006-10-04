@@ -2,9 +2,9 @@
 #  This will need to be manually bumped each time on head... don't forget!!
 archive_version="1.1.17.1"
 
-bundle_urlname="latest"
+bundle_urlname="stable"
 
-bundle_desc="Packages from the development release (beta)"
+bundle_desc="Packages from the latest release"
 
 # This is left empty, because versions on RELEASE will always be the latest from sources/packages
 #  specifying versions is more for a released branch

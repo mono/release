@@ -5,10 +5,10 @@ archive_version="1.1.13.8"
 # This is used for web locations for sources, distro download indicies, and for repos
 # Ex: go-mono.com/sources-stable
 #     go-mono.com/download-stable (which contains download index, as well as the repository)
-bundle_urlname="stable"
+bundle_urlname="maintenance"
 
 # This is for the download repos...
-bundle_desc="Latest packages from the 1.1.13 stable branch"
+bundle_desc="Latest packages from the 1.1.13 maintenance branch"
 
 # Note:  release values are optional
 #   (sources will not be based on release value)
