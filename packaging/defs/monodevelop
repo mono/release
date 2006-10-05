@@ -29,15 +29,10 @@ MONO_DEPS=(
 	gtksourceview-sharp-2.0
 	boo
 	ikvm
-	mono-tools
-	gtk-sharp
-	gecko-sharp
 	nant
 	mono-basic
 	xsp
 )
-
-# The above gtk# 1 deps had to be added because of the gtk-sharp-2.0 -> mono-tools req
 
 get_destroot () {
 	DEST_ROOT=noarch

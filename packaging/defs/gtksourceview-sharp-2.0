@@ -26,10 +26,7 @@ get_destroot () {
 MONO_DEPS=(
 	mono
 	gtk-sharp-2.0
-	gtk-sharp
 	monodoc
-	mono-tools
-	gecko-sharp
 )
 
 

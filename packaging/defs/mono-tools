@@ -30,14 +30,11 @@ USE_HOSTS=(
 	win-4-i386
 )
 
-# Ugh... mono-tools depends on itself because gtk-sharp-2.0 depends on mono-tools
 MONO_DEPS=(
 	mono
 	monodoc
-	gtk-sharp
 	gtk-sharp-2.0
-	mono-tools
-	gecko-sharp
+	gecko-sharp-2.0
 )
 
 

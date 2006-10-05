@@ -8,10 +8,6 @@ USE_HOSTS=(${BUILD_HOSTS[@]})
 MONO_DEPS=(
 	mono
 	gtk-sharp-2.8
-	mono-tools
-	gtk-sharp
-	gecko-sharp
-	monodoc
 )
 
 get_destroot () {
