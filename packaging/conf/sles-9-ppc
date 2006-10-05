@@ -1,4 +1,4 @@
-target_host=builder@137.65.65.18
+target_host=builder@mono-mac-ppc.dnsdhcp.provo.novell.com
 jaildir=/jails/sles-9-ppc
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"

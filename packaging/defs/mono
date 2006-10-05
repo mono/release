@@ -4,6 +4,7 @@ web_index=0
 
 # Possibly use sles-8 as the new base distro?
 BUILD_HOSTS=(
+	debian-3-arm
 	macos-10-ppc
 	macos-10-x86
 	redhat-9-i386
@@ -261,6 +262,14 @@ EOF
 
 }
 
+debian_ZIP_BUILD () {
+
+	./configure --prefix=/tmp/install
+
+	make || exit 1
+	make install || exit 1
+}
+
 get_destroot () {
 	# rh9 rpms can't be used on sles-8-i386
 	if [ $DISTRO == "sles-8-i386" ] ; then
@@ -332,6 +341,7 @@ POSTBUILD_STEP4 () {
 		$make_path -k test
 	else
 		echo "Skipping..."
+		false
 	fi
 }
 

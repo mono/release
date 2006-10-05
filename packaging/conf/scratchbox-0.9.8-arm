@@ -1,4 +1,6 @@
-target_host=builder@hardhat.boston.ximian.com
+target_host=builder@monobuild1.boston.ximian.com
 jaildir=/jails/scratchbox-0.9.8-arm
 
 USE_ZIP_PKG=1
+
+target_command_prefix="/scratchbox/login "

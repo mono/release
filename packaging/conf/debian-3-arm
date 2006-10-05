@@ -1,0 +1,4 @@
+target_host=builder@mono-arm.dnsdhcp.provo.novell.com
+
+USE_ZIP_PKG=1
+
