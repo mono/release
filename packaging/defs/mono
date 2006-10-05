@@ -4,7 +4,7 @@ web_index=0
 
 # Possibly use sles-8 as the new base distro?
 BUILD_HOSTS=(
-	debian-3-arm
+	debian-31-arm
 	macos-10-ppc
 	macos-10-x86
 	redhat-9-i386
