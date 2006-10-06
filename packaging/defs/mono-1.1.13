@@ -4,15 +4,24 @@ def_alias="mono"
 version_selection_reg="1\.1\.13\.\d+"
 
 BUILD_HOSTS=(
+	debian-31-arm
+	debian-31-sparc
+	macos-10-ppc 
         redhat-9-i386
         sles-9-ia64
         sles-9-ppc
         sles-9-s390
         sles-9-s390x
         sles-9-x86_64
+	sunos-8-sparc 
+	sunos-10-x86
+	win-4-i386 
 )
 
 USE_HOSTS=(
+	debian-31-arm
+	debian-31-sparc
+	macos-10-ppc 
 	fedora-3-i386
 	nld-9-i586
 	nld-9-x86_64
@@ -24,9 +33,12 @@ USE_HOSTS=(
         sles-9-s390
         sles-9-s390x
 	sles-9-x86_64
+	sunos-8-sparc 
+	sunos-10-x86
 	suse-92-i586
 	suse-93-i586
 	suse-93-x86_64
+	win-4-i386 
 )
 
 MONO_DEPS=(
