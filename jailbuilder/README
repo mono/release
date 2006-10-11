@@ -8,11 +8,13 @@ Plus, if we loose any of ours jails it is quite a bit of downtime if we don't ha
 
 So, use gatherrpms.py to collect all the rpms for a certain distro.
 
-Then, fill out a jail config file (sample_jail_config.txt),
+./gatherrpms.py <method> <distro_name> <iso files|url>
+
+Then, update jail_config for your distro
 
 run: (as root or under sudo)
 
-./buildjail.py <config_file> <destination jail dir>
+./buildjail.py <distro_name>
 
 It may take some figuring out to create the jail just right, but once you have it, it's much easier to recreate the jail for future use.
 

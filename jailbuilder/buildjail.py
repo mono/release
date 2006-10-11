@@ -31,6 +31,7 @@ import string
 import tempfile
 import shutil
 import pickle
+import distutils.dir_util
 
 import pdb
 
@@ -126,13 +127,13 @@ class Package:
 class rpm_query_cache:
 	"""Front loader to the Package class, checking a cached version first."""
 
-	def __init__(self):
+	def __init__(self, my_dir):
 
 		# Filename to pickle load/unload
-		self.cache_dir = 'rpm_cache'
+		self.cache_dir = 'rpm_cache' + os.sep + os.path.basename(my_dir)
 
 		if not os.path.exists(self.cache_dir):
-			os.mkdir(self.cache_dir)
+			distutils.dir_util.mkpath(self.cache_dir)
 
 	def retrieve(self, dir_and_filename):
 		"""Load Package object from cache, otherwise create a new one, store it in the cache,
@@ -167,24 +168,19 @@ class rpm_query_cache:
 
 class Jail:
 
-	def __init__(self, config, path):
-		self.config = config
-		self.jail_location = os.path.abspath(path)
+	def __init__(self, distro_name):
+		self.config = Config(distro_name)
 
-		if not os.path.exists(self.jail_location):
-			os.mkdir(self.jail_location)
+		if not os.path.exists(self.config.jail_dir):
+			distutils.dir_util.mkpath(self.config.jail_dir)
 
-		self.cache = rpm_query_cache()
+		self.cache = rpm_query_cache(self.config.name_ver)
 
 		# These are base names of rpms
 		#    for rpm based distros, you must add the rpm dep since we are ignoring rpmlib requirements
-		self.orig_required_rpms = config.get_required_rpms()
+		self.orig_required_rpms = self.config.required_rpms
 		self.orig_required_rpms.append("rpm")
 		self.required_rpms = []
-		self.valid_arch_types = config.get_valid_arch()
-
-		# Get and set environment
-		self.environment = self.config.get_environment()
 
 		self.available_rpms = {} # map of rpm_name -> Package object
 		self.provide_map = {} # Large map to have quick access to provides
@@ -212,24 +208,20 @@ class Jail:
 		self.post_config()
 
 
-
-	# May be able to cache this later to speed things up
 	def load_package_cache(self):
 
-		files = os.listdir(self.config.get_rpm_repository_path())
+		files = os.listdir(self.config.rpm_source_dir)
 		files.sort()
-
 
 		for rpm_filename in files:
 
-			
 			my_package = self.cache.retrieve(
-				os.path.join(self.config.get_rpm_repository_path(), rpm_filename))
+				os.path.join(self.config.rpm_source_dir, rpm_filename))
 				
 
 			# If the package is a valid arch, and
 			# It hasn't been loaded yet, or if this arch has a priority over the loaded package
-			if self.valid_arch_types.count(my_package.arch) and ( not self.available_rpms.has_key(my_package.name) or self.valid_arch_types.index(self.available_rpms[my_package.name].arch) > self.valid_arch_types.index(my_package.arch)):
+			if self.config.valid_arch.count(my_package.arch) and ( not self.available_rpms.has_key(my_package.name) or self.config.valid_arch.index(self.available_rpms[my_package.name].arch) > self.config.valid_arch.index(my_package.arch)):
 				# If the package is going to be overwritten, clean the old one up
 				if self.available_rpms.has_key(my_package.name):
 					del self.available_rpms[my_package.name]
@@ -313,12 +305,12 @@ class Jail:
 
 		# Blow away the directory
 		# Unmount the possible proc dir just in case
-		utils.launch_process("umount %s" % self.jail_location + os.sep + "proc")
+		utils.launch_process("umount %s" % self.config.jail_dir + os.sep + "proc")
 		print "Removing jail target dir..."
-		shutil.rmtree(self.jail_location)
+		shutil.rmtree(self.config.jail_dir)
 		
-		os.makedirs(self.jail_location + os.sep + "var/lib/rpm") # Needed for rpm version 3
-		command = """rpm --root %s --initdb""" % self.jail_location
+		os.makedirs(self.config.jail_dir + os.sep + "var/lib/rpm") # Needed for rpm version 3
+		command = """rpm --root %s --initdb""" % self.config.jail_dir
 		print command
 		(status, output) = utils.launch_process(command)
 		if status:
@@ -338,7 +330,7 @@ class Jail:
 		manifest.close()
 
 		# This will work (using a manifest filename) as long as you're using rpm version 4 and above on the host machine
-		command = """rpm --root %s -i %s""" % (self.jail_location, manifest_filename)
+		command = """rpm --root %s -i %s""" % (self.config.jail_dir, manifest_filename)
 		print command
 		(status, output) = utils.launch_process(command)
 		print output
@@ -353,12 +345,12 @@ class Jail:
 	def install_packages(self):
 
 		# Copy all required rpms to inside the jail
-		package_dir = self.jail_location + os.sep + "jailbuilder"
+		package_dir = self.config.jail_dir + os.sep + "jailbuilder"
 		os.mkdir(package_dir)
 
 		# write a new manifest file 
 		#(can't use manifest file on rpm < 4)
-		#jail_manifest = open(self.jail_location + os.sep + "jailbuilder" + os.sep + "manifest", 'w')
+		#jail_manifest = open(self.config.jail_dir + os.sep + "jailbuilder" + os.sep + "manifest", 'w')
 		rpm_list = ""
 		for rpm in self.required_rpms:
 			rpm_path = self.available_rpms[rpm].full_path
@@ -368,14 +360,14 @@ class Jail:
 		#jail_manifest.close()
 
 		# Is this location ever going to be different for different distros?
-		shutil.rmtree(self.jail_location + os.sep + "var/lib/rpm")
-		os.mkdir(self.jail_location + os.sep + "var/lib/rpm")
+		shutil.rmtree(self.config.jail_dir + os.sep + "var/lib/rpm")
+		distutils.dir_util.mkpath(self.config.jail_dir + os.sep + "var/lib/rpm")
 
 		# Add chroot path to environment for redhat based systems
 		os.environ['PATH'] = os.environ['PATH'] + ":/usr/sbin"
 	
 		# Reinitialize the rpm database with the jail's version of rpm	
-		command = "chroot %s env %s rpm --initdb" % (self.jail_location, self.environment)
+		command = "chroot %s env %s rpm --initdb" % (self.config.jail_dir, self.config.environment)
 		print command
 		(status, output) = utils.launch_process(command)
 		print "Status: %d" % status
@@ -383,10 +375,10 @@ class Jail:
 
 		# Reinstall the rpms from inside the jail		
 		# manifest files don't work on rpm 3 and below...
-		#command = "chroot %s env %s rpm --force -U %s" % (self.jail_location, self.environment, "jailbuilder" + os.sep + "manifest")
+		#command = "chroot %s env %s rpm --force -U %s" % (self.config.jail_dir, self.environment, "jailbuilder" + os.sep + "manifest")
 
 		# But, this method may be a problem because of the length of the arguments
-		command = "chroot %s env %s rpm --force -U %s" % (self.jail_location, self.environment, rpm_list)
+		command = "chroot %s env %s rpm --force -U %s" % (self.config.jail_dir, self.config.environment, rpm_list)
 		print command
 		(status, output) = utils.launch_process(command)
 		print "Status: %d" % status
@@ -395,12 +387,12 @@ class Jail:
 
 	def post_cleanup(self):
 		# Remove rpms inside jail
-		shutil.rmtree(self.jail_location + os.sep + "jailbuilder")
+		shutil.rmtree(self.config.jail_dir + os.sep + "jailbuilder")
 
 		# Remove rpmorig and rpmnew files from the jail
 		match_rpmorig = re.compile("rpmorig$")
 		match_rpmnew = re.compile("rpmnew$")
-		for root, dirs, files in os.walk(self.jail_location):
+		for root, dirs, files in os.walk(self.config.jail_dir):
 			for file in files:
 				full_path = os.path.join(root, file)
 				if match_rpmorig.search(full_path):
@@ -417,10 +409,10 @@ class Jail:
 	def post_config(self):
 		
 		# Process resolv.conf
-		name_servers = self.config.get_nameservers()
+		name_servers = self.config.settings['nameservers'].split()
 		
 		if name_servers:
-			resolv_conf = open(os.path.join(self.jail_location, "etc", "resolv.conf"), 'w')
+			resolv_conf = open(os.path.join(self.config.jail_dir, "etc", "resolv.conf"), 'w')
 			for server in name_servers:
 				resolv_conf.write("nameserver %s\n" % server)
 			resolv_conf.close()
@@ -432,59 +424,68 @@ class Jail:
 # This will parse the config file and have values available (probably xml?  could be simpler...)
 class Config:
 
-	comment = re.compile("^[\s#]")
+	def __init__(self, distro_name):
 
-	def __init__(self, filename):
-		self.setting = {}
+		execfile('jail_config.py')
 
-		# Load all elements into a dictionary
-		for line in open(filename).readlines():
-			if not Config.comment.search(line):
-				(key, value) = line.split("=", 1)
-				self.setting[key] = value.strip()
+		(name, ver, arch) = distro_name.split('-')
+		self.name_ver = name + '-' + ver
 
-		
-		print self.setting
+		self.jail_dir = os.path.abspath("jails" + os.sep + distro_name)
 
-	def get_setting(self, name):
-		if self.setting.has_key(name):
-			return self.setting[name]
+		self.valid_arch = locals()['valid_arch'][arch].split()
+		self.required_rpms = locals()['required_rpms'][self.name_ver].split()
+
+		self.settings = locals()['settings']
+
+		# These are optional
+		try:
+			self.environment = locals()['environment'][self.name_ver]
+		except:
+			self.environment = ""
+		try:
+			self.post_install_notes = locals()['post_install_notes'][self.name_ver]
+		except:
+			self.post_install_notes = ""
+
+		if os.path.exists("rpms" + os.sep + distro_name):
+			self.rpm_source_dir = distro_name
+		elif os.path.exists("rpms" + os.sep + self.name_ver):
+			self.rpm_source_dir = self.name_ver
 		else:
-			return ""
+			print "Can't find rpms in either rpms/%s or rpms/%s, exiting..." % (distro_name, self.name_ver)
+			sys.exit(1)
 
-	def get_rpm_repository_path(self):
-		return self.get_setting("rpm_repository_path")
-
-	def get_valid_arch(self):
-		return self.get_setting("valid_arch").split()
-
-	def get_required_rpms(self):
-		return self.get_setting("required_rpms").split()
-
-	def get_nameservers(self):
-		return self.get_setting("nameservers").split()
-
-	def get_environment(self):
-		return self.get_setting("environment")
-
+		self.rpm_source_dir = "rpms" + os.sep + self.rpm_source_dir
+		
 
 def commandline():
-	if len(sys.argv) < 3:
-		print "Usage: ./buildjail.py <config_file> <jail_dir>"
+	if len(sys.argv) < 2:
+		print "Usage: ./buildjail.py <distro_name>"
+		print "\tExample: ./buildjail.py suse-100-ppc"
 		sys.exit(1)
         
 	# Collect args
-        config_file = sys.argv[1]
-        destdir = sys.argv[2]
+	distro_name = sys.argv[1]
 
-	print "Are you sure you want to blow away %s and install a jail? [Y/n]" % destdir
-	user_input = sys.stdin.readline().strip().lower()
-	#print """'%s'""" % user_input
-	if user_input == '': user_input = 'y'
+        destdir = "jails" + os.sep + distro_name
+
+	# Make sure we are root
+	if not os.getuid() == 0:
+		print "Must be super user to run this script..."
+		sys.exit(1)
+
+	if os.path.exists(destdir):
+		print "Are you sure you want to blow away %s and install a jail? [Y/n]" % destdir
+		user_input = sys.stdin.readline().strip().lower()
+		#print """'%s'""" % user_input
+		if user_input == '': user_input = 'y'
+	else:
+		user_input = 'y'
 
 	if not user_input[0] == 'n':
 		print "Proceeding..."
-		jail = Jail(Config(config_file), destdir)
+		jail = Jail(distro_name)
 		print "Jail creationg successful!"
 	else:
 		print "Exiting..."
@@ -497,4 +498,3 @@ def commandline():
 if __name__ == "__main__":
         commandline()
  
-

@@ -304,14 +304,18 @@ class Parser(htmllib.HTMLParser):
 def commandline():
 	# Need to look into some command line processing
 	if len(sys.argv) < 4:
-		print "Usage: ./gatherrpms.py <method> <dest_dir> <iso files|url>"
+		print "Usage: ./gatherrpms.py <method> <distro_name> <iso files|url>"
 		print "\tWhere method is either iso, http, or ftp"
+		print "\tand distro_name can be in the format of these examples: suse-93 or suse-93-x86_64"
+		print "\t (reason for suse-93 or suse-93-x86_64 is that multiple archs are often hosted in one location)"
 		print "\t(iso files is a space delimited list, useful for bash globbings)"
 		sys.exit(1)
 
 	# Collect args
 	method = sys.argv[1]
-	destdir = sys.argv[2]
+	distro_name = sys.argv[2]
+
+	destdir = "rpms" + os.sep + distro_name
 
 	if os.path.exists(destdir) and not os.path.isdir(destdir):
 		print "%s exists, but is not a directory, exiting..." % destdir
