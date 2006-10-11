@@ -7,6 +7,7 @@ version_selection_reg="2\.4\.\d+"
 BUILD_HOSTS=(
 	fedora-3-i386
 	fedora-4-i386
+	fedora-4-ppc
 	fedora-4-x86_64
 	nld-9-i586
 	rhel-4-i386

@@ -1,0 +1,5 @@
+target_host=builder@mono-mac-ppc.dnsdhcp.provo.novell.com
+jaildir=/jails/fedora-4-ppc
+chroot_path=/usr/bin/chroot
+
+USE_YUM=1

@@ -24,6 +24,7 @@ USE_HOSTS=(
 	debian-31-sparc
 	fedora-3-i386
 	fedora-4-i386
+	fedora-4-ppc
 	fedora-4-x86_64
 	fedora-5-i386
 	fedora-5-x86_64
@@ -45,8 +46,10 @@ USE_HOSTS=(
 	suse-93-i586
 	suse-93-x86_64
 	suse-100-i586
+	suse-100-ppc
 	suse-100-x86_64
 	suse-101-i586
+	suse-101-ppc
 	suse-101-x86_64
 	win-4-i386
 )
