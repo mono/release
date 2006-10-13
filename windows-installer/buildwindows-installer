@@ -39,12 +39,13 @@ import os
 import shutil
 import os.path
 import commands
-import pdb
 import string
 import glob
 import distutils.dir_util
 import re
 import datetime
+
+import pdb
 
 # Local common utils
 sys.path += [ "../pyutils" ]
@@ -73,8 +74,16 @@ class Selection:
 
 		# Load some package objects
 		self.pack_objs = {}
+		self.versions = {}
 		for pack in utils.remove_list_duplicates(self.deps + self.packages):
 			self.pack_objs[pack] = packaging.package(installer_env,pack)
+
+			# Total hack to always select an older version on mono-tools, since newer versions don't run on windows
+			if pack == "mono-tools":
+				self.pack_objs[pack].info['version_selection_reg'] = "1\.1\.11.*"
+
+			# Save off package versions for later use (particularily gtk#)
+			self.versions[pack] = self.pack_objs[pack].get_version()
 
 		self.files = self.get_filelist()
 
@@ -108,16 +117,16 @@ class Selection:
 
 ### Main Execution Starts Here ###
 
-if len(sys.argv) < 3:
-	print "Usage: buildwindows-installer <mono version> <gtk-sharp version> [<revision>]"
-	print "Example: buildwindows-installer 1.1.9.1 2.3.91 0"
+if len(sys.argv) < 2:
+	print "Usage: buildwindows-installer <mono version> [<revision>]"
+	print "Example: buildwindows-installer 1.1.9.1 0"
 	sys.exit(1)
 
 # Default to 0 revision
-if len(sys.argv) == 3:
+if len(sys.argv) == 2:
 	sys.argv.append('0')
 
-output_dir = 'Output/%s/windows-installer/%s' % ( sys.argv[1], sys.argv[3]) 
+output_dir = 'Output/%s/windows-installer/%s' % ( sys.argv[1], sys.argv[2]) 
 
 if os.path.exists(output_dir):
 	print "Build already exists: %s (you probably need to bump the revision)" % output_dir
@@ -137,6 +146,11 @@ selections += [ Selection('gtk', deps = "gtk-sharp gtk-sharp-2.8".split() ) ]
 
 #selections += [ Selection('gtk-sharp', packages = "gtk-sharp gtk-sharp-2.0".split() ) ]
 selections += [ Selection('gtk-sharp', packages = "gtk-sharp gtk-sharp-2.8".split() ) ]
+
+# Grab the gtk# version, and if there's a revision, ditch it
+gtk_sharp_version = selections[len(selections) - 1].versions['gtk-sharp-2.8']
+if gtk_sharp_version.count('-'):
+	(gtk_sharp_version, revision) = gtk_sharp_version.split('-')
 
 selections += [ Selection('monodoc', packages = "monodoc mono-tools".split() ) ]
 
@@ -633,8 +647,8 @@ if guid == "found" or not re.compile('.*-.*-.*-.*-.*').search(guid):
 shutil.copy("Mono_template.iss", "Mono.iss")
 parameter_map = {}
 parameter_map[re.compile("@@MONO_VERSION@@")] = sys.argv[1]
-parameter_map[re.compile("@@GTK_SHARP_VERSION@@")] = sys.argv[2]
-parameter_map[re.compile("@@MONO_REVISION@@")] = sys.argv[3]
+parameter_map[re.compile("@@GTK_SHARP_VERSION@@")] = gtk_sharp_version
+parameter_map[re.compile("@@MONO_REVISION@@")] = sys.argv[2]
 parameter_map[re.compile("@@MONO_GUID@@")] = guid
 parameter_map[re.compile("@@DATE@@")] = datetime.date.today().strftime('%b %d, %Y')
 utils.substitute_parameters_in_file("Mono.iss", parameter_map)
@@ -643,7 +657,7 @@ utils.substitute_parameters_in_file('build/mono/ReleaseNotes.txt', parameter_map
 # Massage setmonopath.bat
 parameter_map = {}
 parameter_map[re.compile("@@MONO_VERSION@@")] = sys.argv[1]
-parameter_map[re.compile("@@MONO_REVISION@@")] = sys.argv[3]
+parameter_map[re.compile("@@MONO_REVISION@@")] = sys.argv[2]
 utils.substitute_parameters_in_file("build/mono/bin/setmonopath.bat", parameter_map)
 
 # Copy everything to windows_build_client 

@@ -133,13 +133,14 @@ def build_package(target):
         parameter_map[re.compile("@@IKVM_VERSION@@")] = versions['ikvm']
         parameter_map[re.compile("@@MONO_PACKAGE_FILENAME@@")] = package_filename + ".pkg"
 
-	for file in os.listdir('setup-files'):
+	cwd = os.getcwd()
+
+	for file in os.listdir(cwd + os.sep + 'setup-files'):
 		# Skip directories (.svn in particular)
 		if not os.path.isdir(file):
 			shutil.copy('setup-files' + os.sep + file, temp_dir)
 			utils.substitute_parameters_in_file(temp_dir + os.sep + file, parameter_map)
 
-	cwd = os.getcwd()
 	os.chdir(temp_dir)
 
 	# Copy files to resources_dir
