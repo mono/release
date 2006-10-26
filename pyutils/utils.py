@@ -361,6 +361,7 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 
 	# Use this looping method insead of 'for line in process' so it doesn't use the readahead buffer
 	#  This smooths output greatly, instead of getting big chunks of output with lots of lag
+	# TODO: Track number of output bytes so we can die if it goes above log max
 	while(1):
 		try:
 			#line = process.fromchild.readline()
@@ -587,12 +588,21 @@ def rpm_query(query_format, file):
 
 
 def send_mail(fr, to, subject, body):
-        header = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (fr, to, subject)
 
+        header = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (fr, to, subject)
         msg = header + body
-        server = smtplib.SMTP('mail.novell.com')
-        server.sendmail(fr, to, msg)
-        server.quit()
+
+	try:
+		server = smtplib.SMTP('mail.novell.com')
+		server.sendmail(fr, to, msg)
+		server.quit()
+		val = True
+	except:
+		print "Error sending mail... ignoring."
+		val = False
+
+	return val
+
 
 def unpack_source(filename, tar_path="tar"):
 	"""Args: filename to extract
