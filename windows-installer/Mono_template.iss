@@ -45,6 +45,8 @@ Name: gtk\gtkSharp\monodoc; Description: Monodoc and Mono Tools; Types: full cus
 Name: gtk\gtkSharp\geckosharp; Description: Gecko# Files; Types: full custom
 Name: gtk\gtkSharp\samples; Description: Samples; Types: full custom
 Name: xsp; Description: XSP files; Types: full custom
+Name: xsp\xsp_shell; Description: XSP Shell Integration; Types: full custom
+Name: xsp\xsp2_shell; Description: XSP 2.0 Shell Integration; Types: full custom
 
 [Tasks]
 
@@ -102,6 +104,11 @@ Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: gtk\gtkSh
 Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: gtk; ValueType: dword; ValueName: GtkPlusDevIsInstalled; ValueData: 1; Flags: uninsdeletevalue
 Root: HKLM; Subkey: SOFTWARE\Novell\Mono DefaultCLR; Flags: uninsdeletekeyifempty
 Root: HKLM; Subkey: Software\Novell\Mono DefaultCLR; ValueType: string; ValueName: Installer Language; ValueData: 1033; Flags: uninsdeletevalue
+; XSP Shell Integration (Thanks to Joseph Hill)
+Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP WebServer @@MONO_VERSION@@; Components: xsp\xsp_shell; ValueType: string; ValueData: XSP Web Server Here @@MONO_VERSION@@; Flags: uninsdeletekey
+Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP WebServer @@MONO_VERSION@@\command; Components: xsp\xsp_shell; ValueType: string; ValueData: "{app}\bin\xsp.bat --root ""%1"" --port {code:GetPort} --applications /:."; Flags: uninsdeletekey
+Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@; Components: xsp\xsp2_shell; ValueType: string; ValueData: XSP 2.0 Web Server Here @@MONO_VERSION@@; Flags: uninsdeletekey
+Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@\command; Components: xsp\xsp2_shell; ValueType: string; ValueData: "{app}\bin\xsp2.bat --root ""%1"" --port {code:GetPort} --applications /:."; Flags: uninsdeletekey
 
 ;[Run]
 ;Filename: "{app}\gacutil.exe"; Description: "Install gtk-sharp in the MS GAC"; StatusMsg: "Install Gtk# in the MS GAC"; Tasks: msgac
@@ -246,6 +253,11 @@ var strPort: string;
 begin
     strPort := PortForXSP.Values[0];
     Result := 'http://localhost:' + strPort;
+end;
+
+Function GetPort(Param: String): string;
+begin
+    Result := PortForXSP.Values[0];
 end;
 
 Procedure CurStepChanged(CurStep: TSetupStep);
