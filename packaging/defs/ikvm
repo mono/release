@@ -1,3 +1,5 @@
+EXTERNAL_SOURCE=1
+
 BUILD_HOSTS=(
 	suse-93-i586
 )

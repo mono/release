@@ -279,13 +279,15 @@ class package:
 			else:
 				packages_dir = "packages"
 
-			if self.HEAD_or_RELEASE == "HEAD": packages_dir = "snapshot_" + packages_dir
+			# Point to snapshot packages if this is HEAD and if we build out of Mono's svn repo
+			if self.HEAD_or_RELEASE == "HEAD" and not self.get_info_var('EXTERNAL_SOURCE'): packages_dir = "snapshot_" + packages_dir
 
 			self.package_basepath = os.path.join(config.packaging_dir, packages_dir)
 			self.package_base_relpath = packages_dir
 
 		if not self.source_basepath:
-			if self.HEAD_or_RELEASE == "HEAD":
+			# Point to snapshot sources if this is HEAD and if we build out of Mono's svn repo
+			if self.HEAD_or_RELEASE == "HEAD" and not self.get_info_var('EXTERNAL_SOURCE'):
 				sources_dir = "snapshot_sources"
 			else:
 				sources_dir = "sources"
