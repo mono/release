@@ -8,3 +8,7 @@ distro_aliases=(
 )
 
 USE_OC=1
+
+USE_YUM=1
+YUM_NOTES="Note: The yum repository is to be used with CentOS, as it appears rhel does not ship yum"
+

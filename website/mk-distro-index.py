@@ -34,7 +34,7 @@ def get_rpm_install(env_obj, archive=False):
 	vars = {}
 	vars['OC_DOWNLOAD_URL'] = "ftp://ftp.ximian.com/pub/redcarpet2/%s" % distro_name
 	vars['OC_NOTES'] = ""
-	for i in "OC_NOTES OC_DOWNLOAD_URL".split():
+	for i in "OC_NOTES OC_DOWNLOAD_URL YUM_NOTES".split():
 		if env_obj.info.has_key(i):
 			vars[i] = env_obj.info[i]
 
@@ -68,6 +68,12 @@ def get_rpm_install(env_obj, archive=False):
 		install mono and related packages.
 		</p>
 		"""
+
+		if utils.get_dict_var('YUM_NOTES', env_obj.info):
+			return_text += """
+			<p>
+			%s
+			</p>""" % vars['YUM_NOTES']
 
 	# Generate yast text
 	if utils.get_dict_var('USE_YAST', env_obj.info) or utils.get_dict_var('USE_ZMD', env_obj.info):
