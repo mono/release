@@ -300,17 +300,19 @@ def append_text_to_files(file_text_map):
 		fd.close()
 
 
-def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg="", logger="", output_timeout=0, kill_process_group=0):
+def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg="", logger="", output_timeout=0, kill_process_group=0, max_output_size=0):
 	"""Execute a command, return output (stdout and optionally stderr), and optionally print output the process is being run.
 
 	Returns a tuple: exit code, output
 
-	terminate_reg is a regular expression object where if it is matched during the output,
+	terminate_reg is a regular expression string where if it is matched during the output,
 		execution terminates, and None is returned for exit code, and output thus far is returned
 
 	If a logger object (pyutils/logger) is passed in, output will be logged to there as well.
 
 	output_timeout: kill process if it produces no output for x number of seconds.
+
+	max_output_size: kill process if it outputs more than x chars.  0 (default) to disable.
 
 	kill_process_group: This determines how the process is killed when output_timeout is specified.
 		If this is true, the process group of the current python interpreter is killed, killing all subprocesses.
@@ -318,7 +320,9 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 		The exit status of killed processes seems to vary (see packaging/build for possibilities)."""
 
 	terminate_flag = 0
-	if terminate_reg: terminate_flag = 1
+	if terminate_reg:
+		terminate_flag = 1
+		terminate_reg_obj = re.compile(terminate_reg)
 
 	# This is set by utils.debug
 	if debug:
@@ -351,6 +355,11 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 
 	collected = []
 
+	# Track number of output bytes so we can die if it goes above log max
+	output_size = 0
+	output_overflow = False
+	output_timeout_flag = False
+
 	# there's a bug with output_timeout... ex:
 	# adding: lib/mono/1.0/mono-service.exe.mdb (deflated 51%)
 	# (deflated 52%)
@@ -361,17 +370,25 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 
 	# Use this looping method insead of 'for line in process' so it doesn't use the readahead buffer
 	#  This smooths output greatly, instead of getting big chunks of output with lots of lag
-	# TODO: Track number of output bytes so we can die if it goes above log max
 	while(1):
 		try:
 			#line = process.fromchild.readline()
 			#  in non blocking mode, readline somehow misses data... use read() instead
 			line = process.fromchild.read(128)
+			output_size += len(line)
 			output_received_timestamp = time.time()
+
+			if max_output_size and output_size > max_output_size:
+				print "** Terminating process because output size max of %d exceeded: %d chars(s)**" % (max_output_size, output_size)
+				output_overflow = True
+				raise IOError
+				
 		except IOError:
 			#print "No data..."
-			if time.time() - output_received_timestamp > output_timeout:
+			if output_timeout and time.time() - output_received_timestamp > output_timeout:
+				output_timeout_flag = True
 				print "** Terminating process because no output for %d second(s)**" % output_timeout
+			if output_overflow or output_timeout_flag:
 				sys.stdout.flush()
 				# Close I/O handles?
 				process.fromchild.close()
@@ -415,8 +432,8 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 
 		collected += [ line ]
 
-		if terminate_flag and terminate_reg.search(line):
-			print "** Terminating process because termination string was found **"
+		if terminate_flag and terminate_reg_obj.search(line):
+			print "** Terminating process because termination regular expression (%s) was found: '%s'" % (terminate_reg, line)
 			os.kill(process.pid, signal.SIGKILL)
 			break
 

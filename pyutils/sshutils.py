@@ -64,7 +64,7 @@ class init:
 	# Args: command to execute, and option to print_output
 	#  Will always return output
 	# NOTE: In order to use backticks, you must escape them in the string you pass in
-	def execute(self, command, capture_stderr=1, terminate_reg="", env={}, logger="", output_timeout=0, exec_as_root=0):
+	def execute(self, command, capture_stderr=1, terminate_reg="", env={}, logger="", output_timeout=0, exec_as_root=0, max_output_size=0):
 		"""Args, command string to execute.  Option args: capture_stderr, and terminate_reg.
 
 		capture_stderr is 1 or 0 (Currently unimplemented)
@@ -81,20 +81,22 @@ class init:
 			else:
 				command = "sudo " + command
 
-		if output_timeout or terminate_reg:
+		if output_timeout or terminate_reg or max_output_size:
 			# Copy some files over
 			self.copy_to([ config.packaging_dir + "/../pyutils/utils.py", config.packaging_dir + "/../pyutils/launch_process.py" ], self.build_location)
 
-			term_portion = ""
+			extra_options = ""
 			if terminate_reg:
-				term_portion = "--terminate_reg=%s" % terminate_reg
+				extra_options += " --terminate_reg=%s" % terminate_reg
 
-			output_portion = ""
 			if output_timeout:
-				output_portion = "--output_timeout=%s" % output_timeout
+				extra_options += " --output_timeout=%s" % output_timeout
+
+			if max_output_size:
+				extra_options += " --max_output_size=%s" % max_output_size
 
 			# Surround command with escaped double quotes in order to run multiline commands
-			command = "%s/launch_process.py --kill_process_group %s %s \\\"%s\\\" " % (self.build_location, term_portion, output_portion, command)
+			command = "%s/launch_process.py --kill_process_group %s \\\"%s\\\" " % (self.build_location, extra_options, command)
 
 		if self.target_command_prefix:
 			command = self.target_command_prefix + command
