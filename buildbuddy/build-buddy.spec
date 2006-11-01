@@ -56,6 +56,10 @@ cp -Rf packsys $DEST
 mkdir -p $DEST/scripts
 cp -f scripts/distribution.guess $DEST/scripts
 cp -f scripts/config.guess $DEST/scripts
+
+# Copy lint tests
+mkdir -p $DEST/lint
+cp -f lint/*.pm $DEST/lint
 ######################
 
 # Remove unused files:
