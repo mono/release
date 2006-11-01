@@ -97,7 +97,7 @@ class jail_scheduler(threading.Thread):
 
 					# Build if the build doesn't exist already
 					if not info.exists:
-						command = "cd %s; ./build %s %s %s" % (config.packaging_dir, distro, package_name, version)
+						command = "cd %s; ./build --suppress_output %s %s %s" % (config.packaging_dir, distro, package_name, version)
 						log.log("%s:\t%s\n" % (distro, command) )
 
 						num_started_builds += 1

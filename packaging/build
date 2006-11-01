@@ -58,15 +58,19 @@ def get_state(code, test=0):
 skip_steps = False
 # This is to specify installing release packages even when building a package from head
 install_release_packages = False
-opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_steps", "install_release_packages" ])
+# Don't print to the screen
+print_screen = 1
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_steps", "install_release_packages", "suppress_output" ])
 for option, value in opts:
 	if option == "--skip_steps":
 		 skip_steps = True
 	if option == "--install_release_packages":
 		 install_release_packages = True
+	if option == "--suppress_output":
+		 print_screen = 0
 
 if len(remaining_args) < 3:
-	print "Usage is: ./build [--skip_steps] [--install_release_packages] configuration package version <release>"
+	print "Usage is: ./build [--skip_steps] [--install_release_packages] [--suppress_output] configuration package version <release>"
         print "  <release> is optional"
 	sys.exit(1)
 
@@ -185,7 +189,7 @@ if logfile:
 
 # Update step: installing deps
 LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', 'install-deps.log')
-log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
+log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
 build_info.update_step("install-deps", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 
 if install_release_packages:
@@ -210,7 +214,7 @@ build_info.update_step("install-deps", state="success", finish=utils.get_time())
 
 # Update step: building
 LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', 'build.log')
-log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
+log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
 build_info.update_step("build", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 # Copy tar.gz and zip files
 files_to_copy = [ source_file ]
@@ -283,7 +287,7 @@ if not skip_steps:
 			print "Running step %d!" % counter
 			name = package.info['POSTBUILD_STEP_NAME%d' % counter]
 			LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', '%s.log' % name)
-			log_obj = logger.Logger(filename=LOGFILE, print_screen=0)
+			log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
 			build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 
 			(code, output) = build_env.ssh.execute("%s cd %s  " % (step_env_pre_cmd, remote_src_dir + package.info['POSTBUILD_STEP%d' % counter] ), env=build_env.env_vars, logger=log_obj, output_timeout=timeout, max_output_size=max_output_size)
