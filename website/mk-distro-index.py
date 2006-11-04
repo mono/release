@@ -6,6 +6,7 @@ import os.path
 import glob
 import distutils.dir_util
 import re
+import getopt
 
 import pdb
 
@@ -50,13 +51,13 @@ def get_rpm_install(env_obj, archive=False):
 		<p>To use Red Carpet, execute these commands:</p>
 
 		<xmp class='shell'>
-	rug sa http://go-mono.com/%s
-	rug sub mono-%s
+	rug sa http://%s%s/%s
+	rug sub mono-official-%s
 	rug in mono-complete gtk-sharp-complete
 		</xmp>
 
 		<p>Note: some versions of Red Carpet frequently have IOError timeouts.  This is a bug in Red Carpet.  If Red Carpet for your distro frequently has this problem, please use another installation method.</p>
-		<p>""" % (vars['OC_DOWNLOAD_URL'], vars['OC_NOTES'], url_prefix, bundle_conf.info['bundle_urlname'])
+		<p>""" % (vars['OC_DOWNLOAD_URL'], vars['OC_NOTES'], hostname_url, webroot_path, url_prefix, bundle_conf.info['bundle_urlname'])
 
 
 	# Generate Yum Text
@@ -82,12 +83,12 @@ def get_rpm_install(env_obj, archive=False):
 		This distro supports installing packages via <tt>YaST</tt>.  Add the following installation
 		source to <tt>YaST</tt>:
 		<ul>
-		<li><tt>http://go-mono.com/%s/%s</tt></li>
+		<li><tt>http://%s%s/%s/%s</tt></li>
 		</ul>
 		</p>
 		<p>For assistance with using repositories and installing packages with YaST, visit this link: 
 		<a href="http://en.opensuse.org/Add_Package_Repositories_to_YaST">[1]</a>
-                </p>""" % (url_prefix, env_obj.name)
+                </p>""" % (hostname_url, webroot_path, url_prefix, env_obj.name)
 
 
 	# TODO: Generate zmd text
@@ -141,15 +142,18 @@ def get_external_deps(env_obj, archive=False):
 
 	return return_text
 
-
 # Command line options
-if len(sys.argv) != 4:
-        print "Usage: ./mk-distro-index.py <bundle name> <package source dir> <output webdir>"
+try:
+	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_zip"])
+	(bundle, package_src_dir, output_dir, hostname_url, webroot_path) = remaining_args
+except:
+        print "Usage: ./mk-distro-index.py [--skip_zip] <bundle name> <package source dir> <output webdir> <hostname_url> <webroot_path>"
         sys.exit(1)
 
-bundle = sys.argv[1]
-package_src_dir = os.path.abspath(sys.argv[2])
-output_dir = sys.argv[3]
+skip_zip = False
+for option, value in opts:
+        if option == "--skip_zip":
+                 skip_zip = True
 
 bundle_conf = packaging.bundle(bundle_name=bundle)
 url_prefix = 'download-' + bundle_conf.info['bundle_urlname']
@@ -159,6 +163,11 @@ template = fd.readlines()
 fd.close()
 
 version = bundle_conf.info['archive_version']
+package_src_url = os.path.basename(package_src_dir)
+
+if not package_src_url:
+	print "Invalid package_src_dir, make sure it doesn't end with a slash"
+	sys.exit(1)
 
 # Go here so the rpm file globbings look right
 os.chdir(package_src_dir)
@@ -217,7 +226,7 @@ for distro_conf in distros:
 				os.unlink(zip_filename)
 
 			# If there are more than one rpms to be in the zip file
-			if len(RPMS) > 1:
+			if len(RPMS) > 1 and not skip_zip:
 				print "Creating zip: " + zipname
 				# rpms are compressed anyways -- doing any compression is a waste of time
 				os.system("zip -j -0 %s %s" % (zip_filename, " ".join(RPMS)) )
@@ -230,8 +239,8 @@ for distro_conf in distros:
 
 			for i in RPMS:
 				(NAME, DESC) = utils.rpm_query(['NAME', 'SUMMARY'], i)
-				out.write("<li><a href='../../download/%s'>%s</a> -- %s</li>" % (i, NAME, DESC) )
-				arc_out.write("<li><a href='../../../../download/%s'>%s</a> -- %s</li>" % (i, NAME, DESC) )
+				out.write("<li><a href='../../%s/%s'>%s</a> -- %s</li>" % (package_src_url, i, NAME, DESC) )
+				arc_out.write("<li><a href='../../../../%s/%s'>%s</a> -- %s</li>" % (package_src_url, i, NAME, DESC) )
 			
 			out.write("</ul>")
 			arc_out.write("</ul>")
@@ -244,8 +253,8 @@ for distro_conf in distros:
 			arc_out.write("<p>RPM Spec files: ")
 			for i in SPECS:
 				NAME = os.path.basename(i)
-				out.write("<a href='../../download/%s'>%s</a> " % (i, NAME) )
-				arc_out.write("<a href='../../../../download/%s'>%s</a> " % (i, NAME) )
+				out.write("<a href='../../%s/%s'>%s</a> " % (package_src_url, i, NAME) )
+				arc_out.write("<a href='../../../../%s/%s'>%s</a> " % (package_src_url, i, NAME) )
 
 			out.write("</p>")
 			arc_out.write("</p>")
@@ -262,6 +271,7 @@ for distro_conf in distros:
 		else:
 			line = line.replace('[[arch]]', env.name)
 			line = line.replace('[[version]]', version)
+			line = line.replace('[[webroot_path]]', webroot_path)
 
 			out.write(line)
 			arc_out.write(line)

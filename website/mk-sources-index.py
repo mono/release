@@ -14,13 +14,11 @@ import packaging
 import config
 
 # Command line options
-if len(sys.argv) != 4:
-	print "Usage: ./mk-sources-index.py <bundle name> <sources_dir> <output webdir>"
+try:
+	(script_name, bundle, sources_dir, output_dir, webroot_path) = sys.argv
+except:
+	print "Usage: ./mk-sources-index.py <bundle name> <sources_dir> <output webdir> <webroot_path>"
 	sys.exit(1)
-
-bundle = sys.argv[1]
-sources_dir = os.path.abspath(sys.argv[2])
-output_dir = sys.argv[3]
 
 bundle_conf = packaging.bundle(bundle_name=bundle)
 
@@ -42,7 +40,12 @@ for line in template:
 		tarballs = []
 		for pack in args:
 			pack_obj = packaging.package("", pack, bundle_obj=bundle_conf, source_basepath=sources_dir)
-			source_file = pack_obj.get_source_file()
+			try:
+				source_file = pack_obj.get_source_file()
+			except IndexError:
+				# TODO: Sort of a hack...
+				# There's no source for this module
+				source_file = ''
 			# Skip if there is no source for this bundle
 			if source_file:
 				tarballs.append(source_file)
@@ -61,6 +64,7 @@ for line in template:
 
 	else:
 		line = line.replace("[[version]]", bundle_conf.info['archive_version'])
+		line = line.replace("[[webroot_path]]", webroot_path)
 
 		out.write(line)
 		arc_out.write(line)

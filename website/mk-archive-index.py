@@ -15,25 +15,25 @@ import config
 import utils
 
 # Command line options
-if len(sys.argv) != 3:
-        print "Usage: ./mk-archive-index.py <bundle name> <output webdir>"
+try:
+	(script_name, bundle, output_dir, webroot_path) = sys.argv
+except:
+        print "Usage: ./mk-archive-index.py <bundle name> <output webdir> <webroot_path>"
         sys.exit(1)
-
-bundle = sys.argv[1]
-output_dir = sys.argv[2]
 
 bundle_conf = packaging.bundle(bundle_name=bundle)
 #print bundle_conf.info
 
 # Create url dirs
 out_file = os.path.join(output_dir, "archive", bundle_conf.info['archive_version'], 'download', 'index.html')
+distro_out_file = os.path.join(output_dir, 'download-' + bundle_conf.info['bundle_urlname'], 'index.html')
 distutils.dir_util.mkpath(os.path.dirname(out_file))
 
 version = bundle_conf.info['archive_version']
 
 #### Sources ####
 sources = "<p> <a href='../sources'>Sources</a> </p>"
-
+distro_sources = "<p> <a href='../sources-%s'>Sources</a> </p>" % bundle_conf.info['bundle_urlname']
 
 #### Installers ####
 
@@ -46,6 +46,7 @@ installer_info = [
 ]
 
 installers = ""
+distro_installers = ""
 for installer_map in installer_info:
 
 	my_dir = os.path.join(output_dir, 'archive', version, installer_map['dir_name'])
@@ -57,11 +58,13 @@ for installer_map in installer_info:
 	revision = utils.get_latest_ver(my_dir)
 	installer_dir = my_dir + os.sep + revision
 	ref_dir = "../%s/%s" % (installer_map['dir_name'], revision)
+	ref_dir2 = "../archive/%s/%s/%s" % (version, installer_map['dir_name'], revision)
 
 	filename = os.path.basename(glob.glob(installer_dir + os.sep + '*.%s' % installer_map['ext']).pop())
 	sum_filename = os.path.basename(glob.glob(installer_dir + os.sep + '*.md5').pop())
 
 	installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>" % (installer_map['name'], ref_dir, filename, filename, ref_dir, sum_filename)
+	distro_installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>" % (installer_map['name'], ref_dir2, filename, filename, ref_dir2, sum_filename)
 
 
 #### Packages ####
@@ -82,12 +85,28 @@ fd = open(os.path.join(config.release_repo_root, 'website', 'archive-index'))
 out_text = fd.read()
 fd.close()
 
+distro_out_text = out_text
+
+out_text = out_text.replace('[[webroot_path]]',    webroot_path)
 out_text = out_text.replace('[[version]]',    version)
 out_text = out_text.replace('[[sources]]',    sources)
 out_text = out_text.replace('[[installers]]', installers)
 out_text = out_text.replace('[[packages]]',   packages)
+out_text = out_text.replace('([[bundle_urlname]])',   '')
+
+distro_out_text = distro_out_text.replace('[[webroot_path]]',    webroot_path)
+distro_out_text = distro_out_text.replace('[[version]]',    version)
+distro_out_text = distro_out_text.replace('[[sources]]',    distro_sources)
+distro_out_text = distro_out_text.replace('[[installers]]', distro_installers)
+distro_out_text = distro_out_text.replace('[[packages]]',   packages)
+distro_out_text = distro_out_text.replace('[[bundle_urlname]]',   bundle_conf.info['bundle_urlname'])
 
 out = open(out_file, 'w')
 out.write(out_text)
+out.close()
+
+# TODO: Make this part optional if needed later
+out = open(distro_out_file, 'w')
+out.write(distro_out_text)
 out.close()
 

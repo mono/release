@@ -22,13 +22,12 @@ import packaging
 import utils
 
 # Command line options
-if len(sys.argv) != 4:
-        print "Usage: ./mk-repos.py <bundle name> <package source dir> <output webdir>"
+try:
+	(script_name, bundle, package_src_dir, output_dir, hostname_url, webroot_path) = sys.argv
+	package_src_dir = os.path.abspath(package_src_dir)
+except:
+        print "Usage: ./mk-repos.py <bundle name> <package source dir> <output webdir> <hostname_url> <webroot_path>"
         sys.exit(1)
-
-bundle = sys.argv[1]
-package_src_dir = os.path.abspath(sys.argv[2])
-output_dir = sys.argv[3]
 
 bundle_conf = packaging.bundle(bundle_name=bundle)
 url_prefix = 'download-' + bundle_conf.info['bundle_urlname']
@@ -121,6 +120,9 @@ for distro_obj in distro_objs:
 					'@DISTRO@': distro_obj.name, 
 					'@URL_PREFIX@': url_prefix,
 					'@BUNDLE_NAME@': bundle_conf.info['bundle_urlname'],
+					'@BUNDLE_NAME@': bundle_conf.info['bundle_urlname'],
+					'@HOSTNAME_URL@': hostname_url,
+					'@WEBROOT_PATH@': webroot_path,
 				} )
 
 			# Sign repo
