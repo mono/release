@@ -359,6 +359,7 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 	output_size = 0
 	output_overflow = False
 	output_timeout_flag = False
+	terminate_reg_flag = False
 
 	# there's a bug with output_timeout... ex:
 	# adding: lib/mono/1.0/mono-service.exe.mdb (deflated 51%)
@@ -382,13 +383,18 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 				print "** Terminating process because output size max of %d exceeded: %d chars(s)**" % (max_output_size, output_size)
 				output_overflow = True
 				raise IOError
+
+			if terminate_flag and terminate_reg_obj.search(line):
+				print "** Terminating process because termination regular expression (%s) was found: '%s'" % (terminate_reg, line)
+				terminate_reg_flag = True
+				raise IOError
 				
 		except IOError:
 			#print "No data..."
 			if output_timeout and time.time() - output_received_timestamp > output_timeout:
 				output_timeout_flag = True
 				print "** Terminating process because no output for %d second(s)**" % output_timeout
-			if output_overflow or output_timeout_flag:
+			if output_overflow or output_timeout_flag or terminate_reg_flag:
 				sys.stdout.flush()
 				# Close I/O handles?
 				process.fromchild.close()
@@ -432,10 +438,6 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 
 		collected += [ line ]
 
-		if terminate_flag and terminate_reg_obj.search(line):
-			print "** Terminating process because termination regular expression (%s) was found: '%s'" % (terminate_reg, line)
-			os.kill(process.pid, signal.SIGKILL)
-			break
 
 
 	exit_code = process.wait()
