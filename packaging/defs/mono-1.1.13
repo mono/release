@@ -69,8 +69,7 @@ POSTBUILD_STEP3 () {
         make -k check
 }
 
-POSTBUILD_STEP_NAME4="cleanup"
-POSTBUILD_STEP4 () {
+CLEAN_UP () {
 	#echo "Skipping..."
 	./runtime/semdel-wrapper
 }

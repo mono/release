@@ -365,8 +365,8 @@ POSTBUILD_STEP5 () {
 
 }
 
-POSTBUILD_STEP_NAME6="cleanup"
-POSTBUILD_STEP6 () {
+# This step gets executed after all tests, or after a build failure
+CLEAN_UP () {
         #echo "Skipping..."
         ./runtime/mono-wrapper --wapi=semdel
 

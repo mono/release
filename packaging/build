@@ -54,6 +54,31 @@ def get_state(code, test=0):
 	else:
 		return "success"
 
+def run_postbuild_step(name, step_key, test=0):
+
+	command = package.get_info_var(step_key)
+
+	code = 0
+
+	if not (name and command):
+		print "run_buildbuild_step: Invalid params: '%s', '%s'" % (name, step_key)
+	else:
+		print "Running %s step!" % name
+		LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', '%s.log' % name)
+		log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
+		build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
+
+		(code, output) = build_env.ssh.execute("%s cd %s  " % (step_env_pre_cmd, remote_src_dir + command), env=build_env.env_vars, logger=log_obj, output_timeout=timeout, max_output_size=max_output_size)
+		state = get_state(code, test=test)
+		if code:
+			print "Step %s failed..." % name
+			build_info.update_step(name, state=state, finish=utils.get_time())
+		else:
+			build_info.update_step(name, state=state, finish=utils.get_time())
+
+	return code
+
+
 # Collect optional opts
 skip_steps = False
 # This is to specify installing release packages even when building a package from head
@@ -264,6 +289,7 @@ if code:
 	state = get_state(code)
 	print "Build failed, see log in %s for details" % LOGFILE
 	build_info.update_step("build", state=state, finish=utils.get_time())
+	run_postbuild_step('clean-up', 'CLEAN_UP')
 	build_info.update_build(state="failure", finish=utils.get_time())
 	sys.exit(7)
 
@@ -283,25 +309,19 @@ build_info.update_step("build", state="success", download=os.path.basename('down
 if not skip_steps:
 	counter = 1
 	while(1):
-		if package.info.has_key('POSTBUILD_STEP_NAME%d' % counter) and package.info.has_key('POSTBUILD_STEP%d' % counter):
-			print "Running step %d!" % counter
-			name = package.info['POSTBUILD_STEP_NAME%d' % counter]
-			LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', '%s.log' % name)
-			log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
-			build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
-
-			(code, output) = build_env.ssh.execute("%s cd %s  " % (step_env_pre_cmd, remote_src_dir + package.info['POSTBUILD_STEP%d' % counter] ), env=build_env.env_vars, logger=log_obj, output_timeout=timeout, max_output_size=max_output_size)
-			state = get_state(code, test=1)
-			if code:
-				print "Step %d (%s) failed..." % (counter, package.info['POSTBUILD_STEP_NAME%d' % counter])
-				build_info.update_step(name, state=state, finish=utils.get_time())
-			else:
-				build_info.update_step(name, state=state, finish=utils.get_time())
+		name = package.get_info_var('POSTBUILD_STEP_NAME%d' % counter)
+		step_key = 'POSTBUILD_STEP%d' % counter
+		
+		if name and package.info.has_key(step_key):
+			run_postbuild_step(name, step_key, test=1)
 		else:
+			# We've run out of steps, stop
 			break
 
 		counter += 1
 
+# Run cleanup step
+run_postbuild_step('clean-up', 'CLEAN_UP')
 
 state = build_info.get_collective_state()
 build_info.update_build(state=state, finish=utils.get_time())
