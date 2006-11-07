@@ -35,6 +35,7 @@ locked_packages = """
 	gnome-utils
 	grub
 	gstreamer
+	gtk2-devel
 	gtk2-themes
 	heap-buddy
 	kbd

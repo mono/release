@@ -1,0 +1,5 @@
+2006-11-07  Wade Berrier  <wberrier@novell.com>
+
+	* locked_packages_sled10.py: add gtk2-devel to list of
+	packages to keep (winforms demos need this)
+
