@@ -1,4 +1,4 @@
-target_host=builder@mono-mac-ppc.dnsdhcp.provo.novell.com
+target_host=builder@mono-linux-ppc.dnsdhcp.provo.novell.com
 jaildir=/jails/fedora-4-ppc
 chroot_path=/usr/bin/chroot
 
