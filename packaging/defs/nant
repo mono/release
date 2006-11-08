@@ -8,6 +8,10 @@ USE_HOSTS=(
 	ALL
 )
 
+# nant uses a numbering scheme that rpm doesn't like for upgrade paths
+#  we'll have to manually tweak this here and there
+APPEND_ZERO_TO_RPM_VERSION=1
+
 # Should we build all this noarch stuff on the 1.1.13 bundle?
 #bundle="1.1.13"
 

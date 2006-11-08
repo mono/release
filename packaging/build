@@ -108,10 +108,6 @@ if len(remaining_args) > 3:
 	serial = remaining_args[3]
 else:	serial = "0"
 
-if serial == "0":
-	ver_path = version
-else:
-	ver_path = version + "-" + serial
 
 # Figure out if this is a snapshot build or not...
 #  Could do this by looking at the tarball map... ? (but ./build parameters would have to change)
@@ -144,6 +140,15 @@ source_file = sources[0]
 
 build_env = packaging.buildenv(distro)
 package = packaging.package(build_env, package_name, HEAD_or_RELEASE=HEAD_or_RELEASE)
+
+# Hack to for some numbering schemes (nant, ironpython) to be rpm version sorting friendly
+if package.get_info_var('APPEND_ZERO_TO_RPM_VERSION'):
+	version += '.0'
+
+if serial == "0":
+	ver_path = version
+else:
+	ver_path = version + "-" + serial
 
 # check to see if this package is a valid build
 if not package.valid_build_platform(distro):
@@ -289,7 +294,8 @@ if code:
 	state = get_state(code)
 	print "Build failed, see log in %s for details" % LOGFILE
 	build_info.update_step("build", state=state, finish=utils.get_time())
-	run_postbuild_step('clean-up', 'CLEAN_UP')
+	if package.get_info_var('CLEAN_UP'):
+		run_postbuild_step('clean-up', 'CLEAN_UP')
 	build_info.update_build(state="failure", finish=utils.get_time())
 	sys.exit(7)
 
@@ -321,7 +327,8 @@ if not skip_steps:
 		counter += 1
 
 # Run cleanup step
-run_postbuild_step('clean-up', 'CLEAN_UP')
+if package.get_info_var('CLEAN_UP'):
+	run_postbuild_step('clean-up', 'CLEAN_UP')
 
 state = build_info.get_collective_state()
 build_info.update_build(state=state, finish=utils.get_time())

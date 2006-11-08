@@ -16,6 +16,10 @@ get_destroot () {
 	DEST_ROOT=noarch
 }
 
+# Some versions (like the 1.0) needed this
+# 1.0.1 doesn't
+#APPEND_ZERO_TO_RPM_VERSION=1
+
 BUILD_DIR="/tmp"
 
 make_dist () {
