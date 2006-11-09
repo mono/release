@@ -2,24 +2,24 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Mono 1.1.18 with GTK# 2.8.3
-AppVerName=Mono for Windows 1.1.18
+AppName=Mono 1.2 with GTK# 2.8.3
+AppVerName=Mono for Windows 1.2
 AppPublisher=Mono
 AppPublisherURL=http://www.mono-project.com
 AppSupportURL=http://www.mono-project.com/about/faq.html
 AppUpdatesURL=http://www.mono-project.com/downloads/index.html
-DefaultDirName={pf}\Mono-1.1.18
-DefaultGroupName=Mono 1.1.18 for Windows
-AppID={{3b727113-ae51-4a13-aa09-39efdde72f12}
+DefaultDirName={pf}\Mono-1.2
+DefaultGroupName=Mono 1.2 for Windows
+AppID={{694e38e7-7600-4821-b79f-33b9dca7bea7}
 Compression=lzma/max
 ;Compression=bzip/4
 ;Compression=zip
 SolidCompression=true
 DisableDirPage=false
 DisableReadyPage=false
-OutputBaseFilename=mono-1.1.18-gtksharp-2.8.3-win32-0
-VersionInfoVersion=1.1.18
-VersionInfoDescription=Mono 1.1.18 with Gtk# Installer for Win32
+OutputBaseFilename=mono-1.2-gtksharp-2.8.3-win32-rc0
+VersionInfoVersion=1.2
+VersionInfoDescription=Mono 1.2 with Gtk# Installer for Win32
 VersionInfoCompany=Mono
 InfoBeforeFile=build\mono\ReleaseNotes.txt
 LicenseFile=setup-files\mono-lic.txt
@@ -28,7 +28,7 @@ WizardImageFile=setup-files\installerBanner256.bmp
 UninstallDisplayIcon={app}\mono.ico
 SetupIconFile=setup-files\mono.ico
 ShowLanguageDialog=yes
-AppVersion=1.1.18
+AppVersion=1.2
 MinVersion=0,5.0
 
 
@@ -45,6 +45,8 @@ Name: gtk\gtkSharp\monodoc; Description: Monodoc and Mono Tools; Types: full cus
 Name: gtk\gtkSharp\geckosharp; Description: Gecko# Files; Types: full custom
 Name: gtk\gtkSharp\samples; Description: Samples; Types: full custom
 Name: xsp; Description: XSP files; Types: full custom
+Name: xsp\xsp_shell; Description: XSP Shell Integration; Types: full custom
+Name: xsp\xsp2_shell; Description: XSP 2.0 Shell Integration; Types: full custom
 
 [Tasks]
 
@@ -61,7 +63,7 @@ Source: build\monodoc\*; DestDir: {app}; Components: gtk\gtkSharp\monodoc; Flags
 
 [INI]
 Filename: {app}\Mono.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://www.mono-project.com
-Filename: {app}\MonoReleaseNotes.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://go-mono.com/archive/1.1.18/
+Filename: {app}\MonoReleaseNotes.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://go-mono.com/archive/1.2/
 Filename: {app}\GtkPlus.url; Section: InternetShortcut; Components: gtk; Key: URL; String: http://www.gtk.org
 Filename: {app}\GtkSharp.url; Section: InternetShortcut; Components: gtk\gtkSharp; Key: URL; String: http://gtk-sharp.sourceforge.net/index.html
 Filename: {app}\Xsplocal.url; Section: InternetShortcut; Components: xsp; Key: URL; String: {code:GetURLAndPort}/index.aspx
@@ -70,9 +72,9 @@ Filename: {app}\Xsplocal2.url; Section: InternetShortcut; Components: xsp; Key: 
 ;Filename: {app}\MonoDocWeb.url; Section: InternetShortcut; Components: xsp and gtk\gtkSharp\monodoc; Key: URL; String: {code:GetURLAndPort}/header.html
 
 [Icons]
-Name: {group}\Mono-1.1.18 Command Prompt; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono 1.1.18 Command Prompt
+Name: {group}\Mono-1.2 Command Prompt; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono 1.2 Command Prompt
 Name: {group}\Readme; Filename: {app}\ReleaseNotes.txt; Comment: Combined Installer Release Notes
-Name: {group}\{cm:ProgramOnTheWeb,Mono-1.1.18 Release Notes}; Filename: {app}\MonoReleaseNotes.url
+Name: {group}\{cm:ProgramOnTheWeb,Mono-1.2 Release Notes}; Filename: {app}\MonoReleaseNotes.url
 Name: {group}\Applications\Gtk# Demo; Filename: {app}\bin\GtkDemo.bat; Components: gtk\gtkSharp\samples; Comment: Gtk# Demo
 Name: {group}\Applications\Sql# GTK; Filename: {app}\bin\sqlsharpgtk.bat; Components: gtk\gtkSharp\samples; Comment: SQL# GUI version
 Name: {group}\Applications\Prj2Make# GTK; Filename: {app}\bin\prj2make-sharp-gtk.bat; Components: gtk\gtkSharp\samples; Comment: Makefile generator tool.
@@ -83,7 +85,7 @@ Name: {group}\Applications\Monodoc Browser; IconFilename: {app}\mono.ico; Filena
 Name: {group}\XSP\XSP Test Web Server; Filename: {app}\bin\startXSP.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\XSP\XSP 2.0 Test Web Server; Filename: {app}\bin\startXSP2.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\{cm:ProgramOnTheWeb,Mono}; IconFilename: {app}\mono.ico; Filename: {app}\Mono.url
-Name: {group}\{cm:UninstallProgram,Mono-1.1.18 Win32}; Filename: {uninstallexe}
+Name: {group}\{cm:UninstallProgram,Mono-1.2 Win32}; Filename: {uninstallexe}
 Name: {group}\{cm:ProgramOnTheWeb,Gtk+}; Components: gtk; Filename: {app}\GtkPlus.url
 Name: {group}\{cm:ProgramOnTheWeb,Gtk#}; Components: gtk\gtkSharp; Filename: {app}\GtkSharp.url
 Name: {group}\XSP\XSP Index Page; Components: xsp; Filename: {app}\Xsplocal.url
@@ -92,16 +94,21 @@ Name: {group}\XSP\XSP 2.0 Index Page; Components: xsp; Filename: {app}\Xsplocal2
 
 [Registry]
 Root: HKLM; Subkey: SOFTWARE\Novell\Mono; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: Software\Novell\Mono; ValueType: string; ValueName: DefaultCLR; ValueData: 1.1.18; Flags: uninsdeletevalue
-Root: HKLM; Subkey: SOFTWARE\Novell\Mono\1.1.18; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.18; ValueType: string; ValueName: FrameworkAssemblyDirectory; ValueData: {app}\lib; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.18; ValueType: string; ValueName: MonoConfigDir; ValueData: {app}\etc; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.18; ValueType: string; ValueName: SdkInstallRoot; ValueData: {app}; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.18; Components: xsp; ValueType: dword; ValueName: XSPIsInstalled; ValueData: 1; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.18; Components: gtk\gtkSharp; ValueType: dword; ValueName: GtkSharpIsInstalled; ValueData: 1; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\1.1.18; Components: gtk; ValueType: dword; ValueName: GtkPlusDevIsInstalled; ValueData: 1; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono; ValueType: string; ValueName: DefaultCLR; ValueData: 1.2; Flags: uninsdeletevalue
+Root: HKLM; Subkey: SOFTWARE\Novell\Mono\1.2; Flags: uninsdeletekeyifempty
+Root: HKLM; Subkey: Software\Novell\Mono\1.2; ValueType: string; ValueName: FrameworkAssemblyDirectory; ValueData: {app}\lib; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\1.2; ValueType: string; ValueName: MonoConfigDir; ValueData: {app}\etc; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\1.2; ValueType: string; ValueName: SdkInstallRoot; ValueData: {app}; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\1.2; Components: xsp; ValueType: dword; ValueName: XSPIsInstalled; ValueData: 1; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\1.2; Components: gtk\gtkSharp; ValueType: dword; ValueName: GtkSharpIsInstalled; ValueData: 1; Flags: uninsdeletevalue
+Root: HKLM; Subkey: Software\Novell\Mono\1.2; Components: gtk; ValueType: dword; ValueName: GtkPlusDevIsInstalled; ValueData: 1; Flags: uninsdeletevalue
 Root: HKLM; Subkey: SOFTWARE\Novell\Mono DefaultCLR; Flags: uninsdeletekeyifempty
 Root: HKLM; Subkey: Software\Novell\Mono DefaultCLR; ValueType: string; ValueName: Installer Language; ValueData: 1033; Flags: uninsdeletevalue
+; XSP Shell Integration (Thanks to Joseph Hill)
+Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP WebServer 1.2; Components: xsp\xsp_shell; ValueType: string; ValueData: XSP Web Server Here 1.2; Flags: uninsdeletekey
+Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP WebServer 1.2\command; Components: xsp\xsp_shell; ValueType: string; ValueData: "{app}\bin\xsp.bat --root ""%1"" --port {code:GetPort} --applications /:."; Flags: uninsdeletekey
+Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer 1.2; Components: xsp\xsp2_shell; ValueType: string; ValueData: XSP 2.0 Web Server Here 1.2; Flags: uninsdeletekey
+Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer 1.2\command; Components: xsp\xsp2_shell; ValueType: string; ValueData: "{app}\bin\xsp2.bat --root ""%1"" --port {code:GetPort} --applications /:."; Flags: uninsdeletekey
 
 ;[Run]
 ;Filename: "{app}\gacutil.exe"; Description: "Install gtk-sharp in the MS GAC"; StatusMsg: "Install Gtk# in the MS GAC"; Tasks: msgac
@@ -126,7 +133,7 @@ var
     bRc: Boolean;
 begin
     // Get the registry value
-    bRc := RegQueryStringValue(HKLM, 'SOFTWARE\Novell\Mono\1.1.18', 'SdkInstallRoot',
+    bRc := RegQueryStringValue(HKLM, 'SOFTWARE\Novell\Mono\1.2', 'SdkInstallRoot',
     strMonoBaseDir
     );
 
@@ -136,10 +143,10 @@ begin
     end;
 end;
 
-// Checks to see if Mono 1.1.18 is Installed
+// Checks to see if Mono 1.2 is Installed
 Function IsMonoInstalled() : Boolean;
 begin
-    Result := RegValueExists(HKLM, 'SOFTWARE\Novell\Mono\1.1.18', 'SdkInstallRoot');
+    Result := RegValueExists(HKLM, 'SOFTWARE\Novell\Mono\1.2', 'SdkInstallRoot');
 end;
 
 Function SayMessage(const strMsg: String; const typMsgBox: TMsgBoxType) : Integer;
@@ -246,6 +253,11 @@ var strPort: string;
 begin
     strPort := PortForXSP.Values[0];
     Result := 'http://localhost:' + strPort;
+end;
+
+Function GetPort(Param: String): string;
+begin
+    Result := PortForXSP.Values[0];
 end;
 
 Procedure CurStepChanged(CurStep: TSetupStep);
