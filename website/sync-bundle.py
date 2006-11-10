@@ -5,8 +5,10 @@
 
 import os
 import sys
-sys.path.append("../pyutils")
 import glob
+import getopt
+
+sys.path.append("../pyutils")
 
 import pdb
 
@@ -16,8 +18,18 @@ import utils
 import config
 
 #pdb.set_trace()
+include_zip = False
+fail_on_missing=True
 try:
-	(name, bundle_name, dest) = sys.argv
+
+	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "include_zip", "skip_missing" ])
+	for option, value in opts:
+		if option == "--include_zip":
+			 include_zip = True
+		if option == "--skip_missing":
+			 fail_on_missing = False
+
+	(bundle_name, dest) = remaining_args
 except:
 	print "Usage: ./sync-bundle.py <bundle name> <rsync dest>"
 	print " Ex: ./sync-bundle.py RELEASE wblinux.provo.novell.com:wa/msvn/release/packaging"
@@ -32,7 +44,6 @@ sources = []
 
 execfile('repo-config/config.py')
 
-missing=True
 
 # (for packages_in_repo)
 bundle_obj = packaging.bundle(bundle_name=bundle_name)
@@ -45,7 +56,7 @@ config.sd_latest_build_distros = build.get_platforms()
 # Gather rpms for this bundle
 for plat in config.sd_latest_build_distros:
 	plat_obj = packaging.buildenv(plat)
-	if not plat_obj.get_info_var('USE_ZIP_PKG'):
+	if not plat_obj.get_info_var('USE_ZIP_PKG') or include_zip:
 		print plat_obj.info['distro']
 		# Add external dependencies for this distro
 		extern = 'external_packages' + os.sep + plat_obj.info['distro']
@@ -54,7 +65,7 @@ for plat in config.sd_latest_build_distros:
 		for pack in packages_in_repo:
 			pack_obj = packaging.package(plat_obj, pack, bundle_obj=bundle_obj)
 			if pack_obj.valid_use_platform(plat_obj.info['distro']):
-				rpms += pack_obj.get_files(fail_on_missing=missing)
+				rpms += pack_obj.get_files(fail_on_missing=fail_on_missing)
 
 # Gather sources
 for pack in packages_in_repo:
