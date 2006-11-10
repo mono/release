@@ -1,4 +1,4 @@
-target_host=builder@monobuild1.boston.ximian.com
+target_host=builder@hardhat.boston.ximian.com
 jaildir=/jails/rhel-4as-i386-root-0/jail
 
 distro_aliases=(
