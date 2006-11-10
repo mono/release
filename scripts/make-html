@@ -12,11 +12,13 @@ echo "Latest mono: $latest_mono"
 echo "Latest monolite: $latest_monolite"
 echo "Latest monocharge: $latest_monocharge"
 
-cp -f $latest_mono mono-latest.tar.gz
+cp -f $latest_mono mono-latest.zip
 cp -f $latest_monolite monolite-latest.tar.gz
 cp -f $latest_monocharge monocharge-latest.tar.gz
 
-echo "<html><head><title>Mono Daily Binary Packages</title><link rel='stylesheet' href='http://www.go-mono.com/monologue/monologue.css' type='text/css'><style type='text/css'>p {margin-left: 2em;}</style></head><body>" >index.html
-cat explanation.html >> index.html
-ls  | grep mono | grep -v latest |sed 's/\(.*\)\([-\.]\)\([0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]\)\.\(.*\)/\3 \1\2\3.\4/' | sort -nr | awk '{ if (last != $1) { last = $1; print "<h3>" substr($1,0,4) " " substr ($1,5,2) " " substr ($1, 7, 2) "</h3>\n"; }}  { print "<p><a href=\"" $2 "\">" $2 "</a></p>"}' >> index.html
-echo "</body>" >> index.html
+OUTPUT='index.html'
+
+echo "<html><head><title>Mono Daily Binary Packages</title><link rel='stylesheet' href='http://www.go-mono.com/monologue/monologue.css' type='text/css'><style type='text/css'>p {margin-left: 2em;}</style></head><body>" >$OUTPUT
+cat ../../release/scripts/explanation.html >> $OUTPUT
+ls  | grep mono | grep -v latest |sed 's/\(.*\)\([-\.]\)\([0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]\)\.\(.*\)/\3 \1\2\3.\4/' | sort -nr | awk '{ if (last != $1) { last = $1; print "<h3>" substr($1,0,4) " " substr ($1,5,2) " " substr ($1, 7, 2) "</h3>\n"; }}  { print "<p><a href=\"" $2 "\">" $2 "</a></p>"}' >> $OUTPUT
+echo "</body>" >> $OUTPUT

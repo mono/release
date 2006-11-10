@@ -1,3 +1,10 @@
+2006-11-10  Wade Berrier  <wberrier@novell.com>
+	* mono-snapshot.sh: use make dist-zip instead of make dist, as make dist with
+	us-tar format has unpredictable results with long versions in configure.in.
+	Use checked in files
+	* explanation.html:  new file as well as above changes
+	* make-html: new file, as well as above changes
+
 2006-09-13  Wade Berrier  <wberrier@novell.com>
 	* Integrate class status updates to daily build
 	(Copied necessary scripts in class_status dir from release/buildbot/scripts)
