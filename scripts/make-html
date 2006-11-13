@@ -12,7 +12,7 @@ echo "Latest mono: $latest_mono"
 echo "Latest monolite: $latest_monolite"
 echo "Latest monocharge: $latest_monocharge"
 
-cp -f $latest_mono mono-latest.zip
+cp -f $latest_mono mono-latest.tar.gz
 cp -f $latest_monolite monolite-latest.tar.gz
 cp -f $latest_monocharge monocharge-latest.tar.gz
 

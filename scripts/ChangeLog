@@ -1,3 +1,10 @@
+2006-11-13  Wade Berrier  <wberrier@novell.com>
+	* mono-snapshot.sh:
+	* explanation.html:
+	* make-html:
+	Change back to use 'make dist' since Hari shortened some directory lengths
+	Will keep the download size down (20 MB versus 32 MB)
+
 2006-11-10  Wade Berrier  <wberrier@novell.com>
 	* mono-snapshot.sh: use make dist-zip instead of make dist, as make dist with
 	us-tar format has unpredictable results with long versions in configure.in.

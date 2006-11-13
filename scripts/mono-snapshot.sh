@@ -91,16 +91,17 @@ tar zcvpf monocharge-$DATE.tar.gz monocharge-$DATE/ >> $LOGFILE 2>&1
 # Make mono tarball and check
 #(cd $DAILY_BUILD_DIR/mono && make distcheck || exit 1 ) >> $LOGFILE 2>&1
 # Use dist-zip because ustar format has unpredictable results with long versions (defined in configure.in)
-(cd $DAILY_BUILD_DIR/mono && make dist-zip || exit 1 ) >> $LOGFILE 2>&1
+#  Hari shortened some paths to fix dist...
+(cd $DAILY_BUILD_DIR/mono && make dist || exit 1 ) >> $LOGFILE 2>&1
 
 # Copy resulting tarball to top-level dir
 echo "Copy resulting tarball to top-level dir" >> $LOGFILE 2>&1
-(cd $DAILY_BUILD_DIR/mono && cp *.zip $DAILY_BUILD_DIR )
+(cd $DAILY_BUILD_DIR/mono && cp *.tar.gz $DAILY_BUILD_DIR )
 # Not sure what this is for
 #(cd $DAILY_BUILD_DIR/mono && cp *mono-$DATE* $DAILY_BUILD_DIR )
 
 echo "Copying daily files..." >> $LOGFILE 2>&1
-scp -i $SCRIPTS_DIR/key/cron_key  *.tar.gz *.zip  mono-web@mono.ximian.com:go-mono/daily >> $LOGFILE 2>&1
+scp -i $SCRIPTS_DIR/key/cron_key  *.tar.gz mono-web@mono.ximian.com:go-mono/daily >> $LOGFILE 2>&1
 
 # Run command to update webpage
 ssh -i $SCRIPTS_DIR/key/cron_key mono-web@mono.ximian.com "release/scripts/make-html" >> $LOGFILE 2>&1
