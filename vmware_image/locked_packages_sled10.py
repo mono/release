@@ -62,6 +62,7 @@ locked_packages = """
 	rpm-python
 	rsh
 	samba
+	sax2-gui
 	screen
 	sharp
 	strace
@@ -91,6 +92,7 @@ locked_packages = """
 	yast2-runlevel
 	yast2-sound
 	yast2-trans-en_US
+	yast2-x11
 	zip
 """.split()
 
