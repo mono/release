@@ -13,6 +13,16 @@ built and configured version of XSP.
 
 Installer Changes:
 
+1.2.x:
+ -Library version updates: 
+   glib -> 2.12.3
+   gtk -> 2.10.3
+   gnome -> 2.16
+   libglade -> 2.6
+   glade -> 3
+ -Removed mono-tools since it depends on gtkhtml-sharp2, which has 
+  not been shipped on win32 yet
+
 1.1.13.4:
  -removed wimp theme, as it comes with gtk+ named as MS-Windows
 

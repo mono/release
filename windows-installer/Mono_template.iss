@@ -41,7 +41,7 @@ Name: custom; Description: Custom installation; Flags: iscustom
 Name: mono; Description: Mono Files; Types: full compact custom; Flags: fixed
 Name: gtk; Description: GTK+ 2.8 and Gnome 2.12 Files; Types: full custom
 Name: gtk\gtkSharp; Description: Gtk# @@GTK_SHARP_VERSION@@ Files; Types: full custom
-Name: gtk\gtkSharp\monodoc; Description: Monodoc and Mono Tools; Types: full custom
+Name: gtk\gtkSharp\monodoc; Description: Monodoc; Types: full custom
 Name: gtk\gtkSharp\geckosharp; Description: Gecko# Files; Types: full custom
 Name: gtk\gtkSharp\samples; Description: Samples; Types: full custom
 Name: xsp; Description: XSP files; Types: full custom
@@ -70,18 +70,21 @@ Filename: {app}\Xsplocal.url; Section: InternetShortcut; Components: xsp; Key: U
 Filename: {app}\Xsplocal2.url; Section: InternetShortcut; Components: xsp; Key: URL; String: {code:GetURLAndPort}/index2.aspx
 ; TODO: I'm not sure what was supposed to be at this link, so it's disabled for now
 ;Filename: {app}\MonoDocWeb.url; Section: InternetShortcut; Components: xsp and gtk\gtkSharp\monodoc; Key: URL; String: {code:GetURLAndPort}/header.html
+; Add a link to the online mono documentation
+Filename: {app}\MonoDocWeb.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://www.go-mono.com/docs/
 
 [Icons]
 Name: {group}\Mono-@@MONO_VERSION@@ Command Prompt; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono @@MONO_VERSION@@ Command Prompt
 Name: {group}\Readme; Filename: {app}\ReleaseNotes.txt; Comment: Combined Installer Release Notes
 Name: {group}\{cm:ProgramOnTheWeb,Mono-@@MONO_VERSION@@ Release Notes}; Filename: {app}\MonoReleaseNotes.url
+Name: {group}\MonoDoc Web; Components: mono; Filename: {app}\MonoDocWeb.url
 Name: {group}\Applications\Gtk# Demo; Filename: {app}\bin\GtkDemo.bat; Components: gtk\gtkSharp\samples; Comment: Gtk# Demo
 Name: {group}\Applications\Sql# GTK; Filename: {app}\bin\sqlsharpgtk.bat; Components: gtk\gtkSharp\samples; Comment: SQL# GUI version
 Name: {group}\Applications\Prj2Make# GTK; Filename: {app}\bin\prj2make-sharp-gtk.bat; Components: gtk\gtkSharp\samples; Comment: Makefile generator tool.
 Name: {group}\Applications\Samples Directory; Filename: {app}\samples; Components: gtk\gtkSharp\samples; Comment: Gtk# samples directory
-Name: {group}\Applications\Glade 2; Filename: {app}\bin\glade-2.exe; Components: gtk; Comment: Glade 2 Gui Builder
+Name: {group}\Applications\Glade 3; Filename: {app}\bin\glade-3.exe; Components: gtk; Comment: Glade 3 Gui Builder
 Name: {group}\Applications\Gtk Theme Selector; Filename: {app}\bin\gtkthemeselector.exe; Components: gtk; Comment: GTK Theme Selector
-Name: {group}\Applications\Monodoc Browser; IconFilename: {app}\mono.ico; Filename: {app}\bin\monodoc.bat; Components: gtk\gtkSharp\monodoc; Comment: Mono Documentation Browser
+;Name: {group}\Applications\Monodoc Browser; IconFilename: {app}\mono.ico; Filename: {app}\bin\monodoc.bat; Components: gtk\gtkSharp\monodoc; Comment: Mono Documentation Browser
 Name: {group}\XSP\XSP Test Web Server; Filename: {app}\bin\startXSP.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\XSP\XSP 2.0 Test Web Server; Filename: {app}\bin\startXSP2.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\{cm:ProgramOnTheWeb,Mono}; IconFilename: {app}\mono.ico; Filename: {app}\Mono.url
@@ -90,7 +93,6 @@ Name: {group}\{cm:ProgramOnTheWeb,Gtk+}; Components: gtk; Filename: {app}\GtkPlu
 Name: {group}\{cm:ProgramOnTheWeb,Gtk#}; Components: gtk\gtkSharp; Filename: {app}\GtkSharp.url
 Name: {group}\XSP\XSP Index Page; Components: xsp; Filename: {app}\Xsplocal.url
 Name: {group}\XSP\XSP 2.0 Index Page; Components: xsp; Filename: {app}\Xsplocal2.url
-;Name: {group}\XSP\MonoDoc Web; Components: xsp and gtk\gtkSharp\monodoc; Filename: {app}\MonoDocWeb.url
 
 [Registry]
 Root: HKLM; Subkey: SOFTWARE\Novell\Mono; Flags: uninsdeletekeyifempty
@@ -120,7 +122,7 @@ Type: files; Name: {app}\GtkPlus.url
 Type: files; Name: {app}\GtkSharp.url
 Type: files; Name: {app}\Xsplocal.url
 Type: files; Name: {app}\Xsplocal2.url
-;Type: files; Name: {app}\MonoDocWeb.url
+Type: files; Name: {app}\MonoDocWeb.url
 ;TODO: delete monodoc and gconf cruft?
 
 [Code]

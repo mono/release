@@ -74,11 +74,11 @@ win_4_i386_ZIP_RUNTIME_DEPS=(
 # Note: $DISTRO must have the hyphens converted to underscores
 win_4_i386_ZIP_DEPS=(
 
-	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/glib-2.8.6.zip
-	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/glib-dev-2.8.6.zip
-	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/dependencies/gettext-0.14.5.zip
-	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/dependencies/gettext-dev-0.14.5.zip
-	http://ftp.gnome.org/pub/GNOME/platform/2.12/2.12.2/win32/dependencies/libiconv-1.9.1.bin.woe32.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/glib-2.12.3.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/glib-dev-2.12.3.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/dependencies/gettext-0.14.5.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/dependencies/gettext-dev-0.14.5.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/dependencies/libiconv-1.9.1.bin.woe32.zip
 
 	# This pkg-config expects win32 names... not cygwin names...
 	#ftp://ftp.gtk.org/pub/gtk/v2.8/win32/dependencies/pkg-config-0.20.zip
