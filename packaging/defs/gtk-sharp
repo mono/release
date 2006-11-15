@@ -83,19 +83,23 @@ win_4_i386_ZIP_RUNTIME_DEPS=(
 	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/gnome-icon-theme-2.12.0.zip
 	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/gnome-icon-theme-dev-2.12.0.zip
 
+	# Use this until a binary build of gtk+ 2.10.6 comes out on ftp.gnome.org
+	http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libwimp_2.10.6.zip
+
 )
 
 win_4_i386_ZIP_DEPS=(
 
 	http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2-2.6.20-1-mono.win32.zip
 
-	http://www.gimp.org/~tml/gimp/win32/librsvg-2.4.0.zip
-	http://www.gimp.org/~tml/gimp/win32/librsvg-dev-2.4.0.zip
-	http://www.gimp.org/~tml/gimp/win32/libgsf-1.8.2-20040121.zip
-	http://www.gimp.org/~tml/gimp/win32/libgsf-dev-1.8.2.zip
-
-	#http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-dev.zip
-        #http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-bin.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/librsvg/2.16/librsvg-2.16.1.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/librsvg/2.16/librsvg-dev-2.16.1.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/librsvg/2.16/svg-gdk-pixbuf-loader-2.16.1.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/librsvg/2.16/svg-gtk-engine-2.16.1.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/libgsf/1.14/libgsf-1.14.3.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/libgsf/1.14/libgsf-dev-1.14.3.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/libgsf/1.14/libgsf-gnome-1.14.3.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/libgsf/1.14/libgsf-gnome-dev-1.14.3.zip
 
 	# TODO: add gconf and other libs so gnome# and gtkhtml# can be built, and then mono-tools
 
@@ -127,6 +131,8 @@ win_4_i386_ZIP_DEPS=(
 	# Hmm... gtk# apps don't like (the 2.5 version from 2.12, try 2.6)
 	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libglade-2.6.0.zip
 	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libglade-dev-2.6.0.zip
+	#http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-dev.zip
+        #http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-bin.zip
 
 	# libgnomeprintui
 	http://ftp.gnome.org/pub/GNOME/desktop/2.16/2.16.0/win32/libgnomeprint-2.12.1.zip

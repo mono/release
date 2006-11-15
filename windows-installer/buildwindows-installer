@@ -254,8 +254,7 @@ os.chdir("..")
 
 ###########################################
 ## Special case for gtk-wimp theme
-## TODO: Get this working with new gtk
-#os.chdir('gtk')
+os.chdir('gtk')
 #
 #if not os.path.exists('lib/gtk-2.0/2.4.0'):
 #	print "Error munging gtk-wimp: Path doesn't exist: lib/gtk-2.0/2.4.0"
@@ -284,10 +283,16 @@ os.chdir("..")
 #shutil.copy('share/themes/gtk-wimp/gtk-2.0/gtkrc', 'etc/gtk-2.0')
 #
 #shutil.rmtree('gtk-wimp-0.7.0-bin')
+
+# Replace libwimp that came with 2.10.3 with 2.10.6
+#  (until binaries on fgo are updated)
+os.unlink('lib/gtk-2.0/2.10.0/engines/libwimp.dll')
+shutil.move('libwimp.dll', 'lib/gtk-2.0/2.10.0/engines')
+
 #
-#os.chdir("..")
+os.chdir("..")
 #
-#
+
 #########################################
 
 ########################################
