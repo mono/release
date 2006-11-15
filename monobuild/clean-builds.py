@@ -48,7 +48,10 @@ def handle_link_files(path):
 def get_size_of_files(files):
 	sum = 0
 	for f in files:
-		if os.path.isdir(f):
+		# Skip missing files
+		if not os.path.exists(f):
+			pass
+		elif os.path.isdir(f):
 			new_files = []
 			for f2 in os.listdir(f):
 				new_files.append(f + os.sep + f2)
@@ -60,11 +63,9 @@ def get_size_of_files(files):
 
 
 def cleanup(files, type):
-	# TODO: see how much space these files take up
-	if type != 'link':
-		size = get_size_of_files(files)
-		print "Total size for %s: %d (MB)" % (type, size / 1024 / 1024)
-		space_summary.append("Total size for %s: %d (MB)" % (type, size / 1024 / 1024))
+	size = get_size_of_files(files)
+	print "Total size for %s: %d (MB)" % (type, size / 1024 / 1024)
+	space_summary.append("Total size for %s: %d (MB)" % (type, size / 1024 / 1024))
 	for f in files:
 		# os.path.exists doesn't check existance of the link, but the target
 		if os.path.islink(f):
@@ -72,6 +73,8 @@ def cleanup(files, type):
 			if execute:
 				print "for real..."
 				os.unlink(f)
+			else:
+				print
 		elif os.path.exists(f):
 			print "Removing (%s) " % type + f,
 			if execute:

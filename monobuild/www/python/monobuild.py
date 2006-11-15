@@ -309,8 +309,11 @@ def packagestatus(req, **vars):
 				duration = "?"
 
 			# New times based on clients timezone (accurrate?)
-			tz_start = utils.adjust_for_timezone(timezone_offset, values['start'])
-			tz_finish = utils.adjust_for_timezone(timezone_offset, values['finish'])
+			try:
+				tz_start = utils.adjust_for_timezone(timezone_offset, values['start'])
+				tz_finish = utils.adjust_for_timezone(timezone_offset, values['finish'])
+			except:
+				raise `version`
 
 			req.write("""
 
