@@ -20,18 +20,24 @@ import config
 #pdb.set_trace()
 include_zip = False
 fail_on_missing=True
+skip_installers = False
 try:
 
-	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "include_zip", "skip_missing" ])
+	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "include_zip", "skip_missing", "skip_installers" ])
 	for option, value in opts:
 		if option == "--include_zip":
 			 include_zip = True
 		if option == "--skip_missing":
 			 fail_on_missing = False
+		if option == "--skip_installers":
+			 skip_installers = True
 
 	(bundle_name, dest) = remaining_args
 except:
-	print "Usage: ./sync-bundle.py <bundle name> <rsync dest>"
+	print "Usage: ./sync-bundle.py [ --include_zip | --skip_installers | --skip_missing ] <bundle name> <rsync dest>"
+	print " --include_zip includes zip based distros"
+	print " --skip_installers will not copy installers"
+	print " --skip_missing will allow missing packages for a various platform"
 	print " Ex: ./sync-bundle.py RELEASE wblinux.provo.novell.com:wa/msvn/release/packaging"
 	sys.exit(1)
 
@@ -98,7 +104,8 @@ for dir in	['linux-installer/output/[[version]]/linux-installer',
 	(prefix, sync_dir) = latest.split(splitter)
 	os.chdir(prefix)
 
-	status, output = utils.launch_process('rsync -avzR -e ssh %s %s/archive' % (archive_version + os.sep + sync_dir, dest))
+	if not skip_installers:
+		status, output = utils.launch_process('rsync -avzR -e ssh %s %s/archive' % (archive_version + os.sep + sync_dir, dest))
 
 	os.chdir(cwd)
 
