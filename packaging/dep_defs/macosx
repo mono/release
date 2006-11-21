@@ -10,7 +10,17 @@ BUILD_HOSTS = ['macos-10-ppc', 'macos-10-x86']
 packages = [
 	{
 		'name': 'pkgconfig', 
-		'source': 'http://pkgconfig.freedesktop.org/releases/pkgconfig-0.15.0.tar.gz'
+		'source': 'http://pkgconfig.freedesktop.org/releases/pkgconfig-0.15.0.tar.gz',
+		'post':"""
+			# Configure shell wrapper for pkg-config so it will look for .pc files when installed (#79671)
+			cd /tmp/install/bin
+			mv pkg-config pkg-config.bin
+			cat <<EOF > pkg-config
+#!/bin/sh
+PKG_CONFIG_PATH=/tmp/install/lib/pkgconfig:\$PKG_CONFIG_PATH /tmp/install/bin/pkg-config.bin "\$@"
+EOF
+			chmod 755 pkg-config
+			"""
 	},
 	{
 		'name': 'gettext', 
