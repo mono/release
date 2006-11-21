@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+import re
+import os
+import sys
+
+import commands
+
+output = commands.getoutput('ipcs')
+reg = re.compile('(0x\S+)')
+
+for line in output.split('\n'):
+	match = reg.search(line)
+	if match:
+		print match.group(1)
+		os.system('ipcrm -S %s' % match.group(1))
+

@@ -1,0 +1,27 @@
+#!/usr/bin/python
+
+import sys
+import glob
+import os
+
+sys.path.append('../pyutils')
+
+import packaging
+
+try:
+	distros = [ sys.argv[1] ]
+except:
+	print "Usage: ./clean-semaphores <distro>"
+	print "  where <distro> can be 'all'"
+	sys.exit(1)
+
+if distros == ["all"]:
+	distros = map(os.path.basename, glob.glob("../packaging/conf/*-*-*"))
+
+for distro in distros:
+	env = packaging.buildenv(os.path.basename(distro))
+	env.ssh.copy_to('do-clean-semaphores', '/tmp')
+	# exec_as_root probably isn't portable...
+	#env.ssh.execute('/tmp/do-clean-semaphores', exec_as_root=1)
+	env.ssh.execute('/tmp/do-clean-semaphores')
+
