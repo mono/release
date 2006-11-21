@@ -90,8 +90,7 @@ os.chdir('..')
 installer_dirs = []
 for dir in	['linux-installer/output/[[version]]/linux-installer',
 		'windows-installer/Output/[[version]]/windows-installer',
-		'macosx/new/output/[[version]]/macos-10-ppc',
-		'macosx/new/output/[[version]]/macos-10-x86',
+		'macosx/new/output/[[version]]/macos-10-universal',
 		'sunos/output/[[version]]/sunos-8-sparc',
 		]:
 

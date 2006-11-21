@@ -182,5 +182,8 @@ macos_10_x86_ZIP_DEPS=(
 	# Panther's freetype is too old... Tiger's is ok.  we need it here
 	http://primates.ximian.com/~wberrier/macos/deps/x86/freetype-2.1.10-0.macos10.novell.x86.zip
 
+	# 10.3 and 10.4 have differing expat versions, use our own
+	http://primates.ximian.com/~wberrier/macos/deps/x86/expat-1.95.8-0.macos10.novell.x86.zip
+
 )
 

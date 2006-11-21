@@ -33,8 +33,6 @@ What gets installed inside Mono.framework?\
 \
 Included in this version of the Mono.framework is Cocoa#.  Cocoa# is an API bridge that allows Mono developers to call Cocoa APIs while using Mono and C#.  A Cocoa# wiki is available at http://www.mono-project.com/CocoaSharp\
 \
-This uninstallMono.sh script is in the Resources directory of MonoFramework.pkg.\
-\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
 \cf0 If you'd like to access the mono manpages you'll have to add /Library/Framework/Mono/Versions/Current/man to your manpath\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural
@@ -43,10 +41,9 @@ During the postinstall phase of the installation, links to /usr/bin are created 
 \
 A simple uninstallMono.sh script is included in the disk image.  This is shell script that must be run as root, and it will remove the Mono.framework and the links in /usr/bin.\
 \
-If you have problems find or linking with libmono-profiler-cov.dylib or other dylibs, add /Library/Frameworks/Mono.framework/Versions/Current/lib to DYLD_LIBRARY_PATH .  This is due to a relocation problem.\
-\
 This package was created by the Mono team.  Major contributors to this team include (in alphabetical order): \
 \
+Wade Berrier\
 Adhamh Findlay\
 Miguel de Icaza\
 Urs Muff\

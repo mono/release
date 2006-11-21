@@ -20,6 +20,7 @@ import re
 
 import utils
 import packaging
+import config
 
 if len(sys.argv) < 4:
 	print "Usage: ./do-dep-build <distro> <def filename> <release> <build_location>"
@@ -54,7 +55,7 @@ for pack in packages:
 	if pack.has_key('version'):
 		version = pack['version']
 	else:
-		version = re.compile('(\w+)-(.*)(\.tar\.gz|\.tar\.bz2|\.zip)').search(os.path.basename(pack['source'])).group(2)
+		version = re.compile('%s-(.*)%s' % (pack['name'], config.sources_ext_re_string)).search(os.path.basename(pack['source'])).group(1)
 
 
 	if pack.has_key('build'):
@@ -88,7 +89,10 @@ for pack in packages:
 		env_string = ""
 		if built_packages:
 			package_string = " ".join(built_packages)
-			utils.launch_process(build_location + '/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps ' + package_string)
+			(code, output) = utils.launch_process(build_location + '/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps ' + package_string)
+			if code:
+				print "Error running do-install-zip-pkgs, code: %d" % code
+				sys.exit(1)
 			env_string = ". /tmp/build_deps/env.sh; "
 
 		os.mkdir('scratch')

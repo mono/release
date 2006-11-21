@@ -1,0 +1,114 @@
+#!/usr/bin/env python
+
+import sys
+import os
+import re
+import commands
+import shutil
+import distutils.dir_util
+import distutils.file_util
+
+import pdb
+
+try:
+	(script, distro1, distro2, dest_dir) = sys.argv
+except:
+	print "Usage: ./universal_merge <distro1> <distro2> <destdir>"
+	print " Ex: ./universal_merge macos-10-x86 macos-10-ppc PKGROOT"
+	sys.exit(1)
+
+# TODO: make sure that the 2 PKGROOT_ dirs have a set of matched files
+#  just as an extra check
+
+os.chdir('PKGROOT_' + distro1)
+
+candidate_filelist = []
+full_filelist = []
+print "Gathering filelist..."
+# Get a list of all files (which are not symlinks)
+for root, dirs, files in os.walk('.'):
+        for file in files:
+		full_path = root + os.sep + file
+		full_filelist.append(full_path)
+		if os.path.isfile(full_path) and not os.path.islink(full_path):
+			candidate_filelist.append(full_path)
+
+# Get report from 'file' as to file types
+(code, output) = commands.getstatusoutput('file ' + ' '.join(candidate_filelist))
+
+# Find which files are native
+print "Determining native files..."
+native_reg = re.compile('(.*):.*(Mach-O|ar archive)')
+native_files = []
+for match in native_reg.finditer(output):
+	native_files.append(match.group(1))
+
+native_files.sort()
+print "\n".join(native_files)
+
+os.chdir('..')
+
+# Could auto detect these by diffing...
+platform_specific_headers = [ 'tiffconf.h', 'glibconfig.h' ]
+
+arch1 = distro1.split('-')[2]
+arch2 = distro2.split('-')[2]
+
+# Start the merging
+print "Merging..."
+for i in full_filelist:
+
+	src1 = 'PKGROOT_' + distro1 + os.sep + i
+	src2 = 'PKGROOT_' + distro2 + os.sep + i
+	dest = 'PKGROOT' + os.sep + i
+	filename = os.path.basename(i)
+	dir = os.path.dirname(dest)
+
+	# Make sure destdir exists
+	if not os.path.exists(dir):
+		distutils.dir_util.mkpath(dir)
+
+	# If we have a native file
+	if native_files.count(i):
+		# Lipo
+		#print "lipo'ing: " + i
+		sys.stdout.write('L')
+		sys.stdout.flush()
+		os.system('/usr/bin/lipo -create %s %s -output %s' % (src1, src2, dest) )
+
+	# We need to 'fake lipo' a plat specific header
+	elif platform_specific_headers.count(filename):
+		#print "Merging header: " + i
+		sys.stdout.write('M')
+		sys.stdout.flush()
+		(root, ext) = os.path.splitext(filename)
+		fd = open(dest, 'w')
+		fd.write("""
+#ifdef __LITTLE_ENDIAN__
+        #include <%s.x86.h>
+#elif __BIG_ENDIAN__
+        #include <%s.ppc.h>
+#endif
+""" % (root, root) )
+
+		# Copy each header
+		distutils.file_util.copy_file(src1, dir + os.sep + root + '.' + arch1 + '.h')
+		distutils.file_util.copy_file(src2, dir + os.sep + root + '.' + arch2 + '.h')
+
+	else:
+		# Just copy it
+		#print "Copying: " + i
+
+		# 'copy' the link
+		if os.path.islink(src1):
+			os.symlink(os.readlink(src1), dest)
+			sys.stdout.write('o')
+			sys.stdout.flush()
+		else:
+			distutils.file_util.copy_file(src1, dest)
+			sys.stdout.write('.')
+			sys.stdout.flush()
+
+
+print "\n\n --- Merging Complete! ---\n"	
+

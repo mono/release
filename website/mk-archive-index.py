@@ -40,8 +40,7 @@ distro_sources = "<p> <a href='../sources-%s'>Sources</a> </p>" % bundle_conf.in
 installer_info = [
 	{ 'dir_name': 'linux-installer',   'name': 'Linux Installer',         'ext': 'bin'},
 	{ 'dir_name': 'windows-installer', 'name': 'Windows Installer',       'ext': 'exe'},
-	{ 'dir_name': 'macos-10-ppc',      'name': 'Mac OSX Installer (ppc)', 'ext': 'dmg'},
-	{ 'dir_name': 'macos-10-x86',      'name': 'Mac OSX Installer (x86)', 'ext': 'dmg'},
+	{ 'dir_name': 'macos-10-universal','name': 'Mac OSX Installer (universal)', 'ext': 'dmg'},
 	{ 'dir_name': 'sunos-8-sparc',     'name': 'Solaris 8 SPARC Package', 'ext': 'pkg.gz'}
 ]
 
