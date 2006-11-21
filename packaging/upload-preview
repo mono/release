@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cd ../website
+./sync-bundle.py PRE-RELEASE mono-web@mono.ximian.com:release/monobuild/www/preview
+
+scp packaging.css mono-web@mono.ximian.com:release/monobuild/www/preview
+ssh mono-web@mono.ximian.com "cd release/website; ./mk-sources-index.py PRE-RELEASE ~/release/monobuild/www/preview/sources ~/release/monobuild/www/preview /monobuild/preview"
+ssh mono-web@mono.ximian.com "cd release/website; ./mk-distro-index.py --skip_zip PRE-RELEASE ~/release/monobuild/www/preview/packages ~/release/monobuild/www/preview mono.ximian.com /monobuild/preview"
+ssh mono-web@mono.ximian.com "cd release/website; ./mk-archive-index.py PRE-RELEASE ~/release/monobuild/www/preview /monobuild/preview"
+ssh mono-web@mono.ximian.com "cd release/website; ./mk-repos.py PRE-RELEASE ~/release/monobuild/www/preview/packages ~/release/monobuild/www/preview mono.ximian.com /monobuild/preview"
+
+

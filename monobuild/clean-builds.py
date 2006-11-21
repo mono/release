@@ -64,7 +64,6 @@ def get_size_of_files(files):
 
 def cleanup(files, type):
 	size = get_size_of_files(files)
-	print "Total size for %s: %d (MB)" % (type, size / 1024 / 1024)
 	space_summary.append("Total size for %s: %d (MB)" % (type, size / 1024 / 1024))
 	for f in files:
 		# os.path.exists doesn't check existance of the link, but the target

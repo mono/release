@@ -11,6 +11,11 @@ USE_HOSTS=(
 # monodoc is in this list in order to build docscripts monoapi from mono tree
 MONO_DEPS=(
 	mono
+	#monodoc
+)
+
+# Put this dependency here so we can boostrap, but depend on it after that
+MONO_RECOMMEND_DEPS=(
 	monodoc
 )
 

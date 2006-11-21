@@ -58,12 +58,12 @@ USE_HOSTS=(
 #  (Or that mono is present for the snapshot builds)
 # libgdiplus is here only for System.Drawing tests (Hmm... this will fail the build on windows, solution?)
 MONO_DEPS=(
-	mono
 )
 
 # This way? and then install runtime deps before running the additional steps... ?  runtime and build?  Reinstall them all over again?
 MONO_RECOMMEND_DEPS=(
 	libgdiplus
+	mono
 )
 
 win_4_i386_ZIP_RUNTIME_DEPS=(
@@ -252,6 +252,13 @@ EOF
 EOF
 	cp mcs/class/lib/default/Mono.Posix.dll.config mcs/class/lib/net_2_0/
 
+	# allan requested these options:
+	# allan: -Os makes the native libraries a *lot* smaller
+	# allan: and -gdwarf-2 for the new-style debugging symbols
+	#export CFLAGS=" -Os -gdwarf-2"
+
+	# Could this be the cause of: install_name_tool: object: ./bin/mono malformed object (unknown load command 15) ??
+	#export CFLAGS="-gdwarf-2"
 
 	# Need a version here...
 	./configure --prefix=$MONO_PREFIX --with-preview=yes
@@ -300,11 +307,11 @@ RELEASE_PATH=(
 make_dist () {
 	. /etc/profile
 	./autogen.sh
-	if [ $HEAD_or_RELEASE == "HEAD" ] ; then
-                make dist-zip MCS=mcs RESGEN=resgen
-        else
+	#if [ $HEAD_or_RELEASE == "HEAD" ] ; then
+        #        make dist-zip MCS=mcs RESGEN=resgen
+        #else
                 make dist MCS=mcs RESGEN=resgen
-        fi
+        #fi
 
 }
 

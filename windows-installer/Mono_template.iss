@@ -39,7 +39,7 @@ Name: custom; Description: Custom installation; Flags: iscustom
 
 [Components]
 Name: mono; Description: Mono Files; Types: full compact custom; Flags: fixed
-Name: gtk; Description: GTK+ 2.8 and Gnome 2.12 Files; Types: full custom
+Name: gtk; Description: GTK+ 2.10 and Gnome 2.16 Files; Types: full custom
 Name: gtk\gtkSharp; Description: Gtk# @@GTK_SHARP_VERSION@@ Files; Types: full custom
 Name: gtk\gtkSharp\monodoc; Description: Monodoc; Types: full custom
 Name: gtk\gtkSharp\geckosharp; Description: Gecko# Files; Types: full custom
