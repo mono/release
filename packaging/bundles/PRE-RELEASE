@@ -1,10 +1,10 @@
 # Directory used when created go-mono.com/archive/<archive_version>
 #  This will need to be manually bumped each time on head... don't forget!!
-archive_version="1.2"
+archive_version="1.2.1"
 
-bundle_urlname="rc"
+bundle_urlname="preview"
 
-bundle_desc="Packages from the latest release candidate"
+bundle_desc="Preview packages before an official release"
 
 # This is left empty, because versions on RELEASE will always be the latest from sources/packages
 #  specifying versions is more for a released branch

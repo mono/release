@@ -295,6 +295,10 @@ os.chdir("..")
 #
 os.chdir('gtk')
 shutil.copy('share/themes/MS-Windows/gtk-2.0/gtkrc', 'etc/gtk-2.0')
+
+# Make a copy of rsvg to avoid a dllmap
+shutil.copy('bin/librsvg-2-2.dll', 'bin/librsvg-2.dll')
+
 os.chdir('..')
 
 #
@@ -324,25 +328,66 @@ os.chdir("..")
 os.chdir('mono')
 
 # Add rsvg map
-utils.add_dll_map('etc/mono/config', '<dllmap dll="rsvg-2" target="librsvg-2-2.dll"/>')
+#  Copy the file instead...
+#utils.add_dll_map('etc/mono/config', '<dllmap dll="rsvg-2" target="librsvg-2-2.dll"/>')
 
 # Remove other maps that aren't necessary on win32 (this should be done with the autotools so that people
 #  who run from source will get the changes)
-utils.remove_line_matching('etc/mono/config', '<dllmap dll="MonoPosixHelper" target="libMonoPosixHelper.so"/>')
-utils.remove_line_matching('etc/mono/config', '<dllmap dll="libmySQL.dll" target="libmysqlclient.so" />')
-utils.remove_line_matching('etc/mono/config', '<dllmap dll="odbc32.dll" target="libodbc.so" />')
-utils.remove_line_matching('etc/mono/config', '<dllmap dll="oci" target="clntsh" />')
-utils.remove_line_matching('etc/mono/config', '<dllmap dll="db2cli" target="libdb2_36.so"/>')
-utils.remove_line_matching('etc/mono/config', '<dllmap dll="msvcrt" target="libc.so.6"/>')
-utils.remove_line_matching('etc/mono/config', '<dllmap dll="libX11" target="libX11.so"/>')
-utils.remove_line_matching('etc/mono/config', '<dllmap dll="libcairo-2.dll" target="libcairo.so.2"/>')
-utils.remove_line_matching('etc/mono/config', 'sqlite')
+#utils.remove_line_matching('etc/mono/config', '<dllmap dll="MonoPosixHelper" target="libMonoPosixHelper.so"/>')
+#utils.remove_line_matching('etc/mono/config', '<dllmap dll="libmySQL.dll" target="libmysqlclient.so" />')
+#utils.remove_line_matching('etc/mono/config', '<dllmap dll="odbc32.dll" target="libodbc.so" />')
+#utils.remove_line_matching('etc/mono/config', '<dllmap dll="oci" target="clntsh" />')
+#utils.remove_line_matching('etc/mono/config', '<dllmap dll="db2cli" target="libdb2_36.so"/>')
+#utils.remove_line_matching('etc/mono/config', '<dllmap dll="msvcrt" target="libc.so.6"/>')
+#utils.remove_line_matching('etc/mono/config', '<dllmap dll="libX11" target="libX11.so"/>')
+#utils.remove_line_matching('etc/mono/config', '<dllmap dll="libcairo-2.dll" target="libcairo.so.2"/>')
+#utils.remove_line_matching('etc/mono/config', 'sqlite')
+
+# Ditch the mono config file (should happen in autofoo, but until then... do it here)
+os.unlink('etc/mono/config')
+
+fd = open('etc/mono/config', 'w')
+fd.write("\n")
+fd.close()
 
 os.chdir("..")
 
 #
 #########################################
 
+
+##########################################
+# Special case for xsp  (work around as posted in bug #79920)
+
+#What I did to make it work was:
+#  1. Create a 'exes' directory under lib/mono/1.0 and lib/mono/2.0
+#  2. Move xsp.exe from lib/mono/1.0 to to lib/mono/1.0/exes
+#  3. Move xsp2.exe from lib/mono/2.0 to to lib/mono/2.0/exes
+#  4. Update xsp, xsp.bat, xsp2 and xsp2.bat to the new directory.
+
+os.chdir('xsp')
+
+os.mkdir('lib/mono/1.0/winhack')
+os.mkdir('lib/mono/2.0/winhack')
+
+os.rename('lib/mono/1.0/xsp.exe', 'lib/mono/1.0/winhack/xsp.exe')
+os.rename('lib/mono/2.0/xsp2.exe', 'lib/mono/2.0/winhack/xsp2.exe')
+
+# Munge wrappers
+parameter_map = { 
+	re.compile('lib/mono/1.0'): "lib/mono/1.0/winhack",
+	re.compile('lib/mono/2.0'): "lib/mono/2.0/winhack",
+}
+
+for file in "xsp xsp2".split():
+	utils.substitute_parameters_in_file('bin' + os.sep + file, parameter_map)
+
+os.chdir('..')
+
+# note: No changes needed for startXSP*
+
+#
+#########################################
 
 
 # Add random files for shortcuts
