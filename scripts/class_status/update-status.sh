@@ -5,28 +5,28 @@
 VERSION=$1
 NAME=$2
 SECTIONS=(
-	mscorlib
-	cscompmgd
+#	Microsoft.VisualBasic
 	System
-	System.Xml
 	System.Configuration.Install
 	System.Data
 	System.Data.OracleClient
 	System.Design
+	System.DirectoryServices
 	System.Drawing
 	System.Drawing.Design
-	System.DirectoryServices
+	System.EnterpriseServices
 	System.Management
 	System.Messaging
+	System.Runtime.Remoting
+	System.Runtime.Serialization.Formatters.Soap
+	System.Security
 	System.ServiceProcess
 	System.Web
 	System.Web.Services
-#	Microsoft.VisualBasic
-	System.EnterpriseServices
-	System.Runtime.Remoting
 	System.Windows.Forms
-	System.Runtime.Serialization.Formatters.Soap
-	System.Security
+	System.Xml
+	cscompmgd
+	mscorlib
 )
 
 DEST="mono-web@mono.ximian.com:go-mono/class-status/$NAME"
@@ -54,8 +54,8 @@ case $VERSION in
 		Microsoft.Build.Tasks
 		Microsoft.Build.Utilities
 		System.Configuration
-		System.Transactions
 		System.ServiceProcess
+		System.Transactions
 	) ;;
 esac
 
