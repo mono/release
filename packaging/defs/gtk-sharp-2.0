@@ -112,6 +112,7 @@ win_4_i386_ZIP_BUILD () {
 
         # Clean up the MS gac of gtk-sharp
         rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp
+        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet
 
         make || exit 1
         make install || exit 1
@@ -128,6 +129,7 @@ win_4_i386_ZIP_BUILD () {
 	rm -Rf /tmp/temp_install
         mkdir -p /tmp/temp_install
         mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/temp_install
+        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet /tmp/temp_install
 
         # TODO: Should I be using mono's gacutil instead to install these files?  yes!
 
