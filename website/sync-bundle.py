@@ -94,19 +94,23 @@ for dir in	['linux-installer/output/[[version]]/linux-installer',
 		'sunos/output/[[version]]/sunos-8-sparc',
 		]:
 
-	candidates = glob.glob(dir.replace('[[version]]', archive_version) + os.sep + "*")
-	latest = utils.version_sort(candidates).pop()
-	installer_dirs.append(latest)
-	cwd = os.getcwd()
+	try:
+		candidates = glob.glob(dir.replace('[[version]]', archive_version) + os.sep + "*")
+		latest = utils.version_sort(candidates).pop()
+		installer_dirs.append(latest)
+		cwd = os.getcwd()
 
-	splitter = os.sep + archive_version + os.sep
-	(prefix, sync_dir) = latest.split(splitter)
-	os.chdir(prefix)
+		splitter = os.sep + archive_version + os.sep
+		(prefix, sync_dir) = latest.split(splitter)
+		os.chdir(prefix)
 
-	if not skip_installers:
-		status, output = utils.launch_process('rsync -avzR -e ssh %s %s/archive' % (archive_version + os.sep + sync_dir, dest))
+		if not skip_installers:
+			status, output = utils.launch_process('rsync -avzR -e ssh %s %s/archive' % (archive_version + os.sep + sync_dir, dest))
 
-	os.chdir(cwd)
+		os.chdir(cwd)
+	except:
+		print "Problem syncing: " + dir
+		print "Skipping..."
 
 
 

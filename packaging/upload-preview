@@ -1,12 +1,18 @@
 #!/bin/sh
 
+BUNDLE="PRE-RELEASE"
+TARGET_USER="mono-web"
+TARGET_HOST="mono.ximian.com"
+
+BASE_DIR="~/release/monobuild/www/preview"
+BASE_URL="/monobuild/preview"
+
 cd ../website
-./sync-bundle.py PRE-RELEASE mono-web@mono.ximian.com:release/monobuild/www/preview
+./sync-bundle.py $BUNDLE $TARGET_USER@$TARGET_HOST:$BASE_DIR
 
-scp packaging.css mono-web@mono.ximian.com:release/monobuild/www/preview
-ssh mono-web@mono.ximian.com "cd release/website; ./mk-sources-index.py PRE-RELEASE ~/release/monobuild/www/preview/sources ~/release/monobuild/www/preview /monobuild/preview"
-ssh mono-web@mono.ximian.com "cd release/website; ./mk-distro-index.py --skip_zip PRE-RELEASE ~/release/monobuild/www/preview/packages ~/release/monobuild/www/preview mono.ximian.com /monobuild/preview"
-ssh mono-web@mono.ximian.com "cd release/website; ./mk-archive-index.py PRE-RELEASE ~/release/monobuild/www/preview /monobuild/preview"
-ssh mono-web@mono.ximian.com "cd release/website; ./mk-repos.py PRE-RELEASE ~/release/monobuild/www/preview/packages ~/release/monobuild/www/preview mono.ximian.com /monobuild/preview"
-
+scp packaging.css $TARGET_USER@$TARGET_HOST:$BASE_DIR
+ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-sources-index.py           $BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/sources"
+ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-distro-index.py --skip_zip $BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/packages $TARGET_HOST"
+ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-archive-index.py           $BUNDLE $BASE_DIR $BASE_URL"
+ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-repos.py                   $BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/packages $TARGET_HOST"
 

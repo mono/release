@@ -15,7 +15,7 @@ import config
 
 # Command line options
 try:
-	(script_name, bundle, sources_dir, output_dir, webroot_path) = sys.argv
+	(script_name, bundle, output_dir, webroot_path, sources_dir) = sys.argv
 except:
 	print "Usage: ./mk-sources-index.py <bundle name> <sources_dir> <output webdir> <webroot_path>"
 	sys.exit(1)

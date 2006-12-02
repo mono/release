@@ -145,7 +145,7 @@ def get_external_deps(env_obj, archive=False):
 # Command line options
 try:
 	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_zip"])
-	(bundle, package_src_dir, output_dir, hostname_url, webroot_path) = remaining_args
+	(bundle, output_dir, webroot_path, package_src_dir, hostname_url) = remaining_args
 except:
         print "Usage: ./mk-distro-index.py [--skip_zip] <bundle name> <package source dir> <output webdir> <hostname_url> <webroot_path>"
         sys.exit(1)

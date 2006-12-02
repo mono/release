@@ -54,9 +54,9 @@ if test x$DO_DRYRUN = x1 ; then
 fi
 
 ssh mono-web@go-mono.com "cp -f release/website/packaging.css		~/go-mono/"
-ssh mono-web@go-mono.com "cd release/website; ./mk-sources-index.py	$BUNDLE ~/go-mono/sources  ~/go-mono ''"
-ssh mono-web@go-mono.com "cd release/website; ./mk-distro-index.py	$BUNDLE ~/go-mono/download ~/go-mono go-mono.com ''"
-ssh mono-web@go-mono.com "cd release/website; ./mk-archive-index.py	$BUNDLE 		   ~/go-mono ''"
-ssh mono-web@go-mono.com "cd release/website; ./mk-repos.py		$BUNDLE ~/go-mono/download ~/go-mono go-mono.com ''"
+ssh mono-web@go-mono.com "cd release/website; ./mk-sources-index.py	$BUNDLE ~/go-mono '' ~/go-mono/sources"
+ssh mono-web@go-mono.com "cd release/website; ./mk-distro-index.py	$BUNDLE ~/go-mono '' ~/go-mono/download go-mono.com"
+ssh mono-web@go-mono.com "cd release/website; ./mk-archive-index.py	$BUNDLE ~/go-mono ''"
+ssh mono-web@go-mono.com "cd release/website; ./mk-repos.py		$BUNDLE ~/go-mono '' ~/go-mono/download go-mono.com"
 
 

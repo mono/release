@@ -23,7 +23,7 @@ import utils
 
 # Command line options
 try:
-	(script_name, bundle, package_src_dir, output_dir, hostname_url, webroot_path) = sys.argv
+	(script_name, bundle, output_dir, webroot_path, package_src_dir, hostname_url) = sys.argv
 	package_src_dir = os.path.abspath(package_src_dir)
 except:
         print "Usage: ./mk-repos.py <bundle name> <package source dir> <output webdir> <hostname_url> <webroot_path>"

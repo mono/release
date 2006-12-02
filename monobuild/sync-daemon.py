@@ -18,7 +18,7 @@ import utils
 
 # Target information
 host = 'mono-web@mono.ximian.com'
-target_dir = 'release/monobuild/www/builds'
+target_dir = '~/release/monobuild/www/builds'
 
 # Testing
 #host = 'wberrier@wblinux.provo.novell.com'
