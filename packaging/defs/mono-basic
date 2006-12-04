@@ -46,7 +46,8 @@ win_4_i386_ZIP_BUILD () {
 	OLDPATH=$PATH
 
 	# compiler croaks if this isn't here...
-	mkdir bin
+	# Not needed anymore
+	#mkdir bin
 
 	########################## 1.0 build #################################
         CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322`
@@ -62,7 +63,7 @@ win_4_i386_ZIP_BUILD () {
 	# Install
 	export PATH=$OLDPATH
 	cd bin
-	/tmp/build_deps/bin/gacutil -package 1.0 -i Microsoft.VisualBasic.dll -root `cygpath -m /tmp/install/lib`
+	/tmp/build_deps/bin/gacutil -package 1.0 -i Microsoft.VisualBasic.dll -root `cygpath -m /tmp/install/lib` || exit 1
 	cd ..
 
 	########################## 2.0 build #################################
@@ -79,7 +80,7 @@ win_4_i386_ZIP_BUILD () {
 	# Install
 	export PATH=$OLDPATH
 	cd bin
-	/tmp/build_deps/bin/gacutil -package 2.0 -i Microsoft.VisualBasic.dll -root `cygpath -m /tmp/install/lib`
+	/tmp/build_deps/bin/gacutil -package 2.0 -i Microsoft.VisualBasic.dll -root `cygpath -m /tmp/install/lib` || exit 1
 	cd ..
 
 }
