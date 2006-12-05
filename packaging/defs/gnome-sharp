@@ -1,0 +1,40 @@
+BUILD_HOSTS=(
+	win-4-i386
+)
+
+MKTARBALL_HOST="suse-101-i586"
+
+USE_HOSTS=(${BUILD_HOSTS[@]})
+
+MONO_DEPS=(
+	mono
+	monodoc
+	gtk-sharp-2.10
+)
+
+get_destroot () {
+	DEST_ROOT=$DISTRO
+}
+
+HEAD_PATH=(
+	trunk/gnome-sharp
+)
+RELEASE_PATH=(
+	tags/gnome-sharp/[[versiondot]]/gnome-sharp
+)
+
+update_version_file () {
+	sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$VERSION/" bootstrap-2.16
+}
+
+make_dist () {
+        # This is needed on suse systems with gnome in /opt
+        . /etc/profile
+	./bootstrap-2.16
+        make dist
+}
+
+# TODO:
+win_4_i386_ZIP_BUILD () {
+}
+

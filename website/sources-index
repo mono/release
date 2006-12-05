@@ -19,10 +19,13 @@
 #	monodoc mono-tools gecko-sharp gecko-sharp-2.0 gtksourceview-sharp-2.0 monodevelop boo ikvm mono-debugger heap-buddy cocoa-sharp nant ironpython
 
 	<h3>Gtk# 2</h3>
-#	gtk-sharp-2.0 gtk-sharp-2.8
+#	gtk-sharp-2.0
 
 	<h3>Other</h3>
 #	last-exit
+
+	<h3>Latest Gtk# (which are only supported on newer distros)</h3>
+#	gtk-sharp-2.8 gnome-sharp gtk-sharp-2.10
 
 </body>
 </html>

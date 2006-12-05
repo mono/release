@@ -56,6 +56,14 @@ arch2 = distro2.split('-')[2]
 
 # Start the merging
 print "Merging..."
+print ""
+print "Legend:"
+print "L: native binary lipo"
+print "M: plat specific header"
+print "o: copy symlink"
+print ".: copy file"
+print ""
+
 for i in full_filelist:
 
 	src1 = 'PKGROOT_' + distro1 + os.sep + i

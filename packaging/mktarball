@@ -7,6 +7,7 @@ import sys
 import distutils.dir_util
 import glob
 import commands
+import getopt
 
 import pdb
 
@@ -19,43 +20,42 @@ import config
 
 def usage():
 	print ""
-	print "Usage: ./mktarball <package> <version|snap> [svn rev]"
-	print " where version is a tagged version from svn"
-	print " Note: if you specify snap, you must specify svn rev"
+	print "Usage: ./mktarball [--snapshot] [--force] <package> <version|srv rev>"
+	print " where version is a tagged released version or an svn revision"
+	print " Note: if you specify snapshot, you must specify 'svn rev' instead of 'version'"
+	print " --force is used to override an already existing tarball, "
+	print "   or retry a version that's know to fail"
 	print ""
 
+HEAD_or_RELEASE = "RELEASE"
+force = False
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "snapshot", "force" ])
+for option, value in opts:
+        if option == "--snapshot":
+                 HEAD_or_RELEASE = "HEAD"
+        if option == "--force":
+                 force = True
 
 ### Command line arg handling ###
-if len(sys.argv) < 3:
+try:
+	(package, version) = remaining_args
+except:
 	usage()
 	sys.exit(1)
-
-package=sys.argv[1]
-if sys.argv[2] == "snap":
-	try:
-		version = sys.argv[3]
-	except IndexError:
-		usage()
-		sys.exit(1)
-	HEAD_or_RELEASE = "HEAD"
-else:
-	version=sys.argv[2]
-	HEAD_or_RELEASE = "RELEASE"
-
 
 ### End of Command line arg handling ###
 
 repo = datastore.source_file_repo()
 
-# Check to see if this is already there
-if repo.contains(HEAD_or_RELEASE, package, version):
+# Check to see if this is already there (if we haven't used the force option to override)
+if repo.contains(HEAD_or_RELEASE, package, version) and not force:
 	# Check to see if the state is failure
         repo_info = repo.get_tarball_state_info(HEAD_or_RELEASE, package, read_info=False)
 	if repo_info['state'][version] == "failure":
 		print "Tarball creation for %s version %s (%s) failed already" % (package, version, HEAD_or_RELEASE) 
-		print "  Remove from tarball_map if you want to try again"
+		print "  Use the --force option if you want to try again"
 	else:
-		print "Source file for %s version %s (%s) exists" % (package, version, HEAD_or_RELEASE) 
+		print "Source file for %s version %s (%s) exists, use --force to override" % (package, version, HEAD_or_RELEASE) 
 	sys.exit(1)
 
 LOGFILE = "%s/%s/%s/%s.log" % (config.mktarball_logs, HEAD_or_RELEASE, package, version)

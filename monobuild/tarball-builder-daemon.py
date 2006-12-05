@@ -87,7 +87,7 @@ class tarball_builder(threading.Thread):
 						break
 
 					if not self.distfiles.contains('HEAD', pack_name, str(latest_for_package)) and not sigint_event.isSet():
-						command = "cd %s; ./mktarball %s snap %d" % (config.packaging_dir, pack_name, latest_for_package)
+						command = "cd %s; ./mktarball --snapshot %s %d" % (config.packaging_dir, pack_name, latest_for_package)
 						log.log("Executing: %s\n" % (command) )
 
 						# TODO: the system needs to be smarter about reinstalling the same rpms over and over...

@@ -1,18 +1,6 @@
-web_index=7
-
 def_alias="gtk-sharp-2.0"
 
-version_selection_reg="2\.8\.\d+"
-
 BUILD_HOSTS=(
-	fedora-5-i386
-	fedora-5-x86_64
-	suse-100-i586
-	suse-100-ppc
-	suse-100-x86_64
-	suse-101-i586
-	suse-101-ppc
-	suse-101-x86_64
 	win-4-i386
 )
 
@@ -23,20 +11,31 @@ MONO_DEPS=(
 	monodoc
 )
 
-MKTARBALL_HOST="suse-100-i586"
+MKTARBALL_HOST="suse-101-i586"
 
 get_destroot () {
 	DEST_ROOT=$DISTRO
 }
 
+HEAD_PATH=(
+        trunk/gtk-sharp
+)
+RELEASE_PATH=(
+        tags/gtk-sharp/[[versiondot]]/gtk-sharp
+)
+
+get_source () {
+        $SVNEXPORT $MONO_ROOT/$SVN_PATHS
+}
+
 update_version_file () {
-        sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$VERSION/" bootstrap-2.8
+        sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$VERSION/" bootstrap-2.10
 }
 
 make_dist () {
         # This is needed on suse systems with gnome in /opt
         . /etc/profile
-        ./bootstrap-2.8
+        ./bootstrap-2.10
         make dist
 }
 
