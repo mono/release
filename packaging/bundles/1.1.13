@@ -1,6 +1,6 @@
 # Directory used when created go-mono.com/archive/<archive_version>
 #  This will need to be manually bumped each time... don't forget!!
-archive_version="1.1.13.8.1"
+archive_version="1.1.13.8.2"
 
 # This is used for web locations for sources, distro download indicies, and for repos
 # Ex: go-mono.com/sources-stable
@@ -25,7 +25,7 @@ bundle_desc="Latest packages from the 1.1.13.8 maintenance branch"
 #  Populate this based on what a HEAD release went at, and then make minor updates when appropriate
 #  These versions will also be used to select sources
 versions=(
-	mono="1.1.13.8.1"
+	mono="1.1.13.8.2"
 	libgdiplus="1.1.13.6"
 	xsp="1.1.13.7"
 	mod_mono="1.1.13.5"

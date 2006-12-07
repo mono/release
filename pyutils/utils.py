@@ -28,7 +28,7 @@ import popen2
 import signal
 import fcntl
 import smtplib
-import urllib
+import urllib2
 
 # Catch this error, and then die later on if the namespace isn't found
 #  (Allows us to use launch_process without having python-devel rpm installed on SuSE type machines)
@@ -212,15 +212,39 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
 # Download url into cache (Don't redownload if file exists)
 def get_url(url, destination):
 
-	filename = os.path.basename(url)
+	download_filename = destination + os.sep + os.path.basename(url)
 
-        # Download if not in cache
-        if not os.path.exists(destination + os.sep + filename):
+	# Get size to make sure it's > 0
+	if os.path.exists(download_filename):
+		size = os.stat(download_filename).st_size
+	else:
+		size = 0
+
+        # Download if we don't have it already
+        if not size:
                 print "Downloading: %s ..." % url
 		if not os.path.exists(destination):
 			distutils.dir_util.mkpath(destination)
-		# Use this lib instead of wget for better portability (macos doesn't have wget by default)
-		(filename, headers) = urllib.urlretrieve(url, destination + os.sep + filename)
+
+		fd_out = open(download_filename, 'wb')
+
+		try:
+			fd_url = urllib2.urlopen(url)
+		except:
+			os.unlink(download_filename)
+			raise "ErrorDownloadingFile"
+
+		for data in fd_url.read():
+			fd_out.write(data)
+
+		fd_url.close()
+		fd_out.close()
+
+		# we didn't get any data...
+		if not os.stat(download_filename).st_size:
+			os.unlink(download_filename)
+			raise "ErrorDownloadingFile"
+
 
 def substitute_parameters_in_file(file, parameter_map, qualifier=match_all):
 
