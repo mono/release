@@ -64,8 +64,8 @@ esac
 #
 echo "Build tools"
 mcs -nowarn:0618 transform.cs XhtmlWriter.cs
-(cd ../../../mcs/tools/corcompare; make PROFILE=default)
-(cd ../../../mcs/tools/corcompare; make PROFILE=$PROFILE)
+(cd ../../../mcs/tools/corcompare; make PROFILE=default || exit 1)
+(cd ../../../mcs/tools/corcompare; make PROFILE=$PROFILE || exit 1)
 
 #
 # Generate the data
