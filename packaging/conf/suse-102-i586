@@ -1,0 +1,7 @@
+target_host=builder@monobuild1.boston.ximian.com
+jaildir=/jails/suse-102-i586
+target_command_prefix=". /etc/profile;"
+
+# Repo conf
+USE_ZMD=1
+

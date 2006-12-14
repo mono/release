@@ -13,13 +13,15 @@ USE_HOSTS=(
 	rhel-4-i386
 	suse-92-i586
 	suse-93-i586
+	suse-93-x86_64
 	suse-100-i586
 	suse-100-ppc
 	suse-100-x86_64
 	suse-101-i586
 	suse-101-ppc
 	suse-101-x86_64
-	suse-93-x86_64
+	suse-102-i586
+	suse-102-x86_64
 )
 
 get_destroot () {

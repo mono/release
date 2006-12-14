@@ -1,0 +1,6 @@
+target_host=builder@monobuild2.boston.ximian.com
+jaildir=/jails/suse-102-x86_64
+chroot_path=/usr/bin/chroot
+
+USE_ZMD=1
+

@@ -4,13 +4,20 @@ BUILD_HOSTS=(
 	suse-101-i586
 	suse-101-ppc
         suse-101-x86_64
+	suse-102-i586
+	suse-102-x86_64
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
 	mono
+)
+
+MONO_RECOMMEND_DEPS=(
 	gtk-sharp-2.8
+	gtk-sharp-2.10
+	gnome-sharp
 )
 
 get_destroot () {
