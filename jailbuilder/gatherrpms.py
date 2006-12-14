@@ -21,6 +21,7 @@ import ftplib
 import formatter
 import string
 import time
+import distutils.dir_util
 
 # For debugging
 import pdb
@@ -322,7 +323,7 @@ def commandline():
 		sys.exit(1)
 
 	if not os.path.exists(destdir):
-		os.mkdir(destdir)
+		distutils.dir_util.mkpath(destdir)
 
 	if method == "iso":
 		fetch = get_from_cd

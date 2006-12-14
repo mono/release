@@ -21,6 +21,8 @@ required_rpms = {
 
 	'suse-101': 'aaa_base apache2-devel apache2-prefork autoconf automake esound-devel file freetype2-devel gcc giflib-devel glib2-devel glibc-locale gnome-keyring-devel gnome-panel-devel gstreamer010-devel gstreamer010-plugins-base-devel gtk2-devel gtkhtml2-devel iputils libart_lgpl-devel libglade2-devel libgnomecanvas-devel libgnomeprint libgnomeprint-devel libgnomeprintui libgnomeprintui-devel libgnomeui-devel libgsf-devel libjpeg-devel libpng-devel librsvg librsvg-devel libtiff-devel libtool libxslt-devel make makedev patch perl-XML-LibXML perl-XML-LibXML-Common perl-XML-NamespaceSupport perl-XML-Parser perl-XML-SAX pkgconfig popt-devel procps pwdutils smart sqlite2 sudo sysvinit tar unzip util-linux vim vte-devel wget xorg-x11-devel yast2 zip zlib-devel',
 
+	'suse-102': 'aaa_base apache2-devel apache2-prefork autoconf automake esound-devel file freetype2-devel gcc giflib-devel glib2-devel glibc-locale gnome-keyring-devel gnome-panel-devel gstreamer010-devel gstreamer010-plugins-base-devel gtk2-devel gtkhtml2-devel iputils libart_lgpl-devel libglade2-devel libgnomecanvas-devel libgnomeprint libgnomeprint-devel libgnomeprintui libgnomeprintui-devel libgnomeui-devel libgsf-devel libjpeg-devel libpng-devel librsvg librsvg-devel libtiff-devel libtool libxslt-devel make makedev patch perl-XML-LibXML perl-XML-LibXML-Common perl-XML-NamespaceSupport perl-XML-Parser perl-XML-SAX pkgconfig popt-devel procps pwdutils rsync sqlite2 openssh sudo sysvinit tar unzip util-linux vim vte-devel wget xorg-x11-devel yast2 zip zlib-devel zypper',
+
 	# ftp://ftp.novell.com/pub/ximian/redcarpet2/redhat-9-i386/
 	# ftp://ftp.redhat.com/pub/redhat/linux/9/en/os/i386/
 	'redhat-9': 'autoconf automake gcc make rug vim-enhanced',
@@ -54,6 +56,15 @@ mknod /dev/random  c  1 8
 mknod /dev/urandom c  1 9
 chmod 666 /dev/null /dev/random
 chmod 644 /dev/urandom
+""",
+	'suse-101':	"""# Create some devices:
+mknod /dev/null c 1 3
+mknod /dev/random  c  1 8
+mknod /dev/urandom c  1 9
+chmod 666 /dev/null /dev/random
+chmod 644 /dev/urandom
+
+	Also, had to comment out my_test_for_space in SuSEconfig script
 """,
 
 	'fedora-4':	"""Disable gpg keys and set gpgcheck to 0 in /etc/yum.repos.d/*

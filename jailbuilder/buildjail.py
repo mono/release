@@ -279,6 +279,7 @@ class Jail:
 			#print self.provides
 
 		# When you make it here, you've got all your deps!
+		self.required_rpms.sort()
 		print self.required_rpms
 
 
@@ -330,7 +331,7 @@ class Jail:
 		manifest.close()
 
 		# This will work (using a manifest filename) as long as you're using rpm version 4 and above on the host machine
-		command = """rpm --root %s -i %s""" % (self.config.jail_dir, manifest_filename)
+		command = """rpm --nodeps --root %s -i %s""" % (self.config.jail_dir, manifest_filename)
 		print command
 		(status, output) = utils.launch_process(command)
 		print output
