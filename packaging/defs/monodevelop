@@ -28,7 +28,6 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono
-	gtk-sharp-2.0
 	monodoc
 	gecko-sharp-2.0
 	gtksourceview-sharp-2.0
@@ -37,6 +36,13 @@ MONO_DEPS=(
 	nant
 	mono-basic
 	xsp
+)
+
+MONO_RECOMMEND_DEPS=(
+	gtk-sharp-2.0
+	gtk-sharp-2.8
+	gtk-sharp-2.10
+	gnome-sharp
 )
 
 get_destroot () {

@@ -30,8 +30,14 @@ get_destroot () {
 
 MONO_DEPS=(
 	mono
-	gtk-sharp-2.0
 	monodoc
+)
+
+MONO_RECOMMEND_DEPS=(
+	gtk-sharp-2.0
+	gtk-sharp-2.8
+	gtk-sharp-2.10
+	gnome-sharp
 )
 
 
