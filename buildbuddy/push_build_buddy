@@ -23,7 +23,7 @@ else:
 problem_distros = []
 
 # Distros that need the source environment
-source_envs = ['suse-93-i586', 'suse-100-i586']
+source_envs = ['suse-93-i586', 'suse-100-i586', 'suse-102-i586']
 
 for e in envs:
 	env = packaging.buildenv(os.path.basename(e))
