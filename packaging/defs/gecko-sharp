@@ -8,6 +8,7 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
+	libgdiplus
 	mono
 	gtk-sharp
 )

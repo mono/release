@@ -9,6 +9,7 @@ MKTARBALL_HOST="suse-102-i586"
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
+	libgdiplus
 	mono
 	monodoc
 	gtk-sharp-2.10

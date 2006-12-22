@@ -29,6 +29,7 @@ get_destroot () {
 }
 
 MONO_DEPS=(
+	libgdiplus
 	mono
 	monodoc
 )

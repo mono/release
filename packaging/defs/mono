@@ -56,13 +56,13 @@ USE_HOSTS=(
 	win-4-i386
 )
 
-# Having this ensures that the wrong mono isn't in the jail
-#  (Or that mono is present for the snapshot builds)
-# libgdiplus is here only for System.Drawing tests (Hmm... this will fail the build on windows, solution?)
 MONO_DEPS=(
 )
 
-# This way? and then install runtime deps before running the additional steps... ?  runtime and build?  Reinstall them all over again?
+# Having mono depend on itself ensures that the wrong mono isn't in the jail
+#  (Or that mono is present for the snapshot builds)
+# libgdiplus is here for System.Drawing tests and because mono-winforms now requires libgdiplus.
+# But, since it's 'recommended', it won't fail for windows
 MONO_RECOMMEND_DEPS=(
 	libgdiplus
 	mono

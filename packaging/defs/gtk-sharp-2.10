@@ -9,6 +9,7 @@ BUILD_HOSTS=(
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
+	libgdiplus
 	mono
 	monodoc
 )

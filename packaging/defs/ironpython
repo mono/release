@@ -9,6 +9,7 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
+	libgdiplus
 	mono
 )
 

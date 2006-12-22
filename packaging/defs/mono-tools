@@ -36,6 +36,7 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
+	libgdiplus
 	mono
 	monodoc
 	gecko-sharp-2.0

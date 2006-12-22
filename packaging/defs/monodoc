@@ -8,12 +8,12 @@ USE_HOSTS=(
 	ALL
 )
 
-# monodoc is in this list in order to build docscripts monoapi from mono tree
 MONO_DEPS=(
+	libgdiplus
 	mono
-	#monodoc
 )
 
+# monodoc is in this list in order to build docscripts monoapi from mono tree
 # Put this dependency here so we can boostrap, but depend on it after that
 MONO_RECOMMEND_DEPS=(
 	monodoc

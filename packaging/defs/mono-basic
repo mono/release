@@ -13,6 +13,11 @@ MONO_DEPS=(
 	mono
 )
 
+# Put this here since we build on windows
+MONO_RECOMMEND_DEPS=(
+	libgdiplus
+)
+
 get_destroot () {
         if [ $DISTRO == "win-4-i386" ] ; then
                 DEST_ROOT=$DISTRO
