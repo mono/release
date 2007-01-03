@@ -343,12 +343,13 @@ os.chdir('mono')
 #utils.remove_line_matching('etc/mono/config', '<dllmap dll="libcairo-2.dll" target="libcairo.so.2"/>')
 #utils.remove_line_matching('etc/mono/config', 'sqlite')
 
-# Ditch the mono config file (should happen in autofoo, but until then... do it here)
-os.unlink('etc/mono/config')
-
-fd = open('etc/mono/config', 'w')
-fd.write("\n")
-fd.close()
+# Not needed anymore after bxc #73391 has been fixed according to Hari's suggestion
+## Ditch the mono config file (should happen in autofoo, but until then... do it here)
+#os.unlink('etc/mono/config')
+#
+#fd = open('etc/mono/config', 'w')
+#fd.write("\n")
+#fd.close()
 
 os.chdir("..")
 
