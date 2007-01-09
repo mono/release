@@ -9,7 +9,7 @@ gtk-sharp-2.8
 gtksourceview-sharp-2.0
 heap-buddy
 ikvm
-ironpython
+ipce
 last-exit
 libgdiplus
 mod_mono

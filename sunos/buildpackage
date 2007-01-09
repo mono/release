@@ -37,7 +37,7 @@ import config
 # Constants
 packages_to_include = {}
 
-packages_to_include['sunos-8-sparc']  = ['mono', 'libgdiplus', 'xsp', 'ikvm', 'boo', 'monodoc', 'nant', 'ironpython', 'mono-basic' ]
+packages_to_include['sunos-8-sparc']  = ['mono', 'libgdiplus', 'xsp', 'ikvm', 'boo', 'monodoc', 'nant', 'ipce', 'mono-basic' ]
 
 packages_to_include['sunos-10-sparc'] = packages_to_include['sunos-8-sparc'] + ['gtk-sharp-2.0', 'gtk-sharp', 'mono-tools', 'monodevelop', 'gtksourceview-sharp-2.0' ]
 

@@ -1,0 +1,25 @@
+EXTERNAL_SOURCE=1
+
+BUILD_HOSTS=(
+	fedora-3-i386
+)
+
+USE_HOSTS=(
+	ALL
+)
+
+MONO_DEPS=(
+	libgdiplus
+	mono
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+BUILD_DIR="/tmp"
+
+make_dist () {
+        curl -O http://easynews.dl.sourceforge.net/sourceforge/fepy/IPCE-$VERSION.zip
+}
+

@@ -138,6 +138,7 @@ for distro_obj in distro_objs:
 			# The PLAINcache file is not cross platform... try a 'real' yast source
 			#os.system("cd %s; /home/wberrier/yast_install/bin/genIS_PLAINcache -f -r .; gzip IS_PLAINcache ;  cd - " % i)
 
+			# TODO: Create a signed yast repo (http://en.opensuse.org/Secure_Installation_Sources)
 			# Create a 'real' yast source
 			#os.system("cd %s ; mkdir media.1 ; touch media.1/media ; touch content ; ls -A1 > directory.yast ; /home/wberrier/yast_install/bin/create_package_descr -d .; cd -" % i)
 			current = os.getcwd()
@@ -145,6 +146,8 @@ for distro_obj in distro_objs:
 
 			os.mkdir("media.1")
 			shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/yast/media', 'media.1')
+			# zypp in 10.2 requires this directory.yast
+			os.system("cd media.1 ; ls -A1 > directory.yast")
 
 			utils.substitute_parameters_in_file('media.1/media', { 
 				'@DATE_STRING@': time.strftime("%Y%m%d%H%M%S")

@@ -58,7 +58,7 @@ local_rpms = [
 		"ikvm",
 		"monodoc",
 		"nant",
-		"ironpython",
+		"ipce",
 		"mono-basic",
 
 		"gtk-sharp",
