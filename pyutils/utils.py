@@ -589,7 +589,7 @@ def adjust_for_timezone(tzo_seconds, time_string):
 	return return_string
 
 
-def rpm_query(query_format, file):
+def rpm_query(query_format, file, installed=False):
 	"""Args: query_format, file.
 	query_format can be a list or a string.
 	Returns: results of query, which can also be a list (if > 1), or a string (if < 2).
@@ -600,6 +600,11 @@ def rpm_query(query_format, file):
 	This function also utilizes a hash cache to speed up the script generation by a couple of minutes."""
 
 	marker = "__MONO__"
+
+	if installed: 
+		installed = ""
+	else:
+		installed = "p"
 
 	# Find if query is a string or list
 	if query_format.__class__ == str:
@@ -620,7 +625,7 @@ def rpm_query(query_format, file):
 		#print "Cache hit!"
 		output = rpm_query_cache[key]
 	else:
-		code, output = launch_process("rpm -qp --queryformat \"%s\" %s" % (query_string, file), capture_stderr=0, print_output=0 )
+		code, output = launch_process("rpm -q%s --queryformat \"%s\" %s" % (installed, query_string, file), capture_stderr=0, print_output=0 )
 		rpm_query_cache[key] = output
 
 	results = output.split(marker)
