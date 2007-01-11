@@ -81,8 +81,8 @@ win_4_i386_ZIP_RUNTIME_DEPS=(
 	# For GtkDemo iconview (Hmm... this didn't fix it... later)
 	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/dependencies/hicolor-icon-theme-0.5.zip
 	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/dependencies/default-icon-theme-0.1.zip
-	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/gnome-icon-theme-2.12.0.zip
-	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/gnome-icon-theme-dev-2.12.0.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-icon-theme/2.16/gnome-icon-theme-2.16.0.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-icon-theme/2.16/gnome-icon-theme-dev-2.16.0.zip
 
 )
 

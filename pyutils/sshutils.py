@@ -161,7 +161,7 @@ class init:
 		if compress:
 			# CompressionLevel only works for protocol 1... (bummer)
 			compress_option = ' -o "Compression yes" -o "CompressionLevel 9" '
-			compress_tar_option = "j"
+			compress_tar_option = "z"
 		else:
 			compress_option = ""
 			compress_tar_option = ""
@@ -201,7 +201,7 @@ class init:
 		if compress:
 			# CompressionLevel only works for protocol 1... (bummer)
 			compress_option = ' -o "Compression yes" -o "CompressionLevel 9" '
-			compress_tar_option = "j"
+			compress_tar_option = "z"
 		else:
 			compress_option = ""
 			compress_tar_option = ""
