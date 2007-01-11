@@ -13,14 +13,46 @@ import packaging
 
 debug = 1
 
+# Private method
+def _web_index_sort(web_index_objs):
+	"""Args: dictionary objects with an optional 'web_index' key in the 'info' member
+	returns: sorted objects, according to web_index.
+	Items without web_index are at the end of resulting array, sorted in original
+	order, (which in this case is alphabetically)."""
+
+	obj_map = {}
+	# Create a map with key as index num, and value as an array of plat objs
+	for obj in web_index_objs:
+
+		index = obj.get_info_var('web_index')
+		if index == "": index = "999"
+
+		index = int(index)
+
+		if obj_map.has_key(index):
+			obj_map[index].append(obj)
+		else:
+			obj_map[index] = [obj]
+
+	sorted_web_index_objs = []
+
+	indexes = obj_map.keys()
+	indexes.sort()
+
+	# get objs out of map into sorted array
+	for index in indexes:
+		for i in obj_map[index]:
+			sorted_web_index_objs.append(i)
+
+	return sorted_web_index_objs
+
 def get_platforms():
-	"""Return buildenv objects sorted by web_index.  If some platforms don't have a web_index, sort
-        the remaining alphabetically."""
+	"""Return platform names, sorted alphabetically."""
 
 	platforms = []
 
 	for entry in os.listdir(config.platform_conf_dir):
-		if entry != ".svn" and entry != "hosts":
+		if not re.compile('^\.').search(entry) and entry != "hosts":
 			platforms.append(entry)
 
 	platforms.sort()
@@ -32,21 +64,10 @@ def get_platform_objs():
 	platforms = get_platforms()
 
 	plat_objs = []
-	plat_map = {}
 	for platform in platforms:
-		plat_obj = packaging.buildenv(platform)
-		if plat_obj.info.has_key('web_index'):
-			index = plat_obj.info['web_index']
-			plat_map[index] = plat_obj
-		else:
-			plat_objs.append(plat_obj)
+		plat_objs.append(packaging.buildenv(platform))
 
-	# Insert ordered platforms to the beginning of the list
-	for i in range(0, len(plat_map.keys())):
-		plat_objs.insert(i, plat_map[str(i)])
-
-	return plat_objs
-
+	return _web_index_sort(plat_objs)
 
 def get_packages():
 
@@ -69,9 +90,7 @@ def get_package_objs():
 	packages = get_packages()
 
         pack_objs = []
-        pack_map = {}
         noarch_pack_objs = []
-	noarch_pack_map = {}
 
         for package in packages:
 		# Don't try to create the dirs and links because this code is run by the web server
@@ -79,28 +98,12 @@ def get_package_objs():
 
 		# Handle normal package
 		if pack_obj.info['get_destroot'].find('noarch') == -1:
-			map_ptr = pack_map
-			obj_ptr = pack_objs
-
+			pack_objs.append(pack_obj)
 		# It's noarch
 		else:
-			map_ptr = noarch_pack_map
-			obj_ptr = noarch_pack_objs
+			noarch_pack_objs.append(pack_obj)
 
-                if pack_obj.info.has_key('web_index'):
-                        index = pack_obj.info['web_index']
-                        map_ptr[index] = pack_obj
-                else:
-                        obj_ptr.append(pack_obj)
-
-        # Insert ordered packages to the beginning of the list
-        for i in range(0, len(pack_map.keys())):
-                pack_objs.insert(i, pack_map[str(i)])
-
-        for i in range(0, len(noarch_pack_map.keys())):
-                noarch_pack_objs.insert(i, noarch_pack_map[str(i)])
-
-        return pack_objs, noarch_pack_objs
+        return _web_index_sort(pack_objs), _web_index_sort(noarch_pack_objs)
 
 
 def get_latest_version(HEAD_or_RELEASE, platform, package):
