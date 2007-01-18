@@ -588,6 +588,16 @@ def adjust_for_timezone(tzo_seconds, time_string):
 
 	return return_string
 
+def get_tz_string():
+	tzs_offset = time.timezone / 60 / 60 * 100
+
+	if tzs_offset > 0:
+		tz_string = "-0%d" % tzs_offset
+	else:
+		tz_string = "+0%d" % tzs_offset
+
+	return tz_string
+
 
 def rpm_query(query_format, file, installed=False):
 	"""Args: query_format, file.
@@ -637,7 +647,11 @@ def rpm_query(query_format, file, installed=False):
 
 def send_mail(fr, to, subject, body):
 
-        header = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (fr, to, subject)
+	# Construct date string
+	# Date: Tue, 16 Jan 2007 23:33:55 -0500
+	date = time.strftime("%a, %d %b %Y %H:%M:%S ") + get_tz_string()
+
+        header = "From: %s\r\nTo: %s\r\nSubject: %s\r\nDate: %s\r\n\r\n" % (fr, to, subject, date)
         msg = header + body
 
 	try:

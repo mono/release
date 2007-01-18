@@ -6,7 +6,6 @@ import re
 import time
 import signal
 import threading
-import smtplib
 
 sys.path += [ '../pyutils' ]
 
