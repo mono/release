@@ -3,6 +3,5 @@ jaildir=/jails/suse-101-ppc
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"
 
-USE_OC=1
-USE_YAST=1
+USE_ZMD=1
 

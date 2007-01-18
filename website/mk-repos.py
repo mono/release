@@ -146,7 +146,7 @@ for distro_obj in distro_objs:
 
 			os.mkdir("media.1")
 			shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/yast/media', 'media.1')
-			# zypp in 10.2 requires this directory.yast
+			# zypp in 10.2 requires this directory.yast (as well as 10.1)
 			os.system("cd media.1 ; ls -A1 > directory.yast")
 
 			utils.substitute_parameters_in_file('media.1/media', { 
