@@ -60,7 +60,7 @@ td_max_poll_interval = 60
 td_num_sequential = 10
 
 # static list of packages to create tarballs for
-td_packages = ['mono', 'mono-1.1.13', 'mono-1.1.7', 'mono-1.1.8', 'libgdiplus', 'mono-basic', 'mono-tools', 'monodevelop', 'monodoc', 'xsp', 'gecko-sharp-2.0', 'gtksourceview-sharp-2.0', 'mono-debugger', 'gtk-sharp', 'mod_mono', 'heap-buddy' ]
+td_packages = ['mono', 'libgdiplus', 'mono-basic', 'mono-tools', 'monodevelop', 'monodoc', 'xsp', 'gecko-sharp-2.0', 'mono-debugger', 'gtk-sharp', 'mod_mono' ]
 
 # builds each and every checkin if true, otherwise, only build the latest checkin
 td_sequential = False

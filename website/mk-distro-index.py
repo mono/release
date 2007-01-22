@@ -57,7 +57,7 @@ def get_rpm_install(env_obj, archive=False):
 		</xmp>
 
 		<p>Note: some versions of Red Carpet frequently have IOError timeouts.  This is a bug in Red Carpet.  If Red Carpet for your distro frequently has this problem, please use another installation method.</p>
-		<p>""" % (vars['OC_DOWNLOAD_URL'], vars['OC_NOTES'], hostname_url, webroot_path, url_prefix, bundle_conf.info['bundle_urlname'])
+		""" % (vars['OC_DOWNLOAD_URL'], vars['OC_NOTES'], hostname_url, webroot_path, url_prefix, bundle_conf.info['bundle_urlname'])
 
 
 	# Generate Yum Text
@@ -74,7 +74,7 @@ def get_rpm_install(env_obj, archive=False):
 			return_text += """
 			<p>
 			%s
-			</p>""" % vars['YUM_NOTES']
+			</p>\n""" % vars['YUM_NOTES']
 
 	# Generate yast text
 	if utils.get_dict_var('USE_YAST', env_obj.info) or utils.get_dict_var('USE_ZMD', env_obj.info):
@@ -88,7 +88,7 @@ def get_rpm_install(env_obj, archive=False):
 		</p>
 		<p>For assistance with using repositories and installing packages with YaST, visit this link: 
 		<a href="http://en.opensuse.org/Add_Package_Repositories_to_YaST">[1]</a>
-                </p>""" % (hostname_url, webroot_path, url_prefix, env_obj.name)
+                </p>\n""" % (hostname_url, webroot_path, url_prefix, env_obj.name)
 
 
 	# TODO: Generate zmd text
@@ -115,8 +115,8 @@ def get_external_deps(env_obj, archive=False):
 	
 	# For the RPMS
 	if external_rpms:
-		return_text += "<h3>External Dependencies</h3>"
-		return_text += "<ul>"
+		return_text += "<h3>External Dependencies</h3>\n"
+		return_text += "<ul>\n"
 		for i in external_rpms:
 
 			i = os.path.basename(i)
@@ -125,20 +125,20 @@ def get_external_deps(env_obj, archive=False):
 				continue
 
 			(NAME, DESC) = utils.rpm_query(['NAME', 'SUMMARY'], '../external_packages/%s/%s' % (env_obj.name, i) )
-			return_text += "<li><a href='%s/%s/%s'>%s</a> -- %s</li>" % (external_url_path, env_obj.name, i, NAME, DESC)
-		return_text += "</ul>"
+			return_text += "<li><a href='%s/%s/%s'>%s</a> -- %s</li>\n" % (external_url_path, env_obj.name, i, NAME, DESC)
+		return_text += "</ul>\n"
 
 	# For the source RPMS
 	if external_src_rpms:
-		return_text += "<p>Source RPMS: "
+		return_text += "<p>Source RPMS: \n"
 		for i in external_src_rpms:
 
 			i = os.path.basename(i)
 
 			NAME = utils.rpm_query('NAME', '../external_packages/%s/%s' % (env_obj.name, i) )
-			return_text += "<a href='%s/%s/%s'>%s</a> " % (external_url_path, env_obj.name, i, NAME)
+			return_text += "<a href='%s/%s/%s'>%s</a> \n" % (external_url_path, env_obj.name, i, NAME)
 
-		return_text += "</p>"
+		return_text += "</p>\n"
 
 	return return_text
 
@@ -215,8 +215,8 @@ for distro_conf in distros:
 				SPECS += pack_obj.get_files_relpath(ext="spec", fail_on_missing=False)
 
 			if len(RPMS) == 0:
-				out.write("<p>Not available for this platform</p>")
-				arc_out.write("<p>Not available for this platform</p>")
+				out.write("<p>Not available for this platform</p>\n")
+				arc_out.write("<p>Not available for this platform</p>\n")
 				print " * Skipping " + pack_obj.name
 				continue
 		
@@ -231,33 +231,33 @@ for distro_conf in distros:
 				# rpms are compressed anyways -- doing any compression is a waste of time
 				os.system("zip -j -0 %s %s" % (zip_filename, " ".join(RPMS)) )
 				
-				out.write("<p><a href='%s.zip'><img src='/zip-icon.png' />All of these RPMs in a ZIP file</a></p>" % (zipname))
+				out.write("<p><a href='%s.zip'><img src='/zip-icon.png' />All of these RPMs in a ZIP file</a></p>\n" % (zipname))
 
 
-			out.write("<ul>")
-			arc_out.write("<ul>")
+			out.write("<ul>\n")
+			arc_out.write("<ul>\n")
 
 			for i in RPMS:
 				(NAME, DESC) = utils.rpm_query(['NAME', 'SUMMARY'], i)
-				out.write("<li><a href='../../%s/%s'>%s</a> -- %s</li>" % (package_src_url, i, NAME, DESC) )
-				arc_out.write("<li><a href='../../../../%s/%s'>%s</a> -- %s</li>" % (package_src_url, i, NAME, DESC) )
+				out.write("<li><a href='../../%s/%s'>%s</a> -- %s</li>\n" % (package_src_url, i, NAME, DESC) )
+				arc_out.write("<li><a href='../../../../%s/%s'>%s</a> -- %s</li>\n" % (package_src_url, i, NAME, DESC) )
 			
-			out.write("</ul>")
-			arc_out.write("</ul>")
+			out.write("</ul>\n")
+			arc_out.write("</ul>\n")
 
 			# Print links to spec files
 			if len(SPECS) == 0:
 				continue
 
-			out.write("<p>RPM Spec files: ")
-			arc_out.write("<p>RPM Spec files: ")
+			out.write("<p>RPM Spec files: \n")
+			arc_out.write("<p>RPM Spec files: \n")
 			for i in SPECS:
 				NAME = os.path.basename(i)
-				out.write("<a href='../../%s/%s'>%s</a> " % (package_src_url, i, NAME) )
-				arc_out.write("<a href='../../../../%s/%s'>%s</a> " % (package_src_url, i, NAME) )
+				out.write("<a href='../../%s/%s'>%s</a> \n" % (package_src_url, i, NAME) )
+				arc_out.write("<a href='../../../../%s/%s'>%s</a> \n" % (package_src_url, i, NAME) )
 
-			out.write("</p>")
-			arc_out.write("</p>")
+			out.write("</p>\n")
+			arc_out.write("</p>\n")
 
 			
 		elif line_segs and line_segs[0] == "!":
