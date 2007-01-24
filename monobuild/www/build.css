@@ -42,6 +42,11 @@ p {
 	margin-right: 2em;
 }
 
+div {
+	margin-left: 2em;
+	margin-right: 2em;
+}
+
 .code, .xml , .script
 {
 	margin:15px;

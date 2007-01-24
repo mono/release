@@ -11,6 +11,7 @@ import datastore
 import utils
 import www_utils
 
+doc_type = """<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">"""
 
 def index(req, **vars):
 
@@ -38,23 +39,24 @@ def index(req, **vars):
         req.content_type = "text/html"
 
 	req.write( """
+	%s
 	<HTML>
 	<HEAD>
 	<TITLE>Mono Build Status - %s</TITLE>
 	<link rel="stylesheet" href="%s/build.css" type="text/css">
-	<script language="javascript" src="%s/build.js"></script>
+	<script language="javascript" src="%s/build.js" type="text/javascript"></script>
 	<meta http-equiv="refresh" content="60">
 	</HEAD>
 	<BODY>
 
 	<H1>Mono Build Status - %s</H1>
 
-	""" % (HEAD_or_RELEASE, config.web_root_url, config.web_root_url, HEAD_or_RELEASE))
+	""" % (doc_type, HEAD_or_RELEASE, config.web_root_url, config.web_root_url, HEAD_or_RELEASE))
 
 	legend_html = """
 	
 	<h3>Legend</h3>
-	<p>
+	<div>
 	<table class=legend>
 
 	<tbody>
@@ -63,21 +65,21 @@ def index(req, **vars):
 	<th class=success>Success</th>
 	<th class=failure>Failed</th>
 	<th class=testfailure>Tests Failed</th>
-	<th class=timeout>Timed Out</td>
+	<th class=timeout>Timed Out</th>
 	<th class=queued>Queued</th>
 	<th class=new>New</th>
 	</tr>
 
 	</tbody>
 	</table>
-	</p>"""
+	</div>"""
 
 	req.write(legend_html)
 	 
 	req.write("""
 	<h3>Build Matrix</h3>
 
-	<p>
+	<div>
 	<table class="buildstatus">
 	""")
 
@@ -103,12 +105,12 @@ def index(req, **vars):
 	# Iterate through arch packages, and then noarch packages
 	for (platforms, packs) in  [ (plat_objs, pack_objs), (['noarch'], noarch_pack_objs) ]:
 		
-		req.write("<thead><tr><td></td>\n")
+		req.write("<tr><td></td>\n")
 
 		for obj in packs:
 			req.write("<th>%s</th>\n" % obj.name)
 
-		req.write("</tr></thead>\n<tbody>\n")
+		req.write("</tr>\n")
 
 		# Add row for mktarball status
 		req.write("<tr><th>mktarball</th>\n")
@@ -123,7 +125,7 @@ def index(req, **vars):
 				revision = info['revisions'][0]
 				state = info['state'][revision]
 
-				link = "<a href=%s/tarball_logs/%s/%s/%s.log>%s</a>" % (config.web_root_url, HEAD_or_RELEASE, package.name, revision, revision)
+				link = "<a href='%s/tarball_logs/%s/%s/%s.log'>%s</a>" % (config.web_root_url, HEAD_or_RELEASE, package.name, revision, revision)
 
 				if len(info['revisions']) > 1:
 					revision2 = info['revisions'][1]
@@ -131,9 +133,9 @@ def index(req, **vars):
 
 				if revision2:
 					req.write("<td class=%s>" % state2)
-					req.write("<center><table class=%s><td>" % (state))
+					req.write("<center><table class=%s><tr><td>" % (state))
 					req.write(link)
-					req.write("</td></table></center>")
+					req.write("</td></tr></table></center>")
 					req.write("</td>\n")
 				else:
 					req.write("<td class=%s>" % state)
@@ -185,14 +187,14 @@ def index(req, **vars):
 						state = "new"
 						link = ""
 					else:
-						link = "<a href=%s/packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s>%s</a>" % ( scriptname, platform_name, package.name, HEAD_or_RELEASE, version)
+						link = "<a href='%s/packagestatus?platform=%s&amp;package=%s&amp;HEAD_or_RELEASE=%s'>%s</a>" % ( scriptname, platform_name, package.name, HEAD_or_RELEASE, version)
 
 					# if there's a previous version, print a container table
 					if version2:
 						req.write("<td class=%s>" % state2)
-						req.write("<center><table class=%s><td>" % (state))
+						req.write("<center><table class=%s><tr><td>" % (state))
 						req.write(link)
-						req.write("</td></table></center>")
+						req.write("</td></tr></table></center>")
 						req.write("</td>\n")
 					else:
 						req.write("<td class=%s>" % state)
@@ -205,8 +207,6 @@ def index(req, **vars):
 
 			req.write("</tr>\n")
 
-		req.write("</tbody>\n")
-
 		# Separator section ( # Don't write this on the last one )
 		if count == 0:
 			req.write("<tr><td></td></tr>\n")
@@ -214,7 +214,7 @@ def index(req, **vars):
 		count+= 1
 	
 
-	req.write("</table>\n</p>")
+	req.write("</table>\n</div>")
 
         # Legend
 	req.write(legend_html)
@@ -228,7 +228,6 @@ def index(req, **vars):
 
 	# Footer
 	req.write("""
-	</FORM>
 
 	</BODY>
 	</HTML>
@@ -275,6 +274,7 @@ def packagestatus(req, **vars):
 	req.content_type = "text/html"
 
 	req.write("""
+	%s
 	<html>
 	<head>
 	%s
@@ -282,7 +282,7 @@ def packagestatus(req, **vars):
 	<link rel="stylesheet" href="%s/build.css" type="text/css">
 	</head>
 
-	<body>""" % (refresh_html, config.web_root_url) )
+	<body>""" % (doc_type, refresh_html, config.web_root_url) )
 
 	if versions:
 		req.write("<h1>%s -- %s -- %s</h1>" % (package, platform, HEAD_or_RELEASE))
@@ -290,9 +290,9 @@ def packagestatus(req, **vars):
 		# Print out links...
 		if show_links:
 			if showall:
-				req.write("<p><a href='packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s'>Show Latest 10 Builds</a></p>" % (platform, package, HEAD_or_RELEASE) )
+				req.write("<p><a href='packagestatus?platform=%s&amp;package=%s&amp;HEAD_or_RELEASE=%s'>Show Latest 10 Builds</a></p>" % (platform, package, HEAD_or_RELEASE) )
 			else:
-				req.write("<p><a href='packagestatus?platform=%s&package=%s&HEAD_or_RELEASE=%s&showall=1'>Show Full Build History</a></p>" % (platform, package, HEAD_or_RELEASE) )
+				req.write("<p><a href='packagestatus?platform=%s&amp;package=%s&amp;HEAD_or_RELEASE=%s&amp;showall=1'>Show Full Build History</a></p>" % (platform, package, HEAD_or_RELEASE) )
 
 		counter = 0
 
@@ -319,7 +319,7 @@ def packagestatus(req, **vars):
 
 			<h3>Build status - %s</h3>
 
-			<p>
+			<div>
 			<table>
 			<tbody>
 			<tr>
@@ -341,9 +341,10 @@ def packagestatus(req, **vars):
 
 			</tr>
 			</tbody></table>
+			</div>
 
 			<h4>Build Steps</h4>
-			<p>
+			<div>
 			<table>
 			<tbody>""" % (version, tz_start, tz_finish, duration, values['buildhost']) )
 
@@ -381,7 +382,7 @@ def packagestatus(req, **vars):
 				req.write("</tr>")
 
 				
-			req.write("</tbody></table></p><br>")
+			req.write("</tbody></table></div><br>")
 
 			# Update version counter
 			counter += 1
