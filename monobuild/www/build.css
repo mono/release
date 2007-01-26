@@ -108,7 +108,7 @@ table.buildstatus th {
 }
 
 .new {
-	background:lightgray;
+	background:#d3d3d3;
 }
 
 .queued {
