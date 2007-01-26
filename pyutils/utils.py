@@ -172,6 +172,8 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
         elif ext == ".gz":
                 tempdir = "___EXTRACT___"
 
+		final_dest_dir = os.getcwd()
+
                 if os.path.exists(tempdir):
                         shutil.rmtree(tempdir)
                 os.mkdir(tempdir)
@@ -184,9 +186,14 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
                         print "Error extracting solaris package file: %s" % filename
                         sys.exit(1)
 		packagedir = glob.glob('*').pop()
-                os.chdir(packagedir + os.sep + 'reloc')
+		pkgmap = open(packagedir + os.sep + 'pkgmap', 'r')
 
-		pkgmap = open('../pkgmap', 'r')
+		try:
+			# sunfreeware packages use this convention
+			os.chdir(packagedir + os.sep + 'reloc')
+		except:
+			# blastwave uses these
+			os.chdir(os.path.join(packagedir, 'root', 'opt', 'csw'))
 
 		# Fix up the symbolic links
 		for line in pkgmap:
@@ -194,13 +201,14 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
 			#1 s none lib/libglib-2.0.so=libglib-2.0.so.0.200.3
 			try: 
 				(link, target) = re.compile('. . .*? (.*)=(.*)').search(line).groups()
+				link = link.replace("/opt/csw/", "") # This is for blastwave packages, since they don't use relative paths
 				os.symlink(target, link)
 			except AttributeError:
 				pass
 
-		distutils.dir_util.copy_tree(".", "../../..", preserve_symlinks=preserve_symlinks)
+		distutils.dir_util.copy_tree(".", final_dest_dir, preserve_symlinks=preserve_symlinks)
 
-                os.chdir("../../..")
+                os.chdir(final_dest_dir)
                 shutil.rmtree(tempdir)
 
 	else:

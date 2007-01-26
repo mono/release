@@ -95,9 +95,9 @@ target_env.ssh.copy_to(files, '%s/install-packages' % build_location, mode='scp'
 # Install the packages with rpm/rcd
 if target_env.get_info_var('USE_ZIP_PKG'):
 
-	target_env.ssh.copy_to(['do-install-zip-pkgs', '../pyutils/utils.py', '../pyutils/rpm2cpio.py'], '%s/install-packages' % build_location, mode='scp')
+	target_env.ssh.copy_to(['do-install-zip-pkgs', '../pyutils/utils.py', '../pyutils/rpm2cpio.py'], build_location, mode='scp')
 	# These must NOT be in the build_location, otherwise it will throw off the relocation
-        (code, output) = target_env.ssh.execute( "%s/install-packages/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps %s/install-packages/*" % (build_location, build_location) )
+        (code, output) = target_env.ssh.execute( "%s/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps %s/install-packages/*" % (build_location, build_location) )
 
 else:
 
