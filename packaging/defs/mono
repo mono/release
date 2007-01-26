@@ -371,6 +371,7 @@ POSTBUILD_STEP5 () {
 
 	cd ../Managed.Windows.Forms
 	$make_path run-test
+	$make_path run-test PROFILE=net_2_0
 
 }
 

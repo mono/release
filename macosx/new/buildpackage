@@ -152,8 +152,8 @@ env.ssh.execute("cd %s%s/lib; mv %s ..;  strip -S *.dylib *.a; cd ..; mv %s lib"
 # This is what the old installer script would do, except it deleted the .a files instead of stripping them
 #env.ssh.execute("cd %s%s/bin; strip pedump monodiet monodis jay monograph; cd ../lib strip -S *.a " % (remote_PKGROOT, prefix) )
 
-# Miguel doesn't want to ship the .a files
-env.ssh.execute("cd %s%s/lib; rm -f *.a" % (remote_PKGROOT, prefix) )
+# Miguel doesn't want to ship the .a files (but libmono.la ended up being needed to run mkbundle)
+#env.ssh.execute("cd %s%s/lib; rm -f *.a" % (remote_PKGROOT, prefix) )
 
 if os.path.exists(temp_dir): shutil.rmtree(temp_dir)
 distutils.dir_util.mkpath(temp_dir)
@@ -174,6 +174,7 @@ revision = mono_package.get_revision(release)
 package_filename = "MonoFramework-%s_%s.%s" % (version, revision, arch_name)
 
 # Substitue versions in setup files
+# TODO: This needs to be redone to make new packages automatic
 parameter_map = {}
 parameter_map[re.compile("@@MONO_VERSION@@")] = version
 parameter_map[re.compile("@@MONO_RELEASE@@")] = release

@@ -76,7 +76,12 @@ class Selection:
 		self.pack_objs = {}
 		self.versions = {}
 		for pack in utils.remove_list_duplicates(self.deps + self.packages):
-			self.pack_objs[pack] = packaging.package(installer_env,pack)
+
+			## Total hack to pick the rpm version of mono-basic (contains compiler and runtime) instead of the zip version (only has the runtime)
+			if pack == "mono-basic":
+				self.pack_objs[pack] = packaging.package(packaging.buildenv('fedora-3-i386'),pack)
+			else:
+				self.pack_objs[pack] = packaging.package(installer_env,pack)
 
 			## Total hack to always select an older version on mono-tools, since newer versions don't run on windows
 			#if pack == "mono-tools":

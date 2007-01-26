@@ -1,5 +1,7 @@
 web_index=0
 
+version_selection_reg="1\.\d+"
+
 BUILD_HOSTS=(
 	win-4-i386
         fedora-3-i386
@@ -34,19 +36,24 @@ RELEASE_PATH=(
 )
 
 update_version_file () {
-	echo "Not needed..."
+	sed -i "s/VERSION=\([\.0-9]*\)/VERSION=\1.$VERSION/" configure
 }
 
 make_dist () {
-	cd ..
-	mv mono-basic mono-basic-$VERSION
-	zip -r mono-basic-$VERSION.zip mono-basic-$VERSION
-	mv mono-basic-$VERSION.zip mono-basic-$VERSION
+	./configure --prefix=/usr
+
+	# should this be needed?
+	make
+
+	make dist
 }
 
 win_4_i386_ZIP_BUILD () {
 
 	cd vbruntime
+
+	# This doesn't get included with the tarball... create here
+	mkdir bin
 
 	OLDPATH=$PATH
 
@@ -63,7 +70,8 @@ win_4_i386_ZIP_BUILD () {
         SDK=`cygpath -a $SDK`
         export PATH=$SDK:$CSC:$OLDPATH
 
-	cmd /c VB.build.bat 1 release
+	rm -f Microsoft.VisualBasic.dll Microsoft.VisualBasic/*.log
+	cmd /c VB.build.bat 1 release || (cat Microsoft.VisualBasic/*.log && exit 1)
 
 	# Install
 	export PATH=$OLDPATH
@@ -80,7 +88,8 @@ win_4_i386_ZIP_BUILD () {
         SDK=`cygpath -a $SDK`
         export PATH=$SDK:$CSC:$OLDPATH
 
-	cmd /c VB.build.bat 2 release
+	rm -f Microsoft.VisualBasic.dll Microsoft.VisualBasic/*.log
+	cmd /c VB.build.bat 2 release || (cat Microsoft.VisualBasic/*.log && exit 1)
 
 	# Install
 	export PATH=$OLDPATH

@@ -220,9 +220,11 @@ def build_package(target):
 	(code, output) = env.ssh.execute("id")
 	(uid, gid) = re.compile(r"""\((.*?)\).*\((.*?)\)""").search(output).groups()
 
+	# Add whitespace in substitutions here because there are now filenames with the phrase 'builder' in them, 
+	#  and since that's our username it throws it off
 	parameter_map = {}
-	parameter_map[re.compile(uid)] = "root"
-	parameter_map[re.compile(gid)] = "root"
+	parameter_map[re.compile(" %s " % uid)] = " root "
+	parameter_map[re.compile(" %s" % gid)] = " root"
 	parameter_map[re.compile(" 0700 ")] = " 0755 "
 
 	prototype = utils.substitute_parameters(prototype, parameter_map)
