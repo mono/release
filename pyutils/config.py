@@ -51,6 +51,7 @@ tar_path="tar"
 
 # Tarball daemon config info
 ##############################################
+td_active = True
 # Seconds
 td_network_error_interval = 60
 td_max_poll_interval = 60
@@ -70,6 +71,7 @@ td_sequential = False
 
 # Scheduler daemon config info
 ##############################################
+sd_active = True
 #  (auto reloading only works for the wakeup_interval and latest_build_packages on the scheduler daemon)
 # seconds
 sd_wakeup_interval = 60
@@ -82,6 +84,23 @@ sd_sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
 # List of platforms/packages
 sd_latest_build_distros = [ 'redhat-9-i386', 'sles-9-x86_64', 'win-4-i386', 'macos-10-ppc', 'macos-10-x86', 'sunos-8-sparc', 'sunos-10-x86', 'sles-9-ia64', 'sles-9-s390', 'sles-9-s390x', 'sles-9-ppc', 'debian-31-arm', 'debian-31-sparc', 'fedora-3-i386', 'nld-9-i586', 'suse-93-i586' ]
 sd_latest_build_packages = td_packages
+##############################################
+
+# Sync thread options
+##############################################
+sync_active = True
+sync_host = 'mono-web@mono.ximian.com'
+sync_target_dir = '~/release'
+
+# Testing
+#sync_host = 'wberrier@wblinux.provo.novell.com'
+#sync_target_dir = 'wa/msvn/release/monobuild/www/builds'
+
+#sync_num_builds = 50 # 880 MB in one test...
+#sync_num_builds = 20 # 434 MB in one test...
+sync_num_builds = 10 # 268 MB in one test...
+
+sync_sleep_time = 10
 ##############################################
 
 ##############################################
