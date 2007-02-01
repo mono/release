@@ -10,6 +10,7 @@ import pdb
 # User packages...
 import config
 import packaging
+import utils
 
 debug = 1
 
@@ -116,6 +117,48 @@ def get_latest_version(HEAD_or_RELEASE, platform, package):
 
 	return version
 
+def _head_version_parse(x):
+	rel_splitter = x.find('-')
+
+	ver = ""
+	rel = ""
+	# Handle release
+	if rel_splitter > 0:
+		#pdb.set_trace()
+		ver = x[0:rel_splitter]
+		rel = x[rel_splitter+1:]
+	else:
+		ver = x
+
+	# Handle svn version
+	dot_splitter = ver.rfind('.')
+
+	if dot_splitter > 0:
+		ver = ver[dot_splitter+1:]
+
+	#print "ver: %s, rel %s" % (ver, rel)
+	return int(ver), rel
+
+# Sort by last version
+# still 3x slower than rpmvercmp, and WAY slower that python's sort
+def _HEAD_sort(x, y):
+
+        x_ver, x_rel = _head_version_parse(x)
+        y_ver, y_rel = _head_version_parse(y)
+
+        if x_ver < y_ver:
+                return -1
+        elif x_ver > y_ver:
+                return 1
+        elif x_rel < y_rel:
+                return -1
+        elif x_rel > y_rel:
+                return 1
+        else:
+                return 0
+
+
+
 def get_versions(HEAD_or_RELEASE, platform, package):
 
 	versions = []
@@ -129,6 +172,14 @@ def get_versions(HEAD_or_RELEASE, platform, package):
 		# TODO: This is going to eventually be innaccurate
 		# calling rpmvercmp is too slow here, need a python version
 		versions.sort()
+
+		# This was considered as a solution, but is too slow... why not just have the svn revision in configure.in?
+		## Do this for RELEASE versions (rpmvercmp doesn't seem to be too slow...)
+		#if HEAD_or_RELEASE == "RELEASE":
+		#	versions = utils.version_sort(versions)
+		#elif HEAD_or_RELEASE == "HEAD":
+		#	versions.sort(_HEAD_sort)
+
 
 	except OSError:
 		pass

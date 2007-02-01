@@ -250,7 +250,6 @@ def packagestatus(req, **vars):
 	timezone_offset = www_utils.get_tz_cookie(req.headers_in)
 
 	versions = build.get_versions(HEAD_or_RELEASE, platform, package)
-	versions = utils.version_sort(versions)
 	versions.reverse()
 
 	if len(versions) <= 10:
