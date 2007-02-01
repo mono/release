@@ -36,7 +36,7 @@ RELEASE_PATH=(
 )
 
 update_version_file () {
-	sed -i "s/VERSION=\([\.0-9]*\)/VERSION=\1.$VERSION/" configure
+	sed -i "s/VERSION=\([\.0-9]*\)/VERSION=$VERSION/" configure
 }
 
 make_dist () {

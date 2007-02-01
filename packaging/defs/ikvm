@@ -20,12 +20,6 @@ get_destroot () {
 	DEST_ROOT=noarch
 }
 
-#get_source () {
-#}
-
-#update_version_file () {
-#}
-
 make_dist () {
         #curl -O http://easynews.dl.sourceforge.net/sourceforge/ikvm/ikvm-$VERSION.zip
 	# Had troubles building the source, so use prebuilt

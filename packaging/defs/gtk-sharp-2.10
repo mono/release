@@ -32,7 +32,7 @@ get_source () {
 }
 
 update_version_file () {
-        sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$VERSION/" bootstrap-2.10
+	sed -i "s/^\(GTK_SHARP_VERSION\)=.*/\1=$VERSION/" bootstrap-2.10
 }
 
 make_dist () {

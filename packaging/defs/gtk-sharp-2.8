@@ -31,7 +31,7 @@ get_destroot () {
 }
 
 update_version_file () {
-        sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$VERSION/" bootstrap-2.8
+	sed -i "s/^\(GTK_SHARP_VERSION\)=.*/\1=$VERSION/" bootstrap-2.8
 }
 
 make_dist () {

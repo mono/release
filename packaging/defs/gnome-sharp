@@ -27,7 +27,7 @@ RELEASE_PATH=(
 )
 
 update_version_file () {
-	sed -i "s/^\(GTK_SHARP_VERSION.*\)$/\1.$VERSION/" bootstrap-2.16
+	sed -i "s/^\(GNOME_SHARP_VERSION\)=.*/\1=$VERSION/" bootstrap-2.16
 }
 
 make_dist () {
