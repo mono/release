@@ -381,14 +381,17 @@ CLEAN_UP () {
         ./runtime/mono-wrapper --wapi=semdel
 
 	# Clean up tmp files, but don't fail if they are missing
-	cd /tmp
-	rm -f ipc* || true
-	rm -Rf tmp*tmp || true
-	rm -f *.exe || true
+	# The /var/tmp is for solaris
+	rm -f	/tmp/ipc* 	/var/tmp/ipc*		|| true
+	rm -Rf	/tmp/tmp*tmp 	/var/tmp/tmp*tmp	|| true
+	rm -f	/tmp/*.exe	/var/tmp/*.exe		|| true
 
 	# for ia64
-	rm -f tmp*tmp.o || true
+	rm -f	/tmp/tmp*tmp.o	/var/tmp/tmp*tmp.o	|| true
+
 	# For s390
-	rm -f mono_aot_* || true
+	rm -f	/tmp/mono_aot_*	/var/tmp/mono_aot_*	|| true
+
+	rm -f	/tmp/Mono*	/var/tmp/Mono*		|| true
 }
 

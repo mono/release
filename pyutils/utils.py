@@ -211,6 +211,14 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
                 os.chdir(final_dest_dir)
                 shutil.rmtree(tempdir)
 
+		# need to do some cleanup here (/var/tmp/<something>) (created by pkgtrans)
+		for dir in glob.glob("/var/tmp/aaa*"):
+			try:
+				shutil.rmtree(dir)
+			except:
+				#print "Unable to remove: " + dir
+				pass
+
 	else:
 		print "Warning!!! Unable to extract file of type %s" % ext
 		return
