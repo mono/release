@@ -381,12 +381,12 @@ while threading.activeCount() > 1 or firstrun:
 			build_threads.append(thread)
 
 	# Check if we need to start up the sync thread
-	if not sync_thread.isAlive() and config.sync_active:
+	if not sync_thread.isAlive() and not sigint_event.isSet() and config.sync_active:
 		sync_thread = sync()
 		sync_thread.start()
 
 	# Check if we need to start up the tarball thread
-	if not tarball_thread.isAlive() and config.td_active:
+	if not tarball_thread.isAlive() and not sigint_event.isSet() and config.td_active:
 		tarball_thread = tarball_builder()
 		tarball_thread.start()
 
