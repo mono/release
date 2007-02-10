@@ -23,7 +23,7 @@ SBOX_DIR = $(SBOX_ROOT)/scratchbox
 #SBOX_SPECS = /scratchbox/compilers/host-gcc/host-gcc.specs
 SBOX_LDFLAGS = -Wl,-rpath -Wl,/scratchbox/host_shared/lib/ -Wl,-rpath -Wl,/scratchbox/tools/lib/ -Wl,-rpath -Wl,$(SBOX_PREFIX)/lib/
 
-MASTER_SITES ?= http://go-mono.com/sources/mono/
+MASTER_SITES ?= http://go-mono.com/sources/mono/ ftp://ftp.gtk.org/pub/gtk/v2.8/
 
 # If the color codes are interfering with your terminal, consider
 # commenting this next line out.
