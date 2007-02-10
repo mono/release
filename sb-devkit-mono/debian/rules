@@ -1,0 +1,42 @@
+#!/usr/bin/make -f
+
+PACKAGE	= $(shell dh_listpackages)
+DEVKIT	= $(shell echo $(PACKAGE) | cut -d- -f3-)
+VERSION	= $(shell head -n1 /scratchbox/etc/scratchbox-version)
+DATE	= $(shell head -n2 /scratchbox/etc/scratchbox-version | tail -n1)
+
+build:
+
+binary: binary-arch
+
+binary-arch:
+	dh_testdir
+	dh_testroot
+
+	sed -e "s/<VERSION>/$(VERSION)/" \
+	    -e "s/<DATE>/$(DATE)/" \
+	    debian/changelog.in > debian/changelog
+	cp COPYRIGHT debian/copyright
+
+	mkdir -p debian/$(PACKAGE)/scratchbox/devkits
+	cp -a /scratchbox/devkits/$(DEVKIT) debian/$(PACKAGE)/scratchbox/devkits/
+
+	dh_installdocs
+	dh_installinit
+	dh_fixperms
+	dh_compress
+	dh_installdebconf
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-indep:
+
+clean:
+	dh_testdir
+	dh_testroot
+	dh_clean
+	rm -f debian/changelog debian/copyright
+
+.PHONY: build binary binary-arch binary-indep clean

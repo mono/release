@@ -1,0 +1,17 @@
+Summary: Mono Devkit for Scratchbox
+Name: scratchbox-devkit-mono
+Version: <VERSION>
+Release: 1
+License: GPL
+Group: Development/Tools
+URL: http://scratchbox.org/
+Requires: scratchbox-core >= 1.0
+AutoReqProv: no
+
+%description
+Mono Devkit for use with Scratchbox.
+
+%post
+
+%files
+%defattr(-,root,root)

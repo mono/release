@@ -1,0 +1,31 @@
+2007-02-03  Everaldo Canuto <ecanuto@novell.com>
+
+	* Makefile: Uses mono version as package version.
+	* file_locations.mk: File removed.
+	* gar.conf.mk: MASTER_SITES change to mono web site.
+	* meta/devkit/Makefile: Mono related stuff added.
+	* devkit/category.mk: Change SBOX_PREFIX for mono.
+	* devkit/mono/Makefile: Added.
+	* devkit/gtk-sharp/Makefile: Added.
+	* devkit/maemo-sharp/Makefile: Added.
+	* debian/control, rpm/spec.in: Update to package Mono descriptions.
+
+2005-02-14  Timo Savola <tsavola@movial.fi>
+
+	* gar.mk: Updated deb_list format.
+
+	* Makefile, debian/rules: Debian packaging works better.
+	* debian/control, rpm/spec.in: Always depend on libs >= 1.0.
+
+2005-01-02  Timo Savola <tsavola@movial.fi>
+
+	* Makefile: Added packages, tarball, deb and rpm targets.
+
+	* debian: Debian packaging scripts.  Can be used as stand-alone or
+	  via Makefile.
+
+	* rpm: RPM packaging scripts.  Used by Makefile.
+
+2004-12-15  valtteri.rahkonen@movial.fi
+
+	* Initial import

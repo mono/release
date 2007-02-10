@@ -1,0 +1,13 @@
+Source: sb-devkit-mono
+Section: devel
+Priority: extra
+Maintainer: Everaldo Canuto <ecanuto@novell.com>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.0
+
+Package: scratchbox-devkit-mono
+Architecture: any
+Depends: scratchbox-core (>= 1.0)
+Description: Mono Devkit for Scratchbox
+ Mono Devkit for use with Scratchbox.
+
