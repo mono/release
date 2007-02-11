@@ -114,6 +114,7 @@ SOURCE_LANGUAGES ?= c
 
 # This is for foo-config chaos
 PKG_CONFIG_PATH=$(DESTDIR)$(libdir)/pkgconfig/
+export PKG_CONFIG_PATH
 
 # Put these variables in the environment during the
 # configure build and install stages
