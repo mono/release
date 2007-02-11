@@ -1,0 +1,16 @@
+#!/bin/bash
+export LC_ALL=C
+export TMPDIR=/var/tmp
+export MONO_GAC_PREFIX=/usr
+
+BASE_PKG_CONFIG_PATH=/usr/lib/pkgconfig:/scratchbox/devkits/mono/lib/pkgconfig
+if [ -n $PKG_CONFIG_PATH ]; then
+	export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$BASE_PKG_CONFIG_PATH
+else
+	export PKG_CONFIG_PATH=$BASE_PKG_CONFIG_PATH 
+fi
+
+target=$(grep ^SBOX_CPU= /targets/links/scratchbox.config | cut -d= -f2)
+if [ "$target" = "arm" ]; then
+        export SBOX_UNAME_MACHINE=arm
+fi
