@@ -1,8 +1,7 @@
 DEVKIT	= mono
 PACKAGE	= scratchbox-devkit-$(DEVKIT)
 FILES	= /scratchbox/devkits/$(DEVKIT)/
-#VERSION	= $(shell head -n1 /scratchbox/etc/scratchbox-version)
-VERSION	= 1.2.2.1
+VERSION	= $(MONO_VERSION)
 ARCH	= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 
 PACKAGE_TARGETS	= tarball deb rpm
