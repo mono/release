@@ -114,11 +114,9 @@ SOURCE_LANGUAGES ?= c
 
 # This is for foo-config chaos
 PKG_CONFIG_PATH=$(DESTDIR)$(libdir)/pkgconfig/:/usr/lib/pkgconfig
-export PKG_CONFIG_PATH
 
 # This fixes bin dependencies problems
 PATH += :$(DESTDIR)/$(bindir)
-export PATH
 
 # Put these variables in the environment during the
 # configure build and install stages
@@ -135,8 +133,8 @@ MANIFEST_ENV += $(foreach TTT,$(STAGE_EXPORTS),$(TTT)="$($(TTT))")
 
 # Global environment
 export GARBUILD
-#export PATH LD_LIBRARY_PATH #LD_PRELOAD
-#export PKG_CONFIG_PATH
+export PATH # LD_LIBRARY_PATH LD_PRELOAD
+export PKG_CONFIG_PATH
 
 # prepend the local file listing
 FILE_SITES = file://$(FILEDIR)/
