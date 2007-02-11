@@ -113,8 +113,12 @@ main_NODEPEND += $(if $(shell which python),lang/python,)
 SOURCE_LANGUAGES ?= c
 
 # This is for foo-config chaos
-PKG_CONFIG_PATH=$(DESTDIR)$(libdir)/pkgconfig/
+PKG_CONFIG_PATH=$(DESTDIR)$(libdir)/pkgconfig/:/usr/lib/pkgconfig
 export PKG_CONFIG_PATH
+
+# This fixes bin dependencies problems
+PATH += :$(DESTDIR)/$(bindir)
+export PATH
 
 # Put these variables in the environment during the
 # configure build and install stages

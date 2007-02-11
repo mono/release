@@ -1,5 +1,13 @@
 2007-02-11  Everaldo Canuto <ecanuto@novell.com>
 
+	* gar.conf.mk: 
+	- Set and export PATH var to haev $(DESTDIR)/$(bindir), it fixes bin 
+	dependencies problems in gtk-sharp configure script. 
+	- /usr/lib/pkgconfig added to the PKG_CONFIG_PATH. It fixes
+	problem in Mono configure script. 
+	
+2007-02-11  Everaldo Canuto <ecanuto@novell.com>
+
 	* gar.conf.mk: Export PKG_CONFIG_PATH to fix configure problems in Mono.
 
 2007-02-11  Everaldo Canuto <ecanuto@novell.com>
