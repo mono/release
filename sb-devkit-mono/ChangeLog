@@ -1,3 +1,12 @@
+2007-02-11  Everaldo Canuto <ecanuto@novell.com>
+
+	[A lot of changes in all files to add glib, gtk-sharp and env settings]
+	
+	* gar.conf.mk: Centralize package versions and update to Mono 1.2.3
+	* devkit/gtk-sharp/Makefile: Added.
+	* devkit/environment/Makefile: Added.
+	* devkit/glib/Makefile: Added.
+
 2007-02-03  Everaldo Canuto <ecanuto@novell.com>
 
 	* Makefile: Uses mono version as package version.
