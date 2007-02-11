@@ -1,5 +1,11 @@
 2007-02-11  Everaldo Canuto <ecanuto@novell.com>
 
+	* devkit/gtk-sharp/checksums:
+	* devkit/mono/checksums:
+	* devkit/glib/checksums: Checksums added.
+
+2007-02-11  Everaldo Canuto <ecanuto@novell.com>
+
 	* gar.conf.mk: Fixes gtk-sharp path.
 
 2007-02-11  Everaldo Canuto <ecanuto@novell.com>
