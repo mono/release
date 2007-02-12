@@ -1,3 +1,8 @@
+2007-02-12  Everaldo Canuto <ecanuto@novell.com>
+
+	* meta/devkit/Makefile: Comment gtk-sharp line to disable inclusion of 
+	it in package. Maybe it will be back later.
+
 2007-02-11  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.conf.mk: 
@@ -5,7 +10,7 @@
 	dependencies problems in gtk-sharp configure script. 
 	- /usr/lib/pkgconfig added to the PKG_CONFIG_PATH. It fixes
 	problem in Mono configure script. 
-	
+
 2007-02-11  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.conf.mk: Export PKG_CONFIG_PATH to fix configure problems in Mono.
