@@ -1,0 +1,46 @@
+#!/bin/sh
+
+installerdir=$1
+
+# Check libs to see if md can be run (make sure to set LD_LIBRARY_PATH first)
+
+# Need to add $installerdir/lib to LD_LIBRARY_PATH
+cd $installerdir
+collective=()
+for i in `find . -name "*\.so"` ; do
+	files=(`LD_LIBRARY_PATH=$installerdir/lib ldd $i | grep "not found" | sed -e 's/=> not found//g' 2>&1`)
+	if test "x$files" != "x" ; then
+		collective=(${collective[@]} ${files[@]})
+	fi
+
+done
+
+if test "x$collective" == "x" ; then
+	echo "Congratulations!  You should "
+	echo " have no problems running gtk#"
+	echo " nor gecko# apps."
+else
+
+	# uniqify (ugh...)
+	text=""
+	for i in ${collective[@]} ; do
+		text="$text\n$i"
+	done
+	text=`echo -e $text | sort | uniq`
+		
+	echo "Missing libraries:"
+	echo "----------------"
+	echo -e $text
+	echo "----------------"
+	echo ""
+	echo "It appears your system may be unable"
+	echo " to run graphical apps included"
+	echo " in this installer.  Please fix"
+	echo " unresolved symbols by installing"
+	echo " the necessary packages for your"
+	echo " system."
+	echo ""
+
+fi
+
+

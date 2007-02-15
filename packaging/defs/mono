@@ -393,5 +393,7 @@ CLEAN_UP () {
 	rm -f	/tmp/mono_aot_*	/var/tmp/mono_aot_*	|| true
 
 	rm -f	/tmp/Mono*	/var/tmp/Mono*		|| true
+
+	rm -f	/tmp/mcs*	/var/tmp/mcs*		|| true
 }
 

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+installerdir=$1
+
+# Create a .bashrc if it doesn't exists before trying to add to it
+echo $installerdir
+if [ ! -e "$HOME/.bashrc" ] ; then
+	echo "Creating a .bashrc in the home dir"
+	touch $HOME/.bashrc
+fi
+

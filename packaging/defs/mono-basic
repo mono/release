@@ -99,3 +99,9 @@ win_4_i386_ZIP_BUILD () {
 
 }
 
+POSTBUILD_STEP_NAME1="test"
+POSTBUILD_STEP1 () {
+	# This is for linux... what about win?
+        $make_path test
+}
+

@@ -41,8 +41,8 @@ external_rpms_list = [
 
 custom_rpms_list = [
 	"ftp://mirrors.kernel.org/suse/i386/9.3/suse/i586/gtkhtml2-3.6.1-5.i586.rpm",
-	"http://www.go-mono.com/archive/1.0.5/redhat-9-i386/libgtkhtml3.0_4-3.0.10-0.ximian.6.1.i386.rpm",
-	"http://www.go-mono.com/archive/1.0.5/redhat-9-i386/gtksourceview-1.0.1-0.ximian.6.1.i386.rpm",
+	"http://primates.ximian.com/~wberrier/linux-installer/rpms/libgtkhtml3.0_4-3.0.10-0.ximian.6.1.i386.rpm",
+	"http://primates.ximian.com/~wberrier/linux-installer/rpms/gtksourceview-1.0.1-0.ximian.6.1.i386.rpm",
 	"ftp://ftp.ximian.com/pub/ximian-evolution/redhat-9-i386/libgal2.0_6-1.99.11-0.ximian.6.1.i386.rpm"
 ]
 
@@ -204,6 +204,18 @@ os.rename("etc", "usr/etc")
 for f in glob.glob(p + "/usr/lib/pkgconfig/*.pc"):
 	utils.substitute_parameters_in_file(f, {'/usr' : '@@BITROCK_MONO_ROOTDIR@@'} )
 
+# Create setup.sh for sourcing in bash files
+setup = open(p + "/usr/bin/setup.sh", 'w')
+setup.write("""#!/bin/sh
+
+export PATH="@@BITROCK_MONO_ROOTDIR@@/bin:$PATH"
+export LD_LIBRARY_PATH="@@BITROCK_MONO_ROOTDIR@@/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="@@BITROCK_MONO_ROOTDIR@@/lib/pkgconfig:$PKG_CONFIG_PATH"
+export MANPATH="@@BITROCK_MONO_ROOTDIR@@/share/man:$MANPATH"
+""")
+setup.close()
+os.chmod(p + "/usr/bin/setup.sh", 0755)
+
 executable_wrappers = []
 for f in glob.glob(p + "/usr/bin/*"):
 
@@ -226,6 +238,20 @@ for f in executable_wrappers:
 		} )
 	else:
 		print "***Not found %s/usr/bin/%s***" % (p, f)
+
+# Fix wrappers that have .desktop entries so that the user doesn't need to reload their environment in order to load the apps
+# TODO: These may need to be updated as these wrappers change
+for f in ['monodoc', 'monodevelop']:
+	utils.substitute_parameters_in_file(p + "/usr/bin/" + f,
+		{ '#! ?/bin/sh'	:
+"""#!/bin/sh
+
+# Added by Mono Bitrock installer
+. @@BITROCK_MONO_ROOTDIR@@/bin/setup.sh
+"""
+		}
+	)
+
 
 # This glob should only return one file...
 utils.substitute_parameters_in_file( glob.glob(p + "/usr/lib/mono/gac/monodoc/1.0*/monodoc.dll.config").pop(),
@@ -286,6 +312,10 @@ shutil.copy(p + "/../projects/mono/html/index.html", p + "/html")
 shutil.copy(p + "/../projects/mono/html/mono.css", p + "/html")
 shutil.copy(p + "/../projects/mono/html/bitrock.png", p + "/html")
 
+# Copy installer helper scripts
+shutil.copy(p + "/../projects/post_libscan", p + "/usr/bin/.installer_post_libscan")
+shutil.copy(p + "/../projects/pre_env_setup", p + "/usr/bin/.installer_pre_env_setup")
+
 # Generate some stuff in mono.xml
 result = ""
 
@@ -294,6 +324,9 @@ for item in executable_wrappers:
 	result += "*/bin/%s;" % item
 
 result += "*/monodoc.dll.config;*/*.pc"
+
+# We don't need to substitute here because bitrock shows the unsubstituted version
+#result += ";*/Readme.txt"
 
 utils.substitute_parameters_in_file(p + "/mono.xml",
     { '@@SUBST_FILES@@' : result } )

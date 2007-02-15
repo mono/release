@@ -12,6 +12,9 @@
   <shortName>mono</shortName>
   <version>@@VERSION@@</version>
   <wrapLicenseFileText>1</wrapLicenseFileText>
+  <postInstallationScript>${installdir}/bin/.installer_post_libscan</postInstallationScript>
+  <postInstallationScriptArguments>${installdir}</postInstallationScriptArguments>
+  <showPostInstallationScriptResult>1</showPostInstallationScriptResult>
   <componentList>
     <component>
       <description>Default Component</description>
@@ -139,7 +142,7 @@
       <cliOptionName></cliOptionName>
       <default>1</default>
       <description>Add Mono to your PATH?</description>
-      <explanation>The directory ${installdir}/bin needs to be added to your path in order to run Mono. Setup will modify your ~/.bashrc, ~/.profile files as required. Alternatively you can choose 'No' below, and add the directory manually after installation.</explanation>
+      <explanation>The directory ${installdir}/bin needs to be added to your path in order to run Mono. Setup will modify your ~/.bashrc, ~/.profile files as required.  If you do so, you will need to restart your shell for these changes to take effect.  Alternatively you can choose 'No' below, and add the directory manually after installation, or source ${installdir}/bin/setup.sh as needed.</explanation>
       <name>AddMonoToPath</name>
       <ruleEvaluationLogic>and</ruleEvaluationLogic>
       <title>Add Mono to your Path</title>
@@ -150,6 +153,11 @@
       <postInstallationActionList>
        <actionGroup>
        <actionList>
+        <!-- make sure that ~/.bashrc exists before trying to add env vars -->
+        <runProgram>
+          <program>${installdir}/bin/.installer_pre_env_setup</program>
+          <programArguments>${installdir}</programArguments>
+        </runProgram>
         <addEnvironmentVariable>
           <name>PATH</name>
           <value>${installdir}/bin:$PATH</value>

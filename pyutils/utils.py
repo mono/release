@@ -94,6 +94,7 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
                         print "Error unzipping file! %s" % filename
                         print "File is probably corrupt, removing"
                         os.remove(filename)
+			print output
                         sys.exit(1)
 
         elif ext == ".rpm":
@@ -135,10 +136,6 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
 				print output
 				sys.exit(1)
 
-                if status:
-                        print "Error massaging files from rpm: %s" % filename
-                        sys.exit(1)
-
 		if truncate_path:
 			current = os.getcwd()
 			try:
@@ -166,6 +163,7 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
                 #print "Status: %d" % status
                 if status:
                         print "Error untarring file: %s" % filename
+			print output
                         sys.exit(1)
 
 	# If it's a gzipped solaris package
@@ -184,6 +182,7 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
                 #print "Status: %d" % status
                 if status:
                         print "Error extracting solaris package file: %s" % filename
+			print output
                         sys.exit(1)
 		packagedir = glob.glob('*').pop()
 		pkgmap = open(packagedir + os.sep + 'pkgmap', 'r')
