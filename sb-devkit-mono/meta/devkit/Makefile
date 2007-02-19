@@ -4,7 +4,7 @@ CATEGORIES = meta
 GARDIR = ../..
 
 DEPENDS  = devkit/mono
-#DEPENDS += devkit/gtk-sharp
+DEPENDS += devkit/gtk-sharp
 DEPENDS += devkit/environment
 
 DESCRIPTION = mono-devkit

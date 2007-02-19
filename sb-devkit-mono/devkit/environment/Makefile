@@ -18,6 +18,7 @@ INSTALL_SCRIPTS = environment
 include ../category.mk
 
 install-environment:
-	install -m 644 files/target_setup.sh $(prefix)/
+	mkdir -p $(sysconfdir)
 	install -m 644 files/environment $(sysconfdir)/
+	install -m 644 files/target_setup.sh $(prefix)/
 	$(MAKECOOKIE)

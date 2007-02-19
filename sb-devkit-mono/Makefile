@@ -1,3 +1,5 @@
+-include gar.conf.mk
+
 DEVKIT	= mono
 PACKAGE	= scratchbox-devkit-$(DEVKIT)
 FILES	= /scratchbox/devkits/$(DEVKIT)/
@@ -11,6 +13,10 @@ PACKAGE_TARGETS	= tarball deb rpm
 build:
 	$(MAKE) -C meta/devkit install
 	install -m 644 ChangeLog /scratchbox/devkits/mono/
+
+strip:
+	strip -s $(FILES)bin/*
+	strip -s $(FILES)lib/*.so*
 
 packages: $(PACKAGE_TARGETS)
 

@@ -1,3 +1,25 @@
+2007-02-18  Everaldo Canuto <ecanuto@novell.com>
+
+	* gar.conf.mk: Update Mono to 1.2.3.1 release.
+	
+	* meta/devkit/Makefile: Uncomment gtk-sharp dependency, it makes more
+	easy develop GUI apps.
+
+	* devkit/environment/files/environment: SBOX_DPKG_INST_ARCH and 
+	LD_LIBRARY_PATH exported.
+	
+	* devkit/mono/Makefile: Uses DEBIAN_PACKAGES to generate dpkg info
+	and add some strip command to reduce tarball/deb size.
+	
+	* devkit/glib/Makefile: Change installation procedure to install
+	only needed files, strip this files to less size.
+
+2007-02-12  Everaldo Canuto <ecanuto@novell.com>
+
+	* Makefile: 
+	- Include gar.conf.mk to get right package version.
+	- strip target added to reduce package sizes.
+
 2007-02-12  Everaldo Canuto <ecanuto@novell.com>
 
 	* meta/devkit/Makefile: Comment gtk-sharp line to disable inclusion of 

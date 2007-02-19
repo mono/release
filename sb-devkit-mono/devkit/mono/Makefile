@@ -10,7 +10,7 @@ DEPENDS =
 
 DESCRIPTION = $(GARNAME)
 
-DEBIAN_PACKAGES = 
+DEBIAN_PACKAGES = mono mono-dev
 
 define BLURB
  # FIXME: blurb goes here
@@ -24,3 +24,13 @@ BUILD_SCRIPTS = $(WORKSRC)/Makefile
 INSTALL_SCRIPTS = $(WORKSRC)/Makefile
 
 include ../category.mk
+
+post-install:
+	strip -s $(prefix)/bin/mono
+	strip -s $(prefix)/bin/monodis
+	strip -s $(prefix)/bin/monodiet
+	strip -s $(prefix)/bin/monograph
+	strip -s $(prefix)/bin/pedump
+	strip -s $(prefix)/lib/libMonoPosixHelper.so
+
+	

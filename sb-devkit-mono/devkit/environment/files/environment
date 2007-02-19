@@ -10,7 +10,23 @@ else
 	export PKG_CONFIG_PATH=$BASE_PKG_CONFIG_PATH 
 fi
 
+ARCH=$(dpkg-architecture -t$(gcc -dumpmachine) -qDEB_HOST_ARCH 2>/dev/null)
+if [ x"$ARCH" != x ]; then
+	export SBOX_DPKG_INST_ARCH=$ARCH
+else
+	echo >&2 "SBOX_DPKG_INST_ARCH not set."
+fi
+
+export SBOX_DPKG_BUILDDEPS=yes
+export SBOX_READLINK_HACK=yes
+
 target=$(grep ^SBOX_CPU= /targets/links/scratchbox.config | cut -d= -f2)
 if [ "$target" = "arm" ]; then
-        export SBOX_UNAME_MACHINE=arm
+	export SBOX_UNAME_MACHINE=arm
+	MONO_LIBRARY_PATH=/scratchbox/devkits/mono/lib/glib
+	if [ -n $LD_LIBRARY_PATH ]; then
+		export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MONO_LIBRARY_PATH
+	else
+		export LD_LIBRARY_PATH=$MONO_LIBRARY_PATH
+	fi
 fi
