@@ -1,0 +1,43 @@
+BUILD_HOSTS=(
+        fedora-3-i386
+)
+
+USE_HOSTS=(
+	ALL
+)
+
+MONO_DEPS=(
+	mono
+)
+
+# Put this here since we build on windows
+MONO_RECOMMEND_DEPS=(
+	libgdiplus
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH=(
+	trunk/olive
+)
+RELEASE_PATH=(
+	tags/olive-[[version]]
+)
+
+update_version_file () {
+	sed -i "s/VERSION=\([\.0-9]*\)/VERSION=$VERSION/" configure
+}
+
+make_dist () {
+	./configure --prefix=/usr
+
+	make dist
+}
+
+POSTBUILD_STEP_NAME1="test"
+POSTBUILD_STEP1 () {
+	$make_path test
+}
+
