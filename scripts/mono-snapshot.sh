@@ -33,6 +33,7 @@ if [ ! -e $REPO ] ; then
 	echo "Check out mono and mcs" >> $LOGFILE 2>&1
 	svn co -q $MSVN/trunk/mono >> $LOGFILE 2>&1 || exit 1
 	svn co -q $MSVN/trunk/mcs >> $LOGFILE 2>&1 || exit 1
+	svn co -q $MSVN/trunk/mono-basic >> $LOGFILE 2>&1 || exit 1
 
 # Otherwise update the repo
 else
@@ -41,6 +42,8 @@ else
 	svn switch $MSVN/trunk/mono >> $LOGFILE 2>&1 || exit 1
 	cd ../mcs
 	svn switch $MSVN/trunk/mcs >> $LOGFILE 2>&1 || exit 1
+	cd ../mono-basic
+	svn switch $MSVN/trunk/mono-basic >> $LOGFILE 2>&1 || exit 1
 fi
 
 # rsync the clean source
@@ -61,6 +64,14 @@ echo "Building MONO" >> $LOGFILE 2>&1
 # Install mono
 echo "Installing mono" >> $LOGFILE 2>&1
 (cd $DAILY_BUILD_DIR/mono && make install || exit 1 ) >> $LOGFILE 2>&1
+
+# Build and install basic
+echo "Building basic" >> $LOGFILE 2>&1
+(cd $DAILY_BUILD_DIR/mono-basic && ./configure --prefix=$PREFIX || exit 1 ) >> $LOGFILE 2>&1
+(cd $DAILY_BUILD_DIR/mono-basic && make || exit 1 ) >> $LOGFILE 2>&1
+(cd $DAILY_BUILD_DIR/mono-basic && make install || exit 1 ) >> $LOGFILE 2>&1
+# Copy the basic runtime to where the mcs class libs are so the class status will get properly generated
+cp $DAILY_BUILD_DIR/mono-basic/class/lib/vbnc/*.dll $DAILY_BUILD_DIR/mcs/class/lib/net_2_0
 
 LIBSDIR=$DAILY_BUILD_DIR/mcs/class/lib/net_1_1_bootstrap
 cd $DAILY_BUILD_DIR
@@ -85,6 +96,7 @@ cp $DAILY_BUILD_DIR/mcs/class/lib/default/*.dll $DAILY_BUILD_DIR/monocharge-$DAT
 mkdir -p $DAILY_BUILD_DIR/monocharge-$DATE/2.0
 cp $PREFIX/lib/mono/2.0/*.exe $DAILY_BUILD_DIR/monocharge-$DATE/2.0
 cp $DAILY_BUILD_DIR/mcs/class/lib/net_2_0/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/2.0
+cp $DAILY_BUILD_DIR/mono-basic/class/lib/vbnc/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/2.0
 
 tar zcvpf monocharge-$DATE.tar.gz monocharge-$DATE/ >> $LOGFILE 2>&1
 

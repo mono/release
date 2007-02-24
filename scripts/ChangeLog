@@ -1,3 +1,10 @@
+2007-02-23  Wade Berrier  <wberrier@novell.com>
+
+	* class_status/index-2.0.src:
+	* class_status/update-status.sh:
+	* mono-snapshot.sh:
+	Quick hack to also build mono-basic and generate class status page for the VB 2.0 runtime
+
 2006-11-13  Wade Berrier  <wberrier@novell.com>
 	* mono-snapshot.sh:
 	* explanation.html:

@@ -53,6 +53,7 @@ case $VERSION in
 		Microsoft.Build.Framework
 		Microsoft.Build.Tasks
 		Microsoft.Build.Utilities
+		Microsoft.VisualBasic
 		System.Configuration
 		System.ServiceProcess
 		System.Transactions
