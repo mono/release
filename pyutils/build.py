@@ -98,7 +98,8 @@ def get_package_objs():
                 pack_obj = packaging.package("", package, create_dirs_links=False)
 
 		# Handle normal package
-		if pack_obj.info['get_destroot'].find('noarch') == -1:
+		# Add workaround for packages that build on multiple platforms, but are noarch (currently mono-basic)
+		if pack_obj.info['get_destroot'].find('noarch') == -1 or pack_obj.get_info_var('web_ignore_noarch'):
 			pack_objs.append(pack_obj)
 		# It's noarch
 		else:

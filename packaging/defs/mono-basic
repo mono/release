@@ -1,6 +1,11 @@
-web_index=0
-
+web_index=8
+web_ignore_noarch=1
+ 
 version_selection_reg="1\.\d+"
+ 
+# Note: this noarch package builds on two platforms
+#  BE SURE to build on windows first before building the rpm, otherwise the
+#  1.0 vb runtime won't be included
 
 BUILD_HOSTS=(
 	win-4-i386
@@ -102,6 +107,10 @@ win_4_i386_ZIP_BUILD () {
 POSTBUILD_STEP_NAME1="test"
 POSTBUILD_STEP1 () {
 	# This is for linux... what about win?
-        $make_path test
+        if [ $DISTRO == "win-4-i386" ] ; then
+                true
+        else
+		$make_path test
+	fi
 }
 
