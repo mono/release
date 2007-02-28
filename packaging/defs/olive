@@ -40,6 +40,6 @@ make_dist () {
 
 POSTBUILD_STEP_NAME1="test"
 POSTBUILD_STEP1 () {
-	$make_path test
+	$make_path run-test
 }
 
