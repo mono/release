@@ -35,8 +35,11 @@ BUILD_HOSTS=(
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
-MONO_DEPS=(
+MONO_RECOMMENDED_DEPS=(
 	libgdiplus
+)
+
+MONO_DEPS=(
 	mono
 )
 
@@ -88,7 +91,7 @@ win_4_i386_ZIP_RUNTIME_DEPS=(
 
 win_4_i386_ZIP_DEPS=(
 
-	http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2-2.6.20-1-mono.win32.zip
+	http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2-2.6.27.win32-0.win4.novell.x86.zip
 
 	http://ftp.gnome.org/pub/GNOME/binaries/win32/librsvg/2.16/librsvg-2.16.1.zip
 	http://ftp.gnome.org/pub/GNOME/binaries/win32/librsvg/2.16/librsvg-dev-2.16.1.zip

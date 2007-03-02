@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+
+BUILD_HOSTS = ['win-4-i386']
+
+packages = [
+	{
+		# Generate the .dll.a file and the .pc file
+		# Ideas for generating the .dll.a from:
+		# http://amide.sourceforge.net/compilation_windows.html
+		# http://www.mingw.org/docs.shtml
+
+		'name': 'libxml2', 
+		'source': 'http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2/libxml2-2.6.27.win32.zip',
+		'build': """
+
+x_dir=`pwd`
+cd ..
+x_ver=2.6.27
+f=libxml2-$x_ver.win32.zip
+
+# From http://www.zlatkovic.com/libxml.en.html
+#wget http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2/$f
+#unzip $f
+
+p_ver=0.43
+p=pexports-$p_ver.zip
+
+# From http://www.emmestech.com/software/cygwin/pexports-0.43/download_pexports.html
+wget http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2/$p
+unzip $p
+chmod 755 pexports-$p_ver/bin/pexports.exe
+
+cd $x_dir/bin
+../../pexports-$p_ver/bin/pexports.exe libxml2.dll | sed 's/^_//' > ../lib/libxml2.def
+dlltool.exe --dllname libxml2.dll --input-def ../lib/libxml2.def --output-lib ../lib/libxml2.dll.a
+ranlib ../lib/libxml2.dll.a
+
+# Generate .pc file
+cd ..
+mkdir -p lib/pkgconfig
+echo "prefix=/usr
+exec_prefix=\${prefix}
+libdir=/usr/lib
+includedir=\${prefix}/include
+
+Name: libXML
+Version: $x_ver
+Description: libXML library version2.
+Requires:
+Libs: -L\${libdir} -lxml2 -lz -lm 
+Cflags: -I\${includedir}/libxml -I\${includedir}
+" > lib/pkgconfig/libxml-2.0.pc
+
+# Copy to final location
+mkdir -p /tmp/install
+cp -Rpf * /tmp/install
+
+cd ..
+
+"""
+
+
+	}
+]
+

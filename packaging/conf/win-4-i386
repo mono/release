@@ -1,4 +1,5 @@
-target_host=builder@monowin.dnsdhcp.provo.novell.com
+#target_host=builder@monowin.dnsdhcp.provo.novell.com
+target_host=builder@cygwin-mono.boston.ximian.com
 USE_ZIP_PKG=1
 # Cygwin's ssh server doesn't load this information
 # ... let's do it explicitly through sshutils
