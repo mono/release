@@ -1,5 +1,13 @@
 2007-03-04  Everaldo Canuto <ecanuto@novell.com>
 
+	* meta/devkit/Makefile: Maemo sharp package added.
+	* gar.conf.mk: (same)
+	* devkit/maemo-sharp: (same)
+	* devkit/maemo-sharp/checksums: (same)
+	* devkit/maemo-sharp/Makefile: (same)
+
+2007-03-04  Everaldo Canuto <ecanuto@novell.com>
+
 	* gar.conf.mk: Add file:///scratchbox/packages/ to MASTER_SITES, it 
 	will improve download time if you have packages already downloaded 
 	to this directory.

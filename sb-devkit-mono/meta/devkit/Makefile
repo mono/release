@@ -5,6 +5,7 @@ GARDIR = ../..
 
 DEPENDS  = devkit/mono
 DEPENDS += devkit/gtk-sharp
+DEPENDS += devkit/maemo-sharp
 DEPENDS += devkit/environment
 
 DESCRIPTION = mono-devkit

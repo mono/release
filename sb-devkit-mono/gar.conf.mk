@@ -29,6 +29,7 @@ MASTER_SITES ?= file:///scratchbox/packages/ http://go-mono.com/sources/mono/ ht
 MONO_VERSION = 1.2.3.1
 GTKSHARP_VERSION = 2.4.3
 GLIB_VERSION = 2.8.6
+MAEMOSHARP_VERSION = 0.20
 
 # If the color codes are interfering with your terminal, consider
 # commenting this next line out.
