@@ -23,7 +23,7 @@ SBOX_DIR = $(SBOX_ROOT)/scratchbox
 #SBOX_SPECS = /scratchbox/compilers/host-gcc/host-gcc.specs
 SBOX_LDFLAGS = -Wl,-rpath -Wl,/scratchbox/host_shared/lib/ -Wl,-rpath -Wl,/scratchbox/tools/lib/ -Wl,-rpath -Wl,$(SBOX_PREFIX)/lib/
 
-MASTER_SITES ?= http://go-mono.com/sources/mono/ http://go-mono.com/sources/gtk-sharp-2.0/ ftp://ftp.gtk.org/pub/gtk/v2.8/
+MASTER_SITES ?= file:///scratchbox/packages/ http://go-mono.com/sources/mono/ http://go-mono.com/sources/gtk-sharp-2.0/ ftp://ftp.gtk.org/pub/gtk/v2.8/
 
 # Here you can control what package versions must be use
 MONO_VERSION = 1.2.3.1
