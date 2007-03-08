@@ -1,3 +1,10 @@
+2007-03-08  Everaldo Canuto <ecanuto@novell.com>
+
+	* gar.conf.mk: Change maemo-sharp release to 0.21, a PACKAGE_REVISION
+	added to track package revisions.
+	
+	* Makefile: use PACKAGE_REVISION on talball name.
+
 2007-03-04  Everaldo Canuto <ecanuto@novell.com>
 
 	* meta/devkit/Makefile: Maemo sharp package added.

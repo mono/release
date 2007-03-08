@@ -26,10 +26,12 @@ SBOX_LDFLAGS = -Wl,-rpath -Wl,/scratchbox/host_shared/lib/ -Wl,-rpath -Wl,/scrat
 MASTER_SITES ?= file:///scratchbox/packages/ http://go-mono.com/sources/mono/ http://go-mono.com/sources/gtk-sharp-2.0/ ftp://ftp.gtk.org/pub/gtk/v2.8/
 
 # Here you can control what package versions must be use
+PACKAGE_REVISION = 2
 MONO_VERSION = 1.2.3.1
 GTKSHARP_VERSION = 2.4.3
 GLIB_VERSION = 2.8.6
-MAEMOSHARP_VERSION = 0.20
+MAEMOSHARP_VERSION = 0.21
+
 
 # If the color codes are interfering with your terminal, consider
 # commenting this next line out.

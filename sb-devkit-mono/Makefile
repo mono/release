@@ -1,10 +1,11 @@
 -include gar.conf.mk
 
-DEVKIT	= mono
-PACKAGE	= scratchbox-devkit-$(DEVKIT)
-FILES	= /scratchbox/devkits/$(DEVKIT)/
-VERSION	= $(MONO_VERSION)
-ARCH	= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+DEVKIT	 = mono
+PACKAGE	 = scratchbox-devkit-$(DEVKIT)
+FILES	 = /scratchbox/devkits/$(DEVKIT)/
+VERSION	 = $(MONO_VERSION)
+ARCH	 = $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+REVISION = $(PACKAGE_REVISION)
 
 PACKAGE_TARGETS	= tarball deb rpm
 
@@ -21,7 +22,7 @@ strip:
 packages: $(PACKAGE_TARGETS)
 
 tarball:
-	tar cfz ../$(PACKAGE)-$(VERSION)-$(ARCH).tar.gz --owner=root --group=root $(FILES)
+	tar cfz ../$(PACKAGE)-$(VERSION)-$(REVISION)-$(ARCH).tar.gz --owner=root --group=root $(FILES)
 
 deb:
 	fakeroot debian/rules clean
