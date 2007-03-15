@@ -22,8 +22,8 @@ done
 
 for i in 2.0/*.dll
 do
-  echo MONO_PATH=./2.0 mono ./2.0/gacutil.exe /i $i /f /package 2.0 /root ${libdir}
-  MONO_PATH=./2.0 mono ./2.0/gacutil.exe /i $i /f /package 2.0 /root ${libdir}
+  echo MONO_PATH=./2.0 mono ./1.0/gacutil.exe /i $i /f /package 2.0 /root ${libdir}
+  MONO_PATH=./2.0 mono ./1.0/gacutil.exe /i $i /f /package 2.0 /root ${libdir}
 done
 
 for i in 2.0/*.exe
