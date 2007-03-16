@@ -528,17 +528,20 @@ class package:
 		return return_val
 
 	def get_zip_build_commands(self):
-		"""Get build code.  First check for that os, then os-ver, and then os-version-arch."""
+		"""Get build code.  Go from more to less specific: distro-ver-arch, distro-ver, distro, then generic."""
 
 		my_os = self.package_env.info['os']
 		my_os_version = my_os + "-" + self.package_env.info['version']
 		my_distro = self.package_env.info['distro']
 
 		shell_code = ""
-		for key in [my_os, my_os_version, my_distro]:
+		for key in [my_distro, my_os_version, my_os]:
 			new_key = key.replace("-", "_") + "_ZIP_BUILD"
 			shell_code = self.get_info_var(new_key)
 			if shell_code: break
+
+		if not shell_code:
+			shell_code = self.get_info_var("ZIP_BUILD")
 
 		if not shell_code:
 			print "Warning... could not find shell code..."

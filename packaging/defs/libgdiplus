@@ -1,6 +1,8 @@
 web_index=4
 
 BUILD_HOSTS=(
+        debian-31-arm
+        debian-31-sparc
         fedora-3-i386
         fedora-4-i386
         fedora-4-ppc
@@ -47,6 +49,14 @@ HEAD_PATH=(
 RELEASE_PATH=(
 	tags/mono-[[version]]/libgdiplus
 )
+
+ZIP_BUILD () {
+
+        ./configure --prefix=/tmp/install || exit 1
+        make || exit 1
+        make install || exit 1
+
+}
 
 sunos_8_sparc_ZIP_BUILD () {
         # Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
