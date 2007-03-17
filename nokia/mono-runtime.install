@@ -1,0 +1,5 @@
+debian/tmp/usr/bin/mono
+debian/tmp/usr/etc/mono/config
+debian/tmp/usr/lib/libmono*.so.*
+debian/tmp/usr/lib/libMonoPosixHelper.so
+debian/tmp/usr/lib/libMonoSupportW.so

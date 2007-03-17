@@ -1,0 +1,95 @@
+Source: mono
+Section: user/support
+Priority: optional
+Maintainer: Everaldo Canuto <ecanuto@novell.com>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.1
+
+Package: mono-runtime
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Mono runtime
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono runtime.
+
+Package: libmono-system1.0-cil
+Section: user/libs
+Architecture: all
+Depends: mono-runtime (= ${Source-Version})
+Description: Mono System libraries (1.0)
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the base class libraries of Mono.
+
+Package: libmono-system2.0-cil
+Section: user/libs
+Architecture: all
+Depends: mono-runtime (= ${Source-Version})
+Description: Mono System libraries (2.0)
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the base class libraries of Mono.
+
+Package: libmono-posix1.0-cil
+Section: user/libs
+Architecture: all
+Depends: mono-runtime (= ${Source-Version})
+Description: Mono Posix library (1.0)
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Posix Library 1.0.
+
+Package: libmono-posix2.0-cil
+Section: user/libs
+Architecture: all
+Depends: mono-runtime (= ${Source-Version})
+Description: Mono Posix library (2.0)
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Posix Library 2.0.
+
+Package: libmono-system-data1.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system1.0-cil (= ${Source-Version})
+Description: Mono System.Data library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Data library version 1.0.
+
+Package: libmono-system-data2.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (= ${Source-Version})
+Description: Mono System.Data Library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Data library version 2.0.
+
+Package: libmono-system-runtime1.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (= ${Source-Version})
+Description: Mono System.Runtime library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Runtime library version 1.0.
+
+Package: libmono-system-runtime2.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (= ${Source-Version})
+Description: Mono System.Runtime Library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Runtime library version 2.0.
