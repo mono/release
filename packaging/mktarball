@@ -20,7 +20,7 @@ import config
 
 def usage():
 	print ""
-	print "Usage: ./mktarball [--snapshot] [--force] <package> <version|srv rev>"
+	print "Usage: ./mktarball [--snapshot] [--force] <package> <version|svn rev>"
 	print " where version is a tagged released version or an svn revision"
 	print " Note: if you specify snapshot, you must specify 'svn rev' instead of 'version'"
 	print " --force is used to override an already existing tarball, "

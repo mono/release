@@ -3,9 +3,11 @@ boo
 cocoa-sharp
 gecko-sharp
 gecko-sharp-2.0
+gnome-sharp
 gtk-sharp
 gtk-sharp-2.0
 gtk-sharp-2.8
+gtk-sharp-2.10
 gtksourceview-sharp-2.0
 heap-buddy
 ikvm

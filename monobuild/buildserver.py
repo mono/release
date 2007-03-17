@@ -79,19 +79,29 @@ class tarball_builder(threading.Thread):
 		for pack in config.td_packages:
 			self.pack_objs[pack] = packaging.package("", pack)
 
+	def cancelled(self):
+
+		self.load_info()
+
+		if config.td_active and not sigint_event.isSet():
+			return False
+		else:   
+			return True
+		
 
 	def run(self):
 
 		tarball_log.log("Tarball creator starting...\n")
 
-		while not sigint_event.isSet() and self.td_active:
+		while not self.cancelled():
 
 			start_time = utils.get_time()
 
-			self.load_info()
-
 			# routinely check for updates (sleep every so often)
 			for pack_name, pack_obj in self.pack_objs.iteritems():
+
+				# We are reloading pack_objs, but this for loop won't notice it until we enter it again
+				if self.cancelled(): continue
 
 				# get latest version from the tree
 				latest_tree_rev = self.src_repo.latest_tree_revision()
@@ -123,7 +133,7 @@ class tarball_builder(threading.Thread):
 						# Skip to next pack...
 						break
 
-					if not self.distfiles.contains('HEAD', pack_name, str(latest_for_package)) and not sigint_event.isSet():
+					if not self.distfiles.contains('HEAD', pack_name, str(latest_for_package)) and not self.cancelled():
 						command = "cd %s; ./mktarball --snapshot %s %d" % (config.packaging_dir, pack_name, latest_for_package)
 						tarball_log.log("Executing: %s\n" % (command) )
 
@@ -151,7 +161,7 @@ class tarball_builder(threading.Thread):
 
 			# Only sleep if this loop was shorter than max_poll_interval
 			#  and if we do sleep, discount the time_duration
-			if not sigint_event.isSet() and time_duration < self.max_poll_interval:
+			if not self.cancelled() and time_duration < self.max_poll_interval:
 				#tarball_log.log("Sleeping for %d seconds...\n" % (self.max_poll_interval - time_duration) )
 				time.sleep(self.max_poll_interval - time_duration)
 
@@ -170,29 +180,23 @@ class build_scheduler(threading.Thread):
 
 		self.setName(distro)
 
-	def exit_if_interrupted(self):
-		if sigint_event.isSet():
-			# TODO: what's the best way to exit a thread? _exit?  return?
-			scheduler_log.log("%s:\tExiting because of user interruption\n" % self.distro)
-			sys.exit(1)
-
 	# We can unschedule this platform by removing it from the list in pyutils/config.py or turning off the scheduler
 	# Reload config info (only useful for sleep times and which packages to build for a distro)
-	def scheduled(self):
+	def cancelled(self):
 		# reload python module
 		reload(config)
 
-		if config.sd_latest_build_distros.count(self.distro) and config.sd_active:
-			return True
-		else:   
+		if config.sd_latest_build_distros.count(self.distro) and config.sd_active and not sigint_event.isSet():
 			return False
+		else:   
+			return True
 
 	def run(self):
 
 		distro = self.distro
 		scheduler_log.log("%s:\tStarting scheduler\n" % (distro) )
 
-		while self.scheduled():
+		while not self.cancelled():
 
 			packages_to_build = []
 			for pack_def in config.sd_latest_build_packages:
@@ -206,7 +210,8 @@ class build_scheduler(threading.Thread):
 			# Build each package for this jail
 			for package_name in packages_to_build:
 
-				self.exit_if_interrupted()
+				# Skip builds so we can exit
+				if self.cancelled(): continue
 
 				# Check to see what the latest tarball is
 				# The src_repo class is not threadsafe, so provide a mutex here
@@ -261,6 +266,7 @@ class build_scheduler(threading.Thread):
 		scheduler_log.log("%s:\tExiting upon user request...\n" % distro)
 
 
+# TODO: When CTRL-C is pressed, this should keep running until the other threads stop... ?
 class sync(threading.Thread):
 
 
@@ -279,11 +285,19 @@ class sync(threading.Thread):
 		self.sync_num_builds = config.sync_num_builds
 		self.sync_sleep_time = config.sync_sleep_time
 
+	def cancelled(self):
+		# Don't shut this thread down until the tarball and build threads are done
+		#  Are these vars available across threads?  (if not, we'll have to use a signal)
+		if len(build_threads) == 0 and not tarball_thread.isAlive():
+			return True
+		else:
+			return False
+
 	def run(self):
 
 		sync_log.log("sync thread starting...\n")
 
-		while not sigint_event.isSet() and self.sync_active:
+		while not self.cancelled():
 
 			self.load_info()
 
@@ -336,6 +350,9 @@ def keyboard_interrupt(signum, frame):
 # Set up event object
 sigint_event = threading.Event()
 
+# Keep track of build threads
+build_threads = []
+
 # Set signal handler
 signal.signal(signal.SIGINT, keyboard_interrupt)
 
@@ -346,9 +363,6 @@ sync_thread.start()
 # Start up mktarball thread
 tarball_thread = tarball_builder()
 tarball_thread.start()
-
-# Keep track of build threads
-build_threads = []
 
 # Sleep if threads are still alive
 #  Wow... here was the key... the main thread would exit, but pressing ctrl-c would go to the main thread (which had already exited)
@@ -380,6 +394,7 @@ while threading.activeCount() > 1 or firstrun:
 			thread.start()
 			build_threads.append(thread)
 
+	# TODO: when ctrl-C is pressed, don't stop the sync thread.  Only stop the sync thread if the td and build threads are done
 	# Check if we need to start up the sync thread
 	if not sync_thread.isAlive() and not sigint_event.isSet() and config.sync_active:
 		sync_thread = sync()

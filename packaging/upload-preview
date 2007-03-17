@@ -1,14 +1,16 @@
 #!/bin/sh
 
-BUNDLE="PRE-RELEASE"
+BUNDLE="RTL"
 TARGET_USER="mono-web"
 TARGET_HOST="mono.ximian.com"
 
-BASE_DIR="~/release/monobuild/www/preview"
-BASE_URL="/monobuild/preview"
+BASE_DIR="~/release/monobuild/www/rtl"
+BASE_URL="/monobuild/rtl"
 
+ssh $TARGET_USER@$TARGET_HOST "mkdir -p $BASE_DIR"
 cd ../website
-./sync-bundle.py $BUNDLE $TARGET_USER@$TARGET_HOST:$BASE_DIR
+# Need skip missing, because we don't build packages for gnome-sharp and gtk-sharp 2.10 yet... but we still want to publish the sources
+./sync-bundle.py --skip_missing $BUNDLE $TARGET_USER@$TARGET_HOST:$BASE_DIR
 
 scp packaging.css $TARGET_USER@$TARGET_HOST:$BASE_DIR
 ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-sources-index.py           $BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/sources"

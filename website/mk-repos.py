@@ -96,8 +96,11 @@ for distro_obj in distro_objs:
 		for file in rpms:
 			arch_dir = distro_obj.name + os.sep + utils.rpm_query('ARCH', file)
 			if not os.path.exists(arch_dir):  distutils.dir_util.mkpath(arch_dir)
-			
-			os.link(file, os.path.join(arch_dir, os.path.basename(file)))
+
+			# Hrm... seems the shutil.rmtree didn't work... ?
+			link = arch_dir + os.sep + os.path.basename(file)
+			if not os.path.exists(link):
+				os.link(file, link)
 
 
 		# Start creating repositories
