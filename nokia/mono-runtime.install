@@ -3,3 +3,5 @@ debian/tmp/usr/etc/mono/config
 debian/tmp/usr/lib/libmono*.so.*
 debian/tmp/usr/lib/libMonoPosixHelper.so
 debian/tmp/usr/lib/libMonoSupportW.so
+debian/tmp/usr/etc/mono/1.0/machine.config
+debian/tmp/usr/etc/mono/2.0/machine.config
