@@ -293,8 +293,6 @@ def packagestatus(req, **vars):
 			else:
 				req.write("<p><a href='packagestatus?platform=%s&amp;package=%s&amp;HEAD_or_RELEASE=%s&amp;showall=1'>Show Full Build History</a></p>" % (platform, package, HEAD_or_RELEASE) )
 
-		counter = 0
-
 		for version in versions:
 
 			build_info = datastore.build_info(HEAD_or_RELEASE, platform, package, version)
@@ -302,7 +300,8 @@ def packagestatus(req, **vars):
 
 			if values['start'] and values['finish']:
 				duration = utils.time_duration_asc(values['start'], values['finish'])
-			elif values['start'] and counter == 0:
+			# Sometimes the latest build isn't the one running (usually a bug), but still show the running time
+			elif values['start']:
 				duration = "Running for %s" % utils.time_duration_asc(values['start'], utils.get_time())
 			else:
 				duration = "?"
@@ -376,15 +375,13 @@ def packagestatus(req, **vars):
 
 				if step['start'] and step['finish']:
 					req.write("<td>[ %s min(s) ] </td>" % utils.time_duration_asc(step['start'], step['finish']) )
-				elif step['start'] and counter == 0:
+				# Sometimes the latest build isn't the one running (usually a bug), but still show the running time
+				elif step['start']:
 					req.write("<td>[ Running for %s min(s) ] </td>" % utils.time_duration_asc(step['start'], utils.get_time()) )
 				req.write("</tr>")
 
 				
 			req.write("</tbody></table></div><br>")
-
-			# Update version counter
-			counter += 1
 
 
 	else:
