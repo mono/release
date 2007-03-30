@@ -5,6 +5,8 @@ import commands
 
 child_rpm_match = re.compile("is needed by \(installed\) (\S+)")
 
+rpm_query_cache = {}
+
 def rpm_is_installed(rpm_name):
 
 	(status, output) = commands.getstatusoutput("rpm -q " + rpm_name)
@@ -60,4 +62,48 @@ def remove_rpms(rpms, test=False):
 
 	return installed_rpms
 
+def rpm_query(query_format, file, installed=False):
+        """Args: query_format, file.
+        query_format can be a list or a string.
+        Returns: results of query, which can also be a list (if > 1), or a string (if < 2).
+
+        Ex:  name = rpm_utils.rpm_query('NAME', 'myrpm.rpm')
+        Ex:  (name, sum) = rpm_utils.rpm_query(['NAME', 'SUMMARY'], 'myrpm.rpm')
+
+        This function also utilizes a hash cache to speed up the script generation by a couple of minutes."""
+
+        marker = "__MONO__"
+
+        if installed:
+                installed = ""
+        else:
+                installed = "p"
+
+        # Find if query is a string or list
+        if query_format.__class__ == str:
+                query_format = [ query_format ]
+
+        # Build up query string
+        for i in range(0, len(query_format)):
+                query_format[i] = "%{" + query_format[i] + "}"
+
+        query_string = marker.join(query_format)
+
+        #print "query: " + query_string
+        #print "querying %s for %s" % (file, query_string)
+
+        key = os.path.basename(file) + ":" + query_string
+
+        if rpm_query_cache.has_key(key):
+                #print "Cache hit!"
+                output = rpm_query_cache[key]
+        else:   
+                (code, output) = commands.getstatusoutput("rpm -q%s --queryformat \"%s\" %s" % (installed, query_string, file))
+                rpm_query_cache[key] = output
+
+        results = output.split(marker)
+        if len(results) <= 1:
+                results = output
+
+        return results
 

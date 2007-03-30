@@ -288,6 +288,7 @@ class sync(threading.Thread):
 	def cancelled(self):
 		# Don't shut this thread down until the tarball and build threads are done
 		#  Are these vars available across threads?  (if not, we'll have to use a signal)
+		# TODO: Cafeful, this thread may not have been started yet
 		if len(build_threads) == 0 and not tarball_thread.isAlive():
 			return True
 		else:

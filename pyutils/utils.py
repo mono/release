@@ -50,8 +50,6 @@ rpm2cpio_py_path = os.path.abspath(module_dir + "rpm2cpio.py")
 debug=0
 KILLED_EXIT_CODE=-42
 
-rpm_query_cache = {}
-
 match_all = re.compile('')
 
 # Get vars out of shell scripts (def files)
@@ -612,52 +610,6 @@ def get_tz_string():
 		tz_string = "+0%d" % tzs_offset
 
 	return tz_string
-
-
-def rpm_query(query_format, file, installed=False):
-	"""Args: query_format, file.
-	query_format can be a list or a string.
-	Returns: results of query, which can also be a list (if > 1), or a string (if < 2).
-
-	Ex:  name = utils.rpm_query('NAME', 'myrpm.rpm')
-	Ex:  (name, sum) = utils.rpm_query(['NAME', 'SUMMARY'], 'myrpm.rpm')
-
-	This function also utilizes a hash cache to speed up the script generation by a couple of minutes."""
-
-	marker = "__MONO__"
-
-	if installed: 
-		installed = ""
-	else:
-		installed = "p"
-
-	# Find if query is a string or list
-	if query_format.__class__ == str:
-		query_format = [ query_format ]
-
-	# Build up query string
-	for i in range(0, len(query_format)):
-		query_format[i] = "%{" + query_format[i] + "}"
-
-	query_string = marker.join(query_format)
-
-	#print "query: " + query_string
-	#print "querying %s for %s" % (file, query_string)
-
-	key = os.path.basename(file) + ":" + query_string
-
-	if rpm_query_cache.has_key(key):
-		#print "Cache hit!"
-		output = rpm_query_cache[key]
-	else:
-		code, output = launch_process("rpm -q%s --queryformat \"%s\" %s" % (installed, query_string, file), capture_stderr=0, print_output=0 )
-		rpm_query_cache[key] = output
-
-	results = output.split(marker)
-	if len(results) <= 1:
-		results = output
-
-	return results
 
 
 def send_mail(fr, to, subject, body):

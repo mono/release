@@ -15,6 +15,7 @@ sys.path += [ '../pyutils' ]
 import packaging
 import config
 import utils
+import rpm_utils
 
 
 def get_rpm_install(env_obj, archive=False):
@@ -124,7 +125,7 @@ def get_external_deps(env_obj, archive=False):
 			if re.compile("\.src\.rpm").search(i):
 				continue
 
-			(NAME, DESC) = utils.rpm_query(['NAME', 'SUMMARY'], '../external_packages/%s/%s' % (env_obj.name, i) )
+			(NAME, DESC) = rpm_utils.rpm_query(['NAME', 'SUMMARY'], '../external_packages/%s/%s' % (env_obj.name, i) )
 			return_text += "<li><a href='%s/%s/%s'>%s</a> -- %s</li>\n" % (external_url_path, env_obj.name, i, NAME, DESC)
 		return_text += "</ul>\n"
 
@@ -135,7 +136,7 @@ def get_external_deps(env_obj, archive=False):
 
 			i = os.path.basename(i)
 
-			NAME = utils.rpm_query('NAME', '../external_packages/%s/%s' % (env_obj.name, i) )
+			NAME = rpm_utils.rpm_query('NAME', '../external_packages/%s/%s' % (env_obj.name, i) )
 			return_text += "<a href='%s/%s/%s'>%s</a> \n" % (external_url_path, env_obj.name, i, NAME)
 
 		return_text += "</p>\n"
@@ -238,7 +239,7 @@ for distro_conf in distros:
 			arc_out.write("<ul>\n")
 
 			for i in RPMS:
-				(NAME, DESC) = utils.rpm_query(['NAME', 'SUMMARY'], i)
+				(NAME, DESC) = rpm_utils.rpm_query(['NAME', 'SUMMARY'], i)
 				out.write("<li><a href='../../%s/%s'>%s</a> -- %s</li>\n" % (package_src_url, i, NAME, DESC) )
 				arc_out.write("<li><a href='../../../../%s/%s'>%s</a> -- %s</li>\n" % (package_src_url, i, NAME, DESC) )
 			

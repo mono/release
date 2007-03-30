@@ -20,6 +20,7 @@ import build
 import config
 import packaging
 import utils
+import rpm_utils
 
 # Command line options
 try:
@@ -94,7 +95,7 @@ for distro_obj in distro_objs:
 
 		# Create hard links for all rpms
 		for file in rpms:
-			arch_dir = distro_obj.name + os.sep + utils.rpm_query('ARCH', file)
+			arch_dir = distro_obj.name + os.sep + rpm_utils.rpm_query('ARCH', file)
 			if not os.path.exists(arch_dir):  distutils.dir_util.mkpath(arch_dir)
 
 			# Hrm... seems the shutil.rmtree didn't work... ?

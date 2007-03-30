@@ -9,9 +9,12 @@ import commands
 output = commands.getoutput('ipcs')
 reg = re.compile('(0x\S+)')
 
+count = 0
 for line in output.split('\n'):
 	match = reg.search(line)
 	if match:
 		print match.group(1)
-		os.system('ipcrm -S %s' % match.group(1))
+		ret = os.system('ipcrm -S %s' % match.group(1))
+		if not ret: count += 1
 
+print "Remove %d semaphore(s)" % count

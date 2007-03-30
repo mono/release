@@ -287,9 +287,8 @@ build_env.env_vars['DISTRO'] = distro
 build_env.env_vars['BUILD_OS'] = build_env.info['os']
 build_env.env_vars['BUILD_ARCH'] = build_env.info['arch']
 
-(code, output) = build_env.ssh.execute(build_command, env=build_env.env_vars, logger=log_obj, output_timeout=timeout, max_output_size=max_output_size)
-#code = 0
-if code:
+# Put in a function rather than copy and paste...
+def build_failed(build_env, code, LOGFILE, build_info, package):
 	build_env.unlock_env()
 	state = get_state(code)
 	print "Build failed, see log in %s for details" % LOGFILE
@@ -299,8 +298,42 @@ if code:
 	build_info.update_build(state="failure", finish=utils.get_time())
 	sys.exit(7)
 
+(code, output) = build_env.ssh.execute(build_command, env=build_env.env_vars, logger=log_obj, output_timeout=timeout, max_output_size=max_output_size)
+if code:
+	build_failed(build_env, code, LOGFILE, build_info, package)
+
 distutils.dir_util.mkpath(package_version_path)
 build_env.ssh.copy_from(['%s/builder/built-packages/*' % build_location, '%s/scratch/*.spec' % build_location], package_version_path)
+
+# Make sure packages got here ok
+log_obj.log("Verifying packages...\n")
+
+if build_env.get_info_var('USE_ZIP_PKG'):
+	files = glob.glob(package_version_path + os.sep + "*.zip")
+	code = 0
+	output = ""
+	for file in files:
+		(tmp_code, tmp_output) = utils.launch_process("unzip -qt " + file, logger=log_obj)
+		if tmp_code: code = 1
+		output += tmp_output
+else:
+	files = glob.glob(package_version_path + os.sep + "*.rpm")
+	(code, output) = utils.launch_process("rpm -K " + " ".join(files), logger=log_obj)
+
+if code:
+	log_obj.log(output + "\n")
+	log_obj.log("Verifying packages failed... (usually because of lack of disk space or incomplete copy)\n")
+
+	# Seems sometimes rmtree doesn't full work...
+	try:
+		log_obj.log("Removing build...\n")
+		shutil.rmtree(package_version_path)
+	except:
+		log_obj.log("Error removing build... (possibly a bug in python's shutil.rmtree)\n")
+		print "Error removing build... (bug in python)"
+	build_failed(build_env, code, LOGFILE, build_info, package)
+
+log_obj.log("Packages verified!\n")
 
 # Create link to packages
 try:
