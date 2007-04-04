@@ -308,6 +308,7 @@ build_env.ssh.copy_from(['%s/builder/built-packages/*' % build_location, '%s/scr
 # Make sure packages got here ok
 log_obj.log("Verifying packages...\n")
 
+files = []
 if build_env.get_info_var('USE_ZIP_PKG'):
 	files = glob.glob(package_version_path + os.sep + "*.zip")
 	code = 0
@@ -327,10 +328,16 @@ if code:
 	# Seems sometimes rmtree doesn't full work...
 	try:
 		log_obj.log("Removing build...\n")
-		shutil.rmtree(package_version_path)
+		for f in files:
+			os.remove(f)
+		os.rmdir(package_version_path)
+		# Ugh, broken...
+		#shutil.rmtree(package_version_path)
 	except:
-		log_obj.log("Error removing build... (possibly a bug in python's shutil.rmtree)\n")
-		print "Error removing build... (bug in python)"
+		#log_obj.log("Error removing build... (possibly a bug in python's shutil.rmtree)\n")
+		#print "Error removing build... (bug in python)"
+		log_obj.log("Error removing build...\n")
+		print "Error removing build..."
 	build_failed(build_env, code, LOGFILE, build_info, package)
 
 log_obj.log("Packages verified!\n")
