@@ -42,7 +42,6 @@ USE_HOSTS=(
 	sles-9-s390x
 	sles-9-x86_64
 	sunos-8-sparc
-	suse-92-i586
 	suse-93-i586
 	suse-93-x86_64
 	suse-100-i586
@@ -312,7 +311,7 @@ make_dist () {
 	#if [ $HEAD_or_RELEASE == "HEAD" ] ; then
         #        make dist-zip MCS=mcs RESGEN=resgen
         #else
-                make dist MCS=mcs RESGEN=resgen
+                make dist-bzip2 MCS=mcs RESGEN=resgen
         #fi
 
 }
@@ -382,18 +381,18 @@ CLEAN_UP () {
 
 	# Clean up tmp files, but don't fail if they are missing
 	# The /var/tmp is for solaris
-	rm -f	/tmp/ipc* 	/var/tmp/ipc*		|| true
-	rm -Rf	/tmp/tmp*tmp 	/var/tmp/tmp*tmp	|| true
-	rm -f	/tmp/*.exe	/var/tmp/*.exe		|| true
+	rm -Rf	/tmp/ipc* 	/var/tmp/ipc*
+	rm -Rf	/tmp/tmp*tmp 	/var/tmp/tmp*tmp
+	rm -Rf	/tmp/*.exe	/var/tmp/*.exe
 
 	# for ia64
-	rm -f	/tmp/tmp*tmp.o	/var/tmp/tmp*tmp.o	|| true
+	rm -Rf	/tmp/tmp*tmp.o	/var/tmp/tmp*tmp.o
 
 	# For s390
-	rm -f	/tmp/mono_aot_*	/var/tmp/mono_aot_*	|| true
+	rm -Rf	/tmp/mono_aot_*	/var/tmp/mono_aot_*
 
-	rm -f	/tmp/Mono*	/var/tmp/Mono*		|| true
+	rm -Rf	/tmp/Mono*	/var/tmp/Mono*
 
-	rm -f	/tmp/mcs*	/var/tmp/mcs*		|| true
+	rm -Rf	/tmp/mcs*	/var/tmp/mcs*
 }
 

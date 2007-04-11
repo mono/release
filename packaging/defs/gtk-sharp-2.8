@@ -13,6 +13,8 @@ BUILD_HOSTS=(
 	suse-101-i586
 	suse-101-ppc
 	suse-101-x86_64
+	suse-102-i586
+	suse-102-x86_64
 	win-4-i386
 )
 
@@ -41,6 +43,6 @@ make_dist () {
         # This is needed on suse systems with gnome in /opt
         . /etc/profile
         ./bootstrap-2.8
-        make dist
+        make dist-bzip2
 }
 

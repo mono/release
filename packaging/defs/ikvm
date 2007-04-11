@@ -1,7 +1,7 @@
 EXTERNAL_SOURCE=1
 
 BUILD_HOSTS=(
-	suse-93-i586
+	suse-100-i586
 )
 
 USE_HOSTS=(

@@ -4,7 +4,7 @@ import os
 import stat
 
 # Default distro to make tarballs on (can be overridden in def file)
-mktarball_host = "suse-93-i586"
+mktarball_host = "suse-102-i586"
 
 # Mono repo svn location
 #MONO_ROOT = " svn+ssh://distro@mono-cvs.ximian.com/source"
@@ -82,7 +82,7 @@ sd_sequential_build_distros = [ 'redhat-9-i386' ]
 sd_sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
 
 # List of platforms/packages
-sd_latest_build_distros = [ 'redhat-9-i386', 'sles-9-x86_64', 'win-4-i386', 'macos-10-ppc', 'macos-10-x86', 'sunos-8-sparc', 'sunos-10-x86', 'sles-9-ia64', 'sles-9-s390', 'sles-9-s390x', 'sles-9-ppc', 'debian-31-arm', 'debian-31-sparc', 'fedora-3-i386', 'nld-9-i586', 'suse-93-i586' ]
+sd_latest_build_distros = [ 'redhat-9-i386', 'sles-9-x86_64', 'win-4-i386', 'macos-10-ppc', 'macos-10-x86', 'sunos-8-sparc', 'sunos-10-x86', 'sles-9-ia64', 'sles-9-s390', 'sles-9-s390x', 'sles-9-ppc', 'debian-31-arm', 'debian-31-sparc', 'suse-100-i586' ]
 sd_latest_build_packages = td_packages
 ##############################################
 
@@ -117,17 +117,21 @@ env_vars = {
 # Common place for source extensions, which can be compiled to reg later
 # Ennumerate to make it simpler...
 #  (Src.zip for IronPython)
+# (note: these need to be in the order of increasingly less specific, for 'packaging/build')
 source_extensions = """
-        .tar.gz
+        -src.tar.bz2
         -src.tar.gz
         .tar.bz2
-        -src.tar.bz2
-        .zip
-        -src.zip
+        .tar.gz
         -Src.zip
+        -src.zip
+        .zip
 """.split()
 
-sources_ext_re_string = "(\.tar\.gz|-src\.tar\.gz|\.tar\.bz2|-src\.tar\.bz2|\.zip|-src\.zip|-Src\.zip)"
+# Results in something like:
+# = "(\.tar\.gz|\.zip)"
+sources_ext_re_string = "(" + "|".join(source_extensions).replace(".", "\.") + ")"
+
 ######################################
 
 ######################################

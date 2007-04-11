@@ -1,5 +1,5 @@
 BUILD_HOSTS=(
-	suse-93-i586
+	suse-100-i586
 )
 
 

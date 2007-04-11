@@ -42,6 +42,6 @@ make_dist () {
         # This is needed on suse systems with gnome in /opt
         . /etc/profile
         ./bootstrap-2.10
-        make dist
+        make dist-bzip2
 }
 

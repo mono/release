@@ -1,5 +1,5 @@
 BUILD_HOSTS=(
-	suse-93-i586
+	suse-100-i586
 )
 
 USE_HOSTS=(
@@ -11,7 +11,6 @@ USE_HOSTS=(
 	fedora-5-x86_64
 	nld-9-i586
 	rhel-4-i386
-	suse-92-i586
 	suse-93-i586
 	suse-93-x86_64
 	suse-100-i586

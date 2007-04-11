@@ -11,7 +11,6 @@ BUILD_HOSTS=(
 	fedora-4-x86_64
 	nld-9-i586
 	rhel-4-i386
-	suse-92-i586
 	suse-93-i586
 	suse-93-x86_64
 )
@@ -69,7 +68,7 @@ make_dist () {
         # This is needed on suse systems with gnome in /opt
         . /etc/profile
 	./bootstrap-2.4
-        make dist
+        make dist-bzip2
 }
 
 win_4_i386_ZIP_BUILD () {

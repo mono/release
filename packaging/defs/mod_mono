@@ -17,7 +17,6 @@ BUILD_HOSTS=(
 	sles-9-s390
 	sles-9-s390x
 	sles-9-x86_64
-	suse-92-i586
 	suse-93-i586
 	suse-93-x86_64
 	suse-100-i586

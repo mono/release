@@ -250,10 +250,10 @@ build_info.update_step("build", state="inprogress", log=os.path.basename(LOGFILE
 files_to_copy = [ source_file ]
 
 # Get the dir that tarball unpacks
-#   Will this work with all tarballs?  This is what we do for do-zip-build...
-# TODO: this needs some work (will break if tarball isn't just right...)
-build_dir = os.path.basename(source_file).replace('.tar.gz', '')
-build_dir = build_dir.replace('.zip', '')
+# note: only works if resulting dir name is based off tarball name, and has one of the extions in config.source_extions
+build_dir = os.path.basename(source_file)
+for ext in config.source_extensions:
+	build_dir = build_dir.replace(ext, '')
 
 # Set optional custom build_location
 build_location = build_env.env_vars['build_location']
@@ -322,7 +322,6 @@ else:
 	(code, output) = utils.launch_process("rpm -K " + " ".join(files), logger=log_obj)
 
 if code:
-	log_obj.log(output + "\n")
 	log_obj.log("Verifying packages failed... (usually because of lack of disk space or incomplete copy)\n")
 
 	# Seems sometimes rmtree doesn't full work...

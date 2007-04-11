@@ -1,7 +1,7 @@
 EXTERNAL_SOURCE=1
 
 BUILD_HOSTS=(
-	fedora-3-i386
+	suse-100-i586
 )
 
 USE_HOSTS=(

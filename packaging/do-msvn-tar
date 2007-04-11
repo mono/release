@@ -96,7 +96,7 @@ if not make_dist:
 	# profile is needed on suse systems with gnome in /opt
 	. /etc/profile
         ./autogen.sh
-        make dist
+        make dist-bzip2
 """
 
 get_source = package_obj.get_info_var('get_source')
