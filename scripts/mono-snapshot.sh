@@ -15,7 +15,7 @@ export PKG_CONFIG_PATH=/opt/gnome/lib/pkgconfig
 #export JAVA_HOME=/incoming/tmpinst/j2sdk1.4.1_03
 #export BB_REPODIR=/nfs/release/source_repository
 
-MSVN="svn://svn.myrealbox.com/source"
+MSVN="svn://anonsvn.mono-project.com/source"
 LOGFILE="$HOMEDIR/src/$DATE.log"
 
 # Clean up and set up new dir

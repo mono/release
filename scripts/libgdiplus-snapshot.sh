@@ -17,7 +17,7 @@ echo > libgdiplus-log
 
 # Check out libgdiplus
 #echo Checkout libgdiplus module 
-svn co svn://svn.myrealbox.com/source/trunk/libgdiplus 2>&1 >> libgdiplus-log
+svn co svn://anonsvn.mono-project.com/source/trunk/libgdiplus 2>&1 >> libgdiplus-log
 #svn co svn+ssh://mritvik@mono-cvs.ximian.com/source/trunk/libgdiplus 2>&1 >> libgdiplus-log
 #echo libgdipuls got checked out
 
