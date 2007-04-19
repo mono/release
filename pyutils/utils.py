@@ -553,12 +553,13 @@ def version_sort(my_list):
 		cwd = os.getcwd()
 		os.chdir(os.path.dirname(rpmvercmp_path))
 		print "Attempting to fix..."
-		(code, output) = launch_process("make clean; make", print_output=debug)
+		(code, make_output) = launch_process("make clean; make", print_output=debug)
 		(code, output) = launch_process(rpmvercmp_path + " " + string.join(my_list), print_output=debug)
 		os.chdir(cwd)
 
 		if code:
-			print "Unable to fix..."
+			print "Unable to fix... errors:"
+			print make_output
 			sys.exit(1)
 
 	return output.split()

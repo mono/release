@@ -26,20 +26,25 @@ is_url = re.compile("^(ftp|http)", re.I)
 
 # Default to RELEASE
 HEAD_or_RELEASE = "RELEASE"
-opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "HEAD_or_RELEASE=" ])
+build_source = False
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "HEAD_or_RELEASE=", "build_source" ])
 for option, value in opts:
         if option == "--HEAD_or_RELEASE":
 		if value != "HEAD" and value != "RELEASE":
 			print "HEAD_or_RELEASE must be either HEAD or RELEASE ..."
 			sys.exit(1)
 		HEAD_or_RELEASE = value
+        if option == "--build_source":
+		build_source = True
 
 if len(remaining_args) < 2:
 	print ""
-	print "Usage: ./install-deps [ --HEAD_or_RELEASE=[HEAD|RELEASE] ] TARGET <package> <local packages>"
+	print "Usage: ./install-deps [ --HEAD_or_RELEASE=[HEAD|RELEASE] ] [--build_source] TARGET <package> <local packages>"
 	print " where:"
         print "   package is package to build to install deps for (can also be 'none')"
         print "   local packages is packages in the defs dir and/or urls if distro is zip based"
+        print "   HEAD_or_RELEASE defaults to RELEASE"
+        print "   --build_source is for installing source dependencies instead of build dependencies"
 	print ""
 	sys.exit(1)
 
@@ -53,11 +58,23 @@ if len(remaining_args) > 2: deps = remaining_args[2:]
 
 target_env = packaging.buildenv(target, print_output=1)
 
+if build_source:
+	build_deps = False
+	# RECOMMEND is really for runtime, but we'd need a source_recommend_deps if we don't set this to True, 
+	#  for apps that have deps on gtk#
+	recommend_deps = True
+	source_deps = True
+else:
+	build_deps = True
+	recommend_deps = True
+	source_deps = False
 
 files = []
+packs_to_remove = []
 if build_deps_package != 'none':
 	package = packaging.package(target_env, build_deps_package, HEAD_or_RELEASE=HEAD_or_RELEASE)
-	files += package.get_dep_files()
+	files += package.get_dep_files(build_deps=build_deps, recommend_deps=recommend_deps, source_deps=source_deps)
+	packs_to_remove += package.get_packs_to_remove()
 
 for dep in deps:
 	if is_url.search(dep):
@@ -67,15 +84,16 @@ for dep in deps:
 	else:	
 		package = packaging.package(target_env, dep, HEAD_or_RELEASE=HEAD_or_RELEASE)
 		files += package.get_files()
-		files += package.get_dep_files()
+		files += package.get_dep_files(build_deps=build_deps, recommend_deps=recommend_deps, source_deps=source_deps)
+		packs_to_remove += package.get_packs_to_remove()
 
 
 # Remove duplciates
 files = utils.remove_list_duplicates(files)
 
 
-# Stop if no packages found
-if len(files) == 0:
+# Stop if no packages to install/remove
+if len(files) == 0 and len(packs_to_remove) == 0:
 	print "No packages found..."
 	sys.exit()
 
@@ -101,7 +119,10 @@ if target_env.get_info_var('USE_ZIP_PKG'):
 
 else:
 
-        (code, rpm_names) = utils.launch_process("rpm -qp --queryformat '%%{NAME} ' %s" % " ".join(files))
+	if files:
+		(code, rpm_names) = utils.launch_process("rpm -qp --queryformat '%%{NAME} ' %s" % " ".join(files))
+		packs_to_remove += rpm_names.split()
+	packs_to_remove = utils.remove_list_duplicates(packs_to_remove)
 
         # Use rug if the jail has it
 	(code, output) = target_env.ssh.execute('ls /usr/sbin/rcd')
@@ -112,13 +133,19 @@ else:
 			target_env.ssh.execute('/usr/sbin/rcd -r', exec_as_root=1)
 			print "Waiting for rcd to come alive..."
 			time.sleep(5)
-		target_env.ssh.execute('rug rm -y %s' % rpm_names, exec_as_root=1)
-		(code, output) = target_env.ssh.execute('rug in -y -r %s/install-packages/*.rpm' % build_location, exec_as_root=1)
+		if packs_to_remove:
+			target_env.ssh.execute('rug rm -y %s' % " ".join(packs_to_remove), exec_as_root=1)
+		code = 0
+		if files:
+			(code, output) = target_env.ssh.execute('rug in -y -r %s/install-packages/*.rpm' % build_location, exec_as_root=1)
 		target_env.ssh.execute('rug shutdown', exec_as_root=1)
         else:
-		target_env.ssh.copy_to(['remove-rpms', '../pyutils/rpm_utils.py'], build_location)
-		target_env.ssh.execute('%s/remove-rpms %s' % (build_location, rpm_names), exec_as_root=1)
-		(code, output) = target_env.ssh.execute('rpm -Uvh %s/install-packages/*.rpm' % build_location, exec_as_root=1)
+		if packs_to_remove:
+			target_env.ssh.copy_to(['remove-rpms', '../pyutils/rpm_utils.py'], build_location)
+			target_env.ssh.execute('%s/remove-rpms %s' % (build_location, " ".join(packs_to_remove)), exec_as_root=1)
+		code = 0
+		if files:
+			(code, output) = target_env.ssh.execute('rpm -Uvh %s/install-packages/*.rpm' % build_location, exec_as_root=1)
 
 # Exit with return code...
 sys.exit(code)

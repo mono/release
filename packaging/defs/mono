@@ -58,13 +58,26 @@ USE_HOSTS=(
 MONO_DEPS=(
 )
 
-# Having mono depend on itself ensures that the wrong mono isn't in the jail
-#  (Or that mono is present for the snapshot builds)
-# libgdiplus is here for System.Drawing tests and because mono-winforms now requires libgdiplus.
+# libgdiplus is here for System.Drawing tests and because mono-core now requires libgdiplus.
 # But, since it's 'recommended', it won't fail for windows
 MONO_RECOMMEND_DEPS=(
 	libgdiplus
+)
+
+# Since it's a source dep, it won't be installed on the machine during the build step, only for
+#  tarball creation
+#  (mono-core depends on libgdiplus)
+MONO_SOURCE_DEPS=(
 	mono
+	libgdiplus
+)
+
+# Always remove these packs before building or creating tarball (covers corner cases to not have mono installed when building)
+# (removing libgdiplus will remove mono-core and the rest of the chain, but mono-core is in this list since mono-core didn't
+#  always depend on libgdiplus)
+PACKS_TO_REMOVE=(
+	libgdiplus
+	mono-core
 )
 
 win_4_i386_ZIP_RUNTIME_DEPS=(

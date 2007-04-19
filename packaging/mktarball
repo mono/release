@@ -84,7 +84,7 @@ env.lock_env()
 repo.add_file(HEAD_or_RELEASE, package, version, "inprogress")
 
 if package_obj.info.has_key('MONO_DEPS'):
-	(status, output) = utils.launch_process('./install-deps %s %s' % (distro, package), logger=log_obj)
+	(status, output) = utils.launch_process('./install-deps --build_source %s %s' % (distro, package), logger=log_obj)
 	if status:
 		env.unlock_env()
 		log_obj.log("Dependency installation failed\n")

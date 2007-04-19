@@ -158,6 +158,11 @@ class init:
 		Note, in scp mode, recursive is on by default
 		src can be a string or a list of strings"""
 
+		# bail out if there are no files to copy
+		if src == [] or src == "":
+			print "No files to copy..."
+			return 0, ""
+
 		if compress:
 			# CompressionLevel only works for protocol 1... (bummer)
 			compress_option = ' -o "Compression yes" -o "CompressionLevel 9" '

@@ -355,6 +355,19 @@ class package:
 		else:
 			return []
 
+	def get_mono_source_deps(self):
+		if self.info.has_key('MONO_SOURCE_DEPS'):
+			return self.info['MONO_SOURCE_DEPS']
+		# If there are no source_deps, use mono_deps instead
+		else:
+			return self.get_mono_deps()
+
+	def get_packs_to_remove(self):
+		if self.info.has_key('PACKS_TO_REMOVE'):
+			return self.info['PACKS_TO_REMOVE']
+		else:
+			return []
+
 	def get_distro_zip_deps(self):
 		name_underscored = self.package_env.name.replace("-", "_")
 		name_underscored += "_ZIP_DEPS"
@@ -485,12 +498,20 @@ class package:
 
 
 	# Get all url deps, as well as mono_deps zip/rpms files, and their url deps
-	def get_dep_files(self):
+	def get_dep_files(self, build_deps=False, recommend_deps=False, source_deps=False):
 		files = []
 
 		url_dest = config.packaging_dir + os.sep + 'external_zip_pkg'
 
-		for dep in self.get_mono_deps() + self.get_mono_recommend_deps():
+		deps = []
+		if build_deps:
+			deps += self.get_mono_deps()
+		if recommend_deps:
+			deps += self.get_mono_recommend_deps()
+		if source_deps:
+			deps += self.get_mono_source_deps()
+
+		for dep in deps:
 			# Get files for mono deps
 				# Woah, total cheat here, I imported packaging, and am using it!
 			package = packaging.package(self.package_env, dep, HEAD_or_RELEASE=self.HEAD_or_RELEASE)
