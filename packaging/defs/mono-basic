@@ -9,7 +9,20 @@ version_selection_reg="1\.\d+"
 
 BUILD_HOSTS=(
 	win-4-i386
-        fedora-3-i386
+        suse-100-i586
+
+	sles-9-x86_64
+	sles-9-ia64
+	sles-9-ppc
+	sles-9-s390
+	sles-9-s390x
+	macos-10-ppc
+	macos-10-x86
+	sunos-8-sparc
+	sunos-10-x86
+	win-4-i386
+	debian-31-arm
+	debian-31-sparc
 )
 
 USE_HOSTS=(
@@ -26,10 +39,12 @@ MONO_RECOMMEND_DEPS=(
 )
 
 get_destroot () {
-        if [ $DISTRO == "win-4-i386" ] ; then
+        if test "x$DISTRO" == "xwin-4-i386" ; then
                 DEST_ROOT=$DISTRO
-        else
-		DEST_ROOT=noarch
+	else
+		# noarch for installers
+		#DEST_ROOT=noarch
+                DEST_ROOT=$DISTRO
 	fi
 }
 
@@ -51,6 +66,24 @@ make_dist () {
 	make
 
 	make dist
+}
+
+ZIP_BUILD () {
+
+        # This is so we can use the relocated mono (Will probably have to do this for all builds on mac)
+        MONO_GAC_PREFIX=/tmp/build_deps
+        MONO_PREFIX=/tmp/build_deps
+        MONO_CFG_DIR=/tmp/build_deps/etc
+        MONO_PATH=/tmp/build_deps/lib
+
+	# For solaris10 (install)
+	PATH=$PATH:/usr/sbin
+	export MONO_GAC_PREFIX MONO_PREFIX MONO_CFG_DIR MONO_PATH PATH
+
+	./configure --prefix=/usr
+	$make_path
+
+	$make_path install DESTDIR=/tmp/install
 }
 
 win_4_i386_ZIP_BUILD () {
@@ -106,8 +139,8 @@ win_4_i386_ZIP_BUILD () {
 
 POSTBUILD_STEP_NAME1="test"
 POSTBUILD_STEP1 () {
-	# This is for linux... what about win?
-        if [ $DISTRO == "win-4-i386" ] ; then
+	# Not ready to test on windows yet...
+        if test "x$DISTRO" == "xwin-4-i386" ; then
                 true
         else
 		$make_path test
