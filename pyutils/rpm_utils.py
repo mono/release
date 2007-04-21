@@ -2,6 +2,7 @@
 
 import re
 import commands
+import os
 
 child_rpm_match = re.compile("is needed by \(installed\) (\S+)")
 

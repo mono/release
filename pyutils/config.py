@@ -4,7 +4,7 @@ import os
 import stat
 
 # Default distro to make tarballs on (can be overridden in def file)
-mktarball_host = "suse-102-i586"
+mktarball_host = "suse-102-x86_64"
 
 # Mono repo svn location
 #MONO_ROOT = " svn+ssh://distro@mono-cvs.ximian.com/source"

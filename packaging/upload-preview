@@ -1,11 +1,11 @@
 #!/bin/sh
 
-BUNDLE="RTL"
+BUNDLE="PRE-RELEASE"
 TARGET_USER="mono-web"
 TARGET_HOST="mono.ximian.com"
 
-BASE_DIR="~/release/monobuild/www/rtl"
-BASE_URL="/monobuild/rtl"
+BASE_DIR="~/release/monobuild/www/preview"
+BASE_URL="/monobuild/preview"
 
 ssh $TARGET_USER@$TARGET_HOST "mkdir -p $BASE_DIR"
 cd ../website
