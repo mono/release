@@ -1,6 +1,15 @@
-target_host=builder@monobuild2.boston.ximian.com
+#target_host=builder@monobuild2.boston.ximian.com
+#chroot_path=/usr/bin/chroot
+
+target_host=builder@fedora64.boston.ximian.com
 jaildir=/jails/suse-102-x86_64
-chroot_path=/usr/bin/chroot
+# suse 10.2 doesn't include /usr/lib/pkgconfig on x86_64, force it.
+target_command_prefix=". /etc/profile; export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig; "
+
+# had to create libexpat.so.0 -> libexpat.so.1.5.0 
+# so that xgettext would work for make dist for mono-tools, 
+# filed bug: https://bugzilla.novell.com/show_bug.cgi?id=264110
+
 
 USE_ZMD=1
 
