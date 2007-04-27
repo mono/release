@@ -31,6 +31,10 @@ distutils.dir_util.mkpath(os.path.dirname(out_file))
 
 version = bundle_conf.info['archive_version']
 
+bundle_short_desc = bundle_conf.info['bundle_urlname']
+if bundle_conf.info.has_key('bundle_short_desc'):
+        bundle_short_desc = bundle_conf.info['bundle_short_desc']
+
 #### Sources ####
 sources = "<p> <a href='../sources'>Sources</a> </p>"
 distro_sources = "<p> <a href='../sources-%s'>Sources</a> </p>" % bundle_conf.info['bundle_urlname']
@@ -91,14 +95,14 @@ out_text = out_text.replace('[[version]]',    version)
 out_text = out_text.replace('[[sources]]',    sources)
 out_text = out_text.replace('[[installers]]', installers)
 out_text = out_text.replace('[[packages]]',   packages)
-out_text = out_text.replace('([[bundle_urlname]])',   '')
+out_text = out_text.replace('([[bundle_short_desc]])',   '')
 
 distro_out_text = distro_out_text.replace('[[webroot_path]]',    webroot_path)
 distro_out_text = distro_out_text.replace('[[version]]',    version)
 distro_out_text = distro_out_text.replace('[[sources]]',    distro_sources)
 distro_out_text = distro_out_text.replace('[[installers]]', distro_installers)
 distro_out_text = distro_out_text.replace('[[packages]]',   packages)
-distro_out_text = distro_out_text.replace('[[bundle_urlname]]',   bundle_conf.info['bundle_urlname'])
+distro_out_text = distro_out_text.replace('[[bundle_short_desc]]',  bundle_short_desc)
 
 out = open(out_file, 'w')
 out.write(out_text)

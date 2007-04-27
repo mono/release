@@ -4,7 +4,7 @@
 <title>Mono [[version]] Downloads -- [[arch]]</title>
 </head>
 <body>
-<h1>Mono [[version]] Downloads -- [[arch]]</h1>
+<h1>Mono [[version]] Downloads -- [[arch]] ([[bundle_short_desc]])</h1>
 
 !	get_rpm_install
 

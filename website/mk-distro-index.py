@@ -159,6 +159,11 @@ for option, value in opts:
 bundle_conf = packaging.bundle(bundle_name=bundle)
 url_prefix = 'download-' + bundle_conf.info['bundle_urlname']
 
+# Get a short description, if there is one
+bundle_short_desc = bundle_conf.info['bundle_urlname']
+if bundle_conf.info.has_key('bundle_short_desc'):
+	bundle_short_desc = bundle_conf.info['bundle_short_desc']
+
 fd = open(os.path.join(config.release_repo_root, 'website', 'distro-index'))
 template = fd.readlines()
 fd.close()
@@ -273,6 +278,7 @@ for distro_conf in distros:
 			line = line.replace('[[arch]]', env.name)
 			line = line.replace('[[version]]', version)
 			line = line.replace('[[webroot_path]]', webroot_path)
+			line = line.replace('[[bundle_short_desc]]', bundle_short_desc)
 
 			out.write(line)
 			arc_out.write(line)

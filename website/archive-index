@@ -1,10 +1,10 @@
 <html>
 <head>
 <link rel="stylesheet" href="[[webroot_path]]/packaging.css" type="text/css">
-<title>Mono [[version]] Downloads ([[bundle_urlname]])</title>
+<title>Mono [[version]] Downloads ([[bundle_short_desc]])</title>
 </head>
 <body>
-<h1>Mono [[version]] Downloads ([[bundle_urlname]])</h1>
+<h1>Mono [[version]] Downloads ([[bundle_short_desc]])</h1>
 
 <h3>Sources</h3> 
 [[sources]]
