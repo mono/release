@@ -79,7 +79,7 @@ class Selection:
 
 			## Total hack to pick the rpm version of mono-basic (contains compiler and runtime) instead of the zip version (only has the runtime)
 			if pack == "mono-basic":
-				self.pack_objs[pack] = packaging.package(packaging.buildenv('fedora-3-i386'),pack)
+				self.pack_objs[pack] = packaging.package(packaging.buildenv('suse-100-i586'),pack)
 			else:
 				self.pack_objs[pack] = packaging.package(installer_env,pack)
 
@@ -546,7 +546,7 @@ shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gconfsharp-schemagen.exe", "gtk-sharp/b
 os.remove("gtk-sharp/bin/gconfsharp2-schemagen")
 
 # Fix dll map config for gtkhtml
-# TODO: is this not done in the gtk-sharp build?
+# TODO: is this not done in the gtk-sharp build? (.config files aren't shipped on windows, even in this case there needs to be one)
 utils.add_dll_map('mono/etc/mono/config', '<dllmap dll="gtkhtml-3.0" target="libgtkhtml-3.8-15.dll"/>')
 
 
