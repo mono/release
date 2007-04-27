@@ -284,12 +284,14 @@ class sync(threading.Thread):
 		self.sync_target_dir = config.sync_target_dir
 		self.sync_num_builds = config.sync_num_builds
 		self.sync_sleep_time = config.sync_sleep_time
+		self.sync_max_arg_len = config.sync_max_arg_len
 
 	def cancelled(self):
 		# Don't shut this thread down until the tarball and build threads are done
 		#  Are these vars available across threads?  (if not, we'll have to use a signal)
 		# TODO: Cafeful, this thread may not have been started yet
-		if len(build_threads) == 0 and not tarball_thread.isAlive():
+		#   (second check is so you can have the sync daemon running during a release time, when the other daemons are not...)
+		if len(build_threads) == 0 and not tarball_thread.isAlive() and not config.sync_active == True:
 			return True
 		else:
 			return False
@@ -331,10 +333,28 @@ class sync(threading.Thread):
 			except:
 				sync_log.log("Catching missing dir exceptions...\n")
 
-			#sync_log.log(" *** Syncing ***\n")
-			#  For some reason the --delete option crashes when running the second time to go-mono.com and mono.ximian.com ... ?
-			# rsync all files over, and don't include the builds... just logs and info.xml
-			status, output = utils.launch_process('cd %s; rsync -avzR -e ssh --exclude=files %s %s:%s' % (config.release_repo_root, " ".join(dirs), self.sync_host, self.sync_target_dir), print_output=0)
+			# conduct a dirs string up to the length of the max arg length, and run rsync for each of those blocks (what's the real maximum?)
+			while len(dirs):
+
+				dir_string = ""
+				counter = 0
+				for i in dirs:
+					# +1 is for the space char
+					if len(i) + 1 + len(dir_string) < self.sync_max_arg_len:
+						dir_string += " %s" % i
+					else:
+						break
+					counter +=1
+
+				# Remove counter elements from dirs
+				dirs = dirs[counter:]
+
+				#sync_log.log(" *** Syncing ***\n")
+				#  For some reason the --delete option crashes when running the second time to go-mono.com and mono.ximian.com ... ?
+				# rsync all files over, and don't include the builds... just logs and info.xml
+				status, output = utils.launch_process('cd %s; rsync -avzR -e ssh --exclude=files %s %s:%s' % (config.release_repo_root, dir_string, self.sync_host, self.sync_target_dir), print_output=0)
+				if status:
+					sync_log.log("Error running rsync: " + output)
 
 			#sync_log.log(" *** sync Sleeping ***\n")
 			time.sleep(self.sync_sleep_time)
@@ -357,13 +377,13 @@ build_threads = []
 # Set signal handler
 signal.signal(signal.SIGINT, keyboard_interrupt)
 
+# Start up mktarball thread (start this thread up first, cause sync looks for it)
+tarball_thread = tarball_builder()
+tarball_thread.start()
+
 # Start up a sync thread
 sync_thread = sync()
 sync_thread.start()
-
-# Start up mktarball thread
-tarball_thread = tarball_builder()
-tarball_thread.start()
 
 # Sleep if threads are still alive
 #  Wow... here was the key... the main thread would exit, but pressing ctrl-c would go to the main thread (which had already exited)

@@ -101,6 +101,9 @@ sync_target_dir = '~/release'
 sync_num_builds = 10 # 268 MB in one test...
 
 sync_sleep_time = 10
+
+# That's what autoconf gives us... try it out
+sync_max_arg_len = 32768
 ##############################################
 
 ##############################################
