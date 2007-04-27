@@ -1,6 +1,8 @@
 web_index=2
 
 BUILD_HOSTS=(
+	# md 0.13.1 and before build here
+	#suse-93-i586
 	suse-100-i586
 )
 
