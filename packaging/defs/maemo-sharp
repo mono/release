@@ -1,0 +1,24 @@
+BUILD_HOSTS=(
+	suse-100-i586
+)
+
+USE_HOSTS=(
+	ALL
+)
+
+MONO_DEPS=(
+	mono
+)
+
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH=(
+	trunk/maemo-sharp
+)
+RELEASE_PATH=(
+	tags/maemo-sharp-[[version]]
+)
+

@@ -22,7 +22,7 @@
 #	gtk-sharp-2.0
 
 	<h3>Other</h3>
-#	last-exit
+#	last-exit maemo-sharp
 
 	<h3>Latest Gtk# (which are only supported on newer distros)</h3>
 #	gtk-sharp-2.8 gnome-sharp gtk-sharp-2.10
