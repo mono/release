@@ -1,0 +1,124 @@
+Source: mono
+Section: user/support
+Priority: optional
+Maintainer: Everaldo Canuto <ecanuto@novell.com>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.1
+XB-Maemo-Icon-26:
+  iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAIAAAAmKNuZAAAACXBIWXMAAAsT
+  AAALEwEAmpwYAAAAB3RJTUUH1wUGCgoM0Kp37AAAAB10RVh0Q29tbWVudABD
+  cmVhdGVkIHdpdGggVGhlIEdJTVDvZCVuAAAEXklEQVRIx5WU7W8UVRTGz7kz
+  O7PdnS0vbaEsgbIgxJYttLSVUrRISFOFRFA+qv8A8W8hfiYSRINQYUFqaRMt
+  IUKshk9qE4Mo76XCrgW7L+xMZ+Y8fpjZl9qS6CST3L1z72+f+zznHgZARJ7n
+  jZwbiRimUkz/4QGICERk23ZLc/PwW8PMTEQc4E5/enpw32AqlVq8BwCIGBCA
+  EEyIAAQIgheYGJ9oa2vbvfs1ItKDndlcLpVKFYvFW7/9rjgUCAKH43CGiUCE
+  ClgptW3rK319fTeuX1+EC9RPXr22vaMjFo/VKSQQQhQq2OCkzFNTPyaseCSi
+  V5frVF1A5Lqu63nlctk0TSISQSJhGZEIEXme77qubTtl265ujkQMQW17DRf8
+  a6lYvHf/QdPqVX29u5RSAIkIETRNCywG4Hre9PStctkmoqfZufZXCSBeqg5A
+  Pp8vFEum0c4cRqQUB3Eh5JGuaZYVv3v3ETFls3OoKavDBe69KBWzuWf5fHFN
+  S0s63V7LlwiCyhgrGhN/PskR0fPn+VD0UhwRDMNMJKyenu6Ghujj2ScJy0ok
+  4hUWPM+3bccwI/F4rFAs++IXXzgBjJdTh2MfHYvotRmR8IhEEEBpyjAjudzz
+  a9/dnM+X5ufztuMBXJfEYpymaagUF4GYg/oKC5iIFKuWllXRaDQ3N89MrHRQ
+  sGBJslWzwRV89WaAAAgkAKc2rSfWQETMwUz1sKo+WQAiIr6I74cDEQmvkzx8
+  9DSQ2bR6BVgj1ogUiFAXhVp0QyVkVoa13wKsa226MfWL53lKKWINrMCqWkLL
+  eFf9EDhYKJTiVowq3mlK7di+Zezbm63NKyN6hBm+rwIflsFJBcfMBPrjzoNT
+  n2XaNm3c29+9bWtbUNhWPHrwQN/nX141TYOJfN+rluQSdQIAzASiZ8/+vnBp
+  QmnazMyTkQvfrFy1ore7ozO9JRaLLrjeX3P5qGkywfcVvfywIgATu85C5uK4
+  67qmaTBrzFq57NyY+umHm79u27rBMAzf86OGTkyexy/1TgQCiPjnM1/PzMwq
+  TWdFzGAGsQKU5zs/T99BpWMwkWHoDQ2Gu1Dm5bwTERDw7uG3sajf1YKSMG8J
+  wvd9n5kc+yXqCLiYyRQKBcuyZh8/fn1wMJlMjpw9u2bt2sNHjmQymVw2u2dg
+  YMPGjZnz5xsbG7t39diOva61dUndIdBGo5cv7xkYOHXy5L79+899cebj48eH
+  hocfPXw4OTk5Njp68NChc2fOfHLixO7+/kKhcP/+vc2bt8hy3rGIMLNSWnJ9
+  0kokmpqaiJiZbdt2HIeZW5qbY7EYESnmUqlk22Um8sUXX/6N03VNfF+Ad44c
+  1jT9vaNHY7HYvv1vdu7YOTY62t7R8cbgIESiDQ0HhoY6d3ZNXBlLJtf3D+x1
+  Xdd2nGoUYdcdvzJeKBa7urrqMqjrArVegNo1BMQXZ2Fh9KtL73/4QWc6XcMB
+  mPp+6vbt2/T/n57e3nR6u1KKiP4B8dAIDfLz7yoAAAAASUVORK5CYII=
+
+Package: mono-runtime
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Mono runtime
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono runtime.
+
+Package: libmono-system1.0-cil
+Section: user/libs
+Architecture: all
+Depends: mono-runtime (= ${Source-Version})
+Description: Mono System libraries (1.0)
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the base class libraries of Mono.
+
+Package: libmono-system2.0-cil
+Section: user/libs
+Architecture: all
+Depends: mono-runtime (= ${Source-Version})
+Description: Mono System libraries (2.0)
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the base class libraries of Mono.
+
+Package: libmono-posix1.0-cil
+Section: user/libs
+Architecture: all
+Depends: mono-runtime (= ${Source-Version})
+Description: Mono Posix library (1.0)
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Posix Library 1.0.
+
+Package: libmono-posix2.0-cil
+Section: user/libs
+Architecture: all
+Depends: mono-runtime (= ${Source-Version})
+Description: Mono Posix library (2.0)
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Posix Library 2.0.
+
+Package: libmono-system-data1.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system1.0-cil (= ${Source-Version})
+Description: Mono System.Data library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Data library version 1.0.
+
+Package: libmono-system-data2.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (= ${Source-Version})
+Description: Mono System.Data Library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Data library version 2.0.
+
+Package: libmono-system-runtime1.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (= ${Source-Version})
+Description: Mono System.Runtime library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Runtime library version 1.0.
+
+Package: libmono-system-runtime2.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (= ${Source-Version})
+Description: Mono System.Runtime Library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Runtime library version 2.0.

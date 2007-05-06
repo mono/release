@@ -1,0 +1,4 @@
+debian/tmp/usr/lib/mono/gac/System.Runtime.Remoting/1.0.*/System.Runtime.Remoting.dll
+debian/tmp/usr/lib/mono/1.0/System.Runtime.Remoting.dll
+debian/tmp/usr/lib/mono/gac/System.Runtime.Serialization.Formatters.Soap/1.0.*/System.Runtime.Serialization.Formatters.Soap.dll
+debian/tmp/usr/lib/mono/1.0/System.Runtime.Serialization.Formatters.Soap.dll

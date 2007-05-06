@@ -1,0 +1,1 @@
+shlibs:Depends=libatk1.0-0 (>= 1.9.0), libc6 (>= 2.3.5-1), libglade2-0 (>= 1:2.3.6), libglib2.0-0 (>= 2.8.6-1osso1), libgtk2.0-0 (>= 2:2.6.10-1.osso8), libpango1.0-0 (>= 1.8.1), libxml2 (>= 2.6.16), zlib1g (>= 1:1.2.1)
