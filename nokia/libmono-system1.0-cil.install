@@ -1,5 +1,0 @@
-debian/tmp/usr/lib/mono/1.0/mscorlib.dll
-debian/tmp/usr/lib/mono/gac/System/1.0.*/System.dll
-debian/tmp/usr/lib/mono/1.0/System.dll
-debian/tmp/usr/lib/mono/gac/System.Xml/1.0.*/System.Xml.dll
-debian/tmp/usr/lib/mono/1.0/System.Xml.dll
