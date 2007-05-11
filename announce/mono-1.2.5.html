@@ -42,7 +42,37 @@
 <a name="changes">
 <h1>New in Mono 1.2.5</h1>
 
+<h2>C# Compiler</h2>
+
+	<p>Scott Petterson implemented the following C# 3.0 features:
+
+	<ul>
+	    <li>Variable type inference (the "var" keyword)
+	    <li>Anonymous types
+	    <li>Array type inference
+	    <li>Object initialization
+	    <li>Collection initialization
+	</ul>
+
+	<p>The C# 3.0 support is enabled by passing the
+	-langversion:linq option to the compiler.   In addition to the
+	above the C# 3.0 compiler also supports: extension methods,
+	lambdas and anonymous method generic type inference. 
+	
+<h2>Runtime</h2>
+
+	<p>AOT is now supported for 2.0 assemblies (although generic
+	calls are still not pre-compiled) [Zoltan].
+	
 <h2>System.Core</h2>
+
+	<p>Fresh implementation of TimeZoneInfo [Stephane Delcroix].
+
+	<p>
+	
+<h2>System.Windows.Forms</h2>
+
+	<p>MaskedTextBox implementation [Rolf Bjarne].
 	
 <h1>Contributors</h1>
 
