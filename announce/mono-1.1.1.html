@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?> <!-- -*-nxml-*- -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Mono 1.1.1: Development Release: Features and Known Issues.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.1.1 Development Release</h1>
+
+	<p>Mono 1.1.1 is the first release on the development series
+	of Mono and it is not intended to be used for production as it
+	is undergoing internal changes.  Those interested in a
+	production release should use the Mono 1.0.xx series.
+
+	<p>The Mono 1.1.xx series will eventually lead to the next
+	stable milestone: Mono 1.2.
+
+	<p><b>Important:</b> Mono 1.1.1 can not be installed in
+	parallel with Mono 1.0.x series on the same prefix.  To work
+	around this issue, you must use a different prefix at
+	configure time, for example:
+
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p>You can then setup your PATH to include /devel/bin to
+	access the Mono 1.1.  Alternatively you can replace your Mono
+	installation with 1.1.1.
+
+<a name="install"></a>
+<h2>Installing Mono 1.1.1</h2>
+	
+	<p><b>Binary Packages:</b>
+	<blockquote>
+	<p>Pre-compiled packages for SUSE 9, SUSE 9.1, Red Hat 9, SLES
+        8, Fedora Core 1, Fedora Core 2 and MacOS X are available from
+	our web site from the
+        <a href="http://www.go-mono.com/download.html">download</a>
+        section.  A Red Carpet Mono channel is also available on these
+        platforms.
+	</blockquote>
+        
+	<p><b>Source code:</b>
+	<blockquote>
+	<ul>
+	  <li>Mono Runtime: <a href="http://www.go-mono.com/archive/1.1.1/mono-1.1.1.tar.gz">mono-1.1.1.tar.gz</a>
+          <li>Mono C# sources: <a href="http://www.go-mono.com/archive/1.1.1/mcs-1.1.1.tar.gz">mcs-1.1.1.tar.gz</a>
+          <li>GDI+ library: <a href="http://www.go-mono.com/archive/1.1.1/libgdiplus-1.1.1.tar.gz">libgdiplus-1.1.1.tar.gz</a>
+	</ul>
+	</blockquote>
+	
+	<p><b>Dependencies</b>
+	
+	<p>If you are installing from source code, there are a few
+	 optional dependencies that you will want to consider
+	 installing.
+        
+	<blockquote>
+	 <p><b>icu 2.6.1 or later</b> Optional: for supporting string collation.
+	 <p><b>Cairo 0.1.23</b> Required to install libgdiplus.
+	</blockquote>
+	
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.1.1.tar.gz
+    $ cd mono-1.1.1
+    $ ./configure
+    $ make install
+	
+</pre>
+	</blockquote>
+	<p><b>Optional Packages</b><p>
+	<blockquote>
+	<p>Libgdiplus is an optional packages, you only need
+	those if you intent to use System.Drawing or Windows.Forms.
+	
+	<p>libgdiplus:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.1.1.tar.gz
+    $ cd libgdiplus-1.1.1
+    $ /configure
+    $ make install
+	
+</pre>
+
+</blockquote>
+
+<h2>Changes since the Mono 1.0 release</h2>
+
+	<p>The following is a high-level description of the changes in
+	the development release of Mono since the original Mono 1.0 release.
+
+<h3>Mono Ports</h3>
+
+	<p>The Mono JIT has been ported to two new architectures, and
+	another port has reached completion stage.
+
+	<p>The engine is now 64-bit ready: the two new ports ports are
+	64-bit ports.  Existing applications will automatically take
+	advantage of the larger address space on these systems.
+	
+	<ul>
+		<li><b>AMD64:</b> A 64 bit port done by Zoltan.
+	
+		<li><b>SPARC v9:</b> Another 64 bit port done by
+		Zoltan.
+
+		<li><b>S390:</b> Neale has declared that the port is
+		now complete on the 1.1.1 branch.
+	</ul>
+
+	<p>Neale has also started a 64 bit port to the S390x
+	architecture, the code is included but it is not ready yet.
+
+<h3>Runtime</h3>
+
+	
+	<ul>
+		<li><b>Runtime detection:</b> Implemented support for
+		side-by-side execution of applications that require
+		different runtime versions. Mono now will detect the
+		runtime version that an application requires (checking
+		the version number embedded in the assembly, or
+		looking at the application configuraion file if
+		available), and will load the appropiate mscorlib.dll
+		and machine.config. Thanks to this feature it is much
+		easier to test the new 2.0 libraries: an application
+		compiled with gmcs will be automatically executed in a
+		2.0 environment (Lluis).
+
+		<li><b>ABC Elimination:</b> A new, more complete and
+		more efficient implementation of the Array Bounds
+		Check Elimination has been checked in.  Use the
+		-O=abcrem command line option to enable it.
+
+		<li><b>KQueue support:</b> KeventWatcher is a new
+		FileSystemWatcher backend for *BSD systems that will
+		default over the ManagedWatcher.  The implementation
+		of this watcher gives significant performance gains
+		over the Managed watch in any place that a
+		FileSystemWatcher is used (ie; xsp/mod_mono).
+	</ul>
+
+
+<h3>Optimizations</h3>
+
+	<p>Plenty of optimizations have been implemented at every
+	level: from low-level JIT optimizations to tuning and stress
+	testing the higher class libraries.  For example, the C# compiler in the
+	1.1.x series is 20% faster over the 1.0.x series while doing
+	more work.
+
+	<p>Some details:
+
+	<ul>
+		<li><b>Reduced GC roots:</b> C static variables are no
+		longer GC roots. This greatly reduces the overhead of
+		garbage collection. It also reduces the false
+		retention of GC objects. This gave a few percent
+		improvement on MCS bootstrap. Also, it is a step
+		towards a precise GC. (Ben)
+
+		<li><b>Fast path for GC:</b> It now uses the thread
+		local cache, many allocations now can go through a
+		fast path (Ben).
+
+		<li><b>Static Mono:</b> Mono is now statically linked,
+		allowing the use of the special __thread compiler
+		directive in more places (Zoltan).
+
+		<li><b>XSP:</b> Performance of XSP has gone from 70
+		requests per second to 170 (and 220 for .ashx files.  Also XSP
+		is no longer slower than Apache+mod_mono, it is now slightly
+		faster (Ben, Gonzalo)
+
+		<li><b>XML:</b> The DOM and XmlTextWriter performance
+		has also been improved (Atsushi).
+
+		<li><b>C# Compiler:</b> Ben solved a long-standing
+		optimization shortcoming in the compiler, now we
+		generate optimal code for ++ and -- operators. 
+	</ul>
+
+	<p>Atsushi, Ben, Dick, Gonzalo, Paolo and Zoltan contributed
+	to many other tuneups.
+	
+<h3>Web Services</h3>
+
+	<p>There are many improvements and bug fixes to the existing
+	core, in addition work has started on features from the .NET
+	2.0 stack:
+	
+	<ul>
+	
+		<li><b>WSDL improvements:</b> New wsdl tool for the
+		2.x framwework, and a new option: <tt>-server</tt> to
+		support genreation of server-side skeletons in
+		addition to client-side stubs (Lluis)
+
+		<li><b>Unknown headers:</b> Unknown headers are now
+		supported (<tt>SoapUnknownHeader</tt>) (LLuis).
+
+		<li><b>WS-I:</b> WS-I Basic Profile 1.0 checker, not
+		completed (Lluis).
+	</ul>
+
+	<p>In addition there is a new model for asynchronous calls and
+	a the new tool `sgen' to pre-generate serializers debuts, but
+	is still under development.
+
+<h3>Security</h3>
+
+	<p>Work on Code Access Security (CAS) from Sebastien
+	has started:
+	
+	<ul>
+		<li>Evidences are now provided for AppDomains and assemblies.
+	
+		<li><b>System.Security.Permissions:</b> is complete
+		(in mscorlib.dll).  Most other permissions, in other assemblies, are also complete.
+
+	
+		<li><b>System.Security.Policy:</b> is mostly complete and
+		basic security policies are supported.
+		
+		<li><b>Imperative demands:</b> are now supported.
+		Declarative (attributes) are not yet supported.
+		Neither are Assert, Deny and PermitOnly.
+
+		<li><b>Samples:</b> MSDN library samples for
+		permissions and policies classes are now working.
+
+	</ul>
+
+	<p>SHA224 has been added to the Mono.Security assembly. The
+	certmgr tool is now able to manage the machine's store certificates in
+	addition to the user certificates.
+
+	<p>monodis now support declarative security attributes in it's IL output.
+
+
+<h3>C# language updates</h3>
+
+	<p>We continue to ship two compilers: mcs and gmcs.  The only
+	difference between those compilers is that the latter has
+	support for generics, but they share the rest of the features.
+
+	<ul>
+		<li><b>Static Classes:</b> C# 2.0 feature, added by
+		Marek.
+
+		<li><b>Partial Types:</b> C# 2.0 feature, added by
+		Martin.
+
+		<li><b>#pragma warning:</b> C# 2.0 feature, added by
+		Marek.
+	</ul>
+
+	<p>We continue to improve the compiler to flag more errors for
+	incorrect constructs or provide more useful information to the
+	developer.   
+
+	<p>On this new release of the compiler, we have made the
+	warning level default to 4 from the regular 3.
+
+<h3>Postgress: Npgsql</h3>
+
+	<p>This update comes from Francisco: Added support for point,
+	box, lseg, path, polygon and
+	circle datatypes.  Added NpgsqlDbType enumeration with all
+	supported types.
+
+	<p>They are mapped to NpgsqlPoint, NpgsqlBox, NpgsqlLSeg,
+	NpgsqlPolygon and NpgsqlCircle respectively. Thanks Glen
+	Parker for help.
+
+	<p>The following bugs have been fixed:</p>
+	
+	<ul>
+	<li>Added api documentation in code. Thanks Glen Parker. (No html generation 
+	yet. This will be fixed in next release)
+	
+	<li>Fixed deserialization of NpgsqlException. There are some issues yet, 
+	just the base message is being deserialized. Errors collection are null. 
+	Thanks David Palmer (David dot Palmer at SensusTech dot com) for the 
+	heads up and fix.
+	
+	<li>Improved Unicode encoding support. It was possible to characters in 
+	unicode cross the stream buffer and be discarded. Now we use Decoders 
+	which handle that situation. Thanks Oskars Ozols (oskars dot ozols at di 
+	dot lv)
+	
+	<li>Improved connection startup code. Now new connections in ms.net goes a 
+	lot faster. Thanks Mikko Korkalo (mikko.korkalo at f-solutions dot net) 
+	for the patch.
+	
+	<li>Fixed a problem with plan execution in 7.3 backend versions. The text 
+	parameters weren't being quoted and backend complained about that.
+	
+	<li>gborg 898: Added HasRows method to NpgsqlDataReader. Thanks keitsi at 
+	minttupuffet dot net for feature request.
+	
+	<li>gborg 899: Fixed return of IsClosed after closing NpgsqlDataReader. 
+	Thanks Mikko Korkalo (mikko.korkalo at f-solutions dot net) for the patch.
+	
+	<li>gborg 952: Added missing handling of NoData message.
+	</ul>
+
+<h3>System.XML</h3>
+
+
+	<p>System.XML 2.0 development has started. Most of the new
+	classes are checked in. They are mostly based on .NET FX 2.0
+	beta 1. There are many "partly implemented and untested" new
+	2.0 stuff:
+
+	<ul>
+		<li><b>XmlReader:</b> factory methods, some of the
+		typed value supports, new helper methods such as
+		MoveToDescendant(), ReadSubtree(),
+		IXmlNamespaceResolver support.
+		  
+		<li><b>XML Schema:</b> XmlSchemaSet and new primitive
+		types.
+	
+		<li><b>XPath:</b> XPathEditableNavigator and
+		XPathDocument (it will be deprecated though), new
+		navigation helper methods on XPathNavigator,
+		XPathAtomicValue (too incomplete).
+		  
+		<li><b>XQuery:</b> It is based on the latest W3C
+		working draft and many of the XQuery expressions are
+		implemented as well as the early FLWOR support.
+		Operations on sequence types are not
+		supported. Functions won't work enough.  It is still
+		highly unstable.
+	</ul>
+	
+	<p>This work was done by Atsushi.
+
+<h3>Basic Compiler</h3>
+
+	<p>Anirban, Bernie, Jambunathan and Rafael have been making great
+	progress on the Basic compiler, at this point it is possible
+	to run ASP.NET applications, but work continues to refine the
+	compiler.
+
+	<p>Unlike the C# case where we had a large body of code to
+	test against (the compiler, and later our class libraries),
+	there is less Visual Basic code to test against, so we depend
+	more on language tests for it, Sachin has been contributing to
+	this area.
+
+	<p>Since the last release, the mbas compiler supports:
+	interfaces, inheritance definition, event handlers, implements
+	clause, cross-assembly compilation, properties, enumerations,
+	conditional compilation directives.
+
+	<p>Jochen Wezel provided quick feedback on the changes and
+	Rob Tillie helped with the VisualBasic.dll runtime.
+	
+<h3>C5 Class Library</h3>
+
+	<p>We now distribute the C5 generics library created by Peter
+	Sestoft and Niels Jørgen.  This library is currently used
+	mostly as large test case for the Generics edition of the C#
+	compiler as it is the largest body of template code for C#
+	available to this date.
+
+	<p>We want to thank Peter and Niels for making their work
+	available under the MIT X11 license.
+
+	<p>For more details about it, see the <a
+	href="http://www.itu.dk/research/c5/">C5 home page.</a>
+
+<h3>System.Drawing</h3>
+
+	<p>Sanjay added support for multiple frames (gif and tiff) and
+	graphic control extension (gif).  Animation along with
+	reduction in size of gif files saved.
+
+<h3>ADO.NET</h3>
+
+	<p>Suresh and Uma continued to fix the existing 1-0 API and
+	also have started on the 2.x API features:
+
+<h3>Windows.Forms</h3>
+
+	<p>A new implementation of Windows.Forms is in progress.  This
+	new implementation is a completely managed implementation and
+	only uses a thin driver for interfacing with the host
+	windowing system.  Two drivers are currently supported: Win32
+	and X11, volunteers are welcome to implement a driver for
+	Mac's CoreGraphics.
+
+	<p>This team is currently composed of Jackson, Jordi, Peter
+	and Ravindra who are working exclusively on it.
+	
+	<p>Although the souce code is part of the distribution, no
+	binaries of the library can be distributed yet as it is not
+	complete enough to provide the APIs that other parts of the
+	class libraries require (this is only a build time issue for
+	us, it will be addressed in an upcoming version of the 1.1.x
+	series).
+
+	<p>If you are interested in trying out the new version of
+	Windows.Forms, you should download the mcs package, configure,
+	and then do:
+
+	<pre class="shell">
+	
+	$ cd mcs-1.1.1
+	$ ./configure --prefix=/YOURPREFIX
+	$ cd mcs/class/Managed.Windows.Forms
+	$ make clean
+	$ make install
+	</pre>
+
+	<p>Notice that this is not complete, and it is not finished,
+	contributors are welcome.  To discuss this, please join the <a
+	href="http://lists.ximian.com/mailman/listinfo/mono-winforms-list">mono-winforms-list</a>
+
+	<p>For details on how to contribute, see Peter's <a
+	href="http://lists.ximian.com/archives/public/mono-winforms-list/2004-September/000857.html">update
+	on the effort</a> and the details on how it supports <a
+	href="http://lists.ximian.com/archives/public/mono-winforms-list/2004-September/000858.html">native
+	toolkit themes</a>.  For some screenshots see: <a
+	href="http://primates.ximian.com/~jackson/blog/archive/2004/Sep-20.html">Jackson's
+	blog</a>
+
+<h3>JavaScript</h3>
+
+	<p>The parser and lexer of Java Script have been rewritten by
+	Cesar by porting the code from Rhino.  
+
+<h3>General .NET 2.x updates</h3>
+
+	<p>Tim Coleman, Sebastien Poulliot, Carlos Alberto, [FIXME:
+	FULL LIST]
+	
+<h3>Bug fixes</h3>
+
+	<p>All the bug fixes from the 1.0.x release are available on
+	the development version of Mono as well.
+
+
+

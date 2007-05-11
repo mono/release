@@ -1,0 +1,283 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+	<title>Mono 1.1.14: Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.1.14 Release</h1>
+
+	<p>This is the first beta towards the release of Mono 1.2.   
+	
+	<p>Mono was branched at version 1.1.13 to become the stable
+	version of Mono that is distributed by Novell on its
+	enterprise products.   That series of releases are only
+	getting bug fixes.
+
+	<p>Before each release we run all of the regression tests on
+	Mono, so we consider this release usable for deployment, but
+	there will continue to be changes in various areas.  
+	
+	<p>All of the changes since 1.0 are documented in the
+	following release notes: <a
+	href="http://www.go-mono.com/archive/1.1.1">1.1.1</a>, <a
+	href="http://www.go-mono.com/archive/1.1.2">1.1.2</a>, <a
+	href="http://www.go-mono.com/archive/1.1.3">1.1.3</a>, <a
+	href="http://www.go-mono.com/archive/1.1.4">1.1.4</a>, <a
+	href="http://www.go-mono.com/archive/1.1.5">1.1.5</a>, <a
+	href="http://www.go-mono.com/archive/1.1.6">1.1.6</a>, <a
+	href="http://www.go-mono.com/archive/1.1.7">1.1.7</a>, <a
+	href="http://www.go-mono.com/archive/1.1.8">1.1.8</a>, <a
+	href="http://www.go-mono.com/archive/1.1.9">1.1.9</a>, <a
+	href="http://www.go-mono.com/archive/1.1.10">1.1.10</a> and <a
+	href="http://www.go-mono.com/archive/1.1.13">1.1.13</a>. 
+
+	<ul>
+		<li><a href="#new">What is new since the last release.</a>
+		<li><a href="#install">Download and installation.</a>
+		<li><a href="#contributors">Contributors to this release.</a>
+	</ul>
+
+	<p>This release is mostly a bug-fix release, there are very
+	few new developments.
+
+<a name="new"/></a>
+
+<h2>What is new in Mono 1.1.14</h2>
+
+<h3>Stack Traces</h3>
+
+	<p>Sending the QUIT signal to a running Mono process will
+	produce a stack trace of each thread.  This is a long
+	requested feature to assist folks debugging multi-threaded
+	applications (Zoltan).
+
+<h3>Garbage Collection</h3>
+
+	<p>Paolo upgraded our Garbage Collection engine to the latest
+	publicly available version from Hans Boehm.
+
+	<p>This version also contains many changes to allow for moving
+	and compacting Garbage Collectors.
+
+<h3>IO-Layer</h3>
+
+	<p>MONO_SHARED_HOSTNAME can now be set to to a name for a file
+	in the ~/.wapi directory.  This is used by applications which
+	might change the hostname.
+
+<h3>ASP.NET</h3>
+
+	<p>Large file uploads are now supported.  It is now possible
+	to specify in the &lt;httpRuntime&gt; section a value for the
+	requestLengthDiskThreshold.  The default is 256k.  Any POST
+	data larger than this will be stored on disk instead of in
+	memory.  This is a feature found on ASP.NET 2.x that Mono
+	exposes on both ASP.NET 1.0 and 2.0.
+
+	<p>This allows people to do large posts of files without
+	consuming large amounts of memory   (Gonzalo).
+	
+<h3>ASP.NET 2</h3>
+
+	<p>Chris Toshok fixed Master Pages, nested pages should work
+	now.
+
+	System.Configuration.
+
+	<p>Build Providers.
+
+
+<h3>XML Performance</h3>
+
+	<p>Atsushi tuned the XML stack significantly using XMLMark,
+	some graphs of the progress are available <a
+	href="http://monkey.workarea.jp/mono/xml/XMLmark">here</a>.
+
+<h3>Runtime</h3>
+
+	<p>The runtime will no longer produce g_assertions with
+	invalid metadata, or invalid code, instead it will raise an
+	exception (Paolo Molaro).
+
+	<p>Jim Pubrick contributed a large test suite for CIL
+	verification based on the ECMA spec.
+
+	<p>The runtime now has a --wapi command line option to control
+	the contents of the ~/.wapi directory.   --wapi=hps will show
+	the currently active handles and --wapi=semdel will delete the
+	semaphores used by Mono.   These tools used to be part of a
+	development install of Mono, but they have now been made
+	available to everyone.
+
+<h3>System.Query</h3>
+
+	<p>Alejandro Serrano contributed an implementation of
+	System.Query to Mono.
+
+	<p>Atsushi updated System.Xml.XLinq to use the new
+	System.Query code.
+
+<h3>Language Support</h3>
+
+	<p>Support for third party languages like IronPython and Boo
+	has improved in this release.   Users of those languages are
+	strongly encouraged to upgrade to this release.
+
+<h3>SSL/TLS</h3>
+
+	<p>Added support for abbreviated handshakes, which will reuse
+	a previous security parameters, to re-establish a secure
+	connection (Sebastien).
+
+	<p>Fixed some possible deadlocks while negotiating (Gonzalo
+	and Sebastien).
+
+<h3>Libgdiplus</h3>
+
+	<p>Sebastien has upgraded libgdiplus in various fronts:
+	
+	<p>Region operations: Added GdipCombineRegionPath function to allow using binary
+	operations (union, intersection, complement, exclude and xor)
+	on non-rectangular regions;
+  
+  	<p>Added GdipFlattenPath function (to convert curves into
+  	lines);
+	
+	<p>Added support for region serialization (i.e. GdipGetRegionData, 
+	GdipGetRegionDataSize and GdipCreateRegionRgnData functions);
+  
+  	<p>Better, but still not perfect, clipping support;
+
+	<p>TextureBrush is now working again;
+
+<h3>Ports: OSX/x86</h3>
+
+	<p>Mono now supports OSX on Intel boxes.
+	
+	<p>Geoff and Paolo completed the port of Mono to OSX on x86
+	processors.
+
+<h3>System.Transactions</h3>
+
+	<p>Ankit and Hari also worked on a basic implementation of
+	System.Transactions.  The implementation uses a Lightweight
+	Transaction Manager (LTM) allowing multiple volatile and/or a
+	single durable resource manager.
+	
+<h3>Tools</h3>
+
+	<p>The assembler and disassembler have been upgraded to
+	support generics and they are now able to roundtrip all of our
+	2.0 assemblies with generics (Ankit and Hari).
+
+<h3>JIT Optimizations</h3>
+
+	<p>Massimiliano's work on the tree mover, an optimization used
+	to reduce the number of temporaries has been incorporated.
+
+	<p>The tree mover allowed us to activate a number of
+	optimizations on.  The new default optimizations now include
+	inlining, dead code elimination, copy propagation and constant
+	propagation.
+
+	<p>For the release we did identify two small regressions
+	related to inlining, so the code is not enabled by default as
+	it regresses code that depends on GetCallingAssembly.
+
+<h3>RelaxNG improvements</h3>
+
+	<p>Significant RELAX NG improvements. There are a handful of bugfixes
+	and performance improvements. Before those changes it is practically
+	impossible to validate large XML documents. Now it can validate
+	5 megabytes of OpenDocument specification document within a few
+	seconds (on Pentium M 1.1GHz box), Atsushi.
+
+<h3>Tools</h3>
+
+	<p>A tiny utility "mono-xmltool" is added. It supports
+	validation for XML Schema, DTD, RELAX NG and NVDL, as well as
+	pretty printing and XSL transformation.
+
+	<p>This tool is just a frontend for the various XML validation
+	classes in Mono.
+
+<h3>Encodings</h3>
+
+	<p>I18N: Bruno Haible tried several tests on mono's Encoding support
+	and it resulted in a bunch of bugfixes.
+
+	<p>Also large amount of 2.0 profile support and optimization
+	were done.
+
+<a name="install"/></a>
+
+<h2>Installing Mono 1.1.14</h2>
+	
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p>You can then setup your PATH to include /devel/bin to
+	access the Mono 1.1.  Alternatively you can replace your Mono
+	installation with 1.1.14
+
+	<p><b>Source Code and Binary Packages:</b>
+	<blockquote>
+	<p>Source code and pre-compiled packages for SUSE, SLES,
+	Fedora Core 3, 4, RHEL, MacOS and Windows in a variety of
+	platforms available from our web site from the <a
+	href="http://www.mono-project.com/Downloads">download</a>
+	section.
+
+	</blockquote>
+
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.1.14.tar.gz
+    $ cd mono-1.1.14
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+
+	<p>Then compile libgdiplus:
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.1.14.tar.gz
+    $ cd libgdiplus-1.1.14
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+	</blockquote>
+		
+</blockquote>
+
+<a name="contributors"/></a>
+
+<h2>Contributors to Mono 1.1.12 and Mono 1.1.14</h2>
+
+	<p>A partial list of contributors to this release:
+	
+	<p>Hubert Fongarnand and Robert Jordan deserve special mention
+	for their bug reports and the bug fixing they provided during
+	this and past release cycles. 
+
+	<p>

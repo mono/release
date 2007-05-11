@@ -1,0 +1,290 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+	<title>Mono 1.1.8: Development Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.1.8 Development Release</h1>
+
+	<p>Mono 1.1.8 is the eighth release on the development series
+	of Mono. The Mono 1.1.x series will eventually lead to the next
+	stable milestone: Mono 1.2.
+
+	<p>We consider Mono 1.1.8 stable enough to recommend it for all users.
+	Those upgrading from the 1.0.x series should note that these notes
+	only contain the differences between 1.1.7 and 1.1.8.   All of the
+	changes since 1.0 are documented in the following release notes:
+	<a href="http://www.go-mono.com/archive/1.1.1">1.1.1</a>,
+	<a href="http://www.go-mono.com/archive/1.1.2">1.1.2</a>,
+	<a href="http://www.go-mono.com/archive/1.1.3">1.1.3</a>,
+	<a href="http://www.go-mono.com/archive/1.1.4">1.1.4</a>, 
+	<a href="http://www.go-mono.com/archive/1.1.5">1.1.5</a>,
+	<a href="http://www.go-mono.com/archive/1.1.6">1.1.6</a> and
+	<a href="http://www.go-mono.com/archive/1.1.7">1.1.7</a>.
+
+	<ul>
+		<li><a href="#new">What is new since the last release.</a>
+		<li><a href="#install">Download and installation.</a>
+	</ul>
+
+<a name="new"/></a>
+
+<h3>Building with Visual Studio</h3>
+
+	<p>Visual Studio solution to build Mono runtime natively on
+	Windows.   This is useful if you are embedding the Mono
+	runtime into your application and want to debug and single
+	step inside Mono.
+
+<h3>Debugger</h3>
+
+	<p>The Mono Debugger is being released in sync for the first
+	time with the Mono runtime.  We need testers to try it out
+	(the command line debugger is called `mdb').
+
+	
+<h3>Windows.Forms</h3>
+
+	<p>Here a toplevel list of all things new for 1.1.8 MWF:
+
+	<ul>
+		<li>DomainUpDown and NumericUpDown implemented
+		<li>First version with DataGrid support (still incomplete)
+		<li>First version with MDI support (still incomplete)
+		<li>Drag & Drop implemented for X11 and Win32
+		<li>Clipboard implemented for X11 and Win32
+		<li>HelpProvider implemented
+		<li>ErrorProvider implemented
+		<li>Cursor class completed
+		<li>ResXWriter and ResXReader completed
+		<li>SWF.Timers now working properly
+		<li>A bunch of compatibility fixes
+		<li>Image I/O now working on Win32 (this is actually
+		in System.Drawing)
+	</ul>
+
+
+<h3>Scaling, Performance</h3>
+
+	<p>Harinath has been fine tuning our Regular Expressions class
+	library to reduce allocations which translate into an increase
+	in performance (about 10% on the output match).
+	Regexp.Replace will now be O(number of $s in the replacement
+	string) instead of O(length of replacement string).  The
+
+	<p>The 1024 limit on Socket.Select is gone, Mono will now use
+	poll when available.
+
+	<p>System.Web will consume less memory as well (Gonzalo). 
+
+<h3>Code Access Security</h3>
+
+	<p>Sebastien's progress in this release:
+
+	<ul>
+	<li>AppDomain based sandboxes are supported (limited by
+	#74411);
+	
+	<li>Stack propagation for async code, threads and SWF;
+	
+	<li>Default policies (like LocalIntranet, Internet...) are now supported;
+
+	</ul>
+
+	<p>The new features allows NRobot 0.20
+	(http://home.gna.org/nrobot/) to "work" (as much as the
+	permissions are currently present in the class libraries) on
+	Mono 1.1.8 with a single modification (change the imperative
+	assert in NRobot/Engine/GameArena.cs to a declarative assert).
+
+<h3>ASP.NET 2.x controls</h3>
+
+	<p>Lluis completed various new controls for ASP.NET 2.x:
+	ImageMap, Wizard, SiteMapDataSource and SiteMapPath.
+
+<h3>Reflection</h3>
+
+	<p>Lluis added support for producing debugging information
+	from Reflection.Emit.   This means that all the
+	Reflection-based compilers and VMs will be able to produce
+	debugging information and have the Mono debugger step through
+	the code. 
+	
+<h3>Packaging</h3>
+
+	<P> mono-ikvm has been merged into mono-core. Should make it easier
+        for people to get ikvm
+
+	<p> mono-nunit is back with the nunit stuff. Needed for mono-tools
+	
+<h3>Mono-shlib-cop</h3>
+
+	<p>Jonathan Pryor has contributed this tool to assist
+	developers that use P/Invoke.
+
+	<p>mono-shlib-cop is a tool that inspects a managed assembly
+	looking for erroneous or suspecious behavior of shared libraries.
+
+	<p>The tool takes one or more assembly filenames, and inspects each
+	assembly specified.
+
+	<p>The errors checked for include:
+	<ul>
+	<li>Does the shared library exist?
+	<li>Does the requested symbol exist within the shared library?
+	<p>It also checks if a program uses shared libraries that are
+	part of a -devel package.
+	</ul>
+
+<h3>VB.NET</h3>
+
+	<p>New on this release: late binding, decimal, named
+	arguments, optiona byrefs, 
+
+<h3>Mono.Unix</h3>
+
+	<p>The Mono.Unix namespace will be replacing the old
+	Mono.Posix in Mono 1.2 and is still under development.  In
+	this release cleanups continued and a few new features are
+	present.
+
+	<p>Changes since the last release:
+	<ul<
+		<li>Removed types: MapAttribute, IncludeAttribute, 
+		ErrorMarshal, ErrorMarshal.ErrorTranslator
+		<li>Removed UnixMarshal.IsErrorDescriptionThreadSafe property
+		<li>Renamed LockFlags enum to LockfCommand
+		<li>Removed StdioFileStream.FilePosition property and replaced with
+		RestoreFilePosition() and SaveFilePosition() methods
+		<li>Renamed UnixConvert.ToFilePermissions(string) to 
+		UnixConvert.FromOctalPermissionString(string)
+	</ul>
+	
+      <p>Additions
+      <ul>
+      
+      		<li>Syscall.execv(), Syscall.execve(),
+		Syscall.execvp(), Syscall.fexecve()
+
+		<li>Syscall.fcntl (int, FcntlCommand, DirectoryNotifyFlags)
+		
+		<li>Syscall.mmap, Syscall.munmap, Syscall.msync, Syscall.mlock,
+		  Syscall.munlock, Syscall.mlockall, Syscall.munlockall,
+		  Syscall.mremap, Syscall.mincore,  Syscall.remap_file_pages
+		
+		<li>Syscall.mkstemp
+		
+		<li>Thread safety for "obvious" exports from Stdlib, Syscall
+		
+		<li>UnixConvert.ToOctalPermissionString, 
+		  UnixConvert.FromUnixPermissionString,
+		  UnixConvert.ToUnixPermissionString
+		
+		<li>UnixFileInfo uses stat(2) now, not lstat(2), so a UnixFileInfo
+		  created on a symlink will give information about the target, 
+		  not the link.
+		
+      </ul>
+      <p>Lots of documentation added
+
+<h3>JScript</h3>
+
+	<p>Cesar implemented access to local variables in nested
+	functions in JScript.
+	
+<h3>Bug fixes, scalability</h3>
+
+	<p>There are plenty of bug fixes, performance and scalability
+	improvements that are too detailed to list on the release
+	notes.
+	
+<a name="install"/></a>
+<h2>Installing Mono 1.1.8</h2>
+	
+	<p><b>Important:</b> Mono 1.1.8 can not be installed in
+	parallel with Mono 1.0.x series on the same prefix.  To work
+	around this issue, you must use a different prefix at
+	configure time, for example:
+
+	<p>Fedora Core 4 users: packages will work out of the box, but
+	the source code will be misscompiled by gcc4.
+
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p>You can then setup your PATH to include /devel/bin to
+	access the Mono 1.1.  Alternatively you can replace your Mono
+	installation with 1.1.8
+
+	<p><b>Binary Packages:</b>
+	<blockquote>
+	<p>Pre-compiled packages for SUSE, SLES, Fedora Core, RHEL are
+	available from our web site from the
+        <a href="http://www.go-mono.com/download.html">download</a>
+        section.
+
+	<p>MacOS and Windows packages will be uploaded soon.
+	</blockquote>
+        
+	<p><b>Source code:</b>
+	<blockquote>
+	<ul>
+	  <li>Mono Source Code: <a href="http://go-mono.com/sources/mono-1.1/mono-1.1.8.tar.gz">mono-1.1.8.tar.gz</a>
+	</ul>
+	</blockquote>
+	
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.1.8.tar.gz
+    $ cd mono-1.1.8
+    $ ./configure
+    $ make
+    $ make install
+	
+</pre>
+	</blockquote>
+		
+</blockquote>
+
+
+<h3>Contributors</h3>
+
+	<p>The following list is a partial list of contributors to
+	this release:
+
+	<p>
+	 Jakub Bogusz, Mart Roosmaa, Alexander Olk, Jonathan Chambers,
+	 Matthias Felgner, Jonathan Gilbert, Geoff Norton, Kornél Pál,
+	 Jackson Harper, Jordi Mas, Peter Bartok, Ankit Jain, Michael
+	 Meeks, Gert Driesen, David Waite, Michal Moskal, Bill
+	 Middleton, Nigel Benns, Paolo Molaro, Peter Johanson, Peter
+	 Williams, Rafael Teixeira, Raja R Harinath, Ritvik Mayank,
+	 Sebastien Pouliot, Sudha, S Umadevi, suresh, Todd Berman,
+	 Vladimir Vukicevic, Wade Berrier, Zoltan Varga, Lluis
+	 Sanchez, Manjula, Marek Safar, Mark Crichton, Martin Baulig,
+	 Martin Willemoes Hansen, Massimiliano Mantione, Miguel de
+	 Icaza, Mike Kestner, Konstantin Triger, Kazuki Oikawa, Juraj
+	 Skripsky, Joergr Rosenkranz, Joshua Tauberer, Joseph Hill,
+	 Jonathan S. Chambers, Jonathan Pryor, John Luke, John
+	 BouAntoun, Jeroen Zwartepoorte, Jb Evain, James Wilcox, Jacob
+	 Ils, Gonzalo Paniagua, Gert Driesen, Geoff Norton, Francisco
+	 Figueiredo Jr., Eyal Alaluf, Duncan Mak, Dick Porter, David
+	 Hudson, Dan Winship, Chris Toshok, Christian Hergert, Cesar
+	 Octavio Lopez Nataren, Carlos Alberto Cortes¸ Boris Kirzner,
+	 Ben Maurer, Atsushi Enomoto, Andrew Skiba, Alp Toker,
+	 Alexandre Gomes and Adhamh Findlay.

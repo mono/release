@@ -1,0 +1,1245 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+	<title>Mono 1.1.17: Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.1.17 Release</h1>
+
+	<p>Mono was branched at version 1.1.13 to become the stable
+	version of Mono that is distributed by Novell on its
+	enterprise products.   That series of releases are only
+	getting bug fixes.
+
+	<p>Before each release we run all of the regression tests on
+	Mono, so we consider this release usable for deployment, but
+	there are still a few changes in various areas.  
+	
+	<p>All of the changes since 1.0 are documented in the
+	following release notes: <a
+	href="http://www.go-mono.com/archive/1.1.1">1.1.1</a>, <a
+	href="http://www.go-mono.com/archive/1.1.2">1.1.2</a>, <a
+	href="http://www.go-mono.com/archive/1.1.3">1.1.3</a>, <a
+	href="http://www.go-mono.com/archive/1.1.4">1.1.4</a>, <a
+	href="http://www.go-mono.com/archive/1.1.5">1.1.5</a>, <a
+	href="http://www.go-mono.com/archive/1.1.6">1.1.6</a>, <a
+	href="http://www.go-mono.com/archive/1.1.7">1.1.7</a>, <a
+	href="http://www.go-mono.com/archive/1.1.8">1.1.8</a>, <a
+	href="http://www.go-mono.com/archive/1.1.9">1.1.9</a>, <a
+	href="http://www.go-mono.com/archive/1.1.10">1.1.10</a>, <a
+	href="http://www.go-mono.com/archive/1.1.13">1.1.13</a>, <a
+	href="http://www.go-mono.com/archive/1.1.14">1.1.14</a>, <a
+	href="http://www.go-mono.com/archive/1.1.15">1.1.15</a> and
+	<a href="http://www.go-mono.com/archive/1.1.16">1.1.16</a>.
+
+	<ul>
+		<li><a href="#new">What is new since the last release.</a>
+		<li><a href="#install">Download and installation.</a>
+		<li><a href="#contributors">Contributors to this release.</a>
+	</ul>
+
+	<p>This release is mostly a bug-fix release, there are very
+	few new developments.
+
+<a name="new"/>
+
+<h1>Changes since Mono 1.1.16</h1>
+
+<h2>Highlights</h2>
+
+	<p><b>Basic world:</b> The Mono Basic compiler and the Basic runtime have been
+	removed from the Mono distribution.  A new compiler that is
+	compatible with Visual Basic 2005 and a matching runtime are
+	now part of a separate distribution.  On this particular
+	release, we are offering the basic runtime, but the compiler
+	is not able to run completely on Mono yet.
+
+	<p><b>Windows.Forms:</b> Printing is now supported.
+
+	<p>This release is able to compile and build IronPython 1.0
+	RC2.
+	  
+	<p><b>COM:</b> Basic COM support has been integrated.
+
+	<p><b>AOT:</b> on x86/linux the AOT code generator no longer
+	requires binutils to be installed, Mono now has a built-in
+	executable writer [Paolo Molaro]
+	
+<h3>Inotify watcher</h3>
+
+	<p>The FileSystem will now use inotify directly on systems
+	that support it without having to go through an external
+	library like FAM or Gamin, this should make our use of inotify
+	reliable. [Gonzalo Paniagua]
+
+<h3>Async Process Notification</h3>
+
+	<p>2.0 support for asynchronous reads and writes from the
+	Process class is now supported [Gonzalo].
+	  
+<h3>Mono Loading as a Shared Library Works Again</h3>
+
+	<p>This was a problem that mostly affected the OpenOffice
+	plugin, which loaded Mono as a separate process, this is now
+	fixed [Zoltan Varga]
+	  
+<h3>Gtk# Split</h3>
+
+	<p>As part of Gtk# becoming one of the supported language
+	bindings in the Gnome platform and Tomboy, a Gtk#-based
+	application, becoming part of the Gnome desktop, Gtk# has been
+	split up into multiple packages, instead of a single one.
+
+	<p>All the packages are available from our download site [Mike
+	Kestner].
+
+<h3>Mono.Cairo</h3>
+
+	Mono.Cairo bindings now supports a DirectFB surface now [Alp
+	Toker].
+
+<h3>System.Drawing</h3>
+
+	<p>This release includes an upgraded Cairo stack (from 1.0 to
+	1.2) and allowed us to enable printing in System.Drawing and
+	System.Windows.Forms.
+
+	<p>The original work was done by Jordi Mas, the Cairo upgrade
+	by Peter Bartok and the work was completed by Chris Toshok.
+	  
+<h3>2.0 API updates</h3>
+
+	<p>String.Normalize is included [Atsushi Enomoto]
+
+	<p>ADO.NET 2.0 updates, included an implementation for
+	SqlConnection.GetSchema (Nagappan).
+
+<h3>Registry</h3>
+
+	<p>Updated to the 2.0 API. [Miguel de Icaza]
+
+	<p>Gert added support for splitting the registry across user
+	and system level settings. [Gert Driesen]
+
+<h3>mod_mono</h3>
+
+	<p> Added support for X.509 client certificates. It's now
+	possible to use System.Web.HttpClientCertificate with
+	Apache. Certificate validation can be done by Apache, Mono or
+	both (default). [Hubert Fongarnand, Sebastien Pouliot]
+
+<h3>Security</h3>
+
+	<p>SN now accept password-protected PKCS#12/PFX files to
+	strongname assemblies. This feature is enabled in both 1.x and
+	2.0 profiles [Sebastien Pouliot]
+
+	
+<h3>Additions</h3>
+
+	<p>CodeDOM JScriptCodeProvider code JavaScript code is now included
+	[Akiramei]
+
+	<p>An EventLog implementation is available on both Unix and
+	Windows, to use set the MONO_EVENTLOG_TYPE variable like this:
+
+	<ul>
+	  <li><b>local[:path]</b> generates a log file in the given
+	    path.  If the path is not given, it will store the
+	    results in "/var/lib/mono/eventlog" on Unix and in
+	    "%APPDATA%\mono\eventlog" on Windows.
+	    
+	  <li><b>win32:</b> This uses the native Windows API to send
+	    the log messages to the system event log.
+	    
+	  <li><b>null:</b> discards all of the events
+	</ul>
+	
+	<p>to a pathname where the events should be logged to [Atsuhi
+	Enomoto, Gert Driesen]
+
+	<p>COM Interop: Basic support for Runtime Callable Wrappers
+	(RCWs). This allows users to use unmanaged components from
+	managed code. [Jon Chambers]
+
+	<p>Sqlite now exposes a Version property to detect which
+	underlying database is available (2.x or 3.x) [Joshua
+	Tauberer] 
+
+	<p>Mono.Posix now features an abstract Unix end point in
+	addition to Unix End Points [Alp Toker].
+
+<h3>XML Land</h3>
+
+	<p>Fixed XmlSchemaSet and XmlSchemaCollection problem across
+        multiple namespaces [Atsushi Enomoto]
+	
+<h3>Important Bug Fixes</h3>
+
+	<p>Dynamic linking of Mono is now possible in applications
+	that were using the TLS (open office) [Zoltan Varga].
+
+	<p>Newly created AppDomains no longer inherit the list of
+	loaded assemblies from the main domain.  This has an important
+	side-effect, to get XSP and mod_mono running, you must install
+	the latest versions of it (released in this iteration), older
+	versions will not work [Lluis Sánchez].
+
+	<P>A number of missing pieces of System.IO.Ports have been
+	implemented (ReadChar, ReadLine, BytesToRead, BytesToWrite,
+	ReadTo, return USB tty devices) [Miguel de Icaza].
+
+	<p>ASP.NET Cache will check file dependencies now (79002)
+	[Gonzalo Paniagua]
+
+	  
+<h3>Alpha Port</h3>
+
+	<p>The beginning of a port to Linux/Alpha has been contributed
+	to Mono, [Sergey Tikhonov]
+
+<h3>Cilc</h3>
+
+	<p>Cilc, a tool to generate C wrappers for managed routines
+	has been relicensed from the GPL to the MIT X11 [Alp Toker]
+
+<h3>Postgress</h3>
+
+	<p>Updated the Posgress data bindings to RC3 [Francisco
+	Figueiredo]. 
+
+<h3>Bugs fixed</h3>
+
+	<p>The following bugs were fixed on this release:
+
+<table border="0">
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79016">79016</a></td>
+
+		<td nowrap>Mono Develop </td>
+		<td nowrap>general</td>
+		<td nowrap>Building projects: System.NullReferenceException</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78784">78784</a></td>
+		<td nowrap>Class Libraries</td>
+
+		<td nowrap>CORLIB</td>
+		<td nowrap>DateTime.Now, ToLocalTime and ToUniversalTime doesn&#39;t set Kind property</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78810">78810</a></td>
+		<td nowrap>Class Libraries</td>
+
+		<td nowrap>Sys.Data</td>
+		<td nowrap>Crash with DataRelations</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78842">78842</a></td>
+		<td nowrap>Class Libraries</td>
+		<td nowrap>Sys.Data</td>
+
+		<td nowrap>Element added twice to XML file</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78888">78888</a></td>
+		<td nowrap>Class Libraries</td>
+		<td nowrap>System</td>
+		<td nowrap>Async connects never connect</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78837">78837</a></td>
+		<td nowrap>Class Libraries</td>
+		<td nowrap>Winforms</td>
+		<td nowrap>Toolbar backcolor, size and buttons improper</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78869">78869</a></td>
+		<td nowrap>Class Libraries</td>
+		<td nowrap>Winforms</td>
+		<td nowrap>Version is reported incorrectly on purpose by Application.ProductVersion.</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78871">78871</a></td>
+		<td nowrap>Class Libraries</td>
+		<td nowrap>Winforms</td>
+		<td nowrap>Setting Splitter.SplitPosition does not have any effect</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78855">78855</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>CORLIB</td>
+		<td nowrap>SRE TypeBuilder.CreateType() does not emit custom attributes on properties</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78856">78856</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>CORLIB</td>
+		<td nowrap>System.Char.ConvertFromUtf32 is missing</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78859">78859</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>CORLIB</td>
+
+		<td nowrap>ConstructorBuilder.GetILGenerator always creates a new ILGenerator</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79000">79000</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>CORLIB</td>
+		<td nowrap>[PATCH] Memleak &amp; Performance issue with deserialization of mulit-dimensional 
+		arrays</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79007">79007</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>CORLIB</td>
+		<td nowrap>Char.TryParse not implemented</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79023">79023</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>CORLIB</td>
+		<td nowrap>Type.InvokeMember does not accept (BindingFlags.SetField | BindingFlags.SetProperty)</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79030">79030</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>CORLIB</td>
+		<td nowrap>System.Security.Principal.GenericPrincipal not serializable between 
+		Mono and MS.NET</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78253">78253</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>CORLIB</td>
+		<td nowrap>IronPython and System.Reflection.Emit problem</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78468">78468</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>CORLIB</td>
+		<td nowrap>[PATCH] ArgumentException in Assembly.GetManifestResourceStream for 
+		assembly loaded from byte array</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78943">78943</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>CORLIB</td>
+
+		<td nowrap>Activator.CreateInstance should throw ArgumentException on open generic 
+		types (CLR via C#, chapter 16, example 3: invalid IL generated crash)</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79118">79118</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>CORLIB</td>
+		<td nowrap>FileIOPermission.UnionKeys only considers first entry of list</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78886">78886</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>libgdiplus</td>
+		<td nowrap>loading of particular tiff image fails</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=77820">77820</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Mono.Cecil</td>
+		<td nowrap>Cecil 0.3 throws an incorrect exception when trying to load an assembly.</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78901">78901</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Mono.Security</td>
+		<td nowrap>X509Crl can not load empty CRL without extensions</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78939">78939</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Drawing.</td>
+		<td nowrap>[Patch] Interop difference from MS.Net</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=77551">77551</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>Sys.Web</td>
+		<td nowrap>[2.0] Make TreeView support *NodeStyle-ImageUrl attributes</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78288">78288</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Web</td>
+
+		<td nowrap>[2.0] Implement GetPostBackOptions, PostBackOptions defaults and server 
+		Paging</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78328">78328</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Web</td>
+		<td nowrap>[2.0] PagerSettings fix for numeric style pager generation</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78646">78646</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Web</td>
+		<td nowrap>IsPostback returns true during AJAX call with .Net and false with Mono</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78730">78730</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Web</td>
+		<td nowrap>Session is not available without context (when using ajaxpro)</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78970">78970</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Web</td>
+		<td nowrap>[2.0] Support for nullable types in TemplateControlCompiler</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78971">78971</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Web</td>
+		<td nowrap>[ASP.NET 2.0] PageThemeCompiler generates incorrect skin code</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=77539">77539</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>Sys.Web</td>
+		<td nowrap>[PATCH] Relative client paths</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78968">78968</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Web</td>
+
+		<td nowrap>[MS compat] MS.NET FontInfo class renders text-decoration: none</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79112">79112</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Web</td>
+		<td nowrap>HttpListenerRequest.InputStream.Read blocks indefinitively</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78220">78220</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.XML</td>
+		<td nowrap>XmlSchema compilation fails for extension with base type in aother namespace</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=77489">77489</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.XML</td>
+		<td nowrap>XmlSchemaSet Compile Problem</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79019">79019</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.XML</td>
+		<td nowrap>Unable to use WriteBinHex method</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78696">78696</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>System</td>
+		<td nowrap>SoapReader fails to deserialize some method calls</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78731">78731</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>System</td>
+		<td nowrap>make run-test failures on cygwin</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78724">78724</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>System</td>
+
+		<td nowrap>Assembly.GetTypes(bool) broken on Dynamic Assemblies</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78799">78799</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>System</td>
+		<td nowrap>Missing operator == on Uri class</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79033">79033</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>System</td>
+		<td nowrap>ReadOnlyCollectionBase.Count should not be sealed.</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78986">78986</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>System</td>
+		<td nowrap>[PATCH] X509Certificate2 sometimes does not return RawData</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79028">79028</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>System</td>
+		<td nowrap>ArgumentException using X509Certificate2 ctors that take password</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78945">78945</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>System.Security</td>
+		<td nowrap>Scrollwheel doesn&#39;t work on ComboBox</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=75555">75555</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>VB Runtime</td>
+		<td nowrap>Not fully implemented the Microsoft.VisualBasic namespace</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78271">78271</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>Winforms</td>
+		<td nowrap>Scrolling fast causes control location to shift</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78399">78399</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+
+		<td nowrap>[PATCH] PageSetupDialog incorrectly expects yard-pound units everywhere</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78483">78483</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>toolbar text not shown underneath</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78513">78513</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>TextBox scrollbars behavior</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78525">78525</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>[PATCH] ToolBar does not reflect current selection or the first item 
+		when it got focus.</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78607">78607</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>[PATCH] CheckBox and RadioButton does not show focus</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78661">78661</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>TextBoxBase: text is hidden under scrollbars</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78732">78732</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>Winforms</td>
+		<td nowrap>too many mousemove events</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78737">78737</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+
+		<td nowrap>Form.BringToFront not working</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78753">78753</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>When Form is TopMost, MessageBox is under the Form</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78759">78759</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>ImageListStreamer fails to load image resources</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78761">78761</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>ListView doesn&#39;t set Font properly</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78773">78773</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>TextBoxBase: TextChanged event isn&#39;t fired when it&#39;s set by first time 
+		and gets a String.Empty value</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78804">78804</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>[Patch]: Form.Controls.Clear() doesn&#39;t work</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78806">78806</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>Setting TextBox.SelectionStart causes NullReferenceException</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78813">78813</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>ListBox: Items are not sorted with Sorted=true</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78821">78821</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>Databound TextBox crashes</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78822">78822</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>Winforms</td>
+		<td nowrap>Textbox bound to Typed DataSet crashes</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78825">78825</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+
+		<td nowrap>[Windows] Setting Control.Visible = true affects it&#39;s Position</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78854">78854</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+
+		<td nowrap>ListControl: DataSource should accept null value</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78866">78866</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>FormStartPosition.Manual doesn&#39;t work on Linux</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78889">78889</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>Changing Font of a MultiLine TextBox changes it&#39;s Height</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78907">78907</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>[Windows] Changing Visual Style Crashes MWF</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78912">78912</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>[2.0] [PATCH] Cannot modify KeyChar in a KeyPress event handler</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79001">79001</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>[Patch]: NumericUpDown: Value proeprty should be equal to Minimum property 
+		when created</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79052">79052</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>nunit-gui: TextBoxWriter tests fail in nunit.uikit.tests.dll 2.2.8</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79053">79053</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>Winforms</td>
+		<td nowrap>nunit-gui: alt+R doesn&#39;t run tests</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79076">79076</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>Winforms</td>
+		<td nowrap>InvalidOperationException adding items to sorted ListView</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79095">79095</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+
+		<td nowrap>Crash when setting TextBox.SelectionStart in a KeyPress event</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79096">79096</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>Throws System.InvalidOperationException in simple GUI app</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=76449">76449</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>CORLIB</td>
+		<td nowrap>Custommarshalers compile error</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79037">79037</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Data</td>
+		<td nowrap>System.Transactions.IPromotableSinglePhaseNotification should not include 
+		a Promote member, but should derive from ITransactionPromoter, a new interface</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78746">78746</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Web</td>
+		<td nowrap>Button OnClick not called</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79002">79002</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.Web</td>
+		<td nowrap>Cache Dependency does not working</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79020">79020</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>Sys.Web</td>
+		<td nowrap>[PATCH] TextBox does not render name attribute if you do not specify 
+		ID property</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79085">79085</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.XML</td>
+
+		<td nowrap>stack overflow on recursive entity definition</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79091">79091</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.XML</td>
+		<td nowrap>another XML document can not be loaded</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79090">79090</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.XML</td>
+		<td nowrap>regression: xml document can not be loaded</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78985">78985</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Sys.XML</td>
+		<td nowrap>XML Schema key constraints</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=76453">76453</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>VB Runtime</td>
+		<td nowrap>exception at class field assignment with automatic conversion</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78190">78190</a></td>
+
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>PropertyGrid boolean popup bug.</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78291">78291</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>Winforms</td>
+		<td nowrap>TextBox: Del key shouldn&#39;t fire a KeyPress event</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78800">78800</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>Winforms</td>
+		<td nowrap>TextBoxes don&#39;t fire the Click event.</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78864">78864</a></td>
+		<td nowrap>Class Libraries </td>
+
+		<td nowrap>Winforms</td>
+		<td nowrap>ToolBar problems after recent changes</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78865">78865</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+
+		<td nowrap>CreateParams gets called multiple times for a Control or Form</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78868">78868</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>Scroll bars not displayed on UserControl when Size smaller than AutoScrollMinSize</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78914">78914</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>Deactivating a menubar item requires mouse move to pop up submenu</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78927">78927</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>DataGrid: edit text boxes don&#39;t disappear when you scroll</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78929">78929</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>DataGrid: swf-datagrid.exe &quot;Properties table navigation&quot; sample crashes 
+		with a NRE</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78931">78931</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>Reflector doesn&#39;t work anymore (ScrollBar AE)</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79080">79080</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>r63769 breaks PDN</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78323">78323</a></td>
+		<td nowrap>Class Libraries </td>
+		<td nowrap>Winforms</td>
+		<td nowrap>[PATCH] TextBox cursor doesn&#39;t get moved if you resize a TextBox to 
+		the correct position</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=70506">70506</a></td>
+		<td nowrap>Compilers</td>
+		<td nowrap>C#</td>
+		<td nowrap>Exception from mcs when output assembly name has no extension</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78860">78860</a></td>
+		<td nowrap>Compilers</td>
+		<td nowrap>C#</td>
+		<td nowrap>case null immediately following another case is always matched</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79056">79056</a></td>
+
+		<td nowrap>Compilers</td>
+		<td nowrap>C#</td>
+		<td nowrap>Unexpected compilation error</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=77403">77403</a></td>
+		<td nowrap>Compilers </td>
+
+		<td nowrap>C#</td>
+		<td nowrap>Fix RootContext.Tree.Types to be a partial class</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78770">78770</a></td>
+		<td nowrap>Compilers </td>
+		<td nowrap>C#</td>
+
+		<td nowrap>lock(null) causes output to reference the &quot;msc&quot; assembly</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79067">79067</a></td>
+		<td nowrap>Compilers </td>
+		<td nowrap>C#</td>
+
+		<td nowrap>[GMCS] parser error for pointer type used as type argument</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=77396">77396</a></td>
+		<td nowrap>Compilers </td>
+		<td nowrap>C#</td>
+		<td nowrap>[GMCS] type lookup after #77403 is fixed</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78384">78384</a></td>
+		<td nowrap>Compilers </td>
+		<td nowrap>C#</td>
+		<td nowrap>CSharpCodeProvider ignores CompilerParameters.EmbeddedResources</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79026">79026</a></td>
+		<td nowrap>Compilers </td>
+		<td nowrap>C#</td>
+		<td nowrap>mcs reuses loc.0 for two different things within same expression</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=77963">77963</a></td>
+		<td nowrap>Compilers </td>
+		<td nowrap>C#</td>
+		<td nowrap>[GMCS] NRE on class X : Y&lt;X.Z&gt; - derived class of a generic type whose 
+		generic argument is its nested child class</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=30235">30235</a></td>
+		<td nowrap>Compilers </td>
+		<td nowrap>C#</td>
+		<td nowrap>MCS crashes with correct code.</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78899">78899</a></td>
+		<td nowrap>Compilers </td>
+		<td nowrap>C#</td>
+		<td nowrap>C# compiler should use unsigned arithmetic and should support overflow 
+		check on pointers</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79012">79012</a></td>
+
+		<td nowrap>Compilers </td>
+		<td nowrap>C#</td>
+		<td nowrap>sigsev while executing code: iRaiseItemChangedEvents could not be loaded</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79064">79064</a></td>
+		<td nowrap>Compilers </td>
+
+		<td nowrap>C#</td>
+		<td nowrap>gmcs can&#39;t compile Ironpython 1.0 RC2</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78949">78949</a></td>
+		<td nowrap>Runtime</td>
+
+		<td nowrap>io-layer</td>
+		<td nowrap>** WARNING **: CreateThread: error creating thread handle</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78877">78877</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>GC</td>
+
+		<td nowrap>[PATCH] Can&#39;t assign to WeakReference.Target</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79117">79117</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>interop</td>
+
+		<td nowrap>[PATCH] Marshal.StringToHGlobalAuto &amp; PtrToStringAuto not working as 
+		expected</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79084">79084</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>io-layer</td>
+
+		<td nowrap>socket-io.c and UnixEndPoint have broken assumptions</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78775">78775</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>JIT</td>
+		<td nowrap>Mono run with -v -v always uses the same temp files and doesn&#39;t clean 
+		them up when done</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78816">78816</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>JIT</td>
+		<td nowrap>[gmcs] Generating invalid IL code</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78826">78826</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>JIT</td>
+		<td nowrap>[verifier] Mono 1.1.16 crashes on valid tailcall code</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78827">78827</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>JIT</td>
+		<td nowrap>mono -aot&nbsp; uses vast amounts of memory</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78969">78969</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>JIT</td>
+		<td nowrap>Windows: Accessing an at least 3 dimensional array about 130000 times 
+		causes a StackOverflowException</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79087">79087</a></td>
+
+		<td nowrap>Runtime </td>
+		<td nowrap>JIT</td>
+		<td nowrap>Right shift of UInt64 incorrect for certain values</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78767">78767</a></td>
+		<td nowrap>Runtime </td>
+
+		<td nowrap>JIT</td>
+		<td nowrap>can&#39;t load libmono as a module</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79010">79010</a></td>
+		<td nowrap>Runtime </td>
+
+		<td nowrap>JIT</td>
+		<td nowrap>Problem with using a generic function from an interface implemented 
+		by structure</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=76757">76757</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>misc</td>
+
+		<td nowrap>new AppDomains inherit current loaded assemblies</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79150">79150</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>misc</td>
+		<td nowrap>Runtime crashes on GetTypeCode for System.TypedReference</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79125">79125</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>misc</td>
+		<td nowrap>Crash with explicit interface implementation;&nbsp; VB.NET generated code</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78990">78990</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>JIT</td>
+		<td nowrap>DNS Class Fails</td>
+	</tr>
+
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=79027">79027</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>JIT</td>
+		<td nowrap>Call to a vararg method with no variables arg incorrectly generated</td>
+	</tr>
+	<tr>
+
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78592">78592</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>misc</td>
+		<td nowrap>ExactBinding is igonred by Type.GetMethod</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78972">78972</a></td>
+
+		<td nowrap>Runtime </td>
+		<td nowrap>misc</td>
+		<td nowrap>Vararg method in external dll not found when invoked with no variable 
+		args</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=45730">45730</a></td>
+		<td nowrap>Runtime </td>
+
+		<td nowrap>misc</td>
+		<td nowrap>mono --debug prints wrong line numbers for exception backtrace</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78703">78703</a></td>
+		<td nowrap>Runtime </td>
+		<td nowrap>misc</td>
+
+		<td nowrap>String constructors that take sbyte* should use Encoding.Default rather 
+		than UTF-8 and Latin-1</td>
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=77340">77340</a></td>
+		<td nowrap>Mono: Tools </td>
+		<td nowrap>tools</td>
+		<td nowrap>Local user can overwrite arbitrary file using mono-service</td>
+
+	</tr>
+	<tr>
+		<td nowrap><a href="http://bugzilla.ximian.com/show_bug.cgi?id=78977">78977</a></td>
+		<td nowrap>Mono: Tools </td>
+		<td nowrap>tools</td>
+		<td nowrap>Unhandled Exception in the sn tool</td>
+	</tr>
+
+</table>
+
+<h1>Installing Mono 1.1.17</h1>
+	
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p>You can then setup your PATH to include /devel/bin to
+	access the Mono 1.1.  Alternatively you can replace your Mono
+	installation with 1.1.17
+
+	<p><b>Binary Packages and Source Code Downloads:</b>
+	<blockquote>
+	<p>Source code and pre-compiled packages for SUSE, SLES,
+	Fedora Core 3, 4, RHEL, MacOS and Windows in a variety of
+	platforms available from our web site from the <a
+	href="http://www.mono-project.com/Downloads">download</a>
+	section.
+
+	</blockquote>
+
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.1.17.tar.gz
+    $ cd mono-1.1.17
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+
+	<p>Then compile libgdiplus:
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.1.17.tar.gz
+    $ cd libgdiplus-1.1.17
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+	</blockquote>
+		
+</blockquote>
+
+<a name="contributors"/></a>
+<h3>Contributors</h3>
+
+	<p>The following is a partial list of contributors to the
+	1.1.17 release of Mono, if your name is missing, please
+	contact us.
+	  
+	<p>Aaron Bockover, Akiramei, Alexander Larsson, Alexander Olk,
+	Alois Bělaška, Alp Toker, Andrew Skiba, Ankit Jain, Atsushi
+	Enomoto, Boris Kirzner, Brian Crowell, Carlos Alberto Cortez,
+	César Octavio López Natarén, Chris Toshok, Dean Brettle, Dick
+	Porter, Duncan Mak, Eduardo Garcia Cebollero, Eyal Alalouf,
+	Francisco Figueiredo Jr., Gert Driesen, Gonzalo Paniagua
+	Javier, Gustavo Giraldez, Guy Cohen, Hagit Yidov, Igor
+	Zelmanovich, Jackson Harper, Jarosław Pawlak, Joachim Ante,
+	John Luke, Jonathan Chambers, Jonathan Pobst, Jonathan Pryor,
+	Joshua Tauberer, Juraj Skripsky, Konstantin Triger, Kornél
+	Pál, Lluis Sanchez Gual, Lluis Sanchez Gual, Marek Habersack,
+	Marek Safar, Marek Sieradzki, Martin Baulig, Matt Hargett,
+	Merav Sudri, Miguel de Icaza, Mike Kestner, Nagappan A, Paolo
+	Molaro, Peter Dennis Bartok, Peter Dettman, Petri Latvala,
+	Rafael Mizrahi, Raja R Harinath, Robert Jordan, Roberto Costa,
+	Sebastien Pouliot, Sebastien Robitaille, Senganal T, Sergey
+	Tikhonov, Sudharsan V, Thong Nguyen, Vladimir Krasnov, Wade
+	Berrier, Yoni Klain, and Zoltan Varga
+

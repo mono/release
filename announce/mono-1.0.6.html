@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?> <!-- -*-nxml-*- -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Mono 1.0.6 Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.0.6 Release Notes</h1>
+
+	<p>For detailed information about Mono, please see the <a
+	href="http://www.go-mono.com/archive/1.0/">Mono 1.0</a>
+	release notes.
+
+	<p>Mono 1.0.6 is a maintenance release release for the 1.0
+	series of the Mono runtime.  The Mono 1.0.xx series is the
+	edition of stable releases of the Mono runtime.
+
+	<p>At this point, users looking for extra performance,
+	scalability and features should use Mono 1.1.4.
+
+	<p>Although we will continue to maintain the 1.0.x branch of
+	Mono, at this point we recommend that users switch their
+	runtime to Mono 1.1.4.  There are also more binary packages
+	available for the Mono 1.1.4 distribution that Mono 1.0.6
+
+<a name="new"><h2>New In Mono 1.0.6</h2></a>
+
+	<p>There are many bug fixes, optimizations and scalability
+	fixes that have been backported from the Mono 1.1.xx releases,
+	but in addition:
+
+<h3>MonoDoc</h3>
+
+	<p>Updated documentation all around: monkeyguide, Gtk#.
+
+	<p>Monodocer from Joshua is the new documentation update tool,
+	to use it, just use the <tt>monodocer</tt> command on your assemblies. 
+
+	<p>Monodoc now can convert the output of the C# compiler -doc
+	switch into ECMA XML documentation, so you can browse it with
+	monodoc (command line option --cs-to-ecma).
+
+	<p>Atsushi ported monodoc's ASP.NET interface so it works on
+	Windows now.
+
+<h3>XSP server and mod_mono</h3>
+
+	<p>Many bug fixes to the XSP server: Better pathinfo support,
+	connection handling bug fixes.</p>
+
+	<p>Until now, if you were running apache 2 using a MPM model other
+        than prefork, you needed some tricks to make mod_mono work.
+        That's over. Thanks to a patch by Rob Lyon mod_mono is able to
+        start mod-mono-server without any problem on any MPM model.
+
+<h3>Gtk# 1.0.6</h3>
+
+	<p>An updated version of Gtk# which fixes a few memory leaks
+	and reduces considerably the size of Gtk#.
+
+	
+<a name="install"></a>
+<h2>Installing Mono 1.0.6</h2>
+	
+	<p><b>Binary Packages:</b>
+	<blockquote>
+	<p>Pre-compiled packages for SUSE 9, SUSE 9.1, Red Hat 9, SLES
+        8, Fedora Core 3 are available from
+	our web site from the
+        <a href="http://www.go-mono.com/download.html">download</a>
+        section.  A Red Carpet Mono channel is also available on these
+        platforms.
+	</blockquote>
+        
+	<p><b>Source code:</b>
+	<blockquote>
+	<ul>
+	  <li><a href="http://www.go-mono.com/archive/1.0.6/mono-1.0.6.tar.gz">Mono runtime.</a>
+          <li><a href="http://www.go-mono.com/archive/1.0.6/mcs-1.0.6.tar.gz">MCS (Mono C# compiler and classes).</a>
+          <li><a href="http://www.go-mono.com/archive/1.0.6/libgdiplus-1.0.6.tar.gz">libgdiplus.</a>
+          <li><a href="http://www.go-mono.com/archive/1.0.6/xsp-1.0.6.tar.gz">XSP web server.</a>
+          <li><a href="http://www.go-mono.com/archive/1.0.6/mod_mono-1.0.6.tar.gz">Apache module.</a>
+          <li><a href="http://www.go-mono.com/archive/1.0.6/monodoc-1.0.6.tar.gz">Mono Documentation.</a>
+	</ul>
+	</blockquote>
+	
+	<p><b>Dependencies</b>
+	
+	<p>If you are installing from source code, there are a few
+	 optional dependencies that you will want to consider
+	 installing.
+        
+	<blockquote>
+	 <p><b>icu 2.6.1 or later</b> Optional: for supporting string collation.
+	 <p><b>Cairo 0.1.23</b> Required to install libgdiplus.
+	</blockquote>
+	
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.0.6.tar.gz
+    $ cd mono-1.0.6
+    $ ./configure
+    $ make install
+	
+</pre>
+	</blockquote>
+	<p><b>Optional Packages</b><p>
+	<blockquote>
+	<p>Libgdiplus is an optional packages, you only need
+	those if you intent to use System.Drawing or Windows.Forms.
+	
+	<p>libgdiplus:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.0.6.tar.gz
+    $ cd libgdiplus-1.0.6
+    $ /configure
+    $ make install
+	
+</pre>
+</blockquote>
+

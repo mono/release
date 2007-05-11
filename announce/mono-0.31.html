@@ -1,0 +1,623 @@
+<html>
+<head><title>Mono 0.31 Release</title>
+<style type="text/css">
+h1 {
+color: #efefef;
+font-size: 14pt;
+font-family: "Trebuchet MS";
+
+border: 0;
+
+margin: 0;
+
+padding: 1em;
+
+background: #555555;
+}
+
+h2, h4, h5, h6 {
+font-family: Verdana,sans-serif;
+font-weight: bold;
+}
+
+h3, h4, h5, h5 {
+margin-left: 1em;
+}
+
+h2, h3 {
+font-size: 18px;
+}
+
+h2 {
+padding: 3px;
+color: #000000;
+border-bottom: 2px solid #dddddd;
+}
+
+h3 {
+font-size: 13px;
+border-bottom: 2px solid #dddddd;
+}
+
+body, table {
+background-color: #ffffff;
+font-family: Verdana, sans-serif; font-size: 12px;
+color: black;
+margin: 0;
+padding: 0;
+border: 0;
+       margin-left: 20%;
+       margin-right: 20%;
+}
+
+p,lu,li {
+margin-left: 2em;
+margin-right: 2em;
+}
+
+img {
+border: 0;
+vertical-align: top;
+}
+.code-xml, .code-csharp
+{
+	margin:15px;
+	padding:15px;
+	font-size: small;
+	font-family: "Courier New", Courier;
+	background:whitesmoke;
+	border: solid 1px silver;
+	line-height:110%;
+}
+
+.shell { border-style: solid; background: #000000; color: #bbbbbb;
+	#777777; border-width:
+	1px; padding: 2pt; 
+	margin-left: 4em;
+	margin-right: 4em;
+}
+
+</style>
+<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'/>
+</script>
+</head>
+<body onload='paintColors();'>
+
+<h1>Mono 0.31, libgdiplus 0.2, winelib 1.0</h1>
+
+<p>Hello everyone,</p>
+
+	<p>A new release of <a
+	href="http://www.go-mono.com">Mono</a> has been released.
+	Mono is an open source implementation of the .NET Framework
+	for Unix, Linux and Windows systems.
+
+	<p>The major highligths of this release:
+	<ul>
+		<li>SPARC JIT engine <img valign=bottom src="http://www.go-mono.com/images/mono-exclusive.gif">
+		<li>Windows.Forms is working again (alpha preview)
+		<li>Native asynchronous support has been added to our I/O layer.
+		<li>Relax NG compact syntax parser. <img src="http://www.go-mono.com/images/mono-exclusive.gif">
+		<li>FileSystemWatcher.
+		<li>ADO.NET disconnected operation.
+	</ul>
+
+	<p>For more detailed and in depth listing of features see the
+	rest of this document. 
+	
+	<p>Since the last release, 2,331 individual commits were done
+	to our runtime and class libraries.</p>
+
+	<h3>Thanks</h3>
+
+	<p>A big thank goes again for Duncan Mak who worked steadily to
+	get every new dependency of Mono compiled and tested on our
+	Linux Platforms.   Duncan has a mid-term exam tomorrow, if you
+	are a package user, send him a nice email (duncan@ximian.com).
+
+<h2>Availability</h2>
+	
+	<p><b>Binary Packages:</b>
+
+	<blockquote>
+	<p>Pre-compiled packages for SUSE 9, Red Hat 9 and Fedora Core
+        1 are available from our web site from the <a
+        href="http://www.go-mono.com/download.html">download</a>
+        section.
+	</blockquote>
+
+	<p><b>Source code:</b>
+
+	<blockquote>
+	<ul>
+<a href="http://www.go-mono.com/archive/mono-0.31.tar.gz">http://www.go-mono.com/archive/mono-0.31.tar.gz</a>
+<a href="http://www.go-mono.com/archive/mcs-0.31.tar.gz">http://www.go-mono.com/archive/mcs-0.31.tar.gz</a>
+<a href="http://www.go-mono.com/archive/libgdiplus-0.2.tar.gz">http://www.go-mono.com/archive/libgdiplus-0.2.tar.gz</a>
+ </ul><a href="http://www.go-mono.com/archive/winelib-0.1.tar.gz">http://www.go-mono.com/archive/winelib-0.1.tar.gz</a>
+
+	 <p>On CVS the tags are: MONO_0_31, MCS_0_31, LIBGDIPLUS_0_2
+	 </blockquote>
+
+	 <p><b>Ports:</b>
+	 <blockquote>
+	 <p>Ports of popular open source applications are now
+	maintained here: <a
+	href="http://www.go-mono.com/ports/">http://www.go-mono.com/ports/</a>.
+	 </blockquote>
+	
+	 <p><b>Dependencies</b>
+
+	 <p>If you are installing from source code, there are a few
+	 optional dependencies that you will want to consider
+	 installing.
+
+	 <blockquote>
+	 <p><b>icu 2.6.1</b> Required for supporting international
+	 information.  Strongly recommended.
+
+	 <p><b>libgdiplus 0.2</b> Required if you want to use
+	 System.Drawing APIs.
+
+	 <p><b>Cairo 0.1.18</b> Required to install libgdiplus.
+	 
+	 </blockquote>
+
+	 <p><b>Quick source code installation:</b>
+
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	source code is very simple (MacOS X users, read the rest of
+	the notes):
+
+	<p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-0.31.tar.gz
+    $ cd mono-0.31
+    $ ./configure
+    $ make install
+	
+</pre>
+
+	</blockquote>
+
+	<p><b>Optional Packages</b><p>
+	<blockquote>
+	<p>Libgdiplus and WineLib are optional packages, you only need
+	those if you intent to use System.Drawing and Windows.Forms
+	respectively.
+	
+	<p>libgdiplus:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-0.2.tar.gz
+    $ cd libgdiplus-0.2
+    $ ./configure
+    $ make install
+	
+</pre>
+
+	<p>For WineLib, it is necessary first to install a Wine
+	 package from <a href="http://www.winehq.com">Wine HQ</a>, and
+	 once that is installed, you can install the WineLib package,
+	 which is now just an extension to Wine instead of a
+	 modification to Wine:
+
+	 <pre class="shell">
+	
+    $ tar xzf winelib-0.1.tar.gz
+    $ cd winelib-0.1.tar.gz
+    $ ./configure
+    $ make install
+	
+</pre>
+
+	 </blockquote>
+
+<h2>Windows.Forms update</h2>
+
+	<p>The major achievement in this release is that both
+	System.Drawing and System.Windows.Forms have been improved to
+	the point where it is possible to use Windows.Forms in Mono
+	again.  Peter Bartok came up with a wonderful approach to use
+	Wine: now we use a very small program that allows us to use
+	the system Wine.  Thanks to Alexandre Julliard for the help in
+	getting this wine "loader" ready.
+
+	<p>Windows.Forms applications now work again, but they are not
+	complete.  Work is underway to complete them, and now that we
+	have a stable foundation, we would appreciate if volunteers
+	assisted us in completing various controls.
+
+	<p>Windows.Forms will not be officially supported for the Mono
+	1.0 release (but it will be available under the `if it breaks,
+	you get to keep both pieces' agreement).  Windows.Forms will
+	be supported in the the Mono 1.2 release.
+
+	<p>But those interested in trying it out should: install Wine,
+	winelib-0.1, libgdiplus-0.2 and they can try some of their
+	applications.  This is still an early preview, but some
+	applications and tests are up and running again.
+	
+<h2>Performance</h2>
+
+	<p>Gonzalo did some fixes in the Socket class: It now uses the
+	threadpool for asynchronous IO.
+
+	<p>He also improved the threadpool: it now recycles
+	WaitHandles and creates them on demand.
+
+	<p>Andreas and Jackson re-implemented the various methods in
+	the `Char' class to use managed code which greatly accelerates
+	all of these routines, by avoiding the managed to unmanaged
+	transition.
+
+<h2>PowerPC port <img src="http://www.go-mono.com/images/mono-exclusive.gif"></h2>
+
+	<p>A big change to support thunks was checked by Paolo in to
+	the code generator so we can support large applications (above
+	the 64 MB direct jump limit on PPC).
+
+	<p>Exceptions are now partially working on the JIT: if thrown
+	from managed code they work, but still fail when raised from
+	within the runtime engine, and in MacOS X we will need some
+	extra work to catch the equivalent to SIGSEGV, so instead of a
+	NullReferenceException you will get a crash with the JIT
+	today.
+
+	<p>MacOS X users: you will need to obtain the latest
+	development of the Boehm GC
+	http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/ as the
+	bundled edition of the GC wont work on MacOS X.
+
+	<p>To use you must configure with --with-gc=boehm instead of
+	the default which is --with-gc=included.
+
+	<p>Debug symbols work on PPC now from Urs.
+
+<h2>SPARC Port <img src="http://www.go-mono.com/images/mono-exclusive.gif"></h2>
+
+	<p>All of the regression tests that pass on the x86 port of
+	Mono work on the Solaris port.  Although it is on par
+	feature-wise with the x86 edition and can complete a complete
+	bootstrap of Mono, it has not yet been tuned for performance
+	like the x86 version has.
+
+	<p>The SPARC port of Mono was done by Zoltan Varga in a record
+	time of little more than a month of work. 
+
+<h2>Interpreter: AMD64 support</h2>
+
+	<p>Zalman Stern contributed support for running the Mono
+	interpreter on AMD64.  It is a port on its early stages.
+	
+<h2>C# Compiler</h2>
+
+	<p>Many bugs have been fixed and work on performance has
+	continued in the compiler.  
+
+	<p>But our major focus has been on adding 2.0 features in a
+	couple of separate branches (anonymous methods and generics).
+	
+<h2>JScript</h2>
+
+	<p>JScript keeps advancing slowly, Cesar has implemented the
+	If and Print statements as well as the Comma operator.
+	
+<h2>Mono Runtime Changes.</h2>
+
+	<p>Sebastien implemented Principal support in AppDomain and
+	Thread class. You can now use imperative Role Based Access
+	Control (RBAC) with Mono.
+
+	<p>Many bug fixes continue to be applied to the runtime, many
+	improvements
+	
+<h2>Async IO support, FileSystemWatcher</h2>
+
+	<p>Gonzalo added support for Async IO to our IO stack as well
+	as the FileSystemWatcher API.
+
+	<p>If your system supports the POSIX aio_ interface, the
+	FileStream will be able to take advantage of it when the
+	programmer requests asynchronous operations.  In the past Mono
+	would use threads from the threadpool to implement this
+	functionality.
+
+	<p>FileSystemWatcher can take advantage of <a
+	href="http://oss.sgi.com/projects/fam/">FAM</a> on sysstems
+	that support it, on other systems the feature is emulated
+	using polling plus a separate thread.
+
+<h2>Cryptography</h2>
+
+	<p>Sebastien has documented his saga in improving the
+	CryptoStream: it took several rewrites until he got all of the
+	samples out there on the network to work, and we are very
+	happy with the results.   Someone told me `It is not fun to
+	debug this stream over Http, because all you get is encrypted
+	buffers that are hard to decipher'.
+
+	<p>He also implemented key pair persistance for RSA and DSA
+	keys.  This is similar to the CryptoAPI containers.  Notice
+	that in Linux there is no such things as a "secure storage"
+	like there is in Windows, and the keys are stored in your
+	~/.mono/keypairs directory.
+
+	<p>
+	<img src="http://www.go-mono.com/images/mono-exclusive.gif">
+	
+	<p>Updates to <b>Mono.Security.dll</b>:
+
+	<ul>
+	<li>
+	SymmetricTransform is now available (no
+	more hidden in corlib) in Mono.Security making it easier to
+	support all cipher modes for newsymmetric block ciphers.
+
+	<li>BigInteger and RSAManaged are now exposed in Mono.Security
+	which permitted to include Diffie-Hellman (PKCS#3) support
+	(contributed by Pieter Philippaerts).
+
+	<li>Basic certificate store implementation for storing trusted
+	root certificates.
+	</ul>
+	
+<h2>SSL and HTTPS</h2>
+
+	<p>Sebastien has been working on TLS/SSL support using
+	WebRequest/WebResponse including support for
+	ICertificatePolicy while Carlos has been doing some serious
+	refactoring for future (in-development) server-side TLS/SSL
+	support.
+
+	<p>SSL support requires:
+
+	<ul>
+	<li>Mono.Security.dll assembly (in the PATH on Windows).
+	<li>That you trust the CA that emitted the SSL
+	certificate (see certmgr.exe) or write your own policy.
+	</ul>
+
+<h2>Web Services</h2>
+
+	<p>Improved our `wsdl' command line tool to use the Discovery
+	classes, so it now can handle .disco files as well as .wsdl
+	files.  Also Lluis added support for the missing command line
+	options.
+
+	<p>System.Web.Services.Discovery is now completely
+	implemented. 
+
+	<p>The web services stack now routinely processes 300 SOAP
+	WSDL descriptions to ensure that no regressions are introduced
+	into the codebase.
+
+	<p>Web Services are the major user of the XmlSerializer, the
+	XmlSerializer historically has used a table to drive the
+	serialization process: the table is computed when you create
+	your serializer, and serialization of objects is done by
+	"interpreting" the table one step at a time.
+
+	<p>Lluis has improved the serializer to compile the above
+	serializer table into a C# program.  The generated program is
+	then dynamically loaded into the program increasing the
+	performance of serialization.  This feature is disabled by
+	default, to enable it you must set the environment variable
+	MONO_XMLSERIALIZER_THS to 0.
+
+	<p><img src="http://www.go-mono.com/images/mono-exclusive.gif">
+	
+	<p>A full description on how to control this serializer
+	feature see <a
+	href="http://primates.ximian.com/~lluis/blog/archives/000376.html">Lluis
+	description</a>.
+	
+	<p>Mainsoft has contributed also numerous bug fixes to this
+	release.
+
+<h2>ADO.NET</h2>
+
+	<p>The Mainsoft folks (Alon Gazit, Eran Domb and Boris
+	Kirzner) have redone chunks of our ADO.NET implementation to
+	improve its performance in disconnected operation.
+
+	<p>Added : indexes on tables are built at the time of
+	constraints and relations adding in order to improve
+	performance of actions that need to query tables for
+	child/parent rows or check row column values uniqueness.
+
+	<p>XmlDataReader. Reading DataSet from XML reviewed in order
+	to support various scenarios (missing DataSet element etc).
+
+	<p>We have reached completion in a number of classes, thanks
+	to Uma who has been going through the code to complete these:
+	System.Data.SqlTypes, many components of the SQL client types
+	and ODBC.
+	
+<h2>XML land</h2>
+
+	<p>Atsushi has been hard at optimizing the XmlReader and
+	XmlWriter as well as the DOM and the Xslt engines.
+
+	<p>
+	<img src="http://www.go-mono.com/images/mono-exclusive.gif">
+
+	<p><b>RelaxNG library:</b> - RelaxngValidatingReader
+	has been improved. It now supports custom datatype. Now it
+	validates XML Schema datatypes and default RELAX NG types by
+	default. Several bugfixes to it have been done.
+
+	<p>The library also contains a Compact Syntax parser.  You can
+	read a compact syntax file, create a grammar object, and
+	output it in the form of XML via its new writing methods.   To
+	use it, you can use:
+
+<xmp class="code-csharp">
+RncParser parser = new RncParser (new NameTable ());
+TextReader source = new StreamReader ("relaxng.rnc");
+RelaxngGrammar grammar = parser.Parse (source);
+
+return new RelaxngValidatingReader (
+  new XmlTextReader ("anygrammar.rng"), grammar);
+</xmp>	
+
+	<p>For more details on it, see the <a href=
+	"http://primates.ximian.com/~atsushi/blog/archives/000375.html">The
+	Compact Syntax Parser</a> blog post from Atsushi.  
+
+<h2>Networking stack</h2>
+
+	<p>A lot of work went into the HttpWebRequest code, Gonzalo
+	reports: 
+
+	<ul>
+		<li>Support for sending chunked data in
+		HttpWebRequest.
+		
+		<li>Honor the protocol version received from the
+		server.
+		
+		<li>Support preauthentication.
+
+		<li>Proxy authentication.
+
+		<li>Lots of fixes.
+	</ul>
+
+<h2>ASP.NET Web Forms</h2>
+
+	<p>Gonzalo added support for session and application objects
+	in Global.asax.
+
+	<p>Fixed bug in Sys.Web.Configuration that caused a
+	performance loss.
+	
+<h2>System.Drawing</h2>
+
+	<p>The work continues to split the System.Drawing code into
+	chunks that live in the managed world, and chunks implemented
+	in C for the libgdiplus library which in turn uses Cairo to do
+	all the heavy lifting.
+	
+	<p>Duncan continuted work on GDI+ and GraphicsPath is now
+	almost complete.
+
+	<p>Jordi Mas has completed the Font support (we use FreeType
+	to render the glyphs) and has also been fixing and completing
+	many parts here.
+
+	<p>Ravindra Kumar has contributed many of the different
+	brushes: texture, hatch 17 out of 52 styles and early gradient
+	path brush that GDI+ supports.
+	
+<h2>Remoting</h2>
+
+	<p>Lluis improves the binary formatter. It can now generate IL
+	code on the fly to access the fields of objects, giving a x3
+	performance boost in some cases.
+	
+	<p>Plenty of bug fixes, some fixes were related to changing
+	some of the field names in our core classes to match the
+	Microsoft .NET names, so we could become compatible with some
+	of the over-the-wire message exchanges.
+
+<h2>Npgsql: Postgres bindings.</h2>
+
+	<p>Implemented support to specify max number of connections
+	Npgsql can use for pooling. The default is 20. You can do that
+	by using the construct MaxPoolSize=value in the connection
+	string.
+	
+	<p>Also, a timeout construct was added to specify, in seconds,
+	the maximum time Npgsql should wait for getting connections
+	from the pool when there is no connections available. You can
+	use it with Timeout=value in the connection string. Default
+	value is 15.
+	
+	<p>Encodings used by Npgsql can now be specified in the
+	connection string. Use the construct Encoding=value. Possible
+	values currently supported are: UNICODE and SQL_ASCII. Default
+	value is SQL_ASCII.
+
+<h2>Tools</h2>
+
+	<p><b>certmgr</b> to add/remove/list trusted root certificates
+	(see man page).
+
+	<p><b>setreg</b> to add/remove the (Mono and MS) test root
+	certificates (used by makecert) from trusted certificates.
+
+	<p><b>monop</b> A small little command-line tool from Ben
+	Maurer that dumps a class definition to standard output,
+	useful when programming if you do not remember a method name
+	(a life saver when you do not remember if ArrayList has a
+	Count or a Length ;-)
+	
+<h2>Generics and the C# compiler</h2>
+
+	<p>At this point our generics compiler (gmcs) and runtime seem
+	to be feature complete, Martin has been working steadily on
+	the compiler front, and some bits of the Generic class
+	libraries.
+
+	<p>Our next tasks are to review the specification and make sure
+	we flag every possible error as well as continuing the
+	implementation of our generic class library.
+
+	<p>Although Generics are available now as the <tt>gmcs</tt>
+	compiler, they will not be part of the 1.0 release, the
+	generic compiler is only present for those working on the post
+	Mono 1.0 components. 
+
+<h2>Databases: DB2</h2>
+
+	<p>Victor Vatamanescu has contributed an updated DB2 database
+	provider.  It works on both Windows and Linux and matches the
+	API and functionality from the IBM developed provider.
+
+	<p>See the <a
+	href="http://www.go-mono.com/ibmdb2.html">http://www.go-mono.com/ibmdb2.html</a>
+	for further details.
+
+<h2>Consistency and completeness</h2>
+
+	<p>A special recognition goes to Andreas Nahr who continued
+	his task to complete various low-level bits on the class
+	libraries (adding localization functions, implementing missing
+	interfaces, proper error checking) as well as making our class
+	libraries conform to the coding guidelines.
+
+<h2>The people behind this release</h2>
+
+	<p>The following 66 developers contributed to this release:
+
+	<p>Aaron Weber, Adrian Bunk, Albert Strasheim, Albert
+	Strasheim, Alberto Fernández, Aleksey Demakov, Alexandre
+	Pigolkine, Alon Gazit, Andreas Nahr, Atsushi Enomoto, B
+	Anirban, Ben Maurer, Bernie Solomon, Carlos Guzmán Álvarez,
+	Cesar López, Daniel Keep, David Sheldon, Dick Porter, Duncan
+	Mak, Eran Domb, Fawad Halim, Francisco Figueiredo, Francois
+	Beauchemin, Glen Parker, Gonzalo Paniagua, Gustavo Giráldez,
+	Hector Gómez, Inigo Illan, Jackson Harper, Jaroslaw Kowalski,
+	Jear-Marc André, Jeroen Zwartenpoorte, Jochen Wezel, John
+	Luke, Jonathan Pryor, Jordi Mas, Joshua Tauberer, Larry Ewing,
+	Lluis Sánchez, Marco Cravairo, Marek Safar, Mark Crichton,
+	Martin Baulig, Martin Willemoes, Miguel de Icaza, Mike
+	Kestner, Nick Drochak, Paolo Molaro, Pedro Abelleira, Peter
+	Bartok, Rachel Hestilow, Rafael Teixeira, Ravi Pratap,
+	Ravindra Kumar, S Umadevi, Sachin Kumar, Sanjay Gupta,
+	Sebastien Pouliot, Sunil Kumar, Tim Coleman, Todd Berman, Urs
+	Muff, Victor Vatamanescu, Zalman Stern and Zoltan Varga
+
+
+	<p>This list is not complete, it is missing contributions that
+	were sent to the list, as it was very hard to track the one
+	million incremental line patch since the last release.
+
+	<p>
+</body>
+</html>
+

@@ -1,0 +1,203 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+	<title>Mono 1.2.1: Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js'
+	type='text/javascript'></script>
+    <style type="text/css" title="default">
+    pre {
+    padding: 6pt;
+    background-color: #f6f6f6;
+    border: 1px solid #ddd;    
+    }
+    </style>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.2.1 Release, November 22nd, 2006</h1>
+
+	<p>Mono 1.2.1 is an update to <a
+	href="http://www.go-mono.com/archive/1.2">Mono 1.2</a>, it is
+	a bug fix release for all the supported components, but also
+	includes updates on the 2.0 stack.
+	
+	<ul>
+		<li><a href="#changes">Changes since version 1.2.0</a>
+		<li><a href="#install">Download and installation.</a>
+		<li><a href="#contributors">Contributors to this release.</a>
+	</ul>
+
+<a name="changes">
+<h1>New in Mono 1.2.1</h1>
+	
+<h3>Core</h3>
+
+	<p>Thread.Interrupt is finally implemented (Dick).
+
+	<p>Many bug reports that were filed were fixed.
+	
+<h3>Web Services</h3>
+
+	<p>Web Services now support generic types (List&lt;T&gt;).
+
+	<p>Web Services updates for the 2.0 API (Atsushi).
+
+<h3>MIPS Port</h3>
+
+	<p>Mono has been ported to the MIPS chip, port contributed by,
+	this port is partial on the 1.2.1 release, to get a fully
+	working version developers need to use SVN releases [Mark
+	Mason].
+
+
+<h3>Windows.Forms</h3>
+
+	<p>Many bug fixes to Windows.Forms from the Winforms team,
+	all the blocking bugs have been eliminated:
+
+	<ol>
+
+	    <li>RichTextBox/TextBox received a lot of usability fixes,
+	    improved support for wrapping, performance enhancements
+	    and no longer crashes with long documents.
+
+	    <li>We pass all our unit tests on linux now (all 598 of
+	    them).
+	    
+	   <li>Transparent/translucent windows really work with Xgl +
+	   Compiz.
+	
+	   <li>Startup performance improvements for X11 (use
+          XInternAtoms instead of many XInternAtom calls).
+	
+	   <li>Many more focus fixes.
+	   
+	   <li>Many, many TextBox/RichTextBox fixes.
+	   <li>NotifyIcon fixes (should work fine on linux now).
+	   
+	   <li>Popup windows (and menus) no longer steal focus from
+	   the main form on win32.
+	   
+	   <li>Fixed win32 bug which resulted in non-visible controls
+	   actually showing up at (0,0).
+	   
+	   <li>TreeView got its scrolling  improved, expands and
+	   collapses without rendering glitches and rendering with
+	   ImageLists is fixed. 
+	   
+	   <li>Datagrid fixes for handling DataSet binding/navigation.
+	   
+	   <li>X11 deadlock/hang/crash fixes for MT apps.
+	   
+	   <li>Printing UI is nicer (doesn't crash with unhandled
+	   exceptions) when you have no printers installed/configured.
+	   
+	   <li>Many toolbar/menu fixes.
+
+	   <li>System colors will keep their names, and track the Gtk
+	   names.
+	</ol>
+	
+<h3>ComponentModel</h3>
+
+	<p>Support for more type converters (arrays of strings were
+	not previously supported), Sebastien.
+
+<h3>ADO.NET</h3>
+
+	<p>2.0 updates, XmlSchema reading and writing (Nagappan).
+
+<h3>Process</h3>
+
+	<p>The Process launching will now support opening special
+	files in addition to launching programs.  On FreeDesktop
+	systems it will use xdg-open, if not, it will try to use
+	gnome-open or kfmclient to open the files.
+
+	<p>This means that Process.Start ("file.pdf") will open your
+	PDF viewer, and Process.Start ("http://www.gnome.org") will
+	launch your web browser to load that url.
+
+<h3>System.Drawing and GDI+</h3>
+
+	<pp>Fixed UTF8 to UCS2 conversion [Choe Hwanjin]</p>
+
+<h3>Security</h3>
+
+	<p>2.0 updates to X.509 certificates related classes.
+
+<h3>ASP.NET 2.0</h3>
+
+	<p>Many updates to the 2.0 stack from Mainsoft.
+
+	<p>App_Code, App_LocalResources and App_GlobalResources,
+	compilation support; Build providers for MasterPage,
+	IgnoreFile, ForceCopy; from Marek Habersack.
+
+<h1>Contributors to this Release</h1>
+
+	<p>Anil Bhatia, Atsushi Enomoto, Vladimir Krasnov, Chris
+	Toshok, Ben Maurer, Paolo Molaro, Sebastien Pouliot, Rolf
+	Bjarne, Andreia Gaita, Marek Habersack, Gonzalo Paniagua,
+	Lluis Sanchez, Dick Porter, Ankit Jain, Miguel de Icaza,
+	Jonathan Pobst, Jonathan Chambers, Jackson Harper, Alexander
+	Olk, Igor Zalmanovich, Klain Yoni, Raja Harinath, Nagappan,
+	Everaldo Canuto, Mike Kestner, Gert Driesen, Konstantin
+	Triger, Andrew Skiba, Mark Mason, Robert Jordan, Jonathan
+	Pryor, Rafael Mizrahi, Wade Berrier, Zoltan Varga, Joshua
+	Tauberer, Vladislav Spivak, Joe Shaw, Neale Ferguson, Carlos
+	Cortes
+
+<a name="install">
+<h1>Installing Mono 1.2.1</h1>
+	
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p><b>Binary Packages and Source Code Downloads:</b>
+	<blockquote>
+	<p>Source code and pre-compiled packages for SUSE, SLES,
+	Fedora Core 3, 4, Solaris, RHEL, MacOS and Windows in a variety of
+	platforms available from our web site from the <a
+	href="http://www.mono-project.com/Downloads">download</a>
+	section.
+
+	</blockquote>
+
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.2.1.tar.gz
+    $ cd mono-1.2.1
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+
+	<p>Then compile libgdiplus:
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.2.1.tar.gz
+    $ cd libgdiplus-1.2.1
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+	</blockquote>
+		
+</blockquote>

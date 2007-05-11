@@ -1,0 +1,90 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+	<title>Mono 1.1.13.8 Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.1.13.8 Release Notes</h1>
+
+	<p>Mono 1.1.13.8 is a bug fix release in the <a
+	href="http://www.go-mono.com/archive/1.1.13">release series</a>.
+	
+
+<h1>Changes since 1.1.13.7</h3>
+
+<h3>Assembler</h3>
+
+	<p>Fix assembler bug that tried to sign netmodules.
+
+	<p>Assembler will now report a bug if two identical labels are declared
+	on the same methods 
+
+	<p>On 2.0, support the "property" directive.
+
+<h3>ASP.NET</h3>
+
+	<p>Make sure application start event is run before the request
+	is processed.
+
+	<p>Dont reset query string in Execute (78177).
+	
+	<p>Make sure that we can read a file before trasmitting it (fixes
+	crash).
+
+	<p>Added two tests (Bug 78101, DataSourceID).
+
+	<p>Do not fail on events that do not derive from EventHandler,
+	patch from Matthew Metnetsky.
+
+	<p>Render some attributes inside span, not div tags (71251).
+
+	<p>Fix searching of control by DataSourceID.
+
+<h3>System.NET</h3>
+
+	<p>Allow posts of size zero (#78316)
+
+	<p>Fix for proxy authentication over HTTPS, for Zen team (78150).
+
+<h3>Core</h3>
+	
+	<p>Do not capture compressed stack, this feature is not yet
+	supported, fixes a crasher bug in ExecutionContext.
+
+	<p>Add FileOptions, necessary for IronPython.
+
+	<p>Fix incorrect buffer reading from console (78218).
+
+<h3>Mono.Security</h3>
+	
+	<p>Enable abbreviated handshake for SSL3 (Zen)
+
+	<p>Deal with empy master secrets (78085)
+
+<h3>Tools</h3>
+
+	<p>Fix mono-find-provides, to not list private copies of
+	assemblies (fixes conflict of MonoDevelop and third party
+	rpms).
+
+<h3>Runtime</h3>
+
+	<p>Fix for 78035.
+
+	<p>Avoids a null dereferences in metadata, IPHostEntry
+
+	<p>x86-64: Fix handling of MONO_INST_GENERICINST
+
+	<p>Memory leak fix, when shutting down threads, clean the TLS:
+	77470.
+
+	<p>Handle multiple leave statements in a try/catch, 78024.
+
+<h3>Compilers</h3>
+	
+	<p>Flag VB as unsupported.

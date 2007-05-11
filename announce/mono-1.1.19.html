@@ -1,0 +1,123 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+	<title>Mono 1.1.19: Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js'
+	type='text/javascript'></script>
+    <style type="text/css" title="default">
+    pre {
+    padding: 6pt;
+    background-color: #f6f6f6;
+    border: 1px solid #ddd;    
+    }
+    </style>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.1.19 Release</h1>
+
+	<p>Mono was branched at version 1.1.13 to become the stable
+	version of Mono that is distributed by Novell on its
+	enterprise products.   That series of releases are only
+	getting bug fixes.
+
+	<p>Before each release we run all of the regression tests on
+	Mono, so we consider this release usable for deployment, but
+	there are still a few changes in various areas.  
+	
+	<p>All of the changes since 1.0 are documented in the
+	following release notes: <a
+	href="http://www.go-mono.com/archive/1.1.1">1.1.1</a>, <a
+	href="http://www.go-mono.com/archive/1.1.2">1.1.2</a>, <a
+	href="http://www.go-mono.com/archive/1.1.3">1.1.3</a>, <a
+	href="http://www.go-mono.com/archive/1.1.4">1.1.4</a>, <a
+	href="http://www.go-mono.com/archive/1.1.5">1.1.5</a>, <a
+	href="http://www.go-mono.com/archive/1.1.6">1.1.6</a>, <a
+	href="http://www.go-mono.com/archive/1.1.7">1.1.7</a>, <a
+	href="http://www.go-mono.com/archive/1.1.8">1.1.8</a>, <a
+	href="http://www.go-mono.com/archive/1.1.9">1.1.9</a>, <a
+	href="http://www.go-mono.com/archive/1.1.10">1.1.10</a>, <a
+	href="http://www.go-mono.com/archive/1.1.13">1.1.13</a>, <a
+	href="http://www.go-mono.com/archive/1.1.14">1.1.14</a>, <a
+	href="http://www.go-mono.com/archive/1.1.15">1.1.15</a>,
+	<a href="http://www.go-mono.com/archive/1.1.16">1.1.16</a>,
+	<a href="http://www.go-mono.com/archive/1.1.17">1.1.17</a> and
+	<a href="http://www.go-mono.com/archive/1.1.18">1.1.18</a>,
+
+	<ul>
+		<li><a href="#new">What is new since the last release.</a>
+		<li><a href="#install">Download and installation.</a>
+		<li><a href="#contributors">Contributors to this release.</a>
+	</ul>
+
+	<p>This release is mostly a bug-fix release, there are very
+	few new developments.
+
+<a name="new"/>
+
+<h1>Changes since Mono 1.1.18</h1>
+
+<h1>Installing Mono 1.1.19</h1>
+	
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p>You can then setup your PATH to include /devel/bin to
+	access the Mono 1.1.  Alternatively you can replace your Mono
+	installation with 1.1.19
+
+	<p><b>Binary Packages and Source Code Downloads:</b>
+	<blockquote>
+	<p>Source code and pre-compiled packages for SUSE, SLES,
+	Fedora Core 3, 4, RHEL, MacOS and Windows in a variety of
+	platforms available from our web site from the <a
+	href="http://www.mono-project.com/Downloads">download</a>
+	section.
+
+	</blockquote>
+
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.1.19.tar.gz
+    $ cd mono-1.1.19
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+
+	<p>Then compile libgdiplus:
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.1.19.tar.gz
+    $ cd libgdiplus-1.1.19
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+	</blockquote>
+		
+</blockquote>
+
+<a name="contributors"/></a>
+<h3>Contributors</h3>
+
+	<p>The following is a partial list of contributors to the
+	1.1.19 release of Mono, if your name is missing, please
+	contact us.
+	  

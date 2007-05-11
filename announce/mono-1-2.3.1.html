@@ -1,0 +1,76 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+	<title>Mono 1.2.3.1: Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js'
+	type='text/javascript'></script>
+    <style type="text/css" title="default">
+    pre {
+    padding: 6pt;
+    background-color: #f6f6f6;
+    border: 1px solid #ddd;    
+    }
+    </style>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.2.3 Release, January 31st, 2006</h1>
+
+	<p>Mono 1.2.3.1 is an update to <a
+	href="http://www.go-mono.com/archive/1.2.3">Mono 1.2.3</a> in
+	the <a href="http://www.go-mono.com/archive/1.2">Mono 1.2
+	series</a>, it is a bug fix release
+	
+	<ul>
+		<li><a href="#changes">Changes since version 1.2.2</a>
+		<li><a href="#install">Download and installation.</a>
+	</ul>
+
+	<p>All of the changes since 1.2 are documented in the
+	following release notes:
+
+	<a href="http://www.go-mono.com/archive/1.2.1">1.2.1</a>,
+	<a href="http://www.go-mono.com/archive/1.2.2">1.2.2</a> and
+	<a href="http://www.go-mono.com/archive/1.2.3">1.2.3</a> and
+	
+<a name="changes">
+<h1>Changes</h1>
+
+	<p>The changes in this release are bug fixes that have been
+	backported from the trunk:
+
+	<ul>
+	<li>Fix for 80320 (negative timezone offsets and DateTime.MinValue).
+
+	<li>Fixed handling of button release on drag (Windows.Forms)
+
+	<li>MCS compiler regression for long constants.
+
+	<li>Treeview scrollbar visibility bug fix.
+
+	<li>Reset cursor properly (Winforms).
+
+	<li>Removed exception throwing for a method that is called
+	often by Winforms 2 apps.
+
+	<li>A white-list was introduced to activate a
+	compatibility-mode workaround for ZenWorks (ZMD broke as it
+	used Remoting incorrectly, fixing remoting broke ZMD;  We now
+	run in compatibility mode inside ZMD).
+
+	<li>Winforms printing bug fix backport.
+
+	<li>Datagrid 80662 bug fix.
+
+	<li>MCS 80749 bug fix.
+
+	<li>Runtime fix for Eiffel.NET
+
+	<li>Fix IronPython 1.1 alpha 1 Compilation (80749).
+
+	<li>Removed debugging writelines in SqlliteClient provider.
+
+	</ul>

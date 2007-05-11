@@ -1,0 +1,715 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+	<title>Mono 1.2: Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js'
+	type='text/javascript'></script>
+    <style type="text/css" title="default">
+    pre {
+    padding: 6pt;
+    background-color: #f6f6f6;
+    border: 1px solid #ddd;    
+    }
+    </style>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.2 Release</h1>
+
+
+	<ul>
+		<li><a href="#new">What is new in Mono 1.2.</a>
+		<li><a href="#changes">Changes since version 1.1.18</a>
+		<li><a href="#install">Download and installation.</a>
+		<li><a href="#prev">Release note links from 1.1.1 to 1.1.18</a>
+		<li><a href="#contributors">Contributors to this release.</a>
+	</ul>
+
+<a name="new">
+<h1>What is new in Mono 1.2</h1>
+
+	<p>A general overview of the Mono project is available in the
+	<a
+	href="http://www.go-mono.com/meeting06/OpeningPresentation.pdf">opening
+	presentation</a> for the 2006 Mono Meeting.   A number of
+	presentations on various Mono-related technologies are
+	available also from <a
+	href="http://www.go-mono.com/meeting/schedule.aspx">this
+	page</a> 
+	
+<h3>Windows.Forms</h3>
+
+	<p>The Windows.Forms 1.1 API is now available, it includes all
+	of the controls in the standard specification, a complete
+	System.Drawing implementation.
+
+	<p>The Windows.Forms implementation has a WndProc compatible
+	design, so most third party widgets that use WndProc to
+	achieve special effects will work out of the box. 
+	
+	<p>Currently there are drivers for X11 and Win32 and will run
+	on Windows systems or systems with the X11 windowing system
+	(Linux, Unix and OSX when using the X11 package).
+
+<h3>System.Drawing</h3>
+
+	<p>System.Drawing is now complete, and in addition to
+	being the underlying rendering engine for Windows.Forms, it
+	has also been tested for using third party controls that
+	heavily depend on it.
+
+<h3>System.ServiceProcess</h3>
+
+	<p>An implementation of ServiceProcess is now available, see
+	the mono-service man page for details.
+
+<h3>System.Transactions</h3>
+
+        <p>We now have a basic implementation of System.Transactions.
+        The implementation uses a Lightweight Transaction Manager
+        (LTM) allowing multiple volatile and/or a single durable
+        resource manager.
+
+<h3>C# Compiler</h3>
+
+	<p>Mono 1.2 ships with complete C# 1.0 and C# 2.0 compilers,
+	called <tt>mcs</tt> and <tt>gmcs</tt> respectively.
+
+	<p>The C# compilers are built on C# themselves and they are
+	faster than in previous versions.   They are able to compile
+	26k lines of C# code per second.
+
+	<p>In addition to complete the 2.0 language coverage, much
+	effort has been placed on providing good error reports and
+	warnings.
+	
+	<p>For more details about the compiler see our <a
+	href="http://www.mono-project.com/CSharp_Compiler">C# Compiler
+	Page</a>
+
+<h3>Mono Ports</h3>
+
+	<p>The Mono 1.2 code generator has been ported to a variety of
+	new platforms, both 32-bit and 64 bit ports are supported and
+	today they include the following architectures and operating
+	systems:
+
+	<p>32 bit systems: x86, PowerPC, ARM, s390, SPARC.
+
+	<p>64 bit systems: x86-64, s390x, Itanium (IA64).
+
+	<p>In addition, our operating system support has expanded and
+	many improvements are included for OSX, Windows and BSD.
+	
+	<p>In addition preview ports for Alpha and MIPS are also
+	available. 
+	
+	<p>For more information see our detailed list of <a
+	href="http://www.mono-project.com/Supported_Platforms">supported
+	platforms</a>.
+
+<h3>Optimizations</h3>
+
+	<p>These are some of the highlights of the optimizations done
+	between Mono 1.0 and Mono 1.2, but they are only a subset.
+	
+	<p><b>Default Optimizations:</b> inlining, dead code
+	elimination, constant folding and constant propagation are now
+	added to the default set of optimizations and have a
+	noticeable impact on performance (anywhere from 6% to 30%
+	depending on the architecture and particular tests).
+	
+	<p><b>Ahead of Time Compilation: </b> The Mono runtime now
+	supports ahead-of-time (AOT) compilation, startup performance
+	is actually reduced and the code is actually shared across
+	multiple Mono instances reducing the overall memory
+	consumption of applications.  AOT is not enabled by default on
+	the installation of Mono 1.2 assemblies, but can be done by
+	end users by running:
+
+	<pre>
+	mono --aot assembly.dll
+	</pre>
+
+	<p>For all the system assemblies, or assemblies in the GAC.
+
+	<p><b>Arrays Bounds Check Elimination:</b> If the JIT can
+	infer that access to an array (for example in a loop) will not
+	be out of range, the JIT will not emit the array range check
+	operations (must use <tt>abcrem</tt> optimization).
+
+	<p><b>Partial Redundancy Elimination:</b> An SSA-based partial
+	redundancy elimination has been added, and implements various
+	partial redundancy optimizations (code hoisting,
+	subexpression elimination and more). 
+
+	<p><b>Runtime:</b> The runtime is now statically linked, and
+	uses the __thread attribute for thread local storage, which
+	provided a performance boost.
+
+	<p><b>Garbage Collector:</b> We now use Boehm GC in precise
+	mode as opposed to fully conservative mode.  We also use it
+	with a precise set of GC roots which greatly improved Garbage
+	Collection performance.
+
+	<p><b>Remoting:</b> performance for the cross application
+        domain channel.  Calls across application domains are now
+        faster (up to 10 times in some cases).   TCP and HTTP
+        transports are now a few order of magnitude faster than in 1.0.
+
+	<p><b>Crytpography:</b> Many improvements were made in
+        cryptographic performance, including 8% for SHA1, 5% for
+        SHA256 and 20% for TripleDES and MACTripleDES. As well, weak
+        key detection for DES is 16 times faster.
+
+        <p>New padding modes ANSI X9.23 and ISO 10126 were implemented
+        (for 2.0) for symmetric ciphers and MACTripleDES;
+
+	<p><b>System.Threading.Interlocked:</b> these are now
+	JIT-compiled instead of being calls
+
+	<p><b>VM Diet:</b> the VM has gone through a diet, and many
+	data structures are smaller, and most data is now shared
+	across multiple Mono instances;  Data structures are now only
+	loaded on demand, reducing startup time, debug information is
+	now loaded using mmap.
+
+	<p>New work to improve Mono's performance is detailed in <a
+	href="http://www.go-mono.com/meeting06/MonoSummit2006-JIT.pdf">Mono
+	Summit JIT presentation</a>.
+	
+<h3>Internationalization</h3>
+
+
+        <p>We have a completely new reimplementation of the CompareInfo
+        infrastructure in this release of Mono, a managed
+        implementation of string collation that is compatible with
+        Windows collation.
+
+	<p>A new framework for RegionInfo information.
+
+	<p>Support for Cultures, date time formats has been greatly
+	expanded as well.
+
+<h3>IO Layer</h3>
+
+	<p>Mono no longer uses a separate daemon for coordinating IO
+	operations
+
+	<p>The new portability laye address those problems without
+	requiring changes to your code.  This will remove a large
+	component of the porting cycle as a whole class of obnoxious
+	problems are gone.
+
+	<p>The new portability framework is enabled by setting the
+	environment variable <tt>MONO_IOMAP</tt> (which
+	we will likely rename to something shorter) to one of the
+	following values:
+
+	<ul>
+	<li><tt>case</tt>: makes all file system access case
+	insensitive.
+	
+	<li><tt>drive</tt>: strips drive name from pathnames.
+	
+	<li><tt>all</tt>: enables both <tt>case</tt> and
+	<tt>drive</tt>.
+	</ul>
+
+	<p>In addition, if any of those options are enabled, the
+	directory separator mapping is also turned on.  So this
+	basically means that you have to type this, or include this in
+	your script that launches your application:
+
+	<pre>
+	$ export MONO_IOMAP=all
+	$ mono myapp.exe</pre>
+
+	<p>For ASP.NET applications hosted with mod_mono, you can add
+	the following directive to your Apache configuration file:
+
+	<pre>
+	MonoSetEnv MONO_IOMAP=all</pre>
+
+	
+<h3>Profilers</h3>
+
+	<p>Mono 1.2 now contains contains a statistical profiler, as
+	well as a profiling interface.
+
+	<p>Developers can create their own profilers and tools to
+	instrument code at runtime and capture interesting code
+	generation and memory related events.
+
+	<p>A few of the existing profilers include: a code coverage
+	profiling module, heap-buddy and heap-shot.
+
+	<p>For more information about profiling see the <a
+	href="http://www.mono-project.com/Performance_Tips">performance
+	tips</a> page.
+
+<h3>2.0 API support</h2>
+
+	<p>The ECMA 1.0 and 2.0 API profiles have been implemented.
+	To build applications that target the 1.0 API use the
+	<tt>mcs</tt> compiler;   To target the 2.0 API use the
+	<tt>gmcs</tt> compiler.
+
+	<p>ADO.NET, ASP.NET, System.Configuration, and Windows.Forms
+	only contain partial support for 2.0 APIs, full support will
+	only be available in Mono 2.0.
+
+	<p>In addition memory usage has gone down all across the
+	board, in particular in core class libraries like System.XML.
+
+<h3>Mono.Posix improvements</h3>
+
+	<p>Jonathan Pryor lead the development of a new namespace
+        which rationalizes the old Mono.Posix namespace, and also adds
+        integration classes between the Posix world and the .NET world
+        (the old libraries merely exposed the syscall interface).
+
+        <p>The new namespace is called Mono.Unix namespace, and it
+        contains the new Syscall class which exports 64-bit APIs.
+        This should now be portable across 32-bit and 64-bit
+        platforms.
+
+        <p>Added higher-level wrapper classes, all prefixed with Unix, to
+        present a .NET-like API over the Syscall functionality.
+
+        <p>The Mono.Unix namespace is also CLS compliant.  The
+        low-level Syscall and Stdlib and related types will move into
+        the Mono.Unix.Native namespace.  The UnixConvert,
+        UnixDirectory, UnixFile, UnixGroup, and UnixUser classes are
+        obsolete and will be removed in a future release.  The types
+        of existing members will change in the next release.
+
+
+        <p>The existing Mono.Posix namespace should be considered
+        deprecated (or at least unmaintained), in preference to the
+        Mono.Unix namespace.
+
+<h3>New assemblies</h3>
+
+	<p>We now ship with bindings for the Cairo API.
+
+	<p>Firebird provider is now bundled with Mono.
+
+	<p>Npgsql is now bundled with Mono.
+
+<h3>Visual Basic, JavaScript and Java</h3>
+
+	<p>Runtimes for both Visual Basic .NET 1.0 and 2.0 are
+	now included.
+
+	<p>A runtime for JScript is included.
+
+	<p>IKVM is now bundled with the Mono distribution, and allows
+	Java applications to be executed with Mono and the IKVM
+	Java Virtual Machine.
+
+<h3>Bundles</h3>
+
+        <p>Bundles are a mechanism to bundle in a single binary the
+        Mono runtime, its dependencies and your application to produce
+        a standalone application.
+
+        <p>We have now introduced the `mkbundle' program that will
+        assist developers in creating self-contained applications
+        built with Mono, and it can optionally compress all the
+        assemblies bundled, as well as creating static binaries. 
+	
+<h3>Compatibility</h3>
+
+	<p>Compatibility has been greatly improved in all areas, and
+	test suites for the compilers and class libraries have been
+	integrated.
+
+	<p>System.Reflection.Emit API now is able to emit debugging
+	information in mdb format.
+
+	<p>Support for the registry is now provided on Linux and
+	Windows.
+
+	<p>An EventLog implementation is available on both Unix and
+        Windows, to use set the MONO_EVENTLOG_TYPE variable like this:
+
+	<p>Mono now supports the #- heap (incremental builds).
+	
+<h3>File System Watching</h3>
+
+	<p>Support for inotify on Linux and KQueue on BSD is now
+	included to monitor file system changes through the
+	FileSystemWatcher interface.
+
+<h3>XML</h3>
+
+	<p>Commons.Xml.Relaxng is now part of the standard
+	distribution, and has been greatly expanded, it now also
+	contains an NVDL implementation and contains a compact syntax
+	writer and a grammar inference engine.
+
+<h3>System.Data and Data Providers</h3>
+
+	<p>Sqlite provide now supports Sqlite 2 and 3 installations
+	(runtime detection).
+
+<h3>Updated Libraries</h3>
+
+	<p>Updated to newer Novell.LDAP libraries and improved
+	System.DirectoryServices
+
+	<p>Include the new ICSharpCode.SharpZipLib.
+
+<h3>ASP.NET</h3>
+
+	<p>A major rewrite to ASP.NET is now available as part of this
+        release, the highlights of the new code include:
+
+        <ul>
+                <li>Tests: 121,600 lines of new tests:
+                <ul>
+                        <li>NUnit test suite for about 50% of the controls.
+
+                        <li>Extensive standalone tests.
+
+                        <li>JSUnit (see section later).
+                </ul>
+
+                <li>Unmanaged I/O: the new implementation uses
+                unmanaged buffers for uploads (HTTP POST for example)
+                and content generation as opposed to the managed
+                buffers that we have today, which greatly reduces the
+                pressure on Mono's GC and also avoids redundant copies
+                of data by sharing buffers as much as possible
+                improving performance.
+
+                <li> Use of TCP Cork on Linux to avoid TCP glitches
+                and delays, this reduces the latency to get a full
+                page.
+
+                <li>Support for Linux sendfile to transfer static
+                pages (support for more platforms will come later).
+
+                <li>XSP now transfers Socket ownership to the
+                AppDomain to avoid round trips and expensive AppDomain
+                boundary crossing increasing performance.
+
+                <li>New controls: about 40% of the existing controls
+                were rewritten from scratch with test suites to
+                validate their output.
+
+                <li>New application pipeline: a new iterators-based
+                design reduces the complexity and increases the
+                maintainability of the old version.
+
+		<li>Improved tracing support.
+
+                <li>Latency has been reduced in various key places and
+                the new unmanaged buffers accelerate the processing of
+                medium and large sized pages (small pages remain about
+                the same speed) and large uploads wont disrupt your
+                Mono process.
+
+		<li>Completed ViewState MAC, a cryptographic checksum to
+		prevent tampering with the view state.
+
+	</ul>
+
+<h3>XSP and Mod_mono</h3>
+
+	<ul>
+
+	        <li>XSP has been split up in two: Mono.WebServer.dll and
+		xsp.exe.  XSP only handles command line parsing and
+		Mono.WebServer.dll is the assembly that implements the
+		functionality.
+
+		<p>Mono.WebServer.dll is an embeddable library that can be
+		used to host ASP.NET in your own applications.  In the past
+		people resorted to making a replica of XSP in their
+		applications if they wanted to host ASP.NET.
+
+		<li>XSP now supports --https command line option for
+		doing SSL/TLS operations.
+		
+		<li>mod_mono now supports auto-hosting of web sites,
+		greatly reducing configuration of ASP.NET with
+		Apache.   See <a
+		href="http://www.mono-project.com/AutoConfiguration">our
+		auto-configuration</a> page for more details.
+
+		<li>mod_mono now correctly works with virtual hosts.
+		
+                <li>HttpClientCertificate on XSP and Apache.
+
+		<li>XSP now supports PKCS#12 private
+		key/certificates. 
+	</ul>
+	
+<h3>Tools</h3>
+
+	<p>Many new tools are part of Mono 1.2:
+
+	<ul>
+		<li><b>AL (assembly linker):</b> can now sign, and delay-sign, assemblies
+		and makecert can now generate PKCS#12 files (Sebastien);
+
+		<li><b>prj2make</b>, a tool developed  by Francisco
+		Martinez is  now part of the standard  Mono distribution.  You
+		can use prj2make  to produce Makefiles that will  work on Unix
+		for projects that use Visual Studio solutions.
+
+		<li><b>dtd2xsd:</b> A new tool to produce Xml Schema
+		Definitions from an XML document that contains a Document Type
+		Definition (DTD), by Atsushi.
+
+		<li><b>mono-xmltool:</b> a tool to validate XML files
+		with RelaxNG, XSDs, DTDs, RNCs or NVDLs as well as
+		providing a command line tool for doing XSLT
+		transforms using the command line.
+
+		<li><b>mono-service:</b> A new tool used to start
+		services that implement the System.ServiceProcess
+		API.
+
+		<li><b>mozroots:</b> A tool used to import the Mozilla
+		TLS and SSL certificates into the Mono trusted
+		certificate store (used for HTTPS connections for
+		instance).
+
+		<br>Mono by default does not have any root certificates on its
+	        certificate store and it is up to each deployment to add the
+	        certificates that they trust to the store.  This has caused
+	        some confusion with people using TLS and SSL with Mono.  The
+	        MozRoots tool makes it simple to import a set of root
+	        certificates from Mozilla into the Mono store.
+
+		<li><b>certmgr:</b> can now download and import certificates into the stores (e.g.
+		SSL, LDAPS), list existing certificate and remove them from a store.
+
+		<li><b>permview:</b> can display assembly-level
+		declarative security present in assemblies (RequestMinimum,
+		RequestOptional and RequestRefuse).
+
+		<li><b>mono-shlib-cop:</b> used to inspects a managed
+		assembly looking for erroneous or suspecious behavior of
+		shared libraries.
+
+		<li><b>ilasm/monodis:</b> the assembler and
+		disassembler now are able to roundtrip all of our
+		assemblies and they now have support for generics. 
+
+		<li><b>sn:</b> assemblies can now be signed with RSA
+		key pairs ranging from 384 to 16384 bits;
+	</ul>
+
+<h3>NUnit</h3>
+
+	<p>A copy of NUnit is now bundled with Mono.
+	
+<h3>Monodoc</h3>
+
+        <p>Monodoc now defaults to use the Mozilla rendering engine to
+        display its values, thanks to Mario Sopena and the Google
+        Summer of Code effort and it also uses CSS to render its
+        pages.
+
+        <p>Monodoc will now also show pending contributions that you
+        might have in your file system as well as including search
+        support.
+
+<h3>Debugging</h3>
+
+	<p>A new Mono debugger will be shortly available (alpha
+	releases are now available for download).
+	
+        <p>Sending the QUIT signal to a running Mono process will
+        produce a stack trace of each thread.  This is a long
+        requested feature to assist folks debugging multi-threaded
+        applications (Zoltan).
+		
+<h3>Unsupported Features</h3>
+
+	<p>Code Access Security was greatly developed in this release,
+	but a couple of JIT supporting routines are still missing, and
+	no audit has been done of the class libraries and the runtime
+	to advertise it as a working feature.
+
+	<p>See the slides from <a
+	href="http://www.go-mono.com/meeting06/Security_Final.pdf">security
+	presentation</a> at the Mono meeting for details.
+ 
+<h3>Relocatable</h3>
+
+        <p>Mono is now relocatable.  This means that a Mono package or
+        RPM can be relocated to any directory and will continue to
+        work.  This works on Linux systems and Solaris 10.
+
+        <p><b>Important:</b> If you embed Mono, you must now call the
+        can call instead mono_assembly_setrootdir($libdir) and
+        mono_set_config_dir ($sysconfdir) to set the library directory
+        and the system configuration directories.
+
+<a name="changes">
+<h1>Changes since Mono 1.1.18</h1>
+
+	<p>Serialization callbacks, allows for version-resistant
+	serialization [Robert Jordan].
+
+	<p>The Registry now supports machine-level settings [Miguel de
+	Icaza].
+
+<a name="install">
+<h1>Installing Mono 1.2</h1>
+	
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p><b>Binary Packages and Source Code Downloads:</b>
+	<blockquote>
+	<p>Source code and pre-compiled packages for SUSE, SLES,
+	Fedora Core 3, 4, Solaris, RHEL, MacOS and Windows in a variety of
+	platforms available from our web site from the <a
+	href="http://www.mono-project.com/Downloads">download</a>
+	section.
+
+	</blockquote>
+
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.2.0tar.gz
+    $ cd mono-1.2.0
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+
+	<p>Then compile libgdiplus:
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.2.0.tar.gz
+    $ cd libgdiplus-1.2.0
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+	</blockquote>
+		
+</blockquote>
+
+<a name="prev">
+<h1>Previous Release Notes</h1>
+	
+	<p>All of the changes since 1.0 are documented in the
+	following release notes: <a
+	href="http://www.go-mono.com/archive/1.1.1">1.1.1</a>, <a
+	href="http://www.go-mono.com/archive/1.1.2">1.1.2</a>, <a
+	href="http://www.go-mono.com/archive/1.1.3">1.1.3</a>, <a
+	href="http://www.go-mono.com/archive/1.1.4">1.1.4</a>, <a
+	href="http://www.go-mono.com/archive/1.1.5">1.1.5</a>, <a
+	href="http://www.go-mono.com/archive/1.1.6">1.1.6</a>, <a
+	href="http://www.go-mono.com/archive/1.1.7">1.1.7</a>, <a
+	href="http://www.go-mono.com/archive/1.1.8">1.1.8</a>, <a
+	href="http://www.go-mono.com/archive/1.1.9">1.1.9</a>, <a
+	href="http://www.go-mono.com/archive/1.1.10">1.1.10</a>, <a
+	href="http://www.go-mono.com/archive/1.1.13">1.1.13</a>, <a
+	href="http://www.go-mono.com/archive/1.1.14">1.1.14</a>, <a
+	href="http://www.go-mono.com/archive/1.1.15">1.1.15</a>,
+	<a href="http://www.go-mono.com/archive/1.1.16">1.1.16</a>,
+	<a href="http://www.go-mono.com/archive/1.1.17">1.1.17</a> and
+	<a href="http://www.go-mono.com/archive/1.1.18">1.1.18</a>.
+
+	<p>This release is mostly a bug-fix release, there are very
+	few new developments.
+
+<a name="new"/>
+
+<a name="contributors"/></a>
+<h3>Contributors</h3>
+
+	<p>The following is a partial list of contributors to the
+	1.2 release of Mono, if your name is missing, please
+	contact us.
+	  
+	<p>Aaron Bockover, Aaron Flynt, Aaron Tomb, Adhamh Findlay,
+	Adrian Johnson, Akiramei, Aleksandar Dezelin, Alexander
+	Larsson, Alexander Olk, Alexandre Gomes, Alexandre Miguel,
+	Alexandre Rocha Lima e Marcondes, Alex Graveley, Alois
+	Bělaška, Alp Toker, Andreia Gaita, Andrew Skiba, Anil Bhatia,
+	Ankit Jain, Atsushi Enomoto, B Anirban, Behdad Esfahbod, Ben
+	Maurer, Ben Motmans, Bernie, Bernie Solomon, Bill Middleton,
+	Billy Biggs, Blagovest Dachev, Boris Kirzner, Brian Crowell,
+	Brian Ritchie, Brion Vibber, Bryan Worth, Carlos Alberto,
+	Carlos Alberto Cortés, Carlos Guzmán, Carl Worth, Cesar
+	Octavio López Natarén, chastamar@yahoo.com, Chris Lahey, Chris
+	Micacchi, Christian Biesinger, Christian Hergert, Chris
+	Toshok, Chris Turchin, C.J. Collier, Daniel Drake, Daniel
+	Granath, Daniel Morgan, Daniel Rodriguez, Dan Winship, David
+	Hudson, David Sheldon, David Waite, Dean Brettle, Dennis
+	Hayes, denys@gnome.cl, dezelin@gmail.com, Dick Porter, Duncan
+	Mak, Eduardo Garcia Cebollero, Eric Butler, Erik Dasque,
+	Everaldo Canuto, Eyal Alalouf, Fawad Halim, Felipe Lessa,
+	Florian Gross, Francisco Figueiredo Jr., Francisco
+	T. Martinez, Gary Ekker, Geoff Norton, Gert Driesen,
+	gildur@gmail.com, Gonzalo Paniagua Javier, Greg Lonnon,
+	Gustavo Giraldez, Guy Cohen, Haakon Nilsen, Hagit Yidov,
+	Hiroyuki Ishimine, Hisham Mardam Bey, Hubert FONGARNAND,
+	Hye-Shik Chang, Iain McCoy, Idan Gazit, Igor Zelmanovich, Ilya
+	Kharmatsky, Ingmar Schuster, Itamar Rogel, Jackson Harper,
+	Jacob Ilsø Christensen, Jaen Saul, Jakub Boqusz, Jambunathan
+	K, James Willcox, Jarosław Pawlak, Jb Evain, Jelmer Vernooij,
+	Jeroen Zwartepoorte, Joachim Ante, Jochen Wezel, Joergr
+	Rosenkranz, Joe Shaw, John BouAntoun, John Ehresman, John
+	Luke, Jonathan Chambers, Jonathan Gilbert, Jonathan Pobst,
+	Jonathan Pryor, Jonathan S. Chambers, Jon Larimer, Jon
+	Trowbridge, Joost Evertse, Jordi Má, Jörg Rosenkranz, José
+	Alexandre Antunes, Joseph Hill, Josh Cooley, Joshua Tauberer,
+	jsinger@eggmouse.com, Julien Puydt, Juraj Skripsky, Kamil
+	Skalski, Kazuki Oikawa, Klain Yoni, Konstantin Triger, Kornél
+	Pál, Larry Ewing, Leszek Ciesielski, Lluis Sanchez, Lluis
+	Sanchez Gual, Luke Ravitch, Maksim Vorobiev, Manjula MGH, Marc
+	Haisenko, Marek Habersack, Marek Safar, Marek Sieradzki, Mario
+	Sopena Novales, Mark Crichton, Martin Baulig, Martin
+	Kretzschmar, Martin Willemoes Hansen, Mart Raudsepp, Mart
+	Roosmaa, Massimiliano Mantione, Matt Hargett, Matthew Wright,
+	Matthias Felgner, Maverson Eduardo Schulze Rosa, meebey
+	(mail@meebey.net), Merav Sudri, Michael Hutchinson, Michael
+	Meeks, Michal Moskal, Miguel de Icaza, Mike Kestner, Mike
+	Tindal, Mike Welham, Nagappan A, Neale Ferguson, Nick Drochak,
+	Nigel Benns, Oleg Mihailik, Palaniappan, Paolo Molaro, Patrick
+	Michel, Patrik Torstensson, Pedro Gomes, Pedro Kiefer, Pedro
+	Martinez, Peter Bartok, Peter Dennis Bartok, Peter Dettman,
+	Peter Johanson, Peter Williams, Petri Latvala, Rafael
+	Ferreira, Rafael Mizrahi, Rafael Teixeira, Raja R Harinath,
+	Randy Ridge, Raphael Slinckx, Ravindra Kumar, Ray Molenkamp,
+	Ricardo Fernandez Pascual, Ritvik Mayank, Robert Jordan,
+	Roberto Costa, Rob Lyon, rodrigobamboo@gmail.com, Roei Erez,
+	Rolf Bjarne Kvinge, Roozbeh Pournader, Sachin Kumar, Sanjay
+	Gupta, Sathya Sudha, Sebastien Pouliot, Sebastien Robitaille,
+	Sebastien (shoehn@web.de), Senganal T, Sergey Tikhonov, Shane
+	Landrum, shoehn@web.de (Sebastian), software@solmersa.com,
+	Sridhar Kulkarni, Sudha, Sudharsan V, Sudha Sathya, S Umadevi,
+	Suresh Kumar, Suresh Thangavel, Svetlana Zholkovsky, Tal
+	Klahr, Tambet Ingo, The Software Team (software@solmersa.com),
+	Thomas Zoechling, Thong Nguyen, Tobias Käs, Toby Miller, Todd
+	Berman, Tomas Kukol, Tomasz Cholewo, Tor Lillqvist, T
+	Senganal, Urs Muff, Vladimir Krasnov, Vladimir Vukicevic,
+	Vladislav Spivak, Wade Berrier, Yaacov Akiba Slama, Yoni
+	Klain, Zac Bowling and Zoltan Varga.

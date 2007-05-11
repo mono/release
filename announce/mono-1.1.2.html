@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="generator" content=
+"HTML Tidy for Linux/x86 (vers 1st September 2004), see www.w3.org">
+<meta http-equiv="Content-Type" content=
+"text/html; charset=us-ascii">
+<title>Mono 1.1.2: Development Release Release Notes.</title>
+<link rel="stylesheet" type="text/css" href=
+"http://www.go-mono.com/archive/1.0/mono.css">
+<script src='http://www.go-mono.com/archive/prettyprint.js' type=
+'text/javascript'>
+</script>
+</head>
+<body onload='paintColors();'>
+<h1>Mono 1.1.2 Development Release</h1>
+<p>Mono 1.1.2 is the second release on the development series of
+Mono and it is not intended to be used for production as it is
+undergoing internal changes. Those interested in a stable release
+should use the Mono 1.0.xx series.</p>
+<p>The Mono 1.1.xx series will eventually lead to the next stable
+milestone: Mono 1.2.</p>
+<ul>
+<li><a href="#new">What is new since the last release</a></li>
+<li><a href="#install">Download and installation.</a></li>
+<li><a href="#cont">Contributors to this release.</a></li>
+</ul>
+<a name="new" id="new">
+<h2>Changes since the Mono 1.1.1 release</h2>
+<p>The following is a high-level description of the changes in the
+development release of Mono since the previous development release
+in September 22nd.</p>
+<p>Although this a development version, this release contains
+mostly bug fixes, speedups and tuning in every subsystem of Mono.
+In addition to that, some key new changes are:</p>
+<h3>C# Compiler</h3>
+<p>The C# compiler now supports anonymous methods, you can now
+write code like this:</p>
+<pre class="shell">
+
+        Button b = new Button ();
+        b.Clicked += delegate {
+                Console.WriteLine ("I got clicked");
+        }
+        
+        
+</pre>
+<p>For more information on anonymous methods, you can read this
+<a href=
+"http://msdn2.microsoft.com/library/0yw3tz5k.aspx">introduction</a>
+or read the <a href=
+"http://download.microsoft.com/download/8/1/6/81682478-4018-48fe-9e5e-f87a44af3db9/SpecificationVer2.doc">
+C# 2.0 specification</a> (Miguel).</p>
+<p>Today Mono 1.1.2's C# compiler supports <a href=
+"http://msdn2.microsoft.com/library/0yw3tz5k.aspx">anonymous
+methods</a>, <a href=
+"http://msdn2.microsoft.com/library/dscyy5s0.aspx">iterators</a>,
+<a href="http://msdn2.microsoft.com/library/wa80x488.aspx">partial
+classes</a>, <a href=
+"http://msdn2.microsoft.com/library/79b3xss3.aspx">static
+classes</a> and <a href=
+"http://msdn2.microsoft.com/library/441722ys.aspx">inline warning
+control</a> from the 2.0 specification. <a href=
+"http://msdn2.microsoft.com/library/512aeb7t.aspx">Generics</a> are
+supported as well on the branched `gmcs' compiler (included).</p>
+<p>Added support for encoding security permission attributes as
+part of the ongoing CAS support in Mono (Marek).</p>
+<p>Still missing for full 2.0 support: nullable types, namespace
+alias qualifier, external assembly alias, property accessor
+accessibility, covariance and contravariance, fixed size buffers
+and friend assemblies.</p>
+<p>Many new errors and warnings reported.</p>
+<h3>Basic Compiler</h3>
+<p>Improved the compiler performance by back porting some
+improvements from mcs to mbas, compilations that used to take
+thirty seconds now take one second (Jambunathan).</p>
+<p>Anirban continued making improvements to the language support
+and Jambu redesigned the test suite layout.</p>
+<h3>libgdiplus and System.Drawing</h3>
+<p>We no longer depend on Cairo internals.</p>
+<h3>Windows.Forms and System.Drawing</h3>
+<p>Work on the new managed implementation of Windows.Forms
+continues, we hope that by the next release the new implementation
+completely replaces the existing version during the build
+process.</p>
+<p>Although there is a lot of progress in this area, Windows.Forms
+is not yet ready for most people testing it.</p>
+<p>Folks interested in helping with the implementation might want
+to go to the #mono-winforms channel on the irc network at
+irc.gnome.org.</p>
+<h3>Debugger</h3>
+<p>Chris and Martin worked on the debugger support, the runtime now
+contains some of the new hooks required by the new debugger. The
+debugger currently can only be obtained from CVS.</p>
+<p>The debugger is available from CVS, in the module
+`debugger'.</p>
+<h3>2.0 features</h3>
+<p>Zoltan has added various Reflection.Emit features from the 2.0
+API.</p>
+<p>Extensive changes to the Mono runtime for improving our generics
+support.</p>
+<h3>System.Web</h3>
+<p>The web support has been fine tuned and optimized, the number of
+requests per second went from 70 to 550.</p>
+<p>A big memory leak that would show up on long running servers has
+been plugged.</p>
+<h3>Xml World</h3>
+<p>The Mono XQuery implementation has moved to a separate assembly
+Mono.Xml.Ext in lieu and will be available for both the 1.x and 2.x
+profiles.</p>
+<h3>JIT Ports</h3>
+<p>Updated the PowerPC, SPARC, AMD64 ports of Mono.</p>
+<p>S390 port by Neale got its exception handling and prologs
+fixed.</p>
+<h3>JScript</h3>
+<p>Cesar has implemented late binding support for the JScript
+compiler. <a name="install" id="install"></a></p>
+<h2>Installing Mono 1.1.2</h2>
+<p><b>Important:</b> Mono 1.1.2 can not be installed in parallel
+with Mono 1.0.x series on the same prefix. To work around this
+issue, you must use a different prefix at configure time, for
+example:</p>
+<pre class="shell">
+        
+        $ ./configure --prefix=/devel
+        
+</pre>
+<p>You can then setup your PATH to include /devel/bin to access the
+Mono 1.1. Alternatively you can replace your Mono installation with
+1.1.2.</p>
+<p><b>Binary Packages:</b></p>
+<blockquote>
+<p>Pre-compiled packages for SUSE 9, SUSE 9.1, Red Hat 9, SLES 8,
+Fedora Core 1, Fedora Core 2 and MacOS X are available from our web
+site from the <a href=
+"http://www.go-mono.com/download.html">download</a> section. A Red
+Carpet Mono channel is also available on these platforms.</p>
+</blockquote>
+<p><b>Source code:</b></p>
+<blockquote>
+<ul>
+<li>Mono Runtime: <a href=
+"http://www.go-mono.com/archive/1.1.2/mono-1.1.2.tar.gz">mono-1.1.2.tar.gz</a></li>
+<li>Mono C# sources: <a href=
+"http://www.go-mono.com/archive/1.1.2/mcs-1.1.2.tar.gz">mcs-1.1.2.tar.gz</a></li>
+<li>GDI+ library: <a href=
+"http://www.go-mono.com/archive/1.1.2/libgdiplus-1.1.2.tar.gz">libgdiplus-1.1.2.tar.gz</a></li>
+</ul>
+</blockquote>
+<p><b>Dependencies</b></p>
+<p>If you are installing from source code, there are a few optional
+dependencies that you will want to consider installing.</p>
+<blockquote>
+<p><b>icu 2.6.1 or later</b> Optional: for supporting string
+collation.</p>
+<p><b>Cairo 0.1.23</b> Required to install libgdiplus.</p>
+</blockquote>
+<p><b>Quick source code installation:</b></p>
+<blockquote>
+<p>If we have no packages for your platform, installing from source
+code is very simple.</p>
+<p>mono:</p>
+<pre class="shell">
+        
+    $ tar xzf mono-1.1.2.tar.gz
+    $ cd mono-1.1.2
+    $ ./configure
+    $ make install
+        
+</pre></blockquote>
+<p><b>Optional Packages</b></p>
+<blockquote>
+<p>Libgdiplus is an optional packages, you only need those if you
+intent to use System.Drawing or Windows.Forms.</p>
+<p>libgdiplus:</p>
+<pre class="shell">
+        
+    $ tar xzf libgdiplus-1.1.2.tar.gz
+    $ cd libgdiplus-1.1.2
+    $ /configure
+    $ make install
+        
+</pre></blockquote>
+<h2>Contributors</h2>
+<p>The changes in Mono 1.1.2 were brought to you by:</p>
+<p>Adhamh Findlay, B Anirban, Atsushi Enomoto, Ben Maurer, Bernie
+Solomon, Carlos Guzm&aacute;n, C&eacute;sar Natar&eacute;n, Chris
+Lahey, Daniel Morgan, Dan Winship, David Sheldon, David Hudson,
+Dick Porter, Duncan Mak, Fawad Halim, Francisco Figueiredo Jr.,
+Gert Driesen, Geoff Norton, Gonzalo Paniagua, Jackson Harper,
+Jambunathan Jambunathan, John Luke, Jochen Wezel, Joe Shaw,
+J&ouml;rg Rosenkranz, Jonathan Pryor, Jordi Mas, Juraj Skripsky,
+Lluis Sanchez, Paolo Molaro, Marek Safar, Martin Baulig,
+Massimiliano Mantione, Miguel de Icaza, Mike Kestner, Martin
+Willemoes, Neale Ferguson, Alex Graveley, Peter Bartok, Peter
+Williams, Rafael Teixeira, Raja R Harinath, Ravindra Kumar, Randy
+Ridge, Sanjay Gupta, Shane Landrum, Sebastien Pouliot, Sudha,
+suresh, Todd Berman, Chris Toshok, S Umadevi, Vladimir Vukicevic
+and Zoltan Varga.</p>
+</body>
+</html>

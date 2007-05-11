@@ -1,0 +1,376 @@
+<html>
+<head><title>Mono 0.28 Release</title>
+<style type="text/css">
+h1 {
+color: #efefef;
+font-size: 14pt;
+font-family: "Trebuchet MS";
+
+border: 0;
+
+margin: 0;
+
+padding: 1em;
+
+background: #666666;
+}
+
+h2, h3, h4, h5, h6 {
+font-family: Verdana,sans-serif;
+font-weight: bold;
+margin: 9pt;
+}
+
+h2, h3 {
+font-size: 18px;
+}
+
+h2 {
+padding: 3px;
+color: #000000;
+}
+
+h3 {
+font-size: 13px;
+border-bottom: 2px solid #dddddd;
+}
+
+body, table {
+background-color: #ffffff;
+font-family: Verdana, sans-serif; font-size: 12px;
+color: black;
+margin: 0;
+padding: 0;
+border: 0;
+       margin-left: 20%;
+       margin-right: 20%;
+}
+
+p {
+margin-left: 2em;
+margin-right: 2em;
+}
+
+img {
+border: 0;
+vertical-align: top;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Mono 0.28 Release</h1>
+
+<p>Hello everyone,</p>
+
+	<p>A new release of the <a
+	href="http://www.go-mono.com">Mono</a> runtime and SDK is
+	available for UNIX and Windows.  Packages for various
+	distributions are also available from our download page.</p>
+
+	<p>Since the last release, 1,124 individual commits were done to
+	our runtime and class libraries.</p>
+
+	<p>144 bugzilla bugs were closed.</p>
+
+	<p>I know that the following summary is incomplete, I
+	apologize for missing major features</p>
+
+	<p>We have finished the SourceGear <a
+	href="http://www.ximian.com/about_us/press_center/press_releases/index.html?pr=sourcegear">contract</a>,
+	which funded Web Services in Mono as well as various
+	improvements in the runtime.  We are very happy to have served
+	our first customer, and we will continue to improve Mono to
+	make sure the <a href="http://www.sourcegear.com/vault/">Vault
+	software</a> runs flawlessly on Mono.
+
+	<p>As you can expect, this release features bug fixes
+	everywhere: memory leaks plugged, performance problems solved,
+	performance improvements and more.  A special area of
+	robustness is the client-side web services component: it is
+	extremely robust now, as one of the SourceGear acceptance
+	criteria was a 24-hour continuous test of their client library
+	that did millions of web service operations.
+
+	<p>We hope to bring the same level of robustness to the server
+	side component in the next release, the www.go-mono.com site
+	<a
+	href="http://www.go-mono.com/docs/index.html">documentation</a>
+	is currently running with Mono and our ASP.NET implementation
+	(that is why the site has gone down a few times: we were using
+	it on our production system to use it under stress).
+
+	<p>Each new release of Mono opens the door for more abusive
+	tests, and this time is not an exception, we already have a
+	few areas of performance and scalability that we want to
+	address for the next release.
+
+<h2>1. Availability</h2>
+	
+	<p>Binaries for various platforms are available from our web
+        site from the <a
+        href="http://www.go-mono.com/download.html">download</a>
+        section:
+
+	<ul> <a
+        href="http://www.go-mono.com/download.html">http://www.go-mono.com/download.html</a>
+	</ul>
+
+	<p>If you are using Red Carpet, subscribe to the Mono channel
+	to install this update. 
+	
+        <p>Source code for Mono, MCS, XSP and mod_mono are also available
+        from our web site</p>
+
+	<ul>
+		<li>MCS package (Class Libraries, C# and VB.NET compiler and managed tools):<br>
+
+			<a href="http://www.go-mono.com/archive/mcs-0.28.tar.gz">http://www.go-mono.com/archive/mcs-0.28.tar.gz</a>
+
+		<li>Mono package (Runtime engine, JIT compiler,
+		pre-compiled compiler and class libraries):<br>
+
+			<a
+        href="http://www.go-mono.com/archive/mono-0.28.tar.gz">http://www.go-mono.com/archive/mono-0.28.tar.gz</a>
+
+		<li>Apache Mono Module and XSP runtime (needed for the
+		Apache module):<br>
+
+			<a
+	href="http://www.go-mono.com/archive/mod_mono-0.4.tar.gz">http://www.go-mono.com/archive/mod_mono-0.5.tar.gz</a><br>
+	
+			<a
+	href="http://www.go-mono.com/archive/xsp-0.5.tar.gz">http://www.go-mono.com/archive/xsp-0.6.tar.gz</a><br>
+
+	 </ul>
+
+<h2>2. New Features in this release.</h2>
+
+<h3>New Thread Locking</h3>
+
+	<p>Zoltan removed the big locks we had in the runtime, and now
+	we have a finely grained lock system in the runtime.  Runtime
+	hackers can read the included lock matrix document which
+	describes the requirements to use the new fine grained locks
+	in their code.
+
+<h3>Ahead of Time Compiler Optimizations</h3>
+
+	<p>Zoltan has worked extensively on the Mono ahead-of-time
+	compilation feature (AOT).  The AOT code is now considered to
+	be production quality, and also for the first time
+	precompiled code runs faster than JITed code.  This resulted
+	in a 13% compilation speed up for the Mono C# compiler,
+	reducing the compile time to 3.185 seconds.  A clear goal of
+	the team for the next release is to reach 3.1416 seconds.
+
+	<p>An MCS bug prevents System.dll from being precompiled
+	currently, we hope to fix this by the next release, but
+	everything else should work fine. 
+
+<h3>Web Services</h3>
+
+	<p>Now we have a complete Web Services stack in Mono, In this
+	release we added:
+
+	<ul>
+		<li>The WSDL command line tool: this tool is used to
+		generate web service client proxies from a WSDL
+		document (local or remote).
+		
+		<li>WSDL documents: now ASP.NET can generate a WSDL
+		document for any web service that it hosts.
+
+		<li>Web service documentation page: it shows
+		information about the methods of a web service. It
+		also provides a form with which you can test simple
+		methods.
+
+		<li>Support for HttpGet and HttpPost protocols.
+
+		<li>Our WSDL documentation page (http://.../file.asmx)
+		also can generate a sample proxy for you, if you don't
+		want to use wsdl.  
+	</ul>
+
+	<p>Notice that the stack was already functional in 0.26, but
+	the addition of the WSDL tools makes the setup complete for
+	developing completely on Mono.
+
+	<p>The work to support Web Services was possible thanks to <a
+	href="http://www.sourcegear.com">SourceGear</a>.  We should
+	all send them a token of appreciation.
+
+<h3>Xml Serialization</h3>
+
+	<p>New XML serializer generator tool (genxs). With this tool
+	you can generate a XML serializer for any type and customize
+	it to your needs.  For details about the use of this tool see
+	Lluis' blog: <a
+	href="http://primates.ximian.com/~lluis/blog/archives/000120.html">http://primates.ximian.com/~lluis/blog/archives/000120.html</a>
+
+	<p>Lots of fixes and improvements to support the WSDL
+	generation and consumption.
+
+<h3>Security</h3>
+
+	<p>Sebastien has implemented Authenticode(tm) and the code is
+	now part of the distribution.
+
+	<p>A couple of new tools are available: signcode and
+	chktrust.  The former is used to sign assemblies (or any PE
+	files) and the later is used to verify signatures and
+	timestamps.
+
+<h3>Web Service Enhancements</h3>
+
+	<p>Implementations of WSE 1.0 and WSE 2.0 appeared on the CVS,
+	thanks to Sebastien, Duncan, Todd and Daniel.   We build both
+	assemblies at this point.
+
+<h3>XML Improvements</h3>
+
+	<p>Speed and memory usage: extensive use of --profile and
+	various clever tricks from Atsushi and Ben.  Lots of
+	performance critical classes were improved, and XPathDocument
+	(which is used extensively by XPath and Xslt) uses arrays of
+	structs for its implementation to improve performance.
+
+	<p>XML Schema validation support in now in XmlValidatingReader
+	(although it is not finished). It also means that now many schema component
+	constraints have been implemented.
+
+<h3>Remoting</h3>
+
+	<p>Added support for CallContext. Now the CallContext is sent through
+	remoting boundaries and fixed various problems related to
+	in/out parameters in Remoting invocations.
+
+	<p>Improved robustness, specially for asynchronous calls.
+
+<h3>Generics</h3>
+
+	<p>Work continues on supporting generics: more changes have
+	been done to the runtime, class libraries and tools, but we
+	are not complete.  
+
+	<p>To build the generic version of Mono, you have to compile
+	the code from source, and build the class libraries with the
+	`generics' profile (make PROFILE=generics).  The generics C#
+	compiler is called `gmcs' and not `mcs'.  They will merge in
+	the future, but we wanted to maintain mcs robust, and do all
+	of our experimentation on a separate branch. 
+
+<h3>XSLT Managed Engine</h3>
+
+	<p>Over the past month, Ben's Managed XSLT engine has grown by
+	leaps and bounds. The implementation now offers compliance in
+	critical areas such as template conflict resolution. It also
+	implements all of the XSLT elements, including xsl:number. All
+	of the extension functions with the exception of format-number
+	have also been implemented.
+
+	<p>Oleg Tkachenko, a seasoned .NET developer, joined Ben in
+	his efforts on XSLT, working on making the design of
+	outputting XSLT much better. His work will allow for better
+	compliance with the spec, greatly improved speed, and support
+	for mode="html" for xsl:output.
+
+	<p>The work of all the XSLT hackers has resulted in a major rewarded, in
+	many cases the managed engine is faster than the C based libxslt.
+
+	<p>Although the Managed XSLT provider is still not the default
+	provider, you can enable it by setting the MONO_MANAGED_XSLT
+	environment variable, like this:
+
+<blockquote><pre>
+	export MONO_MANAGED_XSLT=true</pre></blockquote>
+
+<h3>PowerPC Runtime</h3>
+
+	<p>Progress on the PowerPC JIT engine, but the full engine did
+	not make it into the 0.28 release, it should still be
+	available before the Microsoft PDC.
+	
+<h3>Windows.Forms</h3>
+
+	<p>We got a nice upgrade from Vladimir at <a
+	href="http://www.openlinksw.com">OpenLink</a> for WineLib:
+	various new DLLs from the Wine runtime are now available (in
+	particular all the common dialog routines are now available to
+	us).  Vladimir is currently working on updating WineLib to the
+	latest edition of Wine.
+	
+	<p>Jordi Mas contributed the ListViewItem widget and the file
+	dialog and Jonathan Hogg contributed a few fixes to the code
+	base as well.  Brian Takita contributed the List control.
+
+	<p>Alexandre Pigolkine continued fixing the various low-level
+	controls to have the same rendering behavior that they do have
+	on Windows together with Jerome Laban.  We started a thread to
+	discuss the future implementation strategy for System.Drawing
+	to be fully cross-platform.
+
+	<p>Dennis continues in his quest to fix all the signatures in
+	the Windows.Forms.  Johannes added support to make Wine track
+	the theme settings of Gnome (we will fully complete this on
+	the next release).
+
+	<p>System.Drawing now has migrated to use Cairo bindings on
+	Unix.
+
+<h3>IL Assembler</h3>
+
+	<p>Jackson was in charge of most of these improvements.  New
+	features in this release: .data, p/invoke support, allow
+	multiple constraints on generic parameters, Oberon is now self
+	hosting with our il assembler and plenty of bugs fixed.
+
+<h3>JScript and Vsa</h3>
+
+	<p>Cesar has picked up again on JScript and has done
+	incredible progress on JScript and the Vsa engine, still not
+	ready for hello world, but moving along. 
+	
+<h3>Bug Fixing</h3>
+
+	<p>As you can expect bug fixes everywhere: ASP.NET server and
+	client, ADO.NET, memory leak fixes.  The client side for web
+	services is extremely robust (we passed the 24-hour continuous
+	test from SourceGear and fixed tons of memory leaks,
+	performance issues and stability problems).
+
+	<p>We hope to bring the same level of robustness to the server
+	side component 
+	
+<h2>3. The people behind this release</h2>
+
+	<p>The following developers contributed to this release:
+
+	<p>Alejandro Sanchez, Alexandre Pigolkine, Alp Toker, Atsushi
+	Enomoto, Ben Maurer, Bernie Solomon, Bernie Solomon, Cesar
+	Octavio Lopez Nataren, Christopher Taylor, David Sandor, David
+	Waite, Dennis Hayes, Dick Porter, Duco Fijma, Duncan Mak, Eran
+	Domb, Eric Lindvall, Gaurav Vaish, Gonzalo Paniagua, Hector
+	E. Gomez Morales, Jackson Harper, Jaime Anguiano, Jerome
+	Laban, Joel Basson, Joerg Rosenkranz, Johannes Roith, John
+	Luke, Jonathan Hogg., Jonathan Pryor, Jordi Mas, Joshua
+	Tauberer, Juraj Skripsky, Laurent Morichetti, Laurent
+	Morichetti, lb@lb.ods.org, Lluis Sanchez, Malte Hildingson,
+	Marco Ridoni, Martin Baulig, Martin Willemoes Hansen, Miguel
+	de Icaza, Mike Kestner, Nick Drochak, Oleg Tkachenko, Paolo
+	Molaro, Patrik Torstensson, Pedro Martinez, Peter Williams,
+	Philip Van Hoof, Piers Haken, Piers Haken, Rachel Hestilow,
+	Radek Doulik, Rafael Teixeira, Ravi Pratap, Sebastien Pouliot,
+	Timothy Parez, Todd Berman, Vladimir Kaluzhny, Vladimir
+	Vukicevic, Yaacov Akiba Slama, Yaron Shkop, Zoltan Varga.
+	
+	<p>This list is not complete, it is missing contributions that
+	were sent to the list, as it was very hard to track the two
+	million incremental line patch since the last release (lots of
+	documentation, thats why ;-).
+
+</body>
+</html>
+

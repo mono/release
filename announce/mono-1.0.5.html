@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?> <!-- -*-nxml-*- -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Mono 1.0.5 Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.0.5 Release Notes</h1>
+
+	<p>For detailed information about Mono, please see the <a
+	href="http://www.go-mono.com/archive/1.0/">Mono 1.0</a>
+	release notes.
+
+	<p>Mono 1.0.5 is a maintenance release release for the 1.0
+	series of the Mono runtime.  The Mono 1.0.xx series is the
+	edition of stable releases of the Mono runtime.
+
+<a name="new"><h2>New In Mono 1.0.5</h2></a>
+
+	<p>There are many bug fixes, optimizations and scalability
+	fixes that have been backported from the Mono 1.1.xx releases,
+	but in addition:
+
+<h3>MonoDoc</h3>
+
+	<p>MonoDoc now includes the new MonkeyGuide from Shane,
+	cleaned up and simplified.
+
+	<p>Joshua updated the <tt>monodocer</tt> tool, and by
+	extension the documentation has been updated and improved for
+	various classes.
+
+	<p>Plenty of updated API documentation for Gtk# developers. 
+
+	<p>The only bad news is that currently the Gtk# tutorial is
+	not shipped as it needs to be reviewed for correctness against
+	Gtk# 1.0 (it was wrong in a few places).
+	
+<h3>XSP server</h3>
+
+	<p>The XSP server performance has been increased by supporting
+	keep-alive connections.  Despite being only a testing server,
+	it was being used by a few sites.
+
+<h3>Monodoc</h3>
+
+	<p>Atsushi ported monodoc's ASP.NET interface so it works on
+	Windows now.
+
+	<p>Monodoc now can convert the output of the C# compiler -doc
+	switch into ECMA XML documentation, so you can browse it with
+	monodoc (command line option --cs-to-ecma).
+
+<h3>Security</h3>
+
+	<p>Endian fixes for Authenticode and NTLM (OSX, SPARC).
+
+	<p>Fixed RC4 to work under MS FX 2.0 runtime (empty IV);
+
+	<p>Fixed padding for keys that aren't a multiple of 8 bits
+	(e.g. a 1023 bits public key);
+
+	<p>Added support for SSLv2 ClientHello message to allow FireFox, IE and
+	wget to work with SslServerStream (Carlos, Sebastien);
+
+	<p>Added key blinding (on by default) to RSAManaged to avoid possible
+	timing attacks (Sebastien).
+
+<h3>ADO.NET</h3>
+
+	<p>Dan improved Sqlsharp tool to load data providers from the
+	Mono GAC, this is using the Mono.Data demultiplexor
+	(ProviderFactory). 
+
+	
+<a name="install"></a>
+<h2>Installing Mono 1.0.5</h2>
+	
+	<p><b>Binary Packages:</b>
+	<blockquote>
+	<p>Pre-compiled packages for SUSE 9, SUSE 9.1, Red Hat 9, SLES
+        8, Fedora Core 1, Fedora Core 2 and MacOS X are available from
+	our web site from the
+        <a href="http://www.go-mono.com/download.html">download</a>
+        section.  A Red Carpet Mono channel is also available on these
+        platforms.
+	</blockquote>
+        
+	<p><b>Source code:</b>
+	<blockquote>
+	<ul>
+	  <li><a href="http://www.go-mono.com/archive/1.0.5/mono-1.0.5.tar.gz">Mono runtime.</a>
+          <li><a href="http://www.go-mono.com/archive/1.0.5/mcs-1.0.5.tar.gz">MCS (Mono C# compiler and classes).</a>
+          <li><a href="http://www.go-mono.com/archive/1.0.5/libgdiplus-1.0.5.tar.gz">libgdiplus.</a>
+          <li><a href="http://www.go-mono.com/archive/1.0.5/xsp-1.0.5.tar.gz">XSP web server.</a>
+          <li><a href="http://www.go-mono.com/archive/1.0.5/mod_mono-1.0.5.tar.gz">Apache module.</a>
+          <li><a href="http://www.go-mono.com/archive/1.0.5/monodoc-1.0.5.tar.gz">Mono Documentation.</a>
+	</ul>
+	</blockquote>
+	
+	<p><b>Dependencies</b>
+	
+	<p>If you are installing from source code, there are a few
+	 optional dependencies that you will want to consider
+	 installing.
+        
+	<blockquote>
+	 <p><b>icu 2.6.1 or later</b> Optional: for supporting string collation.
+	 <p><b>Cairo 0.1.23</b> Required to install libgdiplus.
+	</blockquote>
+	
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.0.5.tar.gz
+    $ cd mono-1.0.5
+    $ ./configure
+    $ make install
+	
+</pre>
+	</blockquote>
+	<p><b>Optional Packages</b><p>
+	<blockquote>
+	<p>Libgdiplus is an optional packages, you only need
+	those if you intent to use System.Drawing or Windows.Forms.
+	
+	<p>libgdiplus:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.0.5.tar.gz
+    $ cd libgdiplus-1.0.5
+    $ /configure
+    $ make install
+	
+</pre>
+</blockquote>
+

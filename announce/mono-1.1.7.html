@@ -1,0 +1,328 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+	<title>Mono 1.1.7: Development Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.1.7 Development Release</h1>
+
+	<p>Mono 1.1.7 is the seventh release on the development series
+	of Mono. The Mono 1.1.x series will eventually lead to the next
+	stable milestone: Mono 1.2.
+
+	<p>We consider Mono 1.1.7 stable enough to recommend it for all users.
+	Those upgrading from the 1.0.x series should note that these notes
+	only contain the differences between 1.1.6 and 1.1.7.   All of the
+	changes since 1.0 are documented in the following release notes:
+	<a href="http://www.go-mono.com/archive/1.1.1">1.1.1</a>,
+	<a href="http://www.go-mono.com/archive/1.1.2">1.1.2</a>,
+	<a href="http://www.go-mono.com/archive/1.1.3">1.1.3</a>,
+	<a href="http://www.go-mono.com/archive/1.1.4">1.1.4</a>, 
+	<a href="http://www.go-mono.com/archive/1.1.5">1.1.5</a> and
+	<a href="http://www.go-mono.com/archive/1.1.5">1.1.6</a>.
+
+	<ul>
+		<li><a href="#new">What is new since the last release.</a>
+		<li><a href="#install">Download and installation.</a>
+	</ul>
+
+<a name="new"/></a>
+
+<h3>Mono 1.1.7 overview</h3>
+
+	<p>The Mono core is pretty much complete for the 1.2 release,
+	at this point we are only waiting for Windows.Forms to be
+	completed before we can ship it.  At this point we are
+	scheduled to release Mono 1.2 in September.
+
+	<p>In the meantime, Mono development has fallen into two
+	categories:
+
+	<ul>
+		<li>New code: Windows.Forms, libraries from the 2.x
+		profile (ASP.NET 2, ADO.NET 2), new compilers (JScript,
+		Basic, C# 2.0).
+
+		<br>ie, non-core components.
+
+		<li>New VM features: cross-platform register
+		allocator, new string collation framework, precise
+		garbage collector.
+
+		<br>These are being developed on either branches or on
+		separate trees and do not affect trunk.
+	</ul>
+
+	<p>The above setup allows us to continue development without
+	interfering with the stability of Mono 1.1.x.
+
+<h3>New I/O Layer</h3>
+
+	<p>In Mono 1.1.7 we are including Dick Porter's new IO-Layer,
+	which is daemon-less.  Before 1.1.7 Mono would always launch
+	an auxiliary process that would be used by multiple Mono
+	programs to share information like: global mutexes (named
+	mutexes), file sharing status per-file, process and thread
+	status.
+
+	<p>Mono no longer requires a separate shared process to
+	provide the previous features, this has significantly improved
+	Mono's I/O performance.   Beagle is three times as fast
+	indexing files and xsp tripled its speed.
+
+<h3>Http Client Interactions</h3>
+
+	<p>In the past the HttpWebRequest could starve the ThreadPool
+	and it would lead to deadlocks as documented <a
+	href="http://www.mono-project.com/ThreadPool_DeadLocks">on our
+	web site</a>.
+
+	<p>Gonzalo deployed a new implementation that does not have
+	these problems and can take advantage of Linux epoll or
+	kqueue.
+
+	<p>This code not only eliminated the potential deadlocks, but
+	also improved the client http throughput by avoiding
+	unnecessary context switches.
+
+	<p>Also ReadWriteTimeout is supported and Abort works properly
+        now.
+
+<h3>FreeBSD support</h3>
+
+	<p>Thanks to Bill Middleton support for i386 FreeBSD (tested
+	against 5.4 and 6.x-CURRENT) is now available.
+	
+<h3>Windows.Forms</h3>
+
+	<p>Extensive progress on the Windows.Forms support code since
+	the March 18th release.  Jackson wrote a new double-buffering
+	framework to bring our implementation in line with the
+	expected behavior.
+
+	<p>Databinding is now supported on this release (simple and
+	complex data binding), not all controls are ready though,
+	controls that support it: ListBox, CheckedListBox and ComboBox
+	(Jackson and Jordi).
+	
+	<p>Alexander Olk implemented the file dialogs and did various
+	touch-ups to other dialogs and widgets.
+
+	<p>Complete widgets: ImageListStreamer (Jackson),
+
+	<p>Prototype widgets: DataGrid widget and data container
+	widgets (Jordi) and RichTextBox (Peter)
+
+<h3>ASP.NET</h3>
+
+	<p>New ASP.NET 2.0 controls completed: ButtonField,
+	DetailsView, FormView, GridView, CheckBoxField,
+	HyperlinkField, ImageField, TemplateField by Lluis.
+
+	<p>Implemented support for two-way bindings in ASP.NET,
+	ObjectDataSource and various improvements to the Menu control.
+
+	<p>Gonzalo added support for code render syntax inside
+        non-server tags, ie., &lt;span &lt;%= (firefox) ? class="cool" : ""
+        %&gt;&gt;
+
+<h3>C# Compiler</h3>
+
+	<p>Hari and Marek continue the work on making the compiler
+	comply more strictly to the C# specification.  In some areas
+	the compiler is faster, and consumes less memory, but it also
+	provides better error messages and includes many new warnings
+	that before were ignored.
+
+	<p>Martin synchronized the generics compiler codebase with our
+	main compiler codebase.  Also all bug reported on the generics
+	compiler (except two parsing errors) have now been fixed and
+	the generics class libraries have been modified to match the
+	Beta2 libraries. 
+
+	<p>Marek implemented C# 2.0 conditional attributes and
+	DefaultCharSet attribute.
+
+<h3>SSL/TLS</h3>
+
+	<p>Many important fixes from Sebastien:
+
+	<ul>
+		<li>Fixed asynchronous operations;
+		<li> Fixed support for client-side certificates;
+		<li>Performance enhancements;
+	</ul>
+	
+<h3>Security</h3>
+
+	<p>Continued work on the CAS from Sebastien (--security flag).
+
+	<p>Exposed more of the Mono.Security libraries as the .NET 2.x
+	framework includes more features.
+	
+<h3>New Assemblies.</h3>
+
+	<p>The following assemblies are now functional:
+
+	<p><b>System.Configuration.Install</b> Written by Muthu
+	Kannan and Harinath Raja.
+
+	<p><b>System.ServiceProcess</b>: Joerg Rosenkranz Completed
+	the support and implemented the service host daemon.
+
+<h3>JavaScript</h3>
+
+	<p>Cesar's effort on JScript continue, not the compiler
+	implements:
+	<ul>
+		<li>Strict-Equality operators
+		<li>Eval
+		<li>RegularExpressionLiteral
+		<li>For-in statement 
+		<li>Custom constructors
+		<li>Increment/Decrement operators
+		<li>First-class functions 
+	</ul>
+
+	<p>Plus bug fixing.
+
+	<p>The JScript's runtime support now supports:
+
+	<ul>
+	 	<li>ArrayConstructor's CreateInstance function 
+	 	<li>ArrayPrototype's join method
+	 	<li>JSFieldInfo's GetValue and SetValue functions
+	 	<li>JScriptException's constructor
+	 	<li>Initial implementation of LateBinding's CallValue and
+	 	<li>SetIndexedPropertyValueStatic
+	</ul>
+
+<h3>Basic Language</h3>
+
+	<p>Manjula, Sudha and Ankit continued working on the Basic
+	compiler and the Basic runtime:
+
+	<ul>
+		<li>Implemented "End statement"
+		<li>Support "Exit Function"
+		<li>Support declaration of decimal numbers.
+		<li>Support 'Or' argument of AttributeTargets in AttributeUsage
+		<li> Conditional Constant Directives
+		<li>Support expressions for directives
+		<li>Support Reference Parameter when parameters and
+		arguments are different
+	</ul>
+
+	<p>The runtime now features late binding: it is 75% complete.
+	It works with sub, functions, properties and fields,
+	arrays. Late binding fit in well with simple expressions (like
+	in conditional expressions and arithmatic expressions).
+
+	<p>Finally, there is support for default values using an
+	attribute by round-tripping and patching the runtime.
+
+<h3>ADO.NET</h3>
+
+	<p>SQLServer: Added support for Asynchronous command execution
+	(Ankit and Suresh).
+
+	<p>Various disconnected mode improvements: loading
+	datatables. 
+
+	
+<h3>Mono.Posix assembly</h3>
+
+	<p>There is a new UnixListener and UnixClient classes in the
+	Mono.Unix namespace.
+
+<h3>Build System</h3>
+
+	Users will have to do make at least once in Mono before they
+	can do make in any directory.
+		
+<a name="install"/></a>
+<h2>Installing Mono 1.1.7</h2>
+	
+	<p><b>Important:</b> Mono 1.1.7 can not be installed in
+	parallel with Mono 1.0.x series on the same prefix.  To work
+	around this issue, you must use a different prefix at
+	configure time, for example:
+
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p>You can then setup your PATH to include /devel/bin to
+	access the Mono 1.1.  Alternatively you can replace your Mono
+	installation with 1.1.7
+
+	<p><b>Binary Packages:</b>
+	<blockquote>
+	<p>Pre-compiled packages for SUSE, SLES, Fedora Core, RHEL are
+	available from our web site from the
+        <a href="http://www.go-mono.com/download.html">download</a>
+        section.
+
+	<p>MacOS and Windows packages will be uploaded soon.
+	</blockquote>
+        
+	<p><b>Source code:</b>
+	<blockquote>
+	<ul>
+	  <li>Mono Source Code: <a href="http://www.go-mono.com/archive/1.1.7/mono-1.1.7.tar.gz">mono-1.1.7.tar.gz</a>
+	</ul>
+	</blockquote>
+	
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.1.7.tar.gz
+    $ cd mono-1.1.7
+    $ ./configure
+    $ make
+    $ make install
+	
+</pre>
+	</blockquote>
+		
+</blockquote>
+
+
+<h3>Contributors</h3>
+
+	<p>The following list is a partial list of contributors to
+	this release:
+
+	<p>Alexander Olk, Alp Toker, Andrew Skiba, Ankit Jain, Atsushi
+	Enomoto, Ben Maurer, Bernie Solomon, Bill Middleton, Boris
+	Kirzner, Brian Ritchie, Carlos Alberto Cortes, Cesar Octavio
+	Lopez Nataren, Christian Hergert, Chris Toshok, Daniel Drake,
+	Daniel Morgan, David Hudson, Daniel Rodriguez, David Waite,
+	Dick Porter, Eyal Alaluf, Geoff Norton, Gonzalo Paniagua,
+	Hiroyuki Ishimine, Hubert FONGARNAND, Hye-Shik Chang, Ilya
+	Kharmatsky, Jackson Harper, Jambunathan K, James Wilcox, Jb
+	Evain, Joe Shaw, John BouAntoun, John Luke, Jonathan Pryor,
+	Jonathan S. Chambers, Jon Larimer, Jordi Mas, Joshua Tauberer,
+	Jörg Rosenkranz, Konstantin Triger, Lluis Sanchez, Luke
+	Ravitch, Manjula, Marek Safar, Martin Baulig, Martin Willemoes
+	Hansen, Massimiliano Mantione, Miguel de Icaza, Mike Kestner,
+	Mike Tindal, Neale Ferguson, Nick Drochak, Paolo Molaro, Pedro
+	Kiefer, Peter Bartok, Peter Johanson, Rob Lyon, Rafael
+	Teixeira, Raja R Harinath, Randy Ridge, Ritvik Mayank, Rob
+	Lyon, Sebastien Pouliot, software@solmersa.com, Sudha,
+	Sudharsan V, Suresh, Toby Miller, Urs Muff, Zac Bowling and
+	Zoltan Varga
+

@@ -1,0 +1,151 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+	<title>Mono 1.1.8: Development Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.1.8 Development Release</h1>
+
+	<p>Mono 1.1.8 is the eight release on the development series
+	of Mono. The Mono 1.1.x series will eventually lead to the next
+	stable milestone: Mono 1.2.
+
+	<p>We consider Mono 1.1.8 stable enough to recommend it for all users.
+	Those upgrading from the 1.0.x series should note that these notes
+	only contain the differences between 1.1.7 and 1.1.8.   All of the
+	changes since 1.0 are documented in the following release notes:
+	<a href="http://www.go-mono.com/archive/1.1.1">1.1.1</a>,
+	<a href="http://www.go-mono.com/archive/1.1.2">1.1.2</a>,
+	<a href="http://www.go-mono.com/archive/1.1.3">1.1.3</a>,
+	<a href="http://www.go-mono.com/archive/1.1.4">1.1.4</a>, 
+	<a href="http://www.go-mono.com/archive/1.1.5">1.1.5</a>,
+	<a href="http://www.go-mono.com/archive/1.1.6">1.1.6</a> and
+	<a href="http://www.go-mono.com/archive/1.1.7">1.1.7</a>.
+
+	<ul>
+		<li><a href="#new">What is new since the last release.</a>
+		<li><a href="#install">Download and installation.</a>
+	</ul>
+
+<a name="new"/></a>
+
+<h3>Features</h3>
+
+	<p>Visual Studio solution to build Mono runtime natively on
+	Windows. 
+	
+<h3>Code Access Security</h3>
+
+	<p>Sebastien progress in this release:
+
+	<li>
+	<ul>AppDomain based sandboxes are supported (limited by
+	#74411);
+	
+	<ul>Stack propagation for async code, threads and SWF;
+	
+	<ul>Default policies (like LocalIntranet, Internet...) are now supported;
+
+	</li>
+
+	<p>The new features allows NRobot 0.20
+	(http://home.gna.org/nrobot/) to "work" (as much as the
+	permissions are currently present in the class libraries) on
+	Mono 1.1.8 with a single modification (change the imperative
+	assert in NRobot/Engine/GameArena.cs to a declarative assert).
+
+<h3>Windows.Forms</h3>
+
+	<p>We have drag and drop on X and win32 now.
+
+	<p>Jordi's DataGrid debuts.
+
+<h3>ASP.NET 2.x controls</h3>
+
+	<p>Lluis completed various new controls for ASP.NET 2.x:
+	ImageMap, Wizard, SiteMapDataSource and SiteMapPath.
+
+<h3>Reflection</h3>
+
+	<p>Lluis added support for producing debugging information
+	from Reflection.Emit.   This means that all the
+	Reflection-based compilers and VMs will be able to produce
+	debugging information and have the Mono debugger step through
+	the code. 
+	
+<h3>Packaging</h3>
+
+	<P> mono-ikvm has been merged into mono-core. Should make it easier
+        for people to get ikvm
+
+	<p> mono-nunit is back with the nunit stuff. Needed for mono-tools
+	
+
+<a name="install"/></a>
+<h2>Installing Mono 1.1.8</h2>
+	
+	<p><b>Important:</b> Mono 1.1.8 can not be installed in
+	parallel with Mono 1.0.x series on the same prefix.  To work
+	around this issue, you must use a different prefix at
+	configure time, for example:
+
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p>You can then setup your PATH to include /devel/bin to
+	access the Mono 1.1.  Alternatively you can replace your Mono
+	installation with 1.1.8
+
+	<p><b>Binary Packages:</b>
+	<blockquote>
+	<p>Pre-compiled packages for SUSE, SLES, Fedora Core, RHEL are
+	available from our web site from the
+        <a href="http://www.go-mono.com/download.html">download</a>
+        section.
+
+	<p>MacOS and Windows packages will be uploaded soon.
+	</blockquote>
+        
+	<p><b>Source code:</b>
+	<blockquote>
+	<ul>
+	  <li>Mono Source Code: FIXME <a href="">mono-1.1.8.tar.gz</a>
+	</ul>
+	</blockquote>
+	
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.1.8.tar.gz
+    $ cd mono-1.1.8
+    $ ./configure
+    $ make
+    $ make install
+	
+</pre>
+	</blockquote>
+		
+</blockquote>
+
+
+<h3>Contributors</h3>
+
+	<p>The following list is a partial list of contributors to
+	this release:
+
+	 Jakub Bogusz
+	 Mart Roosmaa

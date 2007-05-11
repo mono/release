@@ -1,0 +1,639 @@
+<html>
+<head><title>Mono 0.29 Release</title>
+<style type="text/css">
+h1 {
+color: #efefef;
+font-size: 14pt;
+font-family: "Trebuchet MS";
+
+border: 0;
+
+margin: 0;
+
+padding: 1em;
+
+background: #666666;
+}
+
+h2, h4, h5, h6 {
+font-family: Verdana,sans-serif;
+font-weight: bold;
+}
+
+h3, h4, h5, h5 {
+margin-left: 1em;
+}
+
+h2, h3 {
+font-size: 18px;
+}
+
+h2 {
+padding: 3px;
+color: #000000;
+}
+
+h3 {
+font-size: 13px;
+border-bottom: 2px solid #dddddd;
+}
+
+body, table {
+background-color: #ffffff;
+font-family: Verdana, sans-serif; font-size: 12px;
+color: black;
+margin: 0;
+padding: 0;
+border: 0;
+       margin-left: 20%;
+       margin-right: 20%;
+}
+
+p,lu,li {
+margin-left: 2em;
+margin-right: 2em;
+}
+
+img {
+border: 0;
+vertical-align: top;
+}
+.code-xml, .code-csharp
+{
+	margin:15px;
+	padding:15px;
+	font-size: small;
+	font-family: "Courier New", Courier;
+	background:whitesmoke;
+	border: solid 1px silver;
+	line-height:110%;
+}
+
+.shell { border-style: solid; background: #000000; color: #bbbbbb;
+	#777777; border-width:
+	1px; padding: 2pt; 
+	margin-left: 4em;
+	margin-right: 4em;
+}
+
+</style>
+<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'/>
+</script>
+</head>
+<body onload='paintColors();'>
+
+<h1>Mono 0.29, MonoDoc 0.8, XSP 0.8 and mod_mono 0.6</h1>
+
+<p>Hello everyone,</p>
+
+	<p>A new release of <a
+	href="http://www.go-mono.com">Mono</a> has been released.
+	Mono is an open source implementation of the .NET Framework
+	for Unix, Linux and Windows systems.
+
+	<p>There are big breaking news: Mono JIT on PowerPC runs Hello
+	World, ASP.NET is feature complete, AppDomain unloading is
+	supported and 64-bit ports of HPPA and SPARCv9 are available
+	now.  A new group of developers from Mainsoft has been
+	contributing extensively to ADO.NET and ASP.NET.
+
+	<p>This release includes four components at once: the Runtime
+	and Software Development Kit as well as the Documentation
+	browser, our XSP web host for ASP.NET and the Mono/Apache
+	module have been released.  Packages for various distributions
+	are also available from our download page.</p>
+
+	<p>A big push in this release has been to get closer to
+	completion on the .NET 1.0 and .NET 1.1 APIs and completing
+	pieces that we need for the <a
+	href="http://www.go-mono.com/mono-roadmap.html">Mono 1.0
+	release</a>.  But at the same time work continues within the
+	safety of #ifdefs on Mono 1.1 features (integrating .NET 1.2
+	components).
+	
+	<p>I know that the following summary is incomplete, I
+	apologize for missing major features</p>
+
+	<h3>Stats</h3>
+
+	<p>Since the last release, 3,071 individual commits were done to
+	our runtime and class libraries.</p>
+
+	<p>310 bugzilla bugs were closed.</p>
+
+	<h3>Thanks</h3>
+
+	<p>A big thank you goes for Duncan Mak who worked steadily to
+	get every new dependency of Mono compiled and tested in four
+	platforms as well as maintaining the Red Carpet channel (and
+	soon, give us the easy installer).
+
+<h2>1. Availability</h2>
+	
+	<p><b>Binary Packages:</b>
+
+	<blockquote>
+	<p>Pre-compiled packages for various platforms are available
+        from our web site from the <a
+        href="http://www.go-mono.com/download.html">download</a>
+        section:
+
+	<ul> <a
+        href="http://www.go-mono.com/download.html">http://www.go-mono.com/download.html</a>
+	</ul>
+
+	<p>Since there are so many new package dependencies (libicu
+	and the Cairo universe), we are not listing the individual
+	packages to download anymore and we recommend that you use Red
+	Carpet to install.
+
+	<p>The Ximian Desktop installer will be able to install Mono
+	later this week, so with a single click, you should be able to
+	install Mono 0.29 on your system.
+	</blockquote>
+
+	<p><b>Source code:</b>
+	<blockquote>
+	<ul>
+		<li>Mono package (Runtime engine, JIT compiler,
+		pre-compiled compiler and class libraries):<br>
+
+			<a
+        href="http://www.go-mono.com/archive/mono-0.29.tar.gz">http://www.go-mono.com/archive/mono-0.29.tar.gz</a>
+
+		<li>MCS package (Class Libraries, C# and VB.NET compiler and managed tools):<br>
+
+			<a href="http://www.go-mono.com/archive/mcs-0.29.tar.gz">http://www.go-mono.com/archive/mcs-0.29.tar.gz</a>
+
+		<li>Apache Mono Module and XSP runtime (needed for the
+		Apache module):<br>
+
+			<a
+	href="http://www.go-mono.com/archive/mod_mono-0.6.tar.gz">http://www.go-mono.com/archive/mod_mono-0.6.tar.gz</a><br>
+	
+			<a
+	href="http://www.go-mono.com/archive/xsp-0.8.tar.gz">http://www.go-mono.com/archive/xsp-0.8.tar.gz</a><br>
+
+		<li>Mono Documentation browser:<br>
+			<a href="http://www.go-mono.com/archive/monodoc-0.8.tar.gz">http://www.go-mono.com/archive/monodoc-0.8.tar.gz</a><br>
+	 </ul>
+
+	 <p>On CVS the tags are MONO_0_29, MCS_0_29, XSP_0_8,
+	 MOD_MONO_0_6 and MONODOC_0_8.
+	 </blockquote>
+
+	 <p><b>Quick source code installation:</b>
+
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	source code is very simple:
+	
+	<pre class="shell">
+$ tar xzf mono-0.29.tar.gz
+$ cd mono-0.29
+$ ./configure
+$ make install</pre>
+	 
+	 </blockquote>
+
+<h2>2. Mono Runtime Changes.</h2>
+
+	<p>Fedora's security features broke Mono 0.28, this version of
+	Mono rectifies this problem.
+	
+	
+<h3>Ahead of Time Compiler</h3>
+
+	<p>Bug fixes in the C# compiler now permit all the assemblies
+	to be pre-compiled using the ahead-of-time compilation option
+	of Mono.  On average a fully AOT environment will give the C#
+	compiler a 20% performance boost.
+
+<h3>Porting Progress</h3>
+
+	<p>More work on the PowerPC code generator is on this release,
+	the JIT engine was able to run "Hello World" for the first
+	time.  This involves JITing a fair amount of code, roughly
+	about 100 methods and it also exercises various P/Invoke and
+	calling convention features.  (<a
+	href="http://www.go-mono.com/images/mono-macosx.png">[Screenshot]</a>)
+
+	<p>At this point it seems like Mono exposes a few bugs on
+	the MacOS X application support.
+	
+	<p>64-bit support for the VM was checked in for the SPARC v9
+	and HPPA architectures by Bernie Solomon.   This is a
+	significant change because this means that the values of the 
+	"IntPtr" variable is 8-bytes instead of 4-bytes.  The port
+	included various cleanups in our libraries to make them 64-bit
+	ready. 
+
+<h3>Internationalization</h3>
+
+	<p>Dick has checked in a large upgrade to our
+	internationalization support, initially this code contains
+	CultureInfo and string collation routines.  This uses IBM's
+	IBM's ICU library, available from:<br> <a
+	href="http://oss.software.ibm.com/icu/index.html">http://oss.software.ibm.com/icu/index.html</a>.
+
+	<p>Now Mono can cope with charset-encoded filenames instead of
+	demanding them to be in UTF-8 format.  See the man page for
+	mono(1) for details.
+
+<h3>Generics Support</h3>
+
+	<p>Martin continues his work to support generics in Mono.  The
+	support is not ready for prime time yet, but you can see some
+	thirty-something generic sample programs in mcs/tests/gen-*
+
+<h3>Improved Trace Facility</h3>
+
+	<p>The runtime features an improved trace facility, developers
+	can now include and exclude groups of methods, namespaces,
+	types and assemblies from the trace output, a helpful tool for
+	debugging code.  See the man page for details.
+
+	<p>For example, to trace method calls in the program, and on
+	the System.XML namespace, use:
+	
+	<pre class="shell">
+$ mono --trace=program,N:System.Xml hello.exe
+</pre>
+	
+
+<h3>AppDomain unloading and Module support</h3>
+
+	<p>Mono has finally gained module support, some programs from
+	the Mercury compiler are known to work now and this should
+	allow the IIOP.NET folks to continue their work	(Zoltan).
+
+	<p>AppDomains can now be unloaded (Zoltan).
+
+<h3>Other runtime features</h3>
+
+	<p>Gonzalo and Zoltan have fixed a long-standing problem with
+	the implementation of Equals on ValueTypes, this problem was
+	not only fixed by Gonzalo, but later the performance was
+	boosted by Zoltan.
+
+	<p>Lluis implemented context static field support for remoting.
+
+	<p>Zoltan implemented AppDomain unloading, LastErr flag on
+	P/Invoke methods, stdcall calling conventions support,
+	marshalling of structs and improved the support for running
+	SML.NET and Mercury.NET generated code.
+
+	<p>AppDomain.LoadAssemblyRaw functionality has been added by
+	Zdravko Tashev.
+	
+<h2>3. Compilers and Tools Changes.</h2>
+
+	<p>The C# compiler continues to be bug fixed.  A new version
+	of the compiler `gmcs' is available for testing out the
+	Generics features of C# 2.0.  To use this feature, you must
+	rebuild the Mono class libraries with the `generics' profile:
+
+	<pre class="shell">
+$ cd mcs-0.29
+$ make PROFILE=generics
+$ make install</pre>
+
+	<p>Sebastien and Zoltan improved MCS to support delay-signing
+	of assemblies.   Also the <tt>sn</tt> (StrongName) tool is
+	included in this distribution to re-sign and verify signatures
+	of assemblies.
+	
+<h2>4. Mono Class Libraries Changes.</h2>
+
+<h3>Corlib has been renamed to Mscorlib</h3>
+
+	<p>We have finally renamed `corlib.dll' into `mscorlib.dll'
+	which means that we removed all the various workarounds that
+	we had in the code to cope with this difference. 
+
+<h3>Novell.Directory.LDAP</h3>
+
+	<p>Sunil Kumar and his team at Novell have contributed a fully
+	managed implementation of LDAP for Mono and the .NET
+	Framework.   The code is now part of the standard distribution
+	of Mono, and is being used to implement our
+	System.DirectoryServices namespace.   The Mono.Directory.LDAP
+	assembly is now deprecated in favor of this.
+
+<h3>System.Drawing and Windows.Forms</h3>
+
+	<p>In the last release of Mono we had started an effort to
+	unify the three backends that we had for System.Drawing, since
+	it was becoming hard to maintain.
+
+	<p>The new strategy to implement System.Drawing is to use the
+	GDI+ API on Unix and implement the GDI+ C Flat API on top of
+	the cairo library (which is now a dependency).
+
+	<p>The good news is that the code is much simpler, our support
+	is more complete, and we can develop this one faster.  The bad
+	news is that there are many regressions on this release
+	related to using System.Drawing and Windows.Forms on Unix.
+
+	<p>Windows.Forms in this release is broken on Unix, but fairly
+	functional on Windows.  The new rendering engine introduced
+	for System.Drawing broke a lot of the functionality we had,
+	and we will be working hard to address those limitations on
+	the next release. 
+
+<h3>Databases</h3>
+
+	<p>Reggie updates the ByteFX MySQL provider on CVS and
+	Francisco updates the Npgsql provider, so this version ships
+	with the latest editions of these two providers.
+
+	<p>Victor contributed an updated DB2 provider.   We could not
+	get the latest version of his code before the release, but
+	expect the namespace to change on the next release as we
+	become binary compatible with the IBM.Data.Db2Client
+	implementation.
+
+	<p>Eran Domb has been actively fixing bugs in the System.Data
+	assembly and related tools.
+
+<h3>JavaScript</h3>
+
+	<p>Cesar continued with the grammar fixes to the language.  Code
+	Generation for: default ms compiler jscript assembly format,
+	function declarations, variable declarations, boolean literals,
+	string literals and initial code generation for binary
+	operations.
+	
+	<p>Semantic Analysis: initial /fast features, like detecting
+	not declared variables.
+	
+<h2>5. Web Services and Remoting Changes</h2>
+
+	<p>Lluis has been working hard on completing the Web Services
+	and Remoting assemblies to reach 1.0.
+
+	<p>All the encodings are now supported (previously we
+	supported only document/literal): literal encoded and RPC
+	format is now supported, with wrapped or bare parameters.
+
+	<p>A new documentation page is generated now for web services
+	automatically and added support for generation of WSDL files
+	for client HttpPost and HttpGet.
+
+	<p>Web Services error handling and error reporting has
+	improved a lot as we started using it for developing our own
+	web services and the various improvements to the HTTP runtime
+	also benefit this space.  The discovery classes have been
+	added to support the DISCO protocol, and a new tool (disco) is
+	distributed as well.
+
+	<p>Remoting.Configuration has been implemented thanks to Jaime
+	who did the first pass at the implementation and Lluis who
+	completed it and deployed it.  Remoting objects can be hosted
+	in XSP, the .rem and .soap files types are now supported as well.
+
+	<p>Improved the performance of calls between application
+	domains, and also implemented support for asynchronous calls
+	as well as improving the support for synchronization and
+	static fields.
+
+<h3>WSE: The Web Services Enhancements</h3>
+
+	<p>Sebastien added support for trace filters on input/output
+	SOAP messages.
+
+	<p>He also added support for WS-Security on the client side:
+	UserName rountrip (except digital signatures) and XML
+	encryption using X.509 certificates to/from a web service.
+
+<h2>6. Mono Documentation Browser Changes.</h2>
+
+	<p>MonoDoc is the Mono Documentation Browser.  It includes
+	class library documentation, tutorials, the C# language
+	reference and errors reference.  Monodoc contains inline
+	editing and collaboration facilities built into it. 
+	
+	<p>On this release of MonoDoc we are shipping with its
+	collaboration features turned on.  Users can now edit the
+	content for the class library documentation and submit their
+	improvements through a Mono Web Service.  Improvements will
+	appear on upcoming releases of MonoDoc.
+
+	<p>The editing facility in MonoDoc contains new shortcuts to
+	insert cross references, tables, item lists and code samples
+	(miguel).  Also Ben added support for editing enumeration
+	definitions (<a
+	href="http://www.go-mono.com/images/Screenshot-MonodocEditing.png">[Screenshot]</a>).
+
+	<p>The Web edition has better JavaScript navigation facilities
+	for the tree explorer, and Gonzalo improved the caching of
+	data for the web edition of Monodoc: now it will return the
+	time-stamp of the documents to avoid reloading redundant
+	information over the web.
+
+	<p>You can use the Monodoc/web edition to host the
+	documentation for your own class libraries.
+
+	<p>You can see the web front-end for Monodoc live at <a
+	href="http://www.go-mono.com/docs/index.html">http://www.go-mono.com/docs/index.html</a>
+
+	<p>John Luke contributed various aesthetic changes to the web
+	edition and various Gtk# types were documented by him.  The
+	new style is closer to the NDoc web interface.
+
+	<p>New documentation for NUnit, Npgsql is also available.
+
+	<p><b>Monkeyguide</b>: We are shipping the Monkeyguide in this
+	release, but we need help in updating it as well as doing
+	editing work on it.  It is known to contain old materials that
+	confuse people, if you are interested in helping the
+	documentation effort, please subscribe to the
+	mono-docs-list@ximian.com mailing list. 
+
+<h2>7. ASP.NET: Feature complete</h2>
+
+	<p>Two major changes in this release: OutputCache support and
+	state session support.   With this we consider our
+	implementation of ASP.NET to be feature complete, and at this
+	point we are requesting ASP.NET developers to try out their
+	existing applications and report any problems to us (Please use <a
+	href="http://bugzilla.ximian.com">Bugzilla</a> to file a
+	report). 
+	
+	<p><b>In depth</b>: Now Mono supports the session managers other than the
+	in-memory session manager.  There are two: the StateServer and
+	the SQL-based state server.  Both configured the same way you
+	would on Microsoft.NET.
+
+	<p>The Mono SQLSessionServer allows you to use any database
+	provider that implements the IDbConnection interface (The
+	default provider is Npgsql).
+
+	<p> A little extra configuration is required because of this
+	extra flexibility. If you are not using Npgsql you need to add
+	the StateDBProviderAssembly and StateDBConnectionType
+	attributes to your app settings like so:
+
+<xmp class="code-xml">
+<appSettings>
+	<add key="StateDBProviderAssembly" value="Npgsql"/>
+	<add key="StateDBConnectionType" value="Npgsql.NpgsqlConnection"/>
+</appSettings>
+</xmp>
+
+	<p><a
+	href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconOutputCache.asp">OutputCache</a>
+	is supported now on ASP.NET pages.
+
+	<p>Two new tools asp_state.exe and dbsessmgr.exe ship: the
+	first is the state manager for ASP.NET and the later is a tool
+	to manipulate the current session database.
+
+	<p>Support for other languages in ASP.NET is included now,
+	they only need to distribute a CodeDOM provider (VB.NET does).
+
+	<p>Support for different character set encodings on files,
+	requests and responses instead of only supporting UTF-8.
+
+	<p>Timeouts: now it is possible to use the machine.config or
+	the application config file to control the amount of time that
+	the runtime will wait to process an ASP.NET request.  If the
+	timeout is exceeded the operation is aborted.
+
+	<p>A request queue mechanism: it now possible to inform the
+	runtime through the machine.config or application config file
+	how many threads it should consume from the threadpool: any
+	excess requests will be queued up instead of consuming all the
+	threads available:
+
+	<xmp class="code-xml"><system.web>
+	<httpRuntime executionTimeout="90"
+		maxRequestLength="4096"
+		useFullyQualifiedRedirectUrl="false"
+		minFreeThreads="8"
+		minLocalRequestFreeThreads="4"
+		appRequestQueueLimit="100" />
+</system.web>
+	</xmp>
+
+	<p>Alon and Yaron from Mainsoft have actively contributed to
+	fixing plenty of bugs and controls on this release.
+
+<h2>8. Security</h2>
+
+	<p>The Mono Cryptographic libraries are very complete and all
+	written in managed code.  Various people take bits and pieces
+	of it and run it on smaller devices where the Compact
+	Framework might not have all the functionality they need.
+
+	<p>In this release Sebastien expands the Mono.Security code
+	base with new features:
+
+	<ul>
+	<li>Augmented support for X.509 certificates.
+	<li>Basic chaining and trust-anchors.
+	<li>Added a managed MD4 implementation to support NTLM
+	authentication.
+	<li>Added PKCS#8 support to protect private keys - required
+	for PKCS #12.
+	</ul>
+
+	<p>You can track Sebastien's <a
+	href="http://pages.infinit.net/ctech/poupou.html">blog</a> for
+	more up-to-date information on security.
+	
+	
+<h2>9. Support for .NET 1.2</h2>
+
+	<p>Some work has begun in various areas to support the .NET
+	1.2 APIs, although Mono 1.0 will not ship with support for 1.2
+	APIs, some work is being done to get a head start.
+
+<h3>Runtime features</h3>
+
+	<p>Martin continued his work on the runtime features to
+	support generics and Zoltan brought in some of the new features
+	from .NET 1.2 to System.Reflection: Dynamic methods and the
+	new Reflection.Emit support for things like type modifiers. 
+
+<h3>ObjectSpaces</h3>
+
+	<p>Implementation on ObjectSpaces has begun: Mark Easton,
+	Richard Thombs and Tim Coleman have started work on this new
+	database system.  
+
+	<p>The current strategy has been to stub out code to get the
+	basics moving, and write unit tests as we go.
+	
+<h3>Crypto</h3>
+
+	<p>Most of the new cryptographic functionality available in .NET
+	1.2 was already part of Mono.Security or were internal classes
+	of System.Security.
+
+	<p>Pieter Philippaerts donated this RIPEMD160 managed hash
+	implementation.
+
+	<p>Added the new classes for the new HMAC and it's
+	derived companions: HMACMD5,HMACRIPEMD160, HMACSHA256,
+	HMACSHA384 and HMACSHA512 (Sebastien).
+
+	<p>Added the new PKCS#5 PBDKF2 password based key derivation
+	inRfc2898DeriveBytes (Sebastien).
+
+	<p>Also new:
+	
+	<ul>
+	<li>System.Security.Cryptography: Complete support for ASN1
+	data and OID.
+	<li>System.Security.Cryptography.Pkcs: Started implemention
+	usingMono.Security PKCS#7 support.
+	<li>System.Security.Cryptography.X509Certificates: Started
+	implementation using Mono.Security X.509 support.
+	</ul>
+
+<h2>10. Other News</h2>
+
+	<p>Gonzalo has written a couple of new tools to generate an
+	XML map of an API and a tool to compare arbitrary sets of XML
+	API maps.  We are now using this in place of our previous
+	"CorCompare" tool to generate the API status pages on the Mono
+	site.  The new tools allow us to update those more frequently
+	and they more accurately represent the <a href="http://www.go-mono.com/class-status-corlib.html">current library
+	status</a>. 
+
+	<p>Our IL assembler and disassembler are much better and more
+	conforming than before.
+	
+<h2>11. The people behind this release</h2>
+
+	<p>Roughly 70 developers following developers contributed to this
+	release:
+
+	<p>Aleksey Demakov, Alexandre Pigolkine, Andreas Nahr, Atsushi
+	Enomoto, Ben Maurer, Bernie Solomon, Carlos A. Barcenilla,
+	Carlos Alberto Cortes, Carlos Guzmán Álvarez, Cesar Octavio
+	Lopez Nataren, Christopher Taylor, Daniel Kornhauser, Daniel
+	Morgan, Dave Bettin, David Waite, Dennis Hayes, Dick Porter,
+	Duncan Mak, Eran Domb, Ettore Perazzoli, Fawad Halim,
+	Francisco Figueiredo Jr., Gaurav Vaish, Gert Driesen, Gonzalo
+	Paniagua, Hector E. Gomez, Hye-Shik Chang, Jackson Harper,
+	Jaime Anguiano, Jean-Marc André, Jeff Seifert, Jochen Wezel,
+	Joel Basson, Johannes Roith, John Luke, Jonathan Pryor, Jordi
+	Mas, Laurent Morichetti, Lluis Sanchez, Marek Safar, Mark
+	Easton, Martin Baulig, Martin Willemoes Hansen, Miguel de
+	Icaza, Mike Kestner, Nick Drochak, Paolo Molaro, Pedro
+	Martinez, Peter Bartok, Peter Teichman, Peter Williams,
+	Philipp Past, Philip Van Hoof, Pieter Philippaerts, Radek
+	Doulik, Rafael Teixeira, recht@netbsd.org, Reggie Burnett,
+	Richard Thombs, Richard Torkar, Sebastien Pouliot, Sunil
+	Kumar, Tim Coleman, Timothy Parez, Todd Berman, Victor
+	Vatamanescu, Wojciech Polak, Yaron Shkop, Zdravko Tashev and
+	Zoltan Varga.
+
+	<p>This list is not complete, it is missing contributions that
+	were sent to the list, as it was very hard to track the one
+	million incremental line patch since the last release.
+</body>
+</html>
+

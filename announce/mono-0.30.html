@@ -1,0 +1,539 @@
+<html>
+<head><title>Mono 0.30 Release</title>
+<style type="text/css">
+h1 {
+color: #efefef;
+font-size: 14pt;
+font-family: "Trebuchet MS";
+
+border: 0;
+
+margin: 0;
+
+padding: 1em;
+
+background: #666666;
+}
+
+h2, h4, h5, h6 {
+font-family: Verdana,sans-serif;
+font-weight: bold;
+}
+
+h3, h4, h5, h5 {
+margin-left: 1em;
+}
+
+h2, h3 {
+font-size: 18px;
+}
+
+h2 {
+padding: 3px;
+color: #000000;
+}
+
+h3 {
+font-size: 13px;
+border-bottom: 2px solid #dddddd;
+}
+
+body, table {
+background-color: #ffffff;
+font-family: Verdana, sans-serif; font-size: 12px;
+color: black;
+margin: 0;
+padding: 0;
+border: 0;
+       margin-left: 20%;
+       margin-right: 20%;
+}
+
+p,lu,li {
+margin-left: 2em;
+margin-right: 2em;
+}
+
+img {
+border: 0;
+vertical-align: top;
+}
+.code-xml, .code-csharp
+{
+	margin:15px;
+	padding:15px;
+	font-size: small;
+	font-family: "Courier New", Courier;
+	background:whitesmoke;
+	border: solid 1px silver;
+	line-height:110%;
+}
+
+.shell { border-style: solid; background: #000000; color: #bbbbbb;
+	#777777; border-width:
+	1px; padding: 2pt; 
+	margin-left: 4em;
+	margin-right: 4em;
+}
+
+</style>
+<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'/>
+</script>
+</head>
+<body onload='paintColors();'>
+
+<h1>Mono 0.30, MonoDoc 0.10, XSP 0.9, mod_mono 0.7, libgdiplus 0.1</h1>
+
+<p>Hello everyone,</p>
+
+	<p>A new release of <a
+	href="http://www.go-mono.com">Mono</a> has been released.
+	Mono is an open source implementation of the .NET Framework
+	for Unix, Linux and Windows systems.
+
+	<p>This release includes four components at once: the Runtime
+	and Software Development Kit, the Documentation browser, and
+	the ASP.NET server with its Apache module.  Packages for
+	various distributions are also available from our download
+	page.</p>
+
+	<p>This is mostly a fine tuning release: bug fixing and
+	performance improvements are the major benefits, but new
+	classes and new features are also included.  See the rest of
+	the notes for details.
+
+	<h3>Stats</h3>
+
+	<p>Since the last release, 2,655 individual commits were done to
+	our runtime and class libraries.</p>
+
+	<p>1,397 bugzilla bugs were closed, four times as much as in
+	the previous release cycle.  So this is certainly a bug fixing
+	release ;-)</p>
+
+	<h3>Thanks</h3>
+
+	<p>A big thank goes again for Duncan Mak who worked steadily to
+	get every new dependency of Mono compiled and tested on our
+	Linux Platforms and to Dan Morgan who tested our Windows build
+	and produced packages for us.
+
+<h2>Availability</h2>
+	
+	<p><b>Binary Packages:</b>
+
+	<blockquote>
+	<p>Pre-compiled packages for SUSE 9, Red Hat 9 and Fedora Core
+        1 are available from our web site from the <a
+        href="http://www.go-mono.com/download.html">download</a>
+        section.
+	</blockquote>
+
+	<p><b>Source code:</b>
+
+	<blockquote>
+	<ul>
+<a href="http://www.go-mono.com/archive/monodoc-0.10.tar.gz">http://www.go-mono.com/archive/monodoc-0.10.tar.gz</a>
+<a href="http://www.go-mono.com/archive/mono-0.30.tar.gz">http://www.go-mono.com/archive/mono-0.30.tar.gz</a>
+<a href="http://www.go-mono.com/archive/mcs-0.30.tar.gz">http://www.go-mono.com/archive/mcs-0.30.tar.gz</a>
+<a href="http://www.go-mono.com/archive/xsp-0.9.tar.gz">http://www.go-mono.com/archive/xsp-0.9.tar.gz</a>
+<a href="http://www.go-mono.com/archive/mod_mono-0.7.tar.gz">http://www.go-mono.com/archive/mod_mono-0.7.tar.gz</a>
+<a href="http://www.go-mono.com/archive/libgdiplus-0.1.tar.gz">http://www.go-mono.com/archive/libgdiplus-0.1.tar.gz</a>
+	 </ul>
+
+	 <p>On CVS the tags are: MONO_0_30, MCS_0_30, XSP_0_9,
+	 MOD_MONO_0_7, MONODOC_0_10, LIBGDIPLUS_0_1
+	 </blockquote>
+
+	 <p><b>Ports:</b>
+	 <blockquote>
+	 <p>Ports of popular open source applications are now
+	maintained here: <a
+	href="http://www.go-mono.com/ports/">http://www.go-mono.com/ports/</a>.
+	 </blockquote>
+	
+	 <p><b>Dependencies</b>
+
+	 <p>If you are installing from source code, there are a few
+	 optional dependencies that you will want to consider
+	 installing.
+
+	 <blockquote>
+	 <p><b>icu 2.6.1</b> Required for supporting international
+	 information.  Strongly recommended.
+
+	 <p><b>libgdiplus 0.1</b> Required if you want to use
+	 System.Drawing APIs.
+
+	 <p><b>Cairo 0.1.17 </b> Required to install libgdiplus
+	 
+	 </blockquote>
+
+	 <p><b>Quick source code installation:</b>
+
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	source code is very simple:
+
+	<p>mono:</p>
+	
+	<pre class="shell">
+$ tar xzf mono-0.30.tar.gz
+$ cd mono-0.30
+$ ./configure
+$ make install</pre>
+
+	<p>libgdiplus:</p>
+	
+	<pre class="shell">
+$ tar xzf libgdiplus-0.1.tar.gz
+$ cd libgdiplus-0.1
+$ ./configure
+$ make install</pre>
+
+	 </blockquote>
+
+<h2>Performance</h2>
+
+	<p>Many improvements to the class libraries (Patrik, Ben), JIT
+	compiler (Paolo, Patrik, Zoltan) and C# compiler (Ben,
+	Benjamin and Miguel).   The net results are that C#
+	compilation times are now 30% to 40% faster than in 0.29
+	(30% for plain, 40% for precompiled).
+
+	<p>There are some nice low-level optimizations done in the
+	JIT, from inlining string-length, to optimizing the
+	object.GetType() call.
+
+	<p>For instance the C# compiler will compile itself in 2.3
+	seconds on a 1.6GHz machine (20klines/second).
+
+	<p>The whole system uses less memory now, and lots of pieces
+	have been better tuned: ArrayList enumerators now use less
+	memory; Patrik rewrote StringBuilder; FileStreams no longer
+	use locking (Ben); the BinaryReader and BinaryWriter handle
+	strings more efficiently (Ben) and Gonzalo reduced the use of
+	memory in Reflection.
+
+	<p>MonoDevelop has been a source of inspiration for areas that
+	have not been optimal in the past.
+
+<h2>PowerPC port</h2>
+
+	<p>Most tests now work on both MacOS X and LinuxPPC.  Neither
+	of them are ready for production use, but most simple programs
+	will run with the JIT.
+
+	<p>On MacOS X 10.2 and 10.3, we know that ICU currently is
+	causing problems, and you will need to install the latest
+	alpha version of <a
+	href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/">Boehm
+	GC</a>.
+		
+<h2>C# Compiler</h2>
+
+	<p>The code generated by the compiler is much better in the
+	presence of complex conditional expressions (thanks to Ben) and
+	code generation has been fixed in various new corner cases
+	that we mis-compiled before.
+
+	<p>A large part of the performance of the compiler comes from
+	its more conservative use of memory.  The compiler should
+	perform better as well on machines with limited amounts of
+	memory.  In the bootstrapping case, the compiler is down to 50
+	megs of memory.
+
+	<p>The file format for the symbol table is much smaller as
+	well (Martin).
+
+	<p>Implicit method group conversions to Delegate types is
+	available if you run the compiler with the -2 option, so this
+	means that you can write less code:
+
+	<pre class="code-csharp">
+	// Before
+	ok_button.Clicked += new ButtonEventHandler (ok_clicked);
+
+	// Now
+	ok_button.Clicked += ok_clicked;</pre>
+
+<h2>VB Compiler and JScript</h2>
+
+	<p>Rafael contributed many updates to the grammar, and Anirban
+	contributed many more tests to exercise the compiler now as
+	well as many bug reports as a result of all these tests based
+	on the published VB specification.
+
+	<p>Cesar has got the basics of his compiler to generate IL for
+	some basic expressions now, with various tests as well. 
+
+<h2>Mono Runtime Changes.</h2>
+
+	<p>Zoltan added support for unmanaged resources to the
+	runtime, reflection emit and the C# compiler (/win32res: and
+	/win32icon: are now supported).
+
+	<p>Zoltan also added support for declarative security to our
+	Reflection.Emit implementation as well as debugging
+	information in Ahead-of-Time (AOT) compiled programs.
+
+	<p>Patrik implemented Stack spilling of floating point support
+	in JIT for x86.  This means that we now support complex
+	floating point operations on 86 via the new floating point
+	stack code.
+
+<h2>FileSystemWatcher is here!</h2>
+
+	<p>Gonzalo implemented the long-awaited FileSystemWatcher for
+	Mono.  If your system support FAM, it will take
+	advantage of it, if not, it will create a thread and
+	periodically poll the underlying system for changes.
+
+	<p>This means that our ASP.NET finally can recompile
+	applications when configuration or source code changes happen
+	without any delays.
+	
+<h2>Cryptography</h2>
+
+	<p>Mono.Security.Win32 is working again thanks to Patrik
+	Torstensson(callingconv).</p>
+
+	<p>Runtime RNG now works under Windows
+	(using CryptoAPI) thanks to Mark Crichton.</p>
+
+	<p>Fixed MACTripleDES for 1.1 (which in some case has
+	different results than 1.0)- Fixed some cases for None and
+	Zeros padding modes in symmetric encryption (Sebastien).</p>
+
+<h2>Security</h2>
+
+	<p>Many new unit tests for permissions and code groups which
+	resulted in lots of small patches in System.Security
+	namespace.
+
+	<p>Fixed lots of method signatures differences to match 1.1
+	(not yet perfect)
+
+	<p>NET 1.2- More stuff for 1.2 compatibility (PKCS,
+	X509Certificate) including PKCS#12 decoding.
+
+<h2>Web Services</h2>
+
+	<p>Regarding web services, this is mainly a bug fixing
+	release.  Many bugfixes in all areas: web services, xml
+	serialization, wsdl processing,document discovery, etc.
+	Thanks for all the bug reports!   And thanks to Lluis for
+	promptly fixing them all.
+
+	<p>Lluis has also deployed a new web service test suite that
+	will help ensure that Mono is interoperable with other web
+	service platforms.  The test suite currently processes more
+	than 350 WSDL documents from various SOAP implementation which
+	it generates around 600 proxies.
+	
+	<p>Implemented support for Dynamic Discovery documents
+	(.vsdisco files).
+
+	<p>The web service documentation page has been improved: now
+	it can render sample requests and responses for all of the
+	supported protocols.
+
+	<p>This feature has also been added to the <tt>wsdl</tt> tool,
+	which means that you can print sample textual
+	requests/responses for all web services, not just Monoweb
+	services.
+	
+	<xmp class="shell">
+$ wsdl -sample:Register http://www.go-mono.com/docs/server.asmx?wsdl
+Mono Web Services Description Language Utility
+Fetching http://www.go-mono.com/docs/server.asmx?wsdl
+
+Sample request message:
+
+POST /docs/server.asmx
+SOAPAction: http://tempuri.org/Register
+Content-Type: text/xml; charset=utf-8
+Content-Length: string
+Host: string
+
+<?xml version="1.0" encoding="utf-16"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <Register xmlns="http://tempuri.org/">
+      <login>string</login>
+    </Register>
+  </soap:Body>
+</soap:Envelope>
+[...]
+$ _
+</xmp>
+
+	<p>Useful if you want to use shell scripts to write your web
+	clients.
+	
+<h2>XML land</h2>
+
+	<p>We have finally switched to managed XSLT as our XSLT
+	engine, this replaced the older <tt>libxslt</tt> based
+	implementation.  Atsushi has implemented the missing features
+	and fixed all the remaining bugs.  He added support for
+	<tt>msxsl:script</tt> as well as extensions objects.
+
+	<p>This managed XSLT implementation is very robust.  We have
+	integrated various XSLT test suites into the tree to verify
+	its conformance continuously.
+
+	<p>XML Schema: David has been improving facet validation
+	support and it became much more close to MS.NET.
+
+	<p>Schema component properties, compilation engine, and
+	validation engine are improved.  Atsushi got nearly 20 W3C
+	msxsdtest failures out of 7400 cases from this release.
+
+	<p> Boris, Tom, and many people gave us several excellent bug
+	reports that helped us improve several classes such as DOM,
+	Schema and XML Resolver.
+
+<h2>ASP.NET Web Forms</h2>
+
+	<p>We continue with the pattern of using tests in this module
+	as well.  We have integrated NUnitASP into the testing process
+	for ASP.NET web pages (Gonzalo)
+
+	<p>Support for custom error pages (Gonzalo)
+
+	<p>Authentication (Basic, Digest, Ntlm) for client side code
+	in System.Net has been implemented (Gonzalo)
+
+	<p>Browser capabilities support has been added to ASP.NET.
+	The database we ship is courtesy of http://www.GaryKeith.com
+	(More Gonzalo!)
+
+	<p>Jackson implemented Cookie-less session support and added
+	support for Trace handlers (Trace.axd) to ASP.NET.
+
+	<p>Jackson added support for ASP.NET caching to our
+	implementation: partial page caching (caching of user controls)
+
+<h2>ASP.NET Ports</h2>
+
+	<p>Jackson has been working on porting various open source
+	ASP.NET applications to run on Unix and Mono, you can find the
+	ongoing ports effort <a
+	href="http://www.go-mono.com/ports/">here</a>.
+
+	<p>Currently these include the PetShop, FlexiWiki and DasBlog.
+	
+<h2>System.Drawing</h2>
+
+	<p>Pen, Brush, Matrix and GraphicsPath implementation and bug
+	fixes from Duncan and Ravindra.
+
+	<p>Jordi fixed our BMP encoder, completed various C#-side
+	components of System.Drawing.  He has started to move the font
+	handling code to the libgdiplus layer.
+
+	<p>Our GDI+ implementation has been split from the MCS source
+	package, and has moved into its own package: libgdiplus
+
+<h2>Remoting</h2>
+
+	<p>Lluis Improved support for the SoapFormatter, including the implementation
+	of the SdlServerSink remoting sink, which renders the wsdl
+	document for a remote object published using http and the soap
+	formatter.
+
+	<p>Lluis also did other improvements and bug fixes, such as
+	complete support for channel configuration properties, and
+	better interoperability with MS.NET remoting.
+
+<h2>Npgsql: Postgres bindings.</h2>
+
+        <p>Initial support for connection pooling. You can use the
+	connection pooling by specifying the MinPoolSize=value in the
+	connection string.  The MaxPoolSize can also be specified, but
+	it is not implemented yet.
+
+	<p>Note that some logs about connection not being closed will
+	be shown as a side effect of connection pool. The unmanaged
+	socket is closed, but server complains and logs about the
+	sundden close. Please, check <a
+	href="http://lists.ximian.com/archives/public/mono-devel-list/2003-December/003380.html">this
+	post</a> for more details about it.
+
+	<p>Faster support of bytea binary data. Thanks Jackson Harper
+	(jackson at ximian dot com) and Jonathan Gilbert (2a5gjx302 at
+	sneakemail dot com).The performance for adding binary data is
+	10x faster than original code :)
+
+	<p>CommandBuilder and better Dataset support. Thanks Pedro
+	Yoros (yoros at wanadoo dot es).
+
+	<p>bearm (bearm at mail dot it) and Marcus Better (marcus at
+	dactylis dot com) also helped with bug fixes in this release.
+		
+<h2>Tools</h2>
+
+	<p>New Assembly Linker (<tt>al</tt>) from Zoltan Varga.
+
+	<p>Lluis Implemented the <tt>soapsuds</tt> tool, which can
+	generate schemas and client proxies for remote classes.
+
+<h2>Windows.Forms update</h2>
+
+	<p>There has been some momentum on the Gtk# backend for
+	Windows.Forms in this release, you would need to compile
+	manually and install these assemblies.
+
+	<p>The WineLib-based version of Windows.Forms is on hold,
+	while Peter Bartok is updating our patches for WineLib to the
+	latest version of Wine.  Large internal changes in Wine
+	rendered our previous WineLib implementation obsolete.
+
+	<p>As part of the renewed patch, Peter is merging the Cairo
+	and Xlib rendering paths to avoid the co-existence issues we
+	had between WineLib and Cairo.
+
+<h2>The people behind this release</h2>
+
+	<p>Roughly 60 developers following developers contributed to this
+	release:
+
+	<p>Alexandre Pigolkine, Alon Gazit, Andreas Nahr, Atsushi
+	Enomoto, B Anirban, Benjamin Jemlich, Ben Maurer, Bernie
+	Solomon, Carlos Alberto Cortes, Cesar Octavio Lopez Nataren,
+	Chris Masters, Daniel Morgan, David Sheldon, Dick Porter,
+	Duncan Mak, Eduardo Garcia, Ettore Perazzoli, Francisco
+	Figueiredo Jr., Gert Driesen, Gonzalo Paniagua, Hector
+	E. Gomez Morales, Jackson Harper, Jan Jaros, Jean-Marc Andre,
+	Jochen Wezel, Joel Basson, Joe Shaw, Johannes Roith, John
+	Luke, Jonathan Gilbert, Jordi Mas, Laurent Guerby, Lluis
+	Sanchez, Marek Safar, Mark Crichton, Martin Baulig, Martin
+	Willemoes Hansen, Miguel de Icaza, Mike Kestner, Nick Drochak,
+	Pablo Baena, Paolo Molaro, Patrik Torstensson, Pedro Abelleira
+	Seco, Pedro Martinez, Peter Williams, Philip Van Hoof, Rachel
+	Hestilow, Radek Doulik, Rafael Teixeira, Ravindra Kumar, Ravi
+	Pratap, Richard Thombs, Sanjay Gupta, Sebastien Pouliot, S
+	Umadevi, Sunil Kumar, Tim Coleman, Todd Berman, Ugo Albarello,
+	Wojciech Polak, and Zoltan Varga.
+
+	<p>This list is not complete, it is missing contributions that
+	were sent to the list, as it was very hard to track the one
+	million incremental line patch since the last release.
+
+<h2>New Crew Members</h2>
+
+	<p>Jordi Mas from Barcelona joined Novell to work on our
+	implementation System.Drawing he will be working with Duncan,
+	Ravindra and Sanjay.  
+
+	<p>Sebastien Pouliot, the man behind most of the Cryptography
+	and Security code in Mono joins Novell to complete this work
+	in Mono as well.   Our first full time security/cryptography
+	person on the team.
+	
+</body>
+</html>
+

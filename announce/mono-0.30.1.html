@@ -1,0 +1,182 @@
+<html>
+<head><title>Mono 0.30 Release</title>
+<style type="text/css">
+h1 {
+color: #efefef;
+font-size: 14pt;
+font-family: "Trebuchet MS";
+
+border: 0;
+
+margin: 0;
+
+padding: 1em;
+
+background: #666666;
+}
+
+h2, h4, h5, h6 {
+font-family: Verdana,sans-serif;
+font-weight: bold;
+}
+
+h3, h4, h5, h5 {
+margin-left: 1em;
+}
+
+h2, h3 {
+font-size: 18px;
+}
+
+h2 {
+padding: 3px;
+color: #000000;
+}
+
+h3 {
+font-size: 13px;
+border-bottom: 2px solid #dddddd;
+}
+
+body, table {
+background-color: #ffffff;
+font-family: Verdana, sans-serif; font-size: 12px;
+color: black;
+margin: 0;
+padding: 0;
+border: 0;
+       margin-left: 20%;
+       margin-right: 20%;
+}
+
+p,lu,li {
+margin-left: 2em;
+margin-right: 2em;
+}
+
+img {
+border: 0;
+vertical-align: top;
+}
+.code-xml, .code-csharp
+{
+	margin:15px;
+	padding:15px;
+	font-size: small;
+	font-family: "Courier New", Courier;
+	background:whitesmoke;
+	border: solid 1px silver;
+	line-height:110%;
+}
+
+.shell { border-style: solid; background: #000000; color: #bbbbbb;
+	#777777; border-width:
+	1px; padding: 2pt; 
+	margin-left: 4em;
+	margin-right: 4em;
+}
+
+</style>
+<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'/>
+</script>
+</head>
+<body onload='paintColors();'>
+
+<h1>Mono 0.30.1</h1>
+
+<p>Hello everyone,</p>
+
+	<p>A small bug fix release of the <a
+	href="http://www.go-mono.com">Mono</a> runtime and SDK has
+	been released.
+	
+	<p>This release only includes a few smaller bug fixes to our
+	Http client as well as minor fixes to the C# compiler. </p>
+
+	<p>Specifically this release fixes some problems with Chunked
+	encoding and a race condition on the Http client.  The C#
+	compiler would crash sometimes when reporting a delegate
+	signature error.
+
+	<p>These bugs were small but important to various users.  If
+	you are not a user of these facilities you do not need to
+	upgrade, although it never hurts, and you will be a little bit
+	happier as you dont need to worry every time you declare a
+	delegate `Will the compiler crash on me?'
+
+	<h3>Thanks</h3>
+
+	<p>Gonzalo Paniagua for tracking down the networking problems
+	that were hunting us and our users that reported the compiler
+	bugs to bugzilla, Zoltan Varga for tracking down one of the
+	runtime errors and Duncan Mak once again for building packages
+	for everyone to download.
+
+<h2>Availability</h2>
+	
+	<p><b>Binary Packages:</b>
+
+	<blockquote>
+	<p>Pre-compiled packages for SUSE 9, Red Hat 9 and Fedora Core
+        1 are available from our web site from the <a
+        href="http://www.go-mono.com/download.html">download</a>
+        section.
+
+	<p>As usual the software is also available for those
+	distributions on the Mono Red Carpet channel. 
+	</blockquote>
+
+	<p><b>Source code:</b>
+
+	<blockquote>
+	<ul>
+<a href="http://www.go-mono.com/archive/mono-0.30.1.tar.gz">http://www.go-mono.com/archive/mono-0.30.1.tar.gz</a><br>
+<a href="http://www.go-mono.com/archive/mcs-0.30.1.tar.gz">http://www.go-mono.com/archive/mcs-0.30.1.tar.gz</a>
+	 </ul>
+
+	 </blockquote>
+
+	 <p><b>Dependencies</b>
+
+	 <p>If you are installing from source code, there are a few
+	 optional dependencies that you will want to consider
+	 installing.
+
+	 <blockquote>
+	 <p><b>icu 2.6.1</b> Required for supporting international
+	 information.  Strongly recommended.
+
+	 <p><b>libgdiplus 0.1</b> Required if you want to use
+	 System.Drawing APIs.
+
+	 <p><b>Cairo 0.1.17 </b> Required to install libgdiplus
+	 
+	 </blockquote>
+
+	 <p><b>Quick source code installation:</b>
+
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	source code is very simple:
+
+	<p>mono:</p>
+	
+	<pre class="shell">
+$ tar xzf mono-0.30.1.tar.gz
+$ cd mono-0.30.1
+$ ./configure
+$ make install</pre>
+
+	<p>libgdiplus:</p>
+	
+	<pre class="shell">
+$ tar xzf libgdiplus-0.1.tar.gz
+$ cd libgdiplus-0.1
+$ ./configure
+$ make install</pre>
+
+	 </blockquote>
+
+</body>
+</html>
+

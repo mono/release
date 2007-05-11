@@ -1,0 +1,398 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+	<title>Mono 1.1.16: Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.1.16 Release</h1>
+
+	<p>This is the third beta towards the release of Mono 1.2.   
+	
+	<p>Mono was branched at version 1.1.13 to become the stable
+	version of Mono that is distributed by Novell on its
+	enterprise products.   That series of releases are only
+	getting bug fixes.
+
+	<p>Before each release we run all of the regression tests on
+	Mono, so we consider this release usable for deployment, but
+	there are still a few changes in various areas.  
+	
+	<p>All of the changes since 1.0 are documented in the
+	following release notes: <a
+	href="http://www.go-mono.com/archive/1.1.1">1.1.1</a>, <a
+	href="http://www.go-mono.com/archive/1.1.2">1.1.2</a>, <a
+	href="http://www.go-mono.com/archive/1.1.3">1.1.3</a>, <a
+	href="http://www.go-mono.com/archive/1.1.4">1.1.4</a>, <a
+	href="http://www.go-mono.com/archive/1.1.5">1.1.5</a>, <a
+	href="http://www.go-mono.com/archive/1.1.6">1.1.6</a>, <a
+	href="http://www.go-mono.com/archive/1.1.7">1.1.7</a>, <a
+	href="http://www.go-mono.com/archive/1.1.8">1.1.8</a>, <a
+	href="http://www.go-mono.com/archive/1.1.9">1.1.9</a>, <a
+	href="http://www.go-mono.com/archive/1.1.10">1.1.10</a>, <a
+	href="http://www.go-mono.com/archive/1.1.13">1.1.13</a>, <a
+	href="http://www.go-mono.com/archive/1.1.14">1.1.14</a> and <a
+	href="http://www.go-mono.com/archive/1.1.15">1.1.15</a>
+
+	<ul>
+		<li><a href="#new">What is new since the last release.</a>
+		<li><a href="#install">Download and installation.</a>
+		<li><a href="#contributors">Contributors to this release.</a>
+	</ul>
+
+	<p>This release is mostly a bug-fix release, there are very
+	few new developments.
+
+<a name="new"/>
+
+<h1>Changes since Mono 1.1.15</h1>
+
+<h2>Highlights</h2>
+
+	<p><a
+	href="http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython">IronPython
+	1.0 Beta 8</a> works with this release out of the box.
+
+	<p>Majorly improved Windows.Forms and System.Drawing as our
+	beta program for Windows.Forms continues.
+
+	<p>New default optimizations boost performance for compute
+	intensive applications.
+
+	<p>Long standing debugging line numbers bug fixed.
+
+	<p>Preview code for the new Compacting GC.
+
+	<p>Hardened runtime for verification, AppDomain unloading and
+	type loading failures
+
+	<p>Significant progress on ASP.NET 2.0, some <a
+	href="http://www.asp.net/downloads/starterkits/default.aspx?tabid=62#personal">Starter
+	Kits</a> are now functional, as well as large improvements to
+	its test suite.
+	
+<h2>Windows.Forms</h2>
+
+	<p>Windows.Forms continues to be a focus of bug fixing in this
+	release.  
+
+	<p>Multi-thread support for Windows.Forms: In the past our
+	Windows.Forms implementation behaved like most other toolkits
+	in Unix.  It was not a multi-threaded toolkit.   With this
+	released Windows.Forms has become multi-threaded (multi-thread
+	considerations still apply), but multiple threads can create
+	their own forms and controls and have their own separate
+	message processing loops.
+
+	<p>Repaint logic changed: Instead of having paint events that
+	are contained in the queue and make their way to the head of the
+	queue, we now only generate synthetic paint events for dirty windows
+	once the queue is emtpy. This matches MS behaviour and allows for a
+	more responsive UI if lots of activity (or slow drawing) happens.
+
+	<p>MDI support has been improved extensively by Jackson.
+
+	<p>DataGrid support has been improved extensively by Chris and
+	is much more usable now.
+	
+	<p>Many performance improvements went into the tree control.
+
+<h2>System.Drawing</h2>
+
+	<p>Sebastien implemented the GraphicsPath.AddPathString
+	methods which add the outlines of a string into the path.
+
+	<p>Bill Holmes and Sebastien teamed up to fix many of the
+	LinearGradient brush bugs.
+
+	<p>Peter and Gonzalo reimplemented the image infrastructure to
+	fix several bugs. 
+
+	<p>Property reading for PNG files is now supported.
+
+	<p>Sebastien: BeginContainer support
+	
+	<p>Sebastien: Region handles (GdipGetRegionHRgn,
+	GdipCreateRegionHrgn and GdipSetClipHrgn).
+
+	<p>Sebastien: Added support for point visibility on paths,
+	GdipIsOutlineVisiblePathPoint[I] and GdipIsVisiblePathPoint[I]
+	functions are now implemented;
+
+<h2>Runtime</h2>
+
+	<p>Stack traces line numbers fixed.   In the past, stack
+	traces pointed to the next statement, which typically
+	translated into line offsets being "off by one", in reality
+	they were off by a statement, which confused developers.   The
+	line information is now correctly reported.
+
+	<p>Paolo's new Generational GC has been integrated into Mono,
+	but it is not currently supported.  Documentation is available
+	in <a
+	href="http://www.mono-project.com/Compacting_GC">http://www.mono-project.com/Compacting_GC</a>
+	and docs/precise-gc.
+
+	<p>The compacting GC currently only works on the 1.0 profile
+	of Mono, the 2.0 support has not been modified yet to work
+	with it, so full Mono bootstraps will fail with it.
+
+	<p>Zoltan fixed many leaks and bugs related to unloading
+	assemblies.  Also, this version of the runtime is friendlier
+	to shutting down Mono (for hosting users, this was driven by
+	<a href="http://www.otee.dk">Otee's</a> Unity needs).
+
+	<p>Verification and reliability work: work has resumed on
+	implementing verification on Mono, as some users (<a
+	href="http://secondlife.com/">SecondLife</a> in particular)
+	need this feature.  In addition to the verification work, we
+	have started to strengthen the runtime to cope with missing or
+	broken referenced assemblies.  All known filed bugs that made
+	the runtime crash will now produce a TypeLoadException.
+	
+	<P>Jonathan Chambers has contributed some initial bits for COM
+	support in Mono.  This includes BSTR and VARIANT marshalling
+	on Windows.
+
+	<p>IronPython beta 8 works out of the box.  IronPython
+	on each release has been adding dependencies into new .NET 2.0
+	features that were not yet implemented in Mono, hence the need
+	to update our support as they move along.
+
+	<p>Sebastien added support for .NET 2.0 declarative security
+	to the runtime.
+
+<h2>Performance</h2>
+
+	<p>Massi enabled the inline optimization by default, which
+	improves performance in many conditions.  To enable inlining,
+	it was necessary to tune a number of other optimizations
+	(constant propagation, dead code elimination).
+
+	<p>The improvements give 6% boost in XmlMark, 3% on SciMark,
+	15% on the particle benchmark, 1.85% on mcs bootstrap, on x86
+	systems.
+
+	<p>On x86-64, it produces 6% boost on XmlMark, 0.4% on
+	SciMark, 19.5% on particle benchmark, and 2.6% on mcs
+	bootstrap.
+
+	<p>Full optimizations and SSA optimizations are also very
+	good, but the individual optimizations have not been tuned to
+	work with each other.  More detailed information created by
+	Massi about the new improvements are available <a
+	href="http://primates.ximian.com/~miguel/Benckmarks-2006-03-23.ods">here</a>.
+
+<h2>ASP.NET 2.0</h2>
+
+	<p>The Mainsoft team (Vladimir Krasnov, Andrew Skiba, and
+	Konstantin Triger) has contributed many updates to the ASP.NET
+	2.0 support and it is now able to run the <a
+	href="http://www.asp.net/downloads/starterkits/default.aspx?tabid=62#personal">ASP.NEt
+	Personal Web Site Starter Kit</a>.
+
+	<p>Most of the bugs were in the theme and skin support.
+
+<h2>ASP.NET 2.0 Test Suite</h2>
+
+	<p>The testing team at Mainsoft (Yoni Klain, Tal Klar, Andrew
+	Skiba, and Merav Soudri) has enhanced the System.Web NUnit
+	test suite:
+
+	<ul>
+	
+		<li>A testing framework package that provides Web
+		Hosting capabilities, which enables testing the entire
+		System.Web functionalities, including post backs,
+		context related features (Master Page, Themes and
+		Skins) and more.
+
+		<li>An HTML Compare package that performs an advanced
+		HTML comparing, by transferring HTML into XML and
+		compares the XML. (An "ignore" tags/ attributes
+		mechanism is also supported).
+
+		<li>Developed 23 new test fixtures (~220 tests) for
+		System.Web 2.0 using the above framework, testing 23
+		System.Web.UI.WebControls classes. Work on this path
+		continues towards full coverage of System.Web 2.0.
+	</ul>
+
+<h2>C# Compiler Bug Fixes</h2>
+
+	<p>Marek implemented Type forwarding (see bug 77002) in the
+	compiler.
+
+	<p>Harinath implemented several important changes in the
+	compiler:
+	
+	<p>Several bugs in handling 'lvalue' accesses have been fixed.
+	In particular, we propagate 'lvalue' lookups of value-type
+	fields to their surrounding objects, allowing better detection
+	of access to read-only fields and MarshalByRef objects.
+	
+	<p>The flow-analysis code in the compiler has been overhauled.
+	This fixes several bugs related to handling of 'goto's,
+	unreachable code, and warnings about undefined variables.  We
+	also fixed the code generator to emit the 'leave' instruction
+	rather than 'br' when jumping out of an unwind-protected
+	region (try { ... } finally { ... }, lock { ... }, using {
+	... }, etc.)
+	
+	<p>The code for numeric promotions has been rewritten to align
+	more closely with the standard.  In particular, we now follow
+	the "overloading" specification used in the standard: the
+	original code implemented a non-normative (informative)
+	section of the standard which provided an intuitive
+	explanation of the semantics.  This rewrite now allows
+	expressions involving user-defined conversions to numeric
+	types.
+
+	<p>Martin implemented support for switch on nullable types, a
+	feature that did not make it in time to the C# standard but is
+	available in the Microsoft compiler and the annotated C#
+	standard. 
+	
+<h2>2.0 Features</h2>
+
+	<p>Many updates from Atsushi to the 2.0 profile.
+	
+<h2>S390 and S390x Port</h2>
+
+	<p>Neale fixed a critical bug in the S390 and S390x port, the
+	atomic interlock operations are now functional on this
+	architecture.
+
+<h2>OSX support</h2>
+
+	<p>Mach port leaks identified by Imeem are now fixed, patch
+	from Allan. 
+	
+	<p>Packages for Mono on OSX/Intel are now available.
+
+<h2>IO Layer</h2>
+
+	<p>Dick fixed a complex problem dealing with resource
+	starvation problem with thread handles (78241).
+
+	<p>GetCurrentThread now matches MS behavior.
+	
+<h2>Debugger</h2>
+
+	<p>Lots of work from Martin in the debugger, the major
+	features are:
+
+	<ul>
+		<li>Breakpoints are saved across runs of a program.
+
+		<li>Many bug fixes, and it is now possible to debug
+		xsp and Winforms applications (no full ASP.NET yet).
+	</ul>
+	
+<h2>XBuild</h2>
+
+	<p>A major breakthrough in this release from Marek: XBuild is
+	able to build some Visual Studio.NET 2005 projects (that don't
+	contain references to assemblies not in GAC nor use
+	resources).
+
+	<p>In addition,  there is now support for simple conditions in
+	xbuild. 
+
+<h2>Tools</h2>
+
+	<p>monodis and ilasm now support the 2.0 declarative security
+	attributes (Sebastien and Ankit).
+
+	<p>Ankit also updated ilasm to support custom attributes on
+	assemblies, return types of methods and custom modifiers.
+
+	<p>mono-find-requires and mono-find-provides will now only
+	list GAC dependencies.   In the past they listed all
+	dependencies, which meant that there were implicit
+	dependencies on private assemblies.
+
+<h2>NUnit</h2>
+
+	<p>NUnit Mocks framework has been integrated into the standard
+	Mono distribution.
+
+<h2>CAS Tests</h2>
+
+	<P>This is the first release to enable the CAS tests during
+	the build process.
+	
+<h2>Cairo</h2>
+
+	<p>The Mono.Cairo library has been updated to the 1.2 Cairo
+	API (John Luke).
+	
+<h2>Coverity and Bug Fixing</h2>
+
+	<p>In this release we have included a number of bug fixes that
+	were uncovered by the <a
+	href="http://www.coverity.com">Coverity</a> source code
+	scanning tool.   Thanks to Coverity for including Mono on
+	their stack of open source applications that they scan.
+	
+	
+<h1>Installing Mono 1.1.16</h1>
+	
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p>You can then setup your PATH to include /devel/bin to
+	access the Mono 1.1.  Alternatively you can replace your Mono
+	installation with 1.1.16
+
+	<p><b>Binary Packages and Source Code Downloads:</b>
+	<blockquote>
+	<p>Source code and pre-compiled packages for SUSE, SLES,
+	Fedora Core 3, 4, RHEL, MacOS and Windows in a variety of
+	platforms available from our web site from the <a
+	href="http://www.mono-project.com/Downloads">download</a>
+	section.
+
+	</blockquote>
+
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.1.16.tar.gz
+    $ cd mono-1.1.16
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+
+	<p>Then compile libgdiplus:
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.1.16.tar.gz
+    $ cd libgdiplus-1.1.16
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+	</blockquote>
+		
+</blockquote>
+
+<a name="contributors"/></a>
+

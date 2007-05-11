@@ -1,0 +1,435 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+	<title>Mono 1.1.4: Development Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.1.4 Development Release</h1>
+
+
+	<p>Mono 1.1.4 is the fourth release on the development series
+	of Mono. The Mono 1.1.x series will eventually lead to the next
+	stable milestone: Mono 1.2.
+
+	<p>We consider Mono 1.1.4 stable enough to recommend it for all users.
+	Those upgrading from the 1.0.x series should note that these notes
+	only contain the differences between 1.1.3 and 1.1.4. All of the
+	changes since 1.0 are documented in the following release notes:
+	<a href="http://www.go-mono.com/archive/1.1.1">1.1.1</a>,
+	<a href="http://www.go-mono.com/archive/1.1.2">1.1.2</a>, and
+	<a href="http://www.go-mono.com/archive/1.1.3">1.1.3</a>. Note that
+	some of the changes mentioned in these notes are also present in the
+	1.0.x series.
+
+	<p>For users who can not make major changes to their environment, the 1.0.x series
+	will still be maintained.
+
+	<ul>
+		<li><a href="#new">What is new since the last release</a>
+		<li><a href="#install">Download and installation.</a>
+	</ul>
+
+<a name="new"/></a>
+
+<h2>Changes since the last release</h2>
+
+	<p>The following is a high-level description of the changes in
+	the development release of Mono since the previous development
+	release in December 9th.  190 reported bugs were fixed in this
+	period of time.
+
+	<p>Although this a development version, this release contains
+	mostly bug fixes, speedups and tuning in every subsystem of
+	Mono. Some key changes are:
+
+<h3>Packages</h3>
+
+	<p><b>New:</b> MacOS X packages now include the Cocoa# API for creating
+	native applications.
+
+	<p>On Linux, we have reduced the number of packages required
+	to install Mono.
+	
+<h3>Security</h3>
+
+	<p><b>New:</b> Sebastien has committed his Code Access Security (CAS)
+	support, enable it by running mono with the `--security'
+	flag.  For this release, the option enables:
+
+	<ul>
+        	<li>Policy resolution - including assembly-level
+        	RequestMinimum, RequestOptional and RequestRefuse
+        	attributes.
+		
+		<li>Declarative/Imperative demands;
+		
+		<li>Declarative stack modifiers (Assert, Deny and
+		PermitOnly);
+	</ul>
+	
+	<p><i>Note:</i> Although the CAS infrastructure is in place, the class
+	libraries have not yet been audited and properly tagged for CAS use,
+	this work is just starting. Some of this work will not be visible
+	until the audit is complete.
+
+	<p>IsolatedStorage has been updated to use
+	assembly/appdomain evidences (but not the
+	permissions).
+
+
+<h3>C# Compiler: Important Changes</h3>
+
+	<p><b>Important Change</b>: The compiler is now more strict in
+	the lookup rules.  This might break code that compiled fine in
+	the past, as we are now closer to the specification
+	(Harinath).  Programs affected are, typically, those that use
+	namespaces and types with the same name.
+
+
+	<p>The warning level has been raised from 2 to 3, code that
+	compiled without warnings will likely produce more messages on
+	this new release (Marek).
+	
+	<p>We now do Decimal Constant folding (Marek).
+	
+	<p>Various bug fixes (From the triple M team: Miguel, Martin, Marek)
+
+<h3>Cryptography</h3>
+
+	<p>Many improvements were made in cryptographic performance, including 8% for
+	SHA1, 5% for SHA256 and 20% for TripleDES and MACTripleDES. As well, weak
+	key detection for DES is 16 times faster.
+	
+	<p>New padding modes ANSI X9.23 and ISO 10126 were implemented
+	(for 2.0) for symmetric ciphers and MACTripleDES;
+
+<h3>ASP.NET 2.0 features</h3>
+
+	<p><b>New:</b> To use these features, you must use `xsp2' in your setup: 
+	
+	<p><b>Master Pages:</b> Lluis has implemented our framework
+	for Master Pages.
+
+	<p><b>Menus, Trees:</b> Support for dynamic menus on web pages
+	(very cute!) and dynamic trees on ASP.NET controls have been
+	implemented by Lluis.
+
+	<p>Also: View and MultiView web controls.
+	
+        <p>Reorganized samples: now there are sample pages for all the
+        new 2.0 controls in XSP.
+
+<h3>Windows.Forms</h3>
+
+	<p><b>New:</b> The new implementation of Windows.Forms (we like to call it
+	"Managed.Windows.Forms") is now the default, and the old code
+	has been removed from this release.
+	
+	<p>It is now the default and it will be installed together
+	with all the other libraries on the system.  Windows.Forms is
+	still not complete, but making progress rapidly.
+
+	<p>Useful links:
+
+	<ul>
+		<li>WinForms Team blog: <a
+	href="http://svn.myrealbox.com/blog/index.php">http://svn.myrealbox.com/blog/index.php</a>.
+
+		<li>Per-control <a
+		href="http://svn.myrealbox.com/mwf/owners.html">status</a>.
+
+		<li>Detailed class <a
+		href="http://svn.myrealbox.com/mwf/class-status-System.Windows.Forms.html">status</a>
+		
+	</ul>
+	
+<h3>GDI+</h3>
+
+	<p>GDI+ now ships with its own bundled version of Cairo.  This
+	also should avoid interfering with the standard release and
+	distribution process of Cairo. (Paolo)
+
+<h3>Tools</h3>
+
+	<p><b>New:</b> <b>prj2make</b>, a tool developed  by Francisco
+	Martinez is  now part of the standard  Mono distribution.  You
+	can use prj2make  to produce Makefiles that will  work on Unix
+	for projects that use Visual Studio solutions.
+
+	<p><b>gacutil:</b> No longer requires patches to work for RPM
+	systems.
+
+	<p><b>dtd2xsd:</b> A new tool to produce Xml Schema
+	Definitions from an XML document that contains a Document Type
+	Definition (DTD), by Atsushi.
+
+	<p><b>ilasm:</b> Added support to strongname assemblies (-key
+	flag).
+
+	<p><b>certmgr:</b> can now download and import certificates into the stores (e.g.
+	SSL, LDAPS), list existing certificate and remove them from a store.
+
+	<p><p>New permview tool</b> can display assembly-level
+	declarative security present in assemblies (RequestMinimum,
+	RequestOptional and RequestRefuse).
+
+<h3>XML World</h3>
+
+	<p>System.XML 2.0 is completed, except for compiled XSLT
+	(Atsushi). New features include:
+
+	<ul>
+        <li>XmlSchemaValidator is implemented. As well, significant
+          refactoring on XML Schema validating reader has been done.
+        <li>SchemaInfo on DOM is now provided.
+        <li>There is new support for reading Binary content (Base64/BinHex).
+	</ul>
+
+	<p>RelaxNG now features a compact syntax writer.
+
+	<p>RelaxNG has an experimental grammar inference engine.
+
+<h3>System.Data World</h3>
+
+	<p>A new test framework for connected behavior was developed
+	by Sudha.
+	
+	<p>Suresh fixed many bugs in connected and disconnected modes
+	in the System.Data stack.  Appasamy has also contributed bug
+	fixes to the SqlClient and Odbc providers.
+	
+	<p>Many bug fixes were made for DataSet, including some from Ankit
+	Jain.
+
+	<p>DataViews are much faster now (Atsushi).
+
+<h3>Profiler</h3>
+
+	<p><b>New:</b> A new statistical profiler is included in the default Mono
+	profiler, to use do:
+
+	<pre>
+	mono --profile=default:stat
+	</pre>
+
+	<p>Additions to the profiler API were made by Ben and Paolo. These
+	changes enable Ben's experimental heap profiler to work. The profiler
+	can be found in the `heap-prof' module of SVN. Beagle has reported
+	great success with this tool.
+
+<h3>Mono Embedding</h3>
+
+	<p><b>New:</b> Using the special library name "__Internal" will resolve
+	symbols against the main executable.  Particularly useful
+	for users embedding the Mono runtime.
+
+	<p><b>New:</b> Simplified threads for embedding: Starting with this release Mono will
+	no longer start a separate thread for running the main
+	application.  Embedders take note about this change, see the
+	updated sample program for details.
+	
+	<p>We have now the beginnings of a framework to document the
+	complete Mono public API.
+
+<h3>Ahead of Time Compilation</h3>
+
+	<p>Position Independent Code (PIC) is generated for both x86 and x86-64.
+	Users with multiple mono processes will notice a memory
+	reduction if AOT is used.
+	
+	<p>Ahead-of-Time compilation can be done on demand by using
+	the MONO_AOT_CACHE environment variable which will toggle
+	auto-batch-compilation on demand (Zoltan).
+	
+<h3>Performance</h3>
+
+	<p>Exception throwing is now a lot faster (Paolo, Zoltan).
+
+	<p>SSA-based partial redundancy elimination has been updated. Work
+	on Alias Analysis is being done to enhance this optimization (Massi).
+
+	<p>Arrray Bounds Check (ABC) Removal removes more checks (Massi).
+	
+	<p>Many System.Threading.Interlocked operations are implemented
+	using inline assembly for the x86 (Patrik).
+
+	<p>Various peephole and Linear Scan improvements have been made
+	to increase code quality (Ben).
+
+	<p>Throw blocks are now placed in an out-of-bound block to
+	improve locality and branch prediction (Zoltan).
+
+	<p>Remoting for TCP and HTTP transport is vastly faster now
+	(few orders of magnitude) this change was done by Lluis.
+
+	<p>Lluis also implemented a more scalable threadpool for
+	remoting for incomming connections.
+
+<h3>Memory Usage</h3>
+
+	<p>The VM went on a memory diet at various levels.
+
+	<p>Many metadata structures are now delay-loaded, reducing memory
+	consumption, especially in long running GUI applications. (Ben)
+
+	<p>Memory leaks have been audited, especially in terms of application
+	domain unloading. (Paolo, Zoltan, Ben)
+
+	<p>The symbol file for --debug is now loaded with mmap, reducing
+	memory consumption by a few megabytes (Ben).
+
+	<p>XmlDocument and its helper classes now use less memory. (Atsushi)
+
+<h3>Test Suites, Build System</h3>
+
+	<p>`make distcheck' now runs the regression tests during
+	the release.  This existed in 1.1.3, but there many more tests
+	on this release.
+
+	<p>We are getting close to have all the regression test suites
+	enabled by default on our tinderbox setup.
+
+<h3>Mono.Posix</h3>
+
+	<p>Jon added support for FILE handles in the
+	Mono.Unix.StdioFileStream class.
+
+	<p>The Mono.Posix namespace is now obsolete, we recommend the
+	use of the classes and methods in the Mono.Unix namespace (the
+	assembly is the same one: Mono.Posix.dll).
+	
+<h3>Bug Fixes</h3>
+
+	<p>For those tracking the mailing lists, we have included the
+	new number formatter from Kazuki Oikawa and the test cases
+	from Akira Mei.  This closed a large number of bugs.
+	
+<h3>Summary of C# 2.0 features supported</h3>
+	
+	<p>Today Mono 1.1.4's C# compiler supports <a
+	href="http://msdn2.microsoft.com/library/0yw3tz5k.aspx">anonymous
+	methods</a>, <a
+	href="http://msdn2.microsoft.com/library/dscyy5s0.aspx">iterators</a>,
+	<a
+	href="http://msdn2.microsoft.com/library/wa80x488.aspx">partial
+	classes</a>, <a
+	href="http://msdn2.microsoft.com/library/79b3xss3.aspx">static
+	classes</a>,
+	<a
+	href="http://msdn2.microsoft.com/library/sea07341.aspx">covariance
+	and contravariance</a>,
+	<a
+	href="http://msdn2.microsoft.com/library/75e8y5dd.aspx">property
+	accessor accessibility</a> 
+	 and <a
+	href="http://msdn2.microsoft.com/library/441722ys.aspx">inline
+	warning control</a> from the 2.0 specification.  <a
+	href="http://msdn2.microsoft.com/library/512aeb7t.aspx">Generics</a>
+	are supported as well on the branched `gmcs' compiler
+	(included).
+
+	<p>Still missing for full 2.0 support: nullable types,
+	namespace alias qualifier, external assembly alias, fixed size
+	buffers and friend assemblies.
+
+<a name="install"></a>
+<h2>Installing Mono 1.1.4</h2>
+	
+	<p><b>Important:</b> Mono 1.1.4 can not be installed in
+	parallel with Mono 1.0.x series on the same prefix.  To work
+	around this issue, you must use a different prefix at
+	configure time, for example:
+
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p>You can then setup your PATH to include /devel/bin to
+	access the Mono 1.1.  Alternatively you can replace your Mono
+	installation with 1.1.4
+
+	<p><b>Binary Packages:</b>
+	<blockquote>
+	<p>Pre-compiled packages for SUSE 9, SUSE 9.1, Red Hat 9, SLES
+        8, Fedora Core 1, Fedora Core 2 and MacOS X are available from
+	our web site from the
+        <a href="http://www.go-mono.com/download.html">download</a>
+        section.  A Red Carpet Mono channel is also available on these
+        platforms.
+	</blockquote>
+        
+	<p><b>Source code:</b>
+	<blockquote>
+	<ul>
+	  <li>Mono Source Code: <a href="http://www.go-mono.com/archive/1.1.4/mono-1.1.4.tar.gz">mono-1.1.4.tar.gz</a>
+          <li>GDI+ library: <a href="http://www.go-mono.com/archive/1.1.4/libgdiplus-1.1.4.tar.gz">libgdiplus-1.1.4.tar.gz</a>
+	</ul>
+	</blockquote>
+	
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.1.4.tar.gz
+    $ cd mono-1.1.4
+    $ ./configure
+    $ make
+    $ make install
+	
+</pre>
+	</blockquote>
+	<p><b>Optional Packages</b><p>
+	<blockquote>
+	<p>Libgdiplus is an optional packages. You only need
+	it if you intend to use System.Drawing or Windows.Forms.
+	
+	<p>libgdiplus:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.1.4.tar.gz
+    $ cd libgdiplus-1.1.4
+    $ ./configure
+    $ make install
+	
+</pre>
+
+<h2>Contributors</h2>
+
+	<p>The following developers contributed to the Mono 1.1.4
+	release:
+
+	<p>Adhamh Findlay, Alexandre Gomes, Alp Toker, Anil Bhatia,
+	Atsushi Enomoto, B Anirban, Ben Maurer, Bernie Solomon, Carlos
+	Alberto, Carlos GuzmÃ¡, Cesar Octavio, Chris Toshok, Chris
+	Lahey, Daniel Morgan, Dan Winship, David Hudson, Dick Porter,
+	Duncan Mak, Erik Dasque, Fawad Halim, Francisco Figueiredo,
+	Geoff Norton, Gonzalo Paniagua, Jackson Harper, Jambunathan
+	Jambunathan, Jb Evain, Jeroen Zwartepoorte, John BouAntoun,
+	John Luke, Jonathan Pryor, Jordi Mas, Joshua Tauberer, Jörg
+	Rosenkranz, Juraj Skripsky, Kazuki Oikawa, Larry Ewing, Lluis
+	Sanchez, Manjula MGH, Marek Safar, Mark Crichton, Martin
+	Baulig, Martin Willemoes, Massimiliano Mantione, Miguel de
+	Icaza, Mike Kestner, Neale Ferguson, Nick Drochak, Paolo
+	Molaro, Patrik Torstensson, Peter Bartok, Peter Williams,
+	Rafael Teixeira, Raja R Harinath, Randy Ridge, Ravindra Kumar,
+	Ritvik Mayank, Sachin Kumar, Sebastien Pouliot, Shane Landrum,
+	José Alexandre Antunes, Sudha Sathya, Suresh Kumar, Todd
+	Berman, Urs Muff, Zac Bowling and Zoltan VargA.
+
+	
+</blockquote>
+
+		

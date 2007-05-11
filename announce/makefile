@@ -1,0 +1,37 @@
+p:
+	scp mono-1.2.4.html mono-web@www.go-mono.com:go-mono/archive/1.2.4/index.html
+
+push:
+	scp mono-1.2.3.1.html mono-web@www.go-mono.com:go-mono/archive/1.2.3.1/index.html
+	scp mono-1.2.3.html mono-web@www.go-mono.com:go-mono/archive/1.2.3/index.html
+	scp mono-1.2.2.html mono-web@www.go-mono.com:go-mono/archive/1.2.2/index.html
+	scp mono-1.2.1.html mono-web@www.go-mono.com:go-mono/archive/1.2.1/index.html
+	scp mono-1.2.html mono-web@www.go-mono.com:go-mono/archive/1.2/index.html
+	scp mono-1.1.17.2.html mono-web@www.go-mono.com:go-mono/archive/1.1.17.2/index.html
+	scp mono-1.1.18.html mono-web@www.go-mono.com:go-mono/archive/1.1.18/index.html
+	scp mono-1.1.13.8.1.html mono-web@www.go-mono.com:go-mono/archive/1.1.13.8.1/index.html
+	scp mono-1.1.17.1.html mono-web@www.go-mono.com:go-mono/archive/1.1.17.1/index.html
+	scp mono-1.1.17.html mono-web@www.go-mono.com:go-mono/archive/1.1.17/index.html
+	scp mono-1.1.16.1.html mono-web@www.go-mono.com:go-mono/archive/1.1.16.1/index.html
+	scp mono-1.1.16.html mono-web@www.go-mono.com:go-mono/archive/1.1.16/index.html
+	scp mono-1.1.15.html mono-web@www.go-mono.com:go-mono/archive/1.1.15/index.html
+	scp mono-1.1.14.html mono-web@www.go-mono.com:go-mono/archive/1.1.14/index.html
+	scp mono-1.1.13.5.html mono-web@www.go-mono.com:go-mono/archive/1.1.13.5/index.html
+	scp mono-1.1.13.8.html mono-web@www.go-mono.com:go-mono/archive/1.1.13.8/index.html
+	scp mono-1.1.13.html mono-web@www.go-mono.com:go-mono/archive/1.1.13/index.html
+	scp mono-1.1.12.html mono-web@www.go-mono.com:go-mono/archive/1.1.12/index.html
+	scp mono-1.1.10.html mono-web@www.go-mono.com:go-mono/archive/1.1.10/index.html
+	scp mono-1.1.9.1.html mono-web@www.go-mono.com:go-mono/archive/1.1.9.1_0/index.html
+	scp mono-1.1.9.html mono-web@www.go-mono.com:go-mono/archive/1.1.9/index.html
+	scp mono-1.1.8.1.html mono-web@www.go-mono.com:go-mono/archive/1.1.8.1/index.html
+	scp mono-1.1.8.html mono-web@www.go-mono.com:go-mono/archive/1.1.8/index.html
+	scp mono-1.1.7.html mono-web@www.go-mono.com:go-mono/archive/1.1.7/index.html
+	scp mono-1.1.4.html mono-web@www.go-mono.com:go-mono/archive/1.1.4/index.html
+	scp mono-1.1.5.html mono-web@www.go-mono.com:go-mono/archive/1.1.5/index.html
+	scp mono-1.0.6.html mono-web@www.go-mono.com:go-mono/archive/1.0.6/index.html
+	scp mono-1.1.2.html mono-web@www.go-mono.com:go-mono/archive/1.1.2/index.html
+	scp mono-1.0.4.html mono-web@www.go-mono.com:go-mono/archive/1.0.4/index.html
+	scp mono-1.1.3.html mono-web@www.go-mono.com:go-mono/archive/1.1.3/index.html
+	scp mono-1.0.5.html mono-web@www.go-mono.com:go-mono/archive/1.0.5/index.html
+	scp mono-1.1.6.html mono-web@www.go-mono.com:go-mono/archive/1.1.6/index.html
+	scp mono-1.1.8.html mono-web@www.go-mono.com:go-mono/archive/1.1.8/index.html

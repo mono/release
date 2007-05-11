@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?> <!-- -*-nxml-*- -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Mono 1.0 Features and Known Issues.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.0.1 Release Notes</h1>
+
+	<p>For detailed information about Mono, please see the <a
+	href="http://www.go-mono.com/archive/1.0/">Mono 1.0</a>
+	release notes.
+
+	<p>Mono 1.0.1 is a maintenance release release for the 1.0
+	series of the Mono runtime.  The Mono 1.0.xx series is the
+	edition of stable releases of the Mono runtime.
+
+<h2>Changes since the Mono 1.0 release</h2>
+
+	<p>The following is a description of the changes and bug fixes
+	since the Mono 1.0 release.
+
+	<p>In particular you should note that the ASP.NET hosting with
+	Apache and XSP has greatly improved and is more robust than
+	the versions that shipped with 1.0, people using ASP.NET are
+	encouraged to upgrade.
+
+<h3>Configuration</h3>
+
+	<ul>
+		<li>Fixes trunc check on Solaris, add SPARC64 defines
+		(Zoltan Varga).
+
+		<li>Fixes #60787: Libgdiplus pthreads check (Jordi
+		Mas).
+
+		<li>Apply patch for libgc support on NetBSD.
+
+		<li>Changes for FreeBSD thread support from John
+		Merryweather Cooper.
+	</ul>
+
+<h3>Runtime</h3>
+
+	<ul>
+		<li>Fixes #61033: Handle returning delegates from
+		a delegate (Zoltan Varga).
+
+		<li>Fixes #61048: Initialize
+		FilterTypeName[IgnoreCase] (Zoltan Varga).
+
+		<li>Fix linking of basic blocks in branch->branch
+		optimizations (Zoltan Varga).
+
+		<li>Fixes crash on AMD64 using the Mono interpreter
+		(Marcin Krzyzanowski).
+
+		<li>Add support for unaligned access on little endian
+		machines (Marcin Krzyzanowski).
+
+		<li>Fixes 60887: Make named mutex shareable (Dick
+		Porter).
+
+		<li>Fixes #58844: InvokeMember failed in some
+		cases (Geoff Norton).
+
+		<li>Fixes #58863: handle some cordner cases (Zoltan
+		Varga)
+
+		<li>Fixes #61167: String.Replace was too slow (Dick
+		Porter).
+
+		<li>Fixes #61287: Return proper name from
+		System.Reflection.Module.ToString () (Paolo Molaro).
+
+		<li>Return real method name on some exception stack
+		traces (Gonzalo Paniagua).
+
+		<li>PowerPC fix for arguments on stack (no bug
+		reported) (Paolo Molaro, Neale Ferguson).
+
+		<li>Fixes #61721, #61802: Hashtable's intenral variable
+		renamed for compatibility (Duncan Mak, Geoff Norton).
+
+		<li>Fixes #61418: Dick Porter.
+
+		<li>Fixes WebProxy detection (Konstantin Triger).
+
+		<li>Fix class loads for pointer types (Paolo Molaro).
+
+		<li>Debugging information bug fix for big-endian
+		machines (Geoff Norton).
+
+		<li>Track line number information on PPC, s390 and
+		SPARC (Geoff Norton).
+
+		<li>Fixes #61458: locale compare on invariant culture
+		(Dick Porter)
+
+		<li>PowerPC bug fixes to register allocation, which
+		closes all known bugs with ASP.NET (Paolo Molaro).
+
+		<li>GC warnings now use g-log to control them (Paolo Molaro).
+	</Ul>
+
+<h3>ADO.NET</h3>
+
+	<ul>
+		<li>Fixed reader problem in OdbcCommand's
+		ExecuteScalar (Sureshkumar).
+
+		<li>Fixed transaction and allow Close to be called
+		multiple times in OdbcCommand (Sébastien Robitaille).
+
+		<li>DataContainer checks for null in
+		SetItemForDataRecord (Aleksey Demakov).
+
+		<li>Fixes #61203: Failure with 64 bit numbers when
+		reading from SqlServer (Umadevi).
+
+		<li>Fixes #58163: DbDataRecord: Return DBNull instead
+		of Null (Umadevi).
+
+		<li>Fixes DataSet to XML serialization (Atsushi
+		Enomoto).
+
+		<li>Fixes #61968: Fixes quoted arguments to
+		OdbcParameter's (Umadevi).
+
+		<Li>Fixes #62046: ExecuteNonQuery implemented
+		correctly (Umadevi).
+	</ul>
+
+<h3>ASP.NET</h3>
+
+	<ul>
+		<li>Added support for tracing on pages (David Taylor,
+		Gonzalo Paniagua).
+
+		<li>Now creates the assemblies in the DynamicBase
+		directory (Gonzalo Paniagua).
+
+		<li>Fixes #61232: Do not keep session around if
+		obtained from the context (Gonzalo Paniagua).
+
+		<li>Fixes #61218: Problem redirecting from https to
+		http (Gonzalo Paniagua).
+
+		<li>Added workaround for postback on Netscape 4.xx
+		(Gonzalo Paniagua).
+
+		<li>Fix crash on XSP when $HOME was not set (use
+		GetFolderPath instead of using HOME) (Gonzalo
+		Paniagua).
+
+		<li>Fixes #61569: Do not include private
+		properties/events when hoooking up (Gonzalo
+		Paniagua).
+
+		<li>Fixes #61429: case-sensitive fixes (Gonzalo
+		Paniagua).
+
+		<li>Fixes #61690: Use invariant when formatting
+		expiration date (Gonzalo Paniagua).
+
+		<li>Fixes #61654: Dont pass double slash when path
+		begins with a tilde (Gonzalo Paniagua).
+
+		<li>Fixes #61524, 61831 (Gonzalo Paniagua).
+
+		<li>WebClientProtocol adds the cookies as soon as they
+		are available (Lluis Sánchez)
+	</ul>
+
+<h3>Remoting</h3>
+
+	<ul>
+		<li>Fixes #60934: Cant setup remoting sink
+		providers in config file (Lluis Sánchez)
+
+		<li>Fixes #60427: SoapFormatter was using a
+		differnent way of encoding argument names (Lluis
+		Sánchez).
+
+		<li>Fixes #61592: Set channel name for provided
+		properties (Lluis Sánchez).
+
+		<li>Fixes #61774, 61249, 61837: (LLuis Sánchez).
+	</ul>
+	
+<h3>System.Drawing</h3>
+
+	<ul>
+		<li>Fixes #61050: Report.Net fails in Mono (Jordi
+		Mas).
+
+		<li>Fixes #61156: Some PNG images were corrupted,
+		and also adds a performance improvement (Ravindra
+		Kumar).
+
+		<li>Fixes to #60386, #60663, #61414: clipping
+		(Ravindra Kumar).
+	</ul>
+
+<h3>System.IO</h3>
+
+	<ul>
+		<li>File.Move needs to check that the destination
+		files does not exist (Dick Porter, Carlos Alberto).
+
+		<li>Include the file name on FileNotFoundExceptions
+		(Dick Porter, Carlos Alberto).
+
+		<li>Fixes #60970: Check for underflow when converting
+		Unix time_t values (Dick Porter).
+
+		<li>Fixes #61131: Fixes support FileStream.Seek for
+		files larger than 2^31 (Dick Porter).
+
+		<li>Add support for obtaining Unix Domain Peer
+		Credentials if available (Mono.Posix) (Dick Porter).
+
+		<li>Do not try to execute directories (Dick Porter).
+
+		<li>Fixes #61511: WaitHandle.WaitAny did not behave
+		correctly with AutoResetEvents (Sébastien Robitaille)
+
+		<li>Fixes #61595: Socket.Select failed with null
+		arguments (Nick Vaughan).
+
+		<li>Fixes #61582: GetNameDataSlot was not thread safe
+		(Dick Porter, Sébastien Robitaille).
+
+		<li>Fixes #61608: RecvFrom throws exceptions on
+		connected sockets (Nick Vaughan).
+
+		<li>Fixes #62398: Update ConnectedState in Poll and
+		Select (Dick Porter).
+
+		<li>Fixes #62421: Do not invoke the callback if the
+		timer changes (Gonzalo Paniagua).
+	</ul>
+
+<h3>System.XML</h3>
+
+	<ul>
+		<li>XmlSerializer supports base64 encoding now (Lluis
+		Sánchez).
+
+		<li>Various fixes to base64 reading routines (Atsushi
+		Enomoto).
+
+		<li>XmlNode insertion bug, NextElementPost fixes
+		(Atsushi Enomoto).
+
+		<li>XmlTextReader: Stop parsing when null character is
+		found (Lluis Sánchez).
+
+		<li>Fixed XPathNavigator's IsSamePositio (Atsushi Enomoto).
+	</ul>
+	
+<h3>Crypto</h3>
+
+	<ul>
+		<li>DES, RC2, TripleDES: Fixed Feedbacksize (Sebastien
+		Poulliot).
+
+		<li>Fixes #61240: (Iainer Munoz).
+
+		<li>Sn warns on missing machine.config (Sebastien Poulliot).
+	</ul>
+	
+<h3>C# Compiler</h3>
+		
+	<ul>
+		<li>Emit correct error codes with flow analysys
+		(Martin Baulig).
+
+		<li>Fixed value type compound assignment regression
+		(Miguel de Icaza).
+
+		<li>Fixes #61293: [Flags] attribute not emitted on
+		some nested enumerations.
+
+		<li>Many fixes to the iterators support, completely
+		redone (Martin Baulig)
+
+		<li>Fixes 61593: overflow on Enum[] iteration (Miguel
+		de Icaza)
+
+		<li>Fixes preprocessor compilation for #line inside
+		false paths (Miguel de Icaza)
+
+		<li>Fixes #61702: Crasher bug (Miguel de Icaza).
+
+		<li>Fixes #62322: Do not abort if a user defined
+		operator is not included but still numeric conversions
+		apply (Martin Baulig).
+
+		<li>Fixes #62263: Pointer arithmetic bugs (Ben
+		Maurer).
+
+		<li>Fixes: #62275: Base invocations (Ben Maurer).
+	</ul>
+
+<h3>CodeDom</h3>
+
+	<ul>
+		<li>Include line pragmas (Peter Williams).
+	</ul>
+	

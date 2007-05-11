@@ -1,0 +1,362 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+	<title>Mono 1.1.13: Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js' type='text/javascript'></script>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.1.13 Release</h1>
+
+	<p>We consider Mono 1.1.13 stable to recommend it for all users.
+	Those upgrading from the 1.0.x series should note that these notes
+	only contain the differences between 1.1.11 and 1.1.13.
+
+	<p>These release notes include the 1.1.12 changes as we did
+	not distribute the 1.1.12 announcement. 
+
+	<p>All of the changes since 1.0 are documented in the
+	following release notes: <a
+	href="http://www.go-mono.com/archive/1.1.1">1.1.1</a>, <a
+	href="http://www.go-mono.com/archive/1.1.2">1.1.2</a>, <a
+	href="http://www.go-mono.com/archive/1.1.3">1.1.3</a>, <a
+	href="http://www.go-mono.com/archive/1.1.4">1.1.4</a>, <a
+	href="http://www.go-mono.com/archive/1.1.5">1.1.5</a>, <a
+	href="http://www.go-mono.com/archive/1.1.6">1.1.6</a>, <a
+	href="http://www.go-mono.com/archive/1.1.7">1.1.7</a>, <a
+	href="http://www.go-mono.com/archive/1.1.8">1.1.8</a>, <a
+	href="http://www.go-mono.com/archive/1.1.9">1.1.9</a> and <a
+	href="http://www.go-mono.com/archive/1.1.10">1.1.10</a>.
+
+	<ul>
+		<li><a href="#new">What is new since the last release.</a>
+		<li><a href="#install">Download and installation.</a>
+		<li><a href="#contributors">Contributors to this release.</a>
+	</ul>
+
+	<p>This release is mostly a bug-fix release, there are very
+	few new developments.
+
+<h3>Important</h3>
+
+	<P>The Mono 1.1.13 release marks a feature freeze point for
+	Mono in preparation for Mono 1.2.  At this point the core of
+	Mono has been frozen and only bug fixes will be applied to it.
+
+	<p>A few libraries remain under development as they are
+	internal to Mono operation or have not been completed: PEAPI
+	(only used for the assembler), libgdiplus (for System.Drawing)
+	and System.Windows.Forms.
+
+	<p>In particular, Mono 1.1.13 is the release that we will be
+	maintaining for the upcoming SUSE enterprise products until
+	Mono 1.2 is released.
+	
+<a name="new"/></a>
+
+<h2>What is new in Mono 1.1.13</h2>
+
+	<p>Also see our next section <a href="#1112">Mono 1.1.12</a>.
+
+<h3>New port: S390x</h3>
+
+	<p>Neale from Sinenomine has completed his 64-bit port of Mono
+	to the S390x platform.
+
+<h3>Obsoleted classes</h3>
+
+	<p>Various classes from Mono.Posix that had been marked
+	obsolete for the last few months have been removed (Jonathan
+	Pryor).
+
+	<p>These classes did not exist in Mono 1.0, they only existed
+	for a little while during the development process of Mono 1.1
+	and they have been replaced now with classes and methods that
+	follow the .NET Framework Programming Guidelines.
+
+<h3>.NET updates</h3>
+
+	<p>Dick Porter implemented the new 2.0 System.Threading primitives.
+
+	<p>John Luke updates the System.Net.Mail and .Net.Mime
+	namespaces.
+
+<h3>Windows.Forms updates</h3>
+
+	<p>Many Windows.Forms updates, in particular Jordi Más
+	contributed the printing framework for System.Windows.Forms.
+	We need to upgrade Cairo before it will become fully
+	functional.
+
+	<p>Peter Bartok, Jackson Harper and Alexander Olk fixed
+	hundreds of bugs in Windows.Forms.
+
+<h3>Sqlite</h3>
+
+	<p>Joshua Tauberer made the Sqlite provider return typed data
+	if Sqlite3 is being used.
+	
+<a name="1112"></a>
+<h2>What is new in Mono 1.1.12</h2>
+
+<h3>Ports</h3>
+
+	<p>Neale updated the S390 JIT compiler to match the new
+	cross platform register allocator.
+
+	<p>Paolo fixed a number PowerPC bugs that were exposed by new
+	tests.  He also fixed floating point code generation on ARM.
+
+<h3>IronPython</h3>
+
+	<p>This version of Mono can run IronPython 0.9.6.
+	
+<h3>JIT Optimizations</h3>
+
+	<p>An SSA-less Dead Code Elimination (fastdce) optimization
+	was checked in by Massi.  This optimization will be more
+	useful on the next release as we tune some of the
+	optimizations that produce dead code.
+	
+<h3>Registry</h3>
+
+	<p>An implementation of the registry is now available on
+	Unix.  
+
+<h3>2.0 profile updates.</h3>
+
+	<p>TryParse methods are no longer wrappers for Parse, Parse is
+	now implemented in terms of Parse which will give us the
+	performance associated with TryParse (Carlos).
+
+	<p>Implement the string compares from 2.0 (Atsushi).
+
+	<p>Implemented System.Globalization and System.Text from 2.0
+	as well as updating many of the CJK codecs (Atsushi).
+
+	<p>Reflection updates from Zoltan.
+
+	<p>Uri parsers from Sebastien.
+
+	<p>System.XML 2.0: Most of 2.0 API has been fixed up except
+	for Xml.Serialization have been done.  Atsushi continues to
+	work on stabilizing the 2.0 API.
+
+	<p>Ben added the initial support for the Nullable&lt;T&gt;
+        boxing conventions.  These implement the last-minute changes
+        that went into the Nullable&lt;T&gt; in .NET.  It is known to
+        have some bugs, as well as incomplete support in parts of the
+        runtime.
+
+	<p>Chris Toshok continues to work on the 2.0
+	System.Configuration assembly which is a key component of many
+	of the new ASP.NET classes.
+
+	<p>Dick implemented the 2.0 Semaphore classes (named and
+	unnamed). 
+	
+<h3>Debugger</h3>
+
+	<p>The Debugger works for the first time.   It might still be
+	a  bit flaky, but I have been using it.
+
+	<p>Get it from: <a
+	href="http://www.go-mono.com/sources/mono-debugger/mono-debugger-0.11.tar.gz">here</a>.
+
+	<p>The X-Develop 1.2 beta has GUI support for it as well.
+
+<h3>Text Encoding</h3>
+
+	<p>Atsushi implemented the 2.x support for text encodings: the
+	new unmanaged APIs and the fallback code.  
+	
+<h3>SharpZipLib upgraded</h3>
+
+	<p>We have upgraded SharpZipLib to the latest version,
+	required to run the new IKVM. 
+
+<h3>Monodoc</h3>
+
+	<p>Improved the Web UI, based on code from Eric Butler.
+
+<h3>Windows.Forms</h3>
+
+	<p>Windows.Forms is moving into bug fixing mode.  We need as
+	many people as possible testing their Windows.Forms
+	applications and submit bug reports for any issues found with
+	it.
+
+	<p>These are some of the highlights, as Windows.Forms is the
+	piece that changed the most in this release:
+
+	<p>Alexander updates his "Nice" theme.  He also checked in a
+	new theme "ClearLooks".  Set the variable MONO_THEME to "nice"
+	or "clearlooks" to select these themes.
+
+	<p>Jackson added MDI and toolwindow support, improved the
+	TreeView and ListView widgets.
+
+	<p>Mike improved the Menu infrastructure and introduced
+	shortcut and key navigation support into Windows.Forms
+
+	<p>Pedro contributed some updates to his summer of code
+	DataGridView widget.
+
+	<p>Peter added cut and paste support to the Textbox and
+	RichTextBox widgets, keybindings for it, drag and drop and
+	undo support.
+
+<h3>HttpListener</h3>
+
+	<p>Gonzalo implemented the embeddable HttpListener web
+	server.  Very cute.
+
+<h3>System.Drawing</h3>
+
+	<p>Jordi has upgraded our System.Drawing stack to implement
+	the 2.0 API.
+
+	<p>Jonathan Gilbert fixed an important bug in GDI+ that
+	prevented some applications from running correctly
+	(UnlockBitmap was busted).
+
+<h3>Compilers</h3>
+
+	<p>Ankit continues to improve the assembler and disassembler
+	to support generics and has updated the PEAPI accordingly.
+
+	<p> Harinath Raja, Marek Safar and Martin Baulig and continued
+	to fix bugs in the C# compiler and improve the error and
+	warning reporting of the compiler.
+	
+	<p>Basic compiler: Many bug fixes and improvements from
+	Alexandre Rocha, Jelmer Vernooij and Maverson Eduardo.
+
+	<p>Atsushi fixed many bugs in the -doc: command line handling
+	in the C# compiler.
+
+	<p>Cesar continued to improve the JScript compiler, the
+	Mozilla test suite now at 8577 successful tests out of 8866
+	(96.74%).
+
+<h3>IO Layer</h3>
+
+	<p>Dick did various improvements to the IO-layer: threads were
+	moved back into the shared handle space now that the leak bug
+	is gone.
+
+	<p>The main thread will now dispose all of its resources upon
+	termination.
+
+	<p>ShellExecute will now work properly on Windows.
+
+<h3>Npgsql</h3>
+
+	<p>Francisco upgraded Npgsql database driver to 1.0beta1.
+
+<h3>Bug Fixes</h3>
+
+	<p>Many bug fixes and tests everywhere.  In particular CodeDOM
+	got a large test harness by Gert, many bug fixes by Gonzalo to
+	System.Web.   Gamin is now correctly autodetected for the
+	FileSystemWatcher. 
+
+	<p>Special thanks go to Robert Jordan which provided plenty of
+	bug fixes and bug reports for this release of Mono.  We also
+	want to thank Zoltan which continues to fix bugs everywhere in
+	the runtime.
+
+	<p>John Luke updated and fixed various Mono.Cairo binding
+	issues.
+
+	<p>Jonathan Pryor updated the Mono.Unix namespace extensively.
+
+	<p>Senganal is the new maintainer of System.Data and has been
+	fixing many of the System.Data bugs.
+	
+<a name="install"/></a>
+
+<h2>Installing Mono 1.1.13</h2>
+	
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p>You can then setup your PATH to include /devel/bin to
+	access the Mono 1.1.  Alternatively you can replace your Mono
+	installation with 1.1.13
+
+	<p><b>Source Code and Binary Packages:</b>
+	<blockquote>
+	<p>Source code and pre-compiled packages for SUSE, SLES,
+	Fedora Core 3, 4, RHEL, MacOS and Windows in a variety of
+	platforms available from our web site from the <a
+	href="http://www.mono-project.com/Downloads">download</a>
+	section.
+
+	</blockquote>
+
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.1.13.tar.gz
+    $ cd mono-1.1.13
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+
+	<p>Then compile libgdiplus:
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.1.13.tar.gz
+    $ cd libgdiplus-1.1.13
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+	</blockquote>
+		
+</blockquote>
+
+<a name="contributors"/></a>
+
+<h2>Contributors to Mono 1.1.12 and Mono 1.1.13</h2>
+
+	<p>A partial list of contributors to this release:
+	
+	<p>Aaron Bockover, Aaron Flynt, Aaron Tomb, Alexander Olk,
+	Alexandre Rocha Lima e Marcondes, Alp Toker, Andrew Skiba,
+	Ankit Jain, Atsushi Enomoto, Ben Maurer, Boris Kirzner, Carlos
+	Alberto Cortes, Cesar Octavio Lopez Nataren, Chris Toshok,
+	C.J. Collier, Daniel Drake, Daniel Morgan, David Hudson, Dick
+	Porter, Duncan Mak, Eyal Alaluf, Felipe Lessa, Francisco
+	Figueiredo Jr, Geoff Norton, Gert Driesen, Gonzalo Paniagua,
+	Ingmar Schuster, Jackson Harper, Jacob Ilsø Christensen, James
+	Willcox, Jb Evain, Jelmer Vernooij, Joe Shaw, John Luke,
+	Jonathan Gilbert, Jonathan Pryor, Jonathan S. Chambers, Jordi
+	Mas, Josh Cooley, Joshua Tauberer, Konstantin Triger, Kornél
+	Pál, Lluis Sanchez, Marek Safar, Martin Baulig, Massimiliano
+	Mantione, Maverson Eduardo Schulze Rosa, Michael Hutchinson,
+	Miguel de Icaza, Mike Kestner, Neale Ferguson, Oleg Mihailik,
+	Paolo Molaro, Pedro Kiefer, Pedro Martinez, Peter Bartok,
+	Peter Johanson, Peter Williams, Rafael Teixeira, Raja R
+	Harinath, Raphael Slinckx, Robert Jordan, Sebastien Pouliot, T
+	Senganal, Todd Berman, Vladimir Krasnov, Vladislav Spivak,
+	Wade Berrier and Zoltan Varga.
+
+	
