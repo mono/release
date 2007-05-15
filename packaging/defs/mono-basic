@@ -52,10 +52,10 @@ get_destroot () {
                 DEST_ROOT=noarch
 	else
 		# for monobuild (building on all archs)
-                DEST_ROOT=$DISTRO
+                #DEST_ROOT=$DISTRO
 
 		# For release time
-                #DEST_ROOT=noarch
+                DEST_ROOT=noarch
 	fi
 }
 
