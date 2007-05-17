@@ -80,7 +80,10 @@ for distro_conf in distros:
 	env = packaging.buildenv(os.path.basename(distro_conf))
 	# Skip the distros that use zip packaging system
 	if not utils.get_dict_var('USE_ZIP_PKG', env.info):
-		packages += "<li><a href='%s'>%s</a></li>" % (env.name, env.name)
+		if env.get_info_var('distro_aliases'):
+			alias_text = "[ " + " | ".join(env.get_info_var('distro_aliases')) + " ]"
+		else: alias_text = ""
+		packages += "<li><a href='%s'>%s</a> %s</li>" % (env.name, env.name, alias_text)
 
 packages += "</ul>"
 
