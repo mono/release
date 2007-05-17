@@ -1,0 +1,7 @@
+target_host=builder@mono-itanium.boston.ximian.com
+jaildir=/jails/sles-10-ia64
+chroot_path=/usr/bin/chroot
+target_command_prefix=". /etc/profile;"
+
+USE_ZMD=1
+
