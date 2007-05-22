@@ -27,10 +27,10 @@ MASTER_SITES ?= file:///scratchbox/packages/ http://go-mono.com/sources/mono/ ht
 
 # Here you can control what package versions must be use
 PACKAGE_REVISION = 2
-MONO_VERSION = 1.2.3.1
+MONO_VERSION = 1.2.4
 GTKSHARP_VERSION = 2.4.3
 GLIB_VERSION = 2.8.6
-MAEMOSHARP_VERSION = 0.21
+MAEMOSHARP_VERSION = 0.22
 
 
 # If the color codes are interfering with your terminal, consider

@@ -1,3 +1,11 @@
+2007-05-22  Everaldo Canuto <ecanuto@novell.com>
+
+	* gar.conf.mk: 
+	- Upgrade to mono release to 1.2.4.
+	- Upgrade to maemo-sharp 0.22.
+
+	* devkit/mono/Makefile: Change file format from gz to bz2.
+
 2007-03-08  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.conf.mk: Change maemo-sharp release to 0.21, a PACKAGE_REVISION
