@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="moma.css" type="text/css">
+  </head>
+  <body>
+
+<h1>Mono Feedback</h1>
+<div id="container">
+<div id="content">
+<p>Comment submissions through <a href="http://www.mono-project.com/Moma">Mono Migration Analysis 1.1</a>
+
+<p>When present, the <span style="color: #0a0">change:</span> labels
+the number of APIs that have been implemented since the original
+report was submitted.
+
+<p>The summary results are not currently available, as I just rewrote
+the hundred of messy shell scripts that took forever to run using a <a
+href="http://anonsvn.mono-project.com/viewcvs/trunk/release/moma">C#
+program</a>.
+
+<p>For the previous program summaries, see <a
+href="http://primates.ximian.com/~miguel/momareports-previous">http://primates.ximian.com/~miguel/momareports-previous</a>.
+

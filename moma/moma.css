@@ -1,0 +1,40 @@
+body {
+	align: center;
+	background-color: #fff;
+	padding-left: 5%;
+	width: 80%;
+	color: #000;
+}
+
+h1 {
+	background: #7A6A99;
+	color: #fff;
+	padding: 15pt;
+}
+#content {
+	width: 65%;
+	float: left;
+}
+#sidebar {
+	top: 0;
+	left: 30%;
+	float: right;
+}
+.sub {
+	border: 2px solid #5B5767;
+	background: #E0E0E0;
+	padding-left: 1em;
+	padding-right: 1em;
+	text-align: left;
+	margin-bottom: 1em;
+}
+
+.col1 {
+	float: left;
+	width: 50%;
+}
+
+.col2 {
+	float: left;
+	width: 50%;
+}
