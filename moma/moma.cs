@@ -60,7 +60,7 @@ class Moma  {
 			sr.Close ();
 		}
 	}
-	
+
 	static void Main (string [] args)
 	{
 		if (args.Length < 3){
@@ -130,6 +130,8 @@ class Moma  {
 
 		concat ("head");
 
+		reports.Sort (Report.date_sorter);
+		
 		foreach (Report r in reports){
 			p ("<div class=\"sub\">");
 			p ("<div class='col1'>");
@@ -159,11 +161,21 @@ public class Report {
 	Dictionary <string,int> local = new Dictionary<string,int> ();
 	public static Dictionary <string,int> GlobalApi = new Dictionary<string,int> ();
 	public string Date;
+	public DateTime DateParsed;
 	public string Ip;
 	public string Definitions;
 	public string Name;
 	public string Comments;
 
+	public static IComparer date_sorter = new DateSorter ();
+
+	class DateSorter : IComparer {
+		public int Compare (object x, object y)
+		{
+			return ((Report) y).DateParsed.CompareTo (((Report)x).DateParsed);
+		}
+	}
+	
 	class CountCompare : IComparer {
 		Report r;
 		
@@ -224,6 +236,7 @@ public class Report {
 			StreamReader sr = new StreamReader (fs);
 
 			Date = sr.ReadLine ();
+			DateParsed = DateTime.Parse (Date);
 			Ip = sr.ReadLine ();
 			
 			string r = ReadMeta (sr);
