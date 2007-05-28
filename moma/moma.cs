@@ -104,8 +104,11 @@ class Moma  {
 
 		string [] files = Directory.GetFiles (args [0], "*.txt");
 		ArrayList reports = new ArrayList ();
+
+		//files = new string []  { "/home/miguel/Results/Fresh/647a1dd1ab0546b0abfcd92127292c72.txt" };
 		
 		foreach (string f in files){
+		
 			// Ignore all the junk temporary files I have lying around
 			if (Path.GetFileName (f).Length < 20)
 				continue;
@@ -188,21 +191,23 @@ class Moma  {
 		
 				foreach (string gapi in Report.GlobalApi.Keys){
 					int n, k;
-					
+
 					n = Report.GlobalApi [gapi];
-					if ((n >> 24) == flag)
+					if ((n >> 24) == flag){
 						table [gapi] = n & 0xffffff;
+					}
 				}
 
-				sw.WriteLine ("Total counts for {0} APIs\n\n", caption);
-				
+				sw.WriteLine ("Total counts for {0} APIs = {1}\n", caption, table.Keys.Count);
+				sw.WriteLine ("The numbers represent the number of applications depending on a given feature\n\n");
+
 				foreach (string s in table.Keys){
 					int p = s.IndexOf (' ');
 					sw.WriteLine ("  {0,6} {1}", table [s], s.Substring (p + 1));
 
 					// Be a bit more useful in TODO reports
 					if (flag == Flags.TODO){
-						sw.WriteLine ("        Details: {0}", TodoExplanation [s]);
+						sw.WriteLine ("         Details: {0}", TodoExplanation [s]);
 						sw.WriteLine ();
 					}
 				}
@@ -221,7 +226,9 @@ public class Report {
 	public string Definitions;
 	public string Name;
 	public string Comments;
-
+	int change;
+	Hashtable implemented = new Hashtable ();
+	
 	public static IComparer date_sorter = new DateSorter ();
 
 	public class CountSorter : IComparer<string> {
@@ -232,7 +239,10 @@ public class Report {
 			xn = GlobalApi [x];
 			yn = GlobalApi [y];
 
-			return (yn & 0xffffff) - (xn & 0xffffff);
+			int d = (yn & 0xffffff) - (xn & 0xffffff);
+			if (d != 0)
+				return d;
+			return y.CompareTo (x);
 		}
 	}
 	
@@ -256,7 +266,11 @@ public class Report {
 			int xn = r.local [(string) x];
 			int yn = r.local [(string) y];
 
-			return (yn & 0xffffff) - (xn & 0xffffff);
+			int d = (yn & 0xffffff) - (xn & 0xffffff);
+			if (d != 0)
+				return d;
+
+			return ((string) y).CompareTo (x);
 		}
 	}
 
@@ -320,10 +334,10 @@ public class Report {
 					r = r.Substring (0, r.Length-1);
 
 				switch (r.Substring (0, 6)){
-				case "[TODO]": ikind = Flags.TODO << 24; break;
-				case "[NIEX]": ikind = Flags.NIEX << 24; break;
-				case "[MISS]": ikind = Flags.MISS << 24; break;
-				case "[PINV]": ikind = Flags.PINV << 24; break;
+				case "[TODO]": ikind = Flags.TODO; break;
+				case "[NIEX]": ikind = Flags.NIEX; break;
+				case "[MISS]": ikind = Flags.MISS; break;
+				case "[PINV]": ikind = Flags.PINV; break;
 				}
 				string rest = r.Substring (7);
 
@@ -333,24 +347,43 @@ public class Report {
 				// has been taken care of.
 				//
 				int n;
-				if (!Moma.API.TryGetValue (rest, out n))
+				if (ikind != Flags.PINV && !Moma.API.TryGetValue (rest, out n)){
+					change++;
+					if (!implemented.Contains (rest))
+						implemented [rest] = rest;
+					    
 					continue;
+				}
+
+				ikind = ikind << 24;
 				
-				Register (local, ikind, rest);
-				Register (GlobalApi, ikind, rest);
+				if (!Register (local, ikind, rest)){
+
+					// Only count individual uses at the global level
+					Register (GlobalApi, ikind, rest);
+				}
 			}
 		}
 	}
 
-	void Register (Dictionary<string,int> api, int ikind, string rest)
+	//
+	// Registers the given API string @rest with type @ikind on the
+	// table called @api.
+	//
+	// Returns true if this was already registered
+	//
+	bool Register (Dictionary<string,int> api, int ikind, string rest)
 	{
 		if (api.ContainsKey (rest)){
 			int v = api [rest];
 			
 			api [rest] = (ikind | (v & 0x7f000000)) |
 				((v & 0xffffff) + 1);
-		} else
+			return true;
+		} else {
 			api [rest] = ikind + 1;
+			return false;
+		}
 	}
 
 	//
@@ -397,15 +430,19 @@ public class Report {
 	public void DumpStats (string outputdir)
 	{
 		int todo = 0, miss = 0, niex = 0, pinv = 0;
-		int change = 0;
 
-		ArrayList implemented = new ArrayList ();
 		ArrayList pinvokes = new ArrayList ();
 		ArrayList issues = new ArrayList ();
 		
 		using (FileStream fs = File.OpenWrite (Path.Combine (outputdir, Name))){
 			StreamWriter rw = new StreamWriter (fs);
 
+			rw.WriteLine ("Definitions: {0}", Definitions);
+			rw.WriteLine ("Date Submitted: {0}", Date);
+			rw.WriteLine ("Comments: {0}", Comments);
+			rw.WriteLine ("=========================================");
+			rw.WriteLine ("");
+			
 			foreach (string apicall in local.Keys){
 				int k;
 				int c;
@@ -424,10 +461,7 @@ public class Report {
 							niex++;
 
 						issues.Add (apicall);
-					} else {
-						change++;
-						implemented.Add (apicall);
-					}
+					} 
 				}
 			}
 
@@ -485,7 +519,7 @@ public class Report {
 				p (rw, "");
 				p (rw, "****************************************************");
 				p (rw, "Methods that have been implemented:");
-				foreach (string s in implemented)
+				foreach (string s in implemented.Keys)
 					p (rw, "   {0}", s.Substring (s.IndexOf (' ')+1));
 
 			}
