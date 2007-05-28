@@ -7,6 +7,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+public class Flags {
+	public const int TODO = 1;
+	public const int MISS = 2;
+	public const int NIEX = 4;
+	public const int PINV = 8;
+}
 
 class Moma  {
 	public static Dictionary<string,int> API = new Dictionary<string, int> ();
@@ -153,12 +159,54 @@ class Moma  {
 		concat ("end");
 
 		sw.Close ();
+
+		//
+		// Now render the total needs
+		//
+		//GenerateStats (Flags.MISS, Path.Combine (outputdir, "f-MISS.txt"), "missing");
+	}
+
+	static void GenerateStats (int flag, string fname, string caption)
+	{
+		using (FileStream fs = File.OpenWrite (fname)){
+			using (StreamWriter sw = new StreamWriter (fs)){
+
+				// Currently broken
+				//
+				// I should recompute the tables after I have "upgraded"
+				// the data to what is actually implemented, instead of
+				// depending on the data from the raw reports
+				//
+				SortedDictionary<string,int> table = new SortedDictionary<string,int> (new Report.CountSorter ());
+		
+				foreach (string gapi in Report.GlobalApi.Keys){
+					int n, k;
+					
+					
+					n = Report.GlobalApi [gapi];
+					if ((n & flag) != 0){
+						
+						if (Moma.API.TryGetValue (gapi, out k))
+							n = k;
+						
+						table [gapi] = n & 0xffffff;
+					}
+				}
+
+				sw.WriteLine ("Total counts for {0} APIs\n\n", caption);
+				
+				foreach (string s in table.Keys){
+					int p = s.IndexOf (' ');
+					sw.WriteLine ("  {0,4} {1}", table [s], s.Substring (p + 1));
+				}
+			}
+		}
 	}
 }
 
 public class Report {
 	Dictionary <string,string> meta = new Dictionary<string,string>();
-	Dictionary <string,int> local = new Dictionary<string,int> ();
+	Dictionary <string,int> local;
 	public static Dictionary <string,int> GlobalApi = new Dictionary<string,int> ();
 	public string Date;
 	public DateTime DateParsed;
@@ -169,6 +217,18 @@ public class Report {
 
 	public static IComparer date_sorter = new DateSorter ();
 
+	public class CountSorter : IComparer<string> {
+		public int Compare (string x, string y)
+		{
+			int xn, yn;
+			
+			xn = GlobalApi [x];
+			yn = GlobalApi [y];
+
+			return (xn & 0xffffff) - (yn & 0xffffff);
+		}
+	}
+	
 	class DateSorter : IComparer {
 		public int Compare (object x, object y)
 		{
@@ -231,6 +291,8 @@ public class Report {
 
 	public Report (string f)
 	{
+		local = new Dictionary <string,int> ();
+
 		Name = Path.GetFileName (f);
 		using (FileStream fs = File.OpenRead (f)){
 			StreamReader sr = new StreamReader (fs);
@@ -251,10 +313,10 @@ public class Report {
 					r = r.Substring (0, r.Length-1);
 
 				switch (r.Substring (0, 6)){
-				case "[TODO]": ikind = 1 << 24; break;
-				case "[NIEX]": ikind = 2 << 24; break;
-				case "[MISS]": ikind = 4 << 24; break;
-				case "[PINV]": ikind = 8 << 24; break;
+				case "[TODO]": ikind = Flags.TODO << 24; break;
+				case "[NIEX]": ikind = Flags.NIEX << 24; break;
+				case "[MISS]": ikind = Flags.MISS << 24; break;
+				case "[PINV]": ikind = Flags.PINV << 24; break;
 				}
 				string rest = r.Substring (7);
 
@@ -307,11 +369,11 @@ public class Report {
 	{
 		// In order of usefulness in the report.
 		
-		if ((n & 2) != 0)
+		if ((n & Flags.MISS) != 0)
 			return "MISS";
-		if ((n & 4) != 0)
+		if ((n & Flags.NIEX) != 0)
 			return "NIEX";
-		if ((n & 1) != 0)
+		if ((n & Flags.TODO) != 0)
 			return "TODO";
 
 		return "UNKN";
@@ -338,11 +400,11 @@ public class Report {
 					pinvokes.Add (apicall);
 				} else {
 					if (Moma.API.TryGetValue (apicall, out k)){
-						if ((k & 1) != 0)
+						if ((k & Flags.TODO) != 0)
 							todo++;
-						else if ((k & 2) != 0)
+						else if ((k & Flags.MISS) != 0)
 							miss++;
-						else if ((k & 4) != 0)
+						else if ((k & Flags.NIEX) != 0)
 							niex++;
 
 						issues.Add (apicall);
@@ -371,7 +433,7 @@ public class Report {
 					p (rw, " {0,4}  [{1}] {2}", n & 0xffffff, map (n), s.Substring (s.IndexOf (' ')+1));
 
 					// If it is a todo, add the annotation of what the message is
-					if ((n & 1) != 0){
+					if ((n & Flags.TODO) != 0){
 						p (rw, "              {0}", Moma.TodoExplanation [s]);
 					}
 				}

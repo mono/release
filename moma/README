@@ -2,5 +2,5 @@ These are the tools used to process the Moma reports and post them on the web,
 they are missing a few results that used to be part of the shell scripts that
 we used to ran in the past.
 
-The new C# program runs in 7 seconds, compared to the 20 minute run
-that was based on a bunch of repetitive shell commands
+The new C# program runs in 7 seconds, compared to the 27 + 7 minutes
+run that was based on an evolution of ugly shell commands.
