@@ -13,8 +13,8 @@
 the number of APIs that have been implemented since the original
 report was submitted.
 
-<p>The summary results are not currently available, as I just rewrote
-the hundred of messy shell scripts that took forever to run using a <a
+<p>Not all summary results are available, as I just rewrote the
+hundred of messy shell scripts that took forever to run using a <a
 href="http://anonsvn.mono-project.com/viewcvs/trunk/release/moma">C#
 program</a>.
 

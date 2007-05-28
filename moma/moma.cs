@@ -156,6 +156,11 @@ class Moma  {
 
 		concat ("side");
 		p ("<b>Submissions:</b> {0}", reports.Count);
+		p ("<p><b>Totals:</b>");
+		p ("<ul style=\"list-style-type: none;\">");
+		p ("<li><a href='f-MISS.txt'>Missing</a>");
+		p ("<li><a href='f-NIEX.txt'>Throw NotImplemented</a>");
+		p ("<li><a href='f-TODO.txt'>TODO/Pending</a>");
 		concat ("end");
 
 		sw.Close ();
@@ -163,7 +168,9 @@ class Moma  {
 		//
 		// Now render the total needs
 		//
-		//GenerateStats (Flags.MISS, Path.Combine (outputdir, "f-MISS.txt"), "missing");
+		GenerateStats (Flags.MISS, Path.Combine (outputdir, "f-MISS.txt"), "missing/not-present in Mono today");
+		GenerateStats (Flags.TODO, Path.Combine (outputdir, "f-TODO.txt"), "methods flagged as TODO");
+		GenerateStats (Flags.NIEX, Path.Combine (outputdir, "f-NIEX.txt"), "throwing NotImplementedException");
 	}
 
 	static void GenerateStats (int flag, string fname, string caption)
@@ -182,22 +189,22 @@ class Moma  {
 				foreach (string gapi in Report.GlobalApi.Keys){
 					int n, k;
 					
-					
 					n = Report.GlobalApi [gapi];
-					if ((n & flag) != 0){
-						
-						if (Moma.API.TryGetValue (gapi, out k))
-							n = k;
-						
+					if ((n >> 24) == flag)
 						table [gapi] = n & 0xffffff;
-					}
 				}
 
 				sw.WriteLine ("Total counts for {0} APIs\n\n", caption);
 				
 				foreach (string s in table.Keys){
 					int p = s.IndexOf (' ');
-					sw.WriteLine ("  {0,4} {1}", table [s], s.Substring (p + 1));
+					sw.WriteLine ("  {0,6} {1}", table [s], s.Substring (p + 1));
+
+					// Be a bit more useful in TODO reports
+					if (flag == Flags.TODO){
+						sw.WriteLine ("        Details: {0}", TodoExplanation [s]);
+						sw.WriteLine ();
+					}
 				}
 			}
 		}
@@ -225,7 +232,7 @@ public class Report {
 			xn = GlobalApi [x];
 			yn = GlobalApi [y];
 
-			return (xn & 0xffffff) - (yn & 0xffffff);
+			return (yn & 0xffffff) - (xn & 0xffffff);
 		}
 	}
 	
@@ -320,6 +327,15 @@ public class Report {
 				}
 				string rest = r.Substring (7);
 
+				//
+				// If the API is not registered in the latest
+				// API tables, do not register it, it means it
+				// has been taken care of.
+				//
+				int n;
+				if (!Moma.API.TryGetValue (rest, out n))
+					continue;
+				
 				Register (local, ikind, rest);
 				Register (GlobalApi, ikind, rest);
 			}
@@ -434,7 +450,7 @@ public class Report {
 
 					// If it is a todo, add the annotation of what the message is
 					if ((n & Flags.TODO) != 0){
-						p (rw, "              {0}", Moma.TodoExplanation [s]);
+						p (rw, "              Details: {0}", Moma.TodoExplanation [s]);
 					}
 				}
 			}
