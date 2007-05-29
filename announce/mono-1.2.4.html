@@ -364,3 +364,54 @@ href="http://www.mono-project.com/Mono_DataConvert">Mono.DataConvert</a></h2>
 	<p>If your name is missing from the list (the list is
 	generated with a bunch of imperfect shell scripts over the svn
 	logs), please contact miguel@ximian.com.
+
+<a name="install">
+<h1>Installing Mono 1.2.4</h1>
+	
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p><b>Binary Packages and Source Code Downloads:</b>
+	<blockquote>
+	<p>Source code and pre-compiled packages for SUSE, SLES,
+	Fedora Core 3, 4, Solaris, RHEL, MacOS and Windows in a variety of
+	platforms available from our web site from the <a
+	href="http://www.mono-project.com/Downloads">download</a>
+	section.
+
+	</blockquote>
+
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.2.4.tar.gz
+    $ cd mono-1.2.4
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+
+	<p>Then compile libgdiplus:
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.2.4.tar.gz
+    $ cd libgdiplus-1.2.4
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+	</blockquote>
+		
+</blockquote>
