@@ -408,5 +408,11 @@ CLEAN_UP () {
 	rm -Rf	/tmp/Mono*	/var/tmp/Mono*
 
 	rm -Rf	/tmp/mcs*	/var/tmp/mcs*
+
+	# These tend to get left around on win32... ?
+	if [ $DISTRO == "win-4-i386" ] ; then
+		/home/builder/bin/Process.exe   -k mono.exe
+	fi
+
 }
 

@@ -21,6 +21,9 @@ if test x$DRYRUN = xdry ; then
 	DO_DRYRUN=1
 fi
 
+# Hack: Don't push the rtl releases
+extra_options="$extra_options --exclude *rtl*"
+
 cd packages
 rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/download
 
