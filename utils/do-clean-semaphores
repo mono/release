@@ -7,14 +7,32 @@ import sys
 import commands
 
 output = commands.getoutput('ipcs')
-reg = re.compile('(0x\S+)')
+lin_reg = re.compile('(0x[0-9a-fA-F]+) (\d+)')
+
+sol_reg = re.compile('s\s+(\d+)\s+(0x[0-9a-fA-F]+) ')
 
 count = 0
 for line in output.split('\n'):
-	match = reg.search(line)
-	if match:
-		print match.group(1)
-		ret = os.system('ipcrm -S %s' % match.group(1))
-		if not ret: count += 1
+	lin_match = lin_reg.search(line)
+	if lin_match:
+		print lin_match.group(1)
+		print lin_match.group(2)
+		for i in "-S -s -m -M".split():
+			ret = os.system('ipcrm %s %s' % (i, lin_match.group(1)) )
+			ret2 = os.system('ipcrm %s %s' % (i, lin_match.group(2)) )
+			if not ret: count += 1
+			if not ret2: count += 1
+
+	sol_match = sol_reg.search(line)
+	if sol_match:
+		print sol_match.group(1)
+		print sol_match.group(2)
+		for i in "-S -s -m -M".split():
+			ret = os.system('ipcrm %s %s' % (i, sol_match.group(1)) )
+			ret2 = os.system('ipcrm %s %s' % (i, sol_match.group(2)) )
+			if not ret: count += 1
+			if not ret2: count += 1
+
+
 
 print "Remove %d semaphore(s)" % count
