@@ -56,7 +56,7 @@ import utils
 # Global constant type vars
 cwd = os.getcwd()
 
-installer_env = packaging.buildenv('win-4-i386')
+installer_conf = packaging.buildconf('win-4-i386')
 
 # Represents a selection in the installer
 class Selection:
@@ -79,9 +79,9 @@ class Selection:
 
 			## Total hack to pick the rpm version of mono-basic (contains compiler and runtime) instead of the zip version (only has the runtime)
 			if pack == "mono-basic":
-				self.pack_objs[pack] = packaging.package(packaging.buildenv('suse-100-i586'),pack)
+				self.pack_objs[pack] = packaging.package(packaging.buildconf('suse-100-i586'),pack)
 			else:
-				self.pack_objs[pack] = packaging.package(installer_env,pack)
+				self.pack_objs[pack] = packaging.package(installer_conf,pack)
 
 			## Total hack to always select an older version on mono-tools, since newer versions don't run on windows
 			#if pack == "mono-tools":
@@ -686,8 +686,8 @@ os.chdir('..')
 
 # Run the guid generator on windows
 print "Copying/running guidgen..."
-installer_env.ssh.copy_to('guidgen/guidgen.exe', '.', mode="scp")
-(code, output) = installer_env.ssh.execute('./guidgen.exe')
+installer_conf.buildenv.copy_to('guidgen/guidgen.exe', '.', mode="scp")
+(code, output) = installer_conf.buildenv.execute_command('./guidgen.exe')
 print "\n",
 guid = output.split().pop()
 
@@ -716,23 +716,23 @@ utils.substitute_parameters_in_file("build/mono/bin/setmonopath.bat", parameter_
 
 # Copy everything to windows_build_client 
 print "Cleaning up files from build client..."
-installer_env.ssh.execute("rm -Rf /tmp/windows-installer; mkdir -p /tmp/windows-installer/Output")
+installer_conf.buildenv.execute_command("rm -Rf /tmp/windows-installer; mkdir -p /tmp/windows-installer/Output")
 if code:
 	print "Error cleaning up"
 	print output
 	sys.exit(code)
 
 print "Copying files to build client..."
-installer_env.ssh.copy_to(["build", "Mono.iss", "setup-files"], '/tmp/windows-installer', compress=1, mode='tar')
+installer_conf.buildenv.copy_to(["build", "Mono.iss", "setup-files"], '/tmp/windows-installer', compress=1, mode='ssh')
 
 # Strip binaries for each selection
 #  TODO: Hmm... this broke the install (mono wouldn't run at runtime) ... will need more investigation
 #  Fixed for now, stripping some of the .dll files causes problems, so we'll only strip the biggest ones
 for sel in selections:
-	(code, output) = installer_env.ssh.execute('cd /tmp/windows-installer/build/%s/bin; strip --strip-unneeded *.exe mono*.dll libgtk-win*.dll ; cd ../lib; strip --strip-unneeded *.a' % sel.name)
+	(code, output) = installer_conf.buildenv.execute_command('cd /tmp/windows-installer/build/%s/bin; strip --strip-unneeded *.exe mono*.dll libgtk-win*.dll ; cd ../lib; strip --strip-unneeded *.a' % sel.name)
 
 # Run installer on windows
-(code, output) = installer_env.ssh.execute('export PATH="$PATH:/cygdrive/c/PROGRA~1/INNOSE~1:C:\Program Files\Inno Setup5"; cd /tmp/windows-installer; ISCC.exe Mono.iss')
+(code, output) = installer_conf.buildenv.execute_command('export PATH="$PATH:/cygdrive/c/PROGRA~1/INNOSE~1:C:\Program Files\Inno Setup5"; cd /tmp/windows-installer; ISCC.exe Mono.iss')
 
 if code:
 	print "Error running installer"
@@ -747,7 +747,7 @@ packages_file.write("\n")
 packages_file.close()
 
 # Copy resultant file back
-installer_env.ssh.copy_from("/tmp/windows-installer/Output/*", output_dir, mode='scp')
+installer_conf.buildenv.copy_from("/tmp/windows-installer/Output/*", output_dir, mode='scp')
 
 # Generate the md5sum of the final installer
 output_filename = os.path.basename(glob.glob(output_dir + os.sep + "*.exe").pop())

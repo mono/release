@@ -56,11 +56,11 @@ def get_state(code, test=0):
 
 def run_postbuild_step(name, step_key, test=0):
 
-	command = package.get_info_var(step_key)
+	code = package.get_info_var(step_key)
 
-	code = 0
+	result = 0
 
-	if not (name and command):
+	if not (name and code):
 		print "run_buildbuild_step: Invalid params: '%s', '%s'" % (name, step_key)
 	else:
 		print "Running %s step!" % name
@@ -68,15 +68,15 @@ def run_postbuild_step(name, step_key, test=0):
 		log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
 		build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 
-		(code, output) = build_env.ssh.execute("%s cd %s  " % (step_env_pre_cmd, remote_src_dir + command), env=build_env.env_vars, logger=log_obj, output_timeout=timeout, max_output_size=max_output_size)
-		state = get_state(code, test=test)
-		if code:
+		(result, output) = conf.buildenv.execute_code("%s %s " % (step_env_pre_cmd, code), working_dir=remote_src_dir, env=conf.env_vars, logger=log_obj, output_timeout=timeout, max_output_size=max_output_size)
+		state = get_state(result, test=test)
+		if result:
 			print "Step %s failed..." % name
 			build_info.update_step(name, state=state, finish=utils.get_time())
 		else:
 			build_info.update_step(name, state=state, finish=utils.get_time())
 
-	return code
+	return result
 
 
 # Collect optional opts
@@ -138,8 +138,8 @@ else:
 sources += snapshot_sources
 source_file = sources[0]
 
-build_env = packaging.buildenv(distro)
-package = packaging.package(build_env, package_name, HEAD_or_RELEASE=HEAD_or_RELEASE)
+conf = packaging.buildconf(distro)
+package = packaging.package(conf, package_name, HEAD_or_RELEASE=HEAD_or_RELEASE)
 
 # Hack to for some numbering schemes (nant, ironpython) to be rpm version sorting friendly
 if package.get_info_var('APPEND_ZERO_TO_RPM_VERSION'):
@@ -156,21 +156,21 @@ if not package.valid_build_platform(distro):
 	sys.exit(3)
 
 
-if build_env.is_locked():
+if conf.buildenv.is_locked():
 	print "%s jail is busy" % distro
 	sys.exit(2)
 
-build_env.lock_env()
+conf.buildenv.lock_env()
 
 # Set signal handler
 def keyboard_interrupt(signum, frame):
 	print 'Build aborted:', signum
-	build_env.unlock_env()
+	conf.buildenv.unlock_env()
 signal.signal(signal.SIGINT, keyboard_interrupt)
 
-if build_env.offline():
+if conf.buildenv.offline():
 	print "%s jail is offline" % distro
-	build_env.unlock_env()
+	conf.buildenv.unlock_env()
 	sys.exit(2)
 
 
@@ -184,14 +184,14 @@ package_version_path = package_path + os.sep + ver_path
 
 if os.path.exists(package_version_path):
 	print "The path for this package (%s) already exists. You probably need to bump the revision number." % package_version_path
-	build_env.unlock_env()
+	conf.buildenv.unlock_env()
 	sys.exit(5)
 
 build_info = datastore.build_info(HEAD_or_RELEASE, distro, package_name, ver_path)
 build_info.new_build()
 
 # Update build step to running
-build_info.update_build(state='inprogress', buildhost=build_env.info['target_host'], start=utils.get_time(), finish="")
+build_info.update_build(state='inprogress', buildhost=conf.buildenv.uid, start=utils.get_time(), finish="")
 
 # Debug
 #values = build_info.get_build_info()
@@ -228,9 +228,9 @@ if install_release_packages:
 else:
 	install_deps_H_or_R = HEAD_or_RELEASE
 print "Installing dependencies..."
-(code, output) = utils.launch_process("./install-deps --HEAD_or_RELEASE=%s %s %s" % (install_deps_H_or_R, distro, package_name), logger=log_obj)
+(code, output) = utils.launch_process("./install-deps --HEAD_or_RELEASE=%s %s %s" % (install_deps_H_or_R, conf.conf_lock_filename, package_name), logger=log_obj)
 if code:
-	build_env.unlock_env()
+	conf.buildenv.unlock_env()
 	build_info.update_step("install-deps", state="failure", finish=utils.get_time())
 	build_info.update_build(state="failure", finish=utils.get_time())
 	print "Dependency installation failed, see log in %s for details" % LOGFILE
@@ -239,7 +239,7 @@ if code:
 build_info.update_step("install-deps", state="success", finish=utils.get_time())
 
 # Debug
-#build_env.unlock_env()
+#conf.unlock_env()
 #sys.exit(1)
 
 # Update step: building
@@ -256,12 +256,13 @@ for ext in config.source_extensions:
 	build_dir = build_dir.replace(ext, '')
 
 # Set optional custom build_location
-build_location = build_env.env_vars['build_location']
+build_location = conf.env_vars['build_location']
 
 # Files for zip build system and build command
-if build_env.get_info_var('USE_ZIP_PKG'):
+if conf.get_info_var('USE_ZIP_PKG'):
 	# do-zip-build deps...
-	files_to_copy += '../pyutils/config.py ../pyutils/utils.py ../pyutils/sshutils.py ../pyutils/packaging.py ../pyutils/shell_parse.py'.split()
+	# Yikes... this dep list is getting big, ugh
+	files_to_copy += '../pyutils/config.py ../pyutils/utils.py ../pyutils/buildenv.py ../pyutils/network.py ../pyutils/logger.py ../pyutils/packaging.py ../pyutils/shell_parse.py'.split()
 	for f in aliases:
 		files_to_copy += ['defs/' + f]
 	files_to_copy += ['do-zip-build', 'conf/' + distro, '../conf/%s/*.patch' % package_name, 'defs/%s' % package_name ]
@@ -279,17 +280,17 @@ else:
 	step_env_pre_cmd = ""
 
 
-build_env.ssh.copy_to(files_to_copy, build_location, mode='scp', compress=0)
+conf.buildenv.copy_to(files_to_copy, build_location, compress=0)
 
 # Set up env for the build and for tests
-build_env.env_vars['HEAD_or_RELEASE'] = "HEAD"
-build_env.env_vars['DISTRO'] = distro
-build_env.env_vars['BUILD_OS'] = build_env.info['os']
-build_env.env_vars['BUILD_ARCH'] = build_env.info['arch']
+conf.env_vars['HEAD_or_RELEASE'] = "HEAD"
+conf.env_vars['DISTRO'] = distro
+conf.env_vars['BUILD_OS'] = conf.info['os']
+conf.env_vars['BUILD_ARCH'] = conf.info['arch']
 
 # Put in a function rather than copy and paste...
-def build_failed(build_env, code, LOGFILE, build_info, package):
-	build_env.unlock_env()
+def build_failed(conf, code, LOGFILE, build_info, package):
+	conf.buildenv.unlock_env()
 	state = get_state(code)
 	print "Build failed, see log in %s for details" % LOGFILE
 	build_info.update_step("build", state=state, finish=utils.get_time())
@@ -298,18 +299,18 @@ def build_failed(build_env, code, LOGFILE, build_info, package):
 	build_info.update_build(state="failure", finish=utils.get_time())
 	sys.exit(7)
 
-(code, output) = build_env.ssh.execute(build_command, env=build_env.env_vars, logger=log_obj, output_timeout=timeout, max_output_size=max_output_size)
+(code, output) = conf.buildenv.execute_command(build_command, env=conf.env_vars, logger=log_obj, output_timeout=timeout, max_output_size=max_output_size)
 if code:
-	build_failed(build_env, code, LOGFILE, build_info, package)
+	build_failed(conf, code, LOGFILE, build_info, package)
 
 distutils.dir_util.mkpath(package_version_path)
-build_env.ssh.copy_from(['%s/builder/built-packages/*' % build_location, '%s/scratch/*.spec' % build_location], package_version_path)
+conf.buildenv.copy_from(['%s/builder/built-packages/*' % build_location], package_version_path)
 
 # Make sure packages got here ok
 log_obj.log("Verifying packages...\n")
 
 files = []
-if build_env.get_info_var('USE_ZIP_PKG'):
+if conf.get_info_var('USE_ZIP_PKG'):
 	files = glob.glob(package_version_path + os.sep + "*.zip")
 	code = 0
 	output = ""
@@ -337,7 +338,7 @@ if code:
 		#print "Error removing build... (bug in python)"
 		log_obj.log("Error removing build...\n")
 		print "Error removing build..."
-	build_failed(build_env, code, LOGFILE, build_info, package)
+	build_failed(conf, code, LOGFILE, build_info, package)
 
 log_obj.log("Packages verified!\n")
 
@@ -372,7 +373,7 @@ if package.get_info_var('CLEAN_UP'):
 state = build_info.get_collective_state()
 build_info.update_build(state=state, finish=utils.get_time())
 
-build_env.unlock_env()
+conf.buildenv.unlock_env()
 
 print "Done!"
 

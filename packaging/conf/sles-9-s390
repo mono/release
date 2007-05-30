@@ -1,9 +1,10 @@
-target_host=builder@aussie-2.osdl.marist.edu
+username=builder
+hostname=aussie-2.osdl.marist.edu
 build_location="/home/builder/tmp"
 
 # Box in Germany
 #target_host=builder@s390zvi38.suse.de
-#jaildir=/mono/jails/sles-9-s390
+#root_dir=/mono/jails/sles-9-s390
 
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"

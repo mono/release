@@ -1,5 +1,6 @@
-target_host=builder@hardhat.boston.ximian.com
-jaildir=/jails/suse-100-i586/jail
+username=builder
+hostname=hardhat.boston.ximian.com
+root_dir=/jails/suse-100-i586/jail
 target_command_prefix=". /etc/profile;"
 
 USE_YAST=1

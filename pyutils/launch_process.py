@@ -2,6 +2,7 @@
 
 import sys
 import getopt
+import os
 
 import utils
 
@@ -16,8 +17,7 @@ def commandline():
 
 	# Options for launch process
 	try:
-		#opts, command = getopt.gnu_getopt(sys.argv[1:], "", [ "terminate_reg=", "output_timeout=" ])
-		opts, command = getopt.getopt(sys.argv[1:], "", [ "terminate_reg=", "output_timeout=", "max_output_size=", "kill_process_group" ])
+		opts, command = getopt.getopt(sys.argv[1:], "", [ "terminate_reg=", "output_timeout=", "max_output_size=", "kill_process_group", "env=", "working_dir=" ])
 	except getopt.GetoptError:
                 usage()
 		sys.exit(1)
@@ -34,6 +34,12 @@ def commandline():
 			args['kill_process_group'] = 1
 		if option == "--max_output_size":
 			args['max_output_size'] = float(value)
+		if option == "--env":
+			for e in value.split(','):
+				k, v = e.split('=')
+				os.environ[k] = v
+		if option == "--working_dir":
+			os.chdir(value)
 
 	command = " ".join(command)
 	code, output = utils.launch_process(command, **args)

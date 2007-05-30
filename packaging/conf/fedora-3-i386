@@ -1,5 +1,6 @@
-target_host=builder@hardhat.boston.ximian.com
-jaildir=/jails/fedora-3-i386-root-0
+username=builder
+hostname=hardhat.boston.ximian.com
+root_dir=/jails/fedora-3-i386-root-0
 
 # Repo conf
 USE_OC=1

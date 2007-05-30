@@ -13,6 +13,7 @@ sys.path += [ '../pyutils' ]
 import packaging
 import config
 import utils
+import build
 
 # Command line options
 try:
@@ -74,16 +75,15 @@ for installer_map in installer_info:
 packages = "<ul>"
 
 # Links to distros
-distros = glob.glob(config.packaging_dir + os.sep + 'conf/*-*-*')
-distros.sort()
+distros = build.get_platforms()
 for distro_conf in distros:
-	env = packaging.buildenv(os.path.basename(distro_conf))
+	conf = packaging.buildconf(os.path.basename(distro_conf))
 	# Skip the distros that use zip packaging system
-	if not utils.get_dict_var('USE_ZIP_PKG', env.info):
-		if env.get_info_var('distro_aliases'):
-			alias_text = "[ " + " | ".join(env.get_info_var('distro_aliases')) + " ]"
+	if not conf.get_info_var('USE_ZIP_PKG'):
+		if conf.get_info_var('distro_aliases'):
+			alias_text = "[ " + " | ".join(conf.get_info_var('distro_aliases')) + " ]"
 		else: alias_text = ""
-		packages += "<li><a href='%s'>%s</a> %s</li>" % (env.name, env.name, alias_text)
+		packages += "<li><a href='%s'>%s</a> %s</li>" % (conf.name, conf.name, alias_text)
 
 packages += "</ul>"
 

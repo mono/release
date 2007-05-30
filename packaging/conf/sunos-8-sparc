@@ -1,11 +1,12 @@
-target_host=builder@mono-sparc.boston.ximian.com
-#target_host=builder@137.65.144.30
-#target_host=builder@pbartok2.provo.novell.com
-#jaildir=/jails/sunos-8-sparc-root-0
+username=builder
+hostname=mono-sparc.boston.ximian.com
+#username=builder
+#hostname=pbartok2.provo.novell.com
+#root_dir=/jails/sunos-8-sparc-root-0
 USE_ZIP_PKG=1
 
 # Jails aren't very friendly on solaris... /dev system gets messed, can't even use stdin
-#jaildir=/export/home/builder/wade/jail
+#root_dir=/export/home/builder/wade/jail
 strip_path=/usr/ccs/bin/strip
 tar_path=/usr/local/bin/tar
 

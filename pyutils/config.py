@@ -32,6 +32,8 @@ snapshot_packages_dir = packaging_dir + "/snapshot_packages"
 sources_dir = packaging_dir + "/sources"
 snapshot_sources_dir = packaging_dir + "/snapshot_sources"
 
+# smbclient password file
+smb_passfile = packaging_dir + "/.smbpass"
 
 # Url path from view of webserver
 web_root_url = ""
@@ -108,12 +110,16 @@ sync_max_arg_len = 32768
 
 ##############################################
 # Default environment (used by sshutils and packaging.buildenv)
+# TODO: there needs to be a better correlation between these env vars and the _path vars in packaging/conf
 env_vars = {
 	'chroot_path':		'/usr/sbin/chroot',
 	'strip_path':		'strip',
 	'tar_path':		'tar',
 	'make_path':		'make',
-	'build_location':	'/tmp'
+	'build_location':	'/tmp',
+	#'shell_path':		'/bin/sh',
+	# We depend on bash (ie: env string in execute_command)
+	'shell_path':		'/bin/bash',
 }
 
 ######################################

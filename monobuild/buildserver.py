@@ -398,6 +398,7 @@ while threading.activeCount() > 1 or firstrun:
 	# Check for newly activated threads
 	reload(config)
 
+	# TODO: how to schedule alternate jails?
 	for distro in config.sd_latest_build_distros:
 		found = False
 		for thread in build_threads:

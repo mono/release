@@ -5,7 +5,7 @@ import string
 
 sys.path += ['../pyutils']
 
-import sshutils
+import buildenv
 import packaging
 
 if len(sys.argv) < 2:
@@ -14,14 +14,15 @@ if len(sys.argv) < 2:
 	print "  If no [command] is given, an interactive login will proceed"
 	sys.exit(1)
 
-buildenv = packaging.buildenv(sys.argv[1], print_output=1)
+conf = packaging.buildconf(sys.argv[1], skip_alternates=True)
+conf.buildenv.print_output=True
 
 if len(sys.argv) > 2:
 	command = string.join(sys.argv[2:], ' ')
 	sys.stderr.write("Executing: %s\n" % command)
-	status, output = buildenv.ssh.execute(command)
+	status, output = conf.buildenv.execute_command(command)
 	sys.exit(status)
 else:
 	print "Logging in"
-	buildenv.ssh.interactive_login()
+	conf.buildenv.login()
 

@@ -1,5 +1,6 @@
-target_host=builder@monobuild1.boston.ximian.com
-jaildir=/jails/suse-102-i586
+username=builder
+hostname=monobuild1.boston.ximian.com
+root_dir=/jails/suse-102-i586
 target_command_prefix=". /etc/profile;"
 
 # had to create libexpat.so.0 -> libexpat.so.1.5.0 

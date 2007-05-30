@@ -59,7 +59,7 @@ else:
 	build_host = target
 	targets = [ target ]
 
-env = packaging.buildenv(build_host, print_output=debug)
+conf = packaging.buildconf(build_host, print_output=debug)
 
 remote_temp = "/tmp/packaging"
 resources_dir = remote_temp + os.sep + 'resources'
@@ -78,15 +78,15 @@ packages_used = []
 versions = {}
 
 # Clean up
-env.ssh.execute('rm -Rf ' + remote_temp + "; mkdir -p " + remote_PKGROOT)
+conf.buildenv.execute_command('rm -Rf ' + remote_temp + "; mkdir -p " + remote_PKGROOT)
 
 for arch in targets:
 
-	arch_env = packaging.buildenv(arch, print_output=debug)
+	arch_conf = packaging.buildconf(arch, print_output=debug)
 	# Get list of files we're going to install
 	files = []
 	for pac in packages_to_include[arch]:
-		package = packaging.package(arch_env, pac)
+		package = packaging.package(arch_conf, pac)
 		versions[pac] = package.get_version()
 		files += package.get_files()
 		files += package.get_dep_files()
@@ -109,16 +109,16 @@ for arch in targets:
 	arch_remote_PKGROOT = remote_PKGROOT + '_' + arch
 
 	# Create dirs
-	env.ssh.execute('mkdir -p %s %s %s' % (arch_remote_packages_loc, arch_remote_PKGROOT, resources_dir) )
+	conf.buildenv.execute_command('mkdir -p %s %s %s' % (arch_remote_packages_loc, arch_remote_PKGROOT, resources_dir) )
 
 	# Copy them over...
-	env.ssh.copy_to(files, arch_remote_packages_loc, mode='scp', compress=0)
+	conf.buildenv.copy_to(files, arch_remote_packages_loc, mode='scp', compress=0)
 
 	# This will unpack and do all the substitution, including the noarch rpms
-	env.ssh.print_output=debug
+	conf.buildenv.print_output=debug
 	framework_prefix = "/Library/Frameworks/Mono.framework"
 	prefix = "%s/Versions/%s" % (framework_prefix, version)
-	(code, output) = env.ssh.execute("%s/do-install-zip-pkgs %s%s %s %s/* " % (arch_remote_packages_loc, arch_remote_PKGROOT, prefix, prefix, arch_remote_packages_loc) )
+	(code, output) = conf.buildenv.execute_command("%s/do-install-zip-pkgs %s%s %s %s/* " % (arch_remote_packages_loc, arch_remote_PKGROOT, prefix, prefix, arch_remote_packages_loc) )
 	if code:
 		print "Error extracting and installing packages"
 		sys.exit(1)
@@ -128,32 +128,32 @@ for arch in targets:
 
 # Lipo archs together if we're doing universal
 if build_universal:
-	(code, output) = env.ssh.execute("cd %s; %s/universal_merge %s PKGROOT" % (remote_temp, arch_remote_packages_loc, " ".join(archs) ) )
+	(code, output) = conf.buildenv.execute_command("cd %s; %s/universal_merge %s PKGROOT" % (remote_temp, arch_remote_packages_loc, " ".join(archs) ) )
 
 # Otherwise, just move the one arch into PKGROOT
 else:
-	(code, output) = env.ssh.execute("cd %s; rmdir PKGROOT; mv %s PKGROOT " % (remote_temp, 'PKGROOT_' + target) )
+	(code, output) = conf.buildenv.execute_command("cd %s; rmdir PKGROOT; mv %s PKGROOT " % (remote_temp, 'PKGROOT_' + target) )
 
 
 #### Strip files to save space
 
 # These were in the old script as "cleanup"
-env.ssh.print_command=1
+conf.buildenv.print_command=1
 # Hmm... stripping all dylibs causes issues on mac x86 as well as for libgdiplus on both plats, only strip some
 # Fixed: use -S on dylibs and .a files.  But, shipping unstripped binaries generates better stack traces
 
 # Don't strip these files
 unstripped_bins = "mono"
 unstripped_libs = "libgdiplus*dylib lib*ono*dylib libikvm*dylib"
-env.ssh.execute("cd %s%s/bin; mv %s ..;  strip *; cd ..; mv %s bin " % (remote_PKGROOT, prefix, unstripped_bins, unstripped_bins ) )
-env.ssh.execute("cd %s%s/lib; mv %s ..;  strip -S *.dylib *.a; cd ..; mv %s lib" % (remote_PKGROOT, prefix, unstripped_libs, unstripped_libs ) )
+conf.buildenv.execute_command("cd %s%s/bin; mv %s ..;  strip *; cd ..; mv %s bin " % (remote_PKGROOT, prefix, unstripped_bins, unstripped_bins ) )
+conf.buildenv.execute_command("cd %s%s/lib; mv %s ..;  strip -S *.dylib *.a; cd ..; mv %s lib" % (remote_PKGROOT, prefix, unstripped_libs, unstripped_libs ) )
 # Still caused problems linking... but this doesn't seem to matter
 
 # This is what the old installer script would do, except it deleted the .a files instead of stripping them
-#env.ssh.execute("cd %s%s/bin; strip pedump monodiet monodis jay monograph; cd ../lib strip -S *.a " % (remote_PKGROOT, prefix) )
+#conf.buildenv.execute_command("cd %s%s/bin; strip pedump monodiet monodis jay monograph; cd ../lib strip -S *.a " % (remote_PKGROOT, prefix) )
 
 # Miguel doesn't want to ship the .a files (but libmono.la ended up being needed to run mkbundle)
-#env.ssh.execute("cd %s%s/lib; rm -f *.a" % (remote_PKGROOT, prefix) )
+#conf.buildenv.execute_command("cd %s%s/lib; rm -f *.a" % (remote_PKGROOT, prefix) )
 
 if os.path.exists(temp_dir): shutil.rmtree(temp_dir)
 distutils.dir_util.mkpath(temp_dir)
@@ -167,7 +167,7 @@ for file in packages_used:
 fd.close()
 
 #  Get some version information
-mono_package = packaging.package(env, 'mono')
+mono_package = packaging.package(conf, 'mono')
 revision = mono_package.get_revision(release)
 
 # Start process of making the package
@@ -198,21 +198,21 @@ for file in os.listdir(cwd + os.sep + 'setup-files'):
 os.chdir(temp_dir)
 
 # Copy files to resources_dir
-env.ssh.copy_to('version.plist License.rtf ReadMe.rtf Welcome.rtf uninstallMono.sh postflight'.split(), resources_dir, mode='scp')
+conf.buildenv.copy_to('version.plist License.rtf ReadMe.rtf Welcome.rtf uninstallMono.sh postflight'.split(), resources_dir, mode='scp')
 
 framework_resources_dir = "%s%s/Versions/%s/Resources" % (remote_PKGROOT, framework_prefix, version)
-env.ssh.execute('mkdir -p %s' % framework_resources_dir )
+conf.buildenv.execute_command('mkdir -p %s' % framework_resources_dir )
 
-env.ssh.copy_to('Info.plist Description.plist version.plist'.split(), framework_resources_dir, mode='scp')
+conf.buildenv.copy_to('Info.plist Description.plist version.plist'.split(), framework_resources_dir, mode='scp')
 
 os.chdir(cwd)
 
 # Testing options
-env.ssh.print_command=1
-#env.ssh.execute_command=0
+conf.buildenv.print_command=1
+#conf.buildenv.execute_command_command=0
 
 print "Creating symlinks..."
-env.ssh.execute('cd %s%s/Versions; ln -sf %s Current' % (remote_PKGROOT, framework_prefix, version) )
+conf.buildenv.execute_command('cd %s%s/Versions; ln -sf %s Current' % (remote_PKGROOT, framework_prefix, version) )
 
 symlinks = {}
 symlinks['Versions/Current/Resources'] 	= "Resources"
@@ -223,7 +223,7 @@ symlinks['Versions/Current'] 		= "Home"
 symlinks['Libraries/libmono.dylib']	= "Mono"
 
 for k,v in symlinks.iteritems():
-	env.ssh.execute('cd %s%s; ln -sf %s %s' % (remote_PKGROOT, framework_prefix, k, v) )
+	conf.buildenv.execute_command('cd %s%s; ln -sf %s %s' % (remote_PKGROOT, framework_prefix, k, v) )
 
 print "Done creating symlinks...."
 
@@ -239,16 +239,16 @@ exit_reg = ""
 # TODO: need to figure out how to set 'Allows Back Rev.' flag, or possibly clean up 'receipt'
 
 packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
-env.ssh.execute('cd %s; %s -build -p %s/%s.pkg -f %s -r %s -i %s/Info.plist -d %s/Description.plist' % (remote_PKGROOT, packagemaker, remote_temp, package_filename, remote_PKGROOT, resources_dir, framework_resources_dir, framework_resources_dir), terminate_reg=exit_reg)
+conf.buildenv.execute_command('cd %s; %s -build -p %s/%s.pkg -f %s -r %s -i %s/Info.plist -d %s/Description.plist' % (remote_PKGROOT, packagemaker, remote_temp, package_filename, remote_PKGROOT, resources_dir, framework_resources_dir, framework_resources_dir), terminate_reg=exit_reg)
 
-env.ssh.execute('/usr/bin/hdiutil create -ov -srcfolder %s/%s.pkg -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, package_filename, version, remote_temp, package_filename) )
+conf.buildenv.execute_command('/usr/bin/hdiutil create -ov -srcfolder %s/%s.pkg -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, package_filename, version, remote_temp, package_filename) )
 
 distutils.dir_util.mkpath(output_dir)
 
 print "Copy package back..."
 # Have to use scp mode here, because I don't want the remote_temp dir in the filename
 # Also, use no compression, since file is already compressed
-env.ssh.copy_from("%s/%s.dmg" % (remote_temp, package_filename), output_dir, mode='scp', compress=0)
+conf.buildenv.copy_from("%s/%s.dmg" % (remote_temp, package_filename), output_dir, mode='scp', compress=0)
 
 # Create md5
 print "Create md5..."

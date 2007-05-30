@@ -26,11 +26,12 @@ problem_distros = []
 source_envs = ['suse-93-i586', 'suse-100-i586', 'suse-102-i586']
 
 for e in envs:
-	env = packaging.buildenv(os.path.basename(e))
+	conf = packaging.buildconf(os.path.basename(e))
+	env = conf.buildenv
 
 	# If using rpm
-	if not env.get_info_var("USE_ZIP_PKG"):
-		name = env.info['distro']
+	if not conf.get_info_var("USE_ZIP_PKG"):
+		name = conf.info['distro']
 
 		print name
 		rpms = [ "build-buddy" ]
@@ -43,18 +44,18 @@ for e in envs:
 			print "RPM: " + rpm
 			rpm_glob = rpm + "-*.rpm"
 			# Clean up existing rpms
-			env.ssh.execute("rm -Rf /tmp/" + rpm_glob, exec_as_root=1)
+			env.execute_command("rm -Rf /tmp/" + rpm_glob, exec_as_root=1)
 			# Copy rpm over
-			env.ssh.copy_to(rpm_glob, "/tmp")
+			env.copy_to(rpm_glob, "/tmp")
 			# Remove current rpm
-			env.ssh.execute("rpm -e " + rpm, exec_as_root=1)
+			env.execute_command("rpm -e " + rpm, exec_as_root=1)
 			# Install new rpm
-			(code, output) = env.ssh.execute("rpm -Uvh /tmp/" + rpm_glob, exec_as_root=1)
+			(code, output) = env.execute_command("rpm -Uvh /tmp/" + rpm_glob, exec_as_root=1)
 			if code:
 				problem_distros.append(name)
 
 			# Clean up
-			env.ssh.execute("rm -Rf /tmp/" + rpm_glob, exec_as_root=1)
+			env.execute_command("rm -Rf /tmp/" + rpm_glob, exec_as_root=1)
 
 if len(problem_distros):
 	print "Error installing buildbuddy on these distros:"

@@ -50,12 +50,16 @@ def _web_index_sort(web_index_objs):
 def get_platforms():
 	"""Return platform names, sorted alphabetically."""
 
-	platforms = []
+	platforms = {}
 
 	for entry in os.listdir(config.platform_conf_dir):
-		if not re.compile('^\.').search(entry) and entry != "hosts":
-			platforms.append(entry)
+		#if not re.compile('^\.').search(entry) and entry != "hosts":
+		# If it dosen't begin with '.' and isn't an alternate (-%d)
+		parts = entry.split('-')
+		if len(parts) == 3 and not re.compile('^\.').search(entry):
+			platforms[entry] = ""
 
+	platforms = platforms.keys()
 	platforms.sort()
 
 	return platforms
@@ -66,7 +70,7 @@ def get_platform_objs():
 
 	plat_objs = []
 	for platform in platforms:
-		plat_objs.append(packaging.buildenv(platform))
+		plat_objs.append(packaging.buildconf(platform))
 
 	return _web_index_sort(plat_objs)
 

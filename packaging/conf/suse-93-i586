@@ -1,5 +1,6 @@
-target_host=builder@hardhat.boston.ximian.com
-jaildir=/jails/suse-93-i586-root-0/jail
+username=builder
+hostname=hardhat.boston.ximian.com
+root_dir=/jails/suse-93-i586-root-0/jail
 # This is so /opt/gnome/lib stuff gets set
 target_command_prefix=". /etc/profile;"
 

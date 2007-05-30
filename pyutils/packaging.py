@@ -5,39 +5,90 @@ import tempfile
 import os
 import os.path
 import glob
-import fcntl
 import distutils.dir_util
 
 import pdb
 
-# needed?
-#sys.path += ['../pyutils']
 import config
 import utils
-import sshutils
+import buildenv
 import packaging
 import shell_parse
 
-class buildenv:
+class buildconf:
 
-	def __init__(self, conf_file_name, print_output=1, logger=""):
+	def __init__(self, conf_file_name, logger="", skip_alternates=False):
+		"""skip_alternates is for times like jail-do, where I don't care if the jail is locked or not"""
 
-                self.name = conf_file_name
-                self.print_output = print_output
+		# Parse out name and counter (alternate)
+		parts = conf_file_name.split('-')
+		if len(parts) > 3:
+			self.name = "-".join(parts[:3])
+			counter = int(parts[3])
+		else:
+			self.name = conf_file_name
+			counter = 0
 
 		# Look in the current dir and then in conf dir
 		#  (This is so that these classes can be used in /tmp on remote machines)
 		if os.path.exists(conf_file_name) and os.path.isfile(conf_file_name):
-			self.conf_file = conf_file_name
+			self.conf_file = self.name
+			check_alternates = False
 		else:
-			self.conf_file = os.path.join(config.packaging_dir, 'conf', conf_file_name)
+			conf_dir = os.path.join(config.packaging_dir, 'conf')
+			check_alternates = True
 
-		# Always turn this off if a logger is used
-		if logger: print_output =0
+		lock_dir = os.path.join(config.packaging_dir, 'status')
 
-		self.lock_filename = os.path.join(config.packaging_dir, 'status', self.name)
+		# Construct arguments
+		buildenv_args = {}
+		buildenv_args['logger'] = logger
 
-		self.load_info()
+		# Find a buildenv that isn't locked
+		while True:
+
+			self.conf_lock_filename = self.name
+			if counter > 0:
+				self.conf_lock_filename += "-%d" % counter
+
+			self.conf_file = conf_dir + os.sep + self.conf_lock_filename
+			buildenv_args['lock_filename'] = lock_dir + os.sep +  self.conf_lock_filename
+
+			# If no alternates were found
+			if not os.path.exists(self.conf_file) and counter > 0:
+				break
+
+			self.info = {}
+			self.load_computed_info()
+			self.load_configured_info()
+
+			for i in "username hostname root_dir target_command_prefix".split():
+				if self.info.has_key(i):
+					buildenv_args[i] = self.info[i]
+				# Remove the stale arg from buildenv_args
+				elif buildenv_args.has_key(i):
+					buildenv_args.pop(i)
+
+			buildenv_args['env'] = self.env_vars
+
+			# Set up the object
+			self.buildenv = buildenv.buildenv(**buildenv_args)
+
+			# Don't check for redundance buildenvs when inside the buildenv
+			if not check_alternates:
+				break
+
+			# TODO: also check for being offline
+			if not self.buildenv.is_locked() or skip_alternates:
+				# we're done, use that buildenv
+				break
+
+			counter += 1
+
+			print "Checking alternate %d" % counter
+
+
+	def load_configured_info(self):
 
 		# Default environment
 		self.env_vars = {}
@@ -45,37 +96,43 @@ class buildenv:
 		for k, v in config.env_vars.iteritems():
 			self.env_vars[k] = v
 
+		# Pull out all vars in the distro conf file
+		conf_info = shell_parse.parse_file(self.conf_file)
+		# Copy info from conf file into structure we've been building
+		for k, v in conf_info.iteritems():
+			self.info[k] = v
+
+		# Keys that are required
+		for key in []:
+			if not self.info.has_key(key):
+				print "conf file must contain: %s" % key
+				sys.exit(1)
+
 		# Allow override from the conf file
 		for key in self.env_vars.keys():
 			if self.info.has_key(key):
 				self.env_vars[key] = self.info[key]
 
-		# Construct arguments
-		args = {}
-		args['target_host'] = self.info['target_host']
-		args['print_output'] = self.print_output
-		args['logger'] = logger
-		args['env'] = self.env_vars
-
-		for i in "jaildir target_command_prefix".split():
-			if self.info.has_key(i):
-				args[i] = self.info[i]
-	
-		# Set up the object	
-		self.ssh = sshutils.init(**args)
+		# allow override or config from self.env
+		if self.info.has_key('env'):
+			for i in self.info['env'].split(','):
+				k, v = i.split('=')
+				self.env_vars[k] = v
+			# remove it from info now that it's been added to env_vars
+			self.info.pop('env')
 
 
-	def load_info(self):
-		"""This really needs to be extended...
+	def load_computed_info(self):
+		"""Load some info based on the buildconf name, that remains the same for redundant jails
+
+		This really needs to be extended...
 
 		example, I have sunos-8-sparc and sunos-10-sparc
 		and they are probably both compatible
 		And win is on x86, but ARCH assumes x86 means linux
 		"""
 
-		info = {}
-
-		info['distro'] = self.name
+		self.info['distro'] = self.name
 
 		# Linux distros
 		redhat_distros = "fedora redhat rhel".split()
@@ -84,82 +141,42 @@ class buildenv:
 		### VERSION, ARCH ###
 		try:
 		# Parse out distro info
-			build_os, info['version'], info['arch'] = re.compile(r'(.*)-(.*)-(.*)').search(self.name).groups()
+			build_os, self.info['version'], self.info['arch'] = re.compile(r'(.*)-(.*)-(.*)').search(self.name).groups()
 		except AttributeError:
 			print "%s is not a valid conf name, example: suse-93-i586" % self.name
 			sys.exit(1)
 
-		if re.compile(r'i[35]86').search(info['arch']): info['arch'] = 'x86'
+		if re.compile(r'i[35]86').search(self.info['arch']): self.info['arch'] = 'x86'
 
 		### OS, OS_TYPE, OS_SUBTYPE ###
 		# If our os is either suse or redhat
 		if (redhat_distros + suse_distros).count(build_os):
-			info['os'] = 'linux'
-			info['os_subtype'] = build_os
+			self.info['os'] = 'linux'
+			self.info['os_subtype'] = build_os
 			if build_os in redhat_distros:
-				info['os_type'] = 'redhat'
+				self.info['os_type'] = 'redhat'
 			elif build_os in suse_distros:
-				info['os_type'] = 'suse'
+				self.info['os_type'] = 'suse'
 		else:
-			info['os'] = build_os
+			self.info['os'] = build_os
 
-
-		# Pull out all vars in the distro conf file
-		conf_info = shell_parse.parse_file(self.conf_file)
-		# Copy info from conf file into structure we've been building
-		for k, v in conf_info.iteritems():
-			info[k] = v
-
-		# Some required keys
-		for key in ['target_host']:
-			if not info.has_key(key):
-				print "conf file must contain: %s" % key
-				sys.exit(1)
-
-		self.info = info
-
-
-	# TODO: use fcntl?
-	def lock_env(self):
-		fd = open(self.lock_filename, 'w')
-		fd.write("")
-		fd.close()
-
-	def unlock_env(self):
-		if os.path.exists(self.lock_filename):
-			os.unlink(self.lock_filename)
-		else:
-			print "Build environment already unlocked"
-
-	def is_locked(self):
-		return os.path.exists(self.lock_filename)
-
-	def offline(self):
-		old_print_output = self.ssh.print_output
-		self.ssh.print_output = 0
-
-		# Run some arbitrary command that will always return true
-		(code, output) = self.ssh.execute("ls")
-
-		self.ssh.print_output = old_print_output
-
-		if code: return 1
-		else:    return 0
 
 
 	def get_info_var(self, key):
 		return utils.get_dict_var(key, self.info)
 
+
+
 class package:
 
 	def __init__(self, package_env, name, bundle_obj="", bundle_name="", source_basepath="", package_basepath="", inside_jail=False, HEAD_or_RELEASE="", create_dirs_links=True, has_parent_pack=False):
-		"""Args: buildenv object, string name of a file in packaging/defs.
+		"""Args: buildconf object, string name of a file in packaging/defs.
 		source/package_basepath: full path to where packages are.  Can be overridden (used for web publishing)
 		inside_jail: this packaging module is used in release/pyutils and /tmp.  If it's in /tmp, that means we're inside the jail
 		   and there are certain things we shouldn't do.
 
 		has_parent_pack: used internally.  Set this flag when creating new package objects within the package constructor.  This
-		lets us know to create the dir structure, even if our buildenv isn't valid for this pack (used by def_alias packages).
+		lets us know to create the dir structure, even if our buildconf isn't valid for this pack (used by def_alias packages).
 		"""
 
 		self.package_env = package_env

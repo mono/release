@@ -1,11 +1,7 @@
-#username=builder
-#hostname=monobuild2.boston.ximian.com
-#root_dir=/jails/suse-102-x86_64
-
-
 username=builder
-hostname=fedora64.boston.ximian.com
+hostname=monobuild2.boston.ximian.com
 root_dir=/jails/suse-102-x86_64
+
 # suse 10.2 doesn't include /usr/lib/pkgconfig on x86_64, force it.
 target_command_prefix=". /etc/profile; "
 env="PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig"

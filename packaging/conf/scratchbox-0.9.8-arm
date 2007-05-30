@@ -1,5 +1,6 @@
-target_host=builder@monobuild1.boston.ximian.com
-jaildir=/jails/scratchbox-0.9.8-arm
+username=builder
+hostname=monobuild1.boston.ximian.com
+root_dir=/jails/scratchbox-0.9.8-arm
 
 USE_ZIP_PKG=1
 

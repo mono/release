@@ -1,4 +1,5 @@
-target_host=builder@aussie-1.osdl.marist.edu
+username=builder
+hostname=aussie-1.osdl.marist.edu
 target_command_prefix=". /etc/profile;"
 
 # /tmp on this machine doesn't have enough space... build here instead

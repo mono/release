@@ -97,7 +97,7 @@ sunos_10_ZIP_BUILD () {
 
 sunos_10_x86_ZIP_DEPS=(
 	# SUNWTiff-devel, SUNWpng-devel
-	http://ftp.math.purdue.edu/mirrors/blastwave.org/unstable/i386/5.10/libungif-4.1.4,REV=2007.01.20-SunOS5.8-i386-CSW.pkg.gz
+	http://ftp.math.purdue.edu/mirrors/blastwave.org/unstable/i386/5.10/libungif-4.1.4,REV=2007.02.05-SunOS5.8-i386-CSW.pkg.gz
 )
 
 sunos_8_sparc_ZIP_DEPS=(

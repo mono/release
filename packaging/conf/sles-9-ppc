@@ -1,5 +1,6 @@
-target_host=builder@mono-linux-ppc.dnsdhcp.provo.novell.com
-jaildir=/jails/sles-9-ppc
+username=builder
+hostname=mono-linux-ppc.dnsdhcp.provo.novell.com
+root_dir=/jails/sles-9-ppc
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"
 

@@ -16,9 +16,10 @@ import packaging
 import config
 import utils
 import rpm_utils
+import build
 
 
-def get_rpm_install(env_obj, archive=False):
+def get_rpm_install(conf_obj, archive=False):
 	return_text = ""
 
 	# Don't display repository information for archive pages
@@ -27,21 +28,21 @@ def get_rpm_install(env_obj, archive=False):
 
 	# For rhel systems...
 	#  If there are distro aliases, use those
-	if env_obj.info.has_key('distro_aliases'):
-		distro_name = env_obj.info['distro_aliases'][0]
+	if conf_obj.info.has_key('distro_aliases'):
+		distro_name = conf_obj.info['distro_aliases'][0]
 	else:
-		distro_name = env_obj.name
+		distro_name = conf_obj.name
 
 	# Grab OC stuff from conf file
 	vars = {}
 	vars['OC_DOWNLOAD_URL'] = "ftp://ftp.ximian.com/pub/redcarpet2/%s" % distro_name
 	vars['OC_NOTES'] = ""
 	for i in "OC_NOTES OC_DOWNLOAD_URL YUM_NOTES".split():
-		if env_obj.info.has_key(i):
-			vars[i] = env_obj.info[i]
+		if conf_obj.info.has_key(i):
+			vars[i] = conf_obj.info[i]
 
 	# Generate OC text
-	if utils.get_dict_var('USE_OC', env_obj.info):
+	if utils.get_dict_var('USE_OC', conf_obj.info):
 		return_text += """
 		<p>
 		This distro supports installing Mono using Novell's Red Carpet.
@@ -62,7 +63,7 @@ def get_rpm_install(env_obj, archive=False):
 
 
 	# Generate Yum Text
-	if utils.get_dict_var('USE_YUM', env_obj.info):
+	if utils.get_dict_var('USE_YUM', conf_obj.info):
 		return_text += """
 		<p>
 		This distro supports installing packages via <tt>yum</tt>. Putting the
@@ -71,14 +72,14 @@ def get_rpm_install(env_obj, archive=False):
 		</p>
 		"""
 
-		if utils.get_dict_var('YUM_NOTES', env_obj.info):
+		if utils.get_dict_var('YUM_NOTES', conf_obj.info):
 			return_text += """
 			<p>
 			%s
 			</p>\n""" % vars['YUM_NOTES']
 
 	# Generate yast text
-	if utils.get_dict_var('USE_YAST', env_obj.info) or utils.get_dict_var('USE_ZMD', env_obj.info):
+	if utils.get_dict_var('USE_YAST', conf_obj.info) or utils.get_dict_var('USE_ZMD', conf_obj.info):
 		return_text += """
 		<p>
 		This distro supports installing packages via <tt>YaST</tt>.  Add the following installation
@@ -89,12 +90,12 @@ def get_rpm_install(env_obj, archive=False):
 		</p>
 		<p>For assistance with using repositories and installing packages with YaST, visit this link: 
 		<a href="http://en.opensuse.org/Add_Package_Repositories_to_YaST">[1]</a>
-                </p>\n""" % (hostname_url, webroot_path, url_prefix, env_obj.name)
+                </p>\n""" % (hostname_url, webroot_path, url_prefix, conf_obj.name)
 
 
 	# TODO: Generate zmd text
 	# Hmm... zmd can use all of the above sources...
-	if utils.get_dict_var('USE_ZMD', env_obj.info):
+	if utils.get_dict_var('USE_ZMD', conf_obj.info):
 		pass
 
 		#Only select one category, since they're all valid.
@@ -104,15 +105,15 @@ def get_rpm_install(env_obj, archive=False):
 
 	return return_text
 
-def get_external_deps(env_obj, archive=False):
+def get_external_deps(conf_obj, archive=False):
 
 	if archive:	external_url_path = "../../../../external_packages"
 	else:		external_url_path = "../../external_packages"
 
 	return_text = ""
 
-	external_rpms = glob.glob("../external_packages/%s/*.rpm" % env_obj.name)
-	external_src_rpms = glob.glob("../external_packages/%s/*.src.rpm" % env_obj.name)
+	external_rpms = glob.glob("../external_packages/%s/*.rpm" % conf_obj.name)
+	external_src_rpms = glob.glob("../external_packages/%s/*.src.rpm" % conf_obj.name)
 	
 	# For the RPMS
 	if external_rpms:
@@ -125,8 +126,8 @@ def get_external_deps(env_obj, archive=False):
 			if re.compile("\.src\.rpm").search(i):
 				continue
 
-			(NAME, DESC) = rpm_utils.rpm_query(['NAME', 'SUMMARY'], '../external_packages/%s/%s' % (env_obj.name, i) )
-			return_text += "<li><a href='%s/%s/%s'>%s</a> -- %s</li>\n" % (external_url_path, env_obj.name, i, NAME, DESC)
+			(NAME, DESC) = rpm_utils.rpm_query(['NAME', 'SUMMARY'], '../external_packages/%s/%s' % (conf_obj.name, i) )
+			return_text += "<li><a href='%s/%s/%s'>%s</a> -- %s</li>\n" % (external_url_path, conf_obj.name, i, NAME, DESC)
 		return_text += "</ul>\n"
 
 	# For the source RPMS
@@ -136,8 +137,8 @@ def get_external_deps(env_obj, archive=False):
 
 			i = os.path.basename(i)
 
-			NAME = rpm_utils.rpm_query('NAME', '../external_packages/%s/%s' % (env_obj.name, i) )
-			return_text += "<a href='%s/%s/%s'>%s</a> \n" % (external_url_path, env_obj.name, i, NAME)
+			NAME = rpm_utils.rpm_query('NAME', '../external_packages/%s/%s' % (conf_obj.name, i) )
+			return_text += "<a href='%s/%s/%s'>%s</a> \n" % (external_url_path, conf_obj.name, i, NAME)
 
 		return_text += "</p>\n"
 
@@ -177,19 +178,18 @@ if not package_src_url:
 
 # Go here so the rpm file globbings look right
 os.chdir(package_src_dir)
-distros = glob.glob(config.packaging_dir + "/conf/*-*-*")
-distros.sort()
+distros = build.get_platforms()
 for distro_conf in distros:
 
-	env = packaging.buildenv(os.path.basename(distro_conf))
-	print "*** Generating pages for: %s" % env.name
+	build_conf = packaging.buildconf(os.path.basename(distro_conf))
+	print "*** Generating pages for: %s" % build_conf.name
 
 	# Skip the distros that use zip packaging system
-	if utils.get_dict_var('USE_ZIP_PKG', env.info): continue
+	if utils.get_dict_var('USE_ZIP_PKG', build_conf.info): continue
 
-	distro_out_dir = os.path.join(output_dir, url_prefix, env.name)
+	distro_out_dir = os.path.join(output_dir, url_prefix, build_conf.name)
 	out_file = distro_out_dir + os.sep + 'index.html'
-	arc_out_file = os.path.join(output_dir, 'archive',  version, 'download', env.name, 'index.html')
+	arc_out_file = os.path.join(output_dir, 'archive',  version, 'download', build_conf.name, 'index.html')
 
 	distutils.dir_util.mkpath(os.path.dirname(out_file))
 	distutils.dir_util.mkpath(os.path.dirname(arc_out_file))
@@ -204,10 +204,9 @@ for distro_conf in distros:
 			RPMS = []
 			SPECS = []
 			for package in ARGS:
-				pack_obj = packaging.package(env, package, bundle_obj=bundle_conf, package_basepath=package_src_dir)
+				pack_obj = packaging.package(build_conf, package, bundle_obj=bundle_conf, package_basepath=package_src_dir)
 
-				#if pack_obj.name == "gtk-sharp": pdb.set_trace()
-				if not pack_obj.valid_use_platform(env.name):
+				if not pack_obj.valid_use_platform(build_conf.name):
 					continue
 
 				# probably won't ever want to post zip files ... ?
@@ -271,11 +270,11 @@ for distro_conf in distros:
 
 			# Strange... but useful way of calling a python function based on a string name
 			#  always pass the buildenv object and archive bool
-			out.write( eval(command)(env, archive=False) )
-			arc_out.write( eval(command)(env, archive=True) )
+			out.write( eval(command)(build_conf, archive=False) )
+			arc_out.write( eval(command)(build_conf, archive=True) )
 
 		else:
-			line = line.replace('[[arch]]', env.name)
+			line = line.replace('[[arch]]', build_conf.name)
 			line = line.replace('[[version]]', version)
 			line = line.replace('[[webroot_path]]', webroot_path)
 			line = line.replace('[[bundle_short_desc]]', bundle_short_desc)

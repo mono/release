@@ -1,8 +1,9 @@
-target_host=builder@mono-sunos-x86.dnsdhcp.provo.novell.com
+username=builder
+hostname=mono-sunos-x86.dnsdhcp.provo.novell.com
 USE_ZIP_PKG=1
 
 # Use the gnu and opensource software
-target_command_prefix='export PATH=/usr/sfw/bin:/usr/ccs/bin:$PATH; export CC=/usr/sfw/bin/gcc; '
+env="PATH=/usr/sfw/bin:/usr/ccs/bin:$PATH,CC=/usr/sfw/bin/gcc"
 
 # Notes about this arch:
 # Removed -mt flag from /usr/lib/pkgconfig/gthread-2.0.pc (it's a compiler flag for forte, which isn't valid with gcc)

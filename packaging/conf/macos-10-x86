@@ -1,8 +1,9 @@
-target_host=builder@mono-mac-x86.provo.novell.com
+username=builder
+hostname=mono-mac-x86.provo.novell.com
 USE_ZIP_PKG=1
 
 # Helps with relocating binaries
-target_command_prefix="export LDFLAGS=' -headerpad_max_install_names '; "
+env="LDFLAGS= -headerpad_max_install_names "
 
 web_index=7
 

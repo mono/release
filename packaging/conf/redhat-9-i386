@@ -1,7 +1,8 @@
-target_host=builder@monobuild1.boston.ximian.com
+username=builder
+hostname=monobuild1.boston.ximian.com
 # Don't put this on hardhat, because when mktarball is running, it takes way too long
-#target_host=builder@hardhat.boston.ximian.com
-jaildir=/jails/redhat-9-i386-duncan-1
+#hostname=hardhat.boston.ximian.com
+root_dir=/jails/redhat-9-i386-duncan-1
 
 web_index=0
 

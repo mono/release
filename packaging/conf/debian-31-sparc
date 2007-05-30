@@ -1,4 +1,5 @@
-target_host=builder@mono-linux-sparc.dnsdhcp.provo.novell.com
+username=builder
+hostname=mono-linux-sparc.dnsdhcp.provo.novell.com
 
 USE_ZIP_PKG=1
 

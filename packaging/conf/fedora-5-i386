@@ -1,4 +1,5 @@
-target_host=builder@monobuild1.boston.ximian.com
-jaildir=/jails/fedora-5-i386-root-0
+username=builder
+hostname=monobuild1.boston.ximian.com
+root_dir=/jails/fedora-5-i386-root-0
 
 USE_YUM=1

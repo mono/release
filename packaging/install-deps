@@ -19,6 +19,7 @@ sys.path += ['../pyutils']
 
 import packaging
 import utils
+import logger
 
 import pdb
 
@@ -56,7 +57,9 @@ build_deps_package = remaining_args[1]
 deps = []
 if len(remaining_args) > 2: deps = remaining_args[2:]
 
-target_env = packaging.buildenv(target, print_output=1)
+log_obj = logger.Logger(filename=os.devnull)
+# skip_alternates, because locking is handled in build and mktarball (if we had better locking, this wouldn't be needed)
+target_conf = packaging.buildconf(target, logger=log_obj, skip_alternates=True)
 
 if build_source:
 	build_deps = False
@@ -72,7 +75,7 @@ else:
 files = []
 packs_to_remove = []
 if build_deps_package != 'none':
-	package = packaging.package(target_env, build_deps_package, HEAD_or_RELEASE=HEAD_or_RELEASE)
+	package = packaging.package(target_conf, build_deps_package, HEAD_or_RELEASE=HEAD_or_RELEASE)
 	files += package.get_dep_files(build_deps=build_deps, recommend_deps=recommend_deps, source_deps=source_deps)
 	packs_to_remove += package.get_packs_to_remove()
 
@@ -82,7 +85,7 @@ for dep in deps:
 		files += [ 'external_zip_pkg' + os.sep + os.path.basename(dep) ]
 
 	else:	
-		package = packaging.package(target_env, dep, HEAD_or_RELEASE=HEAD_or_RELEASE)
+		package = packaging.package(target_conf, dep, HEAD_or_RELEASE=HEAD_or_RELEASE)
 		files += package.get_files()
 		files += package.get_dep_files(build_deps=build_deps, recommend_deps=recommend_deps, source_deps=source_deps)
 		packs_to_remove += package.get_packs_to_remove()
@@ -97,25 +100,25 @@ if len(files) == 0 and len(packs_to_remove) == 0:
 	print "No packages found..."
 	sys.exit()
 
-build_location = target_env.env_vars['build_location']
+build_location = target_conf.env_vars['build_location']
 
 # Clean out deps area (/tmp/build_deps does not use build_location for relocation purposes)
-(code, output) = target_env.ssh.execute("rm -rf %s/install-packages /tmp/build_deps" % (build_location) )
+(code, output) = target_conf.buildenv.execute_command("rm -rf %s/install-packages /tmp/build_deps" % (build_location) )
 if code:
 	print "Error cleaning up... exiting"
 	sys.exit(1)
-target_env.ssh.execute("mkdir -p -m777 %s/install-packages" % build_location)
+target_conf.buildenv.execute_command("mkdir -p -m777 %s/install-packages" % build_location)
 
 # copy packages
 # It would be nice to see the output...
-target_env.ssh.copy_to(files, '%s/install-packages' % build_location, mode='scp', compress=0)
+target_conf.buildenv.copy_to(files, '%s/install-packages' % build_location, mode='scp', compress=0)
 
 # Install the packages with rpm/rcd
-if target_env.get_info_var('USE_ZIP_PKG'):
+if target_conf.get_info_var('USE_ZIP_PKG'):
 
-	target_env.ssh.copy_to(['do-install-zip-pkgs', '../pyutils/utils.py', '../pyutils/rpm2cpio.py'], build_location, mode='scp')
+	target_conf.buildenv.copy_to(['do-install-zip-pkgs', '../pyutils/utils.py', '../pyutils/rpm2cpio.py'], build_location, mode='scp')
 	# These must NOT be in the build_location, otherwise it will throw off the relocation
-        (code, output) = target_env.ssh.execute( "%s/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps %s/install-packages/*" % (build_location, build_location) )
+        (code, output) = target_conf.buildenv.execute_command( "%s/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps %s/install-packages/*" % (build_location, build_location) )
 
 else:
 
@@ -125,27 +128,27 @@ else:
 	packs_to_remove = utils.remove_list_duplicates(packs_to_remove)
 
         # Use rug if the jail has it
-	(code, output) = target_env.ssh.execute('ls /usr/sbin/rcd')
+	(code, output) = target_conf.buildenv.execute_command('ls /usr/sbin/rcd')
 	if not code:
                 # check if rcd is running in this jail and start it if it isn't
-		(code, output) = target_env.ssh.execute('rug ping')
+		(code, output) = target_conf.buildenv.execute_command('rug ping')
 		if code:
-			target_env.ssh.execute('/usr/sbin/rcd -r', exec_as_root=1)
+			target_conf.buildenv.execute_command('/usr/sbin/rcd -r', exec_as_root=1)
 			print "Waiting for rcd to come alive..."
 			time.sleep(5)
 		if packs_to_remove:
-			target_env.ssh.execute('rug rm -y %s' % " ".join(packs_to_remove), exec_as_root=1)
+			target_conf.buildenv.execute_command('rug rm -y %s' % " ".join(packs_to_remove), exec_as_root=1)
 		code = 0
 		if files:
-			(code, output) = target_env.ssh.execute('rug in -y -r %s/install-packages/*.rpm' % build_location, exec_as_root=1)
-		target_env.ssh.execute('rug shutdown', exec_as_root=1)
+			(code, output) = target_conf.buildenv.execute_command('rug in -y -r %s/install-packages/*.rpm' % build_location, exec_as_root=1)
+		target_conf.buildenv.execute_command('rug shutdown', exec_as_root=1)
         else:
 		if packs_to_remove:
-			target_env.ssh.copy_to(['remove-rpms', '../pyutils/rpm_utils.py'], build_location)
-			target_env.ssh.execute('%s/remove-rpms %s' % (build_location, " ".join(packs_to_remove)), exec_as_root=1)
+			target_conf.buildenv.copy_to(['remove-rpms', '../pyutils/rpm_utils.py'], build_location)
+			target_conf.buildenv.execute_command('%s/remove-rpms %s' % (build_location, " ".join(packs_to_remove)), exec_as_root=1)
 		code = 0
 		if files:
-			(code, output) = target_env.ssh.execute('rpm -Uvh %s/install-packages/*.rpm' % build_location, exec_as_root=1)
+			(code, output) = target_conf.buildenv.execute_command('rpm -Uvh %s/install-packages/*.rpm' % build_location, exec_as_root=1)
 
 # Exit with return code...
 sys.exit(code)

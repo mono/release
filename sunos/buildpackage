@@ -47,13 +47,13 @@ debug=1
 def build_package(target):
 
 	
-	env = packaging.buildenv(target, print_output=debug)
+	conf = packaging.buildconf(target, print_output=debug)
 
 	remote_temp = "/tmp/packaging"
 	remote_root = remote_temp + os.sep + "root"
 	remote_package_loc = remote_temp + os.sep + "install-packages"
 
-	remote_strip_loc = env.info['strip_path']
+	remote_strip_loc = conf.info['strip_path']
 
 	output_dir = os.path.join("output", version, target, release) 
 
@@ -73,7 +73,7 @@ def build_package(target):
 	distutils.dir_util.mkpath(temp_dir)
 
 	# remote
-	env.ssh.execute("rm -Rf %s; mkdir -p -m777 %s %s " % ( remote_temp, remote_package_loc, remote_root))
+	conf.buildenv.execute_command("rm -Rf %s; mkdir -p -m777 %s %s " % ( remote_temp, remote_package_loc, remote_root))
 
 	print "Installing mono to build env..."
 	# Install the rest of mono
@@ -81,7 +81,7 @@ def build_package(target):
 	# Get all files needed for the zip packages to include
 	files = []
 	for file in packages_to_include[target]:
-		package = packaging.package(env, file)
+		package = packaging.package(conf, file)
 		files += package.get_files()
 		files += package.get_dep_files()
 
@@ -97,11 +97,11 @@ def build_package(target):
 	files += [config.packaging_dir + os.sep + '../pyutils/rpm2cpio.py' ]
 	
 	# Copy them over...
-	env.ssh.copy_to(files, remote_package_loc, mode='scp', compress=0)
+	conf.buildenv.copy_to(files, remote_package_loc, mode='scp', compress=0)
 
 	# This will unpack and do all the substitution, including the noarch rpms
-	env.ssh.print_output = debug
-	env.ssh.execute("%s/do-install-zip-pkgs %s /opt/mono %s/* " % (remote_package_loc, remote_root, remote_package_loc))
+	conf.buildenv.print_output = debug
+	conf.buildenv.execute_command("%s/do-install-zip-pkgs %s /opt/mono %s/* " % (remote_package_loc, remote_root, remote_package_loc))
 
 	prune_files = """
 		bin/msg*
@@ -131,22 +131,22 @@ def build_package(target):
 		""".split()
 
 	# Delete some stuff (docs, unnecessary programs, etc...) (save msgfmt for glib building, even though we don't use it)
-	env.ssh.execute("cd %s; mv bin/msgfmt .; rm -Rf %s ; mv msgfmt bin " % (remote_root, " ".join(prune_files) ) )
+	conf.buildenv.execute_command("cd %s; mv bin/msgfmt .; rm -Rf %s ; mv msgfmt bin " % (remote_root, " ".join(prune_files) ) )
 
 	# Strip files to save space
 	# Is this causing problems with libgdiplus? (works over an sshd tunnel...)
-	env.ssh.execute("cd %s/bin; %s *; cd ../lib; %s * " % (remote_root, remote_strip_loc, remote_strip_loc))
-	env.ssh.print_output = debug
+	conf.buildenv.execute_command("cd %s/bin; %s *; cd ../lib; %s * " % (remote_root, remote_strip_loc, remote_strip_loc))
+	conf.buildenv.print_output = debug
 
 	print "Set up environment files..."
 
 	# Rename environment files
-	env.ssh.execute("cd %s; mv env.sh  setup.sh " % remote_root)
-	env.ssh.execute("cd %s; mv env.csh setup.csh " % remote_root)
+	conf.buildenv.execute_command("cd %s; mv env.sh  setup.sh " % remote_root)
+	conf.buildenv.execute_command("cd %s; mv env.csh setup.csh " % remote_root)
 
 	# env.sh
-	env.ssh.print_output = 0
-	(code, output) = env.ssh.execute("cd %s; cat setup.sh" % remote_root)
+	conf.buildenv.print_output = 0
+	(code, output) = conf.buildenv.execute_command("cd %s; cat setup.sh" % remote_root)
 	lines = output.split("\n")
 	export_line = lines.pop()
 	lines += ['FONTCONFIG_PATH="/opt/mono/etc/fonts"',
@@ -159,7 +159,7 @@ def build_package(target):
 	os.chmod(temp_dir + '/setup.sh', config.shell_perms)
 
 	# env.csh
-	(code, output) = env.ssh.execute("cd %s; cat setup.csh" % remote_root)
+	(code, output) = conf.buildenv.execute_command("cd %s; cat setup.csh" % remote_root)
 	output += '\nsetenv FONTCONFIG_PATH "/opt/mono/etc/fonts"\n'
 	fd = open(temp_dir + '/setup.csh', 'w')
 	fd.write(output)
@@ -168,18 +168,18 @@ def build_package(target):
 
 	# Add fonts dir to local.conf
 	# <dir>/usr/openwin/lib/X11/fonts</dir>
-	(code, output) = env.ssh.execute("cd %s/etc/fonts; cat local.conf" % remote_root)
+	(code, output) = conf.buildenv.execute_command("cd %s/etc/fonts; cat local.conf" % remote_root)
 
 	output = output.replace("</fontconfig>", " <dir>/usr/openwin/lib/X11/fonts</dir>\n</fontconfig>\n")
 	fd = open(temp_dir + '/local.conf', 'w')
 	fd.write(output)
 	fd.close()
 	os.chmod(temp_dir + '/local.conf', config.data_perms)
-	env.ssh.print_output = debug
+	conf.buildenv.print_output = debug
 
 	# Copy locally modified config files
-	env.ssh.copy_to([temp_dir + '/setup.csh', temp_dir + '/setup.sh'], remote_root, mode='scp')
-	env.ssh.copy_to([temp_dir + '/local.conf'], remote_root + '/etc/fonts', mode='scp')
+	conf.buildenv.copy_to([temp_dir + '/setup.csh', temp_dir + '/setup.sh'], remote_root, mode='scp')
+	conf.buildenv.copy_to([temp_dir + '/local.conf'], remote_root + '/etc/fonts', mode='scp')
 
 	# Print out packages_used
 	print "Saving list of packages..."
@@ -197,7 +197,7 @@ def build_package(target):
 	shutil.copy('pkginfo.template', pkginfo_file)
 
 	#  Get some version information
-	mono_package = packaging.package(env, 'mono')
+	mono_package = packaging.package(conf, 'mono')
 	revision = mono_package.get_revision(release)
 
 	# Get string of packages
@@ -212,12 +212,12 @@ def build_package(target):
 	utils.substitute_parameters_in_file(pkginfo_file, parameter_map)
 
 	# Create prototype
-	(code, prototype) = env.ssh.execute("cd %s; find . -print | pkgproto | sort" % remote_root, capture_stderr=0 )
+	(code, prototype) = conf.buildenv.execute_command("cd %s; find . -print | pkgproto | sort" % remote_root, capture_stderr=0 )
 
 	#print prototype
 
 	#Sample output: uid=104(builder) gid=1(other)
-	(code, output) = env.ssh.execute("id")
+	(code, output) = conf.buildenv.execute_command("id")
 	(uid, gid) = re.compile(r"""\((.*?)\).*\((.*?)\)""").search(output).groups()
 
 	# Add whitespace in substitutions here because there are now filenames with the phrase 'builder' in them, 
@@ -242,13 +242,13 @@ def build_package(target):
 
 	print "Copy pkginfo, prototype, packages_used, and ChangeLog to host..."
 	# Use scp mode because we don't want paths to be included in the destination
-	env.ssh.copy_to([pkginfo_file, prototype_file, temp_dir + os.sep + 'packages_used.txt', 'ChangeLog'], remote_root, mode='scp')
+	conf.buildenv.copy_to([pkginfo_file, prototype_file, temp_dir + os.sep + 'packages_used.txt', 'ChangeLog'], remote_root, mode='scp')
 
 
 	# Actually build the package
 	print "Building package..."
-	package_filename = "mono-%s_%s.%s.pkg" % (version, revision, env.info['arch'])
-	(code, output) = env.ssh.execute("cd %s; pkgmk -d . -b \`pwd\`  &&  pkgtrans -s \`pwd\` %s all; gzip %s" % (remote_root, package_filename, package_filename ))
+	package_filename = "mono-%s_%s.%s.pkg" % (version, revision, conf.info['arch'])
+	(code, output) = conf.buildenv.execute_command("cd %s; pkgmk -d . -b \`pwd\`  &&  pkgtrans -s \`pwd\` %s all; gzip %s" % (remote_root, package_filename, package_filename ))
 	if code:
 		print "%s: Error in creating package" % target
 		sys.exit(1)
@@ -258,7 +258,7 @@ def build_package(target):
 	print "Copy package back..."
 	# Have to use scp mode here, because I don't want the remote_root dir in the filename
 	# Also, use no compression, since file is already compressed
-	env.ssh.copy_from("%s/%s.gz" % (remote_root, package_filename), output_dir, mode='scp', compress=0)
+	conf.buildenv.copy_from("%s/%s.gz" % (remote_root, package_filename), output_dir, mode='scp', compress=0)
 
 	# Create md5
 	print "Create md5..."

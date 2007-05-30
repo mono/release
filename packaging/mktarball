@@ -72,21 +72,21 @@ else:
 log_obj.log("Sources path: %s\n" % package_obj.source_fullpath)
 log_obj.log("Using distro: %s\n" % distro)
 
-env = packaging.buildenv(distro, logger=log_obj)
+conf = packaging.buildconf(distro, logger=log_obj)
 
-if env.is_locked():
+if conf.buildenv.is_locked():
 	log_obj.log("%s jail is busy\n" % distro )
 	sys.exit(2)
 
-env.lock_env()
+conf.buildenv.lock_env()
 
 # Update tarball status to "inprogress"
 repo.add_file(HEAD_or_RELEASE, package, version, "inprogress")
 
 if package_obj.info.has_key('MONO_DEPS'):
-	(status, output) = utils.launch_process('./install-deps --build_source %s %s' % (distro, package), logger=log_obj)
+	(status, output) = utils.launch_process('./install-deps --build_source %s %s' % (conf.conf_lock_filename, package), logger=log_obj)
 	if status:
-		env.unlock_env()
+		conf.buildenv.unlock_env()
 		log_obj.log("Dependency installation failed\n")
 		repo.add_file(HEAD_or_RELEASE, package, version, "failure")
 		sys.exit(3)
@@ -97,14 +97,14 @@ if package_obj.info.has_key('MONO_DEPS'):
 files_to_copy = [ 'do-msvn-tar', 'defs/%s' % package] + glob.glob('../pyutils/*.py') 
 for f in package_obj.get_aliases():
 	files_to_copy += ['defs/' + f ]
-env.ssh.copy_to(files_to_copy, '/tmp', mode='scp')
+conf.buildenv.copy_to(files_to_copy, '/tmp', mode='scp')
 
 log_obj.log("Starting to build source dist...\n")
-(status, output) = env.ssh.execute('mount /proc &> /dev/null', exec_as_root=1)
-(status, output) = env.ssh.execute('/tmp/do-msvn-tar %s %s %s' % (HEAD_or_RELEASE, package, version) )
+(status, output) = conf.buildenv.execute_command('mount /proc &> /dev/null', exec_as_root=1)
+(status, output) = conf.buildenv.execute_command('/tmp/do-msvn-tar %s %s %s' % (HEAD_or_RELEASE, package, version) )
 
 if status:
-        env.unlock_env()
+        conf.buildenv.unlock_env()
         log_obj.log("Source dist file creation failed\n")
 	repo.add_file(HEAD_or_RELEASE, package, version, "failure")
         sys.exit(1)
@@ -114,12 +114,12 @@ tarball = output.split().pop()
 
 # Copy file back
 #  Note: the tarball var is expected to have be in this format, ex:  mono-1.1.13.4.tar.gz
-env.ssh.copy_from('/tmp/built-tarball/%s' % tarball, package_obj.source_fullpath)
+conf.buildenv.copy_from('/tmp/built-tarball/%s' % tarball, package_obj.source_fullpath)
 
 # Keep a map of which params produce which tarball
 repo.add_file(HEAD_or_RELEASE, package, version, package_obj.source_relpath + os.sep + tarball)
 
-env.unlock_env()
+conf.buildenv.unlock_env()
 
 print "Done!"
 

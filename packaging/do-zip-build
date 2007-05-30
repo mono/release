@@ -23,8 +23,8 @@ if not os.path.exists(build_location):
 os.chdir(build_location)
 
 # Load def info
-env = packaging.buildenv(distro)
-pack_def = packaging.package(env, package, inside_jail=True)
+conf = packaging.buildconf(distro)
+pack_def = packaging.package(conf, package, inside_jail=True)
 
 
 for d in [ 'builder/built-packages', 'scratch', '/tmp/install' ]:
@@ -45,7 +45,7 @@ for f in sources + patches + ['../' + package, '../' + distro ]:
 
 
 # Find type of source
-source_dir = utils.unpack_source(os.path.basename(sources[0]), tar_path=env.get_info_var('tar_path') )
+source_dir = utils.unpack_source(os.path.basename(sources[0]), tar_path=conf.get_info_var('tar_path') )
 
 arch = pack_def.package_env.info['arch']
 
