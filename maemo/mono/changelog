@@ -1,6 +1,8 @@
-mono (1.2.4-1) unstable; urgency=low
+mono (1.2.3.1-3) unstable; urgency=low
 
-  * Upgrade to Mono 1.2.4.
+  * Add package icons.
+  * Fix dependencies.
+  * Sqlite package added.
 
  -- Everaldo Canuto <ecanuto@novell.com>  Wed, 25 Apr 2007 23:30:00 -0300
 

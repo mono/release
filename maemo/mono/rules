@@ -29,7 +29,7 @@ else
 	CFLAGS += -O2
 endif
 
-CONFIGURE =	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --enable-minimal=debug,large_code,logging,com,ssa
+CONFIGURE =	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --enable-minimal=debug,large_code,logging,com
 
 configure-arch: configure-arch-stamp
 configure-arch-stamp:
