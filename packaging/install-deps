@@ -111,12 +111,12 @@ target_conf.buildenv.execute_command("mkdir -p -m777 %s/install-packages" % buil
 
 # copy packages
 # It would be nice to see the output...
-target_conf.buildenv.copy_to(files, '%s/install-packages' % build_location, mode='scp', compress=0)
+target_conf.buildenv.copy_to(files, '%s/install-packages' % build_location, compress=0)
 
 # Install the packages with rpm/rcd
 if target_conf.get_info_var('USE_ZIP_PKG'):
 
-	target_conf.buildenv.copy_to(['do-install-zip-pkgs', '../pyutils/utils.py', '../pyutils/rpm2cpio.py'], build_location, mode='scp')
+	target_conf.buildenv.copy_to(['do-install-zip-pkgs', '../pyutils/utils.py', '../pyutils/rpm2cpio.py'], build_location)
 	# These must NOT be in the build_location, otherwise it will throw off the relocation
         (code, output) = target_conf.buildenv.execute_command( "%s/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps %s/install-packages/*" % (build_location, build_location) )
 

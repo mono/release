@@ -97,7 +97,7 @@ def build_package(target):
 	files += [config.packaging_dir + os.sep + '../pyutils/rpm2cpio.py' ]
 	
 	# Copy them over...
-	conf.buildenv.copy_to(files, remote_package_loc, mode='scp', compress=0)
+	conf.buildenv.copy_to(files, remote_package_loc, compress=0)
 
 	# This will unpack and do all the substitution, including the noarch rpms
 	conf.buildenv.print_output = debug
@@ -178,8 +178,8 @@ def build_package(target):
 	conf.buildenv.print_output = debug
 
 	# Copy locally modified config files
-	conf.buildenv.copy_to([temp_dir + '/setup.csh', temp_dir + '/setup.sh'], remote_root, mode='scp')
-	conf.buildenv.copy_to([temp_dir + '/local.conf'], remote_root + '/etc/fonts', mode='scp')
+	conf.buildenv.copy_to([temp_dir + '/setup.csh', temp_dir + '/setup.sh'], remote_root)
+	conf.buildenv.copy_to([temp_dir + '/local.conf'], remote_root + '/etc/fonts')
 
 	# Print out packages_used
 	print "Saving list of packages..."
@@ -242,7 +242,7 @@ def build_package(target):
 
 	print "Copy pkginfo, prototype, packages_used, and ChangeLog to host..."
 	# Use scp mode because we don't want paths to be included in the destination
-	conf.buildenv.copy_to([pkginfo_file, prototype_file, temp_dir + os.sep + 'packages_used.txt', 'ChangeLog'], remote_root, mode='scp')
+	conf.buildenv.copy_to([pkginfo_file, prototype_file, temp_dir + os.sep + 'packages_used.txt', 'ChangeLog'], remote_root)
 
 
 	# Actually build the package
@@ -258,7 +258,7 @@ def build_package(target):
 	print "Copy package back..."
 	# Have to use scp mode here, because I don't want the remote_root dir in the filename
 	# Also, use no compression, since file is already compressed
-	conf.buildenv.copy_from("%s/%s.gz" % (remote_root, package_filename), output_dir, mode='scp', compress=0)
+	conf.buildenv.copy_from("%s/%s.gz" % (remote_root, package_filename), output_dir, compress=0)
 
 	# Create md5
 	print "Create md5..."

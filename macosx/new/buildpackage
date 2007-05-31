@@ -112,7 +112,7 @@ for arch in targets:
 	conf.buildenv.execute_command('mkdir -p %s %s %s' % (arch_remote_packages_loc, arch_remote_PKGROOT, resources_dir) )
 
 	# Copy them over...
-	conf.buildenv.copy_to(files, arch_remote_packages_loc, mode='scp', compress=0)
+	conf.buildenv.copy_to(files, arch_remote_packages_loc, compress=0)
 
 	# This will unpack and do all the substitution, including the noarch rpms
 	conf.buildenv.print_output=debug
@@ -198,12 +198,12 @@ for file in os.listdir(cwd + os.sep + 'setup-files'):
 os.chdir(temp_dir)
 
 # Copy files to resources_dir
-conf.buildenv.copy_to('version.plist License.rtf ReadMe.rtf Welcome.rtf uninstallMono.sh postflight'.split(), resources_dir, mode='scp')
+conf.buildenv.copy_to('version.plist License.rtf ReadMe.rtf Welcome.rtf uninstallMono.sh postflight'.split(), resources_dir)
 
 framework_resources_dir = "%s%s/Versions/%s/Resources" % (remote_PKGROOT, framework_prefix, version)
 conf.buildenv.execute_command('mkdir -p %s' % framework_resources_dir )
 
-conf.buildenv.copy_to('Info.plist Description.plist version.plist'.split(), framework_resources_dir, mode='scp')
+conf.buildenv.copy_to('Info.plist Description.plist version.plist'.split(), framework_resources_dir)
 
 os.chdir(cwd)
 
@@ -248,7 +248,7 @@ distutils.dir_util.mkpath(output_dir)
 print "Copy package back..."
 # Have to use scp mode here, because I don't want the remote_temp dir in the filename
 # Also, use no compression, since file is already compressed
-conf.buildenv.copy_from("%s/%s.dmg" % (remote_temp, package_filename), output_dir, mode='scp', compress=0)
+conf.buildenv.copy_from("%s/%s.dmg" % (remote_temp, package_filename), output_dir, compress=0)
 
 # Create md5
 print "Create md5..."

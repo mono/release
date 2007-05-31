@@ -686,7 +686,7 @@ os.chdir('..')
 
 # Run the guid generator on windows
 print "Copying/running guidgen..."
-installer_conf.buildenv.copy_to('guidgen/guidgen.exe', '.', mode="scp")
+installer_conf.buildenv.copy_to('guidgen/guidgen.exe', '.')
 (code, output) = installer_conf.buildenv.execute_command('./guidgen.exe')
 print "\n",
 guid = output.split().pop()
@@ -747,7 +747,7 @@ packages_file.write("\n")
 packages_file.close()
 
 # Copy resultant file back
-installer_conf.buildenv.copy_from("/tmp/windows-installer/Output/*", output_dir, mode='scp')
+installer_conf.buildenv.copy_from("/tmp/windows-installer/Output/*", output_dir)
 
 # Generate the md5sum of the final installer
 output_filename = os.path.basename(glob.glob(output_dir + os.sep + "*.exe").pop())
