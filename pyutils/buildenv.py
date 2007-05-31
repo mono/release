@@ -150,8 +150,12 @@ class buildenv:
 
 		return self.modes[mode].execute_command(command, logger=logger)
 
-	def execute_code(self, code, working_dir="", interpreter='sh', exec_as_root=False, output_timeout=0, max_output_size=0, terminate_reg="", env={}, logger=""):
+	def execute_code(self, code, working_dir="", interpreter="", exec_as_root=False, output_timeout=0, max_output_size=0, terminate_reg="", env={}, logger=""):
 		""" interpreter can be anything that works... mcs *.cs; mono, perl, python, etc... """
+
+		# Default to shell code, but can be overwritten
+		if not interpreter:
+			interpreter = self.env['shell_path']
 
 		# get code as a string if a file was passed in
 		if os.path.isfile(code):

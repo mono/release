@@ -7,13 +7,23 @@ sys.path.append('..')
 
 import packaging
 
-conf = packaging.buildconf('suse-102-x86_64')
+conf = packaging.buildconf('sunos-8-sparc')
 
-code = """
+shell_code = """
 for i in `ls /tmp` ; do echo $i ; echo "manual" ; done
+
+if [ "test" == "test2" ] ; then
+	echo "no match!"
+fi
+
+if [ "test2" == "test2" ] ; then
+	echo "match!"
+fi
+
+
 """
 
-code = """
+python_code = """
 
 import os
 
@@ -24,14 +34,14 @@ import os
 
 os.system('ls')
 os.system('hostname')
+os.system('ls')
 	
 """
-
-#code = 'test.sh'
 
 env = {}
 env['test'] = 'tes t3'
 env['test2'] = 'test4'
 
-status, output = conf.buildenv.execute_code(code, env=env, interpreter="python", working_dir='/home')
+status, output = conf.buildenv.execute_code(shell_code, env=env, working_dir='/tmp')
+status, output = conf.buildenv.execute_code(python_code, env=env, interpreter='python', working_dir='/tmp')
 
