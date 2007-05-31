@@ -21,7 +21,6 @@ def commandline():
 	except getopt.GetoptError:
                 usage()
 		sys.exit(1)
-	print "Command '%s'" % command
 
 	# Get args to pass to function
 	args = {}

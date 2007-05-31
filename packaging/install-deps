@@ -20,6 +20,7 @@ sys.path += ['../pyutils']
 import packaging
 import utils
 import logger
+import config
 
 import pdb
 
@@ -57,7 +58,7 @@ build_deps_package = remaining_args[1]
 deps = []
 if len(remaining_args) > 2: deps = remaining_args[2:]
 
-log_obj = logger.Logger(filename=os.devnull)
+log_obj = logger.Logger(filename=config.devnull)
 # skip_alternates, because locking is handled in build and mktarball (if we had better locking, this wouldn't be needed)
 target_conf = packaging.buildconf(target, logger=log_obj, skip_alternates=True)
 

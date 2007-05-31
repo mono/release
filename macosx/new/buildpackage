@@ -59,7 +59,7 @@ else:
 	build_host = target
 	targets = [ target ]
 
-conf = packaging.buildconf(build_host, print_output=debug)
+conf = packaging.buildconf(build_host)
 
 remote_temp = "/tmp/packaging"
 resources_dir = remote_temp + os.sep + 'resources'
@@ -82,7 +82,7 @@ conf.buildenv.execute_command('rm -Rf ' + remote_temp + "; mkdir -p " + remote_P
 
 for arch in targets:
 
-	arch_conf = packaging.buildconf(arch, print_output=debug)
+	arch_conf = packaging.buildconf(arch)
 	# Get list of files we're going to install
 	files = []
 	for pac in packages_to_include[arch]:

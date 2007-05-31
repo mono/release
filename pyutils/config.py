@@ -152,3 +152,6 @@ data_perms = stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH # 644
 
 ######################################
 
+# Older python versions don't have os.devnull
+devnull = "/dev/null"
+

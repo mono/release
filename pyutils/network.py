@@ -42,7 +42,6 @@ class ssh:
 		# Put single quotes around the command so the whole command gets passed over ssh
 		# (must use single quotes here since command may have double quotes (shell allows double quotes inside of single, without escaping)
 		command = "ssh %s %s@%s '%s'" % (self.options, self.username, self.hostname, command)
-		print command
                 return utils.launch_process(command, logger=logger)
 
 	def copy_to(self, src, dest, compress=True, logger=""):

@@ -2,8 +2,8 @@ USE_ZIP_PKG=1
 
 # We require building on a 10.3 box
 #  So use the 10.3 sdk, even though this box is 10.4
-#username=builder
-#hostname=g5-mono.boston.ximian.com
+username=builder
+hostname=g5-mono.boston.ximian.com
 # set CC to make sure we build with the 10.3 sdk
 # These extra defines are needed when building on 10.4 with 10.3 sdk (not needed when building on 10.3)
 # headerpad_max_install_names helps with relocating binaries to a destination of a very large pathname

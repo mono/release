@@ -47,7 +47,7 @@ debug=1
 def build_package(target):
 
 	
-	conf = packaging.buildconf(target, print_output=debug)
+	conf = packaging.buildconf(target)
 
 	remote_temp = "/tmp/packaging"
 	remote_root = remote_temp + os.sep + "root"
@@ -212,7 +212,7 @@ def build_package(target):
 	utils.substitute_parameters_in_file(pkginfo_file, parameter_map)
 
 	# Create prototype
-	(code, prototype) = conf.buildenv.execute_command("cd %s; find . -print | pkgproto | sort" % remote_root, capture_stderr=0 )
+	(code, prototype) = conf.buildenv.execute_command("cd %s; find . -print | pkgproto | sort" % remote_root)
 
 	#print prototype
 
@@ -248,7 +248,7 @@ def build_package(target):
 	# Actually build the package
 	print "Building package..."
 	package_filename = "mono-%s_%s.%s.pkg" % (version, revision, conf.info['arch'])
-	(code, output) = conf.buildenv.execute_command("cd %s; pkgmk -d . -b \`pwd\`  &&  pkgtrans -s \`pwd\` %s all; gzip %s" % (remote_root, package_filename, package_filename ))
+	(code, output) = conf.buildenv.execute_code("cd %s; pkgmk -d . -b `pwd`  &&  pkgtrans -s `pwd` %s all; gzip %s" % (remote_root, package_filename, package_filename ))
 	if code:
 		print "%s: Error in creating package" % target
 		sys.exit(1)

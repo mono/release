@@ -32,7 +32,7 @@ class buildconf:
 		# Look in the current dir and then in conf dir
 		#  (This is so that these classes can be used in /tmp on remote machines)
 		if os.path.exists(conf_file_name) and os.path.isfile(conf_file_name):
-			self.conf_file = self.name
+			conf_dir = ""
 			check_alternates = False
 		else:
 			conf_dir = os.path.join(config.packaging_dir, 'conf')
@@ -51,7 +51,7 @@ class buildconf:
 			if counter > 0:
 				self.conf_lock_filename += "-%d" % counter
 
-			self.conf_file = conf_dir + os.sep + self.conf_lock_filename
+			self.conf_file = os.path.join(conf_dir, self.conf_lock_filename)
 			buildenv_args['lock_filename'] = lock_dir + os.sep +  self.conf_lock_filename
 
 			# If no alternates were found

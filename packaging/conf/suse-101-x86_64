@@ -4,7 +4,8 @@ root_dir=/jails/suse-101-x86_64-root-0/jail/
 chroot_path=/usr/bin/chroot
 
 distro_aliases=(
-        sle-10-x86_64
+        sles-10-x86_64
+        sled-10-x86_64
 )
 
 

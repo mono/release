@@ -4,7 +4,8 @@ root_dir=/jails/suse-101-i586/jail
 target_command_prefix=". /etc/profile;"
 
 distro_aliases=(
-        sle-10-i586
+        sles-10-i586
+        sled-10-i586
 )
 
 # Repo conf

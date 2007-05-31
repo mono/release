@@ -19,9 +19,9 @@ if distros == ["all"]:
 	distros = map(os.path.basename, glob.glob("../packaging/conf/*-*-*"))
 
 for distro in distros:
-	env = packaging.buildenv(os.path.basename(distro))
-	env.ssh.copy_to('do-clean-semaphores', '/tmp')
+	conf = packaging.buildconf(os.path.basename(distro))
+	conf.buildenv.copy_to('do-clean-semaphores', '/tmp')
 	# exec_as_root probably isn't portable...
-	#env.ssh.execute('/tmp/do-clean-semaphores', exec_as_root=1)
-	env.ssh.execute('/tmp/do-clean-semaphores')
+	#conf.buildenv.execute_command('/tmp/do-clean-semaphores', exec_as_root=1)
+	conf.buildenv.execute_command('/tmp/do-clean-semaphores')
 

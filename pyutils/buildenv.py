@@ -148,8 +148,6 @@ class buildenv:
 		# Double quotes are very meticulous
 		command = '%s %s %s "%s %s %s"' % (self.root_dir_options, self.env['shell_path'], "-c",  self.target_command_prefix, sudo_opts, command)
 
-		print command
-
 		return self.modes[mode].execute_command(command, logger=logger)
 
 	def execute_code(self, code, working_dir="", interpreter='sh', exec_as_root=False, output_timeout=0, max_output_size=0, terminate_reg="", env={}, logger=""):
@@ -255,7 +253,7 @@ class buildenv:
 
 	def offline(self):
 		old_logger = self.logger
-		self.logger = logger.Logger(os.devnull, print_screen=0)
+		self.logger = logger.Logger(config.devnull, print_screen=0)
 
 		# Run some arbitrary command that will always return true
 		(code, output) = self.execute_command("ls")

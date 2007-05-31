@@ -686,8 +686,9 @@ os.chdir('..')
 
 # Run the guid generator on windows
 print "Copying/running guidgen..."
-installer_conf.buildenv.copy_to('guidgen/guidgen.exe', '.')
-(code, output) = installer_conf.buildenv.execute_command('./guidgen.exe')
+build_loc = installer_conf.buildenv.build_location
+installer_conf.buildenv.copy_to('guidgen/guidgen.exe', build_loc)
+(code, output) = installer_conf.buildenv.execute_command(build_loc + os.sep + 'guidgen.exe')
 print "\n",
 guid = output.split().pop()
 
@@ -732,7 +733,7 @@ for sel in selections:
 	(code, output) = installer_conf.buildenv.execute_command('cd /tmp/windows-installer/build/%s/bin; strip --strip-unneeded *.exe mono*.dll libgtk-win*.dll ; cd ../lib; strip --strip-unneeded *.a' % sel.name)
 
 # Run installer on windows
-(code, output) = installer_conf.buildenv.execute_command('export PATH="$PATH:/cygdrive/c/PROGRA~1/INNOSE~1:C:\Program Files\Inno Setup5"; cd /tmp/windows-installer; ISCC.exe Mono.iss')
+(code, output) = installer_conf.buildenv.execute_code('export PATH="$PATH:/cygdrive/c/PROGRA~1/INNOSE~1:C:\Program Files\Inno Setup5"; cd /tmp/windows-installer; ISCC.exe Mono.iss')
 
 if code:
 	print "Error running installer"
