@@ -12,6 +12,7 @@ rm -rf $build_location/builder/built-packages 		|| exit 1
 # Make sure it exists...
 mkdir -p $build_location				|| exit 1
 cd $build_location && rm -rf scratch		 	|| exit 1
+rm -rf steps						|| exit 1
 mkdir scratch && cd scratch 				|| exit 1
 
 # These need sudo because the uids of builder of the host and jail may not match up

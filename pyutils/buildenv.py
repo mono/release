@@ -93,7 +93,7 @@ class buildenv:
 			mode = self.login_mode
 
 		# TODO: the old code didn't call a shell when root_dir wasn't set (does that matter?)
-		command = "%s %s %s" % (self.root_dir_options, self.env['shell_path'], "-i")
+		command = "%s %s %s" % (self.root_dir_options, self.env['shell_path'], "-l")
 
 		mode = self.modes[mode].login(command)
 

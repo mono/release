@@ -69,6 +69,16 @@ def run_postbuild_step(name, step_key, test=0):
 		build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 
 		(result, output) = conf.buildenv.execute_code("%s %s " % (step_env_pre_cmd, code), working_dir=remote_src_dir, env=conf.env_vars, logger=log_obj, output_timeout=timeout, max_output_size=max_output_size)
+
+		# Get results, if any
+		results_dir = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'files', 'steps')
+		distutils.dir_util.mkpath(results_dir)
+		conf.buildenv.copy_from(os.path.join(conf.env_vars['build_location'], 'steps', name), results_dir)
+
+		# if files were gathered, add 'download' link to the build info
+		if os.path.exists(results_dir + os.sep + name):
+			build_info.update_step(name, download='steps' + os.sep + name)
+
 		state = get_state(result, test=test)
 		if result:
 			print "Step %s failed..." % name

@@ -27,7 +27,7 @@ conf = packaging.buildconf(distro)
 pack_def = packaging.package(conf, package, inside_jail=True)
 
 
-for d in [ 'builder/built-packages', 'scratch', '/tmp/install' ]:
+for d in [ 'builder/built-packages', 'scratch', '/tmp/install', 'steps' ]:
 	if os.path.exists(d):
 		shutil.rmtree(d)
 
