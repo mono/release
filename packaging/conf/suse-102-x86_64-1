@@ -1,6 +1,7 @@
 username=builder
 hostname=monobuild2.boston.ximian.com
 root_dir=/jails/suse-102-x86_64
+chroot_path=/usr/bin/chroot
 
 # suse 10.2 doesn't include /usr/lib/pkgconfig on x86_64, force it.
 target_command_prefix=". /etc/profile; "

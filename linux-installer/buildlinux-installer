@@ -26,6 +26,8 @@ IB_VER = "3.0.1"
 
 # Probably won't ship gtk# until we provide fallback libraries like vmware does.
 
+# md doesn't run on suse 93, needs 10.0 now, update accordingly (at least, when the next version of md ships)
+
 external_rpms_list = [
 	"ftp://archive.download.redhat.com/pub/redhat/linux/9/en/os/i386/RedHat/RPMS/pkgconfig-0.14.0-3.i386.rpm",
 
@@ -47,6 +49,11 @@ custom_rpms_list = [
 ]
 
 # rpm locations we build locally
+
+# Hrm... won't be able to use redhat-9 as a base, as it was heavily patched.
+#  going to have to do some testing on this...
+#  redhat's gtkhtml sharp package doesn't actually work on redhat boxes (not like anyone is using those...)
+#  but, we'll need it for the installer, and built on the lcd... 
 local_rpms = [ 
 	{'name': 'redhat-9-i386', 'packages': [
 		"mono",
@@ -171,10 +178,10 @@ for url in external_rpms_list + custom_rpms_list:
 # Collect local rpm files
 for selection in local_rpms:
 
-	env = packaging.buildenv(selection['name'])
+	conf = packaging.buildconf(selection['name'])
 
 	for pack in selection['packages']:
-		pack_obj = packaging.package(env, pack)
+		pack_obj = packaging.package(conf, pack)
 		files += pack_obj.get_files()
 
 # Extract all the rpms

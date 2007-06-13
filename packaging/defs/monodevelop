@@ -7,16 +7,16 @@ BUILD_HOSTS=(
 )
 
 USE_HOSTS=(
-	# These need to be removed after next md release (which depends on gtk# 2.8)
-	fedora-3-i386
-	fedora-4-i386
-	fedora-4-ppc
-	fedora-4-x86_64
-	nld-9-i586
-	rhel-4-i386
-	suse-92-i586
-	suse-93-i586
-	suse-93-x86_64
+	# md 0.13.1 runs on these distros
+	#fedora-3-i386
+	#fedora-4-i386
+	#fedora-4-ppc
+	#fedora-4-x86_64
+	#nld-9-i586
+	#rhel-4-i386
+	#suse-92-i586
+	#suse-93-i586
+	#suse-93-x86_64
 
 	fedora-5-i386
 	fedora-5-x86_64
