@@ -13,8 +13,8 @@ echo "Latest monolite: $latest_monolite"
 echo "Latest monocharge: $latest_monocharge"
 
 cp -f $latest_mono mono-latest.tar.bz2
-cp -f $latest_monolite monolite-latest.tar.bz2
-cp -f $latest_monocharge monocharge-latest.tar.bz2
+cp -f $latest_monolite monolite-latest.tar.gz
+cp -f $latest_monocharge monocharge-latest.tar.gz
 
 OUTPUT='index.html'
 

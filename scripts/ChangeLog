@@ -2,7 +2,8 @@
 
 	* mono-snapshot.sh:
 	* make-html:
-	Use bzip2 instead of gzip
+	Use bzip2 for source tarball.  (Was going to use bzip2 for monolite, and monocharge
+	but since the .bz2 files are larger, it's better to leave them as is)
 	
 	* mono-snapshot.sh:
 	Don't include original mono version from configure.in, just replace it with date.

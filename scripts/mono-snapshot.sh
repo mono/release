@@ -79,7 +79,7 @@ cd $DAILY_BUILD_DIR
 mkdir -p $DAILY_BUILD_DIR/monolite-$DATE
 cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/Mono.Security.dll $LIBSDIR/System.Xml.dll $LIBSDIR/mcs.exe $DAILY_BUILD_DIR/monolite-$DATE
 
-tar jcvpf monolite-$DATE.tar.bz2 monolite-$DATE/ >> $LOGFILE 2>&1
+tar zcvpf monolite-$DATE.tar.gz monolite-$DATE/ >> $LOGFILE 2>&1
 
 # make monocharge tarball
 mkdir -p $DAILY_BUILD_DIR/monocharge-$DATE
@@ -98,7 +98,7 @@ cp $PREFIX/lib/mono/2.0/*.exe $DAILY_BUILD_DIR/monocharge-$DATE/2.0
 cp $DAILY_BUILD_DIR/mcs/class/lib/net_2_0/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/2.0
 cp $DAILY_BUILD_DIR/mono-basic/class/lib/vbnc/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/2.0
 
-tar jcvpf monocharge-$DATE.tar.bz2 monocharge-$DATE/ >> $LOGFILE 2>&1
+tar zcvpf monocharge-$DATE.tar.gz monocharge-$DATE/ >> $LOGFILE 2>&1
 
 # Make mono tarball and check
 #(cd $DAILY_BUILD_DIR/mono && make distcheck || exit 1 ) >> $LOGFILE 2>&1
@@ -108,12 +108,12 @@ tar jcvpf monocharge-$DATE.tar.bz2 monocharge-$DATE/ >> $LOGFILE 2>&1
 
 # Copy resulting tarball to top-level dir
 echo "Copy resulting tarball to top-level dir" >> $LOGFILE 2>&1
-(cd $DAILY_BUILD_DIR/mono && cp *.tar.bz2 $DAILY_BUILD_DIR )
+(cd $DAILY_BUILD_DIR/mono && cp *.tar.bz2 *.tar.gz $DAILY_BUILD_DIR )
 # Not sure what this is for
 #(cd $DAILY_BUILD_DIR/mono && cp *mono-$DATE* $DAILY_BUILD_DIR )
 
 echo "Copying daily files..." >> $LOGFILE 2>&1
-scp -i $SCRIPTS_DIR/key/cron_key  *.tar.bz2 mono-web@mono.ximian.com:go-mono/daily >> $LOGFILE 2>&1
+scp -i $SCRIPTS_DIR/key/cron_key  *.tar.bz2 *.tar.gz mono-web@mono.ximian.com:go-mono/daily >> $LOGFILE 2>&1
 
 # Run command to update webpage
 ssh -i $SCRIPTS_DIR/key/cron_key mono-web@mono.ximian.com "release/scripts/make-html" >> $LOGFILE 2>&1
