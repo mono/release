@@ -53,7 +53,7 @@ rsync -a --exclude '.svn/' $REPO/* .
 
 # Bump mono version number
 echo "Bump mono version number" >> $LOGFILE 2>&1
-(cd $DAILY_BUILD_DIR/mono && cat configure.in | sed "s/\(AM_INIT_AUTOMAKE.*\))/\1.$DATE)/" > configure.tmp && mv configure.tmp configure.in ) >> $LOGFILE 2>&1
+(cd $DAILY_BUILD_DIR/mono && cat configure.in | sed "s/\(AM_INIT_AUTOMAKE.*\))/AM_INIT_AUTOMAKE\(mono,$DATE)/" > configure.tmp && mv configure.tmp configure.in ) >> $LOGFILE 2>&1
 
 # Build mono
 echo "Building MONO" >> $LOGFILE 2>&1

@@ -3,6 +3,10 @@
 	* mono-snapshot.sh:
 	* make-html:
 	Use bzip2 instead of gzip
+	
+	* mono-snapshot.sh:
+	Don't include original mono version from configure.in, just replace it with date.
+	Otherwise the links on daily downloads to the latest sources are broken.
 
 2007-04-13  Wade Berrier  <wberrier@novell.com>
 
