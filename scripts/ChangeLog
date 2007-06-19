@@ -2,6 +2,7 @@
 
 	* mono-snapshot.sh:
 	* make-html:
+	* explanation.html:
 	Use bzip2 for source tarball.  (Was going to use bzip2 for monolite, and monocharge
 	but since the .bz2 files are larger, it's better to leave them as is)
 	
