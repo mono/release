@@ -1,3 +1,9 @@
+2007-06-19  Wade Berrier  <wberrier@novell.com>
+
+	* mono-snapshot.sh:
+	* make-html:
+	Use bzip2 instead of gzip
+
 2007-04-13  Wade Berrier  <wberrier@novell.com>
 
 	* *-snapshot.sh: svn.myrealbox.com -> anonsvn.mono-project.com 
