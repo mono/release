@@ -24,4 +24,6 @@ infos2: mono-api-info2.exe assemblies-list-2.txt createinfos.sh
 
 clean:
 	rm -f *.pdb *.mdb mono-api-info*.exe *~
+	rm -Rf 1.1
+	rm -Rf 2.0
 

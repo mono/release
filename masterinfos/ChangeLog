@@ -1,4 +1,11 @@
-2007-06-30  Gert Driesen <drieseng@users.sourceforge.net>
+2007-06-30  Gert Driesen  <drieseng@users.sourceforge.net>
+
+	* createinfos.sh: Changed line-endings to LF. Set eol-style to
+	native.
+	* Makefile: Also remove generated masterinfos on clean. Changed
+	line-endings to LF. Set eol-style to native.
+
+2007-06-30  Gert Driesen  <drieseng@users.sourceforge.net>
 
 	* Makefile: Use WINDIR environment variable instead of hardcoding
 	path to Windows. No longer build mono-api-diff since it's not
