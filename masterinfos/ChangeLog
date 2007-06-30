@@ -1,0 +1,5 @@
+2007-06-30  Gert Driesen <drieseng@users.sourceforge.net>
+
+	* Makefile: Use WINDIR environment variable instead of hardcoding
+	path to Windows. No longer build mono-api-diff since it's not
+	used.
