@@ -54,12 +54,16 @@
 	<p>Scott Petterson implemented the following C# 3.0 features:
 
 	<ul>
-	    <li>Variable type inference (the "var" keyword)
-	    <li>Anonymous types
-	    <li>Array type inference
-	    <li>Object initialization
-	    <li>Collection initialization
+	    <li>Variable type inference (the "var" keyword).
+	    <li>Anonymous types.
+	    <li>Array type inference.
+	    <li>Object initialization.
+	    <li>Collection initialization.
+	    <li>Automatic properties.
 	</ul>
+
+	<p>Marek Safar continued work on the LINQ grammar support and
+	the underlying System.Core assembly support for it. 
 
 	<p>The C# 3.0 support is enabled by passing the
 	-langversion:linq option to the compiler.   In addition to the
@@ -73,11 +77,48 @@
 
 	<p>Devirtualization optimization for sealed classes and
 	methods, improving IronPython 2.0 pystone performance by 4%.
-	Other programs can expect similar improvement [Rodrigo].
+        Other programs can expect similar improvement [Rodrigo].
+
+	methods (FIXME: need numbers from Rodrigo) [Rodrigo].
+
+	<p><a
+	href="http://bugzilla.ximian.com/show_bug.cgi?id=81663">Invocation
+	of non-multicast delegate</a> methods has been increased by
+	calling directly into the delegate, this improves IronPython
+	2.0 (pystone) performance by 25% [Zoltan Varga].  Thanks to
+	Dino Viehland from the IronPython team for pointing out the
+	optimization.
+
+	<p>Math.Min and Math.Max are now inlined for signed integers
+	and String.OrdinalCompare has been tuned to use these, which
+	results in a 2-3% performance increase in running PyStone with
+	IronPython. 
+
+	<p>The runtime will not poll in WaitHandles for local handles
+	that are sleeping (this is still done for process-shared
+	handles) [Dick Porter].
+
+<h2>Security</h2>
+
+	<p>Rodrigo Kumpera has added an IL verifier to Mono.
+
+	<p>IL verifiers are not very useful for applications that run
+	at full-trust level (their only use is to help in compiler
+	development and sanity checking).  But we are now working
+	towards <a
+	href="http://www.mono-project.com/Moonlight">supporting
+	Silverlight</a> in Mono which needs to provide limitations on
+	what code can do, and cope with malicious code. 
 	
 <h2>Corlib</h2>
 
 	<p>Completed support for RegionInfo.
+
+	<p>Dictionary: Optimize and add implementation notes. Use a
+	"mini-heap" to store the linked lists instead of the regular
+	heap. Split arrays of structs into separate arrays to make the GC's
+	life simpler (see bug 81879 for details). Make class serialization
+	compatible with MS.NET.
 	
 <h2>System.Core</h2>
 
@@ -88,7 +129,25 @@
 <h2>System.Windows.Forms</h2>
 
 	<p>MaskedTextBox implementation [Rolf Bjarne].
+
+	<p>ToolStripPainter, ToolStripSystemRenderer: new from
+	Jonathan Pobst.
+	
+<h2>GDI+</h2>
+
+	<p>Add missing checks in GdipGetPath[Types|Points] functions
+	(based on parts of #81859 patch by Yves Bastide and Sebastien
+	Pouliot). 
 	
 <h1>Contributors</h1>
 
+<<<<<<< .mine
+	Mike Morano, Stephen A. Jazdzewski, Sanghyeon Seo, Juraj
+	Skripsky,
+
+Document
+
+	MONO_NO_SMP
+	Fix for #77146.=======
 	Mike Morano, Stephen A. Jazdzewski, 
+>>>>>>> .r81481
