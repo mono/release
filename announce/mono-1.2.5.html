@@ -119,6 +119,10 @@
 	heap. Split arrays of structs into separate arrays to make the GC's
 	life simpler (see bug 81879 for details). Make class serialization
 	compatible with MS.NET.
+
+	<p>Environment.GetFolderPath: Now checks for the existance of
+	the XDG_DESKTOP_DIR, XDG_MUSIC_DIR and XDG_PICTURES_DIR environment
+	variables when trying to find the requested path.
 	
 <h2>System.Core</h2>
 
