@@ -98,6 +98,13 @@
 	that are sleeping (this is still done for process-shared
 	handles) [Dick Porter].
 
+	<p>Massi and Paolo implemented a mechanism that reduces
+	virtual table sizes (these tables were getting quite large
+	due to generics and some classes that implement many implicit
+	generic interfaces).    The most visible change is in
+	significant memory reduction for applications using generics
+	extensively. 
+
 <h2>Security</h2>
 
 	<p>Rodrigo Kumpera has added an IL verifier to Mono.
