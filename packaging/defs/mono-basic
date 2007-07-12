@@ -21,8 +21,8 @@ BUILD_HOSTS=(
 	sunos-8-sparc
 	sunos-10-x86
 	win-4-i386
-	debian-31-arm
-	debian-31-sparc
+	debian-4-arm
+	debian-4-sparc
 )
 
 USE_HOSTS=(
@@ -47,15 +47,14 @@ get_destroot () {
 	# For building...
         elif test "x$DISTRO" = "xsuse-100-i586" ; then
                 DEST_ROOT=noarch
-	# For building 0.13.1 and before...
-        elif test "x$DISTRO" = "xsuse-93-i586" ; then
-                DEST_ROOT=noarch
 	else
-		# for monobuild (building on all archs)
-                #DEST_ROOT=$DISTRO
-
-		# For release time
-                DEST_ROOT=noarch
+		if test "x$HEAD_or_RELEASE" = "xHEAD" ; then
+			# for monobuild (building on all archs)
+			DEST_ROOT=$DISTRO
+		else
+			# For release time
+			DEST_ROOT=noarch
+		fi
 	fi
 }
 

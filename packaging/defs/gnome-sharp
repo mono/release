@@ -4,7 +4,9 @@ BUILD_HOSTS=(
 	win-4-i386
 )
 
-MKTARBALL_HOST="suse-102-i586"
+web_index=7
+
+MKTARBALL_HOST="suse-102-x86_64"
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
 

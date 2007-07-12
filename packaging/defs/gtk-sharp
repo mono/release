@@ -4,24 +4,18 @@ version_selection_reg="1\.0\.\d+"
 
 USE_PATCHES=1
 
+MKTARBALL_HOST="suse-100-i586"
+
 BUILD_HOSTS=(
-	fedora-3-i386
-	fedora-4-i386
-	fedora-4-ppc
-	fedora-4-x86_64
 	fedora-5-i386
 	fedora-5-x86_64
 	nld-9-i586
-	redhat-9-i386
 	rhel-3-i386
 	rhel-4-i386
 	sles-9-i586
 	# These don't have all necessary deps
 	#sles-9-ia64
 	#sles-9-x86_64
-	suse-92-i586
-	suse-93-i586
-	suse-93-x86_64
 	suse-100-i586
 	suse-100-ppc
 	suse-100-x86_64
@@ -200,4 +194,5 @@ HEAD_PATH=(
 RELEASE_PATH=(
 	tags/gtk-sharp/[[versiondot]]/gtk-sharp
 )
+
 

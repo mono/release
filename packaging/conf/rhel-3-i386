@@ -2,6 +2,9 @@ username=builder
 hostname=hardhat.boston.ximian.com
 root_dir=/jails/rhel-3as-i386-duncan-0
 
+# It will be a while before this is EOL
+# http://www.redhat.com/security/updates/errata/
+
 distro_aliases=(
 	rhel-3as-i386
 	rhel-3es-i386

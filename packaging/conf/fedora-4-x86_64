@@ -1,6 +1,0 @@
-username=builder
-hostname=monobuild2.boston.ximian.com
-root_dir=/jails/fedora-4-x86_64-root-0/jail/
-chroot_path=/usr/bin/chroot
-
-USE_YUM=1

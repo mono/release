@@ -1,3 +1,5 @@
+web_index=0
+
 username=builder
 hostname=hardhat.boston.ximian.com
 root_dir=/jails/sles-9-i586-duncan-0

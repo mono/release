@@ -1,5 +1,7 @@
 def_alias="gtk-sharp-2.0"
 
+web_index=6
+
 BUILD_HOSTS=(
 	suse-102-i586
 	suse-102-x86_64
@@ -17,7 +19,7 @@ MONO_DEPS=(
 	monodoc
 )
 
-MKTARBALL_HOST="suse-102-i586"
+MKTARBALL_HOST="suse-102-x86_64"
 
 get_destroot () {
 	DEST_ROOT=$DISTRO

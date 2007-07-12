@@ -1,18 +1,12 @@
-web_index=6
+web_index=5
 
 def_alias="gtk-sharp"
 
 version_selection_reg="2\.4\.\d+"
 
 BUILD_HOSTS=(
-	fedora-3-i386
-	fedora-4-i386
-	fedora-4-ppc
-	fedora-4-x86_64
 	nld-9-i586
 	rhel-4-i386
-	suse-93-i586
-	suse-93-x86_64
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -31,7 +25,7 @@ get_destroot () {
 }
 
 HEAD_PATH=(
-	trunk/gtk-sharp
+	branches/gtk-sharp-2-468-branch/gtk-sharp
 )
 RELEASE_PATH=(
 	tags/gtk-sharp/[[gtksharp2ver]]/gtk-sharp
@@ -48,14 +42,20 @@ RELEASE_PATH=(
 
 get_source () {
 
-	# Handle the new gtk-sharp2 tag namaing standard (example tag version: 2.x.2)
-	# turn 2.8.2 into 2.x.2, and replace gtksharp2ver with it
-	gtksharp2ver_match=\\[\\[gtksharp2ver\\]\\]
-	new_version=`echo $VERSION | sed s/\.[0-9]\./\.x\./`
-	new_path=${SVN_PATHS//$gtksharp2ver_match/${new_version}}
+	if test x$HEAD_or_RELEASE = x"RELEASE" ; then
+		# Handle the new gtk-sharp2 tag namaing standard (example tag version: 2.x.2)
+		# turn 2.8.2 into 2.x.2, and replace gtksharp2ver with it
+		gtksharp2ver_match=\\[\\[gtksharp2ver\\]\\]
+		new_version=`echo $VERSION | sed s/\\.[0-9]\\./\\.x\\./`
+		new_path=${SVN_PATHS//$gtksharp2ver_match/${new_version}}
 
+	else
+		new_path=$SVN_PATHS
+
+	fi
 	echo "New path: $new_path"
 
+        echo "command: $SVNEXPORT $MONO_ROOT/$new_path"
         $SVNEXPORT $MONO_ROOT/$new_path
 }
 

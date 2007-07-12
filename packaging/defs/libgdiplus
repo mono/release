@@ -1,19 +1,14 @@
 web_index=4
 
 BUILD_HOSTS=(
-        debian-31-arm
-        debian-31-sparc
-        fedora-3-i386
-        fedora-4-i386
-        fedora-4-ppc
-        fedora-4-x86_64
+        debian-4-arm
+        debian-4-sparc
         fedora-5-i386
         fedora-5-x86_64
 	macos-10-ppc
 	macos-10-x86
         nld-9-i586
         nld-9-x86_64
-        redhat-9-i386
         rhel-3-i386
         rhel-4-i386
         sles-9-i586
@@ -24,8 +19,6 @@ BUILD_HOSTS=(
         sles-9-x86_64
         sunos-8-sparc
         sunos-10-x86
-        suse-93-i586
-	suse-93-x86_64
         suse-100-i586
         suse-100-ppc
         suse-100-x86_64

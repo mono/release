@@ -1,10 +1,6 @@
 web_index=8
 
 BUILD_HOSTS=(
-	fedora-3-i386
-	fedora-4-i386
-	fedora-4-ppc
-	fedora-4-x86_64
 	fedora-5-i386
 	fedora-5-x86_64
 	nld-9-i586
@@ -17,8 +13,6 @@ BUILD_HOSTS=(
 	sles-9-s390
 	sles-9-s390x
 	sles-9-x86_64
-	suse-93-i586
-	suse-93-x86_64
 	suse-100-i586
 	suse-100-ppc
 	suse-100-x86_64
