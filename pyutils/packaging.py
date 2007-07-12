@@ -441,7 +441,12 @@ class package:
 
 		if not self.version:
 			if not self.latest_version:
-				self.latest_version = utils.get_latest_ver(self.package_fullpath, fail_on_missing=fail_on_missing, version_reg=self.get_info_var('version_selection_reg'))
+				# Only use the version_selection_reg on RELEASE, since 'version' is replaced with the subversion revision
+				#  with HEAD
+				version_selection_reg = ""
+				if self.HEAD_or_RELEASE == "RELEASE":
+					version_selection_reg = self.get_info_var('version_selection_reg')
+				self.latest_version = utils.get_latest_ver(self.package_fullpath, fail_on_missing=fail_on_missing, version_reg=version_selection_reg )
 
 			if self.bundle_obj.version_map_exists:
 				# Cases

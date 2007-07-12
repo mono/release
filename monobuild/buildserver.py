@@ -312,26 +312,28 @@ class sync(threading.Thread):
 
 			#sync_log.log(" *** Gathering dirs ***\n")
 
-			try:
-				# Gather dirs to synchronize
-				for i in ['HEAD', 'RELEASE']:
-					for distro in os.listdir(config.build_info_dir + os.sep + i):
-						for component in os.listdir(config.build_info_dir + os.sep + i + os.sep + distro):
-							# Get the last 'num_builds' number of elements from the list
-							versions = build.get_versions(i, distro, component)[-self.sync_num_builds:]
-							for j in versions:
-								dirs.append(os.path.join('monobuild/www/builds', i, distro, component, j))
+			# Gather dirs to synchronize
+			for i in ['HEAD', 'RELEASE']:
+				i_dir = config.build_info_dir + os.sep + i
+				if os.path.exists(i_dir):
+					for distro in os.listdir(i_dir):
+						distro_dir = i_dir + os.sep + distro
+						if os.path.exists(distro_dir):
+							for component in os.listdir(distro_dir):
+								# Get the last 'num_builds' number of elements from the list
+								versions = build.get_versions(i, distro, component)[-self.sync_num_builds:]
+								for j in versions:
+									dirs.append(os.path.join('monobuild/www/builds', i, distro, component, j))
 
-					# Grab latest num_builds for tarball log files as well
-					tarball_path = os.path.join(config.build_info_dir, '..', 'tarball_logs', i)
+				# Grab latest num_builds for tarball log files as well
+				tarball_path = os.path.join(config.build_info_dir, '..', 'tarball_logs', i)
+				if os.path.exists(tarball_path):
 					for component in os.listdir(tarball_path):
-						versions = os.listdir(tarball_path + os.sep + component)
+						component_dir = tarball_path + os.sep + component
+						versions = os.listdir(component_dir)
 						versions.sort()
 						for j in versions[-self.sync_num_builds:]:
 							dirs.append(os.path.join('monobuild/www/tarball_logs', i, component, j))
-
-			except:
-				sync_log.log("Catching missing dir exceptions...\n")
 
 			# conduct a dirs string up to the length of the max arg length, and run rsync for each of those blocks (what's the real maximum?)
 			while len(dirs):
