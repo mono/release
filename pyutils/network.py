@@ -86,6 +86,11 @@ class ssh:
 
                 return utils.launch_process(command, logger=logger)
 
+	def make_path(self, dir):
+                """Args: (dir) Returns: (mkdir exit code)."""
+
+		return self.execute_command("mkdir -p -m777 " + dir)
+
 
 class scp:
 

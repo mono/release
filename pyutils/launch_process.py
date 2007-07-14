@@ -38,7 +38,12 @@ def commandline():
 				k, v = e.split('=')
 				os.environ[k] = v
 		if option == "--working_dir":
-			os.chdir(value)
+			try:
+				os.chdir(value)
+			except:
+				print "Failed to chdir: " + value
+				print "Exiting..."
+				sys.exit(1)
 
 	command = " ".join(command)
 	code, output = utils.launch_process(command, **args)

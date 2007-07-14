@@ -15,6 +15,7 @@ import distutils.dir_util
 import shutil
 import glob
 import tempfile
+import getpass
 
 import logger
 
@@ -50,6 +51,7 @@ class buildenv:
 			# testing
 			#self.username = "wberrier"
 			self.username = "builder"
+			#self.username = getpass.getuser()
 
 
 		# Custom identifier to use at various places
@@ -194,6 +196,13 @@ class buildenv:
 
 		return code, output
 
+	def make_path(self, dir, mode=""):
+
+		if not mode:
+			mode = self.exec_mode
+
+		return self.modes[mode].make_path(self.root_dir + os.sep + dir)
+
         def copy_to(self, src, dest, compress=True, mode=""):
 
                 if not mode:
@@ -207,6 +216,9 @@ class buildenv:
 		if not len(src):
 			print "No files to copy..."
 			return 0, ""
+
+		# Make sure it exists
+		self.make_path(dest)
 
 		return self.modes[mode].copy_to(src, self.root_dir + dest, compress=compress)
 
@@ -322,4 +334,15 @@ class local:
         def copy_from(self, src, dest, compress=True, logger=""):
 		""" No need to duplicate this, since we're on a local machine, use the same method"""
 		return self.copy_to(src, dest, compress=compress, logger=logger)
+
+        def make_path(self, dir):
+		"""Create a path"""
+
+		error = 0
+		try:
+			distutils.dir_util.mkpath(dir)
+		except:
+			error = 1
+		return error
+
 

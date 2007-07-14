@@ -3,6 +3,8 @@ hostname=monobuild2.boston.ximian.com
 root_dir=/jails/suse-101-x86_64-root-0/jail/
 chroot_path=/usr/bin/chroot
 
+target_command_prefix=". /etc/profile;"
+
 distro_aliases=(
         sles-10-x86_64
         sled-10-x86_64
