@@ -201,7 +201,7 @@ class buildenv:
 		if not mode:
 			mode = self.exec_mode
 
-		return self.modes[mode].make_path(self.root_dir + os.sep + dir)
+		return self.modes[mode].make_path(self.root_dir + dir)
 
         def copy_to(self, src, dest, compress=True, mode=""):
 
@@ -313,12 +313,7 @@ class local:
 			new_src += glob.glob(i)
 		src = new_src
 
-		# seems os.path.normpath should do this, but it doesn't
-		dest = dest.replace('//', '/')
-
 		for i in src:
-
-			i = i.replace('//', '/')
 
 			# Don't copy if src and dest are the same (really for execute_code)
 			if os.path.abspath(os.path.normpath(i)) == os.path.abspath(os.path.normpath(dest + os.sep + os.path.basename(i))):
