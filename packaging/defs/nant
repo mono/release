@@ -13,8 +13,11 @@ USE_HOSTS=(
 APPEND_ZERO_TO_RPM_VERSION=1
 
 MONO_DEPS=(
-	libgdiplus
 	mono
+)
+
+MONO_RECOMMEND_DEPS=(
+        libgdiplus
 )
 
 get_destroot () {

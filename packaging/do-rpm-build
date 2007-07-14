@@ -1,0 +1,105 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import glob
+import shutil
+import getpass
+
+# Weird, why isn't '.' in the path already? (because utils isn't in the same location as ./do-build)
+sys.path.append('.')
+
+import utils
+
+(version, rev) = sys.argv[1:]
+
+# Some things we'll need to run as root
+EXEC_AS_ROOT = 'sudo'
+
+os.chdir('build')
+
+temp_build_dir = os.getcwd()
+
+# rpm needs this to be happy
+for f in os.listdir('.'):
+	if os.path.isfile(f): os.system("%s chown root:root %s" % (EXEC_AS_ROOT, f) )
+
+macrofiles = """
+	/usr/lib/rpm/macros
+	/usr/lib/rpm/x86_64-linux/macros
+	/usr/lib/rpm/suse_macros
+	/etc/rpm/macros.specspo
+	/etc/rpm/macros.prelink
+	/etc/rpm/macros.solve
+	/etc/rpm/macros.up2date
+	/etc/rpm/macros
+	/etc/rpm/x86_64-linux/macros
+	monobuild.rpmmacros
+""".split()
+
+# 'macrofiles:' stolen from buildbuddy
+open('monobuild.rpmrc', 'w').write("macrofiles: " + ":".join(macrofiles) )
+
+# need to set some rpmrc macros to be able to build in this directory
+# can't use $build_arch in rpmfilename, need to find out why some distros build as i686
+open('monobuild.rpmmacros', 'w').write("""
+%%_topdir	%s
+%%_sourcedir	%%{_topdir}
+%%_builddir	%%{_topdir}/BUILD
+%%_rpmdir	%%{_topdir}/built-packages
+%%_rpmfilename	%%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm
+%%buildroot	%s/buildroot
+""" % (temp_build_dir, temp_build_dir) )
+
+for d in "BUILD built-packages".split():
+	os.mkdir(d)
+
+# The spec file needs to be writable by the current user
+os.system("%s chown %s *.spec" % (EXEC_AS_ROOT, getpass.getuser()) )
+
+# This is where the spec file munging would have to take place... could be done
+#   on the host side, doesn't really matter.
+for f in glob.glob('*.spec'):
+	utils.substitute_parameters_in_file(f, {
+		'Version:.*':		'Version:\t%s' % version,
+		'Release:.*':		'Release:\t%s' % rev,
+
+		# Newer versions of suse implement a "Recommends" tag, replace with requires for
+		# compatibility
+		'Recommends:':		'Requires:',
+		# TODO: This should be handled in the spec file
+
+		# How to define using patches? will need to pass this in, disable for now...
+		#'.*%patch.*':		'',
+		#'Patch.*:.*':		'',
+		# Use patches afterall...
+
+		# TODO: paste in .changes like autobuild
+
+		})
+
+
+os.system("%s mount -t proc none /proc &> /dev/null" % EXEC_AS_ROOT)
+
+rcfiles = """
+	/usr/lib/rpm/rpmrc
+	monobuild.rpmrc
+""".split()
+
+files = []
+for f in rcfiles:
+	if os.path.exists(f): files.append(f)
+
+# Will this command need to change from distro to distro? (possibly on REALLY old distros)
+command = "rpmbuild --rcfile=%s -bb *.spec" % ":".join(files)
+print "Executing: " + command
+if os.system(command): sys.exit(1)
+
+# cleanup
+#  Can't run this, because /proc needs to be mounted for postbuild steps
+#os.system("%s umount /proc &> /dev/null" % EXEC_AS_ROOT)
+
+# Keep copy of the spec file
+for f in glob.glob('*.spec'):
+	shutil.copy(f, temp_build_dir + os.sep + 'built-packages')
+

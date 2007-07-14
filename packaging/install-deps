@@ -128,28 +128,12 @@ else:
 		packs_to_remove += rpm_names.split()
 	packs_to_remove = utils.remove_list_duplicates(packs_to_remove)
 
-        # Use rug if the jail has it
-	(code, output) = target_conf.buildenv.execute_command('ls /usr/sbin/rcd')
-	if not code:
-                # check if rcd is running in this jail and start it if it isn't
-		(code, output) = target_conf.buildenv.execute_command('rug ping')
-		if code:
-			target_conf.buildenv.execute_command('/usr/sbin/rcd -r', exec_as_root=1)
-			print "Waiting for rcd to come alive..."
-			time.sleep(5)
-		if packs_to_remove:
-			target_conf.buildenv.execute_command('rug rm -y %s' % " ".join(packs_to_remove), exec_as_root=1)
-		code = 0
-		if files:
-			(code, output) = target_conf.buildenv.execute_command('rug in -y -r %s/install-packages/*.rpm' % build_location, exec_as_root=1)
-		target_conf.buildenv.execute_command('rug shutdown', exec_as_root=1)
-        else:
-		if packs_to_remove:
-			target_conf.buildenv.copy_to(['remove-rpms', '../pyutils/rpm_utils.py'], build_location)
-			target_conf.buildenv.execute_command('%s/remove-rpms %s' % (build_location, " ".join(packs_to_remove)), exec_as_root=1)
-		code = 0
-		if files:
-			(code, output) = target_conf.buildenv.execute_command('rpm -Uvh %s/install-packages/*.rpm' % build_location, exec_as_root=1)
+	if packs_to_remove:
+		target_conf.buildenv.copy_to(['remove-rpms', '../pyutils/rpm_utils.py'], build_location)
+		target_conf.buildenv.execute_command('%s/remove-rpms %s' % (build_location, " ".join(packs_to_remove)), exec_as_root=1)
+	code = 0
+	if files:
+		(code, output) = target_conf.buildenv.execute_command('rpm -Uvh %s/install-packages/*.rpm' % build_location, exec_as_root=1)
 
 # Exit with return code...
 sys.exit(code)

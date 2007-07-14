@@ -1,4 +1,4 @@
-def_alias="gtk-sharp-2.0"
+def_alias="gtk-sharp2"
 
 web_index=6
 

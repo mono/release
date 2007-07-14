@@ -11,14 +11,17 @@ BUILD_HOSTS=(
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
-	libgdiplus
 	mono
 )
 
 MONO_RECOMMEND_DEPS=(
-	gtk-sharp-2.8
-	gtk-sharp-2.10
-	gnome-sharp
+        libgdiplus
+)
+
+MONO_RECOMMEND_DEPS=(
+	gtk-sharp28
+	gtk-sharp210
+	gnome-sharp2
 )
 
 get_destroot () {

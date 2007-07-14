@@ -2,5 +2,7 @@ username=builder
 hostname=hardhat.boston.ximian.com
 root_dir=/jails/nld-9-i586-root-0/jail
 
+target_command_prefix=". /etc/profile;"
+
 USE_OC=1
 USE_YAST=1

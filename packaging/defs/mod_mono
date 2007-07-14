@@ -27,9 +27,12 @@ BUILD_HOSTS=(
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
-	libgdiplus
 	mono
 	xsp
+)
+
+MONO_RECOMMEND_DEPS=(
+        libgdiplus
 )
 
 get_destroot () {

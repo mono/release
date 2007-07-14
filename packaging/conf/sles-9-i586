@@ -2,7 +2,9 @@ web_index=0
 
 username=builder
 hostname=hardhat.boston.ximian.com
-root_dir=/jails/sles-9-i586-duncan-0
+root_dir=/jails/sles-9-i586
+
+target_command_prefix=". /etc/profile;"
 
 # Repo conf
 USE_OC=1

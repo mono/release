@@ -258,6 +258,7 @@ log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
 build_info.update_step("build", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
 # Copy tar.gz and zip files
 files_to_copy = [ source_file ]
+support_files_to_copy = []
 
 # Get the dir that tarball unpacks
 # note: only works if resulting dir name is based off tarball name, and has one of the extions in config.source_extions
@@ -266,31 +267,35 @@ for ext in config.source_extensions:
 	build_dir = build_dir.replace(ext, '')
 
 # Set optional custom build_location
-build_location = conf.env_vars['build_location']
+temp_build_dir = conf.env_vars['build_location'] + os.sep + 'build'
 
 # Files for zip build system and build command
 if conf.get_info_var('USE_ZIP_PKG'):
 	# do-zip-build deps...
 	# Yikes... this dep list is getting big, ugh
-	files_to_copy += '../pyutils/config.py ../pyutils/utils.py ../pyutils/buildenv.py ../pyutils/network.py ../pyutils/logger.py ../pyutils/packaging.py ../pyutils/shell_parse.py'.split()
+	for f in "config.py utils.py buildenv.py network.py logger.py packaging.py shell_parse.py".split():
+		support_files_to_copy += ['../pyutils/' + f]
 	for f in aliases:
 		files_to_copy += ['defs/' + f]
-	files_to_copy += ['do-zip-build', 'conf/' + distro, '../conf/%s/*.patch' % package_name, 'defs/%s' % package_name ]
-	build_command = '%s/do-zip-build %s %s %s %s %s' % (build_location, revision, package_name, distro, version, build_location)
-	remote_src_dir = "%s/scratch/%s" % (build_location, build_dir)
-	# This will never be at build_location, always at /tmp/build_deps so do-zip-install-pkgs will correctly relocate
+	files_to_copy += ['do-zip-build', 'conf/' + distro, 'rpm_defs/%s/*.patch' % package_name, 'defs/%s' % package_name ]
+	build_command = '%s/do-zip-build %s %s %s %s' % (temp_build_dir, revision, package_name, distro, version)
+	remote_src_dir = "%s/BUILD/%s" % (temp_build_dir, build_dir)
+	# This will never be at temp_build_dir, always at /tmp/build_deps so do-zip-install-pkgs will correctly relocate
 	step_env_pre_cmd = ". /tmp/build_deps/env.sh; "
 
 else:
 	# Some 3rd party modules use '-' in their versions
 	rpm_version = version.replace('-', '_')
-	files_to_copy += ['do-build', '../conf/%s/*' % package_name ]
-	build_command = '%s/do-build %s %s %s' % (build_location, rpm_version, revision, build_location)
-	remote_src_dir = "%s/scratch/BUILD/%s" % (build_location, build_dir)
+	files_to_copy += ['do-rpm-build', 'rpm_defs/%s/*' % package_name ]
+	build_command = '%s/do-rpm-build %s %s' % (temp_build_dir, rpm_version, revision)
+	remote_src_dir = "%s/BUILD/%s" % (temp_build_dir, build_dir)
 	step_env_pre_cmd = ""
 
-
-conf.buildenv.copy_to(files_to_copy, build_location, compress=0)
+# Clean up
+conf.buildenv.execute_command('rm -Rf %s/steps' % (conf.env_vars['build_location']) )
+conf.buildenv.execute_command('rm -Rf %s; mkdir -p -m777 %s' % (temp_build_dir, temp_build_dir) )
+conf.buildenv.copy_to(files_to_copy, temp_build_dir, compress=0)
+conf.buildenv.copy_to(support_files_to_copy, conf.env_vars['build_location'], compress=0)
 
 # Set up env for the build and for tests
 conf.env_vars['HEAD_or_RELEASE'] = "HEAD"
@@ -314,7 +319,7 @@ if code:
 	build_failed(conf, code, LOGFILE, build_info, package)
 
 distutils.dir_util.mkpath(package_version_path)
-conf.buildenv.copy_from(['%s/builder/built-packages/*' % build_location], package_version_path)
+conf.buildenv.copy_from(['%s/built-packages/*' % temp_build_dir], package_version_path)
 
 # Make sure packages got here ok
 log_obj.log("Verifying packages...\n")

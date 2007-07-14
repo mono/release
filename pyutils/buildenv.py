@@ -281,7 +281,7 @@ class buildenv:
 
 
 class local:
-	"""Class implementing the same interface as a network object, but the jail is or machine is on the host machine"""
+	"""Class implementing the same interface as a network object, but the jail or machine is on the host machine"""
 
 	def __init__(self, username, hostname, env="", logger=""):
                 self.username = username
@@ -324,7 +324,10 @@ class local:
 			if os.path.abspath(os.path.normpath(i)) == os.path.abspath(os.path.normpath(dest + os.sep + os.path.basename(i))):
 				pass
 			elif os.path.isdir(i):
-				results += distutils.dir_util.copy_tree(i, dest, preserve_symlinks=True)
+				# add basename of the src to dest
+				#  This is to match behavior of scp
+				temp_dest = dest + os.sep + os.path.basename(i)
+				results += distutils.dir_util.copy_tree(i, temp_dest, preserve_symlinks=True)
 			else:
 				shutil.copy2(i, dest)
 				results += [dest + os.sep + i]

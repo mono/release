@@ -18,11 +18,10 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
-	libgdiplus
 	mono
 	monodoc
-	gecko-sharp-2.0
-	gtksourceview-sharp-2.0
+	gecko-sharp2
+	gtksourceview-sharp2
 	boo
 	ikvm
 	nant
@@ -31,10 +30,11 @@ MONO_DEPS=(
 )
 
 MONO_RECOMMEND_DEPS=(
-	gtk-sharp-2.0
-	gtk-sharp-2.8
-	gtk-sharp-2.10
-	gnome-sharp
+	libgdiplus
+	gtk-sharp2
+	gtk-sharp28
+	gtk-sharp210
+	gnome-sharp2
 )
 
 get_destroot () {

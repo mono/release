@@ -1,6 +1,6 @@
 username=builder
 hostname=aussie-2.osdl.marist.edu
-build_location="/home/builder/tmp"
+build_location="/home/builder/tmp/monobuild"
 
 # Box in Germany
 #target_host=builder@s390zvi38.suse.de

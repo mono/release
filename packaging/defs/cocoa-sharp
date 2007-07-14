@@ -7,8 +7,11 @@ USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
 	mono
-	libgdiplus
 	monodoc
+)
+
+MONO_RECOMMEND_DEPS=(
+        libgdiplus
 )
 
 macos_10_ZIP_BUILD () {

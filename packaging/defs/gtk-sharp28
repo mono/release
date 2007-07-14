@@ -1,6 +1,6 @@
 web_index=5
 
-def_alias="gtk-sharp-2.0"
+def_alias="gtk-sharp2"
 
 version_selection_reg="2\.8\.\d+"
 

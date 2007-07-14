@@ -16,6 +16,6 @@ strip_path=/usr/ccs/bin/strip
 tar_path=/usr/sfw/bin/gtar
 make_path=/usr/sfw/bin/gmake
 
-build_location=/export/home/builder/tmp
+build_location=/export/home/builder/tmp/monobuild
 
 web_index=9

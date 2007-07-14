@@ -131,7 +131,7 @@ env_vars = {
 	'strip_path':		'strip',
 	'tar_path':		'tar',
 	'make_path':		'make',
-	'build_location':	'/tmp',
+	'build_location':	'/tmp/monobuild',
 	#'shell_path':		'/bin/sh',
 	# We depend on bash (ie: env string in execute_command)
 	'shell_path':		'/bin/bash',

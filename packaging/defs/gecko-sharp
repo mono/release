@@ -8,10 +8,14 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
-	libgdiplus
 	mono
 	gtk-sharp
 )
+
+MONO_RECOMMEND_DEPS=(
+        libgdiplus
+)
+
 
 get_destroot () {
 	DEST_ROOT=noarch

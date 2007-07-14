@@ -9,9 +9,12 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
-	libgdiplus
 	mono
 	nant
+)
+
+MONO_RECOMMEND_DEPS=(
+        libgdiplus
 )
 
 get_destroot () {

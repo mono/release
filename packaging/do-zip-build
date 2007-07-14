@@ -7,32 +7,28 @@ import glob
 import re
 import distutils.dir_util
 
+sys.path.append('.')
+
 import utils
 import packaging
 
-rev = sys.argv[1]
-package = sys.argv[2]
-distro = sys.argv[3]
-version = sys.argv[4]
-build_location = sys.argv[5]
+(rev, package, distro, version) = sys.argv[1:]
 
-# Make sure it exists
-if not os.path.exists(build_location):
-	distutils.dir_util.mkpath(build_location)
+os.chdir('build')
 
-os.chdir(build_location)
+temp_build_dir = os.getcwd()
 
 # Load def info
 conf = packaging.buildconf(distro)
 pack_def = packaging.package(conf, package, inside_jail=True)
 
 
-for d in [ 'builder/built-packages', 'scratch', '/tmp/install', 'steps' ]:
+for d in [ 'built-packages', 'BUILD', '/tmp/install' ]:
 	if os.path.exists(d):
 		shutil.rmtree(d)
 
-os.mkdir('scratch')
-os.chdir('scratch')
+os.mkdir('BUILD')
+os.chdir('BUILD')
 
 sources = glob.glob('../*.zip')
 sources += glob.glob('../*.tar.gz')
@@ -40,12 +36,9 @@ sources += glob.glob('../*.tar.bz2')
 patches = glob.glob('../*.patch')
 patches.sort()
 
-for f in sources + patches + ['../' + package, '../' + distro ]:
-	shutil.move(f, '.')
-
 
 # Find type of source
-source_dir = utils.unpack_source(os.path.basename(sources[0]), tar_path=conf.get_info_var('tar_path') )
+source_dir = utils.unpack_source(sources[0], tar_path=conf.get_info_var('tar_path') )
 
 arch = pack_def.package_env.info['arch']
 
@@ -54,16 +47,12 @@ os.chdir(source_dir)
 # Apply patches if this package defines it
 if pack_def.get_info_var('USE_PATCHES'):
 	for patch in patches:
-		if(os.system("patch -p1 < " + patch)):
+		if(os.system("patch -p1 < ../" + patch)):
 			print "Failed applying patch: " + os.path.basename(patch)
 			sys.exit(1)
 
 # Get code from def file
 shell_code = pack_def.get_zip_build_commands()
-
-# Move def file so it gets cleaned up, and also saved with successful build
-for f in pack_def.get_aliases():
-	shutil.move(build_location + os.sep + f, '..')
 
 # set version var, load up environment for deps, and execute build command
 os.environ['version'] = version
@@ -87,20 +76,20 @@ if(os.system(build_command)):
 	print "Build failed..."
 	sys.exit(1)
 
-# Package up the build (must not use build_location here for relocation correctness)
+# Package up the build (must not use temp_build_dir here for relocation correctness)
 os.chdir('/tmp/install')
-distutils.dir_util.mkpath(build_location + '/builder/built-packages')
-os.system('zip -yr %s/builder/built-packages/%s-%s-%s.%s.zip *' % (build_location, package, version, rev, arch) )
+distutils.dir_util.mkpath(temp_build_dir + '/built-packages')
+os.system('zip -yr %s/built-packages/%s-%s-%s.%s.zip *' % (temp_build_dir, package, version, rev, arch) )
 # Keep a copy of the "spec" file and distro conf file
-shutil.copy(build_location + '/scratch/' + package, build_location + '/builder/built-packages')
-shutil.copy(build_location + '/scratch/' + distro, build_location + '/builder/built-packages')
+shutil.copy(temp_build_dir + os.sep + package, temp_build_dir + '/built-packages')
+shutil.copy(temp_build_dir + os.sep + distro, temp_build_dir + '/built-packages')
 
 # Keep the patches if they are used
 if pack_def.get_info_var('USE_PATCHES'):
 	for patch in patches:
-		shutil.copy(build_location + '/scratch/' + os.path.basename(patch), build_location + '/builder/built-packages')
+		shutil.copy(temp_build_dir + os.sep + os.path.basename(patch), temp_build_dir + '/built-packages')
 
 # Save alias files
 for f in pack_def.get_aliases():
-	shutil.copy(build_location + '/scratch/' + f, build_location + '/builder/built-packages')
+	shutil.copy(temp_build_dir + os.sep + f, temp_build_dir + '/built-packages')
 

@@ -23,16 +23,16 @@ get_destroot () {
 }
 
 MONO_DEPS=(
-	libgdiplus
 	mono
 	monodoc
 )
 
 MONO_RECOMMEND_DEPS=(
-	gtk-sharp-2.0
-	gtk-sharp-2.8
-	gtk-sharp-2.10
-	gnome-sharp
+	libgdiplus
+	gtk-sharp2
+	gtk-sharp28
+	gtk-sharp210
+	gnome-sharp2
 )
 
 

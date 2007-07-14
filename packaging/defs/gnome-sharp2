@@ -14,7 +14,7 @@ MONO_DEPS=(
 	libgdiplus
 	mono
 	monodoc
-	gtk-sharp-2.10
+	gtk-sharp210
 )
 
 get_destroot () {
