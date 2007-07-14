@@ -1,0 +1,104 @@
+Index: gtkhtml/gtkhtml-sharp.dll.config.in
+===================================================================
+--- gtkhtml/gtkhtml-sharp.dll.config.in	(revision 75412)
++++ gtkhtml/gtkhtml-sharp.dll.config.in	(working copy)
+@@ -1,3 +1,3 @@
+ <configuration>
+-  <dllmap dll="gtkhtml-3.0" target="libgtkhtml-@GTKHTML_VERSION@@LIB_PREFIX@.@GTKHTML_SOVERSION@@LIB_SUFFIX@"/>
++  <dllmap dll="gtkhtml-3.0" target="@GTKHTML_BASEFILE@"/>
+ </configuration>
+Index: configure.in
+===================================================================
+--- configure.in	(revision 75412)
++++ configure.in	(working copy)
+@@ -47,19 +47,6 @@
+ AC_SUBST(BUILD_GTK_CFLAGS)
+ AC_SUBST(BUILD_GTK_LIBS)
+ 
+-PKG_PATH=
+-AC_ARG_WITH(crosspkgdir, [  --with-crosspkgdir=/path/to/pkg-config/dir],
+-	if test x$with_crosspkgdir = "x"; then
+-		if test -s $PKG_CONFIG_PATH; then
+-			PKG_PATH=$PKG_CONFIG_PATH
+-		fi
+-	else
+-		PKG_PATH=$with_crosspkgdir
+-		PKG_CONFIG_PATH=$PKG_PATH
+-		export PKG_CONFIG_PATH
+-	fi
+-)
+-
+ MONO_REQUIRED_VERSION=0.96
+ PKG_CHECK_MODULES(MONO_DEPENDENCY, mono >= $MONO_REQUIRED_VERSION, has_mono=true, has_mono=false)
+ 
+@@ -71,9 +58,11 @@
+ if test `uname -s` = "Darwin"; then
+ 	LIB_PREFIX=
+ 	LIB_SUFFIX=.dylib
++	GTKHTML_SORT_FLAGS=-r
+ else
+ 	LIB_PREFIX=.so
+ 	LIB_SUFFIX=
++	GTKHTML_SORT_FLAGS=
+ fi
+ else
+ AC_PATH_PROG(CSC, csc.exe, no)
+@@ -153,39 +142,29 @@
+ RSVG_REQUIRED_VERSION=2.0.1
+ PKG_CHECK_MODULES(RSVG_DEPENDENCIES, librsvg-2.0 >= $RSVG_REQUIRED_VERSION, enable_rsvg=yes, enable_rsvg=no)
+ 
+-GTKHTML_REQUIRED_VERSION=3.6.0
+-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.6 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
+-if test "x$enable_gtkhtml" = "xyes"; then
+-GTKHTML_VERSION=3.6
+-GTKHTML_SOVERSION=18
+-else
+-GTKHTML_REQUIRED_VERSION=3.2.0
+-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.1 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
+-if test "x$enable_gtkhtml" = "xyes"; then
+-GTKHTML_VERSION=3.1
+-GTKHTML_SOVERSION=11
+-else
+-GTKHTML_REQUIRED_VERSION=3.0.10
+-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.0 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
+-if test "x$enable_gtkhtml" = "xyes"; then
+-GTKHTML_VERSION=3.0
+-GTKHTML_SOVERSION=4
+-else
+-GTKHTML_REQUIRED_VERSION=3.0.9
+-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.0 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
+-if test "x$enable_gtkhtml" = "xyes"; then
+-GTKHTML_VERSION=3.0
+-GTKHTML_SOVERSION=2
+-else
++dnl this is only for the .config file... (needs to be a better mono-wide solution for this (preferrably determined at runtime))
+ GTKHTML_VERSION=
+ GTKHTML_SOVERSION=
++i=0
++while [[ $i -lt 100 ]] ; do
++PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.$i, enable_gtkhtml=yes, enable_gtkhtml=no)
++if test "x$enable_gtkhtml" = "xyes"; then
++echo "Found libgtkhtml-3.$i"
++GTKHTML_VERSION=3.$i
++GTKHTML_LIBDIR=`$PKG_CONFIG --variable libdir libgtkhtml-3.$i`
++GTKHTML_FULLFILE=`ls $GTKHTML_LIBDIR/libgtkhtml-$GTKHTML_VERSION$LIB_PREFIX.*$LIB_SUFFIX | sort $GTKHTML_SORT_FLAGS | head -n1`
++GTKHTML_BASEFILE=`basename $GTKHTML_FULLFILE`
++echo "Found versioned file: $GTKHTML_BASEFILE"
++break
++else
++echo "$i"
+ fi
+-fi
+-fi
+-fi
+-AC_SUBST(GTKHTML_VERSION)
+-AC_SUBST(GTKHTML_SOVERSION)
++i=$(($i+1))
+ 
++done
++
++AC_SUBST(GTKHTML_BASEFILE)
++
+ if test "x$enable_gnome" = "xyes"; then
+ VTE_REQUIRED_VERSION=0.11.10
+ PKG_CHECK_MODULES(VTE_DEPENDENCIES, vte >= $VTE_REQUIRED_VERSION, enable_vte=yes, enable_vte=no)

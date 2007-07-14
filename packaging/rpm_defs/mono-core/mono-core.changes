@@ -1,0 +1,892 @@
+-------------------------------------------------------------------
+Tue Jul 10 14:03:53 MST 2007 - wberrier@novell.com
+
+- Build against valgrind for 10.3 and above
+
+-------------------------------------------------------------------
+Tue Jul 05 20:03:53 MST 2007 - wberrier@novell.com
+
+- mono-find-requires fixes for ia64 (bnc #282877)
+
+-------------------------------------------------------------------
+Wed Jun 20 13:08:33 CEST 2007 - ro@suse.de
+
+- removed requires on specific release in mono-complete for
+  mono-basic (not a subpackage of mono-core anymore) 
+
+-------------------------------------------------------------------
+Tue Jun 15 18:18:53 MST 2007 - wberrier@novell.com
+
+- mono-config_rpm_requires.patch: revert back to using package
+  requirements for the .config dep scanning.  This is because
+  noarch packages can be built on either 32 or 64 bit machines,
+  and then otherwise will depend on a 32 or 64 bit library, which
+  is wrong.
+
+-------------------------------------------------------------------
+Tue Jun  5 15:18:53 MST 2007 - wberrier@novell.com
+
+- Fix relevant rpmlint errors/warnings:
+ -also 'provides' for each 'obsoletes'
+ -run ldconfig in post/un for mono-core and mono-devel
+- Update filelists
+- Update to 1.2.4
+ -680 new methods implemented.
+ -290 stubs that used to throw NotImplemented exceptions have been 
+  implemented.
+ -43 methods flagged with "to-do" have been implemented. 
+ -Fixed HandleRef support
+ -Ability to disable shared mem support
+ -Mostly complete ASP 2.0 support (webparts is missing)
+  -asp.net 2.0 performance tripled
+ -C# 3.0 compiler support
+ -Mono.DataConvert: fixed implementation of the broken 
+  System.BitConverter 
+ -System.Windows.Forms
+  -150 bugfixes
+  -performance fixes
+  -2.0 profile additions: ToolStrip, Baloon tips, and hundreds of
+   new methods in various controls
+ -System.Drawing
+  -Initial support for metafiles (wmf & emf)
+  -performance improvements and fixes
+  -Many printing fixes
+ -2.0 ADO.Net updates
+ -Support for amd64 on Solaris
+ -Security and Crypto:
+  -Path.GetTempFileName now returns a file with 600 perms
+  -Fixed HMACSHA384 and HMACSHA512 to use a 128 bits block size
+  -Signcode tool now support password-protected PVK files
+  -CryptoStream.Write is now closer to MS behaviour and requires 
+   less memory
+  -Fixed endian issue in RIPEMD160
+ -installvst: new tool to install VisualStudio source packages
+ -New additional sqlite binding: Mono.Data.Sqlite
+  -better maintained (http://sqlite-dotnet2.sourceforge.net/)
+  -sqlite3 only (no sqlite2, would need to dump/reload db)
+ -COM Interop now supports COM Callable Wrappers
+ -Many of the new 2.0 socket methods are now available
+
+-------------------------------------------------------------------
+Fri Apr 13 19:18:53 CET 2007 - wberrier@novell.com
+
+- add %debug_package so debug packages get created
+
+-------------------------------------------------------------------
+Wed Apr  4 23:38:57 CET 2007 - wberrier@novell.com
+
+- Adapt for build service
+
+-------------------------------------------------------------------
+Tue Mar  6 02:38:57 CET 2007 - wberrier@suse.de
+
+- atomic fixes from Michael Matz for for s390 and s390x
+  ( bnc #237611 and bxc #80892 )
+
+-------------------------------------------------------------------
+Wed Feb 28 18:55:52 CET 2007 - wberrier@suse.de
+
+- Turn off sigaltstack, as it's not safe (Requested by Paolo)
+- Remove obsolete patches
+
+- Update to 1.2.3.1 (Various runtime and winforms crashers 
+  as well as a zmd crasher)
+
+- 1.2.3 Changes:
+ - 1,933 missing methods were implemented.
+ - 164 methods with pending implementations were fixed. 
+ - Improved Winforms 2.0 Support, with additional controls, and
+   reduced memory usage
+ - API complete ASP.NET 2.0 implementation (except for WebParts).
+ - System.Media implementation
+ - Supports SOAP 1.2 as well as the WS-BasicProfile 1.1 checker
+ - Many fixes to the XmlSerializer as well to support the new features
+ - The mkbundle tool now allows the machine.config file to be embedded 
+   as well
+ - HttpListener now also support HTTPS, to configure the certificates 
+   use the httpcfg tool
+ - Completed the support for the 2.0 updates to the API in 
+   System.Net.Sockets
+ - System.Drawing.SystemIcons are now implemented
+ - Authenticode: Signcode now generates valid signature on PE 
+   files with extra data (e.g. debug information, installers) 
+   and for file length that aren't multiple of eight
+ - SSL/TLS: Fix negotiation cache and added configurable cache 
+   timeout using the MONO_TLS_SESSION_CACHE_TIMEOUT environment variable
+ - XML Signature and XML Encryption: several bug fixes, it now it 
+   support exclusive canonicalization (needed for ongoing Olive work)
+ - Support for inherited key parameters in DSA certificates
+ - Support for DSA certificates in PKCS#12 files
+ - Better support for X.509 CRL (including stores & certmgr support)
+ - xbuild improvements
+ - Sqlite 2.0 API support
+ - Array and multi-array access optimizations
+ - Versioned header files
+
+-------------------------------------------------------------------
+Sat Jan 20 07:08:52 CET 2007 - wberrier@suse.de
+
+- Move libgdiplus requirement from mono-winforms to mono-core
+  since System.Drawing (in mono-core) is useless without it
+  (Won't affect mono-winforms, since it depends on mono-core)
+
+-------------------------------------------------------------------
+Tue Jan  9 21:32:48 CET 2007 - wberrier@suse.de
+
+- Move mono-find-provides/requires to mono-devel since they depend
+  on monodis, which is in mono-devel
+- Patch mono-rpm_deps_error_handling_r70445.patch to error out
+  when running the find scripts
+- Fixes bnc #227362
+
+-------------------------------------------------------------------
+Sat Dec  2 05:00:07 CET 2006 - wberrier@suse.de
+
+- Update to 1.2.2 (Fate #301111)
+ -Serious bug fix in compiler (anonymous methods)
+ -Additional 2.0 APIs implemented for Windows.Forms
+ -Removal of many incorrect MonoTODOs and implemented many methods 
+  that were throwing not implemented exceptions
+
+- Changes in 1.2.1
+ -Thread.Interrupt is implemented
+ -Generics support in Web Services
+ -Web Services update for 2.0 api
+ -ASP.Net 2.0 updates
+ -Several Winforms blockers fixed
+ -ADO.Net 2.0 updates
+ -Support for more type converters
+ -Process launching supports supports open special files in addition
+  to launch programs (ie: xdg-open, gnome-open, or kfmclient)
+ -System.Drawing UTF8 to UCS2 conversion fixed
+ -2.0 api updates to X.509 related classes 
+
+- Changes in 1.2
+ -Serialization Callbacks
+ -Machine-level settings now available in registry
+ -Winforms completion
+
+-------------------------------------------------------------------
+Fri Dec  1 04:50:20 CET 2006 - wberrier@suse.de
+
+- Thread safety fixes for rug/zmd (bnc #221277)
+- System.Web Source fix (bnc #225179)
+
+-------------------------------------------------------------------
+Tue Nov 14 16:58:40 CET 2006 - meissner@suse.de
+
+- Disable executable stack option. #65536
+
+-------------------------------------------------------------------
+Sat Oct 21 01:54:52 CEST 2006 - wberrier@suse.de
+
+- Remove glib2-devel from mono-nunit, not sure why it was ever there
+  (bnc #210224)
+- Updated to 1.1.18.1
+ -removed upstream patches
+ -C# Generics fixes
+ -IO Layer changes to ease windows porting migration
+ -Security updates: major speed improvements
+ -Lots of Winforms fixes and updates
+ -Merged source for mcs and gmcs
+ -Performance tuning
+
+-------------------------------------------------------------------
+Thu Sep 28 06:10:34 CEST 2006 - wberrier@suse.de
+
+- Security fix for bnc #205084 VUL-0
+- TempFileCollection.cs: Create files in a temporary subdirectory,
+  for security reasons.
+- CodeCompiler.cs: Let TempFileCollection choose the temp dir.
+
+-------------------------------------------------------------------
+Fri Sep  1 20:12:52 CEST 2006 - wberrier@suse.de
+
+- Update to 1.1.17.1 - Minor bugfix update
+- Fix HttpListener, it was failing with a few post operations
+- mono-service is now installed into the GAC, the recent changes 
+  broke applications that created new AppDomains
+- Fix a race condition on array new
+
+-------------------------------------------------------------------
+Tue Aug 29 21:02:47 CEST 2006 - wberrier@suse.de
+
+- add s390 backchain patch
+- s390 warnings patch
+- remove mono-basic package
+- update filelist for CustomMarshalers
+
+- Update to 1.1.17
+ - Windows.Forms: Printing is now supported.
+ - Basic COM support has been integrated. 
+ - FileSystem will now use inotify directly on systems that 
+   support it without having to go through an external library like 
+   FAM or Gamin [Gonzalo Paniagua]
+ - 2.0 support for asynchronous reads and writes from the 
+   Process class is now supported [Gonzalo]
+ - Fxied Loading as a Shared Library
+ - Mono.Cairo bindings now supports a DirectFB surface now [Alp Toker]
+ - Process now support the async io handling [Gonzalo Paniagua]
+ - String.Normalize is included [Atsushi Enomoto]
+ - ADO.NET 2.0 updates, included an implementation for 
+   SqlConnection.GetSchema (Nagappan, Nagappan).
+ - Registry Updated to the 2.0 API. [Miguel de Icaza]
+ - Support for splitting the registry across user and system level 
+   settings. [Gert Driesen]
+ - Support for X.509 client certificates 
+   [Hubert Fongarnand, Sebastien Pouliot]
+ - SN accepts password-protected PKCS#12/PFX files to strongname 
+   assemblies. This feature is enabled in both 1.x and 2.0 profiles 
+   [Sebastien Pouliot]
+ - CodeDOM JScriptCodeProvider code JavaScript code is now 
+   included [Akiramei]
+ - An EventLog implementation is available on both Unix and 
+   Windows by setting MONO_EVENTLOG_TYPE
+ - COM Interop: Basic support for Runtime Callable Wrappers 
+   (RCWs) [Jon Chambers]
+ - Sqlite now exposes a Version property to detect which underlying 
+   database is available (2.x or 3.x) [Joshua Tauberer]
+ - Mono.Posix now features an abstract Unix end point in addition 
+   to Unix End Points [Alp Toker].
+ - Fixed XmlSchemaSet and XmlSchemaCollection problem across 
+   multiple namespaces [Atsushi Enomoto]
+
+ - Important Bug fixs:
+  - Dynamic linking of Mono is now possible in applications 
+    that were using the TLS (open office) [Zoltan Varga]
+  - Newly created AppDomains no longer inherit the list of 
+    loaded assemblies from the main domain [Lluis Sánchez]
+  - A number of missing pieces of System.IO.Ports have been 
+    implemented (ReadChar, ReadLine, BytesToRead, BytesToWrite, 
+    ReadTo, return USB tty devices) [Miguel de Icaza]
+  - ASP.NET Cache will now check dependencies (79002) 
+    [Gonzalo Paniagua] 
+  - Updated the Posgress data bindings to RC3 
+    [Francisco Figueiredo].
+
+- --------
+
+- Satisfy some compiler warnings with more warnings patches
+- Update filelists
+- Add sigaltstack configure option for performance
+
+- Update to 1.1.16.1
+- Sending the QUIT signal to a running Mono process will produce 
+  a stack trace of each thread
+- Updated Boehm garbage collector
+- Large file uploads are now supported
+- Updated Master Pages, nested pages and System.Configuration
+- Improved performance for XML
+- Added support for abbreviated handshakes
+- Fixed some possible deadlocks while negotiating
+- basic implementation of System.Transactions
+- implemented assembly unloading when an appdomain is released
+- C# Compiler bug fixes: 
+ - #78020, #77916, #77961, #78048, #77966
+ - Improved the generated output for array initialization
+ - #77958, #77929, #77954
+ - #77002
+- XMLSerialization implemented for XmlSchemas
+- improved performance of Int32.ToString() 
+- major updates to System.Windows.Forms and System.Drawing
+- inline optimization enabled by default
+- Long standing debugging line numbers bug fixed
+
+-------------------------------------------------------------------
+Fri Jun 16 03:00:57 CEST 2006 - wberrier@suse.de
+
+Changes from Neale Ferguson <neale@sinenomine.net> from trunk in order
+to fix bnc #179080 (zmd issue on s390x)
+
+- * atomic.h: Fix atomic operations for s390x (not really broken
+  but changed to use full 64-bit opcodes).
+- * atomic.h: Fix atomic exchange pointer operations for s390x - these
+  were broken as they used 32-bit instructions rather than their 64-bit
+  versions.
+- * s390x-codegen.h: Fix immediate checks.
+
+-------------------------------------------------------------------
+Mon May 15 22:41:12 CEST 2006 - wberrier@suse.de
+
+- Revert change to mono-find-provides (59882) so that Mono apps will 
+  not have to depend on being able to find dependent assemblies in 
+  the gac.
+
+-------------------------------------------------------------------
+Thu May 11 01:07:58 CEST 2006 - wberrier@suse.de
+-Add provides for mono-core for assemblies not in the gac, which
+ other packages depend on.
+-Update to 1.1.13.8 from stable branch
+-Assembler:
+ -Fix assembler bug that tried to sign netmodules.
+ -Assembler will now report a bug if two identical labels are declared
+  on the same methods 
+ -On 2.0, support the "property" directive.
+
+-ASP.NET:
+ -Make sure application start event is run before the request is
+  processed.
+ -Dont reset query string in Execute (78177).
+ -Make sure that we can read a file before trasmitting it (fixes
+  crash).
+ -Added two tests (Bug 78101, DataSourceID).
+ -Do not fail on events that do not derive from EventHandler,
+  patch from Matthew Metnetsky.
+ -Render some attributes inside span, not div tags (71251).
+ -Fix searching of control by DataSourceID.
+
+-System.NET:
+ -Allow posts of size zero (#78316)
+ -Fix for proxy authentication over HTTPS, for Zen team (78150).
+
+-Core:
+ -Do not capture compressed stack, this feature is not yet
+  supported, fixes a crasher bug in ExecutionContext.
+ -Add FileOptions, necessary for IronPython.
+ -Fix incorrect buffer reading from console (78218).
+
+-Mono.Security:
+ -Enable abbreviated handshake for SSL3 (Zen)
+ -Deal with emtpy master secrets (78085)
+
+-Tools:
+ -Fix mono-find-provides, to not list private copies of
+  assemblies (fixes conflict of MonoDevelop and third party
+  rpms).
+
+-Runtime:
+ -Fix for 78035.
+ -Avoids a null dereferences in metadata, IPHostEntry
+ -x86-64: Fix handling of MONO_INST_GENERICINST
+ -Memory leak fix, when shutting down threads, clean the TLS:
+  77470.
+ -Handle multiple leave statements in a try/catch, 78024.
+
+-Compilers:
+ -Flag VB as unsupported.
+
+-------------------------------------------------------------------
+Mon Apr 24 21:17:28 CEST 2006 - wberrier@suse.de
+
+- Bug fixes for Zenworks (78089, 78150, amd64 signal crash, and proxy fix in System.Net)
+
+-------------------------------------------------------------------
+Tue Apr 11 01:26:04 CEST 2006 - wberrier@suse.de
+
+- Branch update for iFolder issues.  Also includes some semaphore
+ updates, as well as SWF updates. (77931,01234,77931,01234,77991,
+  77556,77811,77350,75609,78028,77971,78033,77242,76191,41943,77890,
+  78067,78067,78067,77514,77839,77393)
+
+-------------------------------------------------------------------
+Mon Apr 10 14:35:39 CEST 2006 - cthiel@suse.de
+
+- remove redundant Conflicts lines (#159340)
+
+-------------------------------------------------------------------
+Mon Mar 27 12:15:33 CEST 2006 - aj@suse.de
+
+- Apply patch from Dick Porter to Break out of a loop if the
+  shared file is smaller than expected - this fixes some build
+  issues.
+
+-------------------------------------------------------------------
+Sat Mar 25 19:14:40 CET 2006 - wberrier@suse.de
+
+-Update to 1.1.13.5 (No crypto changes)
+ -C# compiler bug fixes for Bugzilla.ximian.com bugs: 77767,
+77642, 77583, 77674, 77642 as well as fixing a number of
+nullable bugs (gtest-254, gtest-251, gtest-250) fixed
+compilation bugs for C5 library.
+ -Sqlite bindings now has a way of specifying the default
+encoding and defaults to UTF-8 instead of using ANSI.
+Versions between Jan 20 and this release stored data always in
+ANSI format which could not be read back.
+ -System.Web: invoke validation callbacks in HttpCachePolicy
+(77825); fixes OutputCache's VaryByParam="*" (77757); fix
+Cache-Control header handling (77825); Fix POST filename
+encodings (77714);  Allows setting custom Cache-Control
+headers (77775).
+ -System.Web/HtmlControls fixes from Mainsoft: fixed
+Anchor.RenderAttributes, Form.Method fixed to include "post"
+if needed; InputImage fixed to cope with SetAtt.
+ -System.Web's SessionState: session state will retry
+reconnecting to the database if the connection is lost
+(77785).   Dispose the data reader to avoid leaks (77698);
+ -System.Web Javascript, hide validators view (77261).
+ -System.Web's/WebControls: Use naming container instead of
+pages to locate controls (77793);   Fixes rendering of
+ListBoxes (77740);
+ -System.XML.Schema: fix return value on the XML Schema
+(77685).
+ -XmlSerialization: consider subtypes (77447), ignore element
+namespaces when using Unqualified mode (75019).
+ -IO-Layer: close redirected pipes on errors (77514), Shell
+Execute, avoid crash (77393);  Delete semaphores on last exit
+(City of Largo request, problem happens in clusters, direct
+communication, no bug#).
+ -WebConnectionStream: avoid async calls when writing zero
+bytes (iFolder CPU consumption issue).
+ -HttpWebRequest: fix close semantics (77753)
+ -UpdClient: fix IPV6 family check (77689).
+ -System.Data fixes: Fixed 77557, 77776 and enabled tests
+that were previously disables, add new tests.  
+ -System.Data: Fixed endianess bugs reported on PPC and
+SPARC. 
+ -Runtime: Updates for LocalDataStoreSlot to prevent the
+Beagle leak from happening; Fixed crasher bug in class
+libraries (77772).  Fixes 77504 in generic libraries; Fix
+Stream bug 77863; Reflection fix for 74937; Stat-usage fixes
+(77759, 76966); public-key-token casing (77898); Codebase
+return fix (77877); fix two ia64 crashes (77774, 77787);
+Handle null in Equals (77700); backport memory corruption fix
+(no bug number);
+ -Tracing: Fix crash in StringBuilders when tracing (77848);
+disable output always 77706.
+ -S390x: Use long-displacement if the CPU supports it. 
+ -Patch from Tambet at ZenWorks team to reduce memory
+consumption in remoting, shaves a few megabytes on RPC calls.
+ -System.Drawing/Windows.Forms: Bring code from trunk (these
+are unsupported libraries).
+ -Mono.Security: several fixes to the async stream handling
+in SSL: implement a ClientSessionCache, redo the async
+processing of requests as they were previously hanging iFolder
+(77663, 67711).  There were no changes to the crypto code. 
+ -Upgraded C5 test suite to 1.0 release from upstream.
+ -Updated debugger API.
+ -Added tests for bugs fixed.
+ -Fix: s390 and s390x will enable the JIT without special
+flags (before we needed --enable-jit).
+ -Prj2Info escapes now characters in filenames that contain
+special shell characters.
+
+-------------------------------------------------------------------
+Wed Mar  1 09:47:52 CET 2006 - aj@suse.de
+
+- Remove echo in %post.
+
+-------------------------------------------------------------------
+Wed Mar  1 03:13:10 CET 2006 - wberrier@suse.de
+
+- Update to 1.1.13.4
+ -Fixes the following bugs: 77524 77581 75479 77637 77613 77446 77433 77398 77397 77315 75436 75479 77521 77536 77572 77468 77371 77273 77309 74932 77442.... too many to list here.
+
+-------------------------------------------------------------------
+Sat Feb 18 14:41:07 CET 2006 - ro@suse.de
+
+- use wildcards in filelist (.mdb files moved to debuginfo package) 
+
+-------------------------------------------------------------------
+Thu Feb 16 22:53:40 CET 2006 - wberrier@suse.de
+
+- have winforms rpm depend on libgdiplus (Novell Bug #150858)
+
+-------------------------------------------------------------------
+Thu Jan 26 17:54:16 CET 2006 - ro@suse.de
+
+- warn if installing on s390/G5 
+
+-------------------------------------------------------------------
+Wed Jan 25 21:38:23 CET 2006 - mls@suse.de
+
+- converted neededforbuild to BuildRequires
+
+-------------------------------------------------------------------
+Fri Jan 20 06:03:01 CET 2006 - wberrier@suse.de
+
+- Update to 1.1.13.2 (no crypto updates)
+
+-------------------------------------------------------------------
+Thu Jan 12 21:32:14 CET 2006 - wberrier@suse.de
+
+- Update to 1.1.13.1 (no crypto updates)
+  Fix for CASA
+
+-------------------------------------------------------------------
+Fri Jan  6 21:31:21 CET 2006 - wberrier@suse.de
+
+- Update to 1.1.13 (No crypto updates)
+  FireBird 2.0 gac file was disabled
+  Added nunit-console to filelist
+
+-------------------------------------------------------------------
+Fri Dec 23 20:58:47 CET 2005 - wberrier@suse.de
+
+- Add some of Zoltan's ia64 fixes to fix the runtime (no crypto updates)
+
+-------------------------------------------------------------------
+Fri Dec 23 03:28:31 CET 2005 - wberrier@suse.de
+
+- Update to 1.1.12.1 (ziplib fix, no crypto updates)
+
+-------------------------------------------------------------------
+Thu Dec 22 00:24:07 CET 2005 - wberrier@suse.de
+
+- Add patches fro Neale's s390 checkins (No crypto updates)
+
+-------------------------------------------------------------------
+Wed Dec 21 08:42:54 CET 2005 - wberrier@suse.de
+
+- Fix mono-cairo.pc for gtk-sharp2 build on x86_64
+
+-------------------------------------------------------------------
+Tue Dec 20 02:48:31 CET 2005 - wberrier@suse.de
+
+- Update to 1.1.12, monoburg warning patch
+
+-------------------------------------------------------------------
+Fri Dec 16 15:32:16 CET 2005 - ro@suse.de
+
+- add an explicit cast on ppc for InterlockedCompareExchangePointer 
+
+-------------------------------------------------------------------
+Thu Dec 15 21:36:32 CET 2005 - wberrier@suse.de
+
+- Update to 1.1.11, add files for 1.1.11, and enable some files (libmono.l?a)
+
+-------------------------------------------------------------------
+Mon Dec 12 12:34:07 CET 2005 - sbrabec@suse.cz
+
+- Added "Obsoletes: mono" to mono-core.
+
+-------------------------------------------------------------------
+Fri Nov 11 17:55:27 CET 2005 - wberrier@suse.de
+
+- Fix build (supportw.c)
+
+-------------------------------------------------------------------
+Fri Nov 11 01:40:21 CET 2005 - wberrier@suse.de
+
+- Update to 1.1.10.  Add profiler-aot, mozroots
+
+-------------------------------------------------------------------
+Thu Oct 20 17:58:16 CEST 2005 - ro@suse.de
+
+- try to fix req/prov scripts
+- remove AC_DISABLE_FAST_INSTALL to fix installed binaries
+- do not build as root
+
+-------------------------------------------------------------------
+Thu Oct 13 01:53:59 CEST 2005 - ro@suse.de
+
+- take fix for gacutil problem from SVN
+- remove workaround hack from specfile 
+
+-------------------------------------------------------------------
+Wed Oct 12 18:24:25 CEST 2005 - ro@suse.de
+
+- fix some lib64 issues 
+
+-------------------------------------------------------------------
+Wed Oct 12 02:41:24 CEST 2005 - wberrier@suse.de
+
+- Update to 1.1.9.2, restructure packages to match upstream
+
+-------------------------------------------------------------------
+Mon Sep 26 15:22:27 CEST 2005 - ro@suse.de
+
+- fix build on x86_64 
+- move mono-nunit.pc to mono-nunit package
+
+-------------------------------------------------------------------
+Fri Sep 23 04:53:09 CEST 2005 - wberrier@suse.de
+
+- Reenable 2.0 preview (bug #118530)
+
+-------------------------------------------------------------------
+Fri Sep 16 20:46:58 CEST 2005 - wberrier@suse.de
+
+- Nasty work around hack for libtool in order to not include wrappers (#116245)
+
+-------------------------------------------------------------------
+Fri Sep  9 01:12:59 CEST 2005 - ro@suse.de
+
+- fix build on 9.1+ 
+
+-------------------------------------------------------------------
+Tue Aug 23 23:10:13 CEST 2005 - wberrier@suse.de
+
+- Add the mono-nunit subpackage (needed for mono-tools)
+
+-------------------------------------------------------------------
+Tue Aug  2 00:50:30 CEST 2005 - ro@suse.de
+
+- update to 1.1.8.3 
+
+-------------------------------------------------------------------
+Mon Jul 15 01:20:31 CEST 2005 - wberrier@novell.com
+
+- Update %file directives for SymbolWriter
+
+-------------------------------------------------------------------
+Mon Jun 27 01:20:31 CEST 2005 - ro@suse.de
+
+- use ldscript only for "libmono" but not for "mono" 
+
+-------------------------------------------------------------------
+Wed Jun 22 14:06:10 CEST 2005 - ro@suse.de
+
+- fix more warnings on ppc 
+
+-------------------------------------------------------------------
+Wed Jun 22 00:29:24 CEST 2005 - ro@suse.de
+
+- update to 1.1.8.1 
+
+-------------------------------------------------------------------
+Tue Jun 21 17:19:36 CEST 2005 - ro@suse.de
+
+- revisit execstack : pass with "-Wl" as linker flag 
+
+-------------------------------------------------------------------
+Tue Jun  7 12:56:00 CEST 2005 - uli@suse.de
+
+- s390: moved __attribute__((packed)) where it is not ignored by
+  the compiler (fixes SIGILLs/SIGSEGVs in several packages)
+
+-------------------------------------------------------------------
+Sat May 14 18:26:39 CEST 2005 - aj@suse.de
+
+- mono-data-* needs mono-data.  Require it explicitely.
+
+-------------------------------------------------------------------
+Fri May 13 12:08:32 CEST 2005 - ro@suse.de
+
+- fix assembliesdir in libexecdir patch again 
+
+-------------------------------------------------------------------
+Thu May 12 14:10:20 CEST 2005 - uli@suse.de
+
+- update -> 1.1.7
+- disabled s390x (port is broken and unmaintained)
+
+-------------------------------------------------------------------
+Tue Mar 22 00:49:39 CET 2005 - mmj@suse.de
+
+- Add dependency for mono-devel on glib2-devel [#74161]
+
+-------------------------------------------------------------------
+Wed Mar 16 05:04:19 CET 2005 - gekker@suse.de
+
+- Add mono-sys-web.patch and mono-leak-fix.patch for mono team 
+
+-------------------------------------------------------------------
+Fri Mar 11 18:26:44 CET 2005 - gekker@suse.de
+
+- Add mono-libgc-finalizer-fix.diff for the mono team
+
+-------------------------------------------------------------------
+Fri Mar 11 13:54:03 CET 2005 - uli@suse.de
+
+- s390* workaround (build with -O1)
+- fixed a bunch of (harmless) warnings to appease autobuild
+
+-------------------------------------------------------------------
+Thu Mar 10 19:58:08 CET 2005 - gekker@suse.de
+
+- add mono-sqlite2-config.patch (71844). 
+
+-------------------------------------------------------------------
+Tue Mar  8 03:04:19 CET 2005 - gekker@suse.de
+
+- add mono-mini-threadfix.diff, to fix random crashes in mcs 
+
+-------------------------------------------------------------------
+Tue Mar  1 21:23:43 CET 2005 - gekker@suse.de
+
+- remove sqlite2-devel crack from requires for mono-data-sqlite 
+
+-------------------------------------------------------------------
+Mon Feb 21 08:24:58 CET 2005 - clahey@suse.de
+
+- Update to 1.1.4.
+
+-------------------------------------------------------------------
+Sun Feb 20 18:43:52 CET 2005 - ro@suse.de
+
+- expand configure macro (not always correct for old distributions)
+- more hacks to java path 
+
+-------------------------------------------------------------------
+Sun Feb 20 11:41:32 CET 2005 - ro@suse.de
+
+- changed java path 
+
+-------------------------------------------------------------------
+Sat Feb 19 11:23:59 CET 2005 - ro@suse.de
+
+- fix build for older distributions (without jni) 
+
+-------------------------------------------------------------------
+Thu Feb 17 19:25:18 CET 2005 - gekker@suse.de
+
+- Add requires to mono-data-sqlite for sqlite2 and sqlite2-devel 
+
+-------------------------------------------------------------------
+Tue Feb 15 17:07:39 CET 2005 - gekker@suse.de
+
+- add -z execstack to LDFLAGS (50536) 
+
+-------------------------------------------------------------------
+Mon Feb  7 00:03:54 CET 2005 - ro@suse.de
+
+- fix mono with exec stack protection 
+
+-------------------------------------------------------------------
+Wed Feb  2 02:19:17 CET 2005 - ro@suse.de
+
+- fix mono-provides 
+
+-------------------------------------------------------------------
+Mon Jan 31 17:31:39 CET 2005 - gekker@suse.de
+
+- fix a directory ownership problem 
+
+-------------------------------------------------------------------
+Mon Jan 31 14:38:50 CET 2005 - ro@suse.de
+
+- fix build on lib64 (again ...) 
+
+-------------------------------------------------------------------
+Mon Jan 31 14:25:17 CET 2005 - ro@suse.de
+
+- fix setup line in spec file 
+
+-------------------------------------------------------------------
+Mon Jan 31 10:10:20 CET 2005 - clahey@suse.de
+
+- Split into separate packages.
+
+-------------------------------------------------------------------
+Thu Jan 13 01:48:00 CET 2005 - ro@suse.de
+
+- update to 1.1.3
+
+-------------------------------------------------------------------
+Mon Nov 29 01:28:07 CET 2004 - ro@suse.de
+
+- THREAD_LOCAL_ALLOC is not possible on ppc, don't force it 
+- extended 64bit-warning patch some more
+- configure "with-jit=yes" as in sles9
+
+-------------------------------------------------------------------
+Fri Nov 12 16:08:09 CET 2004 - ro@suse.de
+
+- update to 1.1.2 devel branch
+- added hacks to use libexecdir (always /usr/lib/mono)
+  (but mcs still doesn't use it)
+
+-------------------------------------------------------------------
+Thu Sep 16 02:09:30 CEST 2004 - ro@suse.de
+
+- updated to 1.0.1 bugfix release
+
+-------------------------------------------------------------------
+Fri Jul  2 16:12:39 CEST 2004 - ro@suse.de
+
+- updated 64bit-warning patch (from clahey)
+
+-------------------------------------------------------------------
+Fri Jul  2 14:13:59 CEST 2004 - ro@suse.de
+
+- update to 1.0 version
+
+-------------------------------------------------------------------
+Tue Jun 29 01:03:41 CEST 2004 - mls@suse.de
+
+- use find-requires and find-provides from rpm
+
+-------------------------------------------------------------------
+Mon Jun 21 23:43:56 CEST 2004 - clahey@suse.de
+
+- Updated to 0.96.
+- Added find-requires.mono and find-provides.mono.
+
+-------------------------------------------------------------------
+Thu Jun 10 03:04:22 CEST 2004 - clahey@suse.de
+
+- Don't include wine stuff.
+
+-------------------------------------------------------------------
+Wed May 26 21:15:14 CEST 2004 - clahey@suse.de
+
+- Require icu and libiuc26.
+
+-------------------------------------------------------------------
+Tue May 25 21:39:55 CEST 2004 - clahey@suse.de
+
+- make clean before make to remove incorrectly disted file.
+- As long as we're conflicting with pnet-compiler, we shouldn't
+  move ilasm to milasm as that messes things up for mono and isn't
+  necessary.
+
+-------------------------------------------------------------------
+Tue May 25 08:25:45 CEST 2004 - adrian@suse.de
+
+- fix permissions of -devel package 
+  (Requires base mono package and conflicts with pnet-compiler)
+
+-------------------------------------------------------------------
+Mon May 24 20:39:42 CEST 2004 - clahey@suse.de
+
+- Don't try to include wine files on non x86 platforms.
+
+-------------------------------------------------------------------
+Fri May 21 21:19:53 CEST 2004 - clahey@suse.de
+
+- Updated to 0.91.
+
+-------------------------------------------------------------------
+Tue Apr 20 14:03:00 CEST 2004 - uli@suse.de
+
+- ditch JIT runtime on PPC as it does not work properly yet
+- add winelib on x86 to allow use of Win32 APIs as provided by WINE
+- require libgdiplus
+
+-------------------------------------------------------------------
+Mon Apr 19 15:28:18 CEST 2004 - uli@suse.de
+
+- update -> 0.31 as reqd by gp 
+
+-------------------------------------------------------------------
+Wed Feb 18 11:53:28 CET 2004 - uli@suse.de
+
+- update -> 0.30.1 as reqd by gp
+
+-------------------------------------------------------------------
+Mon Feb  9 16:16:35 CET 2004 - uli@suse.de
+
+- fixed to build on s390
+
+-------------------------------------------------------------------
+Thu Feb  5 18:15:17 CET 2004 - uli@suse.de
+
+- update -> 0.30 (proper fix for Write/WriteLine problem,
+  obsoletes several patches)
+- build libgc/finalize.c with -fno-strict-aliasing
+
+-------------------------------------------------------------------
+Wed Feb  4 17:38:38 CET 2004 - uli@suse.de
+
+- renamed ilasm to milasm to avoid conflict with Portable.NET 
+
+-------------------------------------------------------------------
+Fri Jan 30 15:58:15 CET 2004 - uli@suse.de
+
+- removed incompatible System.Console.Write/WriteLine methods to
+  make mcs-compiled binaries work with Portable.NET and MS.NET
+
+-------------------------------------------------------------------
+Wed Jan 28 11:30:36 CET 2004 - uli@suse.de
+
+- disable exception tables, do not work with glibc 2.3 yet
+- build class libs and tools from source (not on PPC, fails with
+  null pointer exception)
+- compat link for archs without JIT
+
+-------------------------------------------------------------------
+Mon Jan 26 14:48:22 CET 2004 - uli@suse.de
+
+- initial package
+
+

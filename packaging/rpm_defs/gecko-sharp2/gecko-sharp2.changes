@@ -1,0 +1,105 @@
+-------------------------------------------------------------------
+Fri Jul 06 18:06:25 MST 2007 - wberrier@novell.com
+
+- Update to 0.12
+ -Depend on monodoc-core instead of mono-tools to break cyclic dep
+ -Resolve naming conflicts in automake files
+
+-------------------------------------------------------------------
+Wed Apr 11 16:16:25 CET 2007 - wberrier@novell.com
+
+- Add mono dep/req for older distros
+
+-------------------------------------------------------------------
+Wed Jan  3 23:20:31 CET 2007 - wberrier@suse.de
+
+- obsolete gecko-sharp2-docs for upgrade path
+ -bnc #227363
+
+-------------------------------------------------------------------
+Tue Dec 12 00:13:04 CET 2006 - wberrier@suse.de
+
+- Undo gecko-sharp2 doc package split.
+ -gecko-sharp2-r69353_break_cyclic_dep.patch: Patch to depend on
+  monodoc-core instead of mono-tools to break cyclic dep
+ -gecko-sharp2-r69372_fix_autoconf_docdir.patch: now that we use
+  autoreconf for the above patch, we must rename docdir to
+  monodocdir so docdir doesn't get overwritten
+
+-------------------------------------------------------------------
+Thu Nov 30 17:19:39 CET 2006 - sbrabec@suse.cz
+
+- Fixed xulrunner dependencies for older products.
+
+-------------------------------------------------------------------
+Tue Nov 14 01:24:22 CET 2006 - ro@suse.de
+
+- remove mono-tools from buildrequires and build docs in separate
+  specfile to break cycle between mono-tools and gecko-sharp2 
+
+-------------------------------------------------------------------
+Mon Nov 13 16:36:26 CET 2006 - sbrabec@suse.cz
+
+- Use exact xulrunner version 181 (#218792, #216100).
+
+-------------------------------------------------------------------
+Fri Oct 20 01:41:22 CEST 2006 - ro@suse.de
+
+- added mono-devel to buildrequires 
+
+-------------------------------------------------------------------
+Fri Jul  7 05:30:29 CEST 2006 - lrupp@suse.de
+
+- Requires mozilla-xulrunner180 for %suse_version > 1010
+
+-------------------------------------------------------------------
+Wed Jan 25 21:45:11 CET 2006 - mls@suse.de
+
+- converted neededforbuild to BuildRequires
+
+-------------------------------------------------------------------
+Fri Jan 13 22:29:10 CET 2006 - gekker@suse.de
+
+- Fixup nfb and Requires for new gtk-sharp2 packaging
+
+-------------------------------------------------------------------
+Fri Dec  9 19:16:02 CET 2005 - wberrier@suse.de
+
+- Replace mozilla dep with mozilla-xulrunner, clean up deps, and
+  add documentation 
+
+-------------------------------------------------------------------
+Fri Oct 21 02:29:05 CEST 2005 - ro@suse.de
+
+- rename package, provide and obsolete old name 
+
+-------------------------------------------------------------------
+Sat Oct  8 02:30:22 CEST 2005 - wberrier@suse.de
+
+- Update to 0.11 
+
+-------------------------------------------------------------------
+Mon Aug 15 17:59:09 CEST 2005 - ro@suse.de
+
+- added check-build.sh 
+
+-------------------------------------------------------------------
+Tue Aug  9 09:11:17 CEST 2005 - lnussel@suse.de
+
+- use buildroot and build as user
+
+-------------------------------------------------------------------
+Mon Aug  8 02:27:26 CEST 2005 - ro@suse.de
+
+- fix location of pkgconfig file 
+
+-------------------------------------------------------------------
+Mon Aug  8 00:50:51 CEST 2005 - ro@suse.de
+
+- rename package to gecko-sharp-2_0 (no "." allowed in name) 
+
+-------------------------------------------------------------------
+Thu Aug  4 22:36:47 CEST 2005 - wberrier@suse.de
+
+- Initial package
+

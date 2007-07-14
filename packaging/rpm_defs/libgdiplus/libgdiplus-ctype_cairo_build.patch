@@ -1,0 +1,11 @@
+diff -ru ../../old/libgdiplus-1.2.4/cairo/src/cairo-type1-subset.c ./cairo/src/cairo-type1-subset.c
+--- libgdiplus-1.2.4/cairo/src/cairo-type1-subset.c	2007-05-03 22:40:26.000000000 +0200
++++ libgdiplus/cairo/src/cairo-type1-subset.c	2007-07-05 23:53:24.359424000 +0200
+@@ -41,6 +41,7 @@
+ /* XXX: Eventually, we need to handle other font backends */
+ #include "cairo-ft-private.h"
+ 
++#include <ctype.h>
+ #include <ft2build.h>
+ #include FT_FREETYPE_H
+ #include FT_OUTLINE_H

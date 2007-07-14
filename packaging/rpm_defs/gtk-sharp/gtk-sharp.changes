@@ -1,0 +1,186 @@
+-------------------------------------------------------------------
+Tue May  2 29:15:53 MST 2007 - wberrier@novell.com
+
+- Use the internally defined deps/reqs since the suse rpm support
+  doesn't look for assembly .config files
+ (set _use_internal_dependency_generator to 0 on fedora distros)
+
+-------------------------------------------------------------------
+Tue May  1 20:25:53 MST 2007 - wberrier@novell.com
+
+- Rely on the new .config rpm dep generation for requires for:
+ rsvg-sharp
+ gtkhtml-sharp
+ gnomedb-sharp
+ gda-sharp
+ art-sharp
+  (Also simplifies cross distro packaging, mainly suse vs. redhat)
+
+-------------------------------------------------------------------
+Fri Apr 13 19:18:53 CET 2007 - wberrier@novell.com
+
+- add %debug_package so debug packages get created
+
+-------------------------------------------------------------------
+Wed Apr 11 16:16:25 CET 2007 - wberrier@novell.com
+
+- Add mono dep/req for older distros
+
+-------------------------------------------------------------------
+Wed Apr  4 07:44:37 CET 2007 - wberrier@novell.com
+
+- Adapt for build service, get all distros building
+  rename prefix -> _prefix, /usr/%_lib -> %_libdir
+
+-------------------------------------------------------------------
+Wed Nov 15 00:09:37 CET 2006 - wberrier@suse.de
+
+- Move .exe files out of /usr/bin to /usr/lib/gtk-sharp (bnc #157814)
+  and update wrappers and filelists
+
+-------------------------------------------------------------------
+Mon Oct 16 01:09:45 CEST 2006 - schwab@suse.de
+
+- Use install-data-hook instead of install-hook.
+
+-------------------------------------------------------------------
+Tue Feb 21 15:08:51 CET 2006 - rguenther@suse.de
+
+- Fix build failure on ppc64.  [#152472]
+
+-------------------------------------------------------------------
+Fri Jan 27 01:46:58 CET 2006 - mls@suse.de
+
+- converted neededforbuild to BuildRequires
+
+-------------------------------------------------------------------
+Tue Jan 24 23:41:23 CET 2006 - wberrier@suse.de
+
+- Add some more subpackages (ala gtk-sharp2)
+
+-------------------------------------------------------------------
+Tue Jan 17 19:28:37 CET 2006 - wberrier@suse.de
+
+- Fix filelists
+
+-------------------------------------------------------------------
+Sat Jan 14 00:51:22 CET 2006 - wberrier@suse.de
+
+- Split up packages (like what was done for gtk-sharp2)
+
+-------------------------------------------------------------------
+Fri Sep 23 01:56:01 CEST 2005 - ro@suse.de
+
+- remove libgdiplus-devel from nfb (dropped) 
+
+-------------------------------------------------------------------
+Fri Sep  9 08:33:48 CEST 2005 - aj@suse.de
+
+- Update check-build.sh.
+
+-------------------------------------------------------------------
+Tue Aug 30 08:41:51 CEST 2005 - aj@suse.de
+
+- Add check-build.sh.
+
+-------------------------------------------------------------------
+Tue Aug  9 22:15:19 CEST 2005 - gekker@suse.de
+
+- Update to version 1.0.10 
+
+-------------------------------------------------------------------
+Mon Jul 11 18:58:15 CEST 2005 - gekker@suse.de
+
+- fix build with current libgda/libgnomedb 
+
+-------------------------------------------------------------------
+Wed Jul  6 22:41:13 CEST 2005 - gekker@suse.de
+
+- fix build with current gtkhtml2 
+
+-------------------------------------------------------------------
+Thu May 19 00:50:49 CEST 2005 - ro@suse.de
+
+- fix build with current pkgconfig 
+
+-------------------------------------------------------------------
+Thu May  5 22:55:47 CEST 2005 - gekker@suse.de
+
+- Fix requires in gtk-sharp to require gtk-sharp-gapi 
+
+-------------------------------------------------------------------
+Wed Mar 16 17:01:41 CET 2005 - gekker@suse.de
+
+- Update to version 1.0.8, leak fixes
+- Remove upstreamed patches 
+
+-------------------------------------------------------------------
+Tue Mar  8 23:47:39 CET 2005 - gekker@suse.de
+
+- Update gtkhtml-sharp.diff for new .so version in gtkhtml2 
+
+-------------------------------------------------------------------
+Tue Mar  8 03:08:15 CET 2005 - gekker@suse.de
+
+- add gtkhtml-sharp.diff (66769, 66439) 
+
+-------------------------------------------------------------------
+Thu Feb 24 18:37:38 CET 2005 - gekker@suse.de
+
+- Fix requires (66439) 
+
+-------------------------------------------------------------------
+Mon Feb 21 08:29:28 CET 2005 - clahey@suse.de
+
+- Update to 1.0.6.
+
+-------------------------------------------------------------------
+Fri Jan 21 01:36:25 CET 2005 - ro@suse.de
+
+- update to 1.0.4 
+
+-------------------------------------------------------------------
+Fri Jan 14 02:20:00 CET 2005 - ro@suse.de
+
+- build with gtkhtml-3.6
+
+-------------------------------------------------------------------
+Thu Dec  2 01:33:41 CET 2004 - ro@suse.de
+
+- try to fix build on x86_64 
+
+-------------------------------------------------------------------
+Sun Nov 28 22:47:50 CET 2004 - ro@suse.de
+
+- run autoreconf 
+
+-------------------------------------------------------------------
+Wed Sep  8 19:00:20 CEST 2004 - joeshaw@suse.de
+
+- Update the gtkhtml patch.
+
+-------------------------------------------------------------------
+Tue Sep  7 18:25:33 CEST 2004 - joeshaw@suse.de
+
+- Add a patch to use gtkhtml 3.1 instead of 3.0.  Ximian #63188
+
+-------------------------------------------------------------------
+Fri Sep  3 23:31:20 CEST 2004 - clahey@suse.de
+
+- Updated to 1.0.
+
+-------------------------------------------------------------------
+Tue Jun 29 01:06:19 CEST 2004 - ro@suse.de
+
+- use rpm scripts for find requires/provides
+
+-------------------------------------------------------------------
+Tue Jun 22 00:28:44 CEST 2004 - clahey@suse.de
+
+- Updated to 0.98.
+
+-------------------------------------------------------------------
+Wed May 26 00:11:31 CEST 2004 - clahey@suse.de
+
+- Initial import.
+

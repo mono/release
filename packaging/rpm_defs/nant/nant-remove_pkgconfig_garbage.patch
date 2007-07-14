@@ -1,0 +1,13 @@
+diff -ur ../../nant-0.85/src/NAnt.Core/Functions/PkgConfigFunctions.cs ./src/NAnt.Core/Functions/PkgConfigFunctions.cs
+--- ../../nant-0.85/src/NAnt.Core/Functions/PkgConfigFunctions.cs	2005-10-10 16:51:26.000000000 +0200
++++ ./src/NAnt.Core/Functions/PkgConfigFunctions.cs	2006-11-21 00:35:28.000000000 +0100
+@@ -260,7 +260,8 @@
+                 execTask.Execute();
+                 ms.Position = 0;
+                 StreamReader sr = new StreamReader(ms);
+-                string output = sr.ReadLine();
++                // Temporary workaround Replace \x00 that sometimes gets returned by this on 64bit... ?
++		string output = sr.ReadLine().Replace("\x00", "");
+                 sr.Close();
+                 return output;
+             } catch (Exception ex) {

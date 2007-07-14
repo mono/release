@@ -1,0 +1,50 @@
+-------------------------------------------------------------------
+Fri Apr 13 19:18:53 CET 2007 - wberrier@novell.com
+
+- add %debug_package so debug packages get created
+
+-------------------------------------------------------------------
+Fri Mar  9 18:31:40 CET 2007 - wberrier@suse.de
+
+- Icon and .desktop hacks no longer needed
+
+-------------------------------------------------------------------
+Fri Mar  2 01:01:00 CET 2007 - wberrier@suse.de
+
+- Update to version 4
+ -ui improvements (rearrangement, new preferences dialog)
+ -more last.fm functionality
+ -lots of bug fixes
+ -dbus updates
+
+- Add gconf schema support (use new gconf schema rpm macros)
+- Adjust .desktop file icon hack for version 4
+
+-------------------------------------------------------------------
+Tue Jan 23 14:40:40 CET 2007 - aj@suse.de
+
+- Cleanup BuildRequires.
+- Adjust for GNOME move to /usr.
+
+-------------------------------------------------------------------
+Fri Oct 27 18:24:12 CEST 2006 - dmueller@suse.de
+
+- don't build as root
+
+-------------------------------------------------------------------
+Sun Sep 10 21:15:05 CEST 2006 - meissner@suse.de
+
+- use RPM_OPT_FLAGS, fixed 1 missing return value.
+
+-------------------------------------------------------------------
+Thu Aug 17 01:18:48 CEST 2006 - ro@suse.de
+
+- added dbus-1-glib-devel to BuildRequires 
+
+-------------------------------------------------------------------
+Wed Aug 16 04:37:30 CEST 2006 - wberrier@suse.de
+
+- Initial package
+- Shuffle icon files since they are not found by 
+  suse_update_desktop_file
+

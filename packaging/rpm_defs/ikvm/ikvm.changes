@@ -1,0 +1,53 @@
+-------------------------------------------------------------------
+Wed Apr 11 16:16:25 CET 2007 - wberrier@novell.com
+
+- Add mono dep/req for older distros
+
+-------------------------------------------------------------------
+Wed Apr  5 05:51:19 CEST 2007 - wberrier@novell.com
+
+- add unzip to buildrequires (factory in buildservice requires it)
+
+-------------------------------------------------------------------
+Thu Mar 29 13:27:20 CEST 2007 - coolo@suse.de
+
+- fix BuildRequires
+
+-------------------------------------------------------------------
+Wed Oct 25 06:51:19 CEST 2006 - wberrier@suse.de
+
+- Add mono-devel to BuildRequires so mono rpm deps and requires
+  get generated correctly
+
+-------------------------------------------------------------------
+Wed Aug  2 01:19:15 CEST 2006 - wberrier@suse.de
+
+- Update to 0.28.0.0
+- Package from original ikvm distribution instead of using a 
+  prepackaged binary dist
+
+-------------------------------------------------------------------
+Wed Jan 25 21:46:31 CET 2006 - mls@suse.de
+
+- converted neededforbuild to BuildRequires
+
+-------------------------------------------------------------------
+Fri Dec 16 04:56:20 CET 2005 - wberrier@suse.de
+
+- Update to 0.22
+
+-------------------------------------------------------------------
+Thu Oct 13 14:37:12 CEST 2005 - ro@suse.de
+
+- changed mono-ikvm to mono-core in nfb 
+
+-------------------------------------------------------------------
+Sat Oct  8 02:38:23 CEST 2005 - wberrier@suse.de
+
+- Updated to 0.20 .  Moved .pc file
+
+-------------------------------------------------------------------
+Fri Aug  5 00:22:18 CEST 2005 - wberrier@suse.de
+
+- Initial package
+

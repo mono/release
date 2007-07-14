@@ -1,0 +1,20 @@
+--- src/NAnt.Core/Task.cs.orig	2007-03-06 12:19:02.000000000 -0700
++++ src/NAnt.Core/Task.cs	2007-03-06 12:19:57.000000000 -0700
+@@ -400,7 +400,9 @@
+         #region Protected Instance Methods
+ 
+         /// <summary><note>Deprecated (to be deleted).</note></summary>
+-        [Obsolete("Deprecated- Use InitializeTask instead")]
++	// Obsolete shouldn't be allowed if the parent method isn't obsoleted (which it isn't)
++	// csc allows this, but will warn in future versions
++        //[Obsolete("Deprecated- Use InitializeTask instead")]
+         protected override void InitializeElement(XmlNode elementNode) {
+             // Just defer for now so that everything just works
+             InitializeTask(elementNode);
+@@ -415,4 +417,4 @@
+ 
+         #endregion Protected Instance Methods
+     }
+-}
+\ No newline at end of file
++}

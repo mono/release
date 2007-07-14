@@ -1,0 +1,28 @@
+diff -ru ../old/gtk-sharp-1.0.10/configure.in ./configure.in
+--- ../old/gtk-sharp-1.0.10/configure.in	2007-05-07 14:11:17.000000000 -0600
++++ ./configure.in	2007-05-07 14:10:13.000000000 -0600
+@@ -166,8 +166,15 @@
+ AC_SUBST(GTKHTML_BASEFILE)
+ 
+ if test "x$enable_gnome" = "xyes"; then
++VTE_SOVERSION=9
++VTE_REQUIRED_VERSION=0.14.0
++PKG_CHECK_MODULES(VTE_DEPENDENCIES, vte >= $VTE_REQUIRED_VERSION, enable_vte=yes, enable_vte=no)
++if test "x$enable_vte" = "xno"; then
++VTE_SOVERSION=4
+ VTE_REQUIRED_VERSION=0.11.10
+ PKG_CHECK_MODULES(VTE_DEPENDENCIES, vte >= $VTE_REQUIRED_VERSION, enable_vte=yes, enable_vte=no)
++fi
++AC_SUBST(VTE_SOVERSION)
+ else
+ enable_vte=no
+ fi
+diff -ru ../old/gtk-sharp-1.0.10/vte/vte-sharp.dll.config.in ./vte/vte-sharp.dll.config.in
+--- ../old/gtk-sharp-1.0.10/vte/vte-sharp.dll.config.in	2004-05-05 14:14:14.000000000 -0600
++++ ./vte/vte-sharp.dll.config.in	2007-05-07 14:07:05.000000000 -0600
+@@ -1,4 +1,4 @@
+ <configuration>
+   <dllmap dll="libatk-1.0-0.dll" target="libatk-1.0@LIB_PREFIX@.0@LIB_SUFFIX@"/>
+-  <dllmap dll="vte" target="libvte@LIB_PREFIX@.4@LIB_SUFFIX@"/>
++  <dllmap dll="vte" target="libvte@LIB_PREFIX@.@VTE_SOVERSION@@LIB_SUFFIX@"/>
+ </configuration>

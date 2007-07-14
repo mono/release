@@ -1,0 +1,6 @@
+-------------------------------------------------------------------
+Sat Jul 03 18:25:27 MST 2007 - wberrier@suse.de
+
+- Initial package of gnome-sharp2 2.16.0
+ -(Split from gtk-sharp 2.8.3)
+

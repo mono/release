@@ -1,0 +1,124 @@
+-------------------------------------------------------------------
+Tue Jun  5 17:18:53 MST 2007 - wberrier@novell.com
+
+- Remove unnecessary path defines (prefix, sysconfdir)
+- Update to 1.2.4
+ -fix some race conditions and crashes
+ -add tracing support
+
+-------------------------------------------------------------------
+Fri Apr 13 19:18:53 CET 2007 - wberrier@novell.com
+
+- add %debug_package so debug packages get created
+
+-------------------------------------------------------------------
+Wed Apr 11 16:16:25 CET 2007 - wberrier@novell.com
+
+- Add mono dep/req for older distros
+
+-------------------------------------------------------------------
+Fri Mar  2 01:28:00 CET 2007 - wberrier@suse.de
+
+- Update Update to 1.2.3
+ -Bug fix #80230 (prevents possible nullref)
+ -Support for response header encoding
+
+-------------------------------------------------------------------
+Tue Jan 23 01:49:55 CET 2007 - ro@suse.de
+
+- drop requires for gnome-filesystem 
+
+-------------------------------------------------------------------
+Sat Dec  2 21:48:34 CET 2006 - wberrier@suse.de
+
+- Update to 1.2.1 (Fate #301111)
+ -Bugfixes:
+  -close the connection if there's an error reading the headers 
+   (including assembly loading exceptions due to a bad installation).
+  -kill the warning that everyone is worried about.
+
+-------------------------------------------------------------------
+Sat Oct 21 02:27:22 CEST 2006 - wberrier@suse.de
+
+- Update to 1.1.18
+ -2.0 updates
+
+-------------------------------------------------------------------
+Thu Oct 19 23:55:20 CEST 2006 - wberrier@suse.de
+
+- Add mono-devel to fix bnc #213576 (missing provides)
+
+-------------------------------------------------------------------
+Tue Sep  5 23:12:13 CEST 2006 - wberrier@suse.de
+
+- Update to 1.1.17.1 bugfix release
+- Read from the stream, not the socket as the socket data is 
+  encrypted when using SSL.
+
+-------------------------------------------------------------------
+Wed Aug 30 20:03:08 CEST 2006 - wberrier@suse.de
+
+- Update to 1.1.17
+ - Added support for X.509 client certificates
+ - Update to handle newly created AppDomains
+
+-------------------------------------------------------------------
+Tue Aug  1 02:53:13 CEST 2006 - wberrier@suse.de
+
+- update to 1.1.16.1
+- better connection handling
+- fixes bugs: 77698,78034,78621
+
+-------------------------------------------------------------------
+Wed Apr 26 02:21:12 CEST 2006 - wberrier@suse.de
+
+- Security update (remove all the duplicated slashes 
+  and don't do an extra Replace on non-windows.) and minor fix for
+  #78034.
+
+-------------------------------------------------------------------
+Wed Jan 25 21:49:33 CET 2006 - mls@suse.de
+
+- converted neededforbuild to BuildRequires
+
+-------------------------------------------------------------------
+Fri Jan  6 23:03:48 CET 2006 - wberrier@suse.de
+
+- Update to 1.1.13, clean up deps
+
+-------------------------------------------------------------------
+Fri Nov 11 02:22:25 CET 2005 - wberrier@suse.de
+
+- Update to 1.1.10, set libdir to lib/
+
+-------------------------------------------------------------------
+Fri Oct  7 18:11:53 CEST 2005 - wberrier@suse.de
+
+- Update to 1.1.9.2 and cleanup (I Don't think noarch mono needs 
+  libexec, so I disabled the patch)
+
+-------------------------------------------------------------------
+Tue Jul 19 12:12:41 CEST 2005 - sbrabec@suse.cz
+
+- Build as noarch (#81109).
+
+-------------------------------------------------------------------
+Fri Jul 15 12:15:49 CEST 2005 - sbrabec@suse.cz
+
+- Updated to version 1.0.9 (#96776).
+
+-------------------------------------------------------------------
+Mon Feb 21 08:26:33 CET 2005 - clahey@suse.de
+
+- Updated to 1.0.6.
+
+-------------------------------------------------------------------
+Mon Feb  7 01:56:55 CET 2005 - ro@suse.de
+
+- use /usr/lib/mono 
+
+-------------------------------------------------------------------
+Tue Dec 14 05:15:49 CET 2004 - clahey@suse.de
+
+- New package.
+
