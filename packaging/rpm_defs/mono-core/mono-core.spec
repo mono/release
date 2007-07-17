@@ -865,6 +865,7 @@ Authors:
 %_bindir/sgen
 %_bindir/signcode
 %_bindir/xbuild
+%_mandir/man1/monolinker.1.gz
 %_prefix/lib/mono/gac/PEAPI
 %_prefix/lib/mono/1.0/PEAPI.dll
 %_prefix/lib/mono/1.0/monolinker.*
