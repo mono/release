@@ -37,7 +37,7 @@ Requires:	libgdiplus
 Recommends:	libgdiplus
 %endif
 
-BuildRequires:	glib2-devel file
+BuildRequires:	glib2-devel 
 
 #### suse options ####
 %if 0%{?suse_version}
