@@ -846,6 +846,7 @@ Authors:
 %_bindir/mkbundle2
 %_bindir/monodiet
 %_bindir/monodis
+%_bindir/monolinker
 %_bindir/monop
 %_bindir/monop2
 %_bindir/mono-api-diff
@@ -866,6 +867,7 @@ Authors:
 %_bindir/xbuild
 %_prefix/lib/mono/gac/PEAPI
 %_prefix/lib/mono/1.0/PEAPI.dll
+%_prefix/lib/mono/1.0/monolinker.*
 %_prefix/lib/mono/2.0/PEAPI.dll
 %_prefix/lib/mono/gac/Microsoft.Build.Tasks
 %_prefix/lib/mono/2.0/Microsoft.Build.Tasks.dll
@@ -875,6 +877,7 @@ Authors:
 %_prefix/lib/mono/2.0/Microsoft.Build.Utilities.dll
 %_prefix/lib/mono/gac/Microsoft.Build.Engine
 %_prefix/lib/mono/2.0/Microsoft.Build.Engine.dll
+%_prefix/lib/mono/gac/Mono.Cecil
 %_bindir/monograph
 %_prefix/include/mono-1.0
 %_libdir/libmono-profiler-cov.*
