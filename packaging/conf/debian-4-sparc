@@ -1,5 +1,5 @@
 username=builder
-hostname=mono-linux-sparc.dnsdhcp.provo.novell.com
+hostname=c246.cim.lab.novell.com
 
 USE_ZIP_PKG=1
 

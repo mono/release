@@ -1,5 +1,5 @@
 username=builder
-hostname=mono-mac-x86.provo.novell.com
+hostname=c241.cim.lab.novell.com
 USE_ZIP_PKG=1
 
 # Helps with relocating binaries

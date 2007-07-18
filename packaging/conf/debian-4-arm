@@ -1,5 +1,5 @@
 username=builder
-hostname=mono-arm.dnsdhcp.provo.novell.com
+hostname=c242.cim.lab.novell.com
 
 USE_ZIP_PKG=1
 

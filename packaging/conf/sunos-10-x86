@@ -1,5 +1,5 @@
 username=builder
-hostname=mono-sunos-x86.dnsdhcp.provo.novell.com
+hostname=c245.cim.lab.novell.com
 USE_ZIP_PKG=1
 
 # Use the gnu and opensource software
