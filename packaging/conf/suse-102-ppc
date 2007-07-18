@@ -1,0 +1,9 @@
+username=builder
+hostname=c240.cim.lab.novell.com
+root_dir=/jails/suse-102-ppc
+target_command_prefix=". /etc/profile; "
+
+chroot_path=/usr/bin/chroot
+
+USE_ZMD=1
+

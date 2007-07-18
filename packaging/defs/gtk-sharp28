@@ -13,7 +13,6 @@ BUILD_HOSTS=(
 	suse-101-i586
 	suse-101-ppc
 	suse-101-x86_64
-	win-4-i386
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})

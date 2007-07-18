@@ -44,6 +44,7 @@ USE_HOSTS=(
 	suse-101-ppc
 	suse-101-x86_64
 	suse-102-i586
+	suse-102-ppc
 	suse-102-x86_64
 	win-4-i386
 )

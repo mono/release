@@ -13,9 +13,11 @@ BUILD_HOSTS=(
 	rhel-3-i386
 	rhel-4-i386
 	sles-9-i586
-	# These don't have all necessary deps
-	#sles-9-ia64
-	#sles-9-x86_64
+	sles-9-ia64
+	sles-9-ppc
+	sles-9-s390
+	sles-9-s390x
+	sles-9-x86_64
 	suse-100-i586
 	suse-100-ppc
 	suse-100-x86_64
@@ -23,13 +25,14 @@ BUILD_HOSTS=(
 	suse-101-ppc
 	suse-101-x86_64
 	suse-102-i586
+	suse-102-ppc
 	suse-102-x86_64
 	win-4-i386
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
-MONO_RECOMMENDED_DEPS=(
+MONO_RECOMMEND_DEPS=(
 	libgdiplus
 )
 
