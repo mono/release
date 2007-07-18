@@ -38,15 +38,13 @@ import pdb
 sys.path+=['../pyutils']
 
 import utils
-
+import jail_config
 
 
 class Package:
 
 	# "Static" Members/Methods
 	# Being here they only get compiled once
-	ignoresource = re.compile("\.(no)?src\.rpm$")
-	matchrpm = re.compile("\.rpm$")
 	marker = re.compile("^____")
 	rpmlib_req = re.compile("^rpmlib(.*)")
 
@@ -119,7 +117,7 @@ class Package:
 
 	def valid_rpm_name(self):
 
-		if Package.matchrpm.search(self.full_path):
+		if jail_config.matchrpm.search(self.full_path):
 			return 1
 		else:
 			return 0
@@ -189,7 +187,7 @@ class Jail:
 		self.requires = {}
 		self.provides = {}
 
-		self.load_package_cache()
+		self.load_package_cache(self.config.rpm_source_dir)
 
 		#print self.provide_map
 
@@ -208,34 +206,39 @@ class Jail:
 		self.post_config()
 
 
-	def load_package_cache(self):
+	def load_package_cache(self, package_dir):
+	
+		for rpm_filename in os.listdir(package_dir):
 
-		files = os.listdir(self.config.rpm_source_dir)
-		files.sort()
+			f = package_dir + os.sep + rpm_filename
 
-		for rpm_filename in files:
-
-			my_package = self.cache.retrieve(
-				os.path.join(self.config.rpm_source_dir, rpm_filename))
-				
-
-			# If the package is a valid arch, and
-			# It hasn't been loaded yet, or if this arch has a priority over the loaded package
-			if self.config.valid_arch.count(my_package.arch) and ( not self.available_rpms.has_key(my_package.name) or self.config.valid_arch.index(self.available_rpms[my_package.name].arch) > self.config.valid_arch.index(my_package.arch)):
-				# If the package is going to be overwritten, clean the old one up
-				if self.available_rpms.has_key(my_package.name):
-					del self.available_rpms[my_package.name]
-
-				self.available_rpms[my_package.name] = my_package
-
-				# Load up dictionary lookup to quickly resolve deps
-				for provide in my_package.provides:
-					self.provide_map[provide] = my_package.name
-
+			# Recursively descend through dir structure
+				# This will allow skipping copying rpm files from isos
+			if os.path.isdir(f):
+				self.load_package_cache(f)
+			# Ignore non rpm files, as well as .src.rpm files
+			elif jail_config.ignoresource.search(f) or not jail_config.matchrpm.search(f):
+				continue
 			else:
-				print "Skipping %s package for arch %s" % (my_package.name, my_package.arch)
-				# Don't need this object anymore
-				del my_package
+				my_package = self.cache.retrieve(f)
+
+				# If the package is a valid arch, and
+				# It hasn't been loaded yet, or if this arch has a priority over the loaded package
+				if self.config.valid_arch.count(my_package.arch) and ( not self.available_rpms.has_key(my_package.name) or self.config.valid_arch.index(self.available_rpms[my_package.name].arch) > self.config.valid_arch.index(my_package.arch)):
+					# If the package is going to be overwritten, clean the old one up
+					if self.available_rpms.has_key(my_package.name):
+						del self.available_rpms[my_package.name]
+
+					self.available_rpms[my_package.name] = my_package
+
+					# Load up dictionary lookup to quickly resolve deps
+					for provide in my_package.provides:
+						self.provide_map[provide] = my_package.name
+
+				else:
+					print "Skipping %s package for arch %s" % (my_package.name, my_package.arch)
+					# Don't need this object anymore
+					del my_package
 
 
 

@@ -23,16 +23,14 @@ import string
 import time
 import distutils.dir_util
 
+import jail_config
+
 # For debugging
 import pdb
 
 ############################################################
 # Miscellaneous functions and vars
 ############################################################
-
-# They only get compiled once here...
-ignoresource = re.compile("\.(no)?src\.rpm$")
-matchrpm = re.compile("\.rpm$")
 
 def print_debug(string):
 	global debug
@@ -59,6 +57,11 @@ def valid_rpm(full_pathname):
 	else:
 		return 0
 
+
+iso_notice = """*** Note ***"
+ This method is obsolete because you can simply
+ mount the isos under rpms/<distro_name>, 
+ and use buildjail.py directly"""
 
 ############################################################
 #  Get from iso images
@@ -100,6 +103,7 @@ def get_from_cd(dest_dir, iso_files):
 		os.chdir(cwd)
 		print commands.getoutput("umount " + tempdir)
 
+	print iso_notice
 
 	# Clean up
 	os.rmdir(tempdir)
@@ -326,6 +330,7 @@ def commandline():
 		distutils.dir_util.mkpath(destdir)
 
 	if method == "iso":
+		print iso_notice
 		fetch = get_from_cd
 		# Get everything from index 2 on
 		source = sys.argv[3:]
