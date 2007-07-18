@@ -274,6 +274,7 @@ class package:
 		my_script.write("DISTRO=%s\n" % self.package_env.info['distro'])
 		my_script.write("ARCH=%s\n" % self.package_env.info['arch'])
 		my_script.write("USE_ZIP_PKG=%s\n" % self.package_env.get_info_var('USE_ZIP_PKG') )
+		my_script.write("HEAD_or_RELEASE=%s\n" % self.HEAD_or_RELEASE )
 		my_script.write(self.info[func_name])
 		if var_to_echo: my_script.write("echo ${%s}\n" % var_to_echo)
 		my_script.close()

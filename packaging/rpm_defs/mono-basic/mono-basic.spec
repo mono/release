@@ -43,8 +43,7 @@ Authors:
 %_prefix/bin/vbnc
 %_prefix/lib/mono/2.0/vbnc*
 %_prefix/lib/mono/gac/Microsoft.VisualBasic
-%_prefix/lib/mono/1.0/Microsoft.VisualBasic.dll
-%_prefix/lib/mono/2.0/Microsoft.VisualBasic.dll
+%_prefix/lib/mono/*/Microsoft.VisualBasic.dll
 
 %debug_package
 %prep
@@ -61,14 +60,57 @@ make
 %{?env_options}
 make install DESTDIR=${RPM_BUILD_ROOT}
 
-## Get ms.net runtime out of noarch rpm
-rpm2cpio %{S:1} | cpio -idv
-# Remove vbnc built runtime
-rm -Rf ${RPM_BUILD_ROOT}/usr/lib/mono/gac/Microsoft.VisualBasic
-rm -Rf ${RPM_BUILD_ROOT}/usr/lib/mono/2.0/Microsoft.VisualBasic.dll
-## Install runtime from noarch.rpm into new gac
-gacutil -package 1.0 -root ${RPM_BUILD_ROOT}/usr/lib -i usr/lib/mono/1.0/Microsoft.VisualBasic.dll
-gacutil -package 2.0 -root ${RPM_BUILD_ROOT}/usr/lib -i usr/lib/mono/2.0/Microsoft.VisualBasic.dll
+### Get ms.net runtime out of noarch rpm
+#rpm2cpio %{S:1} | cpio -idv
+## Remove vbnc built runtime
+#rm -Rf ${RPM_BUILD_ROOT}/usr/lib/mono/gac/Microsoft.VisualBasic
+#rm -Rf ${RPM_BUILD_ROOT}/usr/lib/mono/2.0/Microsoft.VisualBasic.dll
+### Install runtime from noarch.rpm into new gac
+#gacutil -package 1.0 -root ${RPM_BUILD_ROOT}/usr/lib -i usr/lib/mono/1.0/Microsoft.VisualBasic.dll
+#gacutil -package 2.0 -root ${RPM_BUILD_ROOT}/usr/lib -i usr/lib/mono/2.0/Microsoft.VisualBasic.dll
+
+## Get ms.net runtime out of noarch rpm (building in buildservice or autobuild)
+if [ -e %{S:1} ] ; then
+	rpm2cpio %{S:1} | cpio -idv
+	# Remove vbnc built runtime
+	rm -Rf ${RPM_BUILD_ROOT}/usr/lib/mono/gac/Microsoft.VisualBasic
+	rm -Rf ${RPM_BUILD_ROOT}/usr/lib/mono/2.0/Microsoft.VisualBasic.dll
+	## Install runtime from noarch.rpm into new gac
+	gacutil -package 1.0 -root ${RPM_BUILD_ROOT}/usr/lib -i usr/lib/mono/1.0/Microsoft.VisualBasic.dll
+	gacutil -package 2.0 -root ${RPM_BUILD_ROOT}/usr/lib -i usr/lib/mono/2.0/Microsoft.VisualBasic.dll
+else
+        # Check for binaries built on windows (for building on monobuild)
+        f="mono-basic-%{version}-0.win4.novell.x86.zip"
+        p="win-4-i386/mono-basic/%{version}/$f"
+        wget http://monobuild2.boston.ximian.com/~wberrier/zip_packages/$p || true
+        wget http://monobuild2.boston.ximian.com/~wberrier/snapshot_zip_packages/$p || true
+
+        # If we have windows built binaries, inject them into the package (to provide the 1.0 runtime)
+        if [ -e "$f" ] ; then 
+                unzip mono-basic-%{version}-0.win4.novell.x86.zip
+                # Remove vbnc built runtime
+                rm -Rf ${RPM_BUILD_ROOT}/%_prefix/lib/mono/gac/Microsoft.VisualBasic
+                rm -Rf ${RPM_BUILD_ROOT}/%_prefix/lib/mono/2.0/Microsoft.VisualBasic.dll
+
+                # Fix permissions on files so they are readable
+                chmod 755 lib/mono/1.0/Microsoft.VisualBasic.dll lib/mono/2.0/Microsoft.VisualBasic.dll
+
+                ## Install into new gac
+
+                gacutil -package 1.0 -root ${RPM_BUILD_ROOT}/usr/lib -i lib/mono/1.0/Microsoft.VisualBasic.dll
+                gacutil -package 2.0 -root ${RPM_BUILD_ROOT}/usr/lib -i lib/mono/2.0/Microsoft.VisualBasic.dll
+        else
+                # If we're building from HEAD, print warning (HEAD doesn't have a version with periods)
+                if test `echo "%{version}" | sed -e 's/\.//g'` == "%{version}" ; then
+                        echo ""
+                        echo "*** vbnc DEBUG BUILD!  Don't ship this RPM! ***"
+                        echo ""
+                # Otherwise RELEASE, fail build, because we don't want to ship an rpm without the 1.0 runtime
+                else
+                        false
+                fi
+        fi
+fi
 
 # Not needed in 1.2.4, since we can bootstrap vbnc
 # ship prebuilt vbnc for now...
