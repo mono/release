@@ -91,24 +91,30 @@ if package_obj.info.has_key('MONO_DEPS'):
 		repo.add_file(HEAD_or_RELEASE, package, version, "failure")
 		sys.exit(3)
 
-temp_dir = conf.env_vars['build_location']
+temp_dir = conf.env_vars['build_location'] + os.sep + 'source_dist_creator'
 
 # Clean up
 conf.buildenv.execute_command("rm -Rf %s" % temp_dir)
 
 # Copy some files over and execute!
 # Also copy over def_alias files
-files_to_copy = [ 'distro_source_key', 'do-msvn-tar', 'defs/%s' % package] + glob.glob('../pyutils/*.py') 
+files_to_copy = [ 'distro_source_key', 'do-msvn-tar', 'defs/%s' % package]
 for f in package_obj.get_aliases():
 	files_to_copy += ['defs/' + f ]
+
+support_files_to_copy = []
+for i in 'buildenv.py config.py logger.py network.py packaging.py shell_parse.py utils.py'.split():
+	support_files_to_copy += ['../pyutils/' + i]
+
 # This command also creates the dest dir
+conf.buildenv.copy_to(support_files_to_copy, conf.env_vars['build_location'], mode='scp')
 conf.buildenv.copy_to(files_to_copy, temp_dir, mode='scp')
 
 log_obj.log("Starting to build source dist...\n")
 # they key needs to be owned by the user so ssh doesn't reject the key
 (status, output) = conf.buildenv.execute_command('chown %s %s/distro_source_key' % (conf.info['username'], temp_dir), exec_as_root=1)
 (status, output) = conf.buildenv.execute_command('mount /proc &> /dev/null', exec_as_root=1)
-(status, output) = conf.buildenv.execute_command('./do-msvn-tar %s %s %s' % (HEAD_or_RELEASE, package, version), working_dir=temp_dir)
+(status, output) = conf.buildenv.execute_command('%s/do-msvn-tar %s %s %s' % (temp_dir, HEAD_or_RELEASE, package, version) )
 
 if status:
         conf.buildenv.unlock_env()
@@ -121,7 +127,7 @@ tarball = output.split().pop()
 
 # Copy file back
 #  Note: the tarball var is expected to have be in this format, ex:  mono-1.1.13.4.tar.gz
-conf.buildenv.copy_from('%s/built-tarball/%s' % (temp_dir, tarball), package_obj.source_fullpath)
+conf.buildenv.copy_from('%s/result/%s' % (temp_dir, tarball), package_obj.source_fullpath)
 
 # Keep a map of which params produce which tarball
 repo.add_file(HEAD_or_RELEASE, package, version, package_obj.source_relpath + os.sep + tarball)

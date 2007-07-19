@@ -10,17 +10,21 @@ import shutil
 import glob
 import distutils.dir_util
 
+sys.path.append('.')
+
 import packaging
 
 (HEAD_or_RELEASE, package, version) = sys.argv[1:]
 
-dummy_env = ""
-package_obj = packaging.package(dummy_env, package, inside_jail=True)
+os.chdir('source_dist_creator')
 
 temp_dir = os.getcwd()
 
-os.mkdir('tarball-creation')
-os.chdir('tarball-creation')
+dummy_env = ""
+package_obj = packaging.package(dummy_env, package, inside_jail=True)
+
+os.mkdir('src')
+os.chdir('src')
 
 # Construct subversion path of location we want to create a tarball from
 svn_paths = []
@@ -96,7 +100,7 @@ if not make_dist:
 
 get_source = package_obj.get_info_var('get_source')
 
-# pwd: /tmp/monobuild/tarball-creation
+# pwd: /tmp/monobuild/source_dist_creator/src
 
 ### Execute the source creating functions ###
 def_file = temp_dir + os.sep + package
@@ -106,8 +110,8 @@ if get_source:
 	print "Command: %s" % get_source
 	os.system(get_source)
 else:
-	# Put cachedir up one level so it will remain through cleanup
-	cache_dir = os.path.abspath( os.path.join(temp_dir, "..", "src_cache", package, HEAD_orRELEASE) )
+	# Put cachedir up two levels so it will remain through cleanup
+	cache_dir = os.path.abspath( os.path.join(temp_dir, "..", "..", "src_cache", package, HEAD_or_RELEASE) )
 	for path in svn_paths:
 		module = os.path.basename(path)
 
@@ -151,7 +155,7 @@ os.chdir(build_dir)
 if HEAD_or_RELEASE == "HEAD":
 	os.system(update_version_file )
 
-# pwd: /tmp/tarball-creation/$build_dir
+# pwd: /tmp/monobuild/source_dist_creator/src/$build_dir
 
 # make_dist
 os.system(make_dist)
@@ -159,13 +163,13 @@ os.system(make_dist)
 ### End of source creating functions ###
 
 ### Finish moving things around
-os.mkdir(temp_dir + '/built-tarball')
+os.mkdir(temp_dir + '/result')
 
 found_source_file = 0
 source_files = glob.glob('*.zip') + glob.glob('*.tar.gz') + glob.glob('*.tar.bz2')
 
 if len(source_files) == 1:
-	os.rename(source_files[0], temp_dir + '/built-tarball/%s' % source_files[0])
+	os.rename(source_files[0], temp_dir + '/result/%s' % source_files[0])
 	found_source_file = 1
 	print "print source filename..."
 	print source_files[0]
