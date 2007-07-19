@@ -12,20 +12,15 @@ import distutils.dir_util
 
 import packaging
 
-HEAD_or_RELEASE = sys.argv[1]
-package = sys.argv[2]
-version = sys.argv[3]
-
-os.chdir('/tmp')
+(HEAD_or_RELEASE, package, version) = sys.argv[1:]
 
 dummy_env = ""
 package_obj = packaging.package(dummy_env, package, inside_jail=True)
 
-if os.path.exists('tarball-creation'):
-	shutil.rmtree('tarball-creation')
+temp_dir = os.getcwd()
+
 os.mkdir('tarball-creation')
 os.chdir('tarball-creation')
-
 
 # Construct subversion path of location we want to create a tarball from
 svn_paths = []
@@ -51,7 +46,7 @@ else:
 
 # use the key in /usr/share/ximian-build-system/conf/ssh
 # This needs to be exported to the environment
-SVN_SSH = "/usr/bin/bb_ssh"
+SVN_SSH = "ssh -i %s/distro_source_key" % temp_dir
 SVNEXPORT = "svn export -q " + rev_arg
 MONO_ROOT = " svn+ssh://distro@mono-cvs.ximian.com/source" 
 SVN_PATHS = ":".join(svn_paths)
@@ -101,20 +96,18 @@ if not make_dist:
 
 get_source = package_obj.get_info_var('get_source')
 
-# pwd: /tmp/tarball-creation
+# pwd: /tmp/monobuild/tarball-creation
 
 ### Execute the source creating functions ###
-def_file = "/tmp/" + package
-
-# Clean up bb_ssh dirs, otherwise, collisions happen, causing svn commands to fail
-os.system("rm -Rf /tmp/bb_ssh*")
+def_file = temp_dir + os.sep + package
 
 # get_source
 if get_source:
 	print "Command: %s" % get_source
 	os.system(get_source)
 else:
-	cache_dir = "/tmp/src_cache/%s/%s" % (package, HEAD_or_RELEASE)
+	# Put cachedir up one level so it will remain through cleanup
+	cache_dir = os.path.abspath( os.path.join(temp_dir, "..", "src_cache", package, HEAD_orRELEASE) )
 	for path in svn_paths:
 		module = os.path.basename(path)
 
@@ -166,22 +159,16 @@ os.system(make_dist)
 ### End of source creating functions ###
 
 ### Finish moving things around
-if os.path.exists('/tmp/built-tarball'):
-	shutil.rmtree('/tmp/built-tarball')
-os.mkdir('/tmp/built-tarball')
+os.mkdir(temp_dir + '/built-tarball')
 
 found_source_file = 0
 source_files = glob.glob('*.zip') + glob.glob('*.tar.gz') + glob.glob('*.tar.bz2')
 
 if len(source_files) == 1:
-	os.rename(source_files[0], '/tmp/built-tarball/%s' % source_files[0])
+	os.rename(source_files[0], temp_dir + '/built-tarball/%s' % source_files[0])
 	found_source_file = 1
 	print "print source filename..."
 	print source_files[0]
-
-# Clean up
-os.chdir('/tmp')
-shutil.rmtree('tarball-creation')
 
 # Propogate exit code
 if not found_source_file:
