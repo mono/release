@@ -13,13 +13,13 @@ import re
 
 class ssh:
 
-	def __init__(self, username, hostname, env="", logger=""):
+	def __init__(self, username, hostname, env="", my_logger=""):
 		# Ignore host checks, and blowfish might be faster and less cpu intensive
 		self.options = '-o "BatchMode yes" -o "StrictHostKeyChecking no" -o "Cipher blowfish" '
 
 		self.username = username
 		self.hostname = hostname
-		self.logger = logger
+		self.logger = my_logger
 
 		# Get tar paths (required from copy to/from)
 		if env and env.has_key('tar_path'):
@@ -34,7 +34,10 @@ class ssh:
 		# Can't use utils.launch_process here because we need an interactive terminal
                 return os.system(command)
 
-        def execute_command(self, command, logger=""):
+        def execute_command(self, command, my_logger=""):
+
+		if not my_logger:
+			my_logger = self.logger
 
 		# Escape these so they get interpolated by the remote machine
 		command = command.replace('$', '\$')
@@ -42,11 +45,14 @@ class ssh:
 		# Put single quotes around the command so the whole command gets passed over ssh
 		# (must use single quotes here since command may have double quotes (shell allows double quotes inside of single, without escaping)
 		command = "ssh %s %s@%s '%s'" % (self.options, self.username, self.hostname, command)
-                return utils.launch_process(command, logger=logger)
+                return utils.launch_process(command, my_logger=my_logger)
 
-	def copy_to(self, src, dest, compress=True, logger=""):
+	def copy_to(self, src, dest, compress=True, my_logger=""):
 		"""Args: src (list of strings), dest, Returns: (exit_code, output).
 		Optional args: compress=True of False"""
+
+		if not my_logger:
+			my_logger = self.logger
 
 		src = " ".join(src)
 
@@ -59,15 +65,18 @@ class ssh:
 
 		# Note: the -f - option to the remote tar is required for solaris tar, otherwise it tries to read from a tape
 		command = "%s -%spc %s | ssh %s %s@%s 'cd %s ; %s -%spvxf - ' " % (self.local_tar_path, compress_option, src, self.options, self.username, self.hostname, dest, self.remote_tar_path, compress_option )
-		return utils.launch_process(command, logger=logger)
+		return utils.launch_process(command, my_logger=my_logger)
 
-	def copy_from(self, src, dest, compress=True, logger=""):
+	def copy_from(self, src, dest, compress=True, my_logger=""):
                 """Args: (src (list), dest) Returns: (exit_code, output).
 
                 Optional args: compress=0 or 1
                 # tar mode handles symbolic links and preserving time stamps, unlike scp.
                 #  I guess I could also use zip/unzip... oh well (What does this mean?)
                 # Note: tar mode appends src path of file to dest (just the way tar works)"""
+
+		if not my_logger:
+			my_logger = self.logger
 
                 if compress:
                         # CompressionLevel only works for protocol 1... (bummer)
@@ -84,29 +93,32 @@ class ssh:
 		# Note: the -f - option to the remote tar is required for solaris tar, otherwise it tries to read from a tape
 		command = "cd %s; ssh %s %s@%s ' %s %s -%spcf - %s ' | %s -%spvxf - " % (dest, self.options, self.username, self.hostname, self.remote_tar_path, tar_dir_options, compress_option, files, self.local_tar_path, compress_tar_option )
 
-                return utils.launch_process(command, logger=logger)
+                return utils.launch_process(command, my_logger=my_logger)
 
 	def make_path(self, dir):
-                """Args: (dir) Returns: (mkdir exit code)."""
+		"""Args: (dir) Returns: (mkdir exit code and output)."""
 
 		return self.execute_command("mkdir -p -m777 " + dir)
 
 
 class scp:
 
-	def __init__(self, username, hostname, env="", logger=""):
+	def __init__(self, username, hostname, env="", my_logger=""):
 		# Ignore host checks, and blowfish might be faster and less cpu intensive
 		self.options = '-o "StrictHostKeyChecking no" -o "Cipher blowfish" '
 
 		self.username = username
 		self.hostname = hostname
-		self.logger = logger
+		self.logger = my_logger
 
-	def copy_to(self, src, dest, compress=True, logger=""):
+	def copy_to(self, src, dest, compress=True, my_logger=""):
 		"""Args: src (list of strings), dest, Returns: (exit_code, output).
 
 		Optional args: compress=0 or 1 (but doesn't actually do anything in ssh protocol 2... oh well
 		Note, in scp mode, recursive is on by default"""
+
+		if not my_logger:
+			my_logger = self.logger
 
 		src = " ".join(src)
 
@@ -118,13 +130,16 @@ class scp:
 
 		command = "scp -r %s %s %s@%s:%s" % (self.options + compress_option, src, self.username, self.hostname, dest)
 
-		return utils.launch_process(command, logger=logger)
+		return utils.launch_process(command, my_logger=my_logger)
 
-	def copy_from(self, src, dest, compress=True, logger=""):
+	def copy_from(self, src, dest, compress=True, my_logger=""):
 		"""Args: (src (list), dest) Returns: (exit_code, output).
 
 		Optional args: compress=0 or 1, mode=tar or scp.
 		#  I guess I could also use zip/unzip... oh well (??)"""
+
+		if not my_logger:
+			my_logger = self.logger
 
 		if compress:
 			# CompressionLevel only works for protocol 1... (bummer)
@@ -138,22 +153,25 @@ class scp:
 			files += " %s@%s:%s " % (self.username, self.hostname, file)
 		command = "scp -r %s %s %s" % (self.options + compress_option, files, dest)
 
-		return utils.launch_process(command, logger=logger)
+		return utils.launch_process(command, my_logger=my_logger)
 
 # TODO: implement code for this
 # Needs to be tested
 class smbclient:
 	
-	def __init__(self, username, hostname, env="", logger=""):
+	def __init__(self, username, hostname, env="", my_logger=""):
 
 		self.username = username
 		self.hostname = hostname
-		self.logger = logger
+		self.logger = my_logger
 
 
 	# Copy to jail
-	def copy_to(self, src, dest, compress=True, logger=""):
+	def copy_to(self, src, dest, compress=True, my_logger=""):
 		"""Args: src (list), dest, Returns: (exit_code, output)."""
+
+		if not my_logger:
+			my_logger = self.logger
 
 		# this is the original 'scp' mode
 		# fixed: You can't mput files outside the current local dir (going to have to chdir to each dir and issue separate smbclient commands)
@@ -175,11 +193,13 @@ class smbclient:
 		#command = "%s -spc %s | smbclient //%s/%s -A %s -U %s -D %s -Trqx -" % (self.local_tar_path, src, self.host, self.SMB_SHARE, config.smb_passfile, self.user, dest)
 
 
-		return utils.launch_process(command, print_output=self.print_output)
+		return utils.launch_process(command, my_logger=my_logger)
 		
-	def copy_from(self, src, dest, compress=True, logger=""):
+	def copy_from(self, src, dest, compress=True, my_logger=""):
 		"""Args: (src (list), dest) Returns: (exit_code, output)."""
 
+		if not my_logger:
+			my_logger = self.logger
 
 		# fixed: You can't mput files outside the current local dir (going to have to chdir to each dir and issue separate smbclient commands)
 		# Kinda ugly, but it works!
@@ -193,6 +213,6 @@ class smbclient:
 			command += "cd %s; smbclient //%s/%s -A %s -U %s -D %s -c 'prompt; recurse; mget %s' ; cd %s ;" % (dest, self.host, self.SMB_SHARE, config.smb_passfile, self.user, dir, filename, current_dir)
 
 
-		return utils.launch_process(command, print_output=self.print_output)
+		return utils.launch_process(command, my_logger=my_logger)
 
 

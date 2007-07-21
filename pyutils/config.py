@@ -63,7 +63,20 @@ td_max_poll_interval = 60
 td_num_sequential = 10
 
 # static list of packages to create tarballs for
-td_packages = ['mono', 'libgdiplus', 'mono-basic', 'mono-tools', 'monodevelop', 'monodoc', 'xsp', 'gecko-sharp-2.0', 'mono-debugger', 'gtk-sharp', 'mod_mono', 'olive' ]
+td_packages = """
+	gecko-sharp2
+	gtk-sharp
+	libgdiplus
+	mod_mono
+	mono
+	mono-basic
+	mono-debugger
+	mono-tools
+	monodevelop
+	monodoc
+	olive
+	xsp
+""".split()
 
 # builds each and every checkin if true, otherwise, only build the latest checkin
 td_sequential = False
@@ -85,20 +98,20 @@ sd_sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
 
 # List of platforms/packages
 sd_latest_build_distros = """
-	sles-9-i586
-	sles-9-x86_64
-	win-4-i386
-	macos-10-ppc
-	macos-10-x86
-	sunos-8-sparc
-	sunos-10-x86
-	sles-9-ia64
-	sles-9-s390
-	sles-9-s390x
-	sles-9-ppc
 	debian-4-arm
 	debian-4-sparc
+	macos-10-ppc
+	macos-10-x86
+	sles-9-i586
+	sles-9-ia64
+	sles-9-ppc
+	sles-9-s390
+	sles-9-s390x
+	sles-9-x86_64
+	sunos-8-sparc
+	sunos-10-x86
 	suse-100-i586
+	win-4-i386
 """.split()
 sd_latest_build_packages = td_packages
 ##############################################
@@ -135,6 +148,7 @@ env_vars = {
 	#'shell_path':		'/bin/sh',
 	# We depend on bash (ie: env string in execute_command)
 	'shell_path':		'/bin/bash',
+	'python_path':		'python', # full path can be set in conf file for individual jails
 }
 
 ######################################

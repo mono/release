@@ -9,14 +9,22 @@ import tempfile
 import shutil
 import glob
 import distutils.dir_util
+import getpass
 
 sys.path.append('.')
 
 import packaging
 
+# Some things we'll need to run as root
+EXEC_AS_ROOT = 'sudo'
+
 (HEAD_or_RELEASE, package, version) = sys.argv[1:]
 
 os.chdir('source_dist_creator')
+
+# they key needs to be owned by the user so ssh doesn't reject the key
+os.system('%s chown %s distro_source_key' % (EXEC_AS_ROOT, getpass.getuser()))
+os.system("%s mount -t proc none /proc &> /dev/null" % EXEC_AS_ROOT)
 
 temp_dir = os.getcwd()
 

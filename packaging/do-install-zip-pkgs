@@ -23,7 +23,7 @@ if len(sys.argv) < 3:
 dest = sys.argv[1]
 reloc = sys.argv[2]
 
-package_files = sys.argv[3:]
+package_files = glob.glob(sys.argv[3] + os.sep + "*")
 
 print " *** Installing to %s for destination %s *** " % (dest, reloc)
 

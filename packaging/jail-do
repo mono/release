@@ -1,28 +1,73 @@
 #!/usr/bin/env python
 
 import sys
-import string
 
 sys.path += ['../pyutils']
 
 import buildenv
 import packaging
 
+def usage():
+	print "Usage: ./jail-do <distro conf> <action> [ <action args> ]"
+	print "  where <action> is one of: login | run | lock | unlock | is_locked | interrupt"
+	print "  Example: ./jail-do exec suse-102-i586 run ls"
+	print "  'run' is the only action that takes <action args>,"
+	print "         which will run that command"
+	print "  'unlock' also removes interrupt file flag"
+
 if len(sys.argv) < 2:
-	print "Usage: ./jail-do <distro conf> [command]"
-	print "  Example: ./jail-do suse-93-i586 ls"
-	print "  If no [command] is given, an interactive login will proceed"
+	usage()
 	sys.exit(1)
 
-conf = packaging.buildconf(sys.argv[1], skip_alternates=True)
+env_name = sys.argv[1]
+action_options = []
+
+# Default to login action if none is specified
+if len(sys.argv) == 2:
+	action = "login"
+else:
+	action = sys.argv[2]
+	if len(sys.argv) > 3:
+		action_options = sys.argv[3:]
+
+
+conf = packaging.buildconf(env_name, skip_alternates=True)
 conf.buildenv.print_output=True
 
-if len(sys.argv) > 2:
-	command = string.join(sys.argv[2:], ' ')
-	sys.stderr.write("Executing: %s\n" % command)
-	status, output = conf.buildenv.execute_command(command)
-	sys.exit(status)
-else:
+if   action == "login":
 	print "Logging in"
 	conf.buildenv.login()
+elif action == "run":
+	command = ' '.join(action_options)
+	sys.stderr.write("Executing: %s\n" % command)
+	status, output = conf.buildenv.execute_command(command)
+	if status == 255:
+		print "Process was killed!"
+	sys.exit(status)
+elif action == "lock":
+	if conf.buildenv.lock_env():
+		print "Locked successfully"
+	else:
+		print "Failed to lock"
+		sys.exit(1)
+elif action == "unlock":
+	if conf.buildenv.unlock_env(clear_interrupt=True):
+		print "Unlocked successfully, interrupt lock cleared if existed"
+	else:
+		print "Failed to unlock"
+		sys.exit(1)
+elif action == "is_locked":
+	if conf.buildenv.is_locked():
+		# return 0 (true) if it is locked
+		print "Locked"
+	else:
+		# return 1 (false) if it's not
+		print "Unlocked"
+		sys.exit(1)
+elif action == "interrupt":
+	(code, output) = conf.buildenv.interrupt()
+	sys.exit(code)
+else:
+	print "Unknown action: " + action
+	sys.exit(1)
 

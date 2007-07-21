@@ -72,7 +72,7 @@ else:
 log_obj.log("Sources path: %s\n" % package_obj.source_fullpath)
 log_obj.log("Using distro: %s\n" % distro)
 
-conf = packaging.buildconf(distro, logger=log_obj)
+conf = packaging.buildconf(distro, my_logger=log_obj)
 
 if conf.buildenv.is_locked():
 	log_obj.log("%s jail is busy\n" % distro )
@@ -84,7 +84,7 @@ conf.buildenv.lock_env()
 repo.add_file(HEAD_or_RELEASE, package, version, "inprogress")
 
 if package_obj.info.has_key('MONO_DEPS'):
-	(status, output) = utils.launch_process('./install-deps --build_source %s %s' % (conf.conf_lock_filename, package), logger=log_obj)
+	(status, output) = utils.launch_process('./install-deps --build_source %s %s' % (conf.conf_lock_filename, package), my_logger=log_obj)
 	if status:
 		conf.buildenv.unlock_env()
 		log_obj.log("Dependency installation failed\n")
@@ -94,7 +94,7 @@ if package_obj.info.has_key('MONO_DEPS'):
 temp_dir = conf.env_vars['build_location'] + os.sep + 'source_dist_creator'
 
 # Clean up
-conf.buildenv.execute_command("rm -Rf %s" % temp_dir)
+conf.buildenv.remove_path(temp_dir)
 
 # Copy some files over and execute!
 # Also copy over def_alias files
@@ -111,10 +111,8 @@ conf.buildenv.copy_to(support_files_to_copy, conf.env_vars['build_location'], mo
 conf.buildenv.copy_to(files_to_copy, temp_dir, mode='scp')
 
 log_obj.log("Starting to build source dist...\n")
-# they key needs to be owned by the user so ssh doesn't reject the key
-(status, output) = conf.buildenv.execute_command('chown %s %s/distro_source_key' % (conf.info['username'], temp_dir), exec_as_root=1)
-(status, output) = conf.buildenv.execute_command('mount /proc &> /dev/null', exec_as_root=1)
-(status, output) = conf.buildenv.execute_command('%s/do-msvn-tar %s %s %s' % (temp_dir, HEAD_or_RELEASE, package, version) )
+# Make this non-interruptable because we don't want the source cache corrupted
+(status, output) = conf.buildenv.execute_command('%s/do-msvn-tar %s %s %s' % (temp_dir, HEAD_or_RELEASE, package, version), interruptable=False )
 
 if status:
         conf.buildenv.unlock_env()

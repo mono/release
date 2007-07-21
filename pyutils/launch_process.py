@@ -7,7 +7,7 @@ import os
 import utils
 
 def usage():
-	print "Usage: ./launch_process.py [--terminate_reg=<reg string>] [--output_timeout=<secs>] [--max_output_size=<num chars>] [--kill_process_group] <command>"
+	print "Usage: ./launch_process.py [--terminate_reg=<reg string>] [--output_timeout=<secs>] [--max_output_size=<num chars>] [--kill_process_group] [--interruptable] <command>"
 
 def commandline():
 
@@ -17,7 +17,7 @@ def commandline():
 
 	# Options for launch process
 	try:
-		opts, command = getopt.getopt(sys.argv[1:], "", [ "terminate_reg=", "output_timeout=", "max_output_size=", "kill_process_group", "env=", "working_dir=" ])
+		opts, command = getopt.getopt(sys.argv[1:], "", [ "terminate_reg=", "output_timeout=", "max_output_size=", "kill_process_group", "env=", "working_dir=", "interruptable=" ])
 	except getopt.GetoptError:
                 usage()
 		sys.exit(1)
@@ -44,6 +44,8 @@ def commandline():
 				print "Failed to chdir: " + value
 				print "Exiting..."
 				sys.exit(1)
+		if option == "--interruptable":
+			args['interruptable'] = value
 
 	command = " ".join(command)
 	code, output = utils.launch_process(command, **args)

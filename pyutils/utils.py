@@ -49,6 +49,7 @@ rpm2cpio_py_path = os.path.abspath(module_dir + "rpm2cpio.py")
 
 debug=0
 KILLED_EXIT_CODE=-42
+INTERRUPTED_EXIT_CODE=10 # Should be arbitrary... ?
 
 match_all = re.compile('')
 
@@ -337,7 +338,7 @@ def append_text_to_files(file_text_map):
 		fd.close()
 
 
-def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg="", logger="", output_timeout=0, kill_process_group=0, max_output_size=0):
+def launch_process(command, capture_stderr=1, print_output=1, print_command=0, terminate_reg="", my_logger="", output_timeout=0, kill_process_group=0, max_output_size=0, interruptable=False):
 	"""Execute a command, return output (stdout and optionally stderr), and optionally print output the process is being run.
 
 	Returns a tuple: exit code, output
@@ -367,9 +368,15 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 		print_command=1
 
 	# turn off output if a logger is used
-	if logger: print_output=0
+	if my_logger: print_output=0
 
 	if print_command: print command
+
+	if interruptable:
+		interrupted_file = os.path.dirname(interruptable) + os.sep + "interrupted"
+		if os.path.exists(interrupted_file):
+			print "** Failing to execute command '%s' because 'interrupted' file is present: %s" % (command, interrupted_file )
+			sys.exit(INTERRUPTED_EXIT_CODE)
 
 	if capture_stderr:
 		process = popen2.Popen4(command)
@@ -378,6 +385,12 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 
 	# Close unnecessary handles
 	process.tochild.close()
+
+
+	if interruptable:
+		fd = open(interruptable, 'w')
+		fd.write(str(os.getpgrp()))
+		fd.close()
 
 	if output_timeout:
 		flags = fcntl.fcntl(process.fromchild.fileno(), fcntl.F_GETFL)
@@ -438,6 +451,10 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 
 				#  Kill the process
 				try:
+					# clean up interruptable file if it's there
+					if interruptable and os.path.exists(interruptable):
+						os.unlink(interruptable)
+
 					# Kill the process group of the current process...
 					if kill_process_group:
 						print "** Killing process group (committing suicide) ... **"
@@ -470,8 +487,8 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 			sys.stdout.flush()
 			# This doesn't work on macosx... ?
 			#process.fromchild.flush()
-		if logger:
-			logger.log(line)
+		if my_logger:
+			my_logger.log(line)
 
 		collected += [ line ]
 
@@ -484,6 +501,12 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 
 	if killed:
 		exit_code = KILLED_EXIT_CODE
+
+	# Clean up interruptable file? naw... shouldn't need to
+	#  actually we do, one to remove file if process isn't running,
+	#  also if we're root (install rpms), we need to remove this while we have rights
+	if interruptable and os.path.exists(interruptable):
+		os.unlink(interruptable)
 
 	#  Concat array elements into a string 
 	#  strip the whitespace off the end (makes it behave more like commands.getxxx)

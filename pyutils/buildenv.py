@@ -7,9 +7,6 @@ Also very handy for installer scripts
 """
 
 import os
-import config
-import network
-import utils
 import socket
 import distutils.dir_util
 import shutil
@@ -17,13 +14,16 @@ import glob
 import tempfile
 import getpass
 
+import config
+import network
+import utils
 import logger
 
 import pdb
 
 class buildenv:
 
-        def __init__(self, username="", hostname="", root_dir="", lock_filename="", target_command_prefix="", env=config.env_vars, logger="", login_mode='ssh', copy_mode='scp', exec_mode='ssh'):
+        def __init__(self, username="", hostname="", root_dir="", lock_filename="", target_command_prefix="", env=config.env_vars, my_logger="", login_mode='ssh', copy_mode='scp', exec_mode='ssh'):
 
 		self.login_mode=login_mode
 		self.copy_mode=copy_mode
@@ -57,10 +57,14 @@ class buildenv:
 		# Custom identifier to use at various places
 		self.uid = "%s@%s:%s" % (self.username, self.hostname, root_dir)
 
+		# Host lock filename
 		if lock_filename:
-			self.lock_filename = lock_filename
+			self.host_lock_filename = lock_filename
 		else:
-			self.lock_filename = self.uid
+			self.host_lock_filename = self.uid
+
+		# Client lock filename
+		self.client_lock_filename = self.build_location + os.sep + "locked"
 
                 # Optional...
                 self.root_dir = root_dir
@@ -73,12 +77,12 @@ class buildenv:
 
 		# initialize objects for later
 		self.modes = {}
-		self.modes['ssh'] = network.ssh(username=username, hostname=hostname, env=self.env, logger=logger)
-		self.modes['scp'] = network.scp(username=username, hostname=hostname, env=self.env, logger=logger)
-		self.modes['smbclient'] = network.smbclient(username=username, hostname=hostname, env=self.env, logger=logger)
-		self.modes['local'] = local(username=username, hostname=hostname, env=self.env, logger=logger)
+		self.modes['ssh'] = network.ssh(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
+		self.modes['scp'] = network.scp(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
+		self.modes['smbclient'] = network.smbclient(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
+		self.modes['local'] = local(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
 
-		self.logger = logger
+		self.logger = my_logger
 
 		# chroot options
 		if root_dir:
@@ -88,6 +92,12 @@ class buildenv:
 		# Set flag so we don't copy over and over for execute_command
 		self.exec_util_files_copied = False
 
+		# empty logger to use at various places
+		self.empty_logger = logger.Logger(config.devnull, print_screen=0)
+
+		# Filenames for process jobs
+		self.interrupted_file = self.build_location + os.sep + 'interrupted'
+		self.pgkill_file = self.build_location + os.sep + 'pgid_kill'
 
 	def login(self, mode=""):
 
@@ -99,13 +109,14 @@ class buildenv:
 
 		mode = self.modes[mode].login(command)
 
-	def execute_command(self, command, working_dir="", mode="", exec_as_root=False, output_timeout=0, max_output_size=0, terminate_reg="", env={}, logger=""):
+	def execute_command(self, command, working_dir="", mode="", exec_as_root=False, output_timeout=0, max_output_size=0, terminate_reg="", env={}, my_logger="", interruptable=True):
+		"""setting interruptable to False is for internal and really important commands (ie: killing rpm installs/removes could cause havoc)  Using that flag doesn't write a pgid file"""
 
 		if not working_dir:
 			working_dir = self.build_location
 
-		if not logger:
-			logger = self.logger
+		if not my_logger:
+			my_logger = self.logger
 
 		if not mode:
 			mode = self.exec_mode
@@ -116,6 +127,10 @@ class buildenv:
 
 		if not env:
 			env = self.env
+
+		# If true, but no filename passed in, use this default filename
+		if interruptable == True:
+			interruptable = self.pgkill_file
 
 		# launch process options. pass everything through launch process, and have it save the pgid to enable process interruptions
 		# TODO: this doesn't play nicely with local commands, because this code is in the process group.  
@@ -129,6 +144,8 @@ class buildenv:
 			launch_options += " --terminate_reg=%s" % terminate_reg
 		if working_dir:
 			launch_options += " --working_dir=%s" % working_dir
+		if interruptable:
+			launch_options += " --interruptable=%s" % interruptable
 
 		# Build environment string to pass to launch_process
 		if env:
@@ -150,10 +167,13 @@ class buildenv:
 		# Double quotes are very meticulous
 		command = '%s %s %s "%s %s %s"' % (self.root_dir_options, self.env['shell_path'], "-c",  self.target_command_prefix, sudo_opts, command)
 
-		return self.modes[mode].execute_command(command, logger=logger)
+		return self.modes[mode].execute_command(command, my_logger=my_logger)
 
-	def execute_code(self, code, working_dir="", interpreter="", exec_as_root=False, output_timeout=0, max_output_size=0, terminate_reg="", env={}, logger=""):
+	def execute_code(self, code, working_dir="", interpreter="", exec_as_root=False, output_timeout=0, max_output_size=0, terminate_reg="", env={}, my_logger="", interruptable=True):
 		""" interpreter can be anything that works... mcs *.cs; mono, perl, python, etc... """
+
+                if not my_logger:
+			my_logger = self.logger
 
 		# Default to shell code, but can be overwritten
 		if not interpreter:
@@ -185,8 +205,9 @@ class buildenv:
 		args['max_output_size'] = max_output_size
 		args['terminate_reg'] = terminate_reg
 		args['env'] = env
-		args['logger'] = logger
+		args['my_logger'] = my_logger
 		args['working_dir'] = working_dir
+		args['interruptable'] = interruptable
 
 		command = "%s %s" % (interpreter, self.build_location + os.sep + file_basename)
 		code, output = self.execute_command(command, **args)
@@ -197,11 +218,31 @@ class buildenv:
 		return code, output
 
 	def make_path(self, dir, mode=""):
-
+		"""Create a path
+			This must be implemented in the lower layers since execute_* depend on it"""
 		if not mode:
 			mode = self.exec_mode
 
 		return self.modes[mode].make_path(self.root_dir + dir)
+
+        def remove_path(self, dir):
+		"""Remove a path.  Since no internal functions depend on this, it can be a higher layer function"""
+
+		remove_path_code = """
+import os
+import shutil
+
+path = '%s'
+
+if os.path.exists(path):
+	# Newer versions of python's rmtree will remove files, but not all versions
+	if os.path.isdir(path):
+		shutil.rmtree(path)
+	else:
+		os.unlink(path)
+""" % dir
+
+		return self.execute_code(remove_path_code, interpreter=self.env['python_path'], interruptable=False)
 
         def copy_to(self, src, dest, compress=True, mode=""):
 
@@ -217,7 +258,7 @@ class buildenv:
 			print "No files to copy..."
 			return 0, ""
 
-		# Make sure it exists
+		## Make sure it exists (turns into circular recursion at this point)
 		self.make_path(dest)
 
 		return self.modes[mode].copy_to(src, self.root_dir + dest, compress=compress)
@@ -245,36 +286,128 @@ class buildenv:
 
                 return self.modes[mode].copy_from(src, dest, compress=compress)
 
-	def interrupt_command(self):
-		pass
+	def interrupt(self):
+		"""Write interrupted file flag, read pgid_kill file, and blow process group away!"""
+
+		flag_code = """
+import os
+
+path = '%s'
+
+fd = open(path, 'w')
+fd.write("")
+fd.close()""" % self.interrupted_file
+
+		(code, output) = self.execute_code(flag_code, interpreter=self.env['python_path'], interruptable=False)
+
+		if code:
+			return (code, output)
+
+		kill_code = """
+import os
+import signal
+import sys
+
+path = '%s'
+client_lock = '%s'
+
+if not os.path.exists(path):
+	if os.path.exists(client_lock):
+		print "Client is busy and uninterruptable, try again in a few minutes"
+		sys.exit(1)
+	print "Client is not running an interruptable command, exiting..."
+	print "  (it could be running an non-interruptable command, but the client isn't locked)"
+	sys.exit(0)
+
+
+fd = open(path)
+pgid = int(fd.read())
+fd.close()
+os.unlink(path)
+
+# Kill the process group
+print "Killing process group: %%d" %% pgid
+try:
+	os.kill(-pgid, signal.SIGKILL)
+except OSError:
+	print "Error killing process group %%d (already gone?)" %% pgid
+	sys.exit(1)
+""" % (self.pgkill_file, self.client_lock_filename)
+
+		return self.execute_code(kill_code, interpreter=self.env['python_path'], interruptable=False)
 	
 
 	# TODO: use os level locking here
 	def lock_env(self):
-		fd = open(self.lock_filename, 'w')
+		fd = open(self.host_lock_filename, 'w')
 		fd.write("")
 		fd.close()
+
+		# also put file in jail to signify that it's locked (method not perfect, but should be good enough)
+		#self.execute_command("touch %s" % self.client_lock_filename)
+
+		lock_code = """
+path = '%s'
+
+fd = open(path, 'w')
+fd.write("")
+fd.close()
+
+""" % self.client_lock_filename
+
+		self.execute_code(lock_code, interpreter=self.env['python_path'], interruptable=False)
+
 		return True
 
-	def unlock_env(self):
-		if os.path.exists(self.lock_filename):
-			os.unlink(self.lock_filename)
+	def unlock_env(self, clear_interrupt=False):
+		if os.path.exists(self.host_lock_filename):
+			os.unlink(self.host_lock_filename)
+			host_ret = True
+		else:
+			print "unlock_env: host lockfile already removed"
+			host_ret = False
+
+		# also remove interrupt file if it is there
+		if clear_interrupt:
+			(ret, output) = self.remove_path(self.interrupted_file)
+		(client_ret, output) = self.remove_path(self.client_lock_filename)
+
+		# Return False on failure
+		if host_ret or not client_ret:
 			return True
 		else:
-			print "Build environment already unlocked"
 			return False
 
 	def is_locked(self):
-		return os.path.exists(self.lock_filename)
+
+		# Check host lockfile
+		if os.path.exists(self.host_lock_filename):
+			host_ret = True
+		else:
+			host_ret = False
+
+		path_exists_code = """
+import os
+import sys
+
+path = '%s'
+
+if not os.path.exists(path):
+	sys.exit(1)
+""" % self.client_lock_filename
+
+		(client_ret, output) = self.execute_code(path_exists_code, interpreter=self.env['python_path'], interruptable=False)
+
+		# if host lock or client lock exists, we're locked
+		if host_ret or not client_ret:
+			return True
+		else:
+			return False
 
 	def offline(self):
-		old_logger = self.logger
-		self.logger = logger.Logger(config.devnull, print_screen=0)
 
 		# Run some arbitrary command that will always return true
-		(code, output) = self.execute_command("ls")
-
-		self.logger = old_logger
+		(code, output) = self.execute_command("ls", my_logger=self.empty_logger, interruptable=False)
 
 		if code: return 1
 		else:    return 0
@@ -283,20 +416,24 @@ class buildenv:
 class local:
 	"""Class implementing the same interface as a network object, but the jail or machine is on the host machine"""
 
-	def __init__(self, username, hostname, env="", logger=""):
+	def __init__(self, username, hostname, env="", my_logger=""):
                 self.username = username
                 self.hostname = hostname
-                self.logger = logger
+                self.logger = my_logger
 
 	def login(self, command):
 
 		os.system(command)
 
-	def execute_command(self, command, logger=""):
+	def execute_command(self, command, my_logger=""):
+
+		if not my_logger:
+			my_logger = self.logger
+
 		# TODO: execute this under a new pgid so only it gets killed, not us all
 		# check http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66012
 		# Or, put that code in the utils.launch_process routine, which would make it more robust
-		return utils.launch_process(command, logger=logger)
+		return utils.launch_process(command, my_logger=my_logger)
 
 	# For local copyings, you can use the same commands (scp, tar), just not over ssh (scp?)
 	# TODO: But how to know what to use... scp or tar, because they behave differently
@@ -305,7 +442,7 @@ class local:
 	# difference: # Note: tar mode appends src path of file to dest (just the way tar works)"""
 	# tar mode handles symbolic links and preserving time stamps, unlike scp.
 
-        def copy_to(self, src, dest, compress=True, logger=""):
+        def copy_to(self, src, dest, compress=True, my_logger=""):
 		results = []
 		# Glob each of the src filesnames to allow wildcards
 		new_src = []
@@ -329,11 +466,11 @@ class local:
 
 		return 0, "\n".join(results)
 
-        def copy_from(self, src, dest, compress=True, logger=""):
+        def copy_from(self, src, dest, compress=True, my_logger=""):
 		""" No need to duplicate this, since we're on a local machine, use the same method"""
-		return self.copy_to(src, dest, compress=compress, logger=logger)
+		return self.copy_to(src, dest, compress=compress, my_logger=my_logger)
 
-        def make_path(self, dir):
+	def make_path(self, dir):
 		"""Create a path"""
 
 		error = 0
@@ -342,5 +479,3 @@ class local:
 		except:
 			error = 1
 		return error
-
-

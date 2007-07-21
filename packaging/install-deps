@@ -60,7 +60,7 @@ if len(remaining_args) > 2: deps = remaining_args[2:]
 
 log_obj = logger.Logger(filename=config.devnull)
 # skip_alternates, because locking is handled in build and mktarball (if we had better locking, this wouldn't be needed)
-target_conf = packaging.buildconf(target, logger=log_obj, skip_alternates=True)
+target_conf = packaging.buildconf(target, my_logger=log_obj, skip_alternates=True)
 
 if build_source:
 	build_deps = False
@@ -104,11 +104,13 @@ if len(files) == 0 and len(packs_to_remove) == 0:
 build_location = target_conf.env_vars['build_location']
 
 # Clean out deps area (/tmp/build_deps does not use build_location for relocation purposes)
-(code, output) = target_conf.buildenv.execute_command("rm -rf %s/install-packages /tmp/build_deps" % (build_location) )
-if code:
+(code, output) = target_conf.buildenv.remove_path("/tmp/build_deps")
+(code2, output2) = target_conf.buildenv.remove_path(build_location + os.sep + 'install-packages')
+if code or code2:
 	print "Error cleaning up... exiting"
 	sys.exit(1)
-target_conf.buildenv.execute_command("mkdir -p -m777 %s/install-packages" % build_location)
+
+target_conf.buildenv.make_path("%s/install-packages" % build_location)
 
 # copy packages
 # It would be nice to see the output...
@@ -119,7 +121,7 @@ if target_conf.get_info_var('USE_ZIP_PKG'):
 
 	target_conf.buildenv.copy_to(['do-install-zip-pkgs', '../pyutils/utils.py', '../pyutils/rpm2cpio.py'], build_location)
 	# These must NOT be in the build_location, otherwise it will throw off the relocation
-        (code, output) = target_conf.buildenv.execute_command( "%s/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps %s/install-packages/*" % (build_location, build_location) )
+        (code, output) = target_conf.buildenv.execute_command( "%s/do-install-zip-pkgs /tmp/build_deps /tmp/build_deps %s/install-packages" % (build_location, build_location) )
 
 else:
 
@@ -133,7 +135,8 @@ else:
 		target_conf.buildenv.execute_command('%s/remove-rpms %s' % (build_location, " ".join(packs_to_remove)), exec_as_root=1)
 	code = 0
 	if files:
-		(code, output) = target_conf.buildenv.execute_command('rpm -Uvh %s/install-packages/*.rpm' % build_location, exec_as_root=1)
+		# Make this non-interruptable because we don't want the rpm db trashed
+		(code, output) = target_conf.buildenv.execute_command('rpm -Uvh %s/install-packages/*.rpm' % build_location, exec_as_root=1, interruptable=False)
 
 # Exit with return code...
 sys.exit(code)

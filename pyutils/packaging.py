@@ -17,7 +17,7 @@ import shell_parse
 
 class buildconf:
 
-	def __init__(self, conf_file_name, logger="", skip_alternates=False):
+	def __init__(self, conf_file_name, my_logger="", skip_alternates=False):
 		"""skip_alternates is for times like jail-do, where I don't care if the jail is locked or not"""
 
 		# Parse out name and counter (alternate)
@@ -42,7 +42,7 @@ class buildconf:
 
 		# Construct arguments
 		buildenv_args = {}
-		buildenv_args['logger'] = logger
+		buildenv_args['my_logger'] = my_logger
 
 		# Find a buildenv that isn't locked
 		while True:
@@ -78,8 +78,7 @@ class buildconf:
 			if not check_alternates:
 				break
 
-			# TODO: also check for being offline
-			if not self.buildenv.is_locked() or skip_alternates:
+			if skip_alternates or self.buildenv.offline() or not self.buildenv.is_locked():
 				# we're done, use that buildenv
 				break
 
