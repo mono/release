@@ -1,5 +1,5 @@
 username=builder
-hostname=c242.cim.lab.novell.com
+hostname=c242.mono.lab.novell.com
 
 USE_ZIP_PKG=1
 

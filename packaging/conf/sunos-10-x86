@@ -1,5 +1,5 @@
 username=builder
-hostname=c245.cim.lab.novell.com
+hostname=c245.mono.lab.novell.com
 USE_ZIP_PKG=1
 
 # Use the gnu and opensource software
