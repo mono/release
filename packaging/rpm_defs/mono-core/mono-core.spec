@@ -844,7 +844,6 @@ Authors:
 %_bindir/makecert
 %_bindir/mkbundle
 %_bindir/mkbundle2
-%_bindir/monodiet
 %_bindir/monodis
 %_bindir/monolinker
 %_bindir/monop
