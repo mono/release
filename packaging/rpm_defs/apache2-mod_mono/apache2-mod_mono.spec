@@ -3,7 +3,7 @@
 
 # fedora uses a different package name
 #  (Is this going to cause grief later... ?)
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 Name:		mod_mono
 %else
 Name:           apache2-mod_mono
@@ -44,7 +44,7 @@ BuildRequires: pkgconfig
 %endif
 
 ############### redhat based options
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 BuildRequires:  httpd-devel pkgconfig
 Requires:       httpd
 %endif
@@ -77,6 +77,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %{apache2_libexecdir}/*
 %{apache2_sysconfdir}/*
-%{_prefix}/share/man/man8/mod_mono.8.gz
+%{_mandir}/man8/mod_mono.8*
 
 %changelog

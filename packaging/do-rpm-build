@@ -5,6 +5,8 @@ import sys
 import glob
 import shutil
 import getpass
+import stat
+import re
 
 # Weird, why isn't '.' in the path already? (because utils isn't in the same location as ./do-build)
 sys.path.append('.')
@@ -22,7 +24,9 @@ temp_build_dir = os.getcwd()
 
 # rpm needs this to be happy
 for f in os.listdir('.'):
-	if os.path.isfile(f): os.system("%s chown root:root %s" % (EXEC_AS_ROOT, f) )
+	# Skip these, so subsequent builds from inside jail can be run without perm errors
+	if os.path.isfile(f) and f != "monobuild.rpmrc" and f != "monobuild.rpmmacros":
+		os.system("%s chown root:root %s" % (EXEC_AS_ROOT, f) )
 
 macrofiles = """
 	/usr/lib/rpm/macros
@@ -40,6 +44,28 @@ macrofiles = """
 # 'macrofiles:' stolen from buildbuddy
 open('monobuild.rpmrc', 'w').write("macrofiles: " + ":".join(macrofiles) )
 
+# Set some macros for the redhat based clients.  Even though redhat doesn't define any
+#  macros for this, the suse build service does.  (In fact, even dag rpms suggest passing
+#  the dist as a define on the rpm build command)
+# This isn't needed for suse... they define versions in the macro files
+version_macro = ""
+for p in "redhat-release fedora-release centos-release".split():
+	(code, output) = utils.launch_process("rpm -q --queryformat '%%{VERSION}' %s" % p, print_output=0)
+
+	# This package exists
+	if not code:
+		if p == "redhat-release":
+			mat = re.search("(\d)[aew]s", output, re.I)
+			if mat:
+				version_macro = "%%rhel_version\t%s" % mat.group(1)
+			else:
+				version_macro = "%%redhat_version\t%s" % output
+		if p == "fedora-release":
+			version_macro = "%%fedora_version\t%s" % output
+		if p == "centos-release":
+			version_macro = "%%rhel_version\t%s" % output
+
+
 # need to set some rpmrc macros to be able to build in this directory
 # can't use $build_arch in rpmfilename, need to find out why some distros build as i686
 open('monobuild.rpmmacros', 'w').write("""
@@ -49,9 +75,11 @@ open('monobuild.rpmmacros', 'w').write("""
 %%_rpmdir	%%{_topdir}/built-packages
 %%_rpmfilename	%%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm
 %%buildroot	%s/buildroot
-""" % (temp_build_dir, temp_build_dir) )
+%s
+""" % (temp_build_dir, temp_build_dir, version_macro) )
 
 for d in "BUILD built-packages".split():
+	if os.path.exists(d): shutil.rmtree(d) # normall won't have to be cleaned up, but do it so we can rerun builds inside jail
 	os.mkdir(d)
 
 # The spec file needs to be writable by the current user
@@ -103,3 +131,6 @@ if os.system(command): sys.exit(1)
 for f in glob.glob('*.spec'):
 	shutil.copy(f, temp_build_dir + os.sep + 'built-packages')
 
+# Change perms on macro and rc file so if we want to build from inside jail again, we don't get errors
+for f in "monobuild.rpmrc monobuild.rpmmacros".split():
+	os.system("%s chown %s %s" % (EXEC_AS_ROOT, getpass.getuser(), f) )

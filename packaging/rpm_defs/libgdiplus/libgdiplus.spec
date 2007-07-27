@@ -45,7 +45,7 @@ BuildRequires:  libungif XFree86-devel pkgconfig
 
 
 ####  fedora  ####
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 
 # All fedora distros have the same names, requirements
 BuildRequires: libungif-devel libjpeg-devel libtiff-devel libpng-devel glib2-devel fontconfig-devel libXrender-devel libXt-devel
