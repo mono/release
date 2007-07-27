@@ -30,7 +30,7 @@ HEAD_PATH=(
         trunk/gtk-sharp
 )
 RELEASE_PATH=(
-        tags/gtk-sharp/[[versiondot]]/gtk-sharp
+        tags/gtk-sharp/[[versiondot]]
 )
 
 get_source () {

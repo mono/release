@@ -132,7 +132,10 @@ else:
 
 	if packs_to_remove:
 		target_conf.buildenv.copy_to(['remove-rpms', '../pyutils/rpm_utils.py'], build_location)
-		target_conf.buildenv.execute_command('%s/remove-rpms %s' % (build_location, " ".join(packs_to_remove)), exec_as_root=1)
+		(code, output) = target_conf.buildenv.execute_command('%s/remove-rpms %s' % (build_location, " ".join(packs_to_remove)), exec_as_root=1)
+		if code:
+			print "Couldn't remove rpms..."
+			sys.exit(code)
 	code = 0
 	if files:
 		# Make this non-interruptable because we don't want the rpm db trashed

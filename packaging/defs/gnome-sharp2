@@ -12,10 +12,13 @@ MKTARBALL_HOST="suse-102-x86_64"
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
-	libgdiplus
 	mono
 	monodoc
 	gtk-sharp210
+)
+
+MONO_RECOMMENDED_DEPS=(
+	libgdiplus
 )
 
 get_destroot () {
@@ -40,7 +43,60 @@ make_dist () {
         make dist-bzip2
 }
 
-# TODO:
 win_4_i386_ZIP_BUILD () {
+	# Make sure it's not dependent on cygwin
+	# Fixed at least in 2.8.2
+	#export CC="gcc -mno-cygwin"
+
+	CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322`
+	CSC=`cygpath -a $CSC`
+
+	# Add MS SDK to path for ilasm and ildasm
+	SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin"`
+	SDK=`cygpath -a $SDK`
+	export PATH=$SDK:$CSC:$PATH
+
+	# Since we're using MS compiler, fake like mono's not installed
+	mkdir -p /tmp/backup
+	mv /tmp/build_deps/lib/pkgconfig/mono.pc /tmp/backup
+
+	./configure --prefix=/tmp/install
+
+	# let's just skip the gnomevfs sample instead of disabling gnome-vfs
+	# Unnecessary in 2.8.1... doh, still another problem: Mono.GetOptions isn't on mssdk
+	sed -i "s/gnomevfs valtest/valtest/" sample/Makefile
+
+	# Clean up the MS gac of gtk-sharp
+	rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp
+	rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet
+
+	# Hrm... perms not set right on this...
+	chmod 755 /tmp/build_deps/lib/gtk-sharp-2.0/*.exe
+
+	make || exit 1
+	make install || exit 1
+
+	# Install the samples
+	mkdir -p /tmp/install/samples/gtk-sharp-2.0
+	cp -Rf sample/* /tmp/install/samples/gtk-sharp-2.0
+
+	# Move them to a temp dir...
+	rm -Rf /tmp/temp_install
+	mkdir -p /tmp/temp_install
+	mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/temp_install
+	mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet /tmp/temp_install
+
+	# Do some path manipulation so that "." is removed from the path.  This allows execdir to work
+	OLD_PATH=$PATH
+	export PATH=/tmp/build_deps/bin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS
+	find /tmp/temp_install -name "*.dll" -execdir /tmp/build_deps/bin/gacutil /i {} /f /package gtk-sharp-2.0 /gacdir `cygpath -m /tmp/install/lib` \;
+	export PATH=$OLD_PATH
+
+	# Remove some uneeded files
+	#  exit on the first failure, usually means windows find was used instead of cygwin's find
+	find /tmp/install -name "*\.a" | xargs rm -f || exit 1
+	find /tmp/install -name "*\.la" | xargs rm -f
+	find /tmp/install -name "__*\.ini" | xargs rm -f
+
 }
 

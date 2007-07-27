@@ -141,19 +141,14 @@ if os.path.exists(output_dir):
 files_used_in_installer = []
 selections = []
 
-selections += [ Selection('mono', packages = "mono boo ikvm nant ipce mono-basic".split(), deps=['mono'] ) ]
+selections += [ Selection('mono', packages = "mono boo ikvm nant IPCE mono-basic".split(), deps=['mono'] ) ]
 
-# TODO: try out gtk-sharp-2.8
-#  Everything works except monodoc browser... fails on glade-sharp glade 2.5 seems to be killing this
-#  Need to use the same glade in compiling gtk-sharp 1.0 and gtk-sharp 2.8
-# glade-sharp does link against the native libglade library... hmm... try rebuilding 1.0 and 2.8 against the 2.5?  I thought they were...
-selections += [ Selection('gtk', deps = "gtk-sharp gtk-sharp-2.8".split() ) ]
+selections += [ Selection('gtk', deps = "gtk-sharp gtk-sharp210 gnome-sharp2".split() ) ]
 
-#selections += [ Selection('gtk-sharp', packages = "gtk-sharp gtk-sharp-2.0".split() ) ]
-selections += [ Selection('gtk-sharp', packages = "gtk-sharp gtk-sharp-2.8".split() ) ]
+selections += [ Selection('gtk-sharp', packages = "gtk-sharp gtk-sharp210 gnome-sharp2".split() ) ]
 
 # Grab the gtk# version, and if there's a revision, ditch it
-gtk_sharp_version = selections[len(selections) - 1].versions['gtk-sharp-2.8']
+gtk_sharp_version = selections[len(selections) - 1].versions['gtk-sharp210']
 if gtk_sharp_version.count('-'):
 	(gtk_sharp_version, revision) = gtk_sharp_version.split('-')
 
@@ -165,7 +160,7 @@ selections += [ Selection('monodoc', packages = "monodoc".split() ) ]
 # TODO: Also, why am I distributing gnome?.... ? adds some to gtk-sharp 1.0.10
 #   monodoc browser needs gconf-sharp, which depends on gnome-sharp...
 #  So, until the GRE for gecko-sharp gets easier to distribute, including gnome is how it is
-selections += [ Selection('gecko-sharp', packages = "gecko-sharp gecko-sharp-2.0".split() ) ]
+selections += [ Selection('gecko-sharp', packages = "gecko-sharp gecko-sharp2".split() ) ]
 
 # Hmm... needs to be a better way to package up these samples...
 selections += [ Selection('samples', urls = """

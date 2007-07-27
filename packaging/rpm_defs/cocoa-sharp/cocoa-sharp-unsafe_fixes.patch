@@ -1,0 +1,127 @@
+diff -ru old/cocoa-sharp-0.9.1/src/Cocoa/Mach.cs cocoa-sharp-0.9.1/src/Cocoa/Mach.cs
+--- old/cocoa-sharp-0.9.1/src/Cocoa/Mach.cs	2005-12-01 14:44:11.000000000 -0700
++++ cocoa-sharp-0.9.1/src/Cocoa/Mach.cs	2007-07-27 16:09:51.000000000 -0600
+@@ -158,7 +158,7 @@
+ 				reply.msgh_id = msg.msgh_id+0x64;
+ 				unsafe {
+ 					int *ptr = (int *)(((int) &reply.msgh_id)+(Marshal.SizeOf (typeof (int))*3));
+-					(int)*(ptr) = 0x5;
++					*ptr = 0x5;
+ 				}
+ 				
+ 				//Console.WriteLine ("Dumping exception reply:");
+Only in cocoa-sharp-0.9.1/src/Cocoa: Makefile
+diff -ru old/cocoa-sharp-0.9.1/src/Cocoa/Native.cs cocoa-sharp-0.9.1/src/Cocoa/Native.cs
+--- old/cocoa-sharp-0.9.1/src/Cocoa/Native.cs	2005-12-01 14:44:11.000000000 -0700
++++ cocoa-sharp-0.9.1/src/Cocoa/Native.cs	2007-07-27 16:37:49.000000000 -0600
+@@ -296,56 +296,56 @@
+ 				void *meta_class = (void*)Marshal.AllocHGlobal ((ptrsize*7) + (longsize*3));
+ 
+ 				// setup the class
+-				(int)*(int *)((int)new_class+0) = (int)meta_class;
+-				(int)*(int *)((int)new_class+(ptrsize*3)+longsize) = 0x1;
+-				(int)*(int *)((int)meta_class+(ptrsize*3)+longsize) = 0x2;
++				*(int *)((int)new_class+0) = (int)meta_class;
++				*(int *)((int)new_class+(ptrsize*3)+longsize) = 0x1;
++				*(int *)((int)meta_class+(ptrsize*3)+longsize) = 0x2;
+ 
+ 				// set the class name
+-				(int)*(int *)((int)new_class+(ptrsize*2)) = (int)nameptr;
+-				(int)*(int *)((int)meta_class+(ptrsize*2)) = (int)nameptr;
++				*(int *)((int)new_class+(ptrsize*2)) = (int)nameptr;
++				*(int *)((int)meta_class+(ptrsize*2)) = (int)nameptr;
+ 
+ 				// connect the class heirarchy
+-				(int)*(int *)((int)new_class+ptrsize) = (int)super_class;
+-				(int)*(int *)((int)meta_class+ptrsize) = (int)*(int *)((int)super_class);
+-				(int)*(int *)((int)meta_class) = (int)*(int *)((int)root_class);
++				*(int *)((int)new_class+ptrsize) = (int)super_class;
++				*(int *)((int)meta_class+ptrsize) = (int)*(int *)((int)super_class);
++				*(int *)((int)meta_class) = (int)*(int *)((int)root_class);
+ 
+ 				// put in empty method lists for now
+ 				void *new_class_mlist = (void *)Marshal.AllocHGlobal ((ptrsize*2)+intsize);
+ 				void *meta_class_mlist = (void *)Marshal.AllocHGlobal ((ptrsize*2)+intsize);
+ 
+-				(int)*(int *)((int)new_class_mlist) = -1;
+-				(int)*(int *)((int)meta_class_mlist) = -1;
++				*(int *)((int)new_class_mlist) = -1;
++				*(int *)((int)meta_class_mlist) = -1;
+ 
+-				(int)*(int *)((int)new_class+(ptrsize*4)+(longsize*3)) = (int)new_class_mlist;
+-				(int)*(int *)((int)meta_class+(ptrsize*4)+(longsize*3)) = (int)meta_class_mlist;
++				*(int *)((int)new_class+(ptrsize*4)+(longsize*3)) = (int)new_class_mlist;
++				*(int *)((int)meta_class+(ptrsize*4)+(longsize*3)) = (int)meta_class_mlist;
+ 
+ 				// add the ivars
+ 				int ivar_size = (int)*(int *)((int)super_class+(ptrsize*3)+(longsize*2));
+ 				void *ivar_list = (void *)Marshal.AllocHGlobal (intsize+ptrsize+((representation.Members.Length+1)*((ptrsize*2)+intsize)));
+ 				void *ivar = (void*)((int)ivar_list+intsize);
+-				(int)*(int *)((int)ivar_list) = representation.Members.Length;
++				*(int *)((int)ivar_list) = representation.Members.Length;
+ 				for (int i = 0; i < representation.Members.Length; i++) {
+-					(int)*(int *)((int)ivar) = (int)member_names [i];
+-					(int)*(int *)((int)ivar+ptrsize) = (int)member_types [i];
+-					(int)*(int *)((int)ivar+(ptrsize*2)) = ivar_size;
++					*(int *)((int)ivar) = (int)member_names [i];
++					*(int *)((int)ivar+ptrsize) = (int)member_types [i];
++					*(int *)((int)ivar+(ptrsize*2)) = ivar_size;
+ 					ivar_size += representation.Members [i].Size;
+ 					ivar = (void *)((int)ivar+(ptrsize*2)+intsize);
+ 				}
+-				(int)*(int *)((int)new_class+(ptrsize*3)+(longsize*3)) = (int)ivar_list;
++				*(int *)((int)new_class+(ptrsize*3)+(longsize*3)) = (int)ivar_list;
+ 
+-				(int)*(int *)((int)ivar) = (int)Marshal.StringToCoTaskMemAnsi ("methodCallback");
+-				(int)*(int *)((int)ivar+ptrsize) = (int)Marshal.StringToCoTaskMemAnsi ("^?");
+-				(int)*(int *)((int)ivar+(ptrsize*2)) = ivar_size;
++				*(int *)((int)ivar) = (int)Marshal.StringToCoTaskMemAnsi ("methodCallback");
++				*(int *)((int)ivar+ptrsize) = (int)Marshal.StringToCoTaskMemAnsi ("^?");
++				*(int *)((int)ivar+(ptrsize*2)) = ivar_size;
+ 				ivar_size += 4;
+ 				
+-				(int)*(int *)((int)new_class+(ptrsize*3)+(longsize*2)) = ivar_size;
+-				(int)*(int *)((int)meta_class+(ptrsize*3)+(longsize*2)) = (int)*(int *)(((int)((int*)(int)*(int *)((int)meta_class+ptrsize)))+(ptrsize*3)+(longsize*2));
++				*(int *)((int)new_class+(ptrsize*3)+(longsize*2)) = ivar_size;
++				*(int *)((int)meta_class+(ptrsize*3)+(longsize*2)) = (int)*(int *)(((int)((int*)(int)*(int *)((int)meta_class+ptrsize)))+(ptrsize*3)+(longsize*2));
+ 
+ 				// zero the cache and protocols;
+-				(int)*(int *)((int)new_class+(ptrsize*5)+(longsize*3)) = 0;
+-				(int)*(int *)((int)new_class+(ptrsize*6)+(longsize*3)) = 0;
+-				(int)*(int *)((int)meta_class+(ptrsize*5)+(longsize*3)) = 0;
+-				(int)*(int *)((int)meta_class+(ptrsize*6)+(longsize*3)) = 0;
++				*(int *)((int)new_class+(ptrsize*5)+(longsize*3)) = 0;
++				*(int *)((int)new_class+(ptrsize*6)+(longsize*3)) = 0;
++				*(int *)((int)meta_class+(ptrsize*5)+(longsize*3)) = 0;
++				*(int *)((int)meta_class+(ptrsize*6)+(longsize*3)) = 0;
+ 
+ 				objc_addClass ((IntPtr)new_class);
+ 
+@@ -354,20 +354,20 @@
+ 				
+ 				// add the methods
+ 				void *method_list = (void *)Marshal.AllocHGlobal (ptrsize+intsize+((representation.Methods.Length+1)*(ptrsize*3)));
+-				(int)*(int *)((int)method_list+ptrsize) = representation.Methods.Length+1;
++				*(int *)((int)method_list+ptrsize) = representation.Methods.Length+1;
+ 				void *methodptr = (void*)((int)method_list+ptrsize+intsize);
+ 				for (int i = 0; i < representation.Methods.Length; i++) {
+-					(int)*(int *)((int)methodptr) = (int)sel_getUid (methods [i]);
+-					(int)*(int *)((int)methodptr+ptrsize) = (int)signatures [i];
+-					(int)*(int *)((int)methodptr+(ptrsize*2)) = (int)implement_method_target;
++					*(int *)((int)methodptr) = (int)sel_getUid (methods [i]);
++					*(int *)((int)methodptr+ptrsize) = (int)signatures [i];
++					*(int *)((int)methodptr+(ptrsize*2)) = (int)implement_method_target;
+ 					methodptr = (void *)((int)methodptr+(ptrsize*3));
+ 				}
+ 
+ 				IntPtr construct_object_target = (IntPtr)delegate_target.GetValue (construct_object);
+ 
+-				(int)*(int *)((int)methodptr) = (int)sel_getUid (init_ptr);
+-				(int)*(int *)((int)methodptr+ptrsize) = (int)size_init_ptr;
+-				(int)*(int *)((int)methodptr+(ptrsize*2)) = (int)construct_object_target;
++				*(int *)((int)methodptr) = (int)sel_getUid (init_ptr);
++				*(int *)((int)methodptr+ptrsize) = (int)size_init_ptr;
++				*(int *)((int)methodptr+(ptrsize*2)) = (int)construct_object_target;
+ 				methodptr = (void *)((int)methodptr+(ptrsize*3));
+ 
+ 				class_addMethods ((IntPtr)new_class, (IntPtr)method_list);

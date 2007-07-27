@@ -81,9 +81,9 @@ if [ -e %{S:1} ] ; then
 else
         # Check for binaries built on windows (for building on monobuild)
         f="mono-basic-%{version}-0.win4.novell.x86.zip"
-        p="win-4-i386/mono-basic/%{version}/$f"
-        wget http://monobuild2.boston.ximian.com/~wberrier/zip_packages/$p || true
-        wget http://monobuild2.boston.ximian.com/~wberrier/snapshot_zip_packages/$p || true
+        p="win-4-i386/mono-basic/%{version}/files/downloads/$f"
+        wget http://monobuild2.boston.ximian.com/builds/RELEASE/$p || true
+        wget http://monobuild2.boston.ximian.com/builds/HEAD/$p || true
 
         # If we have windows built binaries, inject them into the package (to provide the 1.0 runtime)
         if [ -e "$f" ] ; then 

@@ -14,7 +14,7 @@ Release:        52
 Summary:        .Net Language Bindings for Gnome
 Patch0:         gnome-sharp-optflags.patch
 Patch2:         gnome-sharp-find_gtkhtml_ver.patch
-Source:         %{_name}-%{version}.tar.bz2
+Source:         %{_name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires:	gtk-sharp2 glade-sharp2 gtk-sharp2-gapi

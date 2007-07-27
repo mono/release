@@ -10,6 +10,8 @@ MONO_DEPS=(
 	monodoc
 )
 
+USE_PATCHES=1
+
 MONO_RECOMMEND_DEPS=(
         libgdiplus
 )

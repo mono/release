@@ -37,9 +37,9 @@ import config
 # Constants
 packages_to_include = {}
 
-packages_to_include['sunos-8-sparc']  = ['mono', 'libgdiplus', 'xsp', 'ikvm', 'boo', 'monodoc', 'nant', 'ipce', 'mono-basic' ]
+packages_to_include['sunos-8-sparc']  = ['mono', 'libgdiplus', 'xsp', 'ikvm', 'boo', 'monodoc', 'nant', 'IPCE', 'mono-basic' ]
 
-packages_to_include['sunos-10-sparc'] = packages_to_include['sunos-8-sparc'] + ['gtk-sharp-2.0', 'gtk-sharp', 'mono-tools', 'monodevelop', 'gtksourceview-sharp-2.0' ]
+packages_to_include['sunos-10-sparc'] = packages_to_include['sunos-8-sparc'] + ['gtk-sharp2', 'gtk-sharp', 'mono-tools', 'monodevelop', 'gtksourceview-sharp2' ]
 
 debug=1
 
@@ -101,7 +101,7 @@ def build_package(target):
 
 	# This will unpack and do all the substitution, including the noarch rpms
 	conf.buildenv.print_output = debug
-	conf.buildenv.execute_command("%s/do-install-zip-pkgs %s /opt/mono %s/* " % (remote_package_loc, remote_root, remote_package_loc))
+	conf.buildenv.execute_command("%s/do-install-zip-pkgs %s /opt/mono %s " % (remote_package_loc, remote_root, remote_package_loc))
 
 	prune_files = """
 		bin/msg*

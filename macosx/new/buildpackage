@@ -20,7 +20,7 @@ import packaging
 # Which noarch packages to include in the various packages
 packages_to_include = {}
 
-packages_to_include['macos-10-ppc'] = ['mono', 'cocoa-sharp', 'libgdiplus', 'xsp', 'monodoc', 'boo', 'ikvm', 'nant', 'ipce', 'mono-basic' ]
+packages_to_include['macos-10-ppc'] = ['mono', 'cocoa-sharp', 'libgdiplus', 'xsp', 'monodoc', 'boo', 'ikvm', 'nant', 'IPCE', 'mono-basic' ]
 
 packages_to_include['macos-10-x86'] = packages_to_include['macos-10-ppc']
 
@@ -118,7 +118,7 @@ for arch in targets:
 	conf.buildenv.print_output=debug
 	framework_prefix = "/Library/Frameworks/Mono.framework"
 	prefix = "%s/Versions/%s" % (framework_prefix, version)
-	(code, output) = conf.buildenv.execute_command("%s/do-install-zip-pkgs %s%s %s %s/* " % (arch_remote_packages_loc, arch_remote_PKGROOT, prefix, prefix, arch_remote_packages_loc) )
+	(code, output) = conf.buildenv.execute_command("%s/do-install-zip-pkgs %s%s %s %s " % (arch_remote_packages_loc, arch_remote_PKGROOT, prefix, prefix, arch_remote_packages_loc) )
 	if code:
 		print "Error extracting and installing packages"
 		sys.exit(1)

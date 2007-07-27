@@ -16,7 +16,7 @@ import re
 import utils
 
 if len(sys.argv) < 3:
-	print "Usage: ./do-install-zip-pkgs <file location> <relocation destination> [ full path to packages... ]"
+	print "Usage: ./do-install-zip-pkgs <file location> <relocation destination> [ <full path to packages> ]"
 	print "  Note: full path to packages is usually a glob"
 	sys.exit(1)
 
@@ -58,7 +58,7 @@ for root, dirs, files in os.walk('.'):
 # Write out an env.sh in the $RELOC dir so we can use that when we build
 # This needs to by dynamic
 env = open('env.sh', 'w')
-env.write('PKG_CONFIG_PATH="%s/lib/pkgconfig:$PKG_CONFIG_PATH"\n' % reloc)
+env.write('PKG_CONFIG_PATH="%s/share/pkgconfig:%s/lib/pkgconfig:$PKG_CONFIG_PATH"\n' % (reloc, reloc) )
 env.write('PATH="%s/bin:$PATH"\n' % reloc)
 
 # Needed for the solaris builds so far
@@ -79,7 +79,7 @@ os.chmod('env.sh', 0755)
 
 # Write out csh environment file
 env = open('env.csh', 'w')
-env.write('setenv PKG_CONFIG_PATH "%s/lib/pkgconfig:$PKG_CONFIG_PATH"\n' % reloc)
+env.write('setenv PKG_CONFIG_PATH "%s/share/pkgconfig:%s/lib/pkgconfig:$PKG_CONFIG_PATH"\n' % (reloc, reloc) )
 env.write('setenv PATH "%s/bin:$PATH"\n' % reloc)
 
 env.write('setenv LDFLAGS "-L%s/lib $LDFLAGS"\n' % reloc)

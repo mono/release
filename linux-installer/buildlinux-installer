@@ -59,18 +59,18 @@ local_rpms = [
 		"ikvm",
 		"monodoc",
 		"nant",
-		"ipce",
+		"IPCE",
 		"mono-basic",
 
 		] },
 	{'name': 'suse-100-i586', 'packages': [
 		"gtk-sharp",
-		"gtk-sharp-2.8",
+		"gtk-sharp28",
                 "mono-tools",
                 "monodevelop",
                 "gecko-sharp",
-                "gecko-sharp-2.0",
-                "gtksourceview-sharp-2.0",
+                "gecko-sharp2",
+                "gtksourceview-sharp2",
 		] }
 
 ]

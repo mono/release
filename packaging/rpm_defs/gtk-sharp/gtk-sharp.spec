@@ -93,9 +93,9 @@ compile a project that uses it to bind such a library.
 %debug_package
 %prep
 %setup -q
-%patch2
-%patch3
-%patch4
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 %build
 %{?env_options}
