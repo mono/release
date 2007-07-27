@@ -14,7 +14,6 @@ USE_HOSTS=(
 	fedora-5-i386
 	fedora-5-x86_64
 	nld-9-i586
-	rhel-3-i386
 	rhel-4-i386
 	sles-9-i586
 	sles-9-ia64

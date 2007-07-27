@@ -29,7 +29,7 @@ HEAD_PATH=(
 	trunk/mono/mono
 )
 RELEASE_PATH=(
-	tags/monodoc-[[version]]
+	tags/mono-[[version]]/monodoc
 	tags/mono-[[version]]/mcs/errors
 	tags/mono-[[version]]/mono/mono
 )

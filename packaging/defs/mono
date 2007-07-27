@@ -27,7 +27,6 @@ USE_HOSTS=(
 	macos-10-x86
 	nld-9-i586
 	nld-9-x86_64
-	rhel-3-i386
 	rhel-4-i386
 	sles-9-i586
 	sles-9-ia64
@@ -404,7 +403,7 @@ CLEAN_UP () {
 
 	# These tend to get left around on win32... ?
 	if [ $DISTRO == "win-4-i386" ] ; then
-		/home/builder/bin/Process.exe   -k mono.exe
+		/home/builder/bin/Process.exe   -k mono.exe || true
 	fi
 
 }

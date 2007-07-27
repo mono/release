@@ -1,5 +1,0 @@
-username=builder
-hostname=hardhat.boston.ximian.com
-root_dir=/jails/sles-8-i386-root-0/jail
-
-USE_OC=1
