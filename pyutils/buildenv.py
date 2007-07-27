@@ -23,7 +23,7 @@ import pdb
 
 class buildenv:
 
-        def __init__(self, username="", hostname="", root_dir="", lock_filename="", target_command_prefix="", env=config.env_vars, my_logger="", login_mode='ssh', copy_mode='scp', exec_mode='ssh'):
+        def __init__(self, username="", hostname="", root_dir="", lock_filename="", target_command_prefix="", arch_change_path="", env=config.env_vars, my_logger="", login_mode='ssh', copy_mode='scp', exec_mode='ssh'):
 
 		self.login_mode=login_mode
 		self.copy_mode=copy_mode
@@ -72,6 +72,10 @@ class buildenv:
 
                 self.target_command_prefix = target_command_prefix
 
+		# Optional command to run to prepend executing the shell.  suse x86_64 has 'linux32', and sles s390x has 's390'
+		#  allows 32bit jails on 64bit hosts
+		self.arch_change_path = arch_change_path
+
 		# Add some things into the 'env' map
                 self.env['local_tar_path'] = config.tar_path
 
@@ -105,7 +109,7 @@ class buildenv:
 			mode = self.login_mode
 
 		# TODO: the old code didn't call a shell when root_dir wasn't set (does that matter?)
-		command = "%s %s %s" % (self.root_dir_options, self.env['shell_path'], "-l")
+		command = "%s %s %s %s" % (self.arch_change_path, self.root_dir_options, self.env['shell_path'], "-l")
 
 		mode = self.modes[mode].login(command)
 
@@ -165,7 +169,7 @@ class buildenv:
 			self.exec_util_files_copied = True
 
 		# Double quotes are very meticulous
-		command = '%s %s %s "%s %s %s"' % (self.root_dir_options, self.env['shell_path'], "-c",  self.target_command_prefix, sudo_opts, command)
+		command = '%s %s %s %s "%s %s %s"' % (self.arch_change_path, self.root_dir_options, self.env['shell_path'], "-c",  self.target_command_prefix, sudo_opts, command)
 
 		return self.modes[mode].execute_command(command, my_logger=my_logger)
 
@@ -476,6 +480,7 @@ class local:
 		error = 0
 		try:
 			distutils.dir_util.mkpath(dir)
+			os.chmod(dir, 0777)
 		except:
 			error = 1
 		return error

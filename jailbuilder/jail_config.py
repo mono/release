@@ -38,7 +38,7 @@ required_rpms = {
 
 	'fedora-4': 'autoconf automake bzip2 coreutils fontconfig-devel freetype-devel gcc gcc-c++ libungif-devel glib2-devel gnome-panel-devel gtk2-devel gtkhtml3-devel httpd-devel libart_lgpl-devel libglade2-devel libgnomecanvas-devel libgnomeprintui22-devel libgnomeui-devel libjpeg-devel libpng-devel librsvg2-devel libtiff-devel libtool libxml2-devel make openssh-clients pango-devel perl-XML-Parser perl-XML-Simple pkgconfig rpm-build sqlite-devel sudo tcl vim-enhanced vte-devel which yum zlib-devel',
 
-	'fedora-5': 'autoconf automake bzip2 coreutils fontconfig-devel freetype-devel gcc gcc-c++ giflib-devel glib2-devel gnome-panel-devel gtk2-devel gtkhtml3-devel httpd-devel libX11-devel libXrender-devel libart_lgpl-devel libglade2-devel libgnomecanvas-devel libgnomeprintui22-devel libgnomeui-devel libjpeg-devel libpng-devel librsvg2-devel libtiff-devel libtool libxml2-devel make openssh-clients pango-devel perl-XML-Parser perl-XML-Simple pkgconfig rpm-build sqlite-devel sudo tcl vim-enhanced vte-devel which yum zlib-devel',
+	'fedora-5': 'autoconf automake bzip2 coreutils fontconfig-devel freetype-devel gcc gcc-c++ giflib-devel glib2-devel gnome-panel-devel gtk2-devel gtkhtml3-devel httpd-devel libX11-devel libXrender-devel libart_lgpl-devel libglade2-devel libgnomecanvas-devel libgnomeprintui22-devel libgnomeui-devel libjpeg-devel libpng-devel librsvg2-devel libtiff-devel libtool libxml2-devel make openssh-clients pango-devel perl-XML-Parser perl-XML-Simple pkgconfig rpm-build sqlite-devel sudo tcl vim-enhanced vte-devel which yum zlib-devel libXt-devel',
 
 }
 

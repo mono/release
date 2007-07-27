@@ -1,7 +1,10 @@
 username=builder
-hostname=monobuild1.boston.ximian.com
+hostname=monobuild2.boston.ximian.com
 root_dir=/jails/suse-102-i586
 target_command_prefix=". /etc/profile;"
+
+chroot_path=/usr/bin/chroot
+arch_change_path=/usr/bin/linux32
 
 # had to create libexpat.so.0 -> libexpat.so.1.5.0 
 # so that xgettext would work for make dist for mono-tools, 

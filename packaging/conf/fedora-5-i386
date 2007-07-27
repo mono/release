@@ -1,5 +1,8 @@
 username=builder
-hostname=monobuild1.boston.ximian.com
-root_dir=/jails/fedora-5-i386-root-0
+hostname=monobuild2.boston.ximian.com
+root_dir=/jails/fedora-5-i386
+
+chroot_path=/usr/bin/chroot
+arch_change_path=/usr/bin/linux32
 
 USE_YUM=1

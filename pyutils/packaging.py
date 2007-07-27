@@ -62,7 +62,7 @@ class buildconf:
 			self.load_computed_info()
 			self.load_configured_info()
 
-			for i in "username hostname root_dir target_command_prefix".split():
+			for i in "username hostname root_dir target_command_prefix arch_change_path".split():
 				if self.info.has_key(i):
 					buildenv_args[i] = self.info[i]
 				# Remove the stale arg from buildenv_args

@@ -249,8 +249,14 @@ class Jail:
 		print "Required packages:"
 
 		# Add initial deps
+		missing_packs = []
 		for req_rpm in self.orig_required_rpms:
-			self.add_package(req_rpm)
+			if not self.add_package(req_rpm):
+				missing_packs.append(req_rpm)
+
+		if missing_packs:
+			print "ERROR!: missing requested packages: %s" % (" ".join(missing_packs))
+			sys.exit(1)
 
 		#print "Current requires:"
 		#for i in self.requires:
@@ -303,7 +309,9 @@ class Jail:
 
 			else:
 				print "ERROR!: requesting package %s but do not have %s in available rpms!" % (package_name, package_name)
-				sys.exit(1)
+				return False
+
+		return True
 
 	def initialize_jail(self):
 
