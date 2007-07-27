@@ -1,2 +1,4 @@
 debian/tmp/usr/lib/mono/gac/System.Data/2.0.*/System.Data.dll
 debian/tmp/usr/lib/mono/2.0/System.Data.dll
+debian/tmp/usr/lib/mono/gac/System.Transactions/2.0.*/System.Transactions.dll
+debian/tmp/usr/lib/mono/2.0/System.Transactions.dll
