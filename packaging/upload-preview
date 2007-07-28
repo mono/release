@@ -9,8 +9,7 @@ BASE_URL="/monobuild/preview"
 
 ssh $TARGET_USER@$TARGET_HOST "mkdir -p $BASE_DIR"
 cd ../website
-# Need skip missing, because we don't build packages for gnome-sharp and gtk-sharp 2.10 yet... but we still want to publish the sources
-./sync-bundle.py --skip_missing $BUNDLE $TARGET_USER@$TARGET_HOST:$BASE_DIR
+./sync-bundle.py $BUNDLE $TARGET_USER@$TARGET_HOST:$BASE_DIR || exit 1
 
 scp packaging.css $TARGET_USER@$TARGET_HOST:$BASE_DIR
 ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-sources-index.py           $BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/sources"

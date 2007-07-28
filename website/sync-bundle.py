@@ -61,7 +61,7 @@ config.sd_latest_build_distros = build.get_platforms()
 
 # Gather rpms for this bundle
 for plat in config.sd_latest_build_distros:
-	plat_obj = packaging.buildconf(plat)
+	plat_obj = packaging.buildconf(plat, skip_alternates=True)
 	if not plat_obj.get_info_var('USE_ZIP_PKG') or include_zip:
 		print plat_obj.info['distro']
 		# Add external dependencies for this distro

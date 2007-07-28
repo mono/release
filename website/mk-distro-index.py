@@ -181,7 +181,7 @@ os.chdir(package_src_dir)
 distros = build.get_platforms()
 for distro_conf in distros:
 
-	build_conf = packaging.buildconf(os.path.basename(distro_conf))
+	build_conf = packaging.buildconf(os.path.basename(distro_conf), skip_alternates=True)
 	print "*** Generating pages for: %s" % build_conf.name
 
 	# Skip the distros that use zip packaging system

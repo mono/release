@@ -67,6 +67,12 @@ elif action == "is_locked":
 elif action == "interrupt":
 	(code, output) = conf.buildenv.interrupt()
 	sys.exit(code)
+elif action == "copy_to":
+	print "TODO"
+	sys.exit(1)
+elif action == "copy_from":
+	print "TODO"
+	sys.exit(1)
 else:
 	print "Unknown action: " + action
 	sys.exit(1)

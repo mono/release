@@ -70,7 +70,7 @@ def get_platform_objs():
 
 	plat_objs = []
 	for platform in platforms:
-		plat_objs.append(packaging.buildconf(platform))
+		plat_objs.append(packaging.buildconf(platform), skip_alternates=True)
 
 	return _web_index_sort(plat_objs)
 

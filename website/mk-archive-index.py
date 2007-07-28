@@ -77,7 +77,7 @@ packages = "<ul>"
 # Links to distros
 distros = build.get_platforms()
 for distro_conf in distros:
-	conf = packaging.buildconf(os.path.basename(distro_conf))
+	conf = packaging.buildconf(os.path.basename(distro_conf), skip_alternates=True)
 	# Skip the distros that use zip packaging system
 	if not conf.get_info_var('USE_ZIP_PKG'):
 		if conf.get_info_var('distro_aliases'):
