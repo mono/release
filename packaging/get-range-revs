@@ -24,10 +24,20 @@ pack = packaging.package("", package_name)
 
 revs = []
 # add 1 to end because range() doesn't include it
-for i in range(int(start), int(end) + 1):
-	revs.append(repo.latest_path_revision(pack.info['HEAD_PATH'], revision=i))
+revs_to_try = range(int(start), int(end) + 1)
+revs_to_try.reverse()
+latest_rev = int(end)
+
+for i in revs_to_try:
+	# If we're trying something in the list we know doesn't exist, skip to the next try
+	if i > latest_rev:
+		continue
+
+	latest_rev = repo.latest_path_revision(pack.info['HEAD_PATH'], revision=i)
+	revs.append(latest_rev)
 
 revs = utils.remove_list_duplicates(revs)
+revs.reverse()
 
 print revs
 
