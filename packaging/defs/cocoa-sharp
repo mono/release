@@ -10,8 +10,6 @@ MONO_DEPS=(
 	monodoc
 )
 
-USE_PATCHES=1
-
 MONO_RECOMMEND_DEPS=(
         libgdiplus
 )
@@ -41,6 +39,10 @@ macos_10_ZIP_BUILD () {
 
 }
 
+make_dist () {
+	LIBTOOLIZE=libtoolize ./autogen.sh
+        make dist-bzip2
+}
 
 get_destroot () {
 	DEST_ROOT=$DISTRO
