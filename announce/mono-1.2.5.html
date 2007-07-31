@@ -108,8 +108,7 @@
 <h2>Security</h2>
 
 	<p>Rodrigo Kumpera has added an IL verifier to Mono.
-
-	<p>IL verifiers are not very useful for applications that run
+	IL verifiers are not very useful for applications that run
 	at full-trust level (their only use is to help in compiler
 	development and sanity checking).  But we are now working
 	towards <a
@@ -117,6 +116,16 @@
 	Silverlight</a> in Mono which needs to provide limitations on
 	what code can do, and cope with malicious code. 
 	
+	<p>HttpWebRequest can now be used with X.509 client certificates
+	(only possible in the 2.0 profile) [Sebastien]
+	<p>Added support X.509 Client Certificate Chains for SSL/TLS 
+	[Roy Versteeg]
+	<p>Fixed SSL/TLS not to require exportable private keys for client
+	certificates [Roy Versteeg]
+	<p>Implemented import and export of DSA keys CryptoAPI-compatible 
+	BLOB (2.0) [Randolph Chung]
+	<p>Added SafeBag handling to Mono.Security's PKCS#12 [Jay Miller]
+
 <h2>Corlib</h2>
 
 	<p>Completed support for RegionInfo.
@@ -144,11 +153,20 @@
 	<p>ToolStripPainter, ToolStripSystemRenderer: new from
 	Jonathan Pobst.
 	
-<h2>GDI+</h2>
+<h2>System.Drawing / Libgdiplus</h2>
 
-	<p>Add missing checks in GdipGetPath[Types|Points] functions
-	(based on parts of #81859 patch by Yves Bastide and Sebastien
-	Pouliot). 
+	<p>Libgdiplus has been updated to use Cairo 1.4.6 [Sebastien]
+	<p>Libgdiplus header, types and enums names are now much closer to
+	MS GDI+. This should make it easier to use from C/C++ even if this
+	was not the primary goal. [Sebastien, Yves Bastide]
+	<p>Added support for 2bpp PNG and fixes for 4bpp PNG image palettes
+	[Sebastien]
+	<p>Added support for interlaced GIF bitmaps [Sebastien]
+	<p>Added support for ColorMatrixFlag and Gray ColorMatrix in 
+	ImageAttributes [Sebastien]
+	<p>Implemented GdipDrawImagePointsRect[I] functions [Sebastien]
+	<p>Multiple printing fixes (e.g. text size/position) 
+	[Vladimir Dimitrov, Sebastien]
 
 <h2>Cairo</h2>
 
