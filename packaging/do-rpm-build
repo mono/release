@@ -75,6 +75,7 @@ open('monobuild.rpmmacros', 'w').write("""
 %%_rpmdir	%%{_topdir}/built-packages
 %%_rpmfilename	%%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm
 %%buildroot	%s/buildroot
+%%_unpackaged_files_terminate_build	0
 %s
 """ % (temp_build_dir, temp_build_dir, version_macro) )
 

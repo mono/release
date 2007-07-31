@@ -72,7 +72,7 @@ class tarball_builder(threading.Thread):
 
 		self.sequential = config.td_sequential
 
-		self.src_repo = src_repo_utils.svn(config.MONO_ROOT)
+		self.src_repo = src_repo_utils.svn(config.MONO_ROOT, key_file=config.src_key_file)
 		self.distfiles = datastore.source_file_repo()
 
 		self.pack_objs = {}

@@ -18,12 +18,13 @@ package_name = sys.argv[1]
 start = sys.argv[2]
 end = sys.argv[3]
 
-repo = src_repo_utils.svn(config.MONO_ROOT)
+repo = src_repo_utils.svn(config.MONO_ROOT, key_file=config.src_key_file)
 
 pack = packaging.package("", package_name)
 
 revs = []
-for i in range(int(start), int(end)):
+# add 1 to end because range() doesn't include it
+for i in range(int(start), int(end) + 1):
 	revs.append(repo.latest_path_revision(pack.info['HEAD_PATH'], revision=i))
 
 revs = utils.remove_list_duplicates(revs)

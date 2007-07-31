@@ -12,15 +12,19 @@ import config
 #  svn source repo utils
 class svn:
 
-	def __init__(self, root):
+	def __init__(self, root, key_file=""):
 
 		self.root = root
+
+		self.auth_env = ""
+		if key_file:
+			self.auth_env = "SVN_SSH='ssh -i %s'" % key_file
 
 	def latest_tree_revision(self):
 		"""Get the last commit version.
 		"""
 
-		output = commands.getoutput('svn ls %s -v' % ( self.root ) )
+		output = commands.getoutput('%s svn ls %s -v' % ( self.auth_env, self.root ) )
 
 		versions = []
 		for line in output.split('\n'):
@@ -54,7 +58,7 @@ class svn:
 			dirname = os.path.dirname(item)
 			module = os.path.basename(item)
 
-			output = commands.getoutput('svn ls %s/%s %s -v' % ( self.root , dirname, rev_arg) )
+			output = commands.getoutput('%s svn ls %s/%s %s -v' % ( self.auth_env, self.root , dirname, rev_arg) )
 
 			for line in output.split('\n'):
 				list = line.split()

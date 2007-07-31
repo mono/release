@@ -107,8 +107,8 @@ for i in 'buildenv.py config.py logger.py network.py packaging.py shell_parse.py
 	support_files_to_copy += ['../pyutils/' + i]
 
 # This command also creates the dest dir
-conf.buildenv.copy_to(support_files_to_copy, conf.env_vars['build_location'], mode='scp')
-conf.buildenv.copy_to(files_to_copy, temp_dir, mode='scp')
+conf.buildenv.copy_to(support_files_to_copy, conf.env_vars['build_location'])
+conf.buildenv.copy_to(files_to_copy, temp_dir)
 
 log_obj.log("Starting to build source dist...\n")
 # Make this non-interruptable because we don't want the source cache corrupted

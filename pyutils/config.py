@@ -1,15 +1,9 @@
 # Config vars
 import os
-
 import stat
 
 # Default distro to make tarballs on (can be overridden in def file)
 mktarball_host = "suse-102-x86_64"
-
-# Mono repo svn location
-#MONO_ROOT = " svn+ssh://distro@mono-cvs.ximian.com/source"
-MONO_ROOT = " svn+ssh://wade@mono-cvs.ximian.com/source"
-
 
 # Set release base dir
 #  Must do at startup, opposed to doing this in a function
@@ -34,6 +28,12 @@ snapshot_sources_dir = packaging_dir + "/snapshot_sources"
 
 # smbclient password file
 smb_passfile = packaging_dir + "/.smbpass"
+
+# Mono repo svn location
+#MONO_ROOT = "svn://anonsvn.mono-project.com/source"
+#src_key_file = ""
+MONO_ROOT = "svn+ssh://distro@mono-cvs.ximian.com/source"
+src_key_file = packaging_dir + os.sep + "distro_source_key"
 
 # Url path from view of webserver
 web_root_url = ""

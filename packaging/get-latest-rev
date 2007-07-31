@@ -15,7 +15,7 @@ if len(sys.argv) < 2:
 
 package_name = sys.argv[1]
 
-repo = src_repo_utils.svn(config.MONO_ROOT)
+repo = src_repo_utils.svn(config.MONO_ROOT, key_file=config.src_key_file)
 
 pack = packaging.package("", package_name)
 
