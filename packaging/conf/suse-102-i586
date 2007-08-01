@@ -11,5 +11,5 @@ arch_change_path=/usr/bin/linux32
 # filed bug: https://bugzilla.novell.com/show_bug.cgi?id=264110
 
 # Repo conf
-USE_ZMD=1
-
+YAST_INSTALL=1
+RPM_MD_REPO=1

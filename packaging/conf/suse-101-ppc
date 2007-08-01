@@ -8,5 +8,5 @@ distro_aliases=(
         sles-10-ppc
 )
 
-USE_ZMD=1
-
+YAST_INSTALL=1
+RPM_MD_REPO=1

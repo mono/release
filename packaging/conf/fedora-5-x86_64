@@ -3,4 +3,5 @@ hostname=monobuild2.boston.ximian.com
 root_dir=/jails/fedora-5-x86_64
 chroot_path=/usr/bin/chroot
 
-USE_YUM=1
+YUM_INSTALL=1
+RPM_MD_REPO=1

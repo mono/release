@@ -926,11 +926,11 @@ This package contains all runtime Mono packages
 %setup -q -n mono-%{version}
 
 %build
-# What's this for?
-rm -f libgc/libtool.m4
-autoreconf --force --install
-autoreconf --force --install libgc
-export CFLAGS=" $RPM_OPT_FLAGS -DKDE_ASSEMBLIES='\"/opt/kde3/%{_lib}\"' -fno-strict-aliasing"
+# These are only needed if there are patches to the runtime
+#rm -f libgc/libtool.m4
+#autoreconf --force --install
+#autoreconf --force --install libgc
+#export CFLAGS=" $RPM_OPT_FLAGS -DKDE_ASSEMBLIES='\"/opt/kde3/%{_lib}\"' -fno-strict-aliasing"
 
 # From the buildbuddy config
 # This is set by default by autoconf, don't need it

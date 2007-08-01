@@ -40,20 +40,6 @@ os.chdir(base_dir)
 # Load up packages to include in repository (packages_in_repo)
 execfile(os.path.join(config.release_repo_root, 'website', 'repo-config', 'config.py') )
 
-shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/oc/distributions.xml', ".")
-shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/oc/server.conf', ".")
-shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/oc/channel.conf', ".")
-
-# OC config file substitution
-utils.substitute_parameters_in_file('server.conf', { 
-	'@BUNDLE_NAME@': bundle_conf.info['bundle_urlname'] 
-} )
-
-utils.substitute_parameters_in_file('channel.conf', { 
-	'@BUNDLE_NAME@': bundle_conf.info['bundle_urlname'], 
-	'@BUNDLE_DESC@': bundle_conf.info['bundle_desc']
-} )
-
 distro_objs = build.get_platform_objs()
 
 # TODO: maybe we should generate the repo data for all repo types for all distros... ?  That might be just confusing...
@@ -105,19 +91,10 @@ for distro_obj in distro_objs:
 
 
 		# Start creating repositories
-
-		if utils.get_dict_var('USE_OC', distro_obj.info):
-			if distro_obj.info.has_key('distro_aliases'):
-				DISTRO_STRING = ":".join([distro_obj.name] + distro_obj.info['distro_aliases'])
-			else:
-				DISTRO_STRING = distro_obj.name
-		
-			utils.append_text_to_files( {'channel.conf': 'AddDistro %s %s\n' % (DISTRO_STRING, distro_obj.name) } )
-
-		if utils.get_dict_var('USE_YUM', distro_obj.info) or utils.get_dict_var('USE_ZMD', distro_obj.info):
+		if utils.get_dict_var('RPM_MD_REPO', distro_obj.info):
 			os.system("createrepo " + distro_obj.name)
 
-			if utils.get_dict_var('USE_YUM', distro_obj.info):
+			if utils.get_dict_var('YUM_INSTALL', distro_obj.info):
 				shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/yum/mono.repo', distro_obj.name)
 
 				utils.substitute_parameters_in_file(distro_obj.name + os.sep + 'mono.repo', { 
@@ -138,7 +115,7 @@ for distro_obj in distro_objs:
 		#http://en.opensuse.org/SDB%3AGenerating_YaST_Installation_Sources
 			# Plain cache generated with genIS_PLAINcache in yast2-packagemanager package (also liby2util)
 			# REAL yast repo created with create_package_descr in autoyast2-utils package
-		if utils.get_dict_var('USE_YAST', distro_obj.info):# or utils.get_dict_var('USE_ZMD', distro_obj.info):
+		if utils.get_dict_var('YAST_REPO', distro_obj.info):
 			# The PLAINcache file is not cross platform... try a 'real' yast source
 			#os.system("cd %s; /home/wberrier/yast_install/bin/genIS_PLAINcache -f -r .; gzip IS_PLAINcache ;  cd - " % i)
 
@@ -181,30 +158,4 @@ for distro_obj in distro_objs:
 
 			os.chdir(current)
 			
-
-
-os.system("open-carpet")
-
-# Create hard links for rpms to redcarpet can find them? ... nope, modify xml
-
-# postprocess oc package xml files to change <filename> tag to contain 'arch' dir, 
-#  but I'm not sure what other side effects this might have (Joe confirmed this should work)
-for xmlfile in glob.glob("*/packageinfo.xml.gz"):
-	fd = gzip.GzipFile(xmlfile)
-	xml_text = fd.read()
-	fd.close()
-
-	xml_doc = xml.dom.minidom.parseString(xml_text)
-
-	for package_node in xml.xpath.Evaluate('/channel/subchannel/package', xml_doc.documentElement):
-		# Get arch value
-		arch = xml.xpath.Evaluate('arch/text()', package_node)[0].nodeValue
-
-		# Put arch in filename
-		filename_node = xml.xpath.Evaluate('history/update/filename/text()', package_node)[0]
-		filename_node.nodeValue = arch + os.sep + filename_node.nodeValue
-
-	fd = gzip.GzipFile(xmlfile, 'wb')
-	fd.write(xml_doc.toxml())
-	fd.close()
 

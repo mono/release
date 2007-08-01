@@ -6,6 +6,5 @@ target_command_prefix=". /etc/profile;"
 
 web_index=2
 
-USE_OC=1
-USE_YAST=1
-
+YAST_REPO=1
+YAST_INSTALL=1

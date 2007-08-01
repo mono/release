@@ -3,5 +3,5 @@ hostname=hardhat.boston.ximian.com
 root_dir=/jails/suse-100-i586/jail
 target_command_prefix=". /etc/profile;"
 
-USE_YAST=1
-
+YAST_REPO=1
+YAST_INSTALL=1

@@ -10,5 +10,5 @@ distro_aliases=(
         sled-10-x86_64
 )
 
-
-USE_ZMD=1
+YAST_INSTALL=1
+RPM_MD_REPO=1

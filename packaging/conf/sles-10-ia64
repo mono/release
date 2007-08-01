@@ -4,5 +4,5 @@ root_dir=/jails/sles-10-ia64
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"
 
-USE_ZMD=1
-
+YAST_INSTALL=1
+RPM_MD_REPO=1

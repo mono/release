@@ -7,5 +7,5 @@ build_location="/FS/fs0154/builder/tmp/monobuild"
 
 web_index=5
 
-USE_OC=1
-USE_YAST=1
+YAST_REPO=1
+YAST_INSTALL=1

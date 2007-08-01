@@ -33,37 +33,8 @@ def get_rpm_install(conf_obj, archive=False):
 	else:
 		distro_name = conf_obj.name
 
-	# Grab OC stuff from conf file
-	vars = {}
-	vars['OC_DOWNLOAD_URL'] = "ftp://ftp.ximian.com/pub/redcarpet2/%s" % distro_name
-	vars['OC_NOTES'] = ""
-	for i in "OC_NOTES OC_DOWNLOAD_URL YUM_NOTES".split():
-		if conf_obj.info.has_key(i):
-			vars[i] = conf_obj.info[i]
-
-	# Generate OC text
-	if utils.get_dict_var('USE_OC', conf_obj.info):
-		return_text += """
-		<p>
-		This distro supports installing Mono using Novell's Red Carpet.
-		If you do not already have Red Carpet, you can <a href='%s'>download</a> it.
-		%s
-		</p>
-
-		<p>To use Red Carpet, execute these commands:</p>
-
-		<xmp class='shell'>
-	rug sa http://%s%s/%s
-	rug sub mono-official-%s
-	rug in mono-complete gtk-sharp-complete
-		</xmp>
-
-		<p>Note: some versions of Red Carpet frequently have IOError timeouts.  This is a bug in Red Carpet.  If Red Carpet for your distro frequently has this problem, please use another installation method.</p>
-		""" % (vars['OC_DOWNLOAD_URL'], vars['OC_NOTES'], hostname_url, webroot_path, url_prefix, bundle_conf.info['bundle_urlname'])
-
-
 	# Generate Yum Text
-	if utils.get_dict_var('USE_YUM', conf_obj.info):
+	if utils.get_dict_var('YUM_INSTALL', conf_obj.info):
 		return_text += """
 		<p>
 		This distro supports installing packages via <tt>yum</tt>. Putting the
@@ -79,7 +50,7 @@ def get_rpm_install(conf_obj, archive=False):
 			</p>\n""" % vars['YUM_NOTES']
 
 	# Generate yast text
-	if utils.get_dict_var('USE_YAST', conf_obj.info) or utils.get_dict_var('USE_ZMD', conf_obj.info):
+	if utils.get_dict_var('YAST_INSTALL', conf_obj.info):
 		return_text += """
 		<p>
 		This distro supports installing packages via <tt>YaST</tt>.  Add the following installation
@@ -91,17 +62,6 @@ def get_rpm_install(conf_obj, archive=False):
 		<p>For assistance with using repositories and installing packages with YaST, visit this link: 
 		<a href="http://en.opensuse.org/Add_Package_Repositories_to_YaST">[1]</a>
                 </p>\n""" % (hostname_url, webroot_path, url_prefix, conf_obj.name)
-
-
-	# TODO: Generate zmd text
-	# Hmm... zmd can use all of the above sources...
-	if utils.get_dict_var('USE_ZMD', conf_obj.info):
-		pass
-
-		#Only select one category, since they're all valid.
-		#if OC
-		#elif yum,
-		#elif yast
 
 	return return_text
 

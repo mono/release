@@ -11,5 +11,5 @@ env="PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig"
 # so that xgettext would work for make dist for mono-tools, 
 # filed bug: https://bugzilla.novell.com/show_bug.cgi?id=264110
 
-USE_ZMD=1
-
+YAST_INSTALL=1
+RPM_MD_REPO=1

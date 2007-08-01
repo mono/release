@@ -5,5 +5,5 @@ chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"
 
 # Repo conf
-USE_YAST=1
-
+YAST_REPO=1
+YAST_INSTALL=1

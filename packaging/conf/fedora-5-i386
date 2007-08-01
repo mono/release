@@ -5,4 +5,5 @@ root_dir=/jails/fedora-5-i386
 chroot_path=/usr/bin/chroot
 arch_change_path=/usr/bin/linux32
 
-USE_YUM=1
+YUM_INSTALL=1
+RPM_MD_REPO=1

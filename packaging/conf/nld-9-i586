@@ -4,5 +4,5 @@ root_dir=/jails/nld-9-i586-root-0/jail
 
 target_command_prefix=". /etc/profile;"
 
-USE_OC=1
-USE_YAST=1
+YAST_REPO=1
+YAST_INSTALL=1

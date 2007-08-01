@@ -3,5 +3,5 @@ hostname=monobuild2.boston.ximian.com
 root_dir=/jails/nld-9-x86_64-root-0/jail
 chroot_path=/usr/bin/chroot
 
-USE_OC=1
-USE_YAST=1
+YAST_REPO=1
+YAST_INSTALL=1
