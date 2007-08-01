@@ -1,0 +1,16 @@
+prefix=/mono
+cvs=/cvs
+
+apiinfo="mono $cvs/cecil/corcompare/mono-api-info.exe"
+
+base2=$prefix/lib/mono/2.1
+base3=$prefix/lib/mono/3.0
+
+mkdir mine || true
+cp $base3/agclr.dll $base2/mscorlib.dll $base2/System.Core.dll $base2/System.dll $base3/System.Silverlight.dll $base2/System.Xml.Core.dll mine
+
+for i in ./mine/*dll; do
+	echo Processing: $i
+	$apiinfo $i > `basename $i`.mono
+done
+

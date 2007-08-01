@@ -1,0 +1,10 @@
+cvs=/cvs
+cd 11r
+apiinfo="mono $cvs/cecil/corcompare/mono-api-info.exe"
+
+for a in agclr.dll Microsoft.JScript.Compiler.dll Microsoft.JScript.Runtime.dll mscorlib.dll System.Core.dll system.dll System.Silverlight.dll System.Xml.Core.dll; do
+	echo Processing: $a
+	$apiinfo ./$a > ../$a.source
+done
+
+mv ../system.dll.source ../System.dll.source
