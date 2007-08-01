@@ -72,7 +72,7 @@
 	
 <h2>Runtime</h2>
 
-	<p>AOT is now supported for 2.0 assemblies (although generic
+	<p>AOT now provides some support for 2.0 assemblies (although generic
 	calls are still not pre-compiled) [Zoltan].
 
 	<p>Devirtualization optimization for sealed classes and
@@ -83,27 +83,25 @@
 
 	<p><a
 	href="http://bugzilla.ximian.com/show_bug.cgi?id=81663">Invocation
-	of non-multicast delegate</a> methods has been increased by
+	speed of non-multicast delegate</a> methods has been increased by
 	calling directly into the delegate, this improves IronPython
-	2.0 (pystone) performance by 25% [Zoltan Varga].  Thanks to
-	Dino Viehland from the IronPython team for pointing out the
-	optimization.
+	2.0 (pystone) performance by 25% [Zoltan Varga].
 
 	<p>Math.Min and Math.Max are now inlined for signed integers
 	and String.OrdinalCompare has been tuned to use these, which
 	results in a 2-3% performance increase in running PyStone with
 	IronPython. 
 
-	<p>The runtime will not poll in WaitHandles for local handles
-	that are sleeping (this is still done for process-shared
-	handles) [Dick Porter].
-
 	<p>Massi and Paolo implemented a mechanism that reduces
-	virtual table sizes (these tables were getting quite large
-	due to generics and some classes that implement many implicit
-	generic interfaces).    The most visible change is in
-	significant memory reduction for applications using generics
-	extensively. 
+	virtual table sizes for interface method invocations.
+	The most visible change is in significant memory reduction
+	for applications loading many interfaces (this happens for many 2.0
+	apps because of the many additional interfaces arrays implement).
+
+	<p>Optimized double to int conversions using SSE2 on x86 [Paolo Molaro].
+
+	<p>Implemented proper caching of generic methods (provides a very large
+	speedup for virtual generic method invocations) [Paolo Molaro].
 
 <h2>Security</h2>
 
