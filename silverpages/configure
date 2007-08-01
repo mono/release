@@ -7,6 +7,7 @@ while test x$1 != x; do
 	case $1 in
 		--prefix=*)
 		prefix=`echo $1 | sed 's/--prefix=//'`
+		shift;
 		;;
 
 		--help)
