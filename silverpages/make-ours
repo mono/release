@@ -1,7 +1,6 @@
-prefix=/mono
-cvs=/cvs
+. config
 
-apiinfo="mono $cvs/cecil/corcompare/mono-api-info.exe"
+apiinfo="mono mono-api-info.exe"
 
 base2=$prefix/lib/mono/2.1
 base3=$prefix/lib/mono/3.0

@@ -1,8 +1,10 @@
-all: config mscorlib.dll.source 
-	echo "Use make cycle (best), make regen, make push or make update-source"
+all: config cm mscorlib.dll.source regen
 
 config:
 	@if test -f config; then echo OK; else echo Please run configure; exit 1; fi
+
+cm:
+	svn co svn://anonsvn.mono-project.com/source/trunk/mono/web/web/deploy/cm cm
 
 mscorlib.dll.source:
 	wget http://mono.ximian.com/masterinfos/sl11rjuly-full.tar.gz

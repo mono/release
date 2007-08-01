@@ -1,0 +1,41 @@
+#!/bin/sh
+
+prefix=/mono
+cvs=/cvs
+
+while test x$1 != x; do
+	case $1 in
+		--prefix=*)
+		prefix=`echo $1 | sed 's/--prefix=//'`
+		;;
+
+		--help)
+		echo "Use the --prefix=DIR to specify where your Moonlight is configured"
+		exit 0
+		;;
+	esac
+done
+
+dtest()
+{
+	if test -d $1; then echo Directory $1 OK; else echo Direcotry $1 not found; exit 1; fi
+}
+
+ftest()
+{
+	if test -f $1; then echo File $1 OK; else echo File $1 not found; exit 1; fi
+}
+
+dtest $prefix/lib/mono/2.1
+dtest $prefix/lib/mono/3.0
+
+echo prefix=$prefix > config
+
+make cm
+make mscorlib.dll.source
+
+echo ""
+echo "Configured"
+echo ""
+echo "    prefix=$prefix"
+echo ""

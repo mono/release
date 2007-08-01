@@ -1,11 +1,13 @@
+. config
 rm -rf output
 mkdir output || true
-cp -a /cvs/mono/web/web/deploy/cm output/
+cp -a cm output
 cp output/cm/cormissing* output/
 
 echo "<html><body>" > output/index.html
 
 for i in *.mono; do
+	echo Generating status page for $i
 	b=`basename $i .mono`
 	o=$b.diff
 	mono /cvs/cecil/corcompare/mono-api-diff.exe `basename $i .mono`.source $i > $o
