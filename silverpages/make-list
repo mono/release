@@ -10,8 +10,8 @@ for i in *.mono; do
 	echo Generating status page for $i
 	b=`basename $i .mono`
 	o=$b.diff
-	mono /cvs/cecil/corcompare/mono-api-diff.exe `basename $i .mono`.source $i > $o
-	mono /cvs/cecil/corcompare/transform.exe $o mono-api.xsl > output/$b.html
+	mono mono-api-diff.exe `basename $i .mono`.source $i > $o
+	mono transform.exe $o mono-api.xsl > output/$b.html
 	echo "<p>Assembly: <a href=\"$b.html\">$b</a>" >> output/index.html
 done
 echo "</body></html>" >> output/index.html
