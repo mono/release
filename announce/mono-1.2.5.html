@@ -20,7 +20,7 @@
 <h1>Mono 1.2.5 Release, 2007</h1>
 
 	<p>Mono 1.2.5 is an update to <a
-	href="http://www.go-mono.com/archive/1.2.3">Mono 1.2.4</a> in
+	href="http://www.go-mono.com/archive/1.2.4">Mono 1.2.4</a> in
 	the <a href="http://www.go-mono.com/archive/1.2">Mono 1.2
 	series</a>, it is a bug fix release for all the supported
 	components, but also includes updates on the 2.0 stack.
@@ -51,7 +51,8 @@
 	
 <h2>C# Compiler</h2>
 
-	<p>Scott Petterson implemented the following C# 3.0 features:
+	<p>Scott Petterson and Marek Safar implemented the following
+	C# 3.0 features:
 
 	<ul>
 	    <li>Variable type inference (the "var" keyword).
@@ -68,8 +69,8 @@
 	<p>The C# 3.0 support is enabled by passing the
 	-langversion:linq option to the compiler.   In addition to the
 	above the C# 3.0 compiler also supports: extension methods,
-	lambdas and anonymous method generic type inference. 
-	
+	lambdas and anonymous method generic type inference.
+
 <h2>Runtime</h2>
 
 	<p>AOT now provides some support for 2.0 assemblies (although generic
@@ -179,7 +180,7 @@
 	now expose Cairo 1.2 API entry points.   Application code
 	should call CairoAPI.Version to obtain the version and
 	determine if the needed features are available.
-	
+
 <h1>Contributors</h1>
 
 	Mike Morano, Stephen A. Jazdzewski, Sanghyeon Seo, Juraj
