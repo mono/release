@@ -3,8 +3,8 @@
 
 Name:           ikvm
 BuildRequires:  mono-core mono-devel unzip
-Version:        0.28.0.0
-Release:        14
+Version:        0.34.0.2
+Release:        1
 License:        BSD License and BSD-like
 BuildArch:      noarch
 URL:            http://www.ikvm.net

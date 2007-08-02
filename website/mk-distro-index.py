@@ -47,7 +47,7 @@ def get_rpm_install(conf_obj, archive=False):
 			return_text += """
 			<p>
 			%s
-			</p>\n""" % vars['YUM_NOTES']
+			</p>\n""" % conf_obj.info['YUM_NOTES']
 
 	# Generate yast text
 	if utils.get_dict_var('YAST_INSTALL', conf_obj.info):

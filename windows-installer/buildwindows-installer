@@ -56,7 +56,7 @@ import utils
 # Global constant type vars
 cwd = os.getcwd()
 
-installer_conf = packaging.buildconf('win-4-i386')
+installer_conf = packaging.buildconf('win-4-i386', skip_alternates=True)
 
 # Represents a selection in the installer
 class Selection:

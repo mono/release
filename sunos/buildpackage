@@ -47,7 +47,7 @@ debug=1
 def build_package(target):
 
 	
-	conf = packaging.buildconf(target)
+	conf = packaging.buildconf(target, skip_alternates=True)
 
 	remote_temp = "/tmp/packaging"
 	remote_root = remote_temp + os.sep + "root"

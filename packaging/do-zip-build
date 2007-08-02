@@ -19,7 +19,7 @@ os.chdir('build')
 temp_build_dir = os.getcwd()
 
 # Load def info
-conf = packaging.buildconf(distro)
+conf = packaging.buildconf(distro, skip_alternates=True)
 pack_def = packaging.package(conf, package, inside_jail=True)
 
 
