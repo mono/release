@@ -437,7 +437,9 @@
 					<xsl:element name="img">
 						<xsl:attribute name="src">cm/se.gif</xsl:attribute>
 						<xsl:attribute name="class">t</xsl:attribute>
-						<xsl:attribute name="title"><xsl:call-template name="warning-hover" /></xsl:attribute>
+						<xsl:attribute name="alt"><xsl:call-template name="warning-hover" /></xsl:attribute>
+						<xsl:attribute name="onmouseover">showHover (this);</xsl:attribute>
+						<xsl:attribute name="onmouseout">hideHover ();</xsl:attribute>
 					</xsl:element>
 				</xsl:when>
 				<xsl:when test="@error = 'todo'">

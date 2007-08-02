@@ -2,7 +2,7 @@
 rm -rf output
 mkdir output || true
 cp -a cm output
-cp output/cm/cormissing* output/
+cp cormissing* output/
 
 echo "<html><body>" > output/index.html
 
