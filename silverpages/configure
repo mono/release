@@ -19,7 +19,7 @@ done
 
 dtest()
 {
-	if test -d $1; then echo Directory $1 OK; else echo Direcotry $1 not found; exit 1; fi
+	if test -d $1; then echo Directory $1 OK; else echo Directory $1 not found; exit 1; fi
 }
 
 ftest()
