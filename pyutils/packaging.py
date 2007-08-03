@@ -33,10 +33,8 @@ class buildconf:
 		#  (This is so that these classes can be used in /tmp on remote machines)
 		if os.path.exists(conf_file_name) and os.path.isfile(conf_file_name):
 			conf_dir = ""
-			check_alternates = False
 		else:
 			conf_dir = os.path.join(config.packaging_dir, 'conf')
-			check_alternates = True
 
 		lock_dir = os.path.join(config.packaging_dir, 'status')
 
@@ -76,10 +74,6 @@ class buildconf:
 			# Set up the object
 			self.buildenv = buildenv.buildenv(**buildenv_args)
 
-			# Don't check for redundance buildenvs when inside the buildenv
-			if not check_alternates:
-				break
-
 			if exclusive:
 				if not self.buildenv.is_locked():
 					# Grab lock, and use it
@@ -88,7 +82,7 @@ class buildconf:
 					found = True
 					break
 			else:
-				# We don't care about the lock
+				# We don't care about the lock or alternates
 				found = True
 				break
 
