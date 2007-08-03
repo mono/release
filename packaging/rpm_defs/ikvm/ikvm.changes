@@ -2,6 +2,11 @@
 Wed Aug  1 16:16:25 CET 2007 - wberrier@novell.com
 
 - Update to 0.34.0.2
+ -Updated GNU Classpath
+ -Java 1.6 updates
+ -Several bugfixes
+ -class coverage improvements
+ -Interface enhancements
 
 -------------------------------------------------------------------
 Wed Apr 11 16:16:25 CET 2007 - wberrier@novell.com

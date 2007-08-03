@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Aug  3 19:18:49 CEST 2007 - wberrier@suse.de
+
+- Update to 1.2.5
+ -Documentation updates to match mono 1.2.5
+ -several improvements and fixes to 'monodocer' utility
+
+-------------------------------------------------------------------
 Wed Jun  6 17:53:53 MST 2007 - wberrier@novell.com
 
 - Update to 1.2.4

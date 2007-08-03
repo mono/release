@@ -2,9 +2,9 @@
 # norootforbuild
 
 Name:           ikvm
-BuildRequires:  mono-core mono-devel unzip
-Version:        0.34.0.2
-Release:        1
+BuildRequires:  mono-core mono-devel unzip dos2unix
+Version:	0.34.0.2
+Release:	0.novell
 License:        BSD License and BSD-like
 BuildArch:      noarch
 URL:            http://www.ikvm.net
@@ -39,6 +39,8 @@ Authors:
 %setup -q
 # For some reason this file is outside the source dir...
 cp ../LICENSE .
+# fix line endings for rpmlint
+dos2unix LICENSE
 
 %build
 true
