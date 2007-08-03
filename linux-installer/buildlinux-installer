@@ -172,7 +172,7 @@ for url in external_rpms_list + custom_rpms_list:
 # Collect local rpm files
 for selection in local_rpms:
 
-	conf = packaging.buildconf(selection['name'], skip_alternates=True)
+	conf = packaging.buildconf(selection['name'], exclusive=False)
 
 	for pack in selection['packages']:
 		pack_obj = packaging.package(conf, pack)

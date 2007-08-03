@@ -31,7 +31,7 @@ else:
 		action_options = sys.argv[3:]
 
 
-conf = packaging.buildconf(env_name, skip_alternates=True)
+conf = packaging.buildconf(env_name, exclusive=False)
 conf.buildenv.print_output=True
 
 if   action == "login":

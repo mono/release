@@ -9,17 +9,17 @@ Also very handy for installer scripts
 import os
 import socket
 import distutils.dir_util
-import shutil
-import glob
 import tempfile
 import getpass
 
 import config
-import network
+import remote_shell
 import utils
 import logger
 
 import pdb
+
+debug = False
 
 class buildenv:
 
@@ -81,10 +81,10 @@ class buildenv:
 
 		# initialize objects for later
 		self.modes = {}
-		self.modes['ssh'] = network.ssh(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
-		self.modes['scp'] = network.scp(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
-		self.modes['smbclient'] = network.smbclient(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
-		self.modes['local'] = local(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
+		self.modes['ssh'] = remote_shell.ssh(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
+		self.modes['scp'] = remote_shell.scp(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
+		self.modes['smbclient'] = remote_shell.smbclient(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
+		self.modes['local'] = remote_shell.local(username=username, hostname=hostname, env=self.env, my_logger=my_logger)
 
 		self.logger = my_logger
 
@@ -95,6 +95,9 @@ class buildenv:
 
 		# Set flag so we don't copy over and over for execute_command
 		self.exec_util_files_copied = False
+
+		# Keep track of dirs we create so it doesn't get done over and over
+		self.created_dest_dirs = {}
 
 		# empty logger to use at various places
 		self.empty_logger = logger.Logger(config.devnull, print_screen=0)
@@ -213,6 +216,8 @@ class buildenv:
 		args['working_dir'] = working_dir
 		args['interruptable'] = interruptable
 
+		if debug: print "* Executing code: " + code
+
 		command = "%s %s" % (interpreter, self.build_location + os.sep + file_basename)
 		code, output = self.execute_command(command, **args)
 
@@ -227,7 +232,11 @@ class buildenv:
 		if not mode:
 			mode = self.exec_mode
 
-		return self.modes[mode].make_path(self.root_dir + dir)
+		# Add to the list if it's not there
+		if not self.created_dest_dirs.has_key(dir):
+			self.created_dest_dirs[dir] = self.modes[mode].make_path(self.root_dir + dir)
+
+		return self.created_dest_dirs[dir]
 
         def remove_path(self, dir):
 		"""Remove a path.  Since no internal functions depend on this, it can be a higher layer function"""
@@ -245,6 +254,10 @@ if os.path.exists(path):
 	else:
 		os.unlink(path)
 """ % dir
+
+		# Remove from listing so if we try to create again, it doesn't get skipped
+		if self.created_dest_dirs.has_key(dir):
+			self.created_dest_dirs.pop(dir)
 
 		return self.execute_code(remove_path_code, interpreter=self.env['python_path'], interruptable=False)
 
@@ -411,76 +424,9 @@ if not os.path.exists(path):
 	def offline(self):
 
 		# Run some arbitrary command that will always return true
-		(code, output) = self.execute_command("ls", my_logger=self.empty_logger, interruptable=False)
+		(code, output) = self.execute_code("print 'online'", interpreter=self.env['python_path'], my_logger=self.empty_logger, interruptable=False)
 
 		if code: return 1
 		else:    return 0
 
 
-class local:
-	"""Class implementing the same interface as a network object, but the jail or machine is on the host machine"""
-
-	def __init__(self, username, hostname, env="", my_logger=""):
-                self.username = username
-                self.hostname = hostname
-                self.logger = my_logger
-
-	def login(self, command):
-
-		os.system(command)
-
-	def execute_command(self, command, my_logger=""):
-
-		if not my_logger:
-			my_logger = self.logger
-
-		# TODO: execute this under a new pgid so only it gets killed, not us all
-		# check http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66012
-		# Or, put that code in the utils.launch_process routine, which would make it more robust
-		return utils.launch_process(command, my_logger=my_logger)
-
-	# For local copyings, you can use the same commands (scp, tar), just not over ssh (scp?)
-	# TODO: But how to know what to use... scp or tar, because they behave differently
-	# (could add a parameter to the copy to/from definition to distinguish between the two, if this
-	#  becomes necessary)
-	# difference: # Note: tar mode appends src path of file to dest (just the way tar works)"""
-	# tar mode handles symbolic links and preserving time stamps, unlike scp.
-
-        def copy_to(self, src, dest, compress=True, my_logger=""):
-		results = []
-		# Glob each of the src filesnames to allow wildcards
-		new_src = []
-		for i in src:
-			new_src += glob.glob(i)
-		src = new_src
-
-		for i in src:
-
-			# Don't copy if src and dest are the same (really for execute_code)
-			if os.path.abspath(os.path.normpath(i)) == os.path.abspath(os.path.normpath(dest + os.sep + os.path.basename(i))):
-				pass
-			elif os.path.isdir(i):
-				# add basename of the src to dest
-				#  This is to match behavior of scp
-				temp_dest = dest + os.sep + os.path.basename(i)
-				results += distutils.dir_util.copy_tree(i, temp_dest, preserve_symlinks=True)
-			else:
-				shutil.copy2(i, dest)
-				results += [dest + os.sep + i]
-
-		return 0, "\n".join(results)
-
-        def copy_from(self, src, dest, compress=True, my_logger=""):
-		""" No need to duplicate this, since we're on a local machine, use the same method"""
-		return self.copy_to(src, dest, compress=compress, my_logger=my_logger)
-
-	def make_path(self, dir):
-		"""Create a path"""
-
-		error = 0
-		try:
-			distutils.dir_util.mkpath(dir)
-			os.chmod(dir, 0777)
-		except:
-			error = 1
-		return error

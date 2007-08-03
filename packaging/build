@@ -151,6 +151,7 @@ else:
 sources += snapshot_sources
 source_file = sources[0]
 
+# This will grab an exclusive lock and fail if it can't
 conf = packaging.buildconf(distro)
 package = packaging.package(conf, package_name, HEAD_or_RELEASE=HEAD_or_RELEASE)
 
@@ -166,14 +167,8 @@ else:
 # check to see if this package is a valid build
 if not package.valid_build_platform(distro):
 	print "%s is not in BUILD_HOSTS" % distro
+	conf.buildenv.unlock_env()
 	sys.exit(3)
-
-
-if conf.buildenv.is_locked():
-	print "%s jail is busy" % distro
-	sys.exit(2)
-
-conf.buildenv.lock_env()
 
 # Set signal handler
 def keyboard_interrupt(signum, frame):
@@ -276,7 +271,7 @@ temp_build_dir = conf.env_vars['build_location'] + os.sep + 'build'
 if conf.get_info_var('USE_ZIP_PKG'):
 	# do-zip-build deps...
 	# Yikes... this dep list is getting big, ugh
-	for f in "config.py utils.py buildenv.py network.py logger.py packaging.py shell_parse.py".split():
+	for f in "config.py utils.py buildenv.py remote_shell.py logger.py packaging.py shell_parse.py".split():
 		support_files_to_copy += ['../pyutils/' + f]
 	for f in aliases:
 		files_to_copy += ['defs/' + f]

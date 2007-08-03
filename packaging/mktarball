@@ -72,13 +72,8 @@ else:
 log_obj.log("Sources path: %s\n" % package_obj.source_fullpath)
 log_obj.log("Using distro: %s\n" % distro)
 
+# This will also grab an exclusive lock, and fail if it can't
 conf = packaging.buildconf(distro, my_logger=log_obj)
-
-if conf.buildenv.is_locked():
-	log_obj.log("%s jail is busy\n" % distro )
-	sys.exit(2)
-
-conf.buildenv.lock_env()
 
 # Update tarball status to "inprogress"
 repo.add_file(HEAD_or_RELEASE, package, version, "inprogress")
@@ -103,7 +98,7 @@ for f in package_obj.get_aliases():
 	files_to_copy += ['defs/' + f ]
 
 support_files_to_copy = []
-for i in 'buildenv.py config.py logger.py network.py packaging.py shell_parse.py utils.py'.split():
+for i in 'buildenv.py config.py logger.py remote_shell.py packaging.py shell_parse.py utils.py'.split():
 	support_files_to_copy += ['../pyutils/' + i]
 
 # This command also creates the dest dir

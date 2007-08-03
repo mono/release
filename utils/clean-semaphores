@@ -19,7 +19,7 @@ if distros == ["all"]:
 	distros = map(os.path.basename, glob.glob("../packaging/conf/*-*-*"))
 
 for distro in distros:
-	conf = packaging.buildconf(os.path.basename(distro))
+	conf = packaging.buildconf(os.path.basename(distro), exclusive=False)
 	conf.buildenv.copy_to('do-clean-semaphores', '/tmp')
 	# exec_as_root probably isn't portable...
 	#conf.buildenv.execute_command('/tmp/do-clean-semaphores', exec_as_root=1)

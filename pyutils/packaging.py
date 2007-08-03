@@ -17,8 +17,8 @@ import shell_parse
 
 class buildconf:
 
-	def __init__(self, conf_file_name, my_logger="", skip_alternates=False):
-		"""skip_alternates is for times like jail-do, where I don't care if the jail is locked or not"""
+	def __init__(self, conf_file_name, my_logger="", exclusive=True):
+		"""exclusive=False is for times like jail-do, where I don't care if the jail is locked or not"""
 
 		# Parse out name and counter (alternate)
 		parts = conf_file_name.split('-')
@@ -43,6 +43,8 @@ class buildconf:
 		# Construct arguments
 		buildenv_args = {}
 		buildenv_args['my_logger'] = my_logger
+
+		found = False
 
 		# Find a buildenv that isn't locked
 		while True:
@@ -78,13 +80,25 @@ class buildconf:
 			if not check_alternates:
 				break
 
-			if skip_alternates or self.buildenv.offline() or not self.buildenv.is_locked():
-				# we're done, use that buildenv
+			if exclusive:
+				if not self.buildenv.is_locked():
+					# Grab lock, and use it
+					self.buildenv.lock_env()
+					# we're done, use that buildenv
+					found = True
+					break
+			else:
+				# We don't care about the lock
+				found = True
 				break
 
 			counter += 1
 
 			print "Checking alternate %d" % counter
+
+		if not found:
+			print "Could not get exclusive lock on %s or alternates" % self.name
+			sys.exit(2)
 
 
 	def load_configured_info(self):
