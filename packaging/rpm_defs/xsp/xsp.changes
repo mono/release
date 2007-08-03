@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Aug  3 18:09:29 CEST 2007 - wberrier@suse.de
+
+- Update to 1.2.5
+ -More robust exception handling
+ -Fixed permissions bits for non executable scripts
+ -virtual host support
+ -New Documentation for Mono.WebServer
+ -Improved event handling
+
+-------------------------------------------------------------------
 Tue Jun  5 17:18:53 MST 2007 - wberrier@novell.com
 
 - Remove unnecessary path defines (prefix, sysconfdir)

@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Fri Aug  3 16:47:05 CEST 2007 - wberrier@suse.de
+
+- Update to 1.2.5
+ -Internal Cairo updated to 1.4.6
+ -header, types and enums names are now much closer to MS GDI+
+ -support for 2bpp PNG and fixes for 4bpp PNG image palettes
+ -support for interlaced GIF bitmaps
+ -support for ColorMatrixFlag and Gray ColorMatrix in ImageAttributes
+ -Implemented GdipDrawImagePointsRect[I] functions
+ -Multiple printing fixes (e.g. text size/position)
+- Add libexif buildrequires
+
+-------------------------------------------------------------------
 Fri Jul  6 00:02:51 CEST 2007 - wberrier@suse.de
 
 - Fix cairo build (new compiler?) withe ctype patch

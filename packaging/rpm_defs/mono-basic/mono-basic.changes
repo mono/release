@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Aug  3 19:07:32 CEST 2007 - wberrier@suse.de
+
+- Update to 1.2.5
+ -support for late binding in vbnc (Option Strict Off and Option  
+  Explicit Off).
+ -several bugfixes in vbnc, and vbruntime
+ -error reporting is somewhat better now (now possible to get line 
+  numbers in stack traces)
+
+-------------------------------------------------------------------
 Tue Jun  5 17:18:53 MST 2007 - wberrier@novell.com
 
 - Build vbnc instead of shipping from binary

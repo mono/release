@@ -2,8 +2,8 @@
 # norootforbuild
 
 Name:           libgdiplus
-Version:        1.2.4
-Release:        0
+Version:	1.2.5
+Release:	0
 Vendor:         Novell, Inc.
 License:        GPL
 URL:            http:/www.go-mono.com
@@ -19,9 +19,13 @@ Provides:	libgdiplus-devel
 %if 0%{?suse_version}
 
 # Common requires for suse distros
-BuildRequires: libjpeg-devel libtiff-devel libpng-devel glib2-devel fontconfig-devel freetype2-devel
+BuildRequires: libjpeg-devel libtiff-devel libpng-devel glib2-devel fontconfig-devel freetype2-devel libexif
 
-%if %suse_version >= 1020
+%if %suse_version >= 1030
+BuildRequires:  giflib-devel xorg-x11-libXrender-devel xorg-x11-libSM-devel libexif-devel
+%endif
+
+%if %suse_version == 1020
 BuildRequires:  giflib-devel xorg-x11-libXrender-devel xorg-x11-libSM-devel
 %endif
 
@@ -48,7 +52,7 @@ BuildRequires:  libungif XFree86-devel pkgconfig
 %if 0%{?fedora_version} || 0%{?rhel_version}
 
 # All fedora distros have the same names, requirements
-BuildRequires: libungif-devel libjpeg-devel libtiff-devel libpng-devel glib2-devel fontconfig-devel libXrender-devel libXt-devel
+BuildRequires: libungif-devel libjpeg-devel libtiff-devel libpng-devel glib2-devel fontconfig-devel libXrender-devel libXt-devel libexif-devel
 
 %endif
 

@@ -3,11 +3,11 @@
 
 Name:           mono-core
 License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL)
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 URL:            http://go-mono.org/
-Version:        1.2.4
-Release:        11
+Version:	1.2.5
+Release:	5.novell
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
 
@@ -218,7 +218,7 @@ fi
 
 %package -n mono-jscript
 Summary:        JScript .NET support for Mono
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 
 %description -n mono-jscript
@@ -244,7 +244,7 @@ Authors:
 %_prefix/lib/mono/2.0/Microsoft.JScript.dll
 %package -n mono-locale-extras
 Summary:        Extra locale information
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 
 %description -n mono-locale-extras
@@ -281,7 +281,7 @@ Authors:
 %_prefix/lib/mono/2.0/I18N.Other.dll
 %package -n mono-data
 Summary:        Database connectivity for Mono
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Obsoletes:      mono-ms-enterprise
 Obsoletes:      mono-novell-directory
@@ -338,7 +338,7 @@ Authors:
 %_prefix/lib/mono/2.0/System.Transactions.dll
 %package -n mono-winforms
 Summary:        Mono's Windows Forms implementation
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Provides:       mono-window-forms
 Obsoletes:      mono-window-forms
@@ -377,7 +377,7 @@ Authors:
 %_prefix/lib/mono/2.0/System.Drawing.Design.dll
 %package -n ibm-data-db2
 Summary:        Database connectivity for DB2
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 
 %description -n ibm-data-db2
@@ -404,7 +404,7 @@ Authors:
 %_prefix/lib/mono/1.0/IBM.Data.DB2.dll
 %package -n mono-extras
 Summary:        Extra packages
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Obsoletes:      mono-ms-extras
 Provides:	mono-ms-extras
@@ -453,7 +453,7 @@ Authors:
 %_prefix/lib/mono/2.0/Microsoft.Vsa.dll
 %package -n mono-data-sqlite
 Summary:        Database connectivity for Mono
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Requires:       mono-data == %version-%release
 # TODO: Disable this, until a better solution is found
@@ -488,7 +488,7 @@ Authors:
 %_prefix/lib/mono/2.0/Mono.Data.Sqlite.dll
 %package -n mono-data-sybase
 Summary:        Database connectivity for Mono
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Requires:       mono-data == %version-%release
 
@@ -517,7 +517,7 @@ Authors:
 %_prefix/lib/mono/2.0/Mono.Data.SybaseClient.dll
 %package -n mono-web
 Summary:        Mono implementation of ASP.NET, Remoting and Web Services
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Obsoletes:      mono-web-forms
 Obsoletes:      mono-web-services
@@ -584,7 +584,7 @@ Authors:
 %config /etc/mono/2.0/web.config
 %package -n mono-data-oracle
 Summary:        Database connectivity for Mono
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Requires:       mono-data == %version-%release
 
@@ -613,7 +613,7 @@ Authors:
 %_prefix/lib/mono/2.0/System.Data.OracleClient.dll
 %package -n mono-data-postgresql
 Summary:        Database connectivity for Mono
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Requires:       mono-data == %version-%release
 
@@ -642,7 +642,7 @@ Authors:
 %_prefix/lib/mono/2.0/Npgsql.dll
 %package -n bytefx-data-mysql
 Summary:        Database connectivity for Mono
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Requires:       mono-data == %version-%release
 
@@ -671,13 +671,13 @@ Authors:
 %_prefix/lib/mono/2.0/ByteFX.Data.dll
 %package -n mono-nunit
 Summary:        NUnit Testing Framework
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 # No idea why this Requires is here... removing (bnc #210224)
 #Requires:       glib2-devel
 %package -n mono-data-firebird
 Summary:        Database connectivity for Mono
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Requires:       mono-data == %version-%release
 
@@ -734,7 +734,7 @@ Authors:
 %_libdir/pkgconfig/mono-nunit.pc
 %package -n mono-devel
 Summary:        Mono development tools
-Group:          Development/Languages/Other
+Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Requires:       glib2-devel
 
@@ -930,11 +930,8 @@ This package contains all runtime Mono packages
 #rm -f libgc/libtool.m4
 #autoreconf --force --install
 #autoreconf --force --install libgc
-#export CFLAGS=" $RPM_OPT_FLAGS -DKDE_ASSEMBLIES='\"/opt/kde3/%{_lib}\"' -fno-strict-aliasing"
 
-# From the buildbuddy config
-# This is set by default by autoconf, don't need it
-#export CFLAGS="$CFLAGS -O2"
+export CFLAGS=" $RPM_OPT_FLAGS -DKDE_ASSEMBLIES='\"/opt/kde3/%{_lib}\"' -fno-strict-aliasing"
 
 # distro specific configure options
 %{?configure_options}

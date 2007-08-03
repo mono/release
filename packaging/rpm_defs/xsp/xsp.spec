@@ -6,8 +6,8 @@ URL:            http://go-mono.com/
 License:        GNU General Public License (GPL)
 Group:          Productivity/Networking/Web/Servers
 Autoreqprov:    on
-Version:        1.2.4
-Release:        1
+Version:        1.2.5
+Release:        0
 Summary:        Small Web Server Hosting ASP.NET
 Source:         %{name}-%{version}.tar.bz2
 #Patch:        xsp-libexecdir.patch

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Aug  3 18:21:18 CEST 2007 - wberrier@suse.de
+
+- Update to 1.2.5
+ -Error logging
+ -support for ServerAlias directive
+
+-------------------------------------------------------------------
 Tue Jun 05 17:25:12 MST 2007 - wberrier@novell.com
 
 - Update to 1.2.4

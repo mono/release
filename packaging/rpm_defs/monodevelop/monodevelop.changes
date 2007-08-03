@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Fri Aug  3 21:20:14 CEST 2007 - wberrier@suse.de
+
+- Remove upstream monodevelop-rename_ja_JP.patch
+- Update to 0.15
+ -Configurable keybindings
+ -Output pad pinning
+ -Makefile integration
+ -Standard header support for source files
+ -Localization add-in preview
+ -Text editor improvements
+ -Updated gtk# designer (support for gtk# 2.8 and 2.10 widgets)
+ -Assembly signing
+ -Message log for internal messages
+ -More than 60 bugs fixed
+
+-------------------------------------------------------------------
 Thu Jun 14 17:08:53 MST 2007 - wberrier@novell.com
 
 - Put ja_JP locale files in valid location 

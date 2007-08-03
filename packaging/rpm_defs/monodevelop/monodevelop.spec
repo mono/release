@@ -10,8 +10,8 @@ URL:            http://www.go-mono.com/
 License:        GNU General Public License (GPL)
 Group:          Development/Languages/Other
 Autoreqprov:    on
-Version:        0.14
-Release:        1
+Version:	0.15
+Release:	1.novell
 Summary:        A Full-Featured IDE for Mono and Gtk#
 Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

@@ -2,8 +2,8 @@
 # norootforbuild
 
 Name:           IPCE
-Version:        r5
-Release:        1
+Version:	r6
+Release:	0.novell
 License:        Freely Redistributable Software (FSR)
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -76,6 +76,9 @@ done
 for i in lib/IPCE/Lib/cgi.py lib/IPCE/Lib/Crypto/Util/RFC1751.py ; do
         sed -i "s/\/usr\/local\/bin\/python/\/usr\/bin\/python/" ${RPM_BUILD_ROOT}/usr/$i
 done
+
+# New in r6 (oops, they must have missed this in their source tarball)
+find ${RPM_BUILD_ROOT} -name .svn | xargs rm -Rf
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"

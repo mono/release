@@ -9,7 +9,7 @@ BuildRequires:  mono-biarchcompat
 URL:            http://gtk-sharp.sf.net
 License:        GNU General Public License (GPL), GNU Library General Public License v. 2.0 and 2.1 (LGPL)
 Group:          System/GUI/GNOME
-Release:        52
+Release:	1.suse102.novell
 Summary:        .Net Language Bindings for GTK+
 Patch0:         gtk-sharp-optflags.patch
 Patch1:		gtk-sharp-revert_unportable_relocatable.patch
@@ -20,7 +20,7 @@ Patch5:		gnome-sharp-revert_unportable_relocatable.patch
 
 %define old_version 2.4.3
 %define new_version 2.8.3
-%define new_split_version 2.10.1
+%define new_split_version 2.10.2
 
 %define platform_desktop_split 0
 
@@ -28,7 +28,7 @@ Patch5:		gnome-sharp-revert_unportable_relocatable.patch
 %if 0%{?suse_version}
 
 ## which gtk version ###
-%if %suse_version > 930
+%if %suse_version >= 1000
 %define _version %new_version
 %else
 %define _version %old_version
@@ -43,7 +43,6 @@ Patch5:		gnome-sharp-revert_unportable_relocatable.patch
 #%define gtkhtml_requires gtkhtml2
 
 %define new_suse_buildrequires librsvg-devel mono-devel vte-devel gnome-panel-devel  monodoc-core update-desktop-files
-%define old_suse_buildrequires librsvg-devel mono-devel vte-devel pkgconfig pango-devel gtk2-devel libxml2-devel libart_lgpl-devel libgnomecanvas-devel libgnomeui libgnomeui-devel  libglade2-devel libxslt-devel libgsf-devel libgnomeprint-devel libgnomeprintui-devel popt-devel esound-devel freetype2-devel libbonoboui libgnome gnome-vfs2 libgnomeprint libgnomeprintui monodoc-core gnome-panel-devel update-desktop-files
 
 %if %suse_version >= 1020
 BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel
@@ -63,12 +62,6 @@ BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel
 %if %suse_version == 1000
 # vte for .config resolution...
 BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel vte
-%endif
-
-%if %suse_version == 930
-BuildRequires:	%{old_suse_buildrequires}
-BuildRequires:	gnome-keyring-devel libjpeg-devel
-BuildRequires:	gtkhtml2-devel
 %endif
 
 %endif
@@ -234,7 +227,6 @@ This package contains Mono bindings for gconf and gconf peditors.
 %endif
 ################ DESCRIPTION END of packages split as gnome-sharp ############
 ##############################################################################
-
 
 %debug_package
 %prep

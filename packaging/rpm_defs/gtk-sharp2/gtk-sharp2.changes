@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Fri Aug  3 20:49:10 CEST 2007 - wberrier@suse.de
+
+- Update to bigfix release: 2.10.2
+ -Bugfixes: bugzilla.ximian.com:
+  -82287, 78524, 79214, 82037, 82098, 82115
+- Remove fix_callback_code_generator.patch, as it's been fixed in 
+  2.10.2
+
+-------------------------------------------------------------------
+Sun Jul 15 10:06:26 CEST 2007 - aj@suse.de
+
+- Add fix_callback_code_generator.patch to fix gapi's code 
+  generator for callbacks with out parameters (fixes gmime-sharp).
+
+-------------------------------------------------------------------
 Sat Jul 03 12:25:27 MST 2007 - wberrier@suse.de
 
 - Correct time for May 2 entry (failing on s390 machines)

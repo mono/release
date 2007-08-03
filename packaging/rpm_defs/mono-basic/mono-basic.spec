@@ -7,8 +7,8 @@ License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL)
 Group:          Development/Languages/Other
 Summary:        Mono's VB runtime
 URL:            http://go-mono.org/
-Version:        1.2.4
-Release:        3
+Version:	1.2.5
+Release:	0.novell
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.bz2
 Source1:        %{name}-%{version}-0.novell.noarch.rpm
@@ -50,8 +50,6 @@ Authors:
 %setup -q
 
 %build
-# Build croaks without the LANG setting... (fixed in svn)
-export LANG=en_US.UTF-8
 %{?env_options}
 ./configure --prefix=/usr
 make
@@ -59,15 +57,6 @@ make
 %install
 %{?env_options}
 make install DESTDIR=${RPM_BUILD_ROOT}
-
-### Get ms.net runtime out of noarch rpm
-#rpm2cpio %{S:1} | cpio -idv
-## Remove vbnc built runtime
-#rm -Rf ${RPM_BUILD_ROOT}/usr/lib/mono/gac/Microsoft.VisualBasic
-#rm -Rf ${RPM_BUILD_ROOT}/usr/lib/mono/2.0/Microsoft.VisualBasic.dll
-### Install runtime from noarch.rpm into new gac
-#gacutil -package 1.0 -root ${RPM_BUILD_ROOT}/usr/lib -i usr/lib/mono/1.0/Microsoft.VisualBasic.dll
-#gacutil -package 2.0 -root ${RPM_BUILD_ROOT}/usr/lib -i usr/lib/mono/2.0/Microsoft.VisualBasic.dll
 
 ## Get ms.net runtime out of noarch rpm (building in buildservice or autobuild)
 if [ -e %{S:1} ] ; then
