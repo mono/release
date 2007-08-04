@@ -157,7 +157,21 @@
 
 
 	<xsl:template match="namespace/classes">
-		</xsl:apply-templates />
+		<xsl:apply-templates select="class[@type='interface']">
+			<xsl:sort select="@name"/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="class[@type='class']">
+			<xsl:sort select="@name"/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="class[@type='struct']">
+			<xsl:sort select="@name"/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="class[@type='delegate']">
+			<xsl:sort select="@name"/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="class[@type='enum']">
+			<xsl:sort select="@name"/>
+		</xsl:apply-templates>
 	</xsl:template>
 
 
@@ -406,24 +420,7 @@
 		</div>
 	</xsl:template>
 
-	<!-- nested classes -->
-	<xsl:template match="classes">
-		<xsl:apply-templates select="class[@type='interface']">
-			<xsl:sort select="@name"/>
-		</xsl:apply-templates>
-		<xsl:apply-templates select="class[@type='class']">
-			<xsl:sort select="@name"/>
-		</xsl:apply-templates>
-		<xsl:apply-templates select="class[@type='struct']">
-			<xsl:sort select="@name"/>
-		</xsl:apply-templates>
-		<xsl:apply-templates select="class[@type='delegate']">
-			<xsl:sort select="@name"/>
-		</xsl:apply-templates>
-		<xsl:apply-templates select="class[@type='enum']">
-			<xsl:sort select="@name"/>
-		</xsl:apply-templates>
-	</xsl:template>
+
 
 	<!-- support templates -->
 
