@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Aug  6 22:13:30 CEST 2007 - wberrier@suse.de
+
+- Use upstream threading fix instead of workaround
+  (remove nant-remove_pkgconfig_garbage.patch and replace with
+   nant-1733671_threading_fix.patch)  This will fix other issues
+   with nant as well.
+
+-------------------------------------------------------------------
 Wed Apr 11 16:16:25 CET 2007 - wberrier@novell.com
 
 - Add mono dep/req for older distros

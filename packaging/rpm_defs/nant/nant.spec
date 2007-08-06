@@ -11,7 +11,7 @@ License:        GNU General Public License (GPL), GNU Library General Public Lic
 BuildArch:      noarch
 URL:            http://nant.sourceforge.net
 Source0:        %{name}-0.85-src.tar.gz
-Patch0:         nant-remove_pkgconfig_garbage.patch
+Patch0:         nant-1733671_threading_fix.patch
 Patch1:         nant-remove_overridden_obsolete.patch
 Summary:        Ant for .NET
 Group:          Development/Tools/Building
@@ -66,8 +66,8 @@ Authors:
 %{_prefix}/lib/mono/gac/nunit.util
 %prep
 %setup  -q -n %{name}-0.85
-%patch0
-%patch1
+%patch0 -p1
+%patch1 -p1
 
 %build
 %{?env_options}
