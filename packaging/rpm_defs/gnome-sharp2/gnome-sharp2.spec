@@ -13,7 +13,9 @@ Group:          System/GUI/GNOME
 Release:        52
 Summary:        .Net Language Bindings for Gnome
 Patch0:         gnome-sharp-optflags.patch
+Patch1:         gnome-sharp-makefile.patch
 Patch2:         gnome-sharp-find_gtkhtml_ver.patch
+Patch3:         gnome-sharp-revert_unportable_relocatable.patch
 Source:         %{_name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
@@ -123,7 +125,9 @@ This package contains Mono bindings for gconf and gconf peditors.
 %prep
 %setup -q -n %{_name}-%{version}
 %patch0 -p1
-%patch2
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 %{?env_options}

@@ -1,6 +1,6 @@
-diff -ur ../../gtk-sharp-2.8.3/configure.in ./configure.in
---- ../../gtk-sharp-2.8.3/configure.in	2006-07-05 18:09:48.000000000 -0600
-+++ ./configure.in	2007-04-05 20:48:33.000000000 -0600
+diff -ur gtk-sharp-2.8.3/configure.in ./configure.in
+--- gtk-sharp-2.8.3/configure.in	2006-07-05 18:09:48.000000000 -0600
++++ gtk-sharp-2.8.3/configure.in	2007-04-05 20:48:33.000000000 -0600
 @@ -114,9 +114,11 @@
  if test `uname -s` = "Darwin"; then
  	LIB_PREFIX=
@@ -69,9 +69,9 @@ diff -ur ../../gtk-sharp-2.8.3/configure.in ./configure.in
  else
  enable_gtkhtml=no
  fi
-diff -ur ../../gtk-sharp-2.8.3/gtkhtml/gtkhtml-sharp.dll.config.in ./gtkhtml/gtkhtml-sharp.dll.config.in
---- ../../gtk-sharp-2.8.3/gtkhtml/gtkhtml-sharp.dll.config.in	2004-10-29 14:33:07.000000000 -0600
-+++ ./gtkhtml/gtkhtml-sharp.dll.config.in	2007-04-05 20:49:30.000000000 -0600
+diff -ur gtk-sharp-2.8.3/gtkhtml/gtkhtml-sharp.dll.config.in ./gtkhtml/gtkhtml-sharp.dll.config.in
+--- gtk-sharp-2.8.3/gtkhtml/gtkhtml-sharp.dll.config.in	2004-10-29 14:33:07.000000000 -0600
++++ gtk-sharp-2.8.3/gtkhtml/gtkhtml-sharp.dll.config.in	2007-04-05 20:49:30.000000000 -0600
 @@ -1,4 +1,4 @@
  <configuration>
    <dllmap dll="libgobject-2.0-0.dll" target="libgobject-2.0@LIB_PREFIX@.0@LIB_SUFFIX@"/>
