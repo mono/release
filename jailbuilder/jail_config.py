@@ -17,7 +17,7 @@ required_rpms = {
 	'sles-8': 'aaa_base autoconf automake gcc iputils make rug sles-release util-linux vim',
 
 	#ftp://ftp.novell.com/pub/ximian/redcarpet2/sles-9-ia64/
-	'sles-9': 'XFree86-devel XFree86-libs aaa_base aaa_skel apache2 apache2-devel apache2-prefork autoconf automake bison expat file fontconfig fontconfig-devel freetype2 freetype2-devel gcc gdb glib2 glib2-devel glibc-devel iputils libapr0 libjpeg libpng libpng-devel libtiff libtool libungif m4 make mktemp ncurses-devel patch perl-XML-Parser pkgconfig procps pwdutils rug sles-release sudo tar termcap unzip util-linux vim yast2 yast2-ncurses yast2-packager yast2-ncurses zlib-devel librsvg-devel vte vte-devel pango-devel gtk2-devel libxml2-devel libart_lgpl-devel libgnomecanvas-devel libgnomeui libgnomeui-devel libglade2-devel libxslt-devel libgsf-devel libgnomeprint-devel libgnomeprintui-devel popt-devel esound-devel libbonoboui libgnome gnome-vfs2 libgnomeprint libgnomeprintui kbd netcfg',
+	'sles-9': 'XFree86-devel XFree86-libs aaa_base aaa_skel apache2 apache2-devel apache2-prefork autoconf automake bison expat file fontconfig fontconfig-devel freetype2 freetype2-devel gcc gdb glib2 glib2-devel glibc-devel iputils libapr0 libexif libjpeg libpng libpng-devel libtiff libtool libungif m4 make mktemp ncurses-devel patch perl-XML-Parser pkgconfig procps pwdutils rug sles-release sudo tar termcap unzip util-linux vim yast2 yast2-ncurses yast2-packager yast2-ncurses zlib-devel librsvg-devel vte vte-devel pango-devel gtk2-devel libxml2-devel libart_lgpl-devel libgnomecanvas-devel libgnomeui libgnomeui-devel libglade2-devel libxslt-devel libgsf-devel libgnomeprint-devel libgnomeprintui-devel popt-devel esound-devel libbonoboui libgnome gnome-vfs2 libgnomeprint libgnomeprintui kbd netcfg wget',
 
 	'suse-93': 'aaa_base autoconf automake gcc iputils make pwdutils rug util-linux vim',
 
@@ -38,7 +38,7 @@ required_rpms = {
 
 	'fedora-4': 'autoconf automake bzip2 coreutils fontconfig-devel freetype-devel gcc gcc-c++ libungif-devel glib2-devel gnome-panel-devel gtk2-devel gtkhtml3-devel httpd-devel libart_lgpl-devel libglade2-devel libgnomecanvas-devel libgnomeprintui22-devel libgnomeui-devel libjpeg-devel libpng-devel librsvg2-devel libtiff-devel libtool libxml2-devel make openssh-clients pango-devel perl-XML-Parser perl-XML-Simple pkgconfig rpm-build sqlite-devel sudo tcl vim-enhanced vte-devel which yum zlib-devel',
 
-	'fedora-5': 'autoconf automake bzip2 coreutils fontconfig-devel freetype-devel gcc gcc-c++ giflib-devel glib2-devel gnome-panel-devel gtk2-devel gtkhtml3-devel httpd-devel libX11-devel libXrender-devel libart_lgpl-devel libglade2-devel libgnomecanvas-devel libgnomeprintui22-devel libgnomeui-devel libjpeg-devel libpng-devel librsvg2-devel libtiff-devel libtool libxml2-devel make openssh-clients pango-devel perl-XML-Parser perl-XML-Simple pkgconfig rpm-build sqlite-devel sudo tcl vim-enhanced vte-devel which yum zlib-devel libXt-devel',
+	'fedora-5': 'autoconf automake bzip2 coreutils fontconfig-devel freetype-devel gcc gcc-c++ giflib-devel glib2-devel gnome-panel-devel gtk2-devel gtkhtml3-devel httpd-devel libX11-devel libXrender-devel libart_lgpl-devel libglade2-devel libgnomecanvas-devel libgnomeprintui22-devel libgnomeui-devel libjpeg-devel libpng-devel librsvg2-devel libtiff-devel libtool libxml2-devel make openssh-clients pango-devel perl-XML-Parser perl-XML-Simple pkgconfig rpm-build sqlite-devel sudo tcl vim-enhanced vte-devel which yum zlib-devel libXt-devel libexif-devel',
 
 }
 
