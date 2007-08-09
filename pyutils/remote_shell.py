@@ -2,14 +2,14 @@
 simple routines to copy files and execute commands using several different methods
 """
 
-import utils
 import os.path
 import os
-import string
-import config
 import re
 import glob
 import shutil
+
+import config
+import utils
 
 debug = False
 ssh_options = '-o "BatchMode yes" -o "StrictHostKeyChecking no" -o "Cipher blowfish" -o "ConnectTimeout 10" '
@@ -175,6 +175,8 @@ class smbclient:
 		self.hostname = hostname
 		self.logger = my_logger
 
+		# TODO:
+		#self.SMB_SHARE = env['SMB_SHARE']
 
 	# Copy to jail
 	def copy_to(self, src, dest, compress=True, my_logger=""):
@@ -186,7 +188,6 @@ class smbclient:
 		# this is the original 'scp' mode
 		# fixed: You can't mput files outside the current local dir (going to have to chdir to each dir and issue separate smbclient commands)
 		# Kinda ugly, but it works!
-		dest = dest.replace(self.SMB_ROOT, '')
 		current_dir = os.getcwd()
 		command = ""
 		for file in src:
@@ -196,7 +197,7 @@ class smbclient:
 			if dir: dir_cmd = "cd %s;" % dir
 			else: dir_cmd = ""
 
-			command += "%s smbclient //%s/%s -A %s -U %s -D %s -c 'prompt; recurse; mput %s' ; cd %s ;" % (dir_cmd, self.host, self.SMB_SHARE, config.smb_passfile, self.user, dest, filename, current_dir)
+			command += "%s smbclient //%s/%s -A %s -U %s -D %s -c 'prompt; recurse; mput %s' ; cd %s ;" % (dir_cmd, self.hostname, self.SMB_SHARE, config.smb_passfile, self.username, dest, filename, current_dir)
 
 		# This is for 'tar' mode:
 		# (But doesn't have compression, only useful if not using tar over ssh)
@@ -217,10 +218,10 @@ class smbclient:
 		command = ""
 		for file in src:
 			dir = os.path.dirname(file)
-			dir = dir.replace(self.SMB_ROOT, '')
+			if not dir: dir = "."
 			filename = os.path.basename(file)
 
-			command += "cd %s; smbclient //%s/%s -A %s -U %s -D %s -c 'prompt; recurse; mget %s' ; cd %s ;" % (dest, self.host, self.SMB_SHARE, config.smb_passfile, self.user, dir, filename, current_dir)
+			command += "cd %s; smbclient //%s/%s -A %s -U %s -D %s -c 'prompt; recurse; mget %s' ; cd %s ;" % (dest, self.hostname, self.SMB_SHARE, config.smb_passfile, self.username, dir, filename, current_dir)
 
 
 		return utils.launch_process(command, my_logger=my_logger)
