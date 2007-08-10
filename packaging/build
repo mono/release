@@ -69,7 +69,7 @@ def run_postbuild_step(name, step_key, test=0):
 		print "Running %s step!" % name
 		LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', '%s.log' % name)
 		log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
-		build_info.update_step(name, state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
+		build_info.update_step(name, state="inprogress", log=os.path.basename(log_obj.full_path), start=utils.get_time(), finish="")
 
 		(result, output) = conf.buildenv.execute_code("%s %s " % (step_env_pre_cmd, code), working_dir=remote_src_dir, env=conf.env_vars, my_logger=log_obj, output_timeout=timeout, max_output_size=max_output_size)
 
@@ -228,7 +228,7 @@ if logfile:
 # Update step: installing deps
 LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', 'install-deps.log')
 log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
-build_info.update_step("install-deps", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
+build_info.update_step("install-deps", state="inprogress", log=os.path.basename(log_obj.full_path), start=utils.get_time(), finish="")
 
 if install_release_packages:
 	install_deps_H_or_R = "RELEASE"
@@ -253,7 +253,7 @@ build_info.update_step("install-deps", state="success", finish=utils.get_time())
 # Update step: building
 LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', 'build.log')
 log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
-build_info.update_step("build", state="inprogress", log=os.path.basename(LOGFILE), start=utils.get_time(), finish="")
+build_info.update_step("build", state="inprogress", log=os.path.basename(log_obj.full_path), start=utils.get_time(), finish="")
 # Copy tar.gz and zip files
 files_to_copy = [ source_file ]
 support_files_to_copy = []

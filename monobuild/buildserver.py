@@ -25,7 +25,8 @@ import pdb
 ##############################################################
 # Tarball thread options
 
-tarball_log = logger.Logger(filename='tarball_builder.log', print_screen=0)
+# Don't compress these so we can use "tail -f" (they don't get pushed to a server anyway)
+tarball_log = logger.Logger(filename='tarball_builder.log', print_screen=0, compressed=0)
 
 #
 ##############################################################
@@ -33,7 +34,7 @@ tarball_log = logger.Logger(filename='tarball_builder.log', print_screen=0)
 ##############################################################
 # sync thread options
 # Use rsync to synchronize the last n builds
-sync_log = logger.Logger(filename='sync.log', print_screen=0)
+sync_log = logger.Logger(filename='sync.log', print_screen=0, compressed=0)
 
 #
 ##############################################################
@@ -46,7 +47,7 @@ tarballs = datastore.source_file_repo()
 # Set the lock object
 tarball_lock = threading.Lock()
 
-scheduler_log = logger.Logger(filename='scheduler.log', print_screen=0)
+scheduler_log = logger.Logger(filename='scheduler.log', print_screen=0, compressed=0)
 
 #
 ##############################################################

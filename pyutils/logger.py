@@ -1,13 +1,10 @@
 
 import sys
-
 import os
 import os.path
 import distutils.dir_util
-
+import gzip
 import re
-
-#line_reg = re.compile('%s$' % os.linesep, re.M)
 
 class MaxLogOverflowException(Exception):
 	def __init__(self, msg, max):
@@ -15,11 +12,13 @@ class MaxLogOverflowException(Exception):
 
 class Logger:
 
-	def __init__(self, filename="log.log", print_screen=1, max_size=0):
+	def __init__(self, filename="log.log", print_screen=1, max_size=0, compressed=1, print_file=1):
 		"""Simple logging class.
 		filename:	custom filename, otherwise will be log.log
 		print_screen:	whether or not to do screen printout
 		max_size:	throw exception if log is over this size in MB (0 for no limit, which is the default)
+		compressed:	compress while writing log.  Append .gz to filename
+		print_file:	output to file
 		"""
 
 		self.print_screen = print_screen
@@ -29,7 +28,32 @@ class Logger:
 		if not os.path.exists(log_dir):
 			distutils.dir_util.mkpath(log_dir)
 
-		self.fd = open(self.full_path, 'a')
+		self.print_file = print_file
+
+		self.size = 0
+
+		if compressed:
+			# NOTE: to get this working in the browser, you must configure apache so:
+
+			# First, and text/plain for .log files: (in mime.types)
+			#  text/plain txt asc log
+
+			#  Add encoding so browsers will uncompress on the fly:
+			#  AddEncoding x-gzip .gz .tgz
+			#
+			#  Comment out: application/x-gzip gz
+			#  (Can this be done for only certain dirs? or added where necessary?)
+			#
+			#  Must also add 'MultiViews' to options (because links with .log will automaticall point to .log.gz if the file exists)
+			#   (all links on page will point to .log)
+
+			# Append extension
+			self.full_path = self.full_path + ".gz"
+			if self.print_file:
+				self.fd = gzip.open(self.full_path, 'a')
+		else:
+			if self.print_file:
+				self.fd = open(self.full_path, 'a')
 
 		if not max_size:
 			self.max_size = 0
@@ -37,24 +61,22 @@ class Logger:
 			self.max_size = max_size * (1024 * 1024)
 
 	def __del__(self):
-		self.fd.close()
+		if self.print_file:
+			self.fd.close()
 
 	def log(self, msg):
 
-		# If string doesn't have a line ending, add one (so I don't have to constantly pass in '\n')
-		# Can't do this, because we're not logging by line anymore (logging chunks)
-		#if not line_reg.search(msg): 
-		#	msg += os.linesep
-
-		# throw exception if there is a size limit and we exceed it
-		if self.max_size and self.fd.tell() + len(msg) > self.max_size:
-			raise MaxLogOverflowException(msg, self.max_size)
-
-		self.fd.write(msg)
-		self.fd.flush()
+		if self.print_file:
+			self.fd.write(msg)
+			self.fd.flush()
 		if self.print_screen:
 			sys.stdout.write(msg)
 			sys.stdout.flush()
 
+		self.size += len(msg)
+
+		# throw exception if there is a size limit and we exceed it
+		if self.max_size and self.size > self.max_size:
+			raise MaxLogOverflowException(msg, self.max_size)
 
 

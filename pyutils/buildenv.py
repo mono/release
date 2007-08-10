@@ -100,7 +100,7 @@ class buildenv:
 		self.created_dest_dirs = {}
 
 		# empty logger to use at various places
-		self.empty_logger = logger.Logger(config.devnull, print_screen=0)
+		self.empty_logger = logger.Logger(print_file=0, print_screen=0)
 
 		# Filenames for process jobs
 		self.interrupted_file = self.build_location + os.sep + 'interrupted'

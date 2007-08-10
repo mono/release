@@ -349,7 +349,8 @@ def packagestatus(req, **vars):
 			# Start through the build steps...	
 			for step in build_info.get_steps_info(read_info=0):
 
-				log = os.path.join(config.build_info_url, build_info.rel_files_dir, 'logs', step['log'])
+				# Remove .gz extensions since apache will handle it
+				log = os.path.join(config.build_info_url, build_info.rel_files_dir, 'logs', step['log']).replace(".gz", "")
 
 				req.write("""
 				<tr>
