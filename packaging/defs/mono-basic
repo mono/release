@@ -149,10 +149,8 @@ win_4_i386_ZIP_BUILD () {
 
 POSTBUILD_STEP_NAME1="test"
 POSTBUILD_STEP1 () {
-	# Not ready to test on windows yet...
         if test "x$DISTRO" = "xwin-4-i386" ; then
-		#$make_path test
-		true
+		$make_path test
         elif test "x$DISTRO" = "xsuse-100-i586" ; then
 		$make_path test
         else
