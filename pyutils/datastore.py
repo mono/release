@@ -3,7 +3,6 @@ import xml.xpath
 import xml.dom.minidom
 import fcntl
 import os
-import glob
 import re
 import distutils.dir_util
 import sys
@@ -127,7 +126,17 @@ class source_file_repo:
 			print "datastore.get_log_file: Could not find source file in tarball_map: %s" % source_file
 			print "   (Meaning, cannot do reverse lookup on mktarball parameters based on sourcefile)"
 			return ""
-		return config.mktarball_logs_release_relpath + os.sep + key.replace(":", "/") + ".log"
+
+		log = config.mktarball_logs_release_relpath + os.sep + key.replace(":", "/") + ".log"
+
+		# Make sure it exists
+		if os.path.exists(config.release_repo_root + os.sep + log):
+			return log
+		elif os.path.exists(config.release_repo_root + os.sep + log + ".gz"):
+			return log + ".gz"
+		else:
+			print "log (%s(.gz)) doesn't exist!" % log
+			return ""
 
 	def get_latest_tarball(self, HEAD_or_RELEASE, package_name):
 		"""Find latest tarball filename for a component."""
