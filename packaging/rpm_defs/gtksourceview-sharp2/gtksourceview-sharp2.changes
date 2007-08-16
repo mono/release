@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Aug 16 23:56:57 CEST 2007 - wberrier@suse.de
+
+- add noarch again (even though this package depends on binary
+  libraries, the package itself contains no architecture
+  dependant code, and can run on any platform where mono runs)
+- Update to use gtksourceview18 package (this package hasn't been
+  ported to use 1.9 yet)
+
+-------------------------------------------------------------------
+Tue Jun 12 12:55:21 CEST 2007 - ro@suse.de
+
+- remove noarch: this package depends on binary libraries
+
+-------------------------------------------------------------------
 Wed Jun  6 18:29:25 MST 2007 - wberrier@novell.com
 
 - remove upstream patch (also remove autoreconf, since there's

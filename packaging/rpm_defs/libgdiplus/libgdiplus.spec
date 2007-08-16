@@ -8,7 +8,6 @@ Vendor:         Novell, Inc.
 License:        GPL
 URL:            http:/www.go-mono.com
 Source0:        %{name}-%{version}.tar.bz2
-Patch1:		libgdiplus-ctype_cairo_build.patch
 Summary:        libgdiplus: An Open Source implementation of the GDI+ API.
 Group:          Development/Libraries
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -73,7 +72,6 @@ libgdiplus: An Open Source implementation of the GDI+ API, it is part of the Mon
 %debug_package
 %prep
 %setup -q
-%patch1 -p1
 
 %build
 # Set PKG_CONFIG_PATH for sles9

@@ -4,7 +4,7 @@
 Name:           gtksourceview-sharp2
 BuildRequires:  gnome-sharp2 gtk-sharp2-gapi gtksourceview-devel mono-devel monodoc-core
 Version:        0.11
-Release:        69
+Release:        1
 License:        GNU General Public License (GPL)
 BuildArch:      noarch
 URL:            http://www.go-mono.org/
@@ -22,10 +22,16 @@ AutoReqprov:  on
 %define gtksourceview_prefix %(pkg-config --variable=prefix gtksourceview-1.0)
 
 %if 0%{?suse_version}
+
+%if %suse_version >= 1030
+BuildRequires: -gtksourceview-devel gtksourceview18-devel
+%endif
+
 # So that .config references can be resolved...
 %if %suse_version == 1000
 BuildRequires: gtksourceview
 %endif
+
 %endif
 
 # Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')

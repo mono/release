@@ -8,12 +8,12 @@ License:        GPL
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        boo-%{version}-src.zip
 Patch0:		boo-disable_vs2005_update.patch
-Group:          Development
+Group:          Development/Languages/Other
 Summary:        A CLI scripting language
 BuildArch:      noarch
 URL:            http://boo.codehaus.org
 
-BuildRequires:  mono-devel nant  gtksourceview-devel unzip
+BuildRequires:  gtksourceview-devel mono-devel nant unzip
 # This is for finding out where to install the mime files (sles9 doesn't have this package)
 BuildRequires:  shared-mime-info
 
@@ -33,6 +33,7 @@ BuildRequires:  shared-mime-info
 # 10.3 and later doesn't use mime-info
 %if %suse_version >= 1030
 %define include_legacy_mime_info 0
+BuildRequires: -gtksourceview-devel gtksourceview18-devel
 %endif
 
 # gtksourceview from 10.2 on has boo.lang

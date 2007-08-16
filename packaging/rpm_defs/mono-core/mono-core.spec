@@ -375,6 +375,9 @@ Authors:
 %_prefix/lib/mono/gac/System.Drawing.Design
 %_prefix/lib/mono/1.0/System.Drawing.Design.dll
 %_prefix/lib/mono/2.0/System.Drawing.Design.dll
+# TODO: Post 1.2.5:
+#%_prefix/lib/mono/gac/Mono.Mozilla
+
 %package -n ibm-data-db2
 Summary:        Database connectivity for DB2
 Group:          Development/Languages/Mono

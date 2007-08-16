@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug 17 00:04:43 CEST 2007 - wberrier@suse.de
+
+- Depend on gtksourceview18
+
+-------------------------------------------------------------------
 Fri Jul 06 11:31:25 MST 2007 - wberrier@novell.com
 
 - Filelist changes: List each assembly dir instead of having this
