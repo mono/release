@@ -9,7 +9,6 @@ Name:		mod_mono
 Name:           apache2-mod_mono
 Obsoletes:	mod_mono
 Provides:	mod_mono
-# TODO: suse needs mod_mono.conf in /etc/apache2/conf.d !!
 %endif
 
 %define modname mod_mono
