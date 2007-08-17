@@ -7,6 +7,9 @@
 Name:		mod_mono
 %else
 Name:           apache2-mod_mono
+Obsoletes:	mod_mono
+Provides:	mod_mono
+# TODO: suse needs mod_mono.conf in /etc/apache2/conf.d !!
 %endif
 
 %define modname mod_mono
@@ -68,7 +71,7 @@ To load the module into Apache, run the command "a2enmod mono" as root.
 make
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT APXS_SYSCONFDIR="%{apache2_sysconfdir}/conf.d"
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -76,7 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %{apache2_libexecdir}/*
-%{apache2_sysconfdir}/*
+%{apache2_sysconfdir}/conf.d/*
 %{_mandir}/man8/mod_mono.8*
 
 %changelog
