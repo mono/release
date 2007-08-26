@@ -1,6 +1,9 @@
 username=builder
-hostname=hardhat.boston.ximian.com
-root_dir=/jails/nld-9-i586-root-0/jail
+hostname=c201.mono.lab.novell.com
+root_dir=/share/jails/nld-9-i586-root-0
+chroot_path=/usr/bin/chroot
+
+arch_change_path=/usr/bin/linux32
 
 target_command_prefix=". /etc/profile;"
 

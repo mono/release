@@ -2,19 +2,19 @@ USE_ZIP_PKG=1
 
 # We require building on a 10.3 box
 #  So use the 10.3 sdk, even though this box is 10.4
-username=builder
-hostname=g5-mono.boston.ximian.com
+#username=builder
+#hostname=g5-mono.boston.ximian.com
 # set CC to make sure we build with the 10.3 sdk
 # These extra defines are needed when building on 10.4 with 10.3 sdk (not needed when building on 10.3)
 # headerpad_max_install_names helps with relocating binaries to a destination of a very large pathname
 #  (See http://lists.apple.com/archives/darwin-development/2003/Sep/msg00274.html)
 
 # Do this instead, more reliable
-env="CC=gcc -isysroot /Developer/SDKs/MacOSX10.3.9.sdk -DSYS_POLL_NO_WARN -DPOLL_NO_WARN,MACOSX_DEPLOYMENT_TARGET=10.3,LDFLAGS= -headerpad_max_install_names "
+#env="CC=gcc -isysroot /Developer/SDKs/MacOSX10.3.9.sdk -DSYS_POLL_NO_WARN -DPOLL_NO_WARN,MACOSX_DEPLOYMENT_TARGET=10.3,LDFLAGS= -headerpad_max_install_names "
 
 # for testing
-#username=nds_cm
-#hostname=macbld1.provo.novell.com
-#env="LDFLAGS= -headerpad_max_install_names "
+username=nds_cm
+hostname=macbld1.provo.novell.com
+env="LDFLAGS= -headerpad_max_install_names "
 
 web_index=6

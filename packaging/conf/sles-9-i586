@@ -1,8 +1,11 @@
 web_index=0
 
 username=builder
-hostname=hardhat.boston.ximian.com
+hostname=c201.mono.lab.novell.com
 root_dir=/jails/sles-9-i586
+
+chroot_path=/usr/bin/chroot
+arch_change_path=/usr/bin/linux32
 
 target_command_prefix=". /etc/profile;"
 

@@ -1,6 +1,9 @@
 username=builder
-hostname=hardhat.boston.ximian.com
-root_dir=/jails/rhel-4as-i386-root-0/jail
+hostname=c201.mono.lab.novell.com
+root_dir=/share/jails/rhel-4as-i386-root-0
+chroot_path=/usr/bin/chroot
+
+arch_change_path=/usr/bin/linux32
 
 distro_aliases=(
 	rhel-4as-i386

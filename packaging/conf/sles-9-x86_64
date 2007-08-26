@@ -1,6 +1,7 @@
 username=builder
-hostname=monobuild2.boston.ximian.com
+hostname=c201.mono.lab.novell.com
 root_dir=/jails/sles-9-x86_64-root-0/jail
+
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"
 

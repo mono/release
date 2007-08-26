@@ -1,6 +1,6 @@
 username=builder
-hostname=monobuild2.boston.ximian.com
-root_dir=/jails/suse-101-x86_64-root-0/jail/
+hostname=c201.mono.lab.novell.com
+root_dir=/share/jails/suse-101-x86_64-root-0
 chroot_path=/usr/bin/chroot
 
 target_command_prefix=". /etc/profile;"
