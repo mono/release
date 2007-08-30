@@ -288,11 +288,8 @@ if not os.path.exists("libtiff.so.3"):
 os.chdir("../..")
 
 # ncurses for suse 9.1 has files under /lib instead of /usr/lib, fix up
-os.chdir("lib")
-for f in os.listdir('.'):
-	shutil.move(f, '../usr/lib')
-os.chdir("..")
-os.rmdir('lib')
+distutils.dir_util.copy_tree("lib", "usr/lib", preserve_symlinks=1)
+shutil.rmtree('lib')
 
 shutil.copy(p + "/../projects/mono.xml", p)
 utils.substitute_parameters_in_file(p + "/mono.xml", { '@@VERSION@@': mono_version } )

@@ -4,8 +4,8 @@ archive_version="1.2.5"
 
 bundle_urlname="preview"
 
-bundle_short_desc="Preview5"
-bundle_desc="Preview(5) packages before an official release"
+bundle_short_desc="Preview6"
+bundle_desc="Preview(6) packages before an official release"
 
 # This is left empty, because versions on RELEASE will always be the latest from sources/packages
 #  specifying versions is more for a released branch

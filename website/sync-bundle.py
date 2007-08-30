@@ -146,8 +146,11 @@ for i in range(0,len(sources)):
 	sources[i] = sources[i].replace(cwd + os.sep, '')
 
 
+print "Gathered dirs and sources:"
 print "\n".join(dirs)
 print "\n".join(sources)
+print ""
 
+print "Starting rsync..."
 status, output = utils.launch_process('rsync -avzR -e ssh %s %s %s' % (" ".join(sources), " ".join(dirs), dest))
 
