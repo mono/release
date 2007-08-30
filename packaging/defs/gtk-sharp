@@ -8,6 +8,7 @@ MKTARBALL_HOST="suse-100-i586"
 
 BUILD_HOSTS=(
 	fedora-5-i386
+	fedora-5-ppc
 	fedora-5-x86_64
 	nld-9-i586
 	rhel-4-i386
@@ -114,6 +115,9 @@ win_4_i386_ZIP_DEPS=(
 	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/GConf-dev-2.14.0.zip
 	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/ORBit2-2.14.2.zip
 	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/ORBit2-dev-2.14.2.zip
+	# ORBit dev depends on idl...
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libIDL-0.8.7.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libIDL-dev-0.8.7.zip
 
 	# For some extra dll's (art-sharp, glade-sharp, rsvg-sharp)
 	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libart_lgpl-2.3.17.zip
@@ -167,6 +171,8 @@ win_4_i386_ZIP_BUILD () {
 
 	# Fix the paths for gacutil
 	sed -i 's/\$(DESTDIR)\$(prefix)\/lib/`cygpath -m \$(DESTDIR)\$(prefix)\/lib`/' configure
+	# To enable patches
+	autoreconf -fi
 	./configure --prefix=/tmp/install
 
 	# Don't have cyg in dll files
@@ -175,10 +181,10 @@ win_4_i386_ZIP_BUILD () {
 	make || exit 1
 	make install || exit 1
 
-	# Remove some uneeded files
+	# Remove some uneeded files (.config files aren't used on ms .net, only mono)
 	find /tmp/install -name "*\.a" | xargs rm -f || exit 1
 	find /tmp/install -name "*\.la" | xargs rm -f
-	find /tmp/install -name "*\.config" | xargs rm -f
+	#find /tmp/install -name "*\.config" | xargs rm -f
 
 	# Windows convention to have .dll files in the bin dir instead of lib
 	mv /tmp/install/lib/*.dll /tmp/install/bin

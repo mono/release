@@ -1,0 +1,7 @@
+username=builder
+hostname=c240.mono.lab.novell.com
+root_dir=/jails/fedora-5-ppc
+chroot_path=/usr/bin/chroot
+
+YUM_INSTALL=1
+RPM_MD_REPO=1

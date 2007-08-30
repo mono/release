@@ -22,6 +22,7 @@ USE_HOSTS=(
 	debian-4-arm
 	debian-4-sparc
 	fedora-5-i386
+	fedora-5-ppc
 	fedora-5-x86_64
 	macos-10-ppc
 	macos-10-x86
@@ -367,7 +368,7 @@ POSTBUILD_STEP4 () {
 
 POSTBUILD_STEP_NAME5="test-swf"
 POSTBUILD_STEP5 () {
-	DISPLAY=monobuild2.boston.ximian.com:1
+	DISPLAY=c243.mono.lab.novell.com:1
 	export DISPLAY
 
 	cd mcs/class/System.Drawing

@@ -12,6 +12,7 @@ BUILD_HOSTS=(
 
 USE_HOSTS=(
 	fedora-5-i386
+	fedora-5-ppc
 	fedora-5-x86_64
 	nld-9-i586
 	rhel-4-i386
