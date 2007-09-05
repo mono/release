@@ -153,6 +153,7 @@ Authors:
 %_prefix/lib/mono/gac/System.Xml
 %_prefix/lib/mono/1.0/System.Xml.dll
 %_prefix/lib/mono/2.0/System.Xml.dll
+%_prefix/lib/mono/gac/System.Xml.Core
 %_prefix/lib/mono/gac/System
 %_prefix/lib/mono/1.0/System.dll
 %_prefix/lib/mono/2.0/System.dll
@@ -160,6 +161,8 @@ Authors:
 %_prefix/lib/mono/2.0/System.Configuration.dll
 %_prefix/lib/mono/1.0/mscorlib.dll*
 %_prefix/lib/mono/2.0/mscorlib.dll*
+%_prefix/lib/mono/2.1/mscorlib.dll*
+%_prefix/lib/mono/2.1/smcs.exe*
 %dir /etc/mono
 %dir /etc/mono/1.0
 %dir /etc/mono/2.0
@@ -376,7 +379,7 @@ Authors:
 %_prefix/lib/mono/1.0/System.Drawing.Design.dll
 %_prefix/lib/mono/2.0/System.Drawing.Design.dll
 # TODO: Post 1.2.5:
-#%_prefix/lib/mono/gac/Mono.Mozilla
+%_prefix/lib/mono/gac/Mono.Mozilla
 
 %package -n ibm-data-db2
 Summary:        Database connectivity for DB2
@@ -585,6 +588,7 @@ Authors:
 %config /etc/mono/1.0/DefaultWsdlHelpGenerator.aspx
 %config /etc/mono/2.0/DefaultWsdlHelpGenerator.aspx
 %config /etc/mono/2.0/web.config
+%_prefix/lib/mono/gac/System.Web.Extensions
 %package -n mono-data-oracle
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
@@ -881,6 +885,7 @@ Authors:
 %_prefix/lib/mono/gac/Microsoft.Build.Engine
 %_prefix/lib/mono/2.0/Microsoft.Build.Engine.dll
 %_prefix/lib/mono/gac/Mono.Cecil
+%_prefix/lib/mono/gac/Mono.Cecil.Mdb
 %_bindir/monograph
 %_prefix/include/mono-1.0
 %_libdir/libmono-profiler-cov.*
@@ -888,6 +893,7 @@ Authors:
 %_libdir/pkgconfig/mono.pc
 %_libdir/pkgconfig/dotnet.pc
 %_libdir/pkgconfig/mono-cairo.pc
+%_libdir/pkgconfig/cecil.pc
 %_mandir/man1/monoburg.*
 %_prefix/share/mono-1.0/mono/cil/cil-opcodes.xml
 # dirs
@@ -941,7 +947,8 @@ export CFLAGS=" $RPM_OPT_FLAGS -DKDE_ASSEMBLIES='\"/opt/kde3/%{_lib}\"' -fno-str
 %configure \
   --with-jit=yes \
   --with-ikvm=yes \
-  --with-sigaltstack=no
+  --with-sigaltstack=no \
+  --with-moonlight=yes
 make
 
 %install
@@ -1016,6 +1023,8 @@ rm -f ./usr/lib/mono/2.0/Microsoft.VisualBasic.targets
 # 1.2.4 changes
 rm -f ./usr/lib/mono/1.0/culevel.exe*
 
+# Post 1.2.5
+rm -f ./usr/lib/mono/1.0/transform.exe
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
