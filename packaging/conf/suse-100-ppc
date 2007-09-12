@@ -1,5 +1,5 @@
 username=builder
-hostname=c240.mono.lab.novell.com
+hostname=ppc-linux-1.mono.lab.novell.com
 root_dir=/jails/suse-100-ppc
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"

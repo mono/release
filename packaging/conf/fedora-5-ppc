@@ -1,5 +1,5 @@
 username=builder
-hostname=c240.mono.lab.novell.com
+hostname=ppc-linux-1.mono.lab.novell.com
 root_dir=/jails/fedora-5-ppc
 chroot_path=/usr/bin/chroot
 

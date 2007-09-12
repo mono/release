@@ -1,6 +1,9 @@
 username=builder
-hostname=monobuild1.boston.ximian.com
+hostname=x64-linux-2.mono.lab.novell.com
 root_dir=/jails/scratchbox-0.9.8-arm
+
+arch_change_path=/usr/bin/linux32
+chroot_path=/usr/bin/chroot
 
 USE_ZIP_PKG=1
 

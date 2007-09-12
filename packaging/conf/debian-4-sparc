@@ -1,5 +1,5 @@
 username=builder
-hostname=c246.mono.lab.novell.com
+hostname=sparc-linux-1.mono.lab.novell.com
 
 USE_ZIP_PKG=1
 

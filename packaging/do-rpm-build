@@ -89,6 +89,7 @@ os.system("%s chown %s *.spec" % (EXEC_AS_ROOT, getpass.getuser()) )
 # This is where the spec file munging would have to take place... could be done
 #   on the host side, doesn't really matter.
 for f in glob.glob('*.spec'):
+	# TODO: Need to have regex matches: ^Version
 	utils.substitute_parameters_in_file(f, {
 		'Version:.*':		'Version:\t%s' % version,
 		'Release:.*':		'Release:\t%s' % rev,

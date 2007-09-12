@@ -1,5 +1,5 @@
 username=builder
-hostname=c245.mono.lab.novell.com
+hostname=x32-sunos-1.mono.lab.novell.com
 USE_ZIP_PKG=1
 
 # Use the gnu and opensource software

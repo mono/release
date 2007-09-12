@@ -368,7 +368,7 @@ POSTBUILD_STEP4 () {
 
 POSTBUILD_STEP_NAME5="test-swf"
 POSTBUILD_STEP5 () {
-	DISPLAY=c243.mono.lab.novell.com:1
+	DISPLAY=x64-linux-2.mono.lab.novell.com:1
 	export DISPLAY
 
 	cd mcs/class/System.Drawing
