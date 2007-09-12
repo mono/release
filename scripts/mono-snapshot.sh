@@ -10,8 +10,8 @@ DATE=`date +'%Y%m%d'`
 REPO=$HOMEDIR/src/repo
 DAILY_BUILD_DIR=$HOMEDIR/src/build
 PREFIX=$HOMEDIR/src/install
-export PATH=$PREFIX/bin:$PATH
-export PKG_CONFIG_PATH=/opt/gnome/lib/pkgconfig
+#export PATH=$PREFIX/bin:$PATH
+#export PKG_CONFIG_PATH=/opt/gnome/lib64/pkgconfig
 #export JAVA_HOME=/incoming/tmpinst/j2sdk1.4.1_03
 #export BB_REPODIR=/nfs/release/source_repository
 
@@ -57,19 +57,19 @@ echo "Bump mono version number" >> $LOGFILE 2>&1
 
 # Build mono
 echo "Building MONO" >> $LOGFILE 2>&1
-(cd $DAILY_BUILD_DIR/mono && ./autogen.sh --prefix=$PREFIX || exit 1 ) >> $LOGFILE 2>&1
+(cd $DAILY_BUILD_DIR/mono && ./autogen.sh --prefix=$PREFIX ) >> $LOGFILE 2>&1 || exit 1 
 
-(cd $DAILY_BUILD_DIR/mono && make || exit 1 ) >> $LOGFILE 2>&1
+(cd $DAILY_BUILD_DIR/mono && make) >> $LOGFILE 2>&1 || exit 1 
 
 # Install mono
 echo "Installing mono" >> $LOGFILE 2>&1
-(cd $DAILY_BUILD_DIR/mono && make install || exit 1 ) >> $LOGFILE 2>&1
+(cd $DAILY_BUILD_DIR/mono && make install) >> $LOGFILE 2>&1 || exit 1 
 
 # Build and install basic
 echo "Building basic" >> $LOGFILE 2>&1
-(cd $DAILY_BUILD_DIR/mono-basic && ./configure --prefix=$PREFIX || exit 1 ) >> $LOGFILE 2>&1
-(cd $DAILY_BUILD_DIR/mono-basic && make || exit 1 ) >> $LOGFILE 2>&1
-(cd $DAILY_BUILD_DIR/mono-basic && make install || exit 1 ) >> $LOGFILE 2>&1
+(cd $DAILY_BUILD_DIR/mono-basic && ./configure --prefix=$PREFIX) >> $LOGFILE 2>&1 || exit 1 
+(cd $DAILY_BUILD_DIR/mono-basic && make) >> $LOGFILE 2>&1 || exit 1 
+(cd $DAILY_BUILD_DIR/mono-basic && make install) >> $LOGFILE 2>&1 || exit 1 
 # Copy the basic runtime to where the mcs class libs are so the class status will get properly generated
 cp $DAILY_BUILD_DIR/mono-basic/class/lib/vbnc/*.dll $DAILY_BUILD_DIR/mcs/class/lib/net_2_0
 
@@ -101,10 +101,10 @@ cp $DAILY_BUILD_DIR/mono-basic/class/lib/vbnc/*.dll $DAILY_BUILD_DIR/monocharge-
 tar zcvpf monocharge-$DATE.tar.gz monocharge-$DATE/ >> $LOGFILE 2>&1
 
 # Make mono tarball and check
-#(cd $DAILY_BUILD_DIR/mono && make distcheck || exit 1 ) >> $LOGFILE 2>&1
+#(cd $DAILY_BUILD_DIR/mono && make distcheck) >> $LOGFILE 2>&1 || exit 1 
 # Use dist-zip because ustar format has unpredictable results with long versions (defined in configure.in)
 #  Hari shortened some paths to fix dist...
-(cd $DAILY_BUILD_DIR/mono && make dist-bzip2 || exit 1 ) >> $LOGFILE 2>&1
+(cd $DAILY_BUILD_DIR/mono && make dist-bzip2) >> $LOGFILE 2>&1 || exit 1 
 
 # Copy resulting tarball to top-level dir
 echo "Copy resulting tarball to top-level dir" >> $LOGFILE 2>&1
