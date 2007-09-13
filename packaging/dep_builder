@@ -16,21 +16,22 @@ jail = sys.argv[1]
 def_filename = sys.argv[2]
 release = sys.argv[3]
 
-env = packaging.buildenv(jail)
+conf = packaging.buildconf(jail)
 
-build_location = env.env_vars['build_location']
+build_location = conf.env_vars['build_location']
 
 #pdb.set_trace()
 
-env.ssh.copy_to(['do-dep-build', 'dep_defs/' + def_filename, '../pyutils/*.py', 'do-install-zip-pkgs', '../pyutils/rpm2cpio.py', 'conf/' + jail], build_location)
+conf.buildenv.copy_to(['do-dep-build', 'dep_defs/' + def_filename, '../pyutils/*.py', 'do-install-zip-pkgs', '../pyutils/rpm2cpio.py', 'conf/' + jail], build_location)
 
-code, output = env.ssh.execute('%s/do-dep-build %s %s %s %s' % (build_location, jail, def_filename, release, build_location) )
+code, output = conf.buildenv.execute_command('%s/do-dep-build %s %s %s' % (build_location, jail, def_filename, release) )
 
 if code:
 	print "Error building deps..."
+	conf.buildenv.unlock()
 	sys.exit(1)
 
 # Copy files back
-env.ssh.copy_from(build_location + '/builder/built-packages/*', 'external_zip_pkg')
+conf.buildenv.copy_from(build_location + '/build/built-packages/*', 'external_zip_pkg')
 
-
+conf.buildenv.unlock()
