@@ -8,7 +8,7 @@ Vendor:		Novell, Inc.
 Distribution:	Novell Packages for SuSE Linux 10.0 / i586
 License:	LGPL
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-
+Autoreqprov:    on
 BuildArch:      noarch
 URL:		http://www.go-mono.com
 Source0:	%{name}-%{version}.tar.bz2
@@ -50,15 +50,21 @@ Some Linq and other various .NET 3.0 bits.
 %_prefix/lib/mono/gac/System.Workflow.ComponentModel
 %_prefix/lib/mono/3.0/System.Workflow.ComponentModel.dll*
 %_prefix/lib/mono/gac/System.Xml.Linq
+%_prefix/lib/mono/3.5/System.Xml.Linq.dll
 %_prefix/lib/mono/gac/System.Data.Linq
+%_prefix/lib/mono/3.5/System.Data.Linq.dll
 %_prefix/lib/mono/gac/System.ServiceModel.Web
+%_prefix/lib/mono/3.5/System.ServiceModel.Web.dll
 %_prefix/lib/mono/gac/PresentationCore
 %_prefix/lib/mono/3.0/PresentationCore*
 %_prefix/lib/mono/gac/System.SilverLight
+%_prefix/lib/mono/2.1/System.SilverLight*
 %_prefix/lib/mono/3.0/System.SilverLight*
 %_prefix/lib/mono/gac/agmono
+%_prefix/lib/mono/2.1/agmono*
 %_prefix/lib/mono/3.0/agmono*
 %_prefix/lib/mono/gac/agclr
+%_prefix/lib/mono/2.1/agclr*
 %_prefix/lib/mono/3.0/agclr*
 %_prefix/lib/pkgconfig/*.pc
 
@@ -77,5 +83,15 @@ make install DESTDIR=${RPM_BUILD_ROOT}
 # We need to keep the buildroot in tact so we can generate status pages
 #  Or, we can pick the dlls out of the build tree instead of destdir in the step
 #rm -rf "$RPM_BUILD_ROOT"
+
+# auto dep/req generation for older distros (it will take a while for the .config scanning to get upstream)
+%if 0%{?suse_version} <= 1040 || 0%{?fedora_version} <= 7
+%if 0%{?fedora_version}
+# Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
+%define _use_internal_dependency_generator 0
+%endif
+%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
+%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
+%endif
 
 %changelog
