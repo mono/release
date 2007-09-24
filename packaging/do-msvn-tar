@@ -10,6 +10,7 @@ import shutil
 import glob
 import distutils.dir_util
 import getpass
+import getopt
 
 sys.path.append('.')
 
@@ -19,7 +20,14 @@ import config
 # Some things we'll need to run as root
 EXEC_AS_ROOT = 'sudo'
 
-(HEAD_or_RELEASE, package, version) = sys.argv[1:]
+# Collect args
+fresh_checkout = False
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "fresh_checkout" ])
+for option, value in opts:
+	if option == "--fresh_checkout":
+		fresh_checkout = True
+
+(HEAD_or_RELEASE, package, version) = remaining_args
 
 os.chdir('source_dist_creator')
 
@@ -121,6 +129,12 @@ if get_source:
 else:
 	# Put cachedir up two levels so it will remain through cleanup
 	cache_dir = os.path.abspath( os.path.join(temp_dir, "..", "..", "src_cache", package, HEAD_or_RELEASE) )
+
+	# Potentially clean up source to do a fresh checkout (required for modules that use 'svn:external'
+	if fresh_checkout:
+		print "Removing cache..."
+		os.system("rm -Rf %s" % cache_dir)
+
 	for path in svn_paths:
 		module = os.path.basename(path)
 

@@ -1,5 +1,7 @@
 web_index=2
 
+fresh_checkout=1
+
 BUILD_HOSTS=(
 	suse-100-i586
 )

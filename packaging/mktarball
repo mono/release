@@ -105,9 +105,13 @@ for i in 'buildenv.py config.py logger.py remote_shell.py packaging.py shell_par
 conf.buildenv.copy_to(support_files_to_copy, conf.env_vars['build_location'])
 conf.buildenv.copy_to(files_to_copy, temp_dir)
 
+fresh_checkout = ""
+if package_obj.get_info_var('fresh_checkout'):
+	fresh_checkout = "--fresh_checkout"
+
 log_obj.log("Starting to build source dist...\n")
 # Make this non-interruptable because we don't want the source cache corrupted
-(status, output) = conf.buildenv.execute_command('%s/do-msvn-tar %s %s %s' % (temp_dir, HEAD_or_RELEASE, package, version), interruptable=False )
+(status, output) = conf.buildenv.execute_command('%s/do-msvn-tar %s %s %s %s' % (temp_dir, fresh_checkout, HEAD_or_RELEASE, package, version), interruptable=False )
 
 if status:
         conf.buildenv.unlock_env()
