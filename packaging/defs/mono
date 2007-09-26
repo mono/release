@@ -293,12 +293,12 @@ debian_ZIP_BUILD () {
 
 get_destroot () {
 	# rh9 rpms can't be used on sles-8-i386
-	if [ $DISTRO == "sles-8-i386" ] ; then
+	if test x$DISTRO = xsles-8-i386 ; then
 		DEST_ROOT=$DISTRO
-	elif [ x$USE_ZIP_PKG != x ] ; then
+	elif test x$USE_ZIP_PKG != x  ; then
 		DEST_ROOT=$DISTRO
 	else
-		DEST_ROOT=$ARCH
+		DEST_ROOT=$DISTRO
 	fi
 }
 

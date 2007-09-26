@@ -7,6 +7,7 @@ import os
 import re
 import glob
 import shutil
+import distutils.dir_util
 
 import config
 import utils
@@ -291,6 +292,6 @@ class local:
 		try:
 			distutils.dir_util.mkpath(dir)
 			os.chmod(dir, 0777)
-		except:
+		except distutils.errors.DistutilsFileError:
 			error = 1
 		return error

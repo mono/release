@@ -41,7 +41,7 @@ def print_debug(string):
 
 # Name pattern matching
 def is_an_rpm(string):
-	if not ignoresource.search(string) and matchrpm.search(string):
+	if not jail_config.ignoresource.search(string) and jail_config.matchrpm.search(string):
 		return 1
 	else:
 		return 0
@@ -331,6 +331,7 @@ def commandline():
 
 	if method == "iso":
 		print iso_notice
+		sys.exit(1)
 		fetch = get_from_cd
 		# Get everything from index 2 on
 		source = sys.argv[3:]

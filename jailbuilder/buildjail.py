@@ -384,6 +384,8 @@ class Jail:
 		(status, output) = utils.launch_process(command)
 		print "Status: %d" % status
 		print "Output: " + output
+		if status:
+			sys.exit(1)
 
 		# Reinstall the rpms from inside the jail		
 		# manifest files don't work on rpm 3 and below...
