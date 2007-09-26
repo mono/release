@@ -1,0 +1,36 @@
+web_index=8
+
+BUILD_HOSTS=(
+        suse-103-i586
+)
+
+USE_HOSTS=(${BUILD_HOSTS[@]})
+
+MONO_DEPS=(
+	mono
+	olive
+	monodoc
+	gtk-sharp210
+	gnome-sharp2
+	libgdiplus
+)
+
+MONO_RECOMMEND_DEPS=(
+)
+
+get_destroot () {
+	DEST_ROOT=$DISTRO
+}
+
+HEAD_PATH=(
+        trunk/moon
+)
+RELEASE_PATH=(
+        tags/mono-[[version]]/moon
+)
+
+update_version_file () {
+        sed -i "s/\(AM_INIT_AUTOMAKE.*,\\).*)/\\1$VERSION)/" configure.ac
+}
+
+MKTARBALL_HOST="suse-103-i586"
