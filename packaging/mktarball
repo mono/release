@@ -78,8 +78,13 @@ conf = packaging.buildconf(distro, my_logger=log_obj)
 # Update tarball status to "inprogress"
 repo.add_file(HEAD_or_RELEASE, package, version, "inprogress")
 
+# Install deps from HEAD instead of RELEASE for this package
+head_deps = ""
+if package_obj.get_info_var('MKTARBALL_HEAD_DEPS'):
+	head_deps = "--HEAD_or_RELEASE=HEAD"
+
 if package_obj.info.has_key('MONO_DEPS'):
-	(status, output) = utils.launch_process('./install-deps --build_source %s %s' % (conf.conf_lock_filename, package), my_logger=log_obj)
+	(status, output) = utils.launch_process('./install-deps %s --build_source %s %s' % (head_deps, conf.conf_lock_filename, package), my_logger=log_obj)
 	if status:
 		conf.buildenv.unlock_env()
 		log_obj.log("Dependency installation failed\n")

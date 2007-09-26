@@ -1,5 +1,7 @@
 web_index=8
 
+MKTARBALL_HEAD_DEPS=1
+
 BUILD_HOSTS=(
         suse-103-i586
 )
