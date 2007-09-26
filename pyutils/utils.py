@@ -512,6 +512,9 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 	#  strip the whitespace off the end (makes it behave more like commands.getxxx)
 	return exit_code, "".join(collected).rstrip()
 
+class VersionNotFound(Exception):
+        def __init__(self, dir, version):
+                print "utils.get_latest_ver: in %s: version '%s' not found" % (dir, version)
 
 def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
 	"""args: dir, and optional version.
@@ -526,7 +529,7 @@ def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
 		files = os.listdir(dir)
 	elif fail_on_missing:
 		print "utils.get_latest_ver: Path does not exist: %s" % dir
-		sys.exit(1)
+		raise VersionNotFound(dir, 'latest')
 	else:
 		print "utils.py: get_latest_ver: fail_on_missing=False, Warning: path does not exist: " + dir
 
@@ -555,7 +558,7 @@ def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
 		latest_version = ""
 		if fail_on_missing:
 			print "utils.get_latest_ver: No candidates for dir entry for '%s/%s', exiting" % (dir, version)
-			sys.exit(1)
+			raise VersionNotFound(dir, version)
 
 	else:
 		latest_version = version_sort(files).pop()

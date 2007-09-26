@@ -296,7 +296,7 @@ class package:
 		"""Construct basepaths and relative paths for sources and packages."""
 
 		# Set up full basepaths
-		if self.package_env and not self.package_basepath:
+		if self.package_env:
 			# If it's a zipdir package
 			#  Make an exception for noarch packages
 			if self.package_env.get_info_var('USE_ZIP_PKG') and self.destroot != 'noarch':
@@ -310,14 +310,13 @@ class package:
 			self.package_basepath = os.path.join(config.packaging_dir, packages_dir)
 			self.package_base_relpath = packages_dir
 
-		if not self.source_basepath:
-			# Point to snapshot sources if this is HEAD and if we build out of Mono's svn repo
-			if self.HEAD_or_RELEASE == "HEAD" and not self.get_info_var('EXTERNAL_SOURCE'):
-				sources_dir = "snapshot_sources"
-			else:
-				sources_dir = "sources"
-			self.source_basepath = config.packaging_dir + os.sep + sources_dir
-			self.source_base_relpath = sources_dir
+		# Point to snapshot sources if this is HEAD and if we build out of Mono's svn repo
+		if self.HEAD_or_RELEASE == "HEAD" and not self.get_info_var('EXTERNAL_SOURCE'):
+			sources_dir = "snapshot_sources"
+		else:
+			sources_dir = "sources"
+		self.source_basepath = config.packaging_dir + os.sep + sources_dir
+		self.source_base_relpath = sources_dir
 
 		# Set up relative and full paths
 		if self.package_env:
@@ -454,7 +453,22 @@ class package:
 				version_selection_reg = ""
 				if self.HEAD_or_RELEASE == "RELEASE":
 					version_selection_reg = self.get_info_var('version_selection_reg')
-				self.latest_version = utils.get_latest_ver(self.package_fullpath, fail_on_missing=fail_on_missing, version_reg=version_selection_reg )
+
+				# If it's HEAD and not found, try RELEASE as well
+				try:
+					self.latest_version = utils.get_latest_ver(self.package_fullpath, fail_on_missing=fail_on_missing, version_reg=version_selection_reg )
+				except utils.VersionNotFound:
+					if self.HEAD_or_RELEASE == "HEAD":
+						print "Wanted HEAD packages... trying RELEASE"
+						self.HEAD_or_RELEASE = "RELEASE"
+						# Will probably have to call these... is that enough?
+						self.setup_paths()
+						self.setup_symlinks()
+						try:
+							self.latest_version = utils.get_latest_ver(self.package_fullpath, fail_on_missing=fail_on_missing, version_reg=version_selection_reg )
+						except utils.VersionNotFound:
+							print "RELEASE packages also not found... exiting."
+							sys.exit(1)
 
 			if self.bundle_obj.version_map_exists:
 				# Cases
@@ -483,7 +497,11 @@ class package:
 					self.version, = re.compile('([\d\.]*)-0').search(self.version).groups(1)
 				# 5. If version doesn't have a release (signified by a dash), get the latest release of that version
 				elif not re.compile('[\d\.]*-').search(self.version):
-					self.version = utils.get_latest_ver(self.package_fullpath, version=self.version, fail_on_missing=fail_on_missing)
+					try:
+						self.version = utils.get_latest_ver(self.package_fullpath, version=self.version, fail_on_missing=fail_on_missing)
+					except VersionNotFound:
+						print "Bundle version not found: " + self.version
+						sys.exit(1)
 
 				if not os.path.exists(self.package_fullpath + os.sep + self.version):
 					print "Trying to use %s/%s but this path does not exist!" % (self.package_fullpath, self.version)
