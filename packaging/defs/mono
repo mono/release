@@ -16,6 +16,9 @@ BUILD_HOSTS=(
 	sunos-8-sparc
 	sunos-10-x86
 	win-4-i386
+	suse-103-i586
+	suse-103-ppc
+	suse-103-x86_64
 )
 
 USE_HOSTS=(
@@ -46,6 +49,9 @@ USE_HOSTS=(
 	suse-102-i586
 	suse-102-ppc
 	suse-102-x86_64
+	suse-103-i586
+	suse-103-ppc
+	suse-103-x86_64
 	win-4-i386
 )
 
@@ -295,10 +301,12 @@ get_destroot () {
 	# rh9 rpms can't be used on sles-8-i386
 	if test x$DISTRO = xsles-8-i386 ; then
 		DEST_ROOT=$DISTRO
+	elif test x$DISTRO = xsuse-103-i586 ; then
+		DEST_ROOT=$DISTRO
 	elif test x$USE_ZIP_PKG != x  ; then
 		DEST_ROOT=$DISTRO
 	else
-		DEST_ROOT=$DISTRO
+		DEST_ROOT=$ARCH
 	fi
 }
 

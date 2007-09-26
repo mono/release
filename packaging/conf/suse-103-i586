@@ -1,0 +1,13 @@
+username=builder
+hostname=x64-linux-1.mono.lab.novell.com
+root_dir=/share/jails/suse-103-i586
+target_command_prefix=". /etc/profile;"
+
+chroot_path=/usr/bin/chroot
+arch_change_path=/usr/bin/linux32
+
+# NOTE: We edited /usr/lib/libmoon.la to replace /opt/gnome with /usr
+
+# Repo conf
+YAST_INSTALL=1
+RPM_MD_REPO=1
