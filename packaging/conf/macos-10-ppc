@@ -11,6 +11,8 @@ USE_ZIP_PKG=1
 
 # Do this instead, more reliable
 #env="CC=gcc -isysroot /Developer/SDKs/MacOSX10.3.9.sdk -DSYS_POLL_NO_WARN -DPOLL_NO_WARN,MACOSX_DEPLOYMENT_TARGET=10.3,LDFLAGS= -headerpad_max_install_names "
+# NOTE: we can build on 10.4 with the 10.3 sdk as long we don't use @executable_path
+#  (We may just end up using @executable_path just for the installer)
 
 # for testing
 username=nds_cm

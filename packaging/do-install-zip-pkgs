@@ -11,19 +11,28 @@ import distutils.dir_util
 import os
 import glob
 import re
-
+import getopt
 
 import utils
 
-if len(sys.argv) < 3:
-	print "Usage: ./do-install-zip-pkgs <file location> <relocation destination> [ <full path to packages> ]"
-	print "  Note: full path to packages is usually a glob"
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "relative_paths" ])
+
+# Use relative paths with @executable_path for relocation
+relative_paths = False
+
+for option, value in opts:
+	if option == "--relative_paths":
+		relative_paths = True
+
+try:
+	(dest, reloc, package_path) = remaining_args
+except:
+	print "Usage: ./do-install-zip-pkgs [--relative_paths] <file location> <relocation destination> <full path to packages>"
+	print "  relative_paths: use @executable_path on osx for relocation"
+	print "  Note: all packages in <full path to packages> will be installed"
 	sys.exit(1)
 
-dest = sys.argv[1]
-reloc = sys.argv[2]
-
-package_files = glob.glob(sys.argv[3] + os.sep + "*")
+package_files = glob.glob(package_path + os.sep + "*")
 
 print " *** Installing to %s for destination %s *** " % (dest, reloc)
 
@@ -182,7 +191,6 @@ for root, dirs, files in os.walk('.'):
 
 			old_filename = os.path.abspath('/tmp/install/%s/%s' % (root, file) )
 			new_filename = os.path.abspath( re.sub('/tmp/install', reloc, old_filename) )
-			new_filename = os.path.abspath( re.sub('/tmp/install', reloc, old_filename) )
 
 			(code, output) = utils.launch_process('otool -L %s' % path_on_disk, print_output=0)
 
@@ -203,13 +211,13 @@ for root, dirs, files in os.walk('.'):
 			# -Wl,-header-pad_max_install_names ... didn't work... ?  Resorting to using @executable_path for anything that files with full path
 
 			# Our prefixes to search and replace
-			#  Todo...  
-			prefixes = [ '/tmp/install', '/tmp/build_deps', mac_prefix_regex ]
+			prefixes = [ '/tmp/install', '/tmp/build_deps', mac_prefix_regex, "@executable_path/.." ]
 			for prefix in prefixes:
 				#print "Prefix: %s" % prefix
 				# Update /tmp/install references to the new target location
 				#Sample output: /tmp/install/lib/libjpeg.62.dylib (compatibility version 63.0.0, current version 63.0.0)
 				#print "otool_output: '%s'" % otool_output
+				#print prefix
 				for match in re.compile('\s+(%s/(.*?)) \(' % prefix, re.S | re.M).finditer(otool_output):
 					#print "Found Match1: %s " % match.group(1)
 					#print "Found Match2: %s " % match.group(2)
@@ -223,11 +231,11 @@ for root, dirs, files in os.walk('.'):
 					# As expected, this command fails because the reference names are too long.  using @executable_path greatly shortens the string length
 					#command = 'install_name_tool -change %s /bunch/of/junk%s/%s %s' % (full_path, reloc, prefix_on_path, path_on_disk) 
 					#print command1
-					(code, output) = utils.launch_process(command1)
+					if not relative_paths: (code, output) = utils.launch_process(command1)
 
-					if code:
-						print "*** WARNING *** problems executing: %s" % command1
-						print "Falling back to @executable_path with install_name_tool ... "
+					if code or relative_paths:
+						#print "*** WARNING *** problems executing: %s" % command1
+						#print "Falling back to @executable_path with install_name_tool ... "
 
 						# This string is shorter so it works with libmono-profiler-cov
 						# But doesn't seem to work when I install to /tmp/build_deps... (libgdiplus configure test for libtiff fails)

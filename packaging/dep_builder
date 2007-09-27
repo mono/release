@@ -28,10 +28,10 @@ code, output = conf.buildenv.execute_command('%s/do-dep-build %s %s %s' % (build
 
 if code:
 	print "Error building deps..."
-	conf.buildenv.unlock()
+	conf.buildenv.unlock_env()
 	sys.exit(1)
 
 # Copy files back
 conf.buildenv.copy_from(build_location + '/build/built-packages/*', 'external_zip_pkg')
 
-conf.buildenv.unlock()
+conf.buildenv.unlock_env()

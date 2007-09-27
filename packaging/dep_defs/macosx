@@ -9,8 +9,8 @@ BUILD_HOSTS = ['macos-10-ppc', 'macos-10-x86']
 
 packages = [
 	{
-		'name': 'pkgconfig', 
-		'source': 'http://pkgconfig.freedesktop.org/releases/pkgconfig-0.15.0.tar.gz',
+		'name': 'pkg-config', 
+		'source': 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.22.tar.gz',
 		'post':"""
 			# Configure shell wrapper for pkg-config so it will look for .pc files when installed (#79671)
 			cd /tmp/install/bin
@@ -24,7 +24,7 @@ EOF
 	},
 	{
 		'name': 'gettext', 
-		'source': 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.14.1.tar.gz',
+		'source': 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.16.1.tar.gz',
 		'post':"""
 			# Save msgfmt, as this is needed for building glib
 			rm -Rf /tmp/temp_install
@@ -41,7 +41,7 @@ EOF
 	},
 	{
 		'name': 'glib', 
-		'source': 'ftp://ftp.gtk.org/pub/gtk/v2.6/glib-2.6.3.tar.bz2',
+		'source': 'ftp://ftp.gtk.org/pub/glib/2.14/glib-2.14.1.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			rm -Rf /tmp/install/share/gtk-doc
@@ -63,10 +63,16 @@ EOF
 	},
 	{
 		'name': 'tiff', 
-		'source': 'ftp://ftp.freebsd.org/pub/FreeBSD/ports/distfiles/tiff-3.7.1.tar.gz',
+		'source': 'ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.8.2.tar.gz',
 		'build':
-			"""./configure --prefix=/tmp/install --mandir=/tmp/install/share/man \
+			"""
+			./configure --prefix=/tmp/install --mandir=/tmp/install/share/man \
 				--with-jpeg-include-dir=/tmp/build_deps/include --with-jpeg-lib-dir=/tmp/build_deps/lib
+
+			# 3.8.2's libtool didn't like the sysroot for building on 10.3
+			rm libtool
+			ln -s `which glibtool` ./libtool
+
 			make || exit 1
 			cd libtiff
 			make install || exit 1
@@ -74,16 +80,16 @@ EOF
 	},
 	{
 		'name': 'libpng',
-		# Otherwise version turns out to be 1.2.8-config 
-		'version': '1.2.8', 
-		'source': 'http://easynews.dl.sourceforge.net/sourceforge/libpng/libpng-1.2.8-config.tar.gz',
+		'source': 'ftp://ftp.simplesystems.org/pub/png/src/libpng-1.2.20.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
+			# How did this get installed?? (we want .dylib, not .so)
+			rm -Rf /tmp/install/lib/libpng.so
 			"""
 	},
 	{
 		'name': 'libungif', 
-		'source': 'http://easynews.dl.sourceforge.net/sourceforge/libungif/libungif-4.1.3.tar.gz',
+		'source': 'http://easynews.dl.sourceforge.net/sourceforge/libungif/libungif-4.1.4.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
@@ -92,7 +98,7 @@ EOF
 	# (Tiger's used to be sufficient, but it looks like the new cairo needs newer than Tiger's)
 	{
 		'name': 'freetype', 
-		'source': 'http://download.savannah.gnu.org/releases/freetype/freetype-2.1.10.tar.gz',
+		'source': 'http://download.savannah.gnu.org/releases/freetype/freetype-2.2.1.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
@@ -100,7 +106,7 @@ EOF
 	# Include our own because 10.3 and 10.4 ppc have differing expat versions
 	{
 		'name': 'expat', 
-		'source': 'http://easynews.dl.sourceforge.net/sourceforge/expat/expat-1.95.8.tar.gz',
+		'source': 'http://easynews.dl.sourceforge.net/sourceforge/expat/expat-2.0.1.tar.gz',
 		'post':"""
 			rm -Rf /tmp/install/bin
 			rm -Rf /tmp/install/man
