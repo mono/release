@@ -16,6 +16,8 @@ public class Flags {
 
 class Moma  {
 	public static Dictionary<string,int> API = new Dictionary<string, int> ();
+	public static Dictionary<string,object> Valid = new Dictionary<string,object> ();
+	public static Hashtable Invalid = new Hashtable ();
 	public static Dictionary<string,string> TodoExplanation = new Dictionary<string, string> ();
 	static StreamWriter sw;
 	public static string outputdir;
@@ -48,6 +50,18 @@ class Moma  {
 		}
 	}
 
+	public static void LoadPublic ()
+	{
+		using (FileStream fs = File.OpenRead ("all.txt")){
+			StreamReader sr = new StreamReader (fs);
+			string s;
+
+			while ((s = sr.ReadLine ()) != null){
+				Valid [s] = s;
+			}
+		}
+	}
+	
 	static string CleanHTML (string s)
 	{
 		return s.Replace ("<", "&lt;").Replace (">", "&gt;").Replace ("&", "&amp;");
@@ -76,12 +90,17 @@ class Moma  {
 			return;
 		}
 
+		Console.Write ("Loading public API... ");
+		LoadPublic ();
+		Console.WriteLine ("done");
+		
+		Console.Write ("Loading definitions... ");
 		Load (Path.Combine (args [1], "todo.txt"), 1);
 		Load (Path.Combine (args [1], "missing.txt"), 2);
 		Load (Path.Combine (args [1], "exception.txt"), 4);
-
 		LoadTodoExplanations (Path.Combine (args [1], "monotodo.txt"));
-		
+		Console.WriteLine ("done");
+
 		outputdir = args [2];
 		if (!Directory.Exists (outputdir)){
 			try {
@@ -102,6 +121,7 @@ class Moma  {
 
 		Console.WriteLine ("Loaded {0} API definitions", API.Count);
 
+		Console.Write ("Loading reports... ");
 		string [] files = Directory.GetFiles (args [0], "*.txt");
 		ArrayList reports = new ArrayList ();
 
@@ -126,6 +146,7 @@ class Moma  {
 			
 			reports.Add (r);
 		}
+		Console.WriteLine ("done");
 		Console.WriteLine ("{0} API entry points", Report.GlobalApi.Count);
 		Console.WriteLine ("{0} reports loaded", reports.Count);
 
@@ -137,12 +158,16 @@ class Moma  {
 		}
 #endif
 
+		Console.Write ("Generating report... ");
 		concat ("head");
 
 		reports.Sort (Report.date_sorter);
 		
 		foreach (Report r in reports){
-			p ("<div class=\"sub\">");
+			if (r.invalid > 0)
+				p ("<div class=\"subinvalid\">");
+			else 
+				p ("<div class=\"sub\">");
 			p ("<div class='col1'>");
 			p ("<p><b>Definitions:</b> {0}</p>", r.Definitions);
 			p ("</div><div class='col2'>");
@@ -174,8 +199,23 @@ class Moma  {
 		GenerateStats (Flags.MISS, Path.Combine (outputdir, "f-MISS.txt"), "missing/not-present in Mono today");
 		GenerateStats (Flags.TODO, Path.Combine (outputdir, "f-TODO.txt"), "methods flagged as TODO");
 		GenerateStats (Flags.NIEX, Path.Combine (outputdir, "f-NIEX.txt"), "throwing NotImplementedException");
+		Console.WriteLine ("done");
+
+		DumpInvalid ();
 	}
 
+	static void DumpInvalid ()
+	{
+		using (FileStream fs = File.OpenWrite ("generated-invalid.txt")){
+			using (StreamWriter sw = new StreamWriter (fs)){
+				
+				foreach (string invalid in Invalid.Keys){
+					sw.WriteLine (invalid);
+				}
+			}
+		}
+	}
+	
 	static void GenerateStats (int flag, string fname, string caption)
 	{
 		using (FileStream fs = File.OpenWrite (fname)){
@@ -227,6 +267,7 @@ public class Report {
 	public string Name;
 	public string Comments;
 	int change;
+	public int invalid;
 	Hashtable implemented = new Hashtable ();
 	
 	public static IComparer date_sorter = new DateSorter ();
@@ -347,12 +388,22 @@ public class Report {
 				// has been taken care of.
 				//
 				int n;
-				if (ikind != Flags.PINV && !Moma.API.TryGetValue (rest, out n)){
-					change++;
-					if (!implemented.Contains (rest))
-						implemented [rest] = rest;
-					    
-					continue;
+				if (ikind != Flags.PINV){
+					if (!Moma.API.TryGetValue (rest, out n)){
+						change++;
+						if (!implemented.Contains (rest))
+							implemented [rest] = rest;
+						
+						continue;
+					}
+					object obj;
+					
+					if (!Moma.Valid.TryGetValue (rest, out obj)){
+						invalid++;
+						if (!Moma.Invalid.Contains (rest))
+							Moma.Invalid [rest] = Moma.Invalid;
+						continue;
+					}
 				}
 
 				ikind = ikind << 24;
@@ -546,5 +597,7 @@ public class Report {
 			Moma.p ("{0} pinv.", pinv);
 		if (change != 0)
 			Moma.p ("<span style='color: #0a0;'>change: {0}</span>", change);
+		if (invalid != 0)
+			Moma.p ("<span style='color: #a00;'>invalid: {0}</span>", invalid);
 	}
 }

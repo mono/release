@@ -29,6 +29,15 @@ h1 {
 	margin-bottom: 1em;
 }
 
+.subinvalid {
+	border: 2px solid #5B5767;
+	background: #d66b6b;
+	padding-left: 1em;
+	padding-right: 1em;
+	text-align: left;
+	margin-bottom: 1em;
+}
+
 .col1 {
 	float: left;
 	width: 50%;

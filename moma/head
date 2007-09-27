@@ -11,7 +11,10 @@
 
 <p>When present, the <span style="color: #0a0">change:</span> labels
 the number of APIs that have been implemented since the original
-report was submitted.
+report was submitted.  We use the string <span style="color:
+#a00">invalid</span> for invalid API calls (submissions that included
+running Moma on system assemblies).  Those entries in red are likely
+broken reports.
 
 <p>Not all summary results are available, as I just rewrote the
 hundred of messy shell scripts that took forever to run using a <a
