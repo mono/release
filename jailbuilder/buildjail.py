@@ -429,6 +429,8 @@ class Jail:
 			resolv_conf = open(os.path.join(self.config.jail_dir, "etc", "resolv.conf"), 'w')
 			for server in name_servers:
 				resolv_conf.write("nameserver %s\n" % server)
+			# Add search domain for lab... keeps some tests from failing
+			resolv_conf.write("search mono.lab.novell.com\n")
 			resolv_conf.close()
 
 
