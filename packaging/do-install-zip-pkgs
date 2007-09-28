@@ -77,10 +77,11 @@ env.write('LD_LIBRARY_PATH="%s/lib:$LD_LIBRARY_PATH"\n' % reloc)
 env.write('MANPATH="%s/share/man:%s/man:$MANPATH"\n' % (reloc, reloc))
 
 # This is for macos
-env.write('DYLD_LIBRARY_PATH=%s/lib\n' % (reloc) )
+# NOTE: This shouldn't be used... generally using this var on macos is a bad idea
+#env.write('DYLD_LIBRARY_PATH=%s/lib\n' % (reloc) )
 
 # Use this method for older shells
-env.write('export PKG_CONFIG_PATH PATH LDFLAGS CPPFLAGS LD_LIBRARY_PATH MANPATH DYLD_LIBRARY_PATH\n')
+env.write('export PKG_CONFIG_PATH PATH LDFLAGS CPPFLAGS LD_LIBRARY_PATH MANPATH\n')
 
 
 env.close()
@@ -97,7 +98,7 @@ env.write('setenv LD_LIBRARY_PATH "%s/lib:$LD_LIBRARY_PATH"\n' % reloc)
 env.write('setenv MANPATH "%s/share/man:%s/man:$MANPATH"\n' % (reloc, reloc))
 
 # This is for macos
-env.write('setenv DYLD_LIBRARY_PATH %s/lib\n' % (reloc) )
+#env.write('setenv DYLD_LIBRARY_PATH %s/lib\n' % (reloc) )
 
 env.close()
 os.chmod('env.csh', 0755)
