@@ -39,5 +39,5 @@ for i in revs_to_try:
 revs = utils.remove_list_duplicates(revs)
 revs.reverse()
 
-print revs
-
+for r in revs:
+	print r

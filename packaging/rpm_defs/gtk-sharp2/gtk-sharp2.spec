@@ -235,7 +235,12 @@ This package contains Mono bindings for gconf and gconf peditors.
 
 %if %platform_desktop_split == 0
 %patch1 -p1
+
+# 2.8.4 and later on 2.8.x branch doesn't need this patch
+if [ %version <= 2.8.3 ] ; then
 %patch2
+fi
+
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1

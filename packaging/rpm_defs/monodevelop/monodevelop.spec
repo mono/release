@@ -93,6 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/share/pixmaps/monodevelop.png
 %{_prefix}/lib/monodevelop
 %{_prefix}/share/pkgconfig/monodevelop.pc
+%{_mandir}/man1/mdtool.1.gz
 
 %post
 update-mime-database /usr/share/mime >/dev/null || :

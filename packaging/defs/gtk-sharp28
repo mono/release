@@ -33,6 +33,17 @@ get_destroot () {
 	DEST_ROOT=$DISTRO
 }
 
+HEAD_PATH=(
+        branches/gtk-sharp-2-468-branch/gtk-sharp
+)
+RELEASE_PATH=(
+        tags/gtk-sharp/[[versiondot]]
+)
+
+get_source () {
+        $SVNEXPORT $MONO_ROOT/$SVN_PATHS
+}
+
 update_version_file () {
 	sed -i "s/^\(GTK_SHARP_VERSION\)=.*/\1=$VERSION/" bootstrap-2.8
 }

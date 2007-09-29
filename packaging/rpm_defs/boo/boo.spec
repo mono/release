@@ -2,12 +2,13 @@
 # norootforbuild
 
 Name:           boo
-Version:        0.7.8.2559
+Version:        0.7.9.2659
 Release:        1
 License:        GPL
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        boo-%{version}-src.zip
 Patch0:		boo-disable_vs2005_update.patch
+Patch1:		boo-pkgconfig_path_fix.patch
 Group:          Development/Languages/Other
 Summary:        A CLI scripting language
 BuildArch:      noarch
@@ -76,6 +77,7 @@ Boo is a new object oriented statically typed programming language for the Commo
 # use '-c' because this tarball doesn't come with a top-level dir
 %setup -q -c %name-%version
 %patch0
+%patch1
 
 %build
 # Boo gets the mime info from pkg-config, and sles doesn't have shared-mime-info.pc, hack a hardcode

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:04:43 MST 2007 - wberrier@suse.de
+
+- Update to 0.7.9.2659
+ -boo-pkgconfig_path_fix.patch: fix broken paths in .pc file
+
+-------------------------------------------------------------------
 Fri Aug 17 00:04:43 CEST 2007 - wberrier@suse.de
 
 - Depend on gtksourceview18
