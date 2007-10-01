@@ -19,7 +19,7 @@ Patch4:		gtk-sharp-fix_vte_so_version.patch
 Patch5:		gnome-sharp-revert_unportable_relocatable.patch
 
 %define old_version 2.4.3
-%define new_version 2.8.3
+%define new_version 2.8.4
 %define new_split_version 2.10.2
 
 %define platform_desktop_split 0
