@@ -341,8 +341,8 @@ POSTBUILD_STEP1 () {
 POSTBUILD_STEP_NAME2="test-aot"
 POSTBUILD_STEP2 () {
 	# Only run on linux x86 and x86_64
-	if [ $BUILD_OS == "linux" ] ; then
-		if [ $BUILD_ARCH == "x86" ] || [ $BUILD_ARCH == "x86_64" ] ; then
+	if test x$BUILD_OS = xlinux ; then
+		if test x$BUILD_ARCH = x"x86" || test x$BUILD_ARCH = x"x86_64" ; then
 			cd mono/mini
 			$make_path aotcheck
 			cd ../tests
@@ -365,7 +365,7 @@ POSTBUILD_STEP3 () {
 POSTBUILD_STEP_NAME4="test-cas"
 POSTBUILD_STEP4 () {
 	# These hang the tests on sles-9-ia64, so skip for now...
-	if [ $DISTRO != "sles-9-ia64" ] ; then
+	if test x$DISTRO != xsles-9-ia64 ; then
 		cd mono/tests/cas
 		$make_path -k test
 	else
@@ -387,6 +387,15 @@ POSTBUILD_STEP5 () {
 	$make_path run-test
 	$make_path run-test PROFILE=net_2_0
 
+}
+
+POSTBUILD_STEP_NAME6="test-ondotnet"
+POSTBUILD_STEP6 () {
+	if test x$DISTRO = xwin-4-i386 ; then
+		$make_path make run-test-ondotnet
+	else
+		echo "Skipping... test only on windows"
+	fi
 }
 
 # This step gets executed after all tests, or after a build failure
@@ -411,7 +420,7 @@ CLEAN_UP () {
 	rm -Rf	/tmp/mcs*	/var/tmp/mcs*
 
 	# These tend to get left around on win32... ?
-	if [ $DISTRO == "win-4-i386" ] ; then
+	if test x$DISTRO = xwin-4-i386 ; then
 		/home/builder/bin/Process.exe   -k mono.exe || true
 	fi
 

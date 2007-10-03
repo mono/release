@@ -67,7 +67,7 @@ else:
 
 # use the key in /usr/share/ximian-build-system/conf/ssh
 # This needs to be exported to the environment
-SVN_SSH = "ssh -i %s/distro_source_key -o StrictHostKeyChecking=no " % temp_dir
+SVN_SSH = "ssh -i %s/distro_source_key %s " % (temp_dir, config.ssh_options)
 SVNEXPORT = "svn export -q " + rev_arg
 MONO_ROOT = config.MONO_ROOT
 SVN_PATHS = ":".join(svn_paths)

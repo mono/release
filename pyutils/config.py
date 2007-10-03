@@ -35,6 +35,9 @@ smb_passfile = packaging_dir + "/.smbpass"
 MONO_ROOT = "svn+ssh://distro@mono-cvs.ximian.com/source"
 src_key_file = packaging_dir + os.sep + "distro_source_key"
 
+#buildenv_key_file = ""
+buildenv_key_file = packaging_dir + os.sep + "distro_source_key"
+
 # Url path from view of webserver
 web_root_url = ""
 web_root_dir = release_repo_root + "/monobuild/www"
@@ -74,6 +77,7 @@ td_packages = """
 	mono-tools
 	monodevelop
 	monodoc
+	moon
 	olive
 	xsp
 """.split()
@@ -111,6 +115,7 @@ sd_latest_build_distros = """
 	sunos-8-sparc
 	sunos-10-x86
 	suse-100-i586
+	suse-103-i586
 	win-4-i386
 """.split()
 sd_latest_build_packages = td_packages
@@ -181,3 +186,9 @@ data_perms = stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH # 644
 
 ######################################
 
+# Common place to put all ssh options
+ssh_options = '-o BatchMode=yes -o StrictHostKeyChecking=no -o Cipher=blowfish -o ConnectTimeout=10'
+
+# Add key file to options for all ssh stuff, so all you need is the distro key
+if os.path.exists(buildenv_key_file) and buildenv_key_file != "":
+	ssh_options += ' -i ' + buildenv_key_file

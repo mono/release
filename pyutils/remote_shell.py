@@ -13,14 +13,13 @@ import config
 import utils
 
 debug = False
-ssh_options = '-o "BatchMode yes" -o "StrictHostKeyChecking no" -o "Cipher blowfish" -o "ConnectTimeout 10" '
 
 class ssh:
 
 	def __init__(self, username, hostname, env="", my_logger=""):
 		# Ignore host checks, and blowfish might be faster and less cpu intensive
 		# Add connecttimeout so we don't wait forever for a host that is down
-		self.options = ssh_options
+		self.options = config.ssh_options
 
 		self.username = username
 		self.hostname = hostname
@@ -114,7 +113,7 @@ class scp:
 
 	def __init__(self, username, hostname, env="", my_logger=""):
 		# Ignore host checks, and blowfish might be faster and less cpu intensive
-		self.options = ssh_options
+		self.options = config.ssh_options
 
 		self.username = username
 		self.hostname = hostname

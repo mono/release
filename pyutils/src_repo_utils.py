@@ -16,15 +16,18 @@ class svn:
 
 		self.root = root
 
-		self.auth_env = ""
+		self.ssh_options = config.ssh_options
 		if key_file:
-			self.auth_env = "SVN_SSH='ssh -i %s'" % key_file
+			self.ssh_options += " -i %s" % key_file
+
+		# Even this won't be used when using svn:// protocol, it won't hurt
+		self.svn_env = "SVN_SSH='ssh %s'" % self.ssh_options
 
 	def latest_tree_revision(self):
 		"""Get the last commit version.
 		"""
 
-		output = commands.getoutput('%s svn ls %s -v' % ( self.auth_env, self.root ) )
+		output = commands.getoutput('%s svn ls %s -v' % ( self.svn_env, self.root ) )
 
 		versions = []
 		for line in output.split('\n'):
@@ -58,7 +61,7 @@ class svn:
 			dirname = os.path.dirname(item)
 			module = os.path.basename(item)
 
-			output = commands.getoutput('%s svn ls %s/%s %s -v' % ( self.auth_env, self.root , dirname, rev_arg) )
+			output = commands.getoutput('%s svn ls %s/%s %s -v' % ( self.svn_env, self.root , dirname, rev_arg) )
 
 			for line in output.split('\n'):
 				list = line.split()
