@@ -392,7 +392,41 @@ POSTBUILD_STEP5 () {
 POSTBUILD_STEP_NAME6="test-ondotnet"
 POSTBUILD_STEP6 () {
 	if test x$DISTRO = xwin-4-i386 ; then
-		$make_path make run-test-ondotnet
+
+		OLD_PATH=$PATH
+
+		SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin"`
+		SDK=`cygpath -a $SDK`
+		export PATH=$SDK:$PATH
+
+		################# Installing nunit in msgac
+		for f in `find mcs/class/lib -name "*nunit*.dll"` ; do
+			gacutil /i $f /f
+		done
+
+		for f in `find mcs/class/lib -name "*nunit*.exe"` ; do
+			gacutil /i $f /f
+		done
+		export PATH=$OLD_PATH
+
+		################# run tests
+		cd mcs
+		$make_path -k run-test-ondotnet
+		$make_path -k run-test-ondotnet PROFILE=net_2_0
+		cd ..
+
+		################# uninstalling from msgac
+		export PATH=$SDK:$PATH
+		for f in `find mcs/class/lib -name "*nunit*.dll"` ; do
+			gacutil /u `basename $f .dll` /f
+		done
+
+		for f in `find mcs/class/lib -name "*nunit*.exe"` ; do
+			gacutil /u `basename $f .exe` /f
+		done
+
+		export PATH=$OLD_PATH
+
 	else
 		echo "Skipping... test only on windows"
 	fi
