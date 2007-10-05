@@ -80,9 +80,7 @@ make
 make install DESTDIR=${RPM_BUILD_ROOT}
 
 %clean
-# We need to keep the buildroot in tact so we can generate status pages
-#  Or, we can pick the dlls out of the build tree instead of destdir in the step
-#rm -rf "$RPM_BUILD_ROOT"
+rm -rf "$RPM_BUILD_ROOT"
 
 # auto dep/req generation for older distros (it will take a while for the .config scanning to get upstream)
 %if 0%{?suse_version} <= 1040 || 0%{?fedora_version} <= 7
