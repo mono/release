@@ -158,3 +158,46 @@ POSTBUILD_STEP1 () {
 	fi
 }
 
+POSTBUILD_STEP_NAME2="api-diff"
+POSTBUILD_STEP2 () {
+
+        mkdir status
+        cd status
+
+        wget http://mono.ximian.com/masterinfos/masterinfos-2.0.tar.gz
+
+        # todo: wget these out of subversion
+        wget http://primates.ximian.com/~wberrier/class_status/deploy.tar.bz2
+        wget http://primates.ximian.com/~wberrier/class_status/mono-api.xsl
+        wget http://primates.ximian.com/~wberrier/class_status/transform.exe
+
+        tar -zxf masterinfos-2.0.tar.gz
+        tar -jxf deploy.tar.bz2
+
+        mkdir infos
+        mkdir src
+
+        echo "<ul>" >> deploy/index.html
+
+        # Output to step-output dir, which will get recursively copied back to the build info
+        # Are these per file, or can multiple namespaces be in a file... ??
+        # (ie: is it ok for this list to be generated dynamically?)
+        for i in /tmp/monobuild/build/BUILD/mono-basic-*/class/lib/vbnc/*.dll ; do
+                f=`basename $i .dll`
+
+                # Only generate for the files we have master infos for
+                if [ -e masterinfos/$f.xml ] ; then
+                        echo "building class status page for: $i"
+                        mono-api-info2 $i > infos/$f.xml
+                        mono-api-diff masterinfos/$f.xml infos/$f.xml > src/$f.src
+                        mono transform.exe src/$f.src mono-api.xsl source-name=$f.src > deploy/$f.html
+                        echo "<li><a href=\"$f.html\">$f</a></li>" >> deploy/index.html
+                fi
+        done
+        echo "</ul>" >> deploy/index.html
+
+        target=$build_location/steps/api-diff
+        mkdir -p $target
+        cp -Rf deploy/*  $target
+}
+

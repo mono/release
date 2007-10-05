@@ -67,7 +67,7 @@ POSTBUILD_STEP2 () {
 	# Output to step-output dir, which will get recursively copied back to the build info
 	# Are these per file, or can multiple namespaces be in a file... ??
 	# (ie: is it ok for this list to be generated dynamically?)
-	for i in `find /tmp/monobuild/build/buildroot/usr/lib/mono/3.0 -name *\.dll` ; do
+	for i in /tmp/monobuild/build/BUILD/olive-*/class/lib/*/*.dll ; do
 		f=`basename $i .dll`
 
 		# Only generate for the files we have master infos for
