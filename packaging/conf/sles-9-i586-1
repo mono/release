@@ -1,0 +1,13 @@
+web_index=0
+
+username=builder
+hostname=x32-linux-2.mono.lab.novell.com
+root_dir=/jails/sles-9-i586
+
+chroot_path=/usr/bin/chroot
+
+target_command_prefix=". /etc/profile;"
+
+# Repo conf
+YAST_REPO=1
+YAST_INSTALL=1

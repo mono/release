@@ -1,0 +1,5 @@
+username=builder
+hostname=arm-linux-2.mono.lab.novell.com
+
+USE_ZIP_PKG=1
+
