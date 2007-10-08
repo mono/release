@@ -1,7 +1,7 @@
 
 # norootforbuild
 
-Name:           moonlight
+Name:           libmoon
 License:        GNU General Public License (GPL), X11/MIT
 Group:          Development/Languages/Other
 Summary:        Moonlight
@@ -10,39 +10,24 @@ Version:        0.1
 Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        moon-%{version}.tar.bz2
-Provides:       moonlight = %{version}-%{release}
 ExclusiveArch: %ix86 x86_64
 Requires:       mono-core
 
-
-BuildRequires:  cairo-devel 
-
 #### suse options ###
 %if 0%{?suse_version}
-# factory needed this... ?
-#  All distro versions need it, but it was installed by default up until 10.3
 %if %{suse_version} > 1020
-#BuildRequires:	ncurses-devel
 %endif
 
 # For SLES9
 %if %sles_version == 9
-#%define configure_options export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/gnome/%_lib/pkgconfig
-#BuildRequires: pkgconfig
 %endif
 %endif
 
-# Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')
+# Fedora options
 %if 0%{?fedora_version}
-#%define env_options export MONO_SHARED_DIR=/tmp
-
-# Note: this fails to build on fedora5 x86_64 because of this bug:
-# https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=189324
 %endif
-
 
 %description
-Moonlight :-)
 Silverlight 1.1 (http://silverlight.net) is a new development technology for
 the Web created by Microsoft based on the CLR that augments it with a 2D
 retained graphics system and media playback engine and ships a subset of the
@@ -53,37 +38,81 @@ Silverlight 1.0 (canvas + browser-based scripting) as well as 1.1 applications
 %files
 %defattr(-, root, root)
 %doc AUTHORS COPYING ChangeLog README TODO NEWS
+%{_libdir}/libmoon.so.*
+
+%debug_package
+
+%package devel
+Summary:        Moonlight libmoon
+Group:          Development/Languages/Other
+Requires:       libmoon = %{version}
+
+%description devel
+libmoon development files
+
+%files devel
+%defattr(-, root, root)
+%{_prefix}/lib/pkgconfig/moon.pc
+%{_libdir}/libmoon.la
+%{_libdir}/libmoon.so
+
+%package tools
+Summary:        Moonlight tools
+Group:          Development/Languages/Other
+Requires:       libmoon = %{version}
+
+%description tools
+Moonlight library tools (mopen, xamlg, svg2xaml)
+
+%files tools
+%defattr(-, root, root)
 %{_prefix}/bin/mopen
 %{_prefix}/bin/svg2xaml
 %{_prefix}/bin/svg2xaml-gui
 %{_prefix}/bin/xamlg
+%{_prefix}/lib/moon/mopen.exe
+%{_prefix}/lib/moon/mopen.exe.config
+%{_prefix}/lib/moon/svg2xaml-gui.exe
+%{_prefix}/lib/moon/svg2xaml.exe
+%{_prefix}/lib/moon/xamlg.exe
+%{_mandir}/man1/mopen.1.gz
+%{_mandir}/man1/svg2xaml.1.gz
+%{_mandir}/man1/xamlg.1.gz
+
+%package sharp
+Summary:        Moonlight gtksilver
+Group:          Development/Languages/Other
+Requires:       libmoon = %{version}
+
+%description sharp
+gtksilver provides a gtk-sharp object that can be used to embed a moonlight surface in a desktop application
+
+%files sharp
+%defattr(-, root, root)
 %{_prefix}/lib/pkgconfig/gtksilver.pc
-%{_prefix}/lib/pkgconfig/moon.pc
-%{_prefix}/lib/mono/gac/gtksilver
+%{_prefix}/lib/mono/gac/gtksilver/*
 %{_prefix}/lib/mono/moon/gtksilver.dll
 %{_prefix}/lib/monodoc/sources/gtksilver.source
 %{_prefix}/lib/monodoc/sources/gtksilver.tree
 %{_prefix}/lib/monodoc/sources/gtksilver.zip
-%{_prefix}/lib/moon/mopen.exe
-%{_prefix}/lib/moon/mopen.exe.config
+
+%package -n moonlight-plugin
+Summary:        Moonlight browser plugin
+Group:          Productivity/Networking/Web/Browsers
+Requires:       libmoon = %{version}
+
+%description -n moonlight-plugin
+Browser plugin for Moonlight
+
+%files -n moonlight-plugin
+%defattr(-, root, root)
 %{_prefix}/lib/moon/plugin/README
 %{_prefix}/lib/moon/plugin/libmoonloader.la
 %{_prefix}/lib/moon/plugin/libmoonloader.so
 %{_prefix}/lib/moon/plugin/libmoonplugin.la
 %{_prefix}/lib/moon/plugin/libmoonplugin.so
 %{_prefix}/lib/moon/plugin/moonlight.exe
-%{_prefix}/lib/moon/svg2xaml-gui.exe
-%{_prefix}/lib/moon/svg2xaml.exe
-%{_prefix}/lib/moon/xamlg.exe
-%{_libdir}/libmoon.la
-%{_libdir}/libmoon.so
-%{_libdir}/libmoon.so.0
-%{_libdir}/libmoon.so.0.0.0
-%{_mandir}/man1/mopen.1.gz
-%{_mandir}/man1/svg2xaml.1.gz
-%{_mandir}/man1/xamlg.1.gz
 
-%debug_package
 %prep
 %setup  -q -n moon-%{version}
 #%patch0
