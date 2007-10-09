@@ -4,6 +4,10 @@ import sys
 
 sys.path += ['../pyutils']
 
+# Cheat: remove BatchMode while using the interactive jail-do so passwords will be prompted for if necessary
+import config
+config.ssh_options = config.ssh_options.replace("-o BatchMode=yes", "")
+
 import buildenv
 import packaging
 
