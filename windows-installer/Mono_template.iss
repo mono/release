@@ -74,7 +74,7 @@ Filename: {app}\Xsplocal2.url; Section: InternetShortcut; Components: xsp; Key: 
 Filename: {app}\MonoDocWeb.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://www.go-mono.com/docs/
 
 [Icons]
-Name: {group}\Mono-@@MONO_VERSION@@ Command Prompt; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono @@MONO_VERSION@@ Command Prompt
+Name: {group}\Mono-@@MONO_VERSION@@ Command Prompt; IconFilename: {app}\mono.ico; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono @@MONO_VERSION@@ Command Prompt
 Name: {group}\Readme; Filename: {app}\ReleaseNotes.txt; Comment: Combined Installer Release Notes
 Name: {group}\{cm:ProgramOnTheWeb,Mono-@@MONO_VERSION@@ Release Notes}; Filename: {app}\MonoReleaseNotes.url
 Name: {group}\MonoDoc Web; Components: mono; Filename: {app}\MonoDocWeb.url
