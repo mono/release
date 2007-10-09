@@ -72,11 +72,19 @@
 <h2>Runtime Engine</h2>
 
 	<p>Hazard pointers, to be used by lock-free parallel algorithms (Mark
-	Probst).
+	Probst). This improves stability with Thread.Abort-happy workloads.
 
-	<p>Support for Managed allocations: the JIT can now perform
-	allocations completely in managed code without the penalty of
+	<p>Support for the PE32+ assembly file format [Paolo].
+
+	<p>Support for Managed allocations: the runtime can now perform
+	some allocations completely in managed code without the penalty of
 	trasitioning to unmanaged code [Paolo].
+
+	<p>Signifiantly reduced the runtime and memory overhead of providing
+	all the additional interfaces of 2.0 vectors [Paolo].
+
+	<p>Implemented lazy loading of the interface dispatch tables, improving
+	memory usage [Paolo].
 
 	<p>Support for the CoreCLR security system (used by
 	Silverlight sandboxes) [Mark Probst].
