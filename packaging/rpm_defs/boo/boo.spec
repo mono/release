@@ -4,13 +4,13 @@
 Name:           boo
 Version:        0.7.9.2659
 Release:        1
-License:        GPL
+License:        X11/MIT
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        boo-%{version}-src.zip
 Patch0:		boo-disable_vs2005_update.patch
 Patch1:		boo-pkgconfig_path_fix.patch
 Group:          Development/Languages/Other
-Summary:        A CLI scripting language
+Summary:        A CLI Scripting Language
 BuildArch:      noarch
 URL:            http://boo.codehaus.org
 

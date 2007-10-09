@@ -11,7 +11,7 @@ License:        GNU General Public License (GPL)
 Group:          Development/Languages/Other
 Autoreqprov:    on
 Version:	0.16
-Release:	1.novell
+Release:	1
 Summary:        A Full-Featured IDE for Mono and Gtk#
 Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -26,7 +26,7 @@ PreReq:         shared-mime-info
 
 
 %if 0%{?suse_version}
-BuildRequires: update-desktop-files desktop-file-utils
+BuildRequires: desktop-file-utils update-desktop-files
 
 %if %suse_version <= 1000
 # Doesn't work on 9.3 and 10.0...

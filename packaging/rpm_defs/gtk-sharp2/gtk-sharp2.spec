@@ -9,7 +9,7 @@ BuildRequires:  mono-biarchcompat
 URL:            http://gtk-sharp.sf.net
 License:        GNU General Public License (GPL), GNU Library General Public License v. 2.0 and 2.1 (LGPL)
 Group:          System/GUI/GNOME
-Release:	1.suse102.novell
+Release:	1
 Summary:        .Net Language Bindings for GTK+
 Patch0:         gtk-sharp-optflags.patch
 Patch1:		gtk-sharp-revert_unportable_relocatable.patch
@@ -79,7 +79,7 @@ BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel vte
 %endif
 
 # All fedora distros (5 and 6) have the same names, requirements
-BuildRequires: librsvg2-devel mono-devel vte-devel libgnomeprintui22-devel gtkhtml3-devel gnome-panel-devel monodoc-core
+BuildRequires: gnome-panel-devel gtkhtml3-devel libgnomeprintui22-devel librsvg2-devel mono-devel monodoc-core vte-devel
 # Not needed with rpm .config dep search
 #%define gtkhtml_requires gtkhtml2
 
