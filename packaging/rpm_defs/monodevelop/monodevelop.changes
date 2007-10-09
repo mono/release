@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Oct  9 21:11:07 CEST 2007 - wberrier@suse.de
+
+- Update to 0.16
+ -C/C++ Support
+ -New Database Add-in
+ -Text editor improvements
+ -On-the-fly error underlining
+ -Auto-generation of XML comment tags
+ -New ASP.NET features
+ -Multiple GTK# versions
+ -ChangeLog add-in
+ -More than 100 bugs fixed
+
+-------------------------------------------------------------------
 Fri Aug  3 21:20:14 CEST 2007 - wberrier@suse.de
 
 - Remove upstream monodevelop-rename_ja_JP.patch
