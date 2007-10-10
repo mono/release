@@ -11,6 +11,9 @@ import glob
 import distutils.dir_util
 import getpass
 import getopt
+import commands
+import urlparse
+import re
 
 sys.path.append('.')
 
@@ -140,7 +143,21 @@ else:
 
 		# Do we have a working copy already?
 		if os.path.exists("%s/%s" % (cache_dir, module)):
-			# svn switch  (will update update if the path in the working copy hasn't changed, this ensures have the right path)
+			# svn switch  (will update if the path in the working copy hasn't changed, this ensures have the right path)
+
+			# rewrite the url, just in case we've changed it (it's a really fast command, nothing to loose)
+			(status, output) = commands.getstatusoutput("cd %s/%s; svn info" % (cache_dir, module) )
+			if status:
+				print "Error getting repo url..."
+				sys.exit(1)
+			old_mono_host, = re.compile("Repository Root: (.*)").search(output).groups()
+			stuff = urlparse.urlparse(old_mono_host)
+			old_mono_host = stuff[0] + "://" + stuff[1]
+
+			stuff = urlparse.urlparse(MONO_ROOT)
+			new_mono_host = stuff[0] + "://" + stuff[1]
+
+			os.system("cd %s/%s; svn switch --relocate %s %s" % (cache_dir, module, old_mono_host, new_mono_host) )
 			command = 'cd %s/%s; svn switch %s %s/%s' % (cache_dir, module, rev_arg, MONO_ROOT, path)
 			print "Executing: " + command
 			if os.system(command):

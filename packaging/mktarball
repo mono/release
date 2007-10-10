@@ -6,7 +6,6 @@ import os
 import sys
 import distutils.dir_util
 import glob
-import commands
 import getopt
 
 import pdb
