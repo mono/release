@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Oct 10 14:04:43 MST 2007 - wberrier@suse.de
+
+- Don't use -<package> notation in BuildRequires anymore.  Normal
+  sles9 doesn't like it (obs must intervene here).
+
+-------------------------------------------------------------------
 Fri Sep 28 16:04:43 MST 2007 - wberrier@suse.de
 
 - Update to 0.7.9.2659

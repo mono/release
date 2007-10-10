@@ -14,9 +14,7 @@ Summary:        A CLI Scripting Language
 BuildArch:      noarch
 URL:            http://boo.codehaus.org
 
-BuildRequires:  gtksourceview-devel mono-devel nant unzip
-# This is for finding out where to install the mime files (sles9 doesn't have this package)
-BuildRequires:  shared-mime-info
+BuildRequires:  mono-devel nant unzip
 
 # On older versions of suse, this was defined as /opt/gnome... make it cross distro
 %define gtksourceview_prefix %(pkg-config --variable=prefix gtksourceview-1.0)
@@ -34,22 +32,29 @@ BuildRequires:  shared-mime-info
 # 10.3 and later doesn't use mime-info
 %if %suse_version >= 1030
 %define include_legacy_mime_info 0
-BuildRequires: -gtksourceview-devel gtksourceview18-devel
+%define include_boo_lang 0
+BuildRequires:	gtksourceview18-devel shared-mime-info
 %endif
 
 # gtksourceview from 10.2 on has boo.lang
-%if %suse_version >= 1020
+%if %suse_version == 1020
 %define include_boo_lang 0
+BuildRequires:	gtksourceview-devel shared-mime-info
+%endif
+
+%if %suse_version == 1010
+BuildRequires:	gtksourceview-devel shared-mime-info
 %endif
 
 %if %{suse_version} == 1000
 BuildRequires:  %{pre_expansion_requires}
+BuildRequires:	shared-mime-info
 %endif
 
 %if %{sles_version} == 9
-BuildRequires:  %{pre_expansion_requires}
-# This package doesn't exist on sles9... must patch to build instead
-BuildRequires:  -shared-mime-info pkgconfig
+BuildRequires:	%{pre_expansion_requires}
+BuildRequires:	pkgconfig
+# shared-mime-info package doesn't exist on sles9... must patch to build instead
 %define mime_info_prefix /opt/gnome
 %endif
 
@@ -59,6 +64,8 @@ BuildRequires:  -shared-mime-info pkgconfig
 # Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')
 %if 0%{?fedora_version}
 %define env_options export MONO_SHARED_DIR=/tmp
+
+BuildRequires:	gtksourceview-devel shared-mime-info
 
 %if %{fedora_version} == 5
 BuildRequires: mono-core
