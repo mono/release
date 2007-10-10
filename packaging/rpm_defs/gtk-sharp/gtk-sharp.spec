@@ -35,8 +35,8 @@ BuildRequires: %{new_suse_buildrequires} gtkhtml2-devel
 
 # Wow, gtkhtml2-devel wasn't shipped in sles10, but it's in sled10... what to do?  Just build on 10.1, and that's it?
 #  10.1's support will run out before sle10... at that point, drop 10.1, and package sled10 and sles10 separately
+# Update: fixed in 10 sp1
 %if %sles_version == 10
-%define package_gtkhtml 0
 BuildRequires: %{new_suse_buildrequires}
 %endif
 
