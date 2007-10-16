@@ -2,12 +2,14 @@
 #
 
 import os.path
-import commands
 
 # Local modules
 import config
+import utils
 
 # TODO: add some error checking to die gracefully  (use Exceptions?)
+
+output_timeout=600
 
 #  svn source repo utils
 class svn:
@@ -27,7 +29,7 @@ class svn:
 		"""Get the last commit version.
 		"""
 
-		output = commands.getoutput('%s svn ls %s -v' % ( self.svn_env, self.root ) )
+		code, output = utils.launch_process('%s svn ls %s -v' % ( self.svn_env, self.root ), print_output=0, output_timeout=output_timeout )
 
 		versions = []
 		for line in output.split('\n'):
@@ -61,7 +63,7 @@ class svn:
 			dirname = os.path.dirname(item)
 			module = os.path.basename(item)
 
-			output = commands.getoutput('%s svn ls %s/%s %s -v' % ( self.svn_env, self.root , dirname, rev_arg) )
+			code, output = utils.launch_process('%s svn ls %s/%s %s -v' % ( self.svn_env, self.root , dirname, rev_arg), print_output=0, output_timeout=output_timeout )
 
 			for line in output.split('\n'):
 				list = line.split()
