@@ -66,12 +66,16 @@ def index(req, **vars):
 	<th class=failure>Failed</th>
 	<th class=testfailure>Tests Failed</th>
 	<th class=timeout>Timed Out</th>
-	<th class=queued>Queued</th>
 	<th class=new>New</th>
 	</tr>
-
 	</tbody>
 	</table>
+	<p>
+	<table>
+	<tr><td>Inner color:</td><td>current build</td></tr>
+	<tr><td>Outer color:</td><td>previous build</td></tr>
+	</table>
+	</p>
 	</div>"""
 
 	req.write(legend_html)
