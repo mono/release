@@ -379,13 +379,17 @@ POSTBUILD_STEP5 () {
 	DISPLAY=x64-linux-2.mono.lab.novell.com:1
 	export DISPLAY
 
+	failure=0
+
 	cd mcs/class/System.Drawing
-	$make_path run-test
-	$make_path run-test PROFILE=net_2_0
+	$make_path run-test || failure=1
+	$make_path run-test PROFILE=net_2_0 || failure=1
 
 	cd ../Managed.Windows.Forms
-	$make_path run-test
-	$make_path run-test PROFILE=net_2_0
+	$make_path run-test || failure=1
+	$make_path run-test PROFILE=net_2_0 || failure=1
+
+	exit $failure
 
 }
 
@@ -498,6 +502,8 @@ POSTBUILD_STEP7 () {
         mkdir infos
         mkdir src
 
+        echo "<p>Date: `date`</p>" >> deploy/index.html
+        echo "<p>Revision: $version</p>" >> deploy/index.html
         echo "<ul>" >> deploy/index.html
 
         export MONO_PATH=../mcs/class/lib/$PROFILE

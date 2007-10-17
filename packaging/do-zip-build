@@ -54,8 +54,7 @@ if pack_def.get_info_var('USE_PATCHES'):
 # Get code from def file
 shell_code = pack_def.get_zip_build_commands()
 
-# set version var, load up environment for deps, and execute build command
-os.environ['version'] = version
+# load up environment for deps, and execute build command
 build_command = shell_code
 
 # Trying to load this missing file fails on solaris 10... ?

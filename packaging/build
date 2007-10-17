@@ -302,6 +302,7 @@ conf.env_vars['HEAD_or_RELEASE'] = "HEAD"
 conf.env_vars['DISTRO'] = distro
 conf.env_vars['BUILD_OS'] = conf.info['os']
 conf.env_vars['BUILD_ARCH'] = conf.info['arch']
+conf.env_vars['version'] = version
 
 # Put in a function rather than copy and paste...
 def build_failed(conf, code, LOGFILE, build_info, package):

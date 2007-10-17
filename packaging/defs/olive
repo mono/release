@@ -62,6 +62,8 @@ POSTBUILD_STEP2 () {
 	mkdir infos
 	mkdir src
 
+        echo "<p>Date: `date`</p>" >> deploy/index.html
+        echo "<p>Revision: $version</p>" >> deploy/index.html
 	echo "<ul>" >> deploy/index.html
 
 	# Output to step-output dir, which will get recursively copied back to the build info
