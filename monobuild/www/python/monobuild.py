@@ -34,7 +34,7 @@ def index(req, **vars):
 
 	# Pull this in from the release repo
 	plat_objs = build.get_platform_objs()
-	pack_objs, noarch_pack_objs = build.get_package_objs()
+	pack_objs, noarch_pack_objs = build.get_package_objs(honor_disable_webview=True)
 
         req.content_type = "text/html"
 

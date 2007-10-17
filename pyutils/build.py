@@ -89,7 +89,7 @@ def get_packages():
 	return packages
 
 
-def get_package_objs():
+def get_package_objs(honor_disable_webview=False):
 	"""Returns two lists: packages, noarch_packages."""
 
 	packages = get_packages()
@@ -100,6 +100,9 @@ def get_package_objs():
         for package in packages:
 		# Don't try to create the dirs and links because this code is run by the web server
                 pack_obj = packaging.package("", package, create_dirs_links=False)
+
+		if honor_disable_webview and pack_obj.get_info_var("disable_webview"):
+			continue
 
 		# Handle normal package
 		# Add workaround for packages that build on multiple platforms, but are noarch (currently mono-basic)
