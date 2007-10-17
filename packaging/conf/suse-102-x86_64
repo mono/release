@@ -2,9 +2,8 @@
 #hostname=monobuild2.boston.ximian.com
 #root_dir=/jails/suse-102-x86_64
 
-
 username=builder
-hostname=x64-linux-1.mono.lab.novell.com
+hostname=x64-linux-3.mono.lab.novell.com
 root_dir=/jails/suse-102-x86_64
 chroot_path=/usr/bin/chroot
 # suse 10.2 doesn't include /usr/lib/pkgconfig on x86_64, force it.
