@@ -1,0 +1,62 @@
+
+BUILD_HOSTS=(
+        debian-4-arm
+        debian-4-sparc
+        fedora-5-i386
+        fedora-5-ppc
+        fedora-5-x86_64
+	macos-10-ppc
+	macos-10-x86
+        nld-9-i586
+        nld-9-x86_64
+        rhel-4-i386
+        sles-9-i586
+        sles-9-ia64
+        sles-9-ppc
+        sles-9-s390
+        sles-9-s390x
+        sles-9-x86_64
+        sunos-8-sparc
+        sunos-10-x86
+        suse-100-i586
+        suse-100-ppc
+        suse-100-x86_64
+        sles-10-ia64
+        suse-101-i586
+        suse-101-ppc
+        suse-101-x86_64
+        suse-102-i586
+        suse-102-ppc
+        suse-102-x86_64
+        suse-103-i586
+        suse-103-ppc
+        suse-103-x86_64
+        win-4-i386
+)
+
+USE_HOSTS=(${BUILD_HOSTS[@]})
+
+get_destroot () {
+	DEST_ROOT=$DISTRO
+}
+
+HEAD_PATH=(
+	trunk/gluezilla
+)
+RELEASE_PATH=(
+	tags/gluezilla-[[version]]
+)
+
+update_version_file () {
+        sed -i "s/\(AM_INIT_AUTOMAKE.*,\\).*)/\\1$VERSION)/" configure.ac
+}
+
+ZIP_BUILD () {
+
+        ./configure --prefix=/tmp/install || exit 1
+        make || exit 1
+        make install || exit 1
+
+}
+
+
