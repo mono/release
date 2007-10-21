@@ -36,5 +36,6 @@ print status_config
 if not os.path.exists(output_dir): os.mkdir(output_dir)
 
 for a in status_config:
-	os.system('cp -a %s %s' % (a[3], output_dir + os.sep + a[0]) )
+	out = output_dir + os.sep + a[0]
+	os.system('rm -Rf %s; cp -a %s %s' % (out, a[3], out) )
 
