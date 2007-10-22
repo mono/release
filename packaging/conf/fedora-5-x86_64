@@ -1,7 +1,0 @@
-username=builder
-hostname=x64-linux-1.mono.lab.novell.com
-root_dir=/jails/fedora-5-x86_64
-chroot_path=/usr/bin/chroot
-
-YUM_INSTALL=1
-RPM_MD_REPO=1

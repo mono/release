@@ -5,9 +5,6 @@ def_alias="gtk-sharp2"
 version_selection_reg="2\.8\.\d+"
 
 BUILD_HOSTS=(
-	fedora-5-i386
-	fedora-5-ppc
-	fedora-5-x86_64
 	suse-100-i586
 	suse-100-ppc
 	suse-100-x86_64

@@ -1,9 +1,6 @@
 web_index=8
 
 BUILD_HOSTS=(
-	fedora-5-i386
-	fedora-5-ppc
-	fedora-5-x86_64
 	nld-9-i586
 	#nld-9-x86_64
 	rhel-4-i386

@@ -2,9 +2,6 @@
 BUILD_HOSTS=(
         debian-4-arm
         debian-4-sparc
-        fedora-5-i386
-        fedora-5-ppc
-        fedora-5-x86_64
 	macos-10-ppc
 	macos-10-x86
         nld-9-i586
