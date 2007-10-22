@@ -12,34 +12,44 @@ Summary:        Glue library for Winforms Web Control
 Group:          Development/Libraries
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
+BuildRequires:  gcc-c++ gtk2-devel
+
 ####  suse  ####
 %if 0%{?suse_version}
 
-# Common requires for suse distros
-BuildRequires: gcc-c++ mozilla-nspr-devel mozilla-xulrunner181-devel
-
 %if %suse_version >= 1030
-#BuildRequires:  
+BuildRequires: mozilla-nspr-devel mozilla-xulrunner181-devel
 %endif
 
 %if %suse_version == 1020
-#BuildRequires:  
+BuildRequires: mozilla-nspr-devel mozilla-xulrunner181-devel
 %endif
 
 %if %sles_version == 10
-#BuildRequires:  
+# TODO: missing xpcom...
+# without xpcom, nsEmbedAPI.h can't be found
+# mozilla-xulrunner-1.8.0.1-32.2
+BuildRequires: mozilla-nspr-devel mozilla-xulrunner
 %endif
 
 %if %suse_version == 1010
-#BuildRequires:  
+# TODO: missing xpcom...
+# without xpcom, nsEmbedAPI.h can't be found
+# mozilla-xulrunner-1.8.0.1-32
+BuildRequires: mozilla-nspr-devel mozilla-xulrunner mozilla-nss-devel
 %endif
 
 %if %suse_version == 1000
-#BuildRequires:  
+# Broken: missing nsEmbedCID.h
+# Forget about it... eol in 3 weeks
+# mozilla-devel-1.7.11-9
+BuildRequires: mozilla-nspr-devel mozilla-devel mozilla-nss-devel
 %endif
 
 %if %sles_version == 9
-#BuildRequires:  
+# Broken: missing nsEmbedCID.h
+# mozilla-devel-1.7.8-5.13
+BuildRequires: mozilla-devel pkgconfig
 %endif
 
 %endif
@@ -48,8 +58,23 @@ BuildRequires: gcc-c++ mozilla-nspr-devel mozilla-xulrunner181-devel
 ####  fedora  ####
 %if 0%{?fedora_version}
 
-# All fedora distros have the same names, requirements
-#BuildRequires: 
+%if %{fedora_version} == 7
+# works if xpcomglue link flag is removed
+BuildRequires: firefox-devel
+%endif
+
+%if %{fedora_version} == 6
+# Broken: missing nsEmbedAPI.h
+# firefox-devel-1.5.0.7-7.fc6
+BuildRequires: firefox-devel
+%endif
+
+%if %{fedora_version} == 5
+# End of life?
+# Broken: missing nsEmbedCID.h
+# mozilla-devel-1.7.12-5
+BuildRequires: mozilla-devel
+%endif
 
 %endif
 
