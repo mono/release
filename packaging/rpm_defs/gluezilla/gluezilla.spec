@@ -26,17 +26,11 @@ BuildRequires: mozilla-nspr-devel mozilla-xulrunner181-devel
 %endif
 
 %if %sles_version == 10
-# TODO: missing xpcom...
-# without xpcom, nsEmbedAPI.h can't be found
-# mozilla-xulrunner-1.8.0.1-32.2
-BuildRequires: mozilla-nspr-devel mozilla-xulrunner
+BuildRequires: mozilla-nspr-devel mozilla-xulrunner gecko-sdk
 %endif
 
 %if %suse_version == 1010
-# TODO: missing xpcom...
-# without xpcom, nsEmbedAPI.h can't be found
-# mozilla-xulrunner-1.8.0.1-32
-BuildRequires: mozilla-nspr-devel mozilla-xulrunner mozilla-nss-devel
+BuildRequires: mozilla-nspr-devel mozilla-xulrunner gecko-sdk
 %endif
 
 %if %suse_version == 1000
