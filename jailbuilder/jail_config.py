@@ -25,6 +25,7 @@ required_rpms = {
 		automake
 		bison
 		cpio
+		esound-devel
 		expat
 		file
 		fontconfig
@@ -36,22 +37,44 @@ required_rpms = {
 		glib2
 		glib2-devel
 		glibc-devel
+		gnome-vfs2
+		gtk2-devel
+		gtksourceview-devel
 		iputils
+		kbd
 		libapr0
+		libart_lgpl-devel
+		libbonoboui
 		libexif
+		libglade2-devel
+		libgnome
+		libgnomecanvas-devel
+		libgnomeprint
+		libgnomeprint-devel
+		libgnomeprintui
+		libgnomeprintui-devel
+		libgnomeui
+		libgnomeui-devel
+		libgsf-devel
 		libjpeg
 		libpng
 		libpng-devel
+		librsvg-devel
 		libtiff
 		libtool
 		libungif
+		libxml2-devel
+		libxslt-devel
 		m4
 		make
 		mktemp
 		ncurses-devel
+		netcfg
+		pango-devel
 		patch
 		perl-XML-Parser
 		pkgconfig
+		popt-devel
 		procps
 		pwdutils
 		rug
@@ -62,38 +85,15 @@ required_rpms = {
 		unzip
 		util-linux
 		vim
-		yast2
-		yast2-ncurses
-		yast2-packager
-		yast2-ncurses
-		zlib-devel
-		librsvg-devel
 		vte
 		vte-devel
-		pango-devel
-		gtk2-devel
-		libxml2-devel
-		libart_lgpl-devel
-		libgnomecanvas-devel
-		libgnomeui
-		libgnomeui-devel
-		libglade2-devel
-		libxslt-devel
-		libgsf-devel
-		libgnomeprint-devel
-		libgnomeprintui-devel
-		popt-devel
-		esound-devel
-		libbonoboui
-		libgnome
-		gnome-vfs2
-		libgnomeprint
-		libgnomeprintui
-		kbd
-		netcfg
 		wget
-		gtksourceview-devel
-	""".split(),
+		yast2
+		yast2-ncurses
+		yast2-ncurses
+		yast2-packager
+		zlib-devel
+	""",
 
 	'suse-101': """
 		aaa_base
@@ -159,7 +159,7 @@ required_rpms = {
 		yast2-ncurses
 		zip
 		zlib-devel
-	""".split(),
+	""",
 
 	'suse-102': """
 		aaa_base
@@ -173,6 +173,7 @@ required_rpms = {
 		file
 		freetype2-devel
 		gcc
+		gcc-c++
 		giflib-devel
 		glib2-devel
 		glibc-locale
@@ -188,6 +189,7 @@ required_rpms = {
 		libart_lgpl-devel
 		libglade2-devel
 		libgnomecanvas-devel
+		libgnomedb-devel
 		libgnomeprint
 		libgnomeprint-devel
 		libgnomeprintui
@@ -203,6 +205,8 @@ required_rpms = {
 		libxslt-devel
 		make
 		makedev
+		mozilla-nspr-devel
+		mozilla-xulrunner181-devel
 		patch
 		perl-XML-LibXML
 		perl-XML-LibXML-Common
@@ -232,11 +236,7 @@ required_rpms = {
 		zip
 		zlib-devel
 		zypper
-		libgnomedb-devel
-		gcc-c++
-		mozilla-nspr-devel
-		mozilla-xulrunner181-devel
-	""".split(),
+	""",
 
 	'suse-103': """
 		aaa_base
@@ -250,6 +250,7 @@ required_rpms = {
 		file
 		freetype2-devel
 		gcc
+		gcc-c++
 		giflib-devel
 		glib2-devel
 		glibc-locale
@@ -263,7 +264,9 @@ required_rpms = {
 		intltool
 		iputils
 		libart_lgpl-devel
+		libexif-devel
 		libglade2-devel
+		libgnomedb-devel
 		libgnomecanvas-devel
 		libgnomeprint
 		libgnomeprint-devel
@@ -280,6 +283,8 @@ required_rpms = {
 		libxslt-devel
 		make
 		makedev
+		mozilla-nspr-devel
+		mozilla-xulrunner181-devel
 		patch
 		perl-XML-LibXML
 		perl-XML-LibXML-Common
@@ -309,12 +314,7 @@ required_rpms = {
 		zip
 		zlib-devel
 		zypper
-		libgnomedb-devel
-		libexif-devel
-		mozilla-nspr-devel
-		mozilla-xulrunner181-devel
-		gcc-c++
-	""".split(),
+	""",
 
 	'fedora-5': """
 		autoconf
@@ -334,6 +334,7 @@ required_rpms = {
 		libX11-devel
 		libXrender-devel
 		libart_lgpl-devel
+		libexif-devel
 		libglade2-devel
 		libgnomecanvas-devel
 		libgnomeprintui22-devel
@@ -343,6 +344,7 @@ required_rpms = {
 		librsvg2-devel
 		libtiff-devel
 		libtool
+		libXt-devel
 		libxml2-devel
 		make
 		openssh-clients
@@ -359,9 +361,7 @@ required_rpms = {
 		which
 		yum
 		zlib-devel
-		libXt-devel
-		libexif-devel
-	""".split(),
+	""",
 
 }
 
