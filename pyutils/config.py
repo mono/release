@@ -68,6 +68,7 @@ td_num_sequential = 10
 # static list of packages to create tarballs for
 td_packages = """
 	gecko-sharp2
+	gluezilla
 	gtk-sharp
 	libgdiplus
 	mod_mono
@@ -114,7 +115,7 @@ sd_latest_build_distros = """
 	sles-9-x86_64
 	sunos-8-sparc
 	sunos-10-x86
-	suse-100-i586
+	suse-101-i586
 	suse-103-i586
 	win-4-i386
 """.split()

@@ -16,9 +16,6 @@ BUILD_HOSTS=(
         sles-9-x86_64
         sunos-8-sparc
         sunos-10-x86
-        suse-100-i586
-        suse-100-ppc
-        suse-100-x86_64
         sles-10-ia64
         suse-101-i586
         suse-101-ppc

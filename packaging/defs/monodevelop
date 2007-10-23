@@ -3,13 +3,10 @@ web_index=2
 fresh_checkout=1
 
 BUILD_HOSTS=(
-	suse-100-i586
+	suse-101-i586
 )
 
 USE_HOSTS=(
-	suse-100-i586
-	suse-100-ppc
-	suse-100-x86_64
 	suse-101-i586
 	suse-101-ppc
 	suse-101-x86_64

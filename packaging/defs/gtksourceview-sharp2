@@ -1,13 +1,10 @@
 web_index=7
 
 BUILD_HOSTS=(
-	suse-100-i586
+	suse-101-i586
 )
 
 USE_HOSTS=(
-	suse-100-i586
-	suse-100-ppc
-	suse-100-x86_64
 	sles-10-ia64
 	suse-101-i586
 	suse-101-ppc

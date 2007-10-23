@@ -1,7 +1,3 @@
-#username=builder
-#hostname=monobuild2.boston.ximian.com
-#root_dir=/jails/suse-102-x86_64
-
 username=builder
 hostname=x64-linux-3.mono.lab.novell.com
 root_dir=/jails/suse-102-x86_64

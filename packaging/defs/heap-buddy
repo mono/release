@@ -19,9 +19,6 @@ USE_HOSTS=(
 	sles-9-s390
 	sles-9-s390x
 	sles-9-x86_64
-	suse-100-i586
-	suse-100-ppc
-	suse-100-x86_64
 	sles-10-ia64
 	suse-101-i586
 	suse-101-ppc
