@@ -195,8 +195,7 @@ class buildenv:
 		# Prepare a temp file to copy over
 		fd, code_filename = tempfile.mkstemp(prefix='monobuild')
 		file_basename = os.path.basename(code_filename)
-		# Hrm... documentation says fd is a file object, but it's an integer.  Open manually
-		fd = open(code_filename, 'w')
+		fd = os.fdopen(fd, 'w')
 		fd.write(code)
 		fd.close()
 
