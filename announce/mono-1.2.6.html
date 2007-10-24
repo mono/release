@@ -68,7 +68,19 @@
 	AJAX Client Library (which is released under the Microsoft
 	Permissive License). 
 
+<h2>Windows.Forms</h2>
 
+	<p>OSX support debuts with a native Quartz backend (no need to
+	run your applications inside X11, although you still need X11
+	installed as we use FreeType and font-config that are part of
+	the X11 distribution on OSX) [Geoff, ???]
+
+	<p>The Web browser control is introduced in this release.
+	It has support for basic browsing, but support for
+	manipulating the DOM is not yet supported.    This feature
+	requires Mozilla and currently only works on Windows and Linux
+	[Andreia]. 
+	
 <h2>Runtime Engine</h2>
 
 	<p>Hazard pointers, to be used by lock-free parallel algorithms (Mark
@@ -87,9 +99,15 @@
 	memory usage [Paolo].
 
 	<p>Support for the CoreCLR security system (used by
-	Silverlight sandboxes) [Mark Probst].
+	Silverlight sandboxes) [Mark].
 
+	<p>Reduced the size consumed by trampolines, in MonoDevelop's
+	case this saves 160k of memory on startup (Paolo).
 
+	<p>New Timer implementation, this version uses the ThreadPool
+	and provides the proper semantics that people have been
+	requesting [Paolo].
+	
 <h2>Silverlight Support</h2>
 
 	<p>Silverlight 2.1 libraries are now part of the build (JB
@@ -97,12 +115,23 @@
 
 <h2>ASP.NET</h2>
 
-	New mod_mono directives for controlling the life span of
+	<p>New mod_mono directives for controlling the life span of
 	mod-mono-server (Marek Habersack).
+
+	<p>A new tool "mconfig" can be used to easily extend your
+	Web.config settings to include new features (like turning an
+	existing ASP.NET app into an AJAX ASP.NET app).
 
 <h2>Security</h2>
 
 	<p>SslStream has been implemented (Atsushi).
+
+<h2>LDAP support</h2>
+
+	<p>The Mono's library Novell.Directory.Ldap has been
+	synchronized with the Novell's CSHARP LDAP SDK (version
+	2.1.8).  All the changes have been commited together.  [N
+	Palaniappan]
 	
 <h2>Infrastructure</h2>
 
@@ -110,13 +139,17 @@
 	in 1.2.5) (JB Evain).
 
 	<p>System.Core updates: Marek Safar, Federico Di Gregorio
+
+<h2>C# Compiler</h2>
+
+	<p>Support for partial methods has been implemeted [Marek].
 	
 Fixed a number of serial problems in 81967 by Lukasz Byczynski
 
 
 Contributors:
 
-	Lukasz Byczynski, Federico Di Gregorio,
+	Lukasz Byczynski, Federico Di Gregorio,  Kevin Fitzgerald
 
 
  
