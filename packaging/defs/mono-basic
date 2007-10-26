@@ -161,6 +161,11 @@ POSTBUILD_STEP1 () {
 POSTBUILD_STEP_NAME2="api-diff"
 POSTBUILD_STEP2 () {
 
+	if test x$DISTRO != xsuse-101-i586 ; then
+                echo "Class status pages not generated on this platform"
+                exit 0
+	fi
+
         mkdir status
         cd status
 

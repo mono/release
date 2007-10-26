@@ -16,8 +16,8 @@ output_dir = "/var/www/mono-website/go-mono/class-status"
 status_config = [
 	['1.1',		'sles-9-i586',		'mono'],
 	['2.0',		'sles-9-x86_64',	'mono'],
-	['mono-basic',	'suse-100-i586',	'mono-basic'],
-	['olive',	'suse-100-i586',	'olive'],
+	['mono-basic',	'suse-101-i586',	'mono-basic'],
+	['olive',	'suse-101-i586',	'olive'],
 ]
 
 # Collect latest

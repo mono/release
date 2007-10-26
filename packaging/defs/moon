@@ -4,6 +4,7 @@ MKTARBALL_HEAD_DEPS=1
 
 BUILD_HOSTS=(
         suse-103-i586
+        suse-103-x86_64
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -12,12 +13,14 @@ MONO_DEPS=(
 	mono
 	olive
 	monodoc
-	gtk-sharp210
-	gnome-sharp2
-	libgdiplus
 )
 
 MONO_RECOMMEND_DEPS=(
+	gtk-sharp2
+	gtk-sharp28
+	gtk-sharp210
+	gnome-sharp2
+	libgdiplus
 )
 
 get_destroot () {
@@ -35,4 +38,5 @@ update_version_file () {
         sed -i "s/\(AM_INIT_AUTOMAKE.*,\\).*)/\\1$VERSION)/" configure.ac
 }
 
+# This jail has ffmpeg in it
 MKTARBALL_HOST="suse-103-i586"
