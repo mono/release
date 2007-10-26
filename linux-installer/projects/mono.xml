@@ -15,6 +15,7 @@
   <postInstallationScript>${installdir}/bin/.installer_post_libscan</postInstallationScript>
   <postInstallationScriptArguments>${installdir}</postInstallationScriptArguments>
   <showPostInstallationScriptResult>1</showPostInstallationScriptResult>
+  <compressionAlgorithm>lzma</compressionAlgorithm>
   <componentList>
     <component>
       <description>Default Component</description>

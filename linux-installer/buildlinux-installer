@@ -17,7 +17,7 @@ import utils
 # There's a problem with the version of gtksourceview that we use... it is unable to check for *.lang files in the location where the installer installs mono
 
 DOWNLOAD_URL = "http://primates.ximian.com/~wberrier/linux-installer"
-IB_VER = "3.0.1"
+IB_VER = "5.1.1"
 
 # The following list is grouped as deps for: (discovered using ldd)
 # mono
@@ -37,18 +37,19 @@ external_rpms_list = """
 	ftp://ftp.suse.com/pub/suse/discontinued/i386/9.1/suse/i586/libjpeg-6.2.0-731.i586.rpm
 	ftp://ftp.suse.com/pub/suse/discontinued/i386/9.1/suse/i586/zlib-1.2.1-70.i586.rpm
 	ftp://ftp.suse.com/pub/suse/discontinued/i386/9.1/suse/i586/expat-1.95.7-37.i586.rpm
+	ftp://ftp.suse.com/pub/suse/discontinued/i386/9.1/suse/i586/libexif-0.5.12-118.i586.rpm
 """.split()
 
 # What's gal2 for?
 	#http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.0-OSS/inst-source/suse/i586/gal2-2.5.3-5.i586.rpm
 custom_rpms_list = """
-	http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.0-OSS/inst-source/suse/i586/gtkhtml2-3.8.0-3.i586.rpm
-	http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.0-OSS/inst-source/suse/i586/gtksourceview-1.4.1-2.i586.rpm
+	http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/suse/i586/gtkhtml2-3.10.0-15.i586.rpm
+	http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/suse/i586/gtksourceview-1.5.6-18.i586.rpm
 """.split()
 
 # rpm locations we build locally
-local_rpms = [ 
-	{'name': 'sles-9-i586', 'packages': [
+local_rpms = { 
+	'sles-9-i586': [
 		"mono",
 		"mono-debugger",
 		"heap-buddy",
@@ -62,8 +63,8 @@ local_rpms = [
 		"IPCE",
 		"mono-basic",
 
-		] },
-	{'name': 'suse-100-i586', 'packages': [
+		],
+	'suse-101-i586': [
 		"gtk-sharp",
 		"gtk-sharp28",
                 "mono-tools",
@@ -71,9 +72,8 @@ local_rpms = [
                 "gecko-sharp",
                 "gecko-sharp2",
                 "gtksourceview-sharp2",
-		] }
-
-]
+		],
+}
 
 prefix = os.getcwd()
 
@@ -170,11 +170,11 @@ for url in external_rpms_list + custom_rpms_list:
 	files.append(external_rpms + os.sep + os.path.basename(url))
 
 # Collect local rpm files
-for selection in local_rpms:
+for name, packages in local_rpms.iteritems():
 
-	conf = packaging.buildconf(selection['name'], exclusive=False)
+	conf = packaging.buildconf(name, exclusive=False)
 
-	for pack in selection['packages']:
+	for pack in packages:
 		pack_obj = packaging.package(conf, pack)
 		files += pack_obj.get_files()
 
@@ -341,7 +341,7 @@ utils.substitute_parameters_in_file(p + "/mono.xml",
 recurse_directories(p + "/usr/")
 
 # Run the install
-os.system("%s/installbuilder-%s/bin/builder build %s/mono.xml" % (os.environ['HOME'], IB_VER, p) )
+os.system("%s/installbuilder-%s/bin/builder build %s/mono.xml linux" % (os.environ['HOME'], IB_VER, p) )
 
 # Move file to the current
 if os.path.exists(mono_installer_output):
