@@ -1020,10 +1020,10 @@ rm -f $RPM_BUILD_ROOT/usr/%_lib/libMonoSupportW.so
 rm -f $RPM_BUILD_ROOT/usr/bin/mbas
 
 # 1.2.4 changes
-rm -f ./usr/lib/mono/1.0/culevel.exe*
+rm -f $RPM_BUILD_ROOT/usr/lib/mono/1.0/culevel.exe*
 
 # Post 1.2.5
-rm -f ./usr/lib/mono/1.0/transform.exe
+rm -f $RPM_BUILD_ROOT/usr/lib/mono/1.0/transform.exe
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
