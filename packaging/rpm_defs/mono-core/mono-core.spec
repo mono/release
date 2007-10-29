@@ -813,6 +813,7 @@ Authors:
 %_prefix/lib/mono/2.0/Microsoft.Common.tasks
 %_prefix/lib/mono/2.0/Microsoft.Common.targets
 %_prefix/lib/mono/2.0/Microsoft.CSharp.targets
+%_prefix/lib/mono/2.0/Microsoft.VisualBasic.targets
 %_prefix/lib/mono/2.0/MSBuild
 %_prefix/lib/mono/2.0/xbuild.rsp
 
@@ -1017,10 +1018,6 @@ rm -f $RPM_BUILD_ROOT/usr/%_lib/libMonoSupportW.so
 # 1.1.17 updates:
 # This file moved to mono-basic
 rm -f $RPM_BUILD_ROOT/usr/bin/mbas
-
-# From 1.2.3.1 update
-cd $RPM_BUILD_ROOT
-rm -f ./usr/lib/mono/2.0/Microsoft.VisualBasic.targets
 
 # 1.2.4 changes
 rm -f ./usr/lib/mono/1.0/culevel.exe*
