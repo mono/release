@@ -51,7 +51,7 @@ POSTBUILD_STEP1 () {
 
 	make distclean
 	export PKG_CONFIG_PATH=$build_location/moon-ffmpeg:$PKG_CONFIG_PATH
-	./autogen.sh --without-mono-runtime --enable-user-plugin
+	./configure --without-mono-runtime --enable-user-plugin
 	make
 	target=$build_location/steps/$POSTBUILD_STEP_NAME1
 	mkdir -p $target
