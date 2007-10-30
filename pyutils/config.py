@@ -3,7 +3,7 @@ import os
 import stat
 
 # Default distro to make tarballs on (can be overridden in def file)
-mktarball_host = "suse-102-x86_64"
+mktarball_host = "suse-103-x86_64"
 
 # Set release base dir
 #  Must do at startup, opposed to doing this in a function
@@ -102,6 +102,7 @@ sd_sequential_build_distros = [ 'redhat-9-i386' ]
 sd_sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
 
 # List of platforms/packages
+	#sunos-8-sparc
 sd_latest_build_distros = """
 	debian-4-arm
 	debian-4-sparc
@@ -113,7 +114,6 @@ sd_latest_build_distros = """
 	sles-9-s390
 	sles-9-s390x
 	sles-9-x86_64
-	sunos-8-sparc
 	sunos-10-x86
 	suse-101-i586
 	suse-101-x86_64
