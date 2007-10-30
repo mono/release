@@ -3,8 +3,8 @@ web_index=8
 MKTARBALL_HEAD_DEPS=1
 
 BUILD_HOSTS=(
-        suse-103-i586
-        suse-103-x86_64
+        suse-101-i586
+        suse-101-x86_64
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -39,4 +39,21 @@ update_version_file () {
 }
 
 # This jail has ffmpeg in it
-MKTARBALL_HOST="suse-103-i586"
+MKTARBALL_HOST="suse-101-i586"
+
+POSTBUILD_STEP_NAME1="plugin"
+POSTBUILD_STEP1 () {
+	tar xjf /tmp/monobuild/build/moon-ffmpeg.tbz
+	pushd moon-ffmpeg
+	./configure --enable-gpl
+	make
+	popd
+
+	make distclean
+	export PKG_CONFIG_PATH=$build_location/moon-ffmpeg:$PKG_CONFIG_PATH
+	configure --without-mono-runtime --enable-user-plugin
+	make
+	target=$build_location/steps/$POSTBUILD_STEP_NAME1
+	mkdir -p $target
+	cp plugin/novell-moonlight*.xpi $target/
+}

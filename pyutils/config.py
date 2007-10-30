@@ -116,6 +116,7 @@ sd_latest_build_distros = """
 	sunos-8-sparc
 	sunos-10-x86
 	suse-101-i586
+	suse-101-x86_64
 	suse-103-i586
 	win-4-i386
 """.split()
