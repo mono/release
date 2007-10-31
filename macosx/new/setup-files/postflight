@@ -2,6 +2,9 @@
 if [ -d /Library/Frameworks/Mono.framework/Commands ]; then
 cd /Library/Frameworks/Mono.framework/Commands
 for i in `ls -al | grep -v .exe | awk '{print $9}'`; do
+    if test x$i = x. || test x$i = x.. ; then
+        continue
+    fi
     echo "${i}"
     ln -sf $PWD/${i} /usr/bin/${i}
 done;
@@ -11,7 +14,7 @@ else
 fi
 
 if [ -d /Library/Frameworks/Mono.framework/Versions/Current ]; then
-cd /Library/Frameworks/Mono.framework/Versions/Current/man
+cd /Library/Frameworks/Mono.framework/Versions/Current/share/man
 for i in man*; do
    (cd ${i};
    for j in *; do
