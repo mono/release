@@ -45,7 +45,7 @@ POSTBUILD_STEP_NAME1="plugin"
 POSTBUILD_STEP1 () {
 	curl http://go-mono.com/moon/moon-ffmpeg.tar.bz2 | tar xj
 	pushd moon-ffmpeg
-	./configure --enable-gpl
+	./configure --enable-gpl --disable-muxers --disable-encoders #--disable-demuxers --disable-parsers --disable-bsfs --disable-protocols --disable-decoders --enable-decoder=wmv1 --enable-decoder=wmv2 --enable-decoder=wmv3 --enable-decoder=vc1 --enable-decoder=wmva1 --enable-decoder=wmva2 --enable-decoder=mp3
 	make
 	popd
 
