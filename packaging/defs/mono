@@ -225,6 +225,10 @@ fd.seek(0)
 fd.write(text)
 fd.close()'
 
+	# Need a version here...
+	./configure --prefix=$MONO_PREFIX --with-moonlight=yes || exit 1
+
+	make || exit 1
 
 	# It appears that xsp doesn't use /etc/mono/config, so still provide 
 	#  these mappings with the assemblies like we used to
@@ -254,18 +258,6 @@ EOF
 EOF
 	cp mcs/class/lib/default/Mono.Posix.dll.config mcs/class/lib/net_2_0/
 
-	# allan requested these options:
-	# allan: -Os makes the native libraries a *lot* smaller
-	# allan: and -gdwarf-2 for the new-style debugging symbols
-	#export CFLAGS=" -Os -gdwarf-2"
-
-	# Could this be the cause of: install_name_tool: object: ./bin/mono malformed object (unknown load command 15) ??
-	#export CFLAGS="-gdwarf-2"
-
-	# Need a version here...
-	./configure --prefix=$MONO_PREFIX --with-moonlight=yes
-
-	make || exit 1
 
 	rm -Rf /tmp/temp_install
 	make install DESTDIR=/tmp/temp_install || exit 1
