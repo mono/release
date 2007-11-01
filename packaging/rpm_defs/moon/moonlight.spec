@@ -106,12 +106,12 @@ Browser plugin for Moonlight
 
 %files -n moonlight-plugin
 %defattr(-, root, root)
-%{_prefix}/lib/moon/plugin/README
-%{_prefix}/lib/moon/plugin/libmoonloader.la
-%{_prefix}/lib/moon/plugin/libmoonloader.so
-%{_prefix}/lib/moon/plugin/libmoonplugin.la
-%{_prefix}/lib/moon/plugin/libmoonplugin.so
-%{_prefix}/lib/moon/plugin/moonlight.exe
+%{_libdir}/moon/plugin/README
+%{_libdir}/moon/plugin/libmoonloader.la
+%{_libdir}/moon/plugin/libmoonloader.so
+%{_libdir}/moon/plugin/libmoonplugin.la
+%{_libdir}/moon/plugin/libmoonplugin.so
+%{_libdir}/moon/plugin/moonlight.exe
 
 %prep
 %setup  -q -n moon-%{version}
