@@ -52,7 +52,7 @@ libmoon development files
 
 %files devel
 %defattr(-, root, root)
-%{_prefix}/lib/pkgconfig/moon.pc
+%{_libdir}/pkgconfig/moon.pc
 %{_libdir}/libmoon.la
 %{_libdir}/libmoon.so
 
