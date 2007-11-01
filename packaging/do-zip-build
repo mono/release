@@ -66,7 +66,7 @@ if not os.path.exists('/tmp/build_deps/env.sh'):
 	fd.write("")
 	fd.close()
 
-build_command = ". /tmp/build_deps/env.sh ; " + build_command
+build_command = "set -x; . /tmp/build_deps/env.sh ; " + build_command
 print build_command
 
 # TODO:  For some reason the above exit isn't being called on failures

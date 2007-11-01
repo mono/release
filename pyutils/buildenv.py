@@ -184,7 +184,8 @@ class buildenv:
 
 		# Default to shell code, but can be overwritten
 		if not interpreter:
-			interpreter = self.env['shell_path']
+			# -x turns on tracing for shell
+			interpreter = self.env['shell_path'] + " -x"
 
 		# get code as a string if a file was passed in
 		if os.path.isfile(code):
