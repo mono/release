@@ -22,13 +22,23 @@ status_config = [
 
 # Collect latest
 for a in status_config:
-	latest = build.get_latest_version("HEAD", a[1], a[2])
-	dir = "www/builds/HEAD/%s/%s/%s/files/steps/api-diff" % (a[1], a[2], latest)
-	if os.path.exists(dir):
+	versions = build.get_versions("HEAD", a[1], a[2])
+	versions.reverse()
+
+	dir = ""
+	for v in versions:
+		dir = "www/builds/HEAD/%s/%s/%s/files/steps/api-diff" % (a[1], a[2], v)
+		if os.path.exists(dir):
+			break
+		else:
+			print "Skipping: " + dir
+
+	if dir:
 		print dir
 		a.append(dir)
 	else:
-		print dir + " doesn't exist"
+		print "No valid api-diff steps for: " + a[0]
+
 
 print status_config
 
@@ -37,5 +47,7 @@ if not os.path.exists(output_dir): os.mkdir(output_dir)
 
 for a in status_config:
 	out = output_dir + os.sep + a[0]
-	os.system('rm -Rf %s; cp -a %s %s' % (out, a[3], out) )
+	# If there's a valid step, copy it over
+	if len(a) > 3:
+		os.system('rm -Rf %s; cp -a %s %s' % (out, a[3], out) )
 
