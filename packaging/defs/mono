@@ -40,6 +40,9 @@ USE_HOSTS=(
 	suse-102-i586
 	suse-102-ppc
 	suse-102-x86_64
+	suse-103-i586
+	suse-103-ppc
+	suse-103-x86_64
 	win-4-i386
 )
 
@@ -335,6 +338,8 @@ POSTBUILD_STEP2 () {
 
 POSTBUILD_STEP_NAME3="test-profiles"
 POSTBUILD_STEP3 () {
+	TEST_HARNESS_VERBOSE=1
+	export TEST_HARNESS_VERBOSE
 	#echo "Skipping..."
 	cd runtime
 	$make_path -k check
@@ -354,6 +359,8 @@ POSTBUILD_STEP4 () {
 
 POSTBUILD_STEP_NAME5="test-swf"
 POSTBUILD_STEP5 () {
+	TEST_HARNESS_VERBOSE=1
+	export TEST_HARNESS_VERBOSE
 	DISPLAY=x64-linux-2.mono.lab.novell.com:1
 	export DISPLAY
 
