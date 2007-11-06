@@ -161,7 +161,7 @@ else:
 			command = 'cd %s/%s; svn switch %s %s/%s' % (cache_dir, module, rev_arg, MONO_ROOT, path)
 			print "Executing: " + command
 			if os.system(command):
-				print "*** Error *** updating cached copy failed (this is usually because of a malformed url, ex: invalid version, or bb_ssh failed)"
+				print "*** Error *** updating cached copy failed (this is usually because of a malformed url, ex: invalid version, or svn/ssh failed)"
 				sys.exit(1)
 		else:
 			# create cache dir

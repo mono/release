@@ -67,7 +67,6 @@ if not os.path.exists('/tmp/build_deps/env.sh'):
 	fd.close()
 
 build_command = "set -x; . /tmp/build_deps/env.sh ; " + build_command
-print build_command
 
 # TODO:  For some reason the above exit isn't being called on failures
 #  (Still an issue... ?)
@@ -78,7 +77,9 @@ if(os.system(build_command)):
 # Package up the build (must not use temp_build_dir here for relocation correctness)
 os.chdir('/tmp/install')
 distutils.dir_util.mkpath(temp_build_dir + '/built-packages')
-os.system('zip -yr %s/built-packages/%s-%s-%s.%s.zip *' % (temp_build_dir, package, version, rev, arch) )
+if(os.system('zip -yr %s/built-packages/%s-%s-%s.%s.zip *' % (temp_build_dir, package, version, rev, arch) )):
+	print "Error archiving build..."
+	sys.exit(1)
 # Keep a copy of the "spec" file and distro conf file
 shutil.copy(temp_build_dir + os.sep + package, temp_build_dir + '/built-packages')
 shutil.copy(temp_build_dir + os.sep + distro, temp_build_dir + '/built-packages')

@@ -355,7 +355,11 @@ class sync(threading.Thread):
 				#sync_log.log(" *** Syncing ***\n")
 				#  For some reason the --delete option crashes when running the second time to go-mono.com and mono.ximian.com ... ?
 				# rsync all files over, and don't include the builds... just logs and info.xml
-				status, output = utils.launch_process('cd %s; rsync -avzR -e ssh --exclude=files %s %s:%s' % (config.release_repo_root, dir_string, self.sync_host, self.sync_target_dir), print_output=0)
+				command = 'cd %s; rsync -avzR -e "ssh %s" --exclude "files/downloads" --exclude "files/*.tar.gz" --exclude "files/*.tar.bz2" %s %s:%s' % (config.release_repo_root, config.ssh_options, dir_string, self.sync_host, self.sync_target_dir)
+				#sync_log.log(command + "\n")
+				status, output = utils.launch_process(command, print_output=0)
+			
+				#sync_log.log(output)
 				if status:
 					sync_log.log("Error running rsync: " + output)
 
@@ -406,6 +410,9 @@ while threading.activeCount() > 1 or firstrun:
 		found = False
 		for thread in build_threads:
 			# If this thread has quit, remove from the list
+			# TODO: Could this actually mean the thread is sleeping?  is that how more than 1 thread is getting started??  How to check this better?
+			#  TODO: Starting and stopping jails by changing the list is BROKEN!!!
+			#  I just saw more than one debian-4-arm thread exit... ????
 			if not thread.isAlive():
 				build_threads.remove(thread)
 

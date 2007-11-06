@@ -123,6 +123,7 @@ for f in rcfiles:
 # Will this command need to change from distro to distro? (possibly on REALLY old distros)
 command = "rpmbuild --rcfile=%s -bb *.spec" % ":".join(files)
 print "Executing: " + command
+sys.stdout.flush()
 if os.system(command): sys.exit(1)
 
 # cleanup
