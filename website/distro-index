@@ -9,7 +9,7 @@
 !	get_rpm_install
 
 	<h3>Mono</h3> 
-#	mono mono mono-basic libgdiplus
+#	mono mono mono-basic libgdiplus gluezilla
 	
 	<h3>XSP/mod_mono</h3>
 #	webserver xsp mod_mono

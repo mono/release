@@ -65,6 +65,7 @@ local_rpms = {
 
 		],
 	'suse-101-i586': [
+		"gluezilla",
 		"gtk-sharp",
 		"gtk-sharp28",
                 "mono-tools",

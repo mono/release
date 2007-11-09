@@ -3,6 +3,7 @@ boo
 cocoa-sharp
 gecko-sharp
 gecko-sharp2
+gluezilla
 gnome-sharp2
 gtk-sharp
 gtk-sharp2
