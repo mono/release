@@ -1,8 +1,7 @@
 username=builder
-hostname=x32-win-1.mono.lab.novell.com
+hostname=cygwin-mono.boston.ximian.com
 USE_ZIP_PKG=1
 # Cygwin's ssh server doesn't load this information
 # ... let's do it explicitly through sshutils
 target_command_prefix='source /etc/profile;'
 
-web_index=10

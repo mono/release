@@ -38,7 +38,7 @@ HEAD_PATH=(
 	trunk/gluezilla
 )
 RELEASE_PATH=(
-	tags/gluezilla-[[version]]
+	tags/mono-[[version]]/gluezilla
 )
 
 update_version_file () {

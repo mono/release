@@ -115,6 +115,7 @@ Authors:
 %_bindir/chktrust
 %_bindir/gacutil
 %_bindir/gmcs
+%_bindir/mono-test-install
 %_bindir/mcs
 %_bindir/smcs
 %_bindir/mozroots
@@ -163,16 +164,16 @@ Authors:
 %_prefix/lib/mono/2.0/mscorlib.dll*
 %_prefix/lib/mono/2.1/mscorlib.dll*
 %_prefix/lib/mono/2.1/smcs.exe*
-%dir /etc/mono
-%dir /etc/mono/1.0
-%dir /etc/mono/2.0
+%dir %_sysconfdir/mono
+%dir %_sysconfdir/mono/1.0
+%dir %_sysconfdir/mono/2.0
 %dir %_prefix/lib/mono
 %dir %_prefix/lib/mono/1.0
 %dir %_prefix/lib/mono/2.0
 %dir %_prefix/lib/mono/gac
-%config /etc/mono/config
-%config /etc/mono/1.0/machine.config
-%config /etc/mono/2.0/machine.config
+%config %_sysconfdir/mono/config
+%config %_sysconfdir/mono/1.0/machine.config
+%config %_sysconfdir/mono/2.0/machine.config
 %_prefix/lib/mono/gac/Mono.C5
 %_prefix/lib/mono/2.0/Mono.C5.dll
 # ikvm helper
@@ -569,14 +570,20 @@ Authors:
 %_prefix/lib/mono/gac/System.Web.Services
 %_prefix/lib/mono/1.0/System.Web.Services.dll
 %_prefix/lib/mono/2.0/System.Web.Services.dll
+%_prefix/lib/mono/gac/System.Web.Extensions
+%_prefix/lib/mono/2.0/System.Web.Extensions.dll
+%_prefix/lib/mono/gac/System.Web.Extensions.Design
+%_prefix/lib/mono/2.0/System.Web.Extensions.Design.dll
 # exes
 %_prefix/lib/mono/1.0/disco.exe*
 %_prefix/lib/mono/1.0/soapsuds.exe*
 %_prefix/lib/mono/1.0/wsdl.exe*
 %_prefix/lib/mono/2.0/wsdl.exe*
 %_prefix/lib/mono/1.0/xsd.exe*
+%_prefix/lib/mono/2.0/mconfig.exe*
 # shell wrappers
 %_bindir/disco
+%_bindir/mconfig
 %_bindir/soapsuds
 %_bindir/wsdl
 %_bindir/wsdl2
@@ -586,11 +593,12 @@ Authors:
 %_mandir/man1/soapsuds.1.gz
 %_mandir/man1/wsdl.1.gz
 %_mandir/man1/xsd.1.gz
-%config /etc/mono/browscap.ini
-%config /etc/mono/1.0/DefaultWsdlHelpGenerator.aspx
-%config /etc/mono/2.0/DefaultWsdlHelpGenerator.aspx
-%config /etc/mono/2.0/web.config
-%_prefix/lib/mono/gac/System.Web.Extensions
+%_mandir/man1/mconfig.1.gz
+%config %_sysconfdir/mono/browscap.ini
+%config %_sysconfdir/mono/mconfig/config.xml
+%config %_sysconfdir/mono/1.0/DefaultWsdlHelpGenerator.aspx
+%config %_sysconfdir/mono/2.0/DefaultWsdlHelpGenerator.aspx
+%config %_sysconfdir/mono/2.0/web.config
 %package -n mono-data-oracle
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
@@ -706,7 +714,6 @@ Database connectivity for Mono.
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/FirebirdSql.Data.Firebird
 %_prefix/lib/mono/1.0/FirebirdSql.Data.Firebird.dll
-#%_prefix/lib/mono/2.0/FirebirdSql.Data.Firebird.dll
 
 %description -n mono-nunit
 NUnit is a unit-testing framework for all .Net languages.  Initially
@@ -732,14 +739,14 @@ Authors:
 %_prefix/bin/nunit-console2
 %_prefix/lib/mono/1.0/nunit-console.exe*
 %_prefix/lib/mono/2.0/nunit-console.exe*
-%_prefix/lib/mono/1.0/nunit.core.dll
-%_prefix/lib/mono/1.0/nunit.framework.dll
-%_prefix/lib/mono/1.0/nunit.util.dll
-%_prefix/lib/mono/1.0/nunit.mocks.dll
-%_prefix/lib/mono/gac/nunit.core
-%_prefix/lib/mono/gac/nunit.framework
 %_prefix/lib/mono/gac/nunit.util
+%_prefix/lib/mono/1.0/nunit.util.dll
+%_prefix/lib/mono/gac/nunit.core
+%_prefix/lib/mono/1.0/nunit.core.dll
+%_prefix/lib/mono/gac/nunit.framework
+%_prefix/lib/mono/1.0/nunit.framework.dll
 %_prefix/lib/mono/gac/nunit.mocks
+%_prefix/lib/mono/1.0/nunit.mocks.dll
 %_libdir/pkgconfig/mono-nunit.pc
 %package -n mono-devel
 Summary:        Mono development tools

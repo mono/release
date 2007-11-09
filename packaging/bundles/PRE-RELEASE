@@ -1,6 +1,6 @@
 # Directory used when created go-mono.com/archive/<archive_version>
 #  This will need to be manually bumped each time on head... don't forget!!
-archive_version="1.2.5.1"
+archive_version="1.2.6"
 
 bundle_urlname="preview"
 

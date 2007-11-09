@@ -84,6 +84,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/mono/1.0/mod-mono-server.exe
 %{_prefix}/lib/mono/gac/mod-mono-server2
 %{_prefix}/lib/mono/2.0/mod-mono-server2.exe
+%{_prefix}/lib/mono/gac/fastcgi-mono-server
+%{_prefix}/lib/mono/1.0/fastcgi-mono-server.exe
+%{_prefix}/lib/mono/gac/fastcgi-mono-server2
+%{_prefix}/lib/mono/2.0/fastcgi-mono-server2.exe
 %doc NEWS README
 
 # auto dep/req generation for older distros (it will take a while for the .config scanning to get upstream)
