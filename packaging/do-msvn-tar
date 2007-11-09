@@ -11,7 +11,6 @@ import glob
 import distutils.dir_util
 import getpass
 import getopt
-import commands
 import urlparse
 import re
 
@@ -19,6 +18,9 @@ sys.path.append('.')
 
 import packaging
 import config
+import utils
+
+output_timeout = 600
 
 # Some things we'll need to run as root
 EXEC_AS_ROOT = 'sudo'
@@ -35,8 +37,8 @@ for option, value in opts:
 os.chdir('source_dist_creator')
 
 # they key needs to be owned by the user so ssh doesn't reject the key
-os.system('%s chown %s distro_source_key' % (EXEC_AS_ROOT, getpass.getuser()))
-os.system("%s mount -t proc none /proc &> /dev/null" % EXEC_AS_ROOT)
+utils.launch_process('%s chown %s distro_source_key' % (EXEC_AS_ROOT, getpass.getuser()))
+utils.launch_process("%s mount -t proc none /proc &> /dev/null" % EXEC_AS_ROOT)
 
 temp_dir = os.getcwd()
 
@@ -127,8 +129,7 @@ def_file = temp_dir + os.sep + package
 
 # get_source
 if get_source:
-	print "Command: %s" % get_source
-	os.system(get_source)
+	utils.launch_process(get_source, print_command=1, output_timeout=output_timeout)
 else:
 	# Put cachedir up two levels so it will remain through cleanup
 	cache_dir = os.path.abspath( os.path.join(temp_dir, "..", "..", "src_cache", package, HEAD_or_RELEASE) )
@@ -136,7 +137,7 @@ else:
 	# Potentially clean up source to do a fresh checkout (required for modules that use 'svn:external'
 	if fresh_checkout:
 		print "Removing cache..."
-		os.system("rm -Rf %s" % cache_dir)
+		utils.launch_process("rm -Rf %s" % cache_dir)
 
 	for path in svn_paths:
 		module = os.path.basename(path)
@@ -146,7 +147,7 @@ else:
 			# svn switch  (will update if the path in the working copy hasn't changed, this ensures have the right path)
 
 			# rewrite the url, just in case we've changed it (it's a really fast command, nothing to loose)
-			(status, output) = commands.getstatusoutput("cd %s/%s; svn info" % (cache_dir, module) )
+			(status, output) = utils.launch_process("cd %s/%s; svn info" % (cache_dir, module), output_timeout=output_timeout )
 			if status:
 				print "Error getting repo url..."
 				sys.exit(1)
@@ -157,19 +158,23 @@ else:
 			stuff = urlparse.urlparse(MONO_ROOT)
 			new_mono_host = stuff[0] + "://" + stuff[1]
 
-			os.system("cd %s/%s; svn switch --relocate %s %s" % (cache_dir, module, old_mono_host, new_mono_host) )
-			command = 'cd %s/%s; svn switch %s %s/%s' % (cache_dir, module, rev_arg, MONO_ROOT, path)
-			print "Executing: " + command
-			if os.system(command):
-				print "*** Error *** updating cached copy failed (this is usually because of a malformed url, ex: invalid version, or svn/ssh failed)"
+			(status, output) = utils.launch_process("cd %s/%s; svn switch --relocate %s %s" % (cache_dir, module, old_mono_host, new_mono_host), output_timeout=output_timeout )
+			if status:
+				print "Error relocating repo... exiting."
 				sys.exit(1)
+
+			command = 'cd %s/%s; svn switch %s %s/%s' % (cache_dir, module, rev_arg, MONO_ROOT, path)
+			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
 		else:
 			# create cache dir
 			if not os.path.exists(cache_dir): distutils.dir_util.mkpath(cache_dir)
 			#check out working copy
 			command = "cd %s; svn checkout -q %s %s/%s" % (cache_dir, rev_arg, MONO_ROOT, path)
-			print command
-			os.system(command)
+			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
+
+		if status:
+			print "*** Error *** getting/updating source failed (this is usually because of a malformed url, ex: invalid version, or svn/ssh failed)"
+			sys.exit(1)
 
 
 		# svn export from working copy
@@ -183,9 +188,10 @@ else:
 		#  Use rsync instead?  probably...
 		# results: using this instead of svn export recovers those 3 minutes
 		command = "rsync -a --exclude '.svn/' %s/%s ." % (cache_dir, module)
-
-		print command
-		os.system(command)
+		(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
+		if status:
+			print "Error making clean copy of the source tree (did rsync fail, or is it installed?)"
+			sys.exit(1)
 
 
 # Go inside the source tree
@@ -193,12 +199,12 @@ os.chdir(build_dir)
 
 # update_version_file (If this is a snapshot build)
 if HEAD_or_RELEASE == "HEAD":
-	os.system(update_version_file )
+	utils.launch_process(update_version_file )
 
 # pwd: /tmp/monobuild/source_dist_creator/src/$build_dir
 
 # make_dist
-os.system(make_dist)
+utils.launch_process(make_dist)
 
 ### End of source creating functions ###
 
