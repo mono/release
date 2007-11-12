@@ -41,7 +41,7 @@ update_version_file () {
 # This jail has ffmpeg in it
 MKTARBALL_HOST="suse-101-i586"
 
-POSTBUILD_STEP_NAME1="plugin"
+POSTBUILD_STEP_NAME1="plugin-1.0"
 POSTBUILD_STEP1 () {
 	curl -s http://go-mono.com/moon/moon-ffmpeg.tar.bz2 | tar xj
 	pushd moon-ffmpeg
@@ -53,7 +53,18 @@ POSTBUILD_STEP1 () {
 	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
 	./configure --without-mono-runtime --enable-user-plugin
 	make
-	target=$build_location/steps/plugin
+	target=$build_location/steps/plugin-1.0
+	mkdir -p $target
+	cp plugin/novell-moonlight*.xpi $target/
+}
+
+POSTBUILD_STEP_NAME2="plugin-1.1"
+POSTBUILD_STEP2 () {
+	make distclean
+	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
+	./configure --enable-user-plugin
+	make
+	target=$build_location/steps/plugin-1.1
 	mkdir -p $target
 	cp plugin/novell-moonlight*.xpi $target/
 }
