@@ -68,18 +68,44 @@
 	AJAX Client Library (which is released under the Microsoft
 	Permissive License). 
 
-<h2>Windows.Forms</h2>
+<h2>FastCGI</h2>
 
-	<p>OSX support debuts with a native Quartz backend (no need to
-	run your applications inside X11, although you still need X11
-	installed as we use FreeType and font-config that are part of
-	the X11 distribution on OSX) [Geoff, ???]
+	<p>This version of Mono ships with support for servers that
+	speak FastCGI (like lighttpd).   This was developed by Brian
+	Nickel during the summer as part of the Summer of Code.
+
+	<p>Documentation for setting up sites with FastCGI and Mono is
+	available <a
+	href="http://mono-soc-2007.googlecode.com/svn/trunk/brian/FastCgi/doc/index.htm">here</a>. 
+
+	<p>Robert integrated the work into the main distribution.
+
+<h2>Windows.Forms</h2>
 
 	<p>The Web browser control is introduced in this release.
 	It has support for basic browsing, but support for
 	manipulating the DOM is not yet supported.    This feature
 	requires Mozilla and currently only works on Windows and Linux
-	[Andreia]. 
+	[Andreia].
+	
+	<p>OSX support debuts with a native Quartz backend.  This
+	means that there is no need to run your applications inside
+	X11, although you still need X11 installed as we use FreeType
+	and font-config that are part of the X11 distribution on OSX)
+	[Geoff, Will Johannson, Attacom ].  This is at this point a
+	preview and not yet fully supported, but many applications now
+	work.
+
+	<p>To use Windows.Forms on MacOS, you should use the
+	<tt>macpack</tt> tool to "wrap" your Windows.Forms application
+	properly (so that users can double-click on it). 
+
+	<p>WindowsFormsSynchronizationContext has been implemented,
+	this allows callbacks from BackgroundWorker to run on UI
+	thread.
+
+	<p>Approximately 100 reported bugs fixed in this cycle (too
+	many to go into the details).
 	
 <h2>Runtime Engine</h2>
 
@@ -95,8 +121,9 @@
 	<p>Signifiantly reduced the runtime and memory overhead of providing
 	all the additional interfaces of 2.0 vectors [Paolo].
 
-	<p>Implemented lazy loading of the interface dispatch tables, improving
-	memory usage [Paolo].
+	<p>Implemented lazy loading of the interface dispatch tables,
+	improving memory usage.   This feature is available on x86,
+	x86-64 and ARM systems [Paolo].
 
 	<p>Support for the CoreCLR security system (used by
 	Silverlight sandboxes) [Mark].
@@ -107,24 +134,52 @@
 	<p>New Timer implementation, this version uses the ThreadPool
 	and provides the proper semantics that people have been
 	requesting [Paolo].
-	
+
+	<p>New Profiler implementation: there is a new profiler that
+	logs all the profiling events into a log file (as opposed to
+	keeping this information in memory) which enables processing
+	of this information after the program has terminated and
+	allows for external tools to be written to analyze the data
+	[Massimiliano].
+
 <h2>Silverlight Support</h2>
 
 	<p>Silverlight 2.1 libraries are now part of the build (JB
 	Evain).
+
+	<p>To compile code that targets Silverlight, use the
+	<tt>smcs</tt> command line compiler.  This preloads all the
+	Silverlight assemblies and also enables the LINQ language
+	version (-langversion:linq) by default. 
 
 <h2>ASP.NET</h2>
 
 	<p>New mod_mono directives for controlling the life span of
 	mod-mono-server (Marek Habersack).
 
-	<p>A new tool "mconfig" can be used to easily extend your
+	<p>A new tool <tt>mconfig</tt> can be used to easily extend your
 	Web.config settings to include new features (like turning an
 	existing ASP.NET app into an AJAX ASP.NET app).
 
-<h2>Security</h2>
+	<p>The new <tt>mono-asp-apps</tt> script is a tool that can be
+	used by RPM-based distributions to install and remove ASP.NET
+	applications from a system.  [FIXME: link to the ASP.NET
+	application guidelines deployment]
+
+	<p>Some key fixes allow ASP.NET with IronPython to work now
+	[Lluis, Marek and Marek].
+		
+<h2>System</h2>
 
 	<p>SslStream has been implemented (Atsushi).
+
+	<p>System.Net.Mail has been vastly improved (Atsushi).
+
+	<p>System.Net.NetworkInformation (Windows-only for now,
+	Atsushi). 
+
+	<p>Fixed a number of serial problems in 81967 by Lukasz
+	Byczynski
 
 	<p>The Cecil-based permview tool is now part of Mono, 
 	replacing an older reflection based (and incomplete) version
@@ -145,6 +200,7 @@
 
 	<p>TextureBrush now supports transparent bitmaps [Sebastien]
 
+>>>>>>> .r89497
 <h2>LDAP support</h2>
 
 	<p>The Mono's library Novell.Directory.Ldap has been
@@ -159,14 +215,27 @@
 
 	<p>System.Core updates: Marek Safar, Federico Di Gregorio
 
+	<p>The new <tt>mono-test-install</tt> script can be used to
+	check a Mono installation for common errors.
+
 <h2>C# Compiler</h2>
 
 	<p>Support for partial methods has been implemeted [Marek].
+
+	<p>To enable this and other LINQ features from the language,
+	you must use -langversion:linq in the command line.
+
+	<p>The Silverlight compiler (smcs) has that enabled by
+	default. 
+
+<h2>Other</h2>
+
+	<p>Work is underwary to complete the 2.0 API at least to keep
+	the metadata in sync with the framework.   We would much
+	rather have methods documented with TODO items or throwing
+	exceptions that not having the methods defined. 
 	
-Fixed a number of serial problems in 81967 by Lukasz Byczynski
-
-
-Contributors:
+<h1>Contributors:</h1>
 
 	Lukasz Byczynski, Federico Di Gregorio,  Kevin Fitzgerald
 

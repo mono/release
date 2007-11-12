@@ -1,7 +1,8 @@
 p:
-	scp mono-1.2.5.html mono-web@www.go-mono.com:go-mono/archive/1.2.5/index.html
+	scp mono-1.2.6.html mono-web@www.go-mono.com:go-mono/archive/1.2.6/index.html
 
 push:
+	scp mono-1.2.5.html mono-web@www.go-mono.com:go-mono/archive/1.2.5/index.html
 	scp mono-1.2.4.html mono-web@www.go-mono.com:go-mono/archive/1.2.4/index.html
 	scp mono-1.2.3.1.html mono-web@www.go-mono.com:go-mono/archive/1.2.3.1/index.html
 	scp mono-1.2.3.html mono-web@www.go-mono.com:go-mono/archive/1.2.3/index.html
