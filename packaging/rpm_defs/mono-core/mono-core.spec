@@ -155,9 +155,11 @@ Authors:
 %_prefix/lib/mono/1.0/System.Xml.dll
 %_prefix/lib/mono/2.0/System.Xml.dll
 %_prefix/lib/mono/gac/System.Xml.Core
+%_prefix/lib/mono/2.1/System.Xml.Core.dll
 %_prefix/lib/mono/gac/System
 %_prefix/lib/mono/1.0/System.dll
 %_prefix/lib/mono/2.0/System.dll
+%_prefix/lib/mono/2.1/System.dll
 %_prefix/lib/mono/gac/System.Configuration
 %_prefix/lib/mono/2.0/System.Configuration.dll
 %_prefix/lib/mono/1.0/mscorlib.dll*
@@ -207,6 +209,7 @@ Authors:
 %_prefix/lib/mono/2.0/OpenSystem.C.dll
 %_prefix/lib/mono/gac/System.Core
 %_prefix/lib/mono/2.0/System.Core.dll
+%_prefix/lib/mono/2.1/System.Core.dll
 
 %post
 /sbin/ldconfig
