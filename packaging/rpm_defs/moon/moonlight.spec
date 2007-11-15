@@ -112,6 +112,7 @@ Browser plugin for Moonlight
 %{_libdir}/moon/plugin/libmoonplugin.la
 %{_libdir}/moon/plugin/libmoonplugin.so
 %{_libdir}/moon/plugin/moonlight.exe
+%{_libdir}/browser-plugins/libmoonplugin.so
 
 %prep
 %setup  -q -n moon-%{version}
@@ -126,6 +127,7 @@ make
 %install
 %{?env_options}
 make DESTDIR="$RPM_BUILD_ROOT" install
+ln -s %{_libdir}/moon/plugin/libmoonplugin.so $RPM_BUILD_ROOT%{_libdir}/browser-plugins/libmoonplugin.so
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
