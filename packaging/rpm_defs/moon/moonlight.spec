@@ -127,6 +127,7 @@ make
 %install
 %{?env_options}
 make DESTDIR="$RPM_BUILD_ROOT" install
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/browser-plugins
 ln -s %{_libdir}/moon/plugin/libmoonplugin.so $RPM_BUILD_ROOT%{_libdir}/browser-plugins/libmoonplugin.so
 
 %clean
