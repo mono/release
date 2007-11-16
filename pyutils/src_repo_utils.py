@@ -2,6 +2,7 @@
 #
 
 import os.path
+import time
 
 # Local modules
 import config
@@ -9,12 +10,17 @@ import utils
 
 # TODO: add some error checking to die gracefully  (use Exceptions?)
 
+# Exceptions would be nice...
+
 output_timeout=600
+
+# Wait at least x seconds between commands
+default_min_wait = 5
 
 #  svn source repo utils
 class svn:
 
-	def __init__(self, root, key_file=""):
+	def __init__(self, root, key_file="", min_wait=default_min_wait):
 
 		self.root = root
 
@@ -25,10 +31,29 @@ class svn:
 		# Even this won't be used when using svn:// protocol, it won't hurt
 		self.svn_env = "SVN_SSH='ssh %s'" % self.ssh_options
 
+		self.last_access = 0
+		self.min_wait = min_wait
+
+	def regulator(self):
+		"""Make sure we don't pound the svn server too hard"""
+		#print "DEBUG: Calling regulator"
+
+		time_since_last = utils.time_duration_asc(self.last_access, utils.get_time() ) * 60
+		if time_since_last < self.min_wait:
+			wait_time = self.min_wait - time_since_last
+			#print "DEBUG: Sleeping: %d" % wait_time
+			time.sleep(wait_time)
+		#else:
+		#	print "DEBUG: min_wait (%d) satisfied, not waiting" % self.min_wait
+
+		self.last_access = utils.get_time()
+		
+
 	def latest_tree_revision(self):
 		"""Get the last commit version.
 		"""
 
+		self.regulator()
 		code, output = utils.launch_process('%s svn ls %s -v' % ( self.svn_env, self.root ), print_output=0, output_timeout=output_timeout )
 
 		versions = []
@@ -63,6 +88,7 @@ class svn:
 			dirname = os.path.dirname(item)
 			module = os.path.basename(item)
 
+			self.regulator()
 			code, output = utils.launch_process('%s svn ls %s/%s %s -v' % ( self.svn_env, self.root , dirname, rev_arg), print_output=0, output_timeout=output_timeout )
 
 			for line in output.split('\n'):
