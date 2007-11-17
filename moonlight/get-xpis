@@ -1,0 +1,24 @@
+#!/bin/bash -e
+BASEURL="http://build.mono.lab.novell.com/builds"
+TYPE="HEAD"
+NAME="novell-moonlight"
+
+if [ -z "$1" ]; then
+	echo "Please supply a revision"
+	exit 1
+else
+	REVISION="$1"
+fi
+
+for version in "1.0" "1.1"; do
+	for arch in "i586" "x86_64"; do
+		basearch="$arch"
+		[ "$arch" == "i586" ] && basearch="i386"
+		DISTRO="suse-101-$arch"
+		echo "Fetching $NAME-$version-$basearch.xpi"
+		curl -o "$NAME-$version-$basearch.xpi" "$BASEURL/$TYPE/$DISTRO/moon/$REVISION/files/steps/plugin-$version/novell-moonlight.xpi"
+		mkdir "$NAME-$version-$basearch"
+		unzip -d "$NAME-$version-$basearch" "$NAME-$version-$basearch.xpi"
+		rm "$NAME-$version-$basearch.xpi"
+	done
+done
