@@ -49,6 +49,29 @@
 		allows developers to create applications that target
 		Silverlight without requiring a Windows installation. 
 
+		<li>Native Windows.Forms driver for MacOS X allows
+		Winforms-based applications to run without an X
+		server.
+
+		<li>Support for the ASP.NET AJAX APIs and controls.
+
+		<li>Support for FastCGI deployments: ASP.NET can now
+		be deployed on a multitude of servers that implement
+		the FastCGI protocol (lighttpd for example) in
+		addition to Apache.
+
+		<li>Windows.Forms now supports the WebControl on
+		Windows and Linux using Mozilla.
+
+		<li>Runtime will now consume much less memory for
+		2.0-based applications due to various optimizations in
+		generics support as well as including many new
+		performance improvements and an updated verifier and
+		an implementation of CoreCLR security.
+
+		<li>C# compiler is quickly approaching full 3.0
+		support, most of the basics work right now (except
+		support for System.Query.Expression AST generation). 
 	</ul>
 		
 <a name="changes">
@@ -76,7 +99,7 @@
 
 	<p>Documentation for setting up sites with FastCGI and Mono is
 	available <a
-	href="http://mono-soc-2007.googlecode.com/svn/trunk/brian/FastCgi/doc/index.htm">here</a>. 
+	href="http://www.mono-project.com/FastCGI">here</a>. 
 
 	<p>Robert integrated the work into the main distribution.
 
@@ -157,6 +180,9 @@
 	<p>New mod_mono directives for controlling the life span of
 	mod-mono-server (Marek Habersack).
 
+	<p>Startup of mod_mono backends synchronized across all the
+	child apache processes (via a shared memory dashboard).
+	
 	<p>A new tool <tt>mconfig</tt> can be used to easily extend your
 	Web.config settings to include new features (like turning an
 	existing ASP.NET app into an AJAX ASP.NET app).
@@ -200,7 +226,6 @@
 
 	<p>TextureBrush now supports transparent bitmaps [Sebastien]
 
->>>>>>> .r89497
 <h2>LDAP support</h2>
 
 	<p>The Mono's library Novell.Directory.Ldap has been
@@ -241,7 +266,4 @@
 
 
  
-New mod_mono directives for controlling the life span of mod-mono-server. 
 
-Startup of mod_mono backends synchronized across all the child apache 
-processes (via a shared memory dashboard).
