@@ -40,11 +40,10 @@ make_dist () {
 	mv ../errors ../mcs
 
 	cd ../mono/docscripts
-	mkdir -p html
 	make extract
 	make
 	cd -
-	cp ../mono/docscripts/*zip ../mono/docscripts/*tree ../mono/docscripts/*source extras
+	cp ../mono/docscripts/*zip ../mono/docscripts/*tree ../mono/docscripts/*source extras || exit 1
 
 	. /etc/profile
 	./autogen.sh
