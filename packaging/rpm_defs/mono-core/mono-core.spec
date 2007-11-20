@@ -27,6 +27,8 @@ Provides:	mono-cairo
 Provides:	mono-xml-relaxng
 Provides:	mono-posix
 Provides:	mono-ziplib
+Conflicts:	helix-banshee <= 0.12.0
+Conflicts:	f-spot <= 0.3.5
 
 # Require when in the buildserivce
 %if 0%{?opensuse_bs}
