@@ -49,10 +49,18 @@ true
 # Create dirs
 mkdir -p ${RPM_BUILD_ROOT}/usr/bin
 mkdir -p ${RPM_BUILD_ROOT}/usr/lib/ikvm
-mkdir -p ${RPM_BUILD_ROOT}/usr/lib/pkgconfig
+mkdir -p ${RPM_BUILD_ROOT}/usr/share/pkgconfig
+
 #Install binaries
 find bin . -name "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 find bin . -name "*\.exe" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
+
+# Install some in gac (By request of Jeroen)
+for i in IKVM.AWT.WinForms.dll IKVM.GNU.Classpath.dll IKVM.Runtime.dll ; do
+	gacutil -i ${RPM_BUILD_ROOT}/usr/lib/ikvm/$i -package ikvm -root ${RPM_BUILD_ROOT}/usr/lib
+	rm -f ${RPM_BUILD_ROOT}/usr/lib/ikvm/$i
+done
+
 # Generate wrapper scripts
 for f in `find bin . -name "*\.exe"` ; do
         script_name=${RPM_BUILD_ROOT}/usr/bin/`basename $f .exe`
@@ -62,10 +70,11 @@ exec `which mono` /usr/lib/ikvm/`basename $f` "\$@"
 EOF
         chmod 755 $script_name
 done
+
+# Generate .pc file
 %define prot_name Name
 %define prot_version Version
-# Generate .pc file
-cat <<EOF > ${RPM_BUILD_ROOT}/usr/lib/pkgconfig/ikvm.pc
+cat <<EOF > ${RPM_BUILD_ROOT}/usr/share/pkgconfig/ikvm.pc
 prefix=/usr
 exec_prefix=\${prefix}
 libdir=\${prefix}/lib
@@ -76,9 +85,6 @@ Description: An implementation of Java for Mono and the Microsoft .NET Framework
 %prot_version: %{version}
 Libs: -r:\${libdir}/ikvm/IKVM.Runtime.dll -r:\${libdir}/ikvm/IKVM.GNU.Classpath.dll
 EOF
-# Move .pc to share instead of lib
-mkdir -p ${RPM_BUILD_ROOT}/usr/share/pkgconfig
-mv ${RPM_BUILD_ROOT}/usr/lib/pkgconfig/ikvm.pc ${RPM_BUILD_ROOT}/usr/share/pkgconfig
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"
@@ -86,9 +92,11 @@ rm -rf "$RPM_BUILD_ROOT"
 %files
 %defattr(-, root, root)
 %doc LICENSE
-/usr/bin/*
-/usr/lib/ikvm
-/usr/share/pkgconfig/ikvm.pc
+%_bindir/*
+%_prefix/lib/ikvm
+%_prefix/lib/mono/ikvm
+%_prefix/lib/mono/gac/IKVM*
+%_prefix/share/pkgconfig/ikvm.pc
 
 # auto dep/req generation for older distros (it will take a while for the .config scanning to get upstream)
 %if 0%{?suse_version} <= 1040 || 0%{?fedora_version} <= 7
