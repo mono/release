@@ -101,6 +101,7 @@ required_rpms = {
 		apache2-prefork
 		autoconf
 		automake
+		dos2unix
 		esound-devel
 		file
 		freetype2-devel
