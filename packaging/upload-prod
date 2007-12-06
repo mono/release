@@ -47,7 +47,7 @@ cd ../sunos/output
 rsync -avz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
 cd -
 
-cd ../macosx/new/output
+cd ../macosx/output
 rsync -avz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
 cd -
 

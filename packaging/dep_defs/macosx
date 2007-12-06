@@ -80,7 +80,7 @@ EOF
 	},
 	{
 		'name': 'libpng',
-		'source': 'ftp://ftp.simplesystems.org/pub/png/src/libpng-1.2.20.tar.bz2',
+		'source': 'http://superb-east.dl.sourceforge.net/sourceforge/libpng/libpng-1.2.20.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			# How did this get installed?? (we want .dylib, not .so)
@@ -88,8 +88,8 @@ EOF
 			"""
 	},
 	{
-		'name': 'libungif', 
-		'source': 'http://easynews.dl.sourceforge.net/sourceforge/libungif/libungif-4.1.4.tar.bz2',
+		'name': 'giflib', 
+		'source': 'http://easynews.dl.sourceforge.net/sourceforge/giflib/giflib-4.1.6.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
@@ -98,7 +98,7 @@ EOF
 	# (Tiger's used to be sufficient, but it looks like the new cairo needs newer than Tiger's)
 	{
 		'name': 'freetype', 
-		'source': 'http://download.savannah.gnu.org/releases/freetype/freetype-2.2.1.tar.bz2',
+		'source': 'http://download.savannah.gnu.org/releases/freetype/freetype-2.1.10.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
