@@ -11,7 +11,7 @@ import re
 import distutils.dir_util
 import threading
 
-sys.path += ['../../pyutils']
+sys.path += ['../pyutils']
 import config
 import utils
 import packaging

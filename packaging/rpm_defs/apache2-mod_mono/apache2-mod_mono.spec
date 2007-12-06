@@ -27,8 +27,9 @@ Summary:        Run ASP.NET Pages on Unix with Apache and Mono
 Source:         %{modname}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Provides:       mod_mono = %{version}-%{release}
-Requires:       xsp
 
+# This must be manually entered according to xsp's protocol version
+Requires:       xsp >= %{version}
 
 ############### Suse based options
 %if 0%{?suse_version}

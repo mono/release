@@ -27,7 +27,11 @@ Provides:	mono-cairo
 Provides:	mono-xml-relaxng
 Provides:	mono-posix
 Provides:	mono-ziplib
-Conflicts:	helix-banshee <= 0.12.0
+
+# This version of mono has issues with the following versions of apps:
+#  (not because of regressions, but because bugfixes in mono uncover bugs in the apps)
+Conflicts:	helix-banshee <= 0.13.1
+Conflicts:	banshee <= 0.13.1
 Conflicts:	f-spot <= 0.3.5
 
 # Require when in the buildserivce

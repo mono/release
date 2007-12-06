@@ -16,6 +16,11 @@ BuildArch: noarch
 
 BuildRequires:  mono-devel mono-web pkgconfig
 
+# This must be manually entered according to xsp's protocol version
+# Since this package is currently noarch, and mod_mono's name is different
+# on different distros, we can't use this... yet
+#Requires:       mod_mono >= %{version}
+
 #####  suse  ####
 %if 0%{?suse_version}
 
