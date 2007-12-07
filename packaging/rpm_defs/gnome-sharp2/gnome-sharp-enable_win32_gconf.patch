@@ -1,5 +1,15 @@
---- gnome-sharp-2.16.0/gconf/GConf/Makefile.in.orig	2007-12-06 21:41:23.000000000 -0700
-+++ gnome-sharp-2.16.0/gconf/GConf/Makefile.in	2007-12-06 21:43:00.000000000 -0700
+diff -ru ../old/gnome-sharp-2.16.0/gconf/GConf/gconf-sharp-2.0.pc.in gnome-sharp-2.16.0/gconf/GConf/gconf-sharp-2.0.pc.in
+--- ../old/gnome-sharp-2.16.0/gconf/GConf/gconf-sharp-2.0.pc.in	2006-08-21 10:37:30.000000000 -0600
++++ gnome-sharp-2.16.0/gconf/GConf/gconf-sharp-2.0.pc.in	2007-12-07 11:50:41.000000000 -0700
+@@ -7,4 +7,4 @@
+ Description: GConf# - GConf .NET Binding
+ Version: @VERSION@
+ Requires: gnome-sharp-2.0
+-Libs: -r:${libdir}/mono/@PACKAGE_VERSION@/gconf-sharp.dll -r:${libdir}/mono/@PACKAGE_VERSION@/gconf-sharp-peditors.dll
++Libs: -r:${libdir}/mono/@PACKAGE_VERSION@/gconf-sharp.dll
+diff -ru ../old/gnome-sharp-2.16.0/gconf/GConf/Makefile.in gnome-sharp-2.16.0/gconf/GConf/Makefile.in
+--- ../old/gnome-sharp-2.16.0/gconf/GConf/Makefile.in	2006-08-21 10:46:22.000000000 -0600
++++ gnome-sharp-2.16.0/gconf/GConf/Makefile.in	2007-12-07 11:55:17.000000000 -0700
 @@ -231,10 +231,9 @@
  target_cpu = @target_cpu@
  target_os = @target_os@
@@ -28,8 +38,8 @@
  	cp $(top_srcdir)/gtk-sharp.snk .
  
 -$(ASSEMBLY): $(build_sources) gtk-sharp.snk
-+AssemblyInfo.cs: $(top_srcdir)/AssemblyInfo.cs
-+	cp $(top_srcdir)/AssemblyInfo.cs .
++AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
++	cp $(top_builddir)/AssemblyInfo.cs .
 +
 +$(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
  	@rm -f $(ASSEMBLY).mdb
