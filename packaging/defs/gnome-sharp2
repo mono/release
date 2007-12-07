@@ -10,6 +10,8 @@ BUILD_HOSTS=(
 
 web_index=7
 
+USE_PATCHES=1
+
 MKTARBALL_HOST="suse-102-x86_64"
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
