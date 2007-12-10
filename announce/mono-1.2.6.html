@@ -154,16 +154,9 @@
 	<p>Reduced the size consumed by trampolines, in MonoDevelop's
 	case this saves 160k of memory on startup (Paolo).
 
-	<p>New Timer implementation, this version uses the ThreadPool
-	and provides the proper semantics that people have been
+	<p>New Timer implementation, this version s much faster, uses the
+	ThreadPool and provides the proper semantics that people have been
 	requesting [Paolo].
-
-	<p>New Profiler implementation: there is a new profiler that
-	logs all the profiling events into a log file (as opposed to
-	keeping this information in memory) which enables processing
-	of this information after the program has terminated and
-	allows for external tools to be written to analyze the data
-	[Massimiliano].
 
 	<p>Generic code sharing: early components for the generics
 	code sharing are now part of this release.   Currently you can
