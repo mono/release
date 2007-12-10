@@ -1,5 +1,10 @@
 2007-12-09  Everaldo Canuto <ecanuto@novell.com>
 
+	* gar.conf.mk: Add pkg-config package vars and remove maemo-sharp and
+	gtk-sharp info. Also fix master sites to include mono preview location.
+
+2007-12-09  Everaldo Canuto <ecanuto@novell.com>
+
 	* Add pkg-config dependency.
 	* Remove gtk-sharp and maemo-sharp, it will be available as deb package.
 
