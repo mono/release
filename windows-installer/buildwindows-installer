@@ -625,6 +625,25 @@ utils.substitute_parameters_in_file("gtk/etc/gtk-2.0/gtk.immodules", parameter_m
 #
 ##############################################
 
+
+##############################################
+# Fix up xulrunner
+#  Will also need to run: xulrunner --register-global after install, 
+#   find out what it does
+#   and then undo it when mono is uninstalled
+
+#
+##############################################
+
+##############################################
+# ikvm massaging
+#  Since we unpack ikvm files from the linux rpm, 
+#   we package this win32 specific file
+#  Move it into the correct dir for win installer
+shutil.move("mono/lib/ikvm/ikvm-native.dll", "mono/bin")
+#
+##############################################
+
 ##############################################
 # Clean up some unneeded files
 print "Cleaning up unnecessary files..."
