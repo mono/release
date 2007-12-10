@@ -1,3 +1,8 @@
+2007-12-09  Everaldo Canuto <ecanuto@novell.com>
+
+	* Add pkg-config dependency.
+	* Remove gtk-sharp and maemo-sharp, it will be available as deb package.
+
 2007-05-22  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.conf.mk: 
