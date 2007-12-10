@@ -4,7 +4,7 @@ archive_version="1.2.6"
 
 bundle_urlname="preview"
 
-bundle_short_desc="Preview 3"
+bundle_short_desc="Preview 4"
 bundle_desc="Preview packages before an official release"
 
 # This is left empty, because versions on RELEASE will always be the latest from sources/packages

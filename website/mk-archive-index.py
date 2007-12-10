@@ -67,8 +67,8 @@ for installer_map in installer_info:
 	filename = os.path.basename(glob.glob(installer_dir + os.sep + '*.%s' % installer_map['ext']).pop())
 	sum_filename = os.path.basename(glob.glob(installer_dir + os.sep + '*.md5').pop())
 
-	installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>" % (installer_map['name'], ref_dir, filename, filename, ref_dir, sum_filename)
-	distro_installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>" % (installer_map['name'], ref_dir2, filename, filename, ref_dir2, sum_filename)
+	installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>\n" % (installer_map['name'], ref_dir, filename, filename, ref_dir, sum_filename)
+	distro_installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>\n" % (installer_map['name'], ref_dir2, filename, filename, ref_dir2, sum_filename)
 
 
 #### Packages ####
@@ -83,7 +83,7 @@ for distro_conf in distros:
 		if conf.get_info_var('distro_aliases'):
 			alias_text = "[ " + " | ".join(conf.get_info_var('distro_aliases')) + " ]"
 		else: alias_text = ""
-		packages += "<li><a href='%s'>%s</a> %s</li>" % (conf.name, conf.name, alias_text)
+		packages += "<li><a href='%s'>%s</a> %s</li>\n" % (conf.name, conf.name, alias_text)
 
 packages += "</ul>"
 
