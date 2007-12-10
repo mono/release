@@ -1,5 +1,11 @@
 2007-12-09  Everaldo Canuto <ecanuto@novell.com>
 
+	* devkit/glib/Makefile: Install all glib files since most of then is
+	required to install mono, we can remove unneeded files later. Also 
+	strip libraries to reduce size.
+
+2007-12-09  Everaldo Canuto <ecanuto@novell.com>
+
 	* gar.conf.mk: Add pkg-config package vars and remove maemo-sharp and
 	gtk-sharp info. Also fix master sites to include mono preview location.
 
