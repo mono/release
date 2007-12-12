@@ -1,7 +1,7 @@
 #!/bin/bash -e
 BASEURL="http://build.mono.lab.novell.com/builds/HEAD"
 NAME="novell-moonlight"
-DEST="go-mono.com:/var/www/mono-website/go-mono/archive/moonlight-plugins"
+DEST="mono-web@go-mono.com:/var/www/mono-website/go-mono/archive/moonlight-plugins"
 
 if [ -z "$1" ]; then
 	echo "Please supply a revision"
@@ -17,7 +17,7 @@ for version in "1.0" "1.1"; do
 		[ "$arch" == "i586" ] && basearch="i386"
 		DISTRO="suse-101-$arch"
 		echo "Fetching $NAME-$version-$basearch.xpi"
-		curl -o "$TMPDIR/$NAME-$version-$basearch.xpi" "$BASEURL/$DISTRO/moon/$REVISION/files/steps/plugin-$version/novell-moonlight.xpi"
+		curl --fail -o "$TMPDIR/$NAME-$version-$basearch.xpi" "$BASEURL/$DISTRO/moon/$REVISION/files/steps/plugin-$version/novell-moonlight.xpi"
 	done
 done
 
