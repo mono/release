@@ -2,7 +2,7 @@
 # norootforbuild
 
 Name:           libgdiplus
-Version:	1.2.5
+Version:	1.2.6
 Release:	0
 Vendor:         Novell, Inc.
 License:        GPL
