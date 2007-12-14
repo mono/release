@@ -112,8 +112,12 @@ Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP WebServer @@MONO_VERSION@@
 Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@; Components: xsp\xsp2_shell; ValueType: string; ValueData: XSP 2.0 Web Server Here @@MONO_VERSION@@; Flags: uninsdeletekey
 Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@\command; Components: xsp\xsp2_shell; ValueType: string; ValueData: "{app}\bin\xsp2.bat --root ""%1"" --port {code:GetPort} --applications /:."; Flags: uninsdeletekey
 
-;[Run]
+[Run]
 ;Filename: "{app}\gacutil.exe"; Description: "Install gtk-sharp in the MS GAC"; StatusMsg: "Install Gtk# in the MS GAC"; Tasks: msgac
+Filename: "{app}\xulrunner\xulrunner.exe"; Description: "Register xulrunner for SWF Web Control"; StatusMsg: "Registering xulrunner for SWF Web Control..."; Parameters: "--register-global"; Flags: runhidden
+
+[UninstallRun]
+Filename: "{app}\xulrunner\xulrunner.exe"; StatusMsg: "Unregistering xulrunner..."; Parameters: "--unregister-global"; Flags: runhidden
 
 [UninstallDelete]
 Type: files; Name: {app}\Mono.url

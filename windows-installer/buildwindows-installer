@@ -141,7 +141,7 @@ if os.path.exists(output_dir):
 files_used_in_installer = []
 selections = []
 
-selections += [ Selection('mono', packages = "mono boo ikvm nant IPCE mono-basic".split(), deps=['mono'] ) ]
+selections += [ Selection('mono', packages = "mono boo ikvm nant IPCE mono-basic gluezilla".split(), deps='mono gluezilla'.split() ) ]
 
 selections += [ Selection('gtk', deps = "gtk-sharp gtk-sharp210 gnome-sharp2".split() ) ]
 
@@ -627,10 +627,11 @@ utils.substitute_parameters_in_file("gtk/etc/gtk-2.0/gtk.immodules", parameter_m
 
 
 ##############################################
-# Fix up xulrunner
-#  Will also need to run: xulrunner --register-global after install, 
-#   find out what it does
-#   and then undo it when mono is uninstalled
+# Fix up gluezilla (xulrunner deps)
+
+# Remove sdk and buildtools
+shutil.rmtree('mono/gecko-sdk')
+shutil.rmtree('mono/buildtools')
 
 #
 ##############################################
