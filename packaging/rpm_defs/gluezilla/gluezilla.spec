@@ -2,7 +2,7 @@
 # norootforbuild
 
 Name:           gluezilla
-Version:	0.1
+Version:	1.2.6
 Release:	0
 Vendor:         Novell, Inc.
 License:        GPL
