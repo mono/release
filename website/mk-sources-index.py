@@ -52,15 +52,15 @@ for line in template:
 
 		print tarballs
 
-		out.write("<ul>")
-		arc_out.write("<ul>")
+		out.write("<ul>\n")
+		arc_out.write("<ul>\n")
 		for i in tarballs:
 			n = os.path.basename(i)
-			out.write("<li><a href='../sources/%s'>%s</a></li>" % (i, n))
-			arc_out.write("<li><a href='../../../sources/%s'>%s</a></li>" % (i, n))
+			out.write("<li><a href='../sources/%s'>%s</a></li>\n" % (i, n))
+			arc_out.write("<li><a href='../../../sources/%s'>%s</a></li>\n" % (i, n))
 
-		out.write("</ul>")
-		arc_out.write("</ul>")
+		out.write("</ul>\n")
+		arc_out.write("</ul>\n")
 
 	else:
 		line = line.replace("[[version]]", bundle_conf.info['archive_version'])
