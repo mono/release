@@ -7,7 +7,7 @@
 <h1>Mono [[version]] Sources</h1>
 
 	<h3>Mono</h3> 
-#	mono mono-basic libgdiplus
+#	mono mono-basic libgdiplus gluezilla
 	
 	<h3>XSP/mod_mono</h3>
 #	xsp mod_mono
