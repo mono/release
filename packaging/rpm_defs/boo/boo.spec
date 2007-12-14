@@ -2,7 +2,7 @@
 # norootforbuild
 
 Name:           boo
-Version:        0.7.9.2659
+Version:        0.8.0.2730
 Release:        1
 License:        X11/MIT
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

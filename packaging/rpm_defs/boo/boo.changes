@@ -1,4 +1,41 @@
 -------------------------------------------------------------------
+Wed Nov 02 12:18:43 MST 2007 - wberrier@suse.de
+
+- Update to 0.8.0.2730
+ -Fixed Bugs
+    * [BOO-836] - WSA Boo "end" keyword required for some blocks and not others
+    * [BOO-869] - wrong type inferred for null field initializer
+    * [BOO-871] - booish fails to display dictionary that contains DynamicMethod
+    * [BOO-874] - compiler doesn't generate debug information for duck typed call sites
+    * [BOO-881] - compiler doesn't check for duplicate parameter names in constructor definitions
+    * [BOO-883] - Internal error using regular expression in generator
+    * [BOO-884] - compiler should prefer data preserving overloads 
+    * [BOO-885] - parser doesnt allow complex expressions inside closures
+    * [BOO-887] - Wrong stack trace information for exception during assignment inside generator method
+    * [BOO-891] - Boo.NAnt.Tasks is using an obsolete method (Assembly.LoadWithPartialName)
+    * [BOO-893] - QuackInvoke intercepts calls to super() in class CTOR
+    * [BOO-894] - Type inference failure for property used in object initializer
+    * [BOO-898] - [MetaProgramming] Splicing operator is not recognized inside string expression interpolation
+
+  -Improvements
+    * [BOO-870] - parser should not require the 'L' suffix to parse long literals
+    * [BOO-872] - better name for closure methods
+    * [BOO-873] - extension methods should be preferred over non accessible members
+    * [BOO-888] - Delay Sign parameter is ignored
+    * [BOO-889] - BooPrinterVistor makes ugly elif chains
+    * [BOO-892] - Test Cases use obsolete interfaces and throw warnings during compilation
+    * [BOO-895] - [MetaProgramming] splicing for member references
+    * [BOO-896] - [MetaProgramming] splicing for class and field names
+    * [BOO-897] - [MetaProgramming] splicing for method names
+    * [BOO-899] - bool equality comparisons are emitting unnecessary RuntimeServices.EqualityOperator calls
+    * [BOO-900] - unreserve 'otherwise' keyword so it can be used by the 'match' macro
+    * [BOO-901] - unreserve 'given' and 'when' keywords so they can be implemented as macros
+
+  -New Features
+    * [BOO-136] - generic given statement
+    * [BOO-218] - duck typing - unary operators
+
+-------------------------------------------------------------------
 Wed Oct 10 14:04:43 MST 2007 - wberrier@suse.de
 
 - Don't use -<package> notation in BuildRequires anymore.  Normal
