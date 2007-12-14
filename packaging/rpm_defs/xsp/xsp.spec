@@ -6,7 +6,7 @@ URL:            http://go-mono.com/
 License:        GNU General Public License (GPL)
 Group:          Productivity/Networking/Web/Servers
 Autoreqprov:    on
-Version:        1.2.5
+Version:        1.2.6
 Release:        0
 Summary:        Small Web Server Hosting ASP.NET
 Source:         %{name}-%{version}.tar.bz2
@@ -14,7 +14,10 @@ Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch: noarch
 
-BuildRequires:  mono-devel mono-web pkgconfig
+BuildRequires:  mono-devel mono-web mono-data-sqlite mono-data-oracle mono-jscript mono-extras mono-nunit pkgconfig
+
+# One of the test runs requires this
+BuildRequires:  sqlite
 
 # This must be manually entered according to xsp's protocol version
 # Since this package is currently noarch, and mod_mono's name is different
