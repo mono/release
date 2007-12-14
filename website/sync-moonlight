@@ -2,6 +2,7 @@
 BASEURL="http://build.mono.lab.novell.com/builds/HEAD"
 NAME="novell-moonlight"
 DEST="mono-web@go-mono.com:/var/www/mono-website/go-mono/archive/moonlight-plugins"
+TMPDIR=${TMPDIR:-/tmp}
 
 if [ -z "$1" ]; then
 	echo "Please supply a revision"
