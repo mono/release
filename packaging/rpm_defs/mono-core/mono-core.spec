@@ -6,8 +6,8 @@ License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL)
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 URL:            http://go-mono.org/
-Version:	1.2.5.1
-Release:	5.novell
+Version:	1.2.6
+Release:	0.novell
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
 
