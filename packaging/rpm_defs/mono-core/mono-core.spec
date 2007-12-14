@@ -930,12 +930,16 @@ Requires:	bytefx-data-mysql = %version-%release
 Requires:	ibm-data-db2 = %version-%release
 Requires:	mono-core = %version-%release
 Requires:	mono-data = %version-%release
+Requires:	mono-data-firebird = %version-%release
 Requires:	mono-data-oracle = %version-%release
 Requires:	mono-data-postgresql = %version-%release
 Requires:	mono-data-sqlite = %version-%release
 Requires:	mono-data-sybase = %version-%release
+Requires:	mono-devel = %version-%release
 Requires:	mono-extras = %version-%release
+Requires:	mono-jscript = %version-%release
 Requires:	mono-locale-extras = %version-%release
+Requires:	mono-nunit = %version-%release
 Requires:	mono-web = %version-%release
 Requires:	mono-winforms = %version-%release
 
