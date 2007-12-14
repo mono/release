@@ -3,8 +3,8 @@
 
 Name:           mono-tools
 BuildRequires:  gconf-sharp2 gecko-sharp2 gtkhtml-sharp2 mono-devel mono-nunit monodoc-core
-Version:        1.2.4
-Release:        1
+Version:        1.2.6
+Release:        0
 License:        GNU General Public License (GPL)
 BuildArch:    noarch
 URL:            http://go-mono.org/
