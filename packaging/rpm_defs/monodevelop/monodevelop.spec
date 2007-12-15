@@ -1,11 +1,8 @@
 
 # norootforbuild
 
-# Find version of boo
-%define boo_version %(rpm -q boo --queryformat '%{VERSION}')
-
 Name:           monodevelop
-BuildRequires:  boo bytefx-data-mysql gconf-sharp2 gtk-sharp2-gapi gtkhtml-sharp2 gtksourceview-sharp2 ikvm intltool mono-basic mono-data-oracle mono-data-postgresql mono-data-sqlite mono-data-sybase mono-devel mono-nunit monodoc-core gecko-sharp2 perl-XML-Parser vte-sharp2 xsp shared-mime-info
+BuildRequires:  gconf-sharp2 gtk-sharp2-gapi gtksourceview-sharp2 intltool mono-basic mono-devel mono-nunit monodoc-core perl-XML-Parser vte-sharp2 xsp shared-mime-info mono-addins
 URL:            http://www.go-mono.com/
 License:        GNU General Public License (GPL)
 Group:          Development/Languages/Other
@@ -17,12 +14,9 @@ Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:    noarch
 # Boo's assemblies are always version at 1.0.0.0.  Force built against or newer.
-Requires:       boo >= %boo_version
-Requires:       ikvm xsp
-Requires:       mono-data-postgresql bytefx-data-mysql
+Requires:       xsp
 Requires:       mono-basic
 PreReq:         shared-mime-info
-
 
 
 %if 0%{?suse_version}
@@ -63,13 +57,11 @@ SharpDevelop 0.98. See http://monodevelop.com/ for more information.
 %build
 %{?env_options}
 ./configure --prefix=%{_prefix} \
-	    --enable-java \
-	    --enable-boo \
 	    --enable-subversion \
+	    --enable-monoextensions \
 	    --enable-aspnet \
 	    --disable-update-mimedb \
 	    --disable-update-desktopdb
-#            --enable-debugger=yes
 make
 
 %install
@@ -93,6 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/share/pixmaps/monodevelop.png
 %{_prefix}/lib/monodevelop
 %{_prefix}/share/pkgconfig/monodevelop.pc
+%{_prefix}/share/pkgconfig/monodevelop-core-addins.pc
 %{_mandir}/man1/mdtool.1.gz
 
 %post

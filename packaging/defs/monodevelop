@@ -1,6 +1,7 @@
 web_index=2
 
-fresh_checkout=1
+# Not needed anymore... ?
+#fresh_checkout=1
 
 BUILD_HOSTS=(
 	suse-101-i586
@@ -21,11 +22,8 @@ USE_HOSTS=(
 MONO_DEPS=(
 	mono
 	monodoc
-	gecko-sharp2
 	gtksourceview-sharp2
-	boo
-	ikvm
-	nant
+	mono-addins
 	mono-basic
 	xsp
 )
@@ -43,7 +41,7 @@ get_destroot () {
 }
 
 HEAD_PATH=(
-	trunk/monodevelop
+	trunk/monodevelop/main
 )
 RELEASE_PATH=(
 	tags/monodevelop/[[versiondot]]
