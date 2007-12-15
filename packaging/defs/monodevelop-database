@@ -1,0 +1,55 @@
+
+BUILD_HOSTS=(
+	suse-101-i586
+)
+
+# Temporary...
+MKTARBALL_HEAD_DEPS=1
+
+MKTARBALL_HOST="suse-101-i586"
+
+USE_HOSTS=(
+	suse-101-i586
+	suse-101-ppc
+	suse-101-x86_64
+	suse-102-i586
+	suse-102-ppc
+	suse-102-x86_64
+	suse-103-i586
+	suse-103-ppc
+	suse-103-x86_64
+)
+
+MONO_DEPS=(
+	mono
+	monodoc
+	gtksourceview-sharp2
+	mono-addins
+	mono-basic
+	monodevelop
+	xsp
+
+)
+
+MONO_RECOMMEND_DEPS=(
+	libgdiplus
+	gtk-sharp2
+	gtk-sharp28
+	gtk-sharp210
+	gnome-sharp2
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH=(
+	trunk/monodevelop/extras/MonoDevelop.Database
+)
+RELEASE_PATH=(
+	tags/monodevelop-database/[[versiondot]]
+)
+
+update_version_file () {
+	sed -i "s/\(AC_INIT.*, \).*,/\1$VERSION,/" configure.in
+}
