@@ -1,8 +1,8 @@
 
 # norootforbuild
 
-Name:     	monodevelop-database
-Version: 	0.17
+Name:     	monodevelop-java
+Version: 	0.1
 Release:	0
 Vendor:		Novell, Inc.
 License:	LGPL
@@ -10,20 +10,19 @@ BuildRoot:	/var/tmp/%{name}-%{version}-root
 Autoreqprov:    on
 BuildArch:      noarch
 URL:		http://www.go-mono.com
-Source0:	%{name}-%{version}.tar.bz2
-BuildRequires:	mono-devel monodevelop mono-data-postgresql mono-data-sqlite mono-data-sybase
-BuildRequires:	bytefx-data-mysql
-Summary:	Monodevelop Database Addin
+Source0:	%{name}-%{version}.tar.gz
+BuildRequires:	ikvm monodevelop
+Summary:	Monodevelop Java Addin
 Group:		Development/Tools
 
 %description
-Monodevelop Database Addin
-	  
+Monodevelop Java Addin
+
 %files
 %defattr(-, root, root)
-%_prefix/share/pkgconfig/monodevelop-database.pc
-%_prefix/lib/monodevelop/AddIns/MonoDevelop.Database/*.dll
-%_prefix/lib/monodevelop/AddIns/MonoDevelop.Database/locale/*/LC_MESSAGES/monodevelop-database.mo
+%_prefix/share/pkgconfig/monodevelop-java.pc
+%_prefix/lib/monodevelop/AddIns/JavaBinding/JavaBinding.dll*
+%_prefix/lib/monodevelop/AddIns/JavaBinding/locale/*/LC_MESSAGES/monodevelop-java.mo
 
 %prep
 %setup -q
