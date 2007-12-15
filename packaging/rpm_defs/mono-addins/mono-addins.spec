@@ -35,7 +35,7 @@ Mono Addin Support
 %_prefix/lib/mono/gac/Mono.Addins.Gui
 %_prefix/lib/mono/gac/policy.0.2.Mono.Addins.Gui
 %_prefix/lib/mono/mono-addins/Mono.Addins.Gui.dll
-%_prefix/lib/pkgconfig/*.pc
+%_prefix/share/pkgconfig/*.pc
 
 %prep
 %setup -q
@@ -46,6 +46,9 @@ make
 
 %install
 make install DESTDIR=${RPM_BUILD_ROOT}
+
+mkdir -p $RPM_BUILD_ROOT%_prefix/share/pkgconfig
+mv $RPM_BUILD_ROOT%_prefix/lib/pkgconfig/*.pc $RPM_BUILD_ROOT%_prefix/share/pkgconfig
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"
