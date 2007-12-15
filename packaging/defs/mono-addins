@@ -1,0 +1,33 @@
+BUILD_HOSTS=(
+	suse-101-i586
+)
+
+USE_HOSTS=(
+	ALL
+)
+
+MONO_DEPS=(
+	mono
+)
+
+MONO_RECOMMEND_DEPS=(
+        gtk-sharp2
+        gtk-sharp28
+        gtk-sharp210
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH=(
+	trunk/mono-addins
+)
+RELEASE_PATH=(
+	tags/mono-addins/[[versiondot]]
+)
+
+update_version_file () {
+	sed -i "s/\(AC_INIT.*,\\).*)/\\1 [$VERSION])/" configure.ac
+}
+
