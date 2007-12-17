@@ -28,7 +28,8 @@ MONO_DEPS=(
 	mono-basic
 	monodevelop
 	xsp
-
+	boo
+	nant
 )
 
 MONO_RECOMMEND_DEPS=(
@@ -49,12 +50,17 @@ get_destroot () {
 }
 
 HEAD_PATH=(
-	trunk/monodevelop/extras/MonoDevelop.Database
+	trunk/monodevelop/extras/BooBinding
 )
 RELEASE_PATH=(
-	tags/monodevelop-database/[[versiondot]]
+	tags/monodevelop-boo/[[versiondot]]
 )
 
 update_version_file () {
-	sed -i "s/\(AC_INIT.*, \).*,/\1$VERSION,/" configure.in
+	sed -i "s/^VERSION=\([\.0-9]*\)/VERSION=$VERSION/" configure
+}
+
+make_dist () {
+        ./configure --prefix=/usr
+        make dist
 }
