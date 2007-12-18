@@ -52,7 +52,7 @@ HEAD_PATH=(
 	trunk/monodevelop/extras/MonoDevelop.Database
 )
 RELEASE_PATH=(
-	tags/monodevelop-database/[[versiondot]]
+	tags/monodevelop/extras/MonoDevelop.Database/[[versiondot]]
 )
 
 update_version_file () {

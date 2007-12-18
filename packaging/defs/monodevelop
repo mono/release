@@ -44,7 +44,7 @@ HEAD_PATH=(
 	trunk/monodevelop/main
 )
 RELEASE_PATH=(
-	tags/monodevelop/[[versiondot]]
+	tags/monodevelop/main/[[versiondot]]
 )
 
 update_version_file () {

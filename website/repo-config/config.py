@@ -16,8 +16,12 @@ IPCE
 libgdiplus
 mod_mono
 mono
+mono-addins
 mono-basic
 monodevelop
+monodevelop-boo
+monodevelop-database
+monodevelop-java
 monodoc
 mono-debugger
 mono-tools

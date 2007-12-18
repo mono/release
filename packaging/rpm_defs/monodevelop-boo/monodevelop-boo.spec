@@ -1,4 +1,7 @@
 
+# Find version of boo
+%define boo_version %(rpm -q boo --queryformat '%{VERSION}')
+
 # norootforbuild
 
 Name:     	monodevelop-boo
@@ -14,6 +17,8 @@ Source0:	%{name}-%{version}.tar.gz
 BuildRequires:	boo monodevelop
 Summary:	Monodevelop Boo Addin
 Group:		Development/Tools
+# Boo's assemblies are always version at 1.0.0.0.  Force built against or newer.
+Requires:       boo >= %boo_version
 
 %description
 Monodevelop Boo Addin

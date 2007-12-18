@@ -48,7 +48,7 @@ HEAD_PATH=(
 	trunk/monodevelop/extras/JavaBinding
 )
 RELEASE_PATH=(
-	tags/monodevelop-java/[[versiondot]]
+	tags/monodevelop/extras/JavaBinding/[[versiondot]]
 )
 
 update_version_file () {

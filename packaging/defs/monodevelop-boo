@@ -53,7 +53,7 @@ HEAD_PATH=(
 	trunk/monodevelop/extras/BooBinding
 )
 RELEASE_PATH=(
-	tags/monodevelop-boo/[[versiondot]]
+	tags/monodevelop/extras/BooBinding/[[versiondot]]
 )
 
 update_version_file () {

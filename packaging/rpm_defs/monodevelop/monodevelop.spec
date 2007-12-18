@@ -13,7 +13,6 @@ Summary:        A Full-Featured IDE for Mono and Gtk#
 Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:    noarch
-# Boo's assemblies are always version at 1.0.0.0.  Force built against or newer.
 Requires:       xsp
 Requires:       mono-basic
 PreReq:         shared-mime-info
