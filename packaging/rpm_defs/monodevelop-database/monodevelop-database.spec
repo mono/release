@@ -1,4 +1,6 @@
 
+%define db_packages mono-data-postgresql mono-data-sqlite mono-data-sybase 
+
 # norootforbuild
 
 Name:     	monodevelop-database
@@ -11,7 +13,8 @@ Autoreqprov:    on
 BuildArch:      noarch
 URL:		http://www.go-mono.com
 Source0:	%{name}-%{version}.tar.bz2
-BuildRequires:	mono-devel monodevelop mono-data-postgresql mono-data-sqlite mono-data-sybase
+BuildRequires:	mono-devel monodevelop %db_packages
+Requires:	%db_packages
 BuildRequires:	bytefx-data-mysql
 Summary:	Monodevelop Database Addin
 Group:		Development/Tools
