@@ -1,3 +1,7 @@
+2007-12-18  Everaldo Canuto <ecanuto@novell.com>
+
+	* docs: GAR system documentation added.
+
 2007-12-16  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.mk: Fixed PATH environment var using "$(bindir):$(sbindir):$(PATH)",
