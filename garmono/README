@@ -1,0 +1,84 @@
+GARMONO Build System
+====================
+
+ GARMONO is a build utility that allows users to build Mono from sources, it 
+ downloads, builds and installs Mono packages from the latest tarball releases
+ or SVN. GARMONO is based on the GAR ports system developed by Nick Moffitt. 
+
+ Table of Contents:
+
+	1. Using GARMONO
+	2. Directory Layout
+	3. Maintainers Guidelines
+
+
+1. Using GARMONO
+================
+
+	You must go to GARMONO root directory and type:
+
+	> make [task or package]
+	
+	For a complete list of available tasks you can type "make help" or just
+	check sub-directories available inside "tasks" folder, for a list of 
+	available packages just type "make packages".
+
+	You could be also interested on build individual packages going to its
+	folder and using one of available targets, for this	
+
+	> cd mono/libgdiplus
+	> make fetch
+
+	Tthe GAR(MONO) system provides seven basic targets for each package:
+
+	* fetch - this target downloads all files and patches needed to compile the
+	package. Typically this is a single tarball, accompanied by the occasional
+	patch file. 
+
+	* checksum - uses md5sum to ensure that the downloaded files match those
+	with which the package maintainer worked. 
+
+	* extract -	makes sure that all of the necessary source files are available
+	in a working directory. In some cases (such as when downloading a single C 
+	source file), this will simply copy files over. 
+
+	* patch - if the package has to be patched (either via third-party patches
+	or package maintainer patches), this target will perform that step. 
+
+	* configure - configures the package as specified in the Makefile. It will
+	typically run the package's underlying configuration system (such as 
+	autoconf or Imake). 
+
+	* build - performs the actual step of compilation. 
+
+	* install -	puts files in the proper locations and performs any necessary
+	mop-up work.
+
+
+2. Directory Layout
+===================
+
+	deps/
+		
+		cygwin/ 
+
+	docs/
+		Technical documents about the GAR and GARMONO system. Mos
+
+	mono/
+		...
+
+	tasks/
+		...
+
+
+3. Maintainers Guidelines
+=========================
+
+	TODO: Some lines about GARMONO!
+
+	For more information about GAR system you can go to docs/ directory and 
+	check the documents about GAR structure, GAR tips, an article about GAR
+	usage and a template file for new packages.
+
+

@@ -1,0 +1,43 @@
+2007-12-16  Everaldo Canuto <ecanuto@novell.com>
+
+	* gar.mk: Fixed PATH environment var using "$(bindir):$(sbindir):$(PATH)",
+	it makes more sense for our build environment. Also fixed LD_LIBRARY_PATH
+	and included PKG_CONFIG_PATH, C_INCLUDE_PATH and ACLOCAL_PATH.
+
+	* gar.conf.mk: Include ~/.gar.conf file if exists, so is possible to have
+	some local configuration to override default settings. Also remove all
+	unneeded stuff from file.
+
+	* gar.category.mk: Removed, we will use tasks instead of categories.
+
+	* mono/xsp: XSP package added.
+
+	* mono/mod_mono: mod_mono package added.
+
+2007-12-15  Everaldo Canuto <ecanuto@novell.com>
+
+	* all: Create all stuff based on on gar system by Nick Moffitt.
+
+	* TODO, ChangeLog, README: Created.
+
+	* gar.bugs.mk: Deleted.
+
+	* gar.mk:
+	- INSTALL_DIRS vars removed, we wont create all dir for every instalation
+	we will create it as part of install scripts.
+	- Commented the inclusion of gar.bugs.mk, it looks to be useless for non
+	debian systems.
+
+	* Makefile: Created top-level Makefile for the entire tree.
+
+	* meta/build: Default meta package to build mono to DESTDIR, normally
+	/opt/mono.
+
+	* mono/environment: Environment vars package added.
+
+	* mono/mono: Mono package added.
+
+	* mono/libgdiplus: Libgdiplus package added.
+
+	* mono/gluezilla: GlueZilla package added.
+

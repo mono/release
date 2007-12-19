@@ -1,0 +1,23 @@
+GARNAME    = xsp
+GARVERSION = 1.2.6
+CATEGORIES = mono
+DISTFILES  = $(GARNAME)-$(GARVERSION).tar.bz2
+
+DEPENDS  = mono/mono
+
+DESCRIPTION = XSP
+define BLURB
+ XSP is a standalone web server written in C# that can be used to run your 
+ ASP.NET applications with minimal effort. XSP works under both the Mono and 
+ Microsoft runtimes.
+endef
+
+CONFIGURE_SCRIPTS = $(WORKSRC)/configure
+BUILD_SCRIPTS = $(WORKSRC)/Makefile
+INSTALL_SCRIPTS = $(WORKSRC)/Makefile
+
+CONFIGURE_ARGS = $(DIRPATHS)
+
+# This should go before any hand-made rules.
+include ../../gar.mk
+
