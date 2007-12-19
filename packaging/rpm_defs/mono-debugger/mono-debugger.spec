@@ -6,8 +6,8 @@ License:        GNU General Public License (GPL), X11/MIT
 Group:          Development/Languages/Other
 Summary:        Mono Debugger
 URL:            http://www.mono-project.com/Debugger
-Version:        0.50
-Release:        5
+Version:        0.60
+Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.bz2
 Patch0:         mono-debugger_libedit_cast.patch

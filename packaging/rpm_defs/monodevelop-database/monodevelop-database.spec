@@ -4,7 +4,7 @@
 # norootforbuild
 
 Name:     	monodevelop-database
-Version: 	0.17
+Version: 	0.18
 Release:	0
 Vendor:		Novell, Inc.
 License:	LGPL
@@ -19,6 +19,11 @@ BuildRequires:	bytefx-data-mysql
 Summary:	Monodevelop Database Addin
 Group:		Development/Tools
 
+%if 0%{?fedora_version}
+%define env_options export MONO_SHARED_DIR=/tmp
+BuildRequires:  gtksourceview-sharp2 monodoc-core
+%endif
+
 %description
 Monodevelop Database Addin
 	  
@@ -32,10 +37,12 @@ Monodevelop Database Addin
 %setup -q
 
 %build
+%{?env_options}
 ./configure --prefix=%_prefix
 make
 
 %install
+%{?env_options}
 make install DESTDIR=${RPM_BUILD_ROOT}
 
 mkdir -p $RPM_BUILD_ROOT%_prefix/share/pkgconfig

@@ -2,7 +2,7 @@
 # norootforbuild
 
 Name:     	mono-addins
-Version: 	0.2
+Version: 	0.3
 Release:	0
 Vendor:		Novell, Inc.
 License:	LGPL
@@ -14,6 +14,11 @@ Source0:	%{name}-%{version}.tar.bz2
 BuildRequires:	mono-devel gtk-sharp2
 Summary:	Mono Addins
 Group:		Development/Tools
+
+%if 0%{?fedora_version}
+%define env_options export MONO_SHARED_DIR=/tmp
+%endif
+
 
 %description
 Mono Addin Support
@@ -41,10 +46,12 @@ Mono Addin Support
 %setup -q
 
 %build
+%{?env_options}
 ./configure --prefix=%_prefix
 make
 
 %install
+%{?env_options}
 make install DESTDIR=${RPM_BUILD_ROOT}
 
 mkdir -p $RPM_BUILD_ROOT%_prefix/share/pkgconfig

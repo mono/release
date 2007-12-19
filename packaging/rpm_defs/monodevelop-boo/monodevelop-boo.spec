@@ -5,7 +5,7 @@
 # norootforbuild
 
 Name:     	monodevelop-boo
-Version: 	0.1
+Version: 	0.18
 Release:	0
 Vendor:		Novell, Inc.
 License:	LGPL
@@ -14,11 +14,17 @@ Autoreqprov:    on
 BuildArch:      noarch
 URL:		http://www.go-mono.com
 Source0:	%{name}-%{version}.tar.gz
-BuildRequires:	boo monodevelop
+Patch0:		monodevelop-boo-destdir.patch
+BuildRequires:	boo monodevelop mono-devel
 Summary:	Monodevelop Boo Addin
 Group:		Development/Tools
 # Boo's assemblies are always version at 1.0.0.0.  Force built against or newer.
 Requires:       boo >= %boo_version
+
+%if 0%{?fedora_version}
+%define env_options export MONO_SHARED_DIR=/tmp
+BuildRequires:	gtksourceview-sharp2 monodoc-core
+%endif
 
 %description
 Monodevelop Boo Addin
@@ -32,12 +38,15 @@ Monodevelop Boo Addin
 
 %prep
 %setup -q
+%patch0
 
 %build
+%{?env_options}
 ./configure --prefix=%_prefix
 make
 
 %install
+%{?env_options}
 make install DESTDIR=${RPM_BUILD_ROOT}
 
 mkdir -p $RPM_BUILD_ROOT%_prefix/share/pkgconfig
