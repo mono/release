@@ -1,3 +1,11 @@
+2007-12-19  Everaldo Canuto <ecanuto@novell.com>
+
+	* mono/environment/Makefile: Create monoenv based on config settings.
+
+	* mono/environment/files/monoenv: Renamed to monoenv.in.
+
+	* TODO: Remove task from todo since is is already done.
+
 2007-12-18  Everaldo Canuto <ecanuto@novell.com>
 
 	* docs: GAR system documentation added.

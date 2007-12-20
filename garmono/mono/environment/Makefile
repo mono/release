@@ -15,10 +15,11 @@ INSTALL_SCRIPTS = environment
 include ../../gar.mk
 
 build-environment:
+	sed -e 's,#mono-prefix#,$(GARMONO_DESTDIR),' files/monoenv.in > $(WORKSRC)/monoenv
 	$(MAKECOOKIE)
 
 install-environment:
 	mkdir -p $(bindir)
-	install -m 755 files/monoenv $(bindir)/
+	install -m 755 $(WORKSRC)/monoenv $(bindir)/
 	$(MAKECOOKIE)
 

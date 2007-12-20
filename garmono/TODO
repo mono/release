@@ -1,6 +1,4 @@
 GARMONO TODO LIST
 -----------------
 
- * In mono/environment "monoenv" script uses fixed values, we need to create it
- on the fly based on config settings (gar.conf.mk).
-
+ * Nothing at moment!
