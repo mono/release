@@ -4,11 +4,11 @@
 # command-line.
 
 # Garmono specific values.
-GARMONO_SOURCES ?= ~/src
-GARMONO_DESTDIR ?= /opt/mono
-GARMONO_SVNUSER ?= 
+GARMONO_DESTDIR ?= $(HOME)/mono
+GARMONO_SOURCES ?= $(GARMONO_DESTDIR)/src
+GARMONO_CACHE   ?= $(GARMONO_DESTDIR)/cache
 
-GARMONO_VERSION  = "1.2.6" 
+GARMONO_VERSION  = 1.2.6
 
 # Remote addresses.
 MASTER_SITES += http://go-mono.com/sources/$(GARNAME)/

@@ -1,3 +1,7 @@
+2007-12-20  Everaldo Canuto <ecanuto@novell.com>
+
+	* gar.conf.mk: New defautl setting based on user home dir.
+
 2007-12-19  Everaldo Canuto <ecanuto@novell.com>
 
 	* mono/environment/Makefile: Create monoenv based on config settings.
