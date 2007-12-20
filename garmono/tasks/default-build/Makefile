@@ -9,9 +9,8 @@ DEPENDS += mono/gluezilla
 
 DESCRIPTION = Mono linux build meta package
 define BLURB
- This package build and install mono environment, normally at /opt/mono, it is
- the default behavior of GarMono and is most commonly used by developers that
- whats to have an up to date system.
+ This meta package build and install mono environment for linux, all library
+ dependecies is also instaled.
 endef
 
 # This should go before any hand-made rules.

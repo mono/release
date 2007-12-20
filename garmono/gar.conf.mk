@@ -14,7 +14,7 @@ GARMONO_VERSION  = 1.2.6
 MASTER_SITES += http://go-mono.com/sources/$(GARNAME)/
 
 # Prepend the local file listing
-FILE_SITES = file://$(FILEDIR)/ file://$(HOME)/Downloads/
+FILE_SITES = file://$(FILEDIR)/ file://$(GARMONO_CACHE)/
 
 # If the color codes are interfering with your terminal, consider commenting
 # this next line out.
@@ -62,7 +62,7 @@ main_licensedir = $(prefix)/licenses
 # the DESTDIR is used at INSTALL TIME ONLY to determine what the
 # filesystem root should be.  Each different DESTIMG has its own
 # DESTDIR.
-main_DESTDIR ?= 
+main_DESTDIR ?= $(GARMONO_DESTDIR)
 
 # Default main_CC to gcc, $(DESTIMG)_CC to main_CC and set CC based on $(DESTIMG)
 main_CC ?= gcc 

@@ -184,7 +184,7 @@ export PARALLELMFLAGS
 # For rules that do nothing, display what dependencies they
 # successfully completed
 #DONADA = @echo "	[$@] complete.  Finished rules: $+"
-DONADA = @touch $(COOKIEDIR)/$@; echo -e "	$(ANNOUNCECOLOR)[$(STAGECOLOR)$@$(ANNOUNCECOLOR)] complete for $(NAMECOLOR)$(GARNAME)$(ANNOUNCECOLOR).$(NORMALCOLOR)"; which xtermset > /dev/null && xtermset -T "[$@] complete for $(GARNAME)" || true
+DONADA = @touch $(COOKIEDIR)/$@; echo -e "	$(ANNOUNCECOLOR)[$(STAGECOLOR)$@$(ANNOUNCECOLOR)] complete for $(NAMECOLOR)$(GARNAME)$(ANNOUNCECOLOR).$(NORMALCOLOR)"; which xtermset > /dev/null 2> /dev/null && xtermset -T "[$@] complete for $(GARNAME)" || true
 
 # TODO: write a stub rule to print out the name of a rule when it
 # *does* do something, and handle indentation intelligently.
@@ -221,7 +221,7 @@ post-%:
 	@true
 
 xtermset-%:
-	-@which xtermset > /dev/null && xtermset -T "$(GARNAME): $*" || true
+	-@which xtermset > /dev/null 2> /dev/null && xtermset -T "$(GARNAME): $*" || true
 
 # Call any arbitrary rule recursively
 deep-%: %

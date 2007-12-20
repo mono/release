@@ -1,5 +1,18 @@
 2007-12-20  Everaldo Canuto <ecanuto@novell.com>
 
+	* gar.mk: Fixed xtermset error messages on cygwin when you don't have 
+	xtermset tool instaled. [GAR backport]
+
+	* gar.conf.mk: Use GARMONO_CACHE in FILE_SITES so we can set the directory
+	where downloaded files is cached. Also fixed main_DESTDIR var using 
+	GARMONO_DESTDIR var.
+
+	* mono/environment/Makefile: Uses "install -d" instead of "mkdir -p".
+
+	* tasks/default-build/Makefile: Fix package description (BLURB).
+
+2007-12-20  Everaldo Canuto <ecanuto@novell.com>
+
 	* gar.conf.mk: New defautl setting based on user home dir.
 
 2007-12-19  Everaldo Canuto <ecanuto@novell.com>

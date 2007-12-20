@@ -19,7 +19,7 @@ build-environment:
 	$(MAKECOOKIE)
 
 install-environment:
-	mkdir -p $(bindir)
+	install -d $(bindir)
 	install -m 755 $(WORKSRC)/monoenv $(bindir)/
 	$(MAKECOOKIE)
 
