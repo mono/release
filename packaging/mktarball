@@ -126,6 +126,14 @@ if status:
 # get tarball filename
 tarball = output.split().pop()
 
+# Check to see if we have this filename already
+#  (we can override with force)
+if os.path.exists(package_obj.source_fullpath + os.sep + tarball) and not force:
+	conf.buildenv.unlock_env()
+	log_obj.log("Error: Source file already exists.  Override with --force\n")
+	repo.add_file(HEAD_or_RELEASE, package, version, "failure")
+	sys.exit(1)
+
 # Copy file back
 #  Note: the tarball var is expected to have be in this format, ex:  mono-1.1.13.4.tar.gz
 conf.buildenv.copy_from('%s/result/%s' % (temp_dir, tarball), package_obj.source_fullpath)
