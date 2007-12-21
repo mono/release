@@ -79,7 +79,7 @@ rm -Rf ${DESTDIR}
 %{_prefix}/lib/mono/gtksourceview-sharp-2.0
 %{_prefix}/share/pkgconfig/gtksourceview-sharp-2.0.pc
 %{_prefix}/share/gapi-2.0/gtksourceview-api.xml
-%{_prefix}/lib/monodoc
+%{_prefix}/lib/monodoc/sources/gtksourceview-sharp-docs*
 
 # auto dep/req generation for older distros (it will take a while for the .config scanning to get upstream)
 %if 0%{?suse_version} <= 1040 || 0%{?fedora_version} <= 7
