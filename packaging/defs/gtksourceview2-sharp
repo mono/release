@@ -1,0 +1,35 @@
+web_index=7
+
+BUILD_HOSTS=(
+	suse-103-x86_64
+)
+
+USE_HOSTS=(
+	suse-103-i586
+	suse-103-x86_64
+	macos-10-ppc
+	macos-10-x86
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+MONO_DEPS=(
+	mono
+	monodoc
+	gtk-sharp210
+	gnome-sharp2
+)
+
+MONO_RECOMMEND_DEPS=(
+	libgdiplus
+)
+
+HEAD_PATH=(
+	trunk/gtksourceview2-sharp
+)
+RELEASE_PATH=(
+	tags/gtksourceview-sharp-[[version]]
+)
+
