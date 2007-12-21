@@ -5,7 +5,7 @@
 # norootforbuild
 
 Name:     	monodevelop-boo
-Version: 	0.18
+Version: 	0.18.1
 Release:	0
 Vendor:		Novell, Inc.
 License:	LGPL
@@ -14,7 +14,6 @@ Autoreqprov:    on
 BuildArch:      noarch
 URL:		http://www.go-mono.com
 Source0:	%{name}-%{version}.tar.gz
-Patch0:		monodevelop-boo-destdir.patch
 BuildRequires:	boo monodevelop mono-devel
 Summary:	Monodevelop Boo Addin
 Group:		Development/Tools
@@ -38,7 +37,6 @@ Monodevelop Boo Addin
 
 %prep
 %setup -q
-%patch0
 
 %build
 %{?env_options}

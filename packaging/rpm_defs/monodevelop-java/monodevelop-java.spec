@@ -12,6 +12,7 @@ BuildArch:      noarch
 URL:		http://www.go-mono.com
 Source0:	%{name}-%{version}.tar.gz
 BuildRequires:	ikvm monodevelop mono-devel
+Requires:	ikvm
 Summary:	Monodevelop Java Addin
 Group:		Development/Tools
 
