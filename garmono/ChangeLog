@@ -1,3 +1,21 @@
+2007-12-21  Everaldo Canuto <ecanuto@novell.com>
+
+	* gar.mk: Use DESTDIR as prefix for PATH, LD_LIBRARY_PATH, PKG_CONFIG_PATH,
+	C_INCLUDE_PATH and ACLOCAL_PATH.
+
+	* gar.conf.mk: Back to use empty main_DESTDIR since it is used in install
+	time only.
+
+	* gar.category.mk: Recreated, it is usefull for categories like deps when we
+	need to build all packages from same category.
+
+	* mono/environment/Makefile: Use DESTDIR as prefix for install path.
+
+	* tasks/cygwin-build: Cygwin build added, now we can build mono for cygwin
+	using 'make cygwin-build', all depenencies is checked.
+
+	* deps/cygwin: Packages for cygwin dependencies added.
+
 2007-12-20  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.mk: Fixed xtermset error messages on cygwin when you don't have 

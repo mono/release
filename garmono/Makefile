@@ -15,7 +15,7 @@ VERSION  = "1.2.6alpha"
 HELPMSG  = "GARMONO $(VERSION) is a utility that allows users to build Mono from sources"
 HOST_OS  = $(shell uname -o)
 
-TGPATHS  = $(shell find . -maxdepth 4 -mindepth 3 -name Makefile)
+TGPATHS  = $(shell find . -maxdepth 3 -mindepth 3 -name Makefile)
 TARGETS  = $(sort $(subst ./,, $(subst /Makefile,, $(TGPATHS))))
 PACKAGES = $(filter-out tasks/%, $(TARGETS))
 TASKS    = $(subst tasks/,, $(filter tasks/%, $(TARGETS)))

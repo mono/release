@@ -62,7 +62,7 @@ main_licensedir = $(prefix)/licenses
 # the DESTDIR is used at INSTALL TIME ONLY to determine what the
 # filesystem root should be.  Each different DESTIMG has its own
 # DESTDIR.
-main_DESTDIR ?= $(GARMONO_DESTDIR)
+main_DESTDIR ?= 
 
 # Default main_CC to gcc, $(DESTIMG)_CC to main_CC and set CC based on $(DESTIMG)
 main_CC ?= gcc 

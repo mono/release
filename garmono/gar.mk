@@ -159,11 +159,11 @@ DIRSTODOTS = $(subst . /,./,$(patsubst %,/..,$(subst /, ,/$(1))))
 ROOTFROMDEST = $(call DIRSTODOTS,$(DESTDIR))
 
 # Allow us to use programs we just built
-PATH := $(bindir):$(sbindir):$(PATH)
-LD_LIBRARY_PATH := $(libdir):/lib:/usr/lib:/usr/local/lib
-PKG_CONFIG_PATH := $(libdir)/pkgconfig/:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/gnome/lib/pkgconfig
-C_INCLUDE_PATH := $(DESTDIR)/include:/opt/gnome/include
-ACLOCAL_PATH := $(DESTDIR)/share/aclocal
+PATH := $(DESTDIR)$(bindir):$(DESTDIR)$(sbindir):$(PATH)
+LD_LIBRARY_PATH := $(DESTDIR)$(libdir):/lib:/usr/lib:/usr/local/lib
+PKG_CONFIG_PATH := $(DESTDIR)$(libdir)/pkgconfig/:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/gnome/lib/pkgconfig
+C_INCLUDE_PATH := $(DESTDIR)/$(includedir):/opt/gnome/include
+ACLOCAL_PATH := $(DESTDIR)$(datadir)/aclocal
 
 # or at least it did before we had DESTDIR and fully-munged
 # builddeps.  The following may be more of a hindrance than a
