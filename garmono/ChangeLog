@@ -1,3 +1,9 @@
+2007-12-22  Everaldo Canuto <ecanuto@novell.com>
+
+	* gar.lib.mk: Support for subversion added. [GAR backport]
+
+	* README: Information about 'GAR backport' added.
+
 2007-12-21  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.mk: Use DESTDIR as prefix for PATH, LD_LIBRARY_PATH, PKG_CONFIG_PATH,

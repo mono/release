@@ -88,6 +88,16 @@ cvs//%:
 	cvs -z3 -d :pserver:$(shell dirname $* | sed 's,/,:/,') co $(shell basename $*)
 
 
+svn//%:
+	cd $(PARTIALDIR); \
+	svn co $(subst //,://,$@) $(notdir $*)
+
+svn+ssh//%:
+	cd $(PARTIALDIR); \
+	echo $(PARTIALDIR); \
+	echo $(subst //,://,$@) $(notdir $*); \
+	svn co $(subst //,://,$@) $(notdir $*)
+
 #################### CHECKSUM RULES ####################
 
 # check a given file's checksum against $(CHECKSUM_FILE) and

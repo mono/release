@@ -75,6 +75,12 @@ GARMONO Build System
 3. Maintainers Guidelines
 =========================
 
+	The [GAR backport] tag:
+
+	In ChangeLog file theres some entries tagger by "[GAR backport]", it is used
+	to tag the entries that could be backported to original GAR system. The 
+	ideal is to send it in form of patches to Nick Moffitt, the author of GAR.
+
 	TODO: Some lines about GARMONO!
 
 	For more information about GAR system you can go to docs/ directory and 
