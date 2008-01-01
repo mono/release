@@ -22,6 +22,20 @@ TASKS    = $(subst tasks/,, $(filter tasks/%, $(TARGETS)))
 
 default: help
 
+build:
+	@if [ $(HOST_OS) = "Cygwin" ]; then \
+		$(MAKE) -C tasks/cygwin-$@ install; \
+	else \
+		$(MAKE) -C tasks/default-$@ install; \
+	fi;
+
+build-%:
+	@if [ $(HOST_OS) = "Cygwin" ]; then \
+		$(MAKE) -C tasks/cygwin-$* install; \
+	else \
+		$(MAKE) -C tasks/default-$* install; \
+	fi;
+
 $(TASKS):
 	$(MAKE) -C tasks/$@ install
 
@@ -62,5 +76,5 @@ targets:
 	@echo -e "Invalid task/package, use 'make help' to see available options\n"
 
 .SILENT:
-.PHONY: default $(TASKS) $(PACKAGES) clean help help-packages 
+.PHONY: default build $(TASKS) $(PACKAGES) clean help help-packages 
 

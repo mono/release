@@ -1,3 +1,9 @@
+2008-01-01  Everaldo Canuto <ecanuto@novell.com>
+
+	* deps: Renamed to cygwin.
+
+	* Makefile: Targets build and build-* added.
+
 2007-12-22  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.lib.mk: Support for subversion added. [GAR backport]
