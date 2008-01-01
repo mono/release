@@ -1,5 +1,9 @@
 2008-01-01  Everaldo Canuto <ecanuto@novell.com>
 
+	* cygwin/cygwin: Renamed to cygwin/deps.
+
+2008-01-01  Everaldo Canuto <ecanuto@novell.com>
+
 	* deps: Renamed to cygwin.
 
 	* Makefile: Targets build and build-* added.
