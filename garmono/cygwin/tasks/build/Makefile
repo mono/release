@@ -19,14 +19,14 @@
 # The idea is to download this packages and use it.
 #
 
-GARNAME    = cygwin-build
+GARNAME    = build
 GARVERSION = $(GARMONO_VERSION)
-CATEGORIES = meta
+CATEGORIES = cygwin/tasks
 
-DEPENDS  = deps/cygwin/make
-DEPENDS += deps/cygwin/glib
-DEPENDS += deps/cygwin/pkgconfig
-DEPENDS += deps/cygwin/zlib
+DEPENDS  = cygwin/deps/make
+DEPENDS += cygwin/deps/glib
+DEPENDS += cygwin/deps/pkgconfig
+DEPENDS += cygwin/deps/zlib
 DEPENDS += mono/environment
 DEPENDS += mono/mono
 
@@ -37,5 +37,5 @@ define BLURB
 endef
 
 # This should go before any hand-made rules.
-include ../../gar.mk
+include ../../../gar.mk
 

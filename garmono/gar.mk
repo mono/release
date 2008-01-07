@@ -14,7 +14,7 @@
 #endif
 
 ####### Invariants #######
-GARDIR ?= ../..
+GARDIR ?= ../../..
 
 # GARBUILD is the platform on which you're running GAR.  If you want to
 # override it with a value other than what GCC thinks it's running on that's

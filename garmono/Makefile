@@ -15,32 +15,21 @@ VERSION  = "1.2.6alpha"
 HELPMSG  = "GARMONO $(VERSION) is a utility that allows users to build Mono from sources"
 HOST_OS  = $(shell uname -o)
 
-TGPATHS  = $(shell find . -maxdepth 3 -mindepth 3 -name Makefile)
-TARGETS  = $(sort $(subst ./,, $(subst /Makefile,, $(TGPATHS))))
-PACKAGES = $(filter-out tasks/%, $(TARGETS))
-TASKS    = $(subst tasks/,, $(filter tasks/%, $(TARGETS)))
+TGPATHS = $(shell find . -maxdepth 4 -mindepth 4 -name Makefile)
+TARGETS = $(sort $(subst ./,, $(subst /Makefile,, $(TGPATHS))))
+
+TKPATHS = $(shell find . -maxdepth 4 -mindepth 4 -name Makefile | grep /tasks/)
+TASKS   = $(sort $(subst /tasks,, $(subst ./,, $(subst /Makefile,, $(TKPATHS)))))
+
 
 default: help
 
 build:
 	@if [ $(HOST_OS) = "Cygwin" ]; then \
-		$(MAKE) -C tasks/cygwin-$@ install; \
+		$(MAKE) -C cygwin/tasks/$@ install; \
 	else \
-		$(MAKE) -C tasks/default-$@ install; \
+		$(MAKE) -C linux/tasks/$@ install; \
 	fi;
-
-build-%:
-	@if [ $(HOST_OS) = "Cygwin" ]; then \
-		$(MAKE) -C tasks/cygwin-$* install; \
-	else \
-		$(MAKE) -C tasks/default-$* install; \
-	fi;
-
-$(TASKS):
-	$(MAKE) -C tasks/$@ install
-
-$(PACKAGES):
-	$(MAKE) -C $@ install
 
 clean:
 	@for i in $(TARGETS) ; do \
@@ -49,17 +38,17 @@ clean:
 
 help:
 	@echo -e $(HELPMSG) 
-	@echo -e "Usage: make [task or package]\n"
+	@echo -e "Usage: make [task or target]\n"
 	@echo -e "Tasks:\n"
 	@for i in $(TASKS) ; do \
 		echo "    $$i" ; \
 	done
-	@echo -e "\nTo show all available packages type 'make packages'\n"
+	@echo -e "\nTo show all available targets type 'make targets' \n"
 
-packages:
+tasks:
 	@echo -e $(HELPMSG)
-	@echo -e "\nAvailable packages:\n"
-	@for i in $(PACKAGES) ; do \
+	@echo -e "\nAvailable tasks:\n"
+	@for i in $(TASKS) ; do \
 		echo "    $$i" ; \
 	done
 	@echo ""
@@ -72,9 +61,15 @@ targets:
 	done
 	@echo ""
 
+$(TASKS):
+	$(MAKE) -C $(subst /,/tasks/,$@) install
+
+$(TARGETS):
+	$(MAKE) -C $@ install
+
 %:
-	@echo -e "Invalid task/package, use 'make help' to see available options\n"
+	@echo -e "Invalid task/target, use 'make help' to see available options\n"
 
 .SILENT:
-.PHONY: default build $(TASKS) $(PACKAGES) clean help help-packages 
+.PHONY: default build clean help tasks targets $(TASKS) $(TARGETS)
 

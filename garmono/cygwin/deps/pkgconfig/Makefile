@@ -1,10 +1,10 @@
 GARNAME      = pkgconfig
 GARVERSION   = 0.15
-CATEGORIES   = deps/cygwin
+CATEGORIES   = cygwin/deps
 DISTFILES    = $(GARNAME)-$(GARVERSION).zip
 MASTER_SITES = http://www.gimp.org/~tml/gimp/win32/
 
-DEPENDS += deps/cygwin/glib
+DEPENDS += cygwin/deps/glib
 
 DESCRIPTION = The pkg-config returns metainformation about installed libraries
 define BLURB
@@ -16,7 +16,6 @@ endef
 INSTALL_SCRIPTS = pkgconfig
 
 # This should go before any hand-made rules.
-GARDIR ?= ../../..
 include ../../../gar.mk
 
 install-pkgconfig:

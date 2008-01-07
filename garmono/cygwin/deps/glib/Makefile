@@ -1,6 +1,6 @@
 GARNAME    = glib
 GARVERSION = 2.12.4
-CATEGORIES = deps/cygwin
+CATEGORIES = cygwin/deps
 
 DISTFILES  = $(GARNAME)-$(GARVERSION).zip
 DISTFILES += $(GARNAME)-dev-$(GARVERSION).zip
@@ -22,7 +22,6 @@ endef
 INSTALL_SCRIPTS = deps
 
 # This should go before any hand-made rules.
-GARDIR ?= ../../..
 include ../../../gar.mk
 
 install-deps:

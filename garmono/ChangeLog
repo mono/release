@@ -1,3 +1,24 @@
+2008-01-02  Everaldo Canuto <ecanuto@novell.com>
+
+	* all stuff: New directory structure system/category/(package or task).
+
+	* gar.mk: Add 3 levels to GARDIR var, now our directory structure will be
+	system/category/(package or task).
+
+	* Makefile: Fix Makefile for new directory structure, also now we have only
+	tasks and targets.
+
+	* cygwin/deps/*: Fix deps categories.
+
+	* linux: Added to put all linux related targets according to new directory
+	structure.
+
+	* linux/tasks: Added.
+
+	* linux/svn: Added.
+
+	* mono/environment/files/config.site.in: Added.
+
 2008-01-01  Everaldo Canuto <ecanuto@novell.com>
 
 	* cygwin/cygwin: Renamed to cygwin/deps.

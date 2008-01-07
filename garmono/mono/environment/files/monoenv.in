@@ -7,7 +7,7 @@ LD_LIBRARY_PATH=$MONO_PREFIX/lib:$LD_LIBRARY_PATH
 C_INCLUDE_PATH=$MONO_PREFIX/include:$GNOME_PREFIX/include
 ACLOCAL_PATH=$MONO_PREFIX/share/aclocal
 PKG_CONFIG_PATH=$MONO_PREFIX/lib/pkgconfig:$GNOME_PREFIX/lib/pkgconfig
-CONFIG_SITE="$HOME/.config/automake/config.site"
+CONFIG_SITE="$MONO_PREFIX/bin/config.site"
 
 PATH=$MONO_PREFIX/bin:$PATH
 PS1="\[\e]0;\w\a\]\[\e[32m\]mono@\h:\[\e[33m\]\w>\[\e[0m\] "

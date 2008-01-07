@@ -1,6 +1,6 @@
 GARNAME      = make
 GARVERSION   = 3.80-1
-CATEGORIES   = deps/cygwin
+CATEGORIES   = cygwin/deps
 DISTFILES    = $(GARNAME)-$(GARVERSION).tar.bz2
 MASTER_SITES = http://www.go-mono.com/archive/helper/
 
@@ -13,7 +13,6 @@ endef
 INSTALL_SCRIPTS = make
 
 # This should go before any hand-made rules.
-GARDIR ?= ../../..
 include ../../../gar.mk
 
 install-make:
