@@ -78,8 +78,11 @@ win_4_i386_ZIP_BUILD () {
 	cd src
 	# Do this to get around the 'invalid pdb problem'
 	#  Hrm... sp1 was supposed to fix the issue, but it didn't work (http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=99676)
+	# don't build with sp1, because then we need to distribute the sp1 redistributable
 	my_dir=`cygpath -w $PWD`
+	# both vcvars and SetEnv need to be called because one has cl.exe, and the latter has the win32 api headers
 	cat <<EOF > build.bat
+call "c:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat"
 call "c:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd"
 nmake /f windows.mak CFG=Debug all
 EOF
