@@ -12,7 +12,8 @@ Autoreqprov:    on
 BuildArch:      noarch
 URL:		http://www.go-mono.com
 Source0:	%{name}-%{version}.tar.bz2
-BuildRequires:	mono-devel
+Requires:	mono-core
+BuildRequires:	mono-devel mono-extras
 Summary:	Mono Olive
 Group:		Development/Tools
 
