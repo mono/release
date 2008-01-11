@@ -68,20 +68,18 @@ BuildRequires: pkgconfig
 PreReq:         grep
 %endif
 
+# TODO:
 # This won't work until the rpm package passes .config files to mono-find-requires
 #%define __find_provides env MONO_PREFIX=%{buildroot}/usr /usr/lib/rpm/find-provides
 #%define __find_requires env MONO_PREFIX=%{buildroot}/usr /usr/lib/rpm/find-requires
 
 
-# auto dep/req generation for older distros (it will take a while for the .config scanning to get upstream)
-%if 0%{?suse_version} <= 1040 || 0%{?fedora_version} <= 7
 %if 0%{?fedora_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif
 %define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}/usr %{buildroot}/usr/bin/mono-find-provides ; } | sort | uniq'
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}/usr %{buildroot}/usr/bin/mono-find-requires ; } | sort | uniq'
-%endif
 
 
 

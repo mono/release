@@ -19,6 +19,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 # All fedora distros (5 and 6) have the same names, requirements
 # Needed to generate wrapper
 BuildRequires: which
+# Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')
+%define env_options export MONO_SHARED_DIR=/tmp
 %endif
 #################
 
@@ -46,6 +48,7 @@ dos2unix LICENSE
 true
 
 %install
+%{?env_options}
 # Create dirs
 mkdir -p ${RPM_BUILD_ROOT}/usr/bin
 mkdir -p ${RPM_BUILD_ROOT}/usr/lib/ikvm
@@ -98,14 +101,11 @@ rm -rf "$RPM_BUILD_ROOT"
 %_prefix/lib/mono/gac/IKVM*
 %_prefix/share/pkgconfig/ikvm.pc
 
-# auto dep/req generation for older distros (it will take a while for the .config scanning to get upstream)
-%if 0%{?suse_version} <= 1040 || 0%{?fedora_version} <= 7
 %if 0%{?fedora_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif
 %define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
-%endif
 
 %changelog
