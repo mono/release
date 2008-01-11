@@ -78,15 +78,20 @@ win_4_i386_ZIP_BUILD () {
 	cd src
 	# Do this to get around the 'invalid pdb problem'
 	#  Hrm... sp1 was supposed to fix the issue, but it didn't work (http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=99676)
-	# don't build with sp1, because then we need to distribute the sp1 redistributable
 	my_dir=`cygpath -w $PWD`
 	# both vcvars and SetEnv need to be called because one has cl.exe, and the latter has the win32 api headers
 	cat <<EOF > build.bat
 call "c:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat"
 call "c:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd"
-nmake /f windows.mak CFG=Debug all
+nmake /f windows.mak CFG=Release all
 EOF
-	rsh localhost "cd $my_dir && build.bat" || exit 1
+	output=`rsh localhost "cd $my_dir && build.bat > out.log && echo exit:%ERRORLEVEL%"`
+
+	# echo output locally
+	rsh localhost "cd $my_dir && type out.log"
+
+	# test for failure
+	echo $output | grep "exit:0" || exit 1
 
 	mkdir -p /tmp/install/bin
 	cp gluezilla.dll /tmp/install/bin
