@@ -1,6 +1,6 @@
 GARNAME    = environment
-GARVERSION = $(MONO_VERSION)
 CATEGORIES = linux/mono
+GARVERSION = $(MONO_VERSION)
 
 DESCRIPTION = Environment vars scripts for Mono
 define BLURB

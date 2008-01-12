@@ -1,6 +1,6 @@
 GARNAME    = xsp
-GARVERSION = 1.2.6
 CATEGORIES = linux/mono
+GARVERSION = $(XSP_VERSION)
 DISTFILES  = $(GARNAME)-$(GARVERSION).tar.bz2
 
 DEPENDS  = linux/mono/mono

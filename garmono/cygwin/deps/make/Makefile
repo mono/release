@@ -1,6 +1,6 @@
 GARNAME      = make
-GARVERSION   = 3.80-1
 CATEGORIES   = cygwin/deps
+GARVERSION   = 3.80-1
 DISTFILES    = $(GARNAME)-$(GARVERSION).tar.bz2
 MASTER_SITES = http://www.go-mono.com/archive/helper/
 

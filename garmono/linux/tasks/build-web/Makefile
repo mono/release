@@ -1,9 +1,9 @@
 GARNAME    = default-build-web
+CATEGORIES = linux/tasks
 GARVERSION = $(GARMONO_VERSION)
-CATEGORIES = tasks
 
 DEPENDS  = task/default-build
-DEPENDS += mono/xsp
+DEPENDS += linux/mono/xsp
 #DEPENDS += mono/mod_mono
 
 DESCRIPTION = Mono linux build meta package with web tools included

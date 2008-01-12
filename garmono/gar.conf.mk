@@ -9,8 +9,13 @@ GARMONO_SOURCES ?= $(GARMONO_DESTDIR)/src
 GARMONO_CACHE   ?= $(GARMONO_DESTDIR)/cache
 GARMONO_SVNROOT = svn+ssh://everaldo@mono-cvs.ximian.com/source/trunk/
 
-GARMONO_VERSION = 1.2.6
-MONO_VERSION    = $(GARMONO_VERSION)
+# Versions.
+GARMONO_VERSION   = 1.2.6
+MONO_VERSION      = $(GARMONO_VERSION)
+LIBGDI_VERSION    = $(MONO_VERSION)
+GLUEZILLA_VERSION = $(MONO_VERSION).1
+XSP_VERSION       = $(MONO_VERSION)
+MODMONO_VERSION   = $(MONO_VERSION)
 
 # Remote addresses.
 MASTER_SITES += http://go-mono.com/sources/$(GARNAME)/

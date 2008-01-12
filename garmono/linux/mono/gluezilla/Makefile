@@ -1,6 +1,6 @@
-GARNAME   = gluezilla
-GARVERSION = 1.2.6
+GARNAME    = gluezilla
 CATEGORIES = linux/mono
+GARVERSION = $(GLUEZILLA_VERSION)
 DISTFILES  = $(GARNAME)-$(GARVERSION).tar.bz2
 
 DEPENDS  = linux/mono/mono

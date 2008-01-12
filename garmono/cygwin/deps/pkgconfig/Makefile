@@ -1,6 +1,6 @@
 GARNAME      = pkgconfig
-GARVERSION   = 0.15
 CATEGORIES   = cygwin/deps
+GARVERSION   = 0.15
 DISTFILES    = $(GARNAME)-$(GARVERSION).zip
 MASTER_SITES = http://www.gimp.org/~tml/gimp/win32/
 

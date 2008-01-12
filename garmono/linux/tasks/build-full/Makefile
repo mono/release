@@ -1,6 +1,6 @@
 GARNAME    = default-build-web
+CATEGORIES = linux/tasks
 GARVERSION = $(GARMONO_VERSION)
-CATEGORIES = tasks
 
 DEPENDS  = task/default-build
 DEPENDS += task/default-build-web

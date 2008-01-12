@@ -20,8 +20,8 @@
 #
 
 GARNAME    = build
-GARVERSION = $(GARMONO_VERSION)
 CATEGORIES = cygwin/tasks
+GARVERSION = $(GARMONO_VERSION)
 
 DEPENDS  = cygwin/deps/make
 DEPENDS += cygwin/deps/glib

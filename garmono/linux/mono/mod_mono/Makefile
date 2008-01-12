@@ -1,6 +1,6 @@
 GARNAME    = mod_mono
-GARVERSION = 1.2.6
 CATEGORIES = linux/mono
+GARVERSION = $(MODMONO_VERSION)
 DISTFILES  = $(GARNAME)-$(GARVERSION).tar.bz2
 
 DEPENDS  = linux/mono/mono

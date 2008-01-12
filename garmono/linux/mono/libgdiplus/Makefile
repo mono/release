@@ -1,6 +1,6 @@
 GARNAME    = libgdiplus
-GARVERSION = 1.2.6
 CATEGORIES = linux/mono
+GARVERSION = $(LIBGDI_VERSION)
 DISTFILES  = $(GARNAME)-$(GARVERSION).tar.bz2
 
 DESCRIPTION = Libgdiplus

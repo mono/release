@@ -1,6 +1,6 @@
 GARNAME      = zlib
-GARVERSION   = 1.2.3
 CATEGORIES   = cygwin/deps
+GARVERSION   = 1.2.3
 DISTFILES    = $(GARNAME)-$(GARVERSION)-bin.zip
 DISTFILES   += $(GARNAME)-$(GARVERSION)-lib.zip
 MASTER_SITES = http://internap.dl.sourceforge.net/sourceforge/gnuwin32/
