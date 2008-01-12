@@ -1,11 +1,11 @@
-GARNAME    = default-build
+GARNAME    = build
 GARVERSION = $(GARMONO_VERSION)
-CATEGORIES = tasks
+CATEGORIES = linux/tasks
 
-DEPENDS  = mono/environment
-DEPENDS += mono/mono
-DEPENDS += mono/libgdiplus
-DEPENDS += mono/gluezilla
+DEPENDS  = linux/pkgs/environment
+DEPENDS += linux/pkgs/mono
+DEPENDS += linux/pkgs/libgdiplus
+DEPENDS += linux/pkgs/gluezilla
 
 DESCRIPTION = Mono linux build meta package
 define BLURB

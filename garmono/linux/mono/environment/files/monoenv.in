@@ -1,0 +1,14 @@
+#!/bin/bash
+
+MONO_PREFIX=#mono-prefix#
+GNOME_PREFIX=/opt/gnome
+
+export LD_LIBRARY_PATH=$MONO_PREFIX/lib:$LD_LIBRARY_PATH
+export C_INCLUDE_PATH=$MONO_PREFIX/include:$GNOME_PREFIX/include
+export ACLOCAL_PATH=$MONO_PREFIX/share/aclocal
+export PKG_CONFIG_PATH=$MONO_PREFIX/lib/pkgconfig:$GNOME_PREFIX/lib/pkgconfig
+export CONFIG_SITE="$MONO_PREFIX/bin/config.site"
+
+PATH=$MONO_PREFIX/bin:$PATH
+PS1="\[\e]0;\w\a\]\[\e[32m\]mono@\h:\[\e[33m\]\w>\[\e[0m\] "
+

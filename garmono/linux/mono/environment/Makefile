@@ -1,6 +1,6 @@
 GARNAME    = environment
-GARVERSION = $(GARMONO_VERSION)
-CATEGORIES = mono
+GARVERSION = $(MONO_VERSION)
+CATEGORIES = linux/mono
 
 DESCRIPTION = Environment vars scripts for Mono
 define BLURB
@@ -8,11 +8,11 @@ define BLURB
  obtain all environments vars needed to execute mono.
 endef
 
-BUILD_SCRIPTS = environment
+BUILD_SCRIPTS   = environment
 INSTALL_SCRIPTS = environment
 
 # This should go before any hand-made rules.
-include ../../gar.mk
+include ../../../gar.mk
 
 build-environment:
 	sed -e 's,#mono-prefix#,$(GARMONO_DESTDIR),' files/monoenv.in > $(WORKSRC)/monoenv

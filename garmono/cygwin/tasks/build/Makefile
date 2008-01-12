@@ -27,8 +27,8 @@ DEPENDS  = cygwin/deps/make
 DEPENDS += cygwin/deps/glib
 DEPENDS += cygwin/deps/pkgconfig
 DEPENDS += cygwin/deps/zlib
-DEPENDS += mono/environment
-DEPENDS += mono/mono
+DEPENDS += linux/mono/environment
+DEPENDS += linux/mono/mono
 
 DESCRIPTION = Mono Cygwin build meta package
 define BLURB

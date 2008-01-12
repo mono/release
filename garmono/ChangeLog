@@ -1,3 +1,11 @@
+2008-01-03  Everaldo Canuto <ecanuto@novell.com>
+
+	* gar.conf.mk: Var MONO_VERSION added.
+
+	* linux/mono: Move mono packages from /mono to /linux/mono.
+
+	* cygwin/tasks/build/Makefile: Fix deps.
+
 2008-01-02  Everaldo Canuto <ecanuto@novell.com>
 
 	* all stuff: New directory structure system/category/(package or task).

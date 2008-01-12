@@ -1,10 +1,10 @@
 GARNAME    = mod_mono
 GARVERSION = 1.2.6
-CATEGORIES = mono
+CATEGORIES = linux/mono
 DISTFILES  = $(GARNAME)-$(GARVERSION).tar.bz2
 
-DEPENDS  = mono/mono
-DEPENDS += mono/xsp
+DEPENDS  = linux/mono/mono
+DEPENDS += linux/mono/xsp
 
 DESCRIPTION = Mod Mono
 define BLURB
@@ -13,13 +13,13 @@ define BLURB
 endef
 
 CONFIGURE_SCRIPTS = $(WORKSRC)/configure
-BUILD_SCRIPTS = $(WORKSRC)/Makefile
-INSTALL_SCRIPTS = $(WORKSRC)/Makefile
+BUILD_SCRIPTS     = $(WORKSRC)/Makefile
+INSTALL_SCRIPTS   = $(WORKSRC)/Makefile
 
 CONFIGURE_ARGS = $(DIRPATHS)
 
 # This should go before any hand-made rules.
-include ../../gar.mk
+include ../../../gar.mk
 
 # NOTES:
 # mod_mono can be build only with root privilegies.
