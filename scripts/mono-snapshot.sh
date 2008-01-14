@@ -118,13 +118,14 @@ scp -i $SCRIPTS_DIR/key/cron_key  *.tar.bz2 *.tar.gz mono-web@mono.ximian.com:go
 # Run command to update webpage
 ssh -i $SCRIPTS_DIR/key/cron_key mono-web@mono.ximian.com "release/scripts/make-html" >> $LOGFILE 2>&1
 
-echo "Updating class status pages..." >> $LOGFILE 2>&1
-
-cd $DAILY_BUILD_DIR
-$SCRIPTS_DIR/class_status/update-status.sh 1.1 mono-HEAD-vs-fx-1-1 >> $LOGFILE 2>&1
-
-cd $DAILY_BUILD_DIR
-$SCRIPTS_DIR/class_status/update-status.sh 2.0 mono-HEAD-vs-fx-2 >> $LOGFILE 2>&1
+# These are done in monobuild now
+#echo "Updating class status pages..." >> $LOGFILE 2>&1
+#
+#cd $DAILY_BUILD_DIR
+#$SCRIPTS_DIR/class_status/update-status.sh 1.1 mono-HEAD-vs-fx-1-1 >> $LOGFILE 2>&1
+#
+#cd $DAILY_BUILD_DIR
+#$SCRIPTS_DIR/class_status/update-status.sh 2.0 mono-HEAD-vs-fx-2 >> $LOGFILE 2>&1
 
 # Keep log around, but compress it
 echo "Compressing log..." >> $LOGFILE 2>&1
