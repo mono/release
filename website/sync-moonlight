@@ -12,7 +12,7 @@ else
 fi
 
 rm -f $TMPDIR/novell-moonlight-*-*.xpi
-for version in "1.0" "1.1"; do
+for version in "1.0" "2.0"; do
 	for arch in "i586" "x86_64"; do
 		basearch="$arch"
 		[ "$arch" == "i586" ] && basearch="i386"
