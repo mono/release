@@ -60,6 +60,7 @@ function selected(n)
 	document.getElementById("step3").innerHTML = "";
 	document.getElementById("step4").innerHTML = "";
 	document.getElementById("step5").innerHTML = "";
+	document.getElementById("stepn").innerHTML = "";
 
 	switch (n)
 	{
@@ -95,33 +96,16 @@ function selected(n)
 
 function windows_step2()
 {
-	var html = "<h2>2. Windows Version</h2>";
-	html += "<br><select size='3'><option selected>2000, XP</option></select>";
-	document.getElementById("step2").innerHTML = html;
-
-	windows_step3();
-}
-
-function windows_step3()
-{
-	var html = "<h2>3. Processor Architecture</h2>";
-	html += "<br><select size='3'><option selected>" + i586 + "</option></select>";
-	document.getElementById("step3").innerHTML = html;
-
-	windows_step4();
-}
-
-function windows_step4()
-{
-	var html = "<h2>4. Download Mono for Windows</h2>";
-	html += "<br><table><tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/0/00/Mono_icon_windows.gif'>";
+	var html = "<h2>2. Download Mono for Windows</h2>";
+	html += "<br><table><tr><td colspan='2'>This version of Mono works on all versions of Windows 2000, XP, 2003 and Vista.</tr>";
+	html += "<tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/0/00/Mono_icon_windows.gif'>";
 	html += "<td>Mono for Windows, Gtk#, and XSP";
 	html += "<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/windows-installer/4/mono-1.2.6-gtksharp-2.10.2-win32-4.exe'>Mono 1.2.6_4 Setup</a></ul>";
 	html += "Only Gtk# for .NET: <ul><li><a href=' http://forge.novell.com/modules/xfmod/project/?gtks-inst4win'>SDK and Runtime</a></ul>";
 	html += "Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>";
 	html += "</tr></table>";
 
-	document.getElementById("step4").innerHTML = html;
+	document.getElementById("stepn").innerHTML = html;
 }
 
 function macosx_step2()
@@ -133,15 +117,16 @@ function macosx_step2()
 	macosx_step3();
 }
 
-function macosx_step3()
+function macosx_step2()
 {
-	var html = "<h2>3. Download Mono for Mac OS X</h2>";
-	html += "<br><table><tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/b/bf/Mono_icon_mac.gif'>";
+	var html = "<h2>2. Download Mono for Mac OS X</h2>";
+	html += "<br><table><tr><td colspan='2'>This version of Mono works on Mac OS X Tiger (10.4) and Leopard (10.5).</tr>";
+	html += "<tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/b/bf/Mono_icon_mac.gif'>";
 	html += "<td>Includes Mono, Cocoa#, installs in /Library/Frameworks:";
 	html += "<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/macos-10-universal/4/MonoFramework-1.2.6_4.macos10.novell.universal.dmg'>Mono 1.2.6_4 Framework - Universal</a>";
 	html += "<li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>";
 	html += "</tr></table>";
-	document.getElementById("step3").innerHTML = html;
+	document.getElementById("stepn").innerHTML = html;
 }
 
 function suse_step2()
@@ -154,7 +139,7 @@ function suse_step2()
 	html += "<br><select size='5'>";
 	html += "<option onclick='suse_step3(\"suse\")'>openSUSE</option>";
 	html += "<option onclick='suse_step3(\"sles\")'>Suse Linux Enterpise Server (SLES)</option>";
-	html += "<option onclick='suse_step3(\"sles\")'>Suse Linux Enterpise Desktop (SLED)</option>";
+	html += "<option onclick='suse_step3(\"sled\")'>Suse Linux Enterpise Desktop (SLED)</option>";
 	html += "<option onclick='suse_step3(\"nld\")'>Novell Linux Desktop (NLD)</option>";
 	html += "</select>";
 	document.getElementById("step2").innerHTML = html;
@@ -180,6 +165,11 @@ function suse_step3(os_name)
 		case "sles": // SLES and SLED
 			html += "<option onclick='suse_step4(\"" + os_name + "\",\"9\")'>9</option>";
 			html += "<option onclick='suse_step4(\"" + os_name + "\",\"10\")'>10</option>";
+			break;
+
+		case "sled": // SLES and SLED
+			html += "<option selected>10</option>";
+			suse_step4("sles","10");
 			break;
 
 		case "nld": // NLD
@@ -253,100 +243,50 @@ function suse_step5(os_name, os_version, arch)
 
 function redhat_step2()
 {
-	var html = "<h2>2. RedHat Version</h2>";
-	html += "<br><select size='3'><option selected>RedHat Enterprise Linux 4</option></select>";
-	document.getElementById("step2").innerHTML = html;
-
-	redhat_step3();
-}
-
-function redhat_step3()
-{
-	var html = "<h2>3. Processor Architecture</h2>";
-	html += "<br><select size='3'><option selected>" + i586 + "</option></select>";
-	document.getElementById("step3").innerHTML = html;
-
-	redhat_step4();
-}
-
-function redhat_step4()
-{
-	var html = "<h2>4. Download Mono for RedHat</h2>";
-	html += "<br><table><tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/6/6e/Mono_icon_redhat.gif'>";
+	var html = "<h2>2. Download Mono for RedHat</h2>";
+	html += "<br><table><tr><td colspan='2'>This version of Mono works on RedHat Enterprise Linux 4 on " + i586 + ".</tr>";
+	html += "<tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/6/6e/Mono_icon_redhat.gif'>";
 	html += "<td>The downloads are available <a href='http://www.go-mono.com/download-stable/rhel-4-i386'>here</a>.";
 	html += "</tr></table>";
 
-	document.getElementById("step4").innerHTML = html;
+	document.getElementById("stepn").innerHTML = html;
 }
 
 function linux_step2()
 {
-	var html = "<h2>2. Linux Architecture</h2>";
-	html += "<br><select size='3'><option selected>" + i586 + "</option></select>";
-	document.getElementById("step2").innerHTML = html;
+	var html = "<h2>2. Download Mono for Generic Linux</h2>";
 
-	linux_step3();
-}
-
-function linux_step3()
-{
-	var html = "<h2>3. Download Mono for Generic Linux</h2>";
-
-	html += "<br><table><tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/2/21/Mono_icon_linux.gif'>";
+	html += "<br><table><tr><td colspan='2'>This version of Mono works on most generic Linux's on " + i586 + ".</tr>";
+	html += "<tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/2/21/Mono_icon_linux.gif'>";
 	html += "<td>For help with the installation, see: <a href='http://mono-project.com/InstallerInstructions'>Instructions to use the Installer</a>.";
 	html += "<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/linux-installer/6/mono-1.2.6_6-installer.bin'>Mono 1.2.6_6 Installer</a></ul>";
 	html += "</tr></table>";
 
-	document.getElementById("step3").innerHTML = html;
+	document.getElementById("stepn").innerHTML = html;
 }
 
 function maemo_step2()
 {
-	var html = "<h2>2. Maemo Architecture</h2>";
-	html += "<br><select size='3'><option selected>Nokia 770/800</option></select>";
-	document.getElementById("step2").innerHTML = html;
-
-	maemo_step3();
-}
-
-function maemo_step3()
-{
-	var html = "<h2>3. Download Mono for Maemo</h2>";
-	html += "<br><table><tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/a/aa/Maemo.gif'>";             
+	var html = "<h2>2. Download Mono for Maemo</h2>";
+	html += "<br><table><tr><td colspan='2'>This version of Mono works on Maemo for the Nokia 770 and 800.</tr>";
+	html += "<tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/a/aa/Maemo.gif'>";             
 	html += "<td>For help with the installation, see <a href='http://mono-project.com/Maemo'>Mono for Nokia</a>";
 	html += "<ul><li><a href='http://go-mono.com/maemo/pool/bora/mono/mono.install'>Mono 1.2.5 Runtime Single Click Install</a>";
 	html += "<li><a href='http://go-mono.com/maemo/scratchbox-devkit-mono-1.2.3.1-2-i386.tar.gz'>Mono 1.2.3.1 Scratchbox developer kit</a></ul>";
 	html += "</tr></table>";
-	document.getElementById("step3").innerHTML = html;
+	document.getElementById("stepn").innerHTML = html;
 }
 
 function solaris_step2()
 {
-	var html = "<h2>2. Solaris Version</h2>";
-	html += "<br><select size='3'><option selected>8</option></select>";
-	document.getElementById("step2").innerHTML = html;
-
-	solaris_step3();
-}
-
-function solaris_step3()
-{
-	var html = "<h2>3. Processor Architecture</h2>";
-	html += "<br><select size='3'><option selected>Sparc</option></select>";
-	document.getElementById("step3").innerHTML = html;
-
-	solaris_step4();
-}
-
-function solaris_step4()
-{
-	var html = "<h2>4. Download Mono for Solaris</h2>";
-	html +="<br><table><tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/2/2f/Mono_icon_solaris.gif'>";
+	var html = "<h2>2. Download Mono for Solaris</h2>";
+	html += "<br><table><tr><td colspan='2'>This version of Mono works on Solaris 8 on SPARC.</tr>";
+	html += "<tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/2/2f/Mono_icon_solaris.gif'>";
 	html += "<td><a href='http://mono-project.com/SolarisInstructions'>Solaris package instructions";
 	html += "<ul><li><a href='ftp://www.go-mono.com/archive/1.2.4/sunos-8-sparc/4/mono-1.2.4_4.sunos8.novell.sparc.pkg.gz'>Mono 1.2.4_4 Package</a></ul>";
 	html += "</tr></table>";
 
-	document.getElementById("step4").innerHTML = html;
+	document.getElementById("stepn").innerHTML = html;
 }
 
 </script>
@@ -428,6 +368,7 @@ function solaris_step4()
 </form>
 </div>
 
+
 <table>
 <tr valign='top'>
 <td><div id='step2'></div></td>
@@ -440,6 +381,9 @@ function solaris_step4()
 <td><div id='step5'></div></td>
 </tr>
 </table>
+
+<div id='stepn'></div>
+
 
 
 <br>
@@ -455,7 +399,7 @@ function solaris_step4()
 For notes on using the VMware image, see: <a href='http://mono-project.com/VMware_Image'>Instructions for VMware image</a>.
 </tr>
 
-<tr><td><img src="http://www.mono-project.com/files/e/e9/Mono_icon_source.gif"> </td>
+<tr><td><img src="source_code.jpg"> </td>
 	<td><a href="http://go-mono.com/sources-stable/">Latest Mono Sources</a></td></table>
 
 <ul><li>Current version: Mono 1.2.6
