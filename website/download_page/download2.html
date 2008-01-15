@@ -95,7 +95,7 @@ function selected(n)
 
 function windows_step2()
 {
-	var html = "<h2>2. Select The Windows Version</h2>";
+	var html = "<h2>2. Windows Version</h2>";
 	html += "<br><select size='3'><option selected>2000, XP</option></select>";
 	document.getElementById("step2").innerHTML = html;
 
@@ -104,7 +104,7 @@ function windows_step2()
 
 function windows_step3()
 {
-	var html = "<h2>3. Select The Processor Architecture</h2>";
+	var html = "<h2>3. Processor Architecture</h2>";
 	html += "<br><select size='3'><option selected>" + i586 + "</option></select>";
 	document.getElementById("step3").innerHTML = html;
 
@@ -126,7 +126,7 @@ function windows_step4()
 
 function macosx_step2()
 {
-	var html = "<h2>2. Select The Mac OS X Version</h2>";
+	var html = "<h2>2. Mac OS X Version</h2>";
 	html += "<br><select size='3'><option selected>Tiger (10.4), Leopard (10.5)</option></select>";
 	document.getElementById("step2").innerHTML = html;
 
@@ -150,7 +150,7 @@ function suse_step2()
 	document.getElementById("step4").innerHTML = "";
 	document.getElementById("step5").innerHTML = "";
 
-	var html = "<h2>2. Select The Suse Version</h2>";
+	var html = "<h2>2. Suse Version</h2>";
 	html += "<br><select size='5'>";
 	html += "<option onclick='suse_step3(\"suse\")'>openSUSE</option>";
 	html += "<option onclick='suse_step3(\"sles\")'>Suse Linux Enterpise Server (SLES)</option>";
@@ -165,7 +165,7 @@ function suse_step3(os_name)
 	document.getElementById("step4").innerHTML = "";
 	document.getElementById("step5").innerHTML = "";
 
-	var html = "<h2>3. Select The OS Version</h2>";
+	var html = "<h2>3. OS Version</h2>";
 	html += "<br><select size='3'>";
 	var options = "";
 
@@ -197,7 +197,7 @@ function suse_step4(os_name, os_version)
 {
 	document.getElementById("step5").innerHTML = "";
 
-	var html = "<h2>4. Select The Processor Architecture</h2>";
+	var html = "<h2>4. Processor Architecture</h2>";
 	html += "<br><select size='5'>";
 
 	switch (os_name)
@@ -253,7 +253,7 @@ function suse_step5(os_name, os_version, arch)
 
 function redhat_step2()
 {
-	var html = "<h2>2. Select The RedHat Version</h2>";
+	var html = "<h2>2. RedHat Version</h2>";
 	html += "<br><select size='3'><option selected>RedHat Enterprise Linux 4</option></select>";
 	document.getElementById("step2").innerHTML = html;
 
@@ -262,7 +262,7 @@ function redhat_step2()
 
 function redhat_step3()
 {
-	var html = "<h2>3. Select The Processor Architecture</h2>";
+	var html = "<h2>3. Processor Architecture</h2>";
 	html += "<br><select size='3'><option selected>" + i586 + "</option></select>";
 	document.getElementById("step3").innerHTML = html;
 
@@ -281,7 +281,7 @@ function redhat_step4()
 
 function linux_step2()
 {
-	var html = "<h2>2. Select The Linux Architecture</h2>";
+	var html = "<h2>2. Linux Architecture</h2>";
 	html += "<br><select size='3'><option selected>" + i586 + "</option></select>";
 	document.getElementById("step2").innerHTML = html;
 
@@ -302,7 +302,7 @@ function linux_step3()
 
 function maemo_step2()
 {
-	var html = "<h2>2. Select The Maemo Architecture</h2>";
+	var html = "<h2>2. Maemo Architecture</h2>";
 	html += "<br><select size='3'><option selected>Nokia 770/800</option></select>";
 	document.getElementById("step2").innerHTML = html;
 
@@ -322,7 +322,7 @@ function maemo_step3()
 
 function solaris_step2()
 {
-	var html = "<h2>2. Select The Solaris Version</h2>";
+	var html = "<h2>2. Solaris Version</h2>";
 	html += "<br><select size='3'><option selected>8</option></select>";
 	document.getElementById("step2").innerHTML = html;
 
@@ -331,7 +331,7 @@ function solaris_step2()
 
 function solaris_step3()
 {
-	var html = "<h2>3. Select The Processor Architecture</h2>";
+	var html = "<h2>3. Processor Architecture</h2>";
 	html += "<br><select size='3'><option selected>Sparc</option></select>";
 	document.getElementById("step3").innerHTML = html;
 
@@ -376,7 +376,7 @@ function solaris_step4()
 <h1>Download Mono 1.2.6</h1>
 
 <div id='step1'>
-<h2>1. Select The OS</h2>
+<h2>1. OS</h2>
 <br>
 <form>
 	<table class="os">
@@ -428,10 +428,18 @@ function solaris_step4()
 </form>
 </div>
 
-<div id='step2'></div>
-<div id='step3'></div>
-<div id='step4'></div>
-<div id='step5'></div>
+<table>
+<tr valign='top'>
+<td><div id='step2'></div></td>
+<td width='50px'>
+<td><div id='step3'></div></td>
+</tr>
+<tr valign='top'>
+<td><div id='step4'></div></td>
+<td width='50px'>
+<td><div id='step5'></div></td>
+</tr>
+</table>
 
 
 <br>
