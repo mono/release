@@ -1,10 +1,10 @@
-username=builder
-hostname=x64-linux-1.mono.lab.novell.com
-root_dir=/jails/suse-101-i586
+#username=builder
+#hostname=x64-linux-1.mono.lab.novell.com
+root_dir=/home/ajorg/src/release/jailbuilder/jails/suse-101-i586
 target_command_prefix=". /etc/profile;"
 
 chroot_path=/usr/bin/chroot
-arch_change_path=/usr/bin/linux32
+#arch_change_path=/usr/bin/linux32
 
 distro_aliases=(
         sles-10-i586

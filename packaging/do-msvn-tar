@@ -151,7 +151,7 @@ else:
 			if status:
 				print "Error getting repo url..."
 				sys.exit(1)
-			old_revision, = re.compile("Revision: (.*)").search(output).groups()
+			#old_revision, = re.compile("Revision: (.*)").search(output).groups()
 
 			old_mono_host, = re.compile("Repository Root: (.*)").search(output).groups()
 			stuff = urlparse.urlparse(old_mono_host)
@@ -168,7 +168,7 @@ else:
 			command = 'cd %s/%s; svn switch %s %s/%s' % (cache_dir, module, rev_arg, MONO_ROOT, path)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
 
-			command = 'cd %s/%s; svn diff -r%s ' % (cache_dir, module, old_revision)
+			command = 'cd %s/%s; svn diff -rPREV ' % (cache_dir, module)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
 		else:
 			# create cache dir
