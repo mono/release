@@ -25,6 +25,10 @@ div.os
 	width: 100%;
 }
 
+td.dl-tableborder
+{
+padding: 0px;
+}
 table.os
 {
         border-collapse: separate;
