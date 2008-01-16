@@ -11,10 +11,11 @@ var num_os = 7;
 var windows = 0;
 var macosx = 1;
 var suse = 2;
-var redhat = 3;
-var linux = 4;
-var maemo = 5;
-var solaris = 6;
+var sle = 3;
+var redhat = 4;
+var linux = 5;
+var maemo = 6;
+var solaris = 7;
 var i586 = "x86 32bit (i586)";
 var x86_64 = "x86 64bit (x86_64)";
 var ppc = "PowerPC 32bit (ppc32)";
@@ -59,7 +60,6 @@ function selected(n)
 	document.getElementById("step2").innerHTML = "";
 	document.getElementById("step3").innerHTML = "";
 	document.getElementById("step4").innerHTML = "";
-	document.getElementById("step5").innerHTML = "";
 	document.getElementById("stepn").innerHTML = "";
 
 	switch (n)
@@ -74,6 +74,10 @@ function selected(n)
 
 		case suse:
 			suse_step2();
+			break;
+
+		case sle:
+			sle_step2();
 			break;
 
 		case redhat:
@@ -133,97 +137,76 @@ function suse_step2()
 {
 	document.getElementById("step3").innerHTML = "";
 	document.getElementById("step4").innerHTML = "";
-	document.getElementById("step5").innerHTML = "";
 
 	var html = "<h2>2. Suse Version</h2>";
 	html += "<br><select size='5'>";
-	html += "<option onclick='suse_step3(\"suse\")'>openSUSE</option>";
-	html += "<option onclick='suse_step3(\"sles\")'>Suse Linux Enterpise Server (SLES)</option>";
-	html += "<option onclick='suse_step3(\"sled\")'>Suse Linux Enterpise Desktop (SLED)</option>";
-	html += "<option onclick='suse_step3(\"nld\")'>Novell Linux Desktop (NLD)</option>";
+	html += "<option onclick='suse_step3(\"suse\",\"101\")'>openSUSE 10.1</option>";
+	html += "<option onclick='suse_step3(\"suse\",\"102\")'>openSUSE 10.2</option>";
+	html += "<option onclick='suse_step3(\"suse\",\"103\")'>openSUSE 10.3</option>";
 	html += "</select>";
 	document.getElementById("step2").innerHTML = html;
 }
 
-function suse_step3(os_name)
+function sle_step2()
 {
+	document.getElementById("step3").innerHTML = "";
 	document.getElementById("step4").innerHTML = "";
-	document.getElementById("step5").innerHTML = "";
 
-	var html = "<h2>3. OS Version</h2>";
-	html += "<br><select size='3'>";
-	var options = "";
-
-	switch(os_name)
-	{
-		case "suse": // openSUSE
-			html += "<option onclick='suse_step4(\"" + os_name + "\",\"101\")'>10.1</option>";
-			html += "<option onclick='suse_step4(\"" + os_name + "\",\"102\")'>10.2</option>";
-			html += "<option onclick='suse_step4(\"" + os_name + "\",\"103\")'>10.3</option>";
-			break;
-
-		case "sles": // SLES and SLED
-			html += "<option onclick='suse_step4(\"" + os_name + "\",\"9\")'>9</option>";
-			html += "<option onclick='suse_step4(\"" + os_name + "\",\"10\")'>10</option>";
-			break;
-
-		case "sled": // SLES and SLED
-			html += "<option selected>10</option>";
-			suse_step4("sles","10");
-			break;
-
-		case "nld": // NLD
-			html += "<option selected>9</option>";
-			suse_step4(os_name,"9");
-			break;
-	}
-	
+	var html = "<h2>2. Suse Version</h2>";
+	html += "<br><select size='5'>";
+	html += "<option onclick='suse_step3(\"sles\",\"9\")'>Suse Linux Enterpise Server 9 (SLES)</option>";
+	html += "<option onclick='suse_step3(\"sles\",\"10\")'>Suse Linux Enterpise Server 10 (SLES)</option>";
+	html += "<option onclick='suse_step3(\"sled\",\"10\")'>Suse Linux Enterpise Desktop 10 (SLED)</option>";
+	html += "<option onclick='suse_step3(\"nld\",\"9\")'>Novell Linux Desktop 9 (NLD)</option>";
 	html += "</select>";
-
-	document.getElementById("step3").innerHTML = html;
+	document.getElementById("step2").innerHTML = html;
 }
 
-function suse_step4(os_name, os_version)
+function suse_step3(os_name, os_version)
 {
-	document.getElementById("step5").innerHTML = "";
+	document.getElementById("stepn").innerHTML = "";
 
-	var html = "<h2>4. Processor Architecture</h2>";
+	var html = "<h2>3. Processor Architecture</h2>";
 	html += "<br><select size='5'>";
 
 	switch (os_name)
 	{
 		case "suse": // openSUSE
-			html += "<option onclick='suse_step5(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
-			html += "<option onclick='suse_step5(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
+			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
+			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
 			if (os_version != "103")
-				html += "<option onclick='suse_step5(\"" + os_name + "\",\"" + os_version + "\",\"ppc\")'>" + ppc + "</option>";
+				html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"ppc\")'>" + ppc + "</option>";
 			break;
 
-		case "sles": // SLES and SLED
-			html += "<option onclick='suse_step5(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
-			html += "<option onclick='suse_step5(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
-			html += "<option onclick='suse_step5(\"" + os_name + "\",\"" + os_version + "\",\"ppc\")'>" + ppc + "</option>";
-			html += "<option onclick='suse_step5(\"" + os_name + "\",\"" + os_version + "\",\"ia64\")'>" + ia64 + "</option>";
-			if (os_version == "9")
+		case "sled": // SLED
+		case "sles": // SLES
+			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
+			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
+			if (os_name != "sled")
 			{
-				html += "<option onclick='suse_step5(\"" + os_name + "\",\"" + os_version + "\",\"s390\")'>" + s390 + "</option>";
-				html += "<option onclick='suse_step5(\"" + os_name + "\",\"" + os_version + "\",\"s390x\")'>" + s390x + "</option>";
+				html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"ppc\")'>" + ppc + "</option>";
+				html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"ia64\")'>" + ia64 + "</option>";
+				if (os_version == "9")
+				{
+					html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"s390\")'>" + s390 + "</option>";
+					html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"s390x\")'>" + s390x + "</option>";
+				}
 			}
 			break;
 
 		case "nld": // NLD
-			html += "<option onclick='suse_step5(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
-			html += "<option onclick='suse_step5(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
+			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
+			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
 			break;
 	}
 
 	html += "</select>";
-	document.getElementById("step4").innerHTML = html;
+	document.getElementById("step3").innerHTML = html;
 }
 
-function suse_step5(os_name, os_version, arch)
+function suse_step4(os_name, os_version, arch)
 {
-	var html = "<h2>5. Download Mono for SuSE</h2>";
+	var html = "<h2>4. Download Mono for SuSE</h2>";
 	if ((arch != "ia64") && (os_name == "sles") && (os_version == "10"))
 	{
 		os_name = "suse";
@@ -237,8 +220,7 @@ function suse_step5(os_name, os_version, arch)
 	html += "<td>The downloads are available <a href='" + url + "'>here</a>.";
 	html += "</tr></table>";
 
-	//document.getElementById("step5").innerHTML = "<h1>[" + os_name + "],[" + os_version + "],[" + arch + "]</h1>";
-	document.getElementById("step5").innerHTML = html;
+	document.getElementById("stepn").innerHTML = html;
 }
 
 function redhat_step2()
@@ -333,43 +315,49 @@ function solaris_step2()
 	<tr>
 	<td class='os' id='td0'>
 		<div class='os' onMouseOver="mouseOver(0)" onMouseOut="mouseOut(0)" onClick="selected(0)">
-			<div class='os-rd'><input type='radio' name='os' value='Windows' id='rb0' onClick="selected(0)"></div>
+			<div class='os-rd'><input type='radio' name='os' id='rb0' onClick="selected(0)"></div>
 			<div class='os-id'><img alt='Windows' src='http://www.mono-project.com/files/0/00/Mono_icon_windows.gif'><br />Windows</div>
 		</div>
 	</td>
 	<td class='os' id='td1'>
 		<div class='os' onMouseOver="mouseOver(1)" onMouseOut="mouseOut(1)" onClick="selected(1)">
-			<div class='os-rd'><input type='radio' name='os' value='Windows' id='rb1' onClick="selected(1)"></div>
+			<div class='os-rd'><input type='radio' name='os' id='rb1' onClick="selected(1)"></div>
 			<div class='os-id'><img alt='Mac OS X' src='http://www.mono-project.com/files/b/bf/Mono_icon_mac.gif'><br />Mac OS X</div>
 		</div>
 	</td>
 	<td class='os' id='td2'>
 		<div class='os' onMouseOver="mouseOver(2)" onMouseOut="mouseOut(2)" onClick="selected(2)">
-			<div class='os-rd'><input type='radio' name='os' value='Windows' id='rb2' onClick="selected(2)"></div>
-			<div class='os-id'><img alt='Suse' src='http://www.mono-project.com/files/d/dd/Mono_icon_suse.gif'><br />SuSE</div>
+			<div class='os-rd'><input type='radio' name='os' id='rb2' onClick="selected(2)"></div>
+			<div class='os-id'><img alt='Suse' src='suse.jpg'><br />openSUSE</div>
 		</div>
 	</td>
 	<td class='os' id='td3'>
 		<div class='os' onMouseOver="mouseOver(3)" onMouseOut="mouseOut(3)" onClick="selected(3)">
-			<div class='os-rd'><input type='radio' name='os' value='Windows' id='rb3' onClick="selected(3)"></div>
-			<div class='os-id'><img alt='RedHat' src='http://www.mono-project.com/files/6/6e/Mono_icon_redhat.gif'><br />RedHat</div>
+			<div class='os-rd'><input type='radio' name='os' id='rb3' onClick="selected(3)"></div>
+			<div class='os-id'><img alt='Suse' src='novell.jpg'><br />SLE</div>
 		</div>
 	</td>
 	<td class='os' id='td4'>
 		<div class='os' onMouseOver="mouseOver(4)" onMouseOut="mouseOut(4)" onClick="selected(4)">
-			<div class='os-rd'><input type='radio' name='os' value='Windows' id='rb4' onClick="selected(4)"></div>
-			<div class='os-id'><img alt='Linux' src='http://www.mono-project.com/files/2/21/Mono_icon_linux.gif'><br />Linux</div>
+			<div class='os-rd'><input type='radio' name='os' id='rb4' onClick="selected(4)"></div>
+			<div class='os-id'><img alt='RedHat' src='http://www.mono-project.com/files/6/6e/Mono_icon_redhat.gif'><br />RedHat</div>
 		</div>
 	</td>
 	<td class='os' id='td5'>
 		<div class='os' onMouseOver="mouseOver(5)" onMouseOut="mouseOut(5)" onClick="selected(5)">
-			<div class='os-rd'><input type='radio' name='os' value='Windows' id='rb5' onClick="selected(5)"></div>
-			<div class='os-id'><img alt='Maemo' src='http://www.mono-project.com/files/a/aa/Maemo.gif'><br />Maemo</div>
+			<div class='os-rd'><input type='radio' name='os' id='rb5' onClick="selected(5)"></div>
+			<div class='os-id'><img alt='Linux' src='http://www.mono-project.com/files/2/21/Mono_icon_linux.gif'><br />Linux</div>
 		</div>
 	</td>
 	<td class='os' id='td6'>
 		<div class='os' onMouseOver="mouseOver(6)" onMouseOut="mouseOut(6)" onClick="selected(6)">
-			<div class='os-rd'><input type='radio' name='os' value='Windows' id='rb6' onClick="selected(6)"></div>
+			<div class='os-rd'><input type='radio' name='os' id='rb6' onClick="selected(6)"></div>
+			<div class='os-id'><img alt='Maemo' src='http://www.mono-project.com/files/a/aa/Maemo.gif'><br />Maemo</div>
+		</div>
+	</td>
+	<td class='os' id='td7'>
+		<div class='os' onMouseOver="mouseOver(7)" onMouseOut="mouseOut(7)" onClick="selected(7)">
+			<div class='os-rd'><input type='radio' name='os' id='rb7' onClick="selected(7)"></div>
 			<div class='os-id'><img alt='Solaris' src='http://www.mono-project.com/files/2/2f/Mono_icon_solaris.gif'><br />Solaris</div>
 		</div>
 	</td>
@@ -385,15 +373,11 @@ function solaris_step2()
 <tr valign='top'>
 <td><div id='step4'></div></td>
 <td width='50px'>
-<td><div id='step5'></div></td>
 </tr>
 </table>
 
 <div id='stepn'></div>
 
-
-
-<br> <br>
 
 <!-- End contents -->
 </td>
@@ -406,7 +390,8 @@ function solaris_step2()
 </tr>
 </table>
 
-
+<!-- lower table -->
+<br>
 
 <table>
 <tr height="11">
