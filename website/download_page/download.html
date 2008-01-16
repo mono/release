@@ -7,7 +7,7 @@
 
 
 <script type="text/javascript">
-var num_os = 7;
+var num_os = 9;
 var windows = 0;
 var macosx = 1;
 var suse = 2;
@@ -16,6 +16,7 @@ var redhat = 4;
 var linux = 5;
 var maemo = 6;
 var solaris = 7;
+var vmware = 8;
 var i586 = "x86 32bit (i586)";
 var x86_64 = "x86 64bit (x86_64)";
 var ppc = "PowerPC 32bit (ppc32)";
@@ -94,6 +95,10 @@ function selected(n)
 
 		case solaris:
 			solaris_step2();
+			break;
+
+		case vmware:
+			vmware_step2();
 			break;
 	}
 }
@@ -270,6 +275,21 @@ function solaris_step2()
 
 	document.getElementById("stepn").innerHTML = html;
 }
+function vmware_step2()
+{
+	var html = "<h2>2. Download the Mono VMware Image</h2>";
+	html += "<br><table><tr valign='middle'><td><img src='vmware_icon.jpg' >";
+	html += "<td>Download the openSUSE 10.2 VMWare image which includes Mono 1.2.5.1";
+	html += "<ul><li><a href='http://anonsvn.mono-project.com/mono1.2.5.1_opensuse10.2_vmware_0.zip.torrent'>via Torrent</a>";
+	html += "<li><a href='http://anonsvn.mono-project.com/mono1.2.5.1_opensuse10.2_vmware_0.zip'>via http</a>";
+	html += "</ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>.";
+
+	html += "</tr></table>";
+
+
+	document.getElementById("stepn").innerHTML = html;
+	
+}
 
 </script>
 
@@ -306,13 +326,28 @@ function solaris_step2()
 <td class="dl-tableborder" style="background-image:url('left_middle.jpg'); "></td>
 <td>
 <!-- contents go here -->
-
+<table width="100%"><tr><td width="70%">
 <h1>Download Mono 1.2.6</h1>
+<td align="right"><img src="source_code.jpg" width="35px">
+<a href="http://go-mono.com/sources-stable/">Latest Mono Sources</a></td>
+<tr><td valign="top">
+<a href="http://www.go-mono.com/archive/1.2.6">Release Notes</a>
+</td><td align="right">
+	<a href="http://mono-project.com/OldReleases">Older releases</a>
+</td></tr></table>
 
-<h2>1. OS</h2>
+
+
+<h2>1. Select OS</h2>
 <br>
 	<table class="os" >
 	<tr>
+	<td class='os' id='td8'>
+		<div class='os' onMouseOver="mouseOver(8)" onMouseOut="mouseOut(8)" onClick="selected(8)">
+			<div class='os-rd'><input type='radio' name='os' id='rb8' onClick="selected(8)"></div>
+			<div class='os-id'><img alt='VMware' src='vmware_icon_2.jpg' width="40px"><br />VMware</div>
+		</div>
+	</td>
 	<td class='os' id='td0'>
 		<div class='os' onMouseOver="mouseOver(0)" onMouseOut="mouseOut(0)" onClick="selected(0)">
 			<div class='os-rd'><input type='radio' name='os' id='rb0' onClick="selected(0)"></div>
@@ -322,7 +357,7 @@ function solaris_step2()
 	<td class='os' id='td1'>
 		<div class='os' onMouseOver="mouseOver(1)" onMouseOut="mouseOut(1)" onClick="selected(1)">
 			<div class='os-rd'><input type='radio' name='os' id='rb1' onClick="selected(1)"></div>
-			<div class='os-id'><img alt='Mac OS X' src='http://www.mono-project.com/files/b/bf/Mono_icon_mac.gif'><br />Mac OS X</div>
+			<div class='os-id'><img alt='Mac OSX' src='http://www.mono-project.com/files/b/bf/Mono_icon_mac.gif'><br />Mac OS X</div>
 		</div>
 	</td>
 	<td class='os' id='td2'>
@@ -334,7 +369,7 @@ function solaris_step2()
 	<td class='os' id='td3'>
 		<div class='os' onMouseOver="mouseOver(3)" onMouseOut="mouseOut(3)" onClick="selected(3)">
 			<div class='os-rd'><input type='radio' name='os' id='rb3' onClick="selected(3)"></div>
-			<div class='os-id'><img alt='Suse' src='novell.jpg'><br />SLE</div>
+			<div class='os-id'><img alt='Suse' src='novell.jpg'><br />SLES/SLED</div>
 		</div>
 	</td>
 	<td class='os' id='td4'>
@@ -390,52 +425,11 @@ function solaris_step2()
 </tr>
 </table>
 
-<!-- lower table -->
-<br>
-
-<table>
-<tr height="11">
-<td width="9" class="dl-tableborder"><img src='top_left.jpg'></td>
-<td width="800" class="dl-tableborder" style="background-image:url('top_middle.jpg');"></td>
-<td width="9" class="dl-tableborder"><img src='top_right.jpg'></td>
-</tr>
-
-<tr>
-<td class="dl-tableborder" style="background-image:url('left_middle.jpg'); "></td>
-<td>
-<!-- contents go here -->
-<table><tr valign='middle'><td><img src='vmware_icon.jpg' >
-	<td>Download The Mono 1.2.5.1 on openSUSE 10.2 VMWare image
-	<ul><li><a href='http://anonsvn.mono-project.com/mono1.2.5.1_opensuse10.2_vmware_0.zip.torrent'>via Torrent</a>
-	<li><a href='http://anonsvn.mono-project.com/mono1.2.5.1_opensuse10.2_vmware_0.zip'>via http</a></ul>
-For notes on using the VMware image, see: <a href='http://mono-project.com/VMware_Image'>Instructions for VMware image</a>.
-</tr>
-
-<tr><td><img src="source_code.jpg"> </td>
-	<td><a href="http://go-mono.com/sources-stable/">Latest Mono Sources</a></td>
-
-<tr><td></td><td><a href="http://www.go-mono.com/archive/1.2.6">Mono 1.2.6 release notes</a></td>
-	</ul>
-<tr><td></td><td>
-	<a href="http://mono-project.com/OldReleases">Older releases</a>
-	</td></tr>
-</table>
-<br>
-<h2>Other downloads</h2><br>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;
 Can't find the specific download you want? We have some 
-<a href="http://www.mono-project.com/Other_Downloads">more downloads</a> for you to look at.
-
-<!-- End contents -->
-</td>
-<td class="dl-tableborder" style="background-image:url('right_middle.jpg')"></td>
-</tr>
-<tr>
-<td class="dl-tableborder"><img src="bottom_left.jpg"></td>
-<td class="dl-tableborder" style="background-image:url('bottom_middle.jpg')"></td>
-<td class="dl-tableborder"><img src="bottom_right.jpg"></td>
-</tr>
-</table>
-
+<a href="http://www.mono-project.com/Other_Downloads">unsupported downloads</a> you might be interested in.
+</p>
 
 				<!--  END CONTENT -->
                 </div>
