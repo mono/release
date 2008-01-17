@@ -12,7 +12,7 @@ License:	LGPL
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Autoreqprov:    on
 BuildArch:      noarch
-URL:		http://www.go-mono.com
+URL:		http://www.monodevelop.com
 Source0:	%{name}-%{version}.tar.gz
 BuildRequires:	boo monodevelop mono-devel
 Summary:	Monodevelop Boo Addin
@@ -28,12 +28,13 @@ BuildRequires:	gtksourceview-sharp2 monodoc-core
 %description
 Monodevelop Boo Addin
 
-%files
+%files -f %{name}.lang
 %defattr(-, root, root)
 %_prefix/share/pkgconfig/monodevelop-boo.pc
 %_prefix/lib/monodevelop/AddIns/BooBinding/BooShell.dll*
 %_prefix/lib/monodevelop/AddIns/BooBinding/BooBinding.dll*
-%_prefix/lib/monodevelop/AddIns/BooBinding/locale/*/LC_MESSAGES/monodevelop-boo.mo
+%dir %_prefix/lib/monodevelop/AddIns/BooBinding
+%dir %_prefix/lib/monodevelop/AddIns/BooBinding/locale
 
 %prep
 %setup -q
@@ -49,6 +50,8 @@ make install DESTDIR=${RPM_BUILD_ROOT}
 
 mkdir -p $RPM_BUILD_ROOT%_prefix/share/pkgconfig
 mv $RPM_BUILD_ROOT%_prefix/lib/pkgconfig/*.pc $RPM_BUILD_ROOT%_prefix/share/pkgconfig
+
+%find_lang %{name}
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"

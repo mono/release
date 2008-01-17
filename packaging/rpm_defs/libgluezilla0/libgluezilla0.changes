@@ -1,0 +1,10 @@
+-------------------------------------------------------------------
+Sat Jan 16 13:58:18 MST 2008 - wberrier@suse.de
+
+- rename gluezilla -> libgluezilla0
+
+-------------------------------------------------------------------
+Sat Jan 12 01:58:18 CET 2008 - wberrier@suse.de
+
+- initial package
+

@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Mon Jan 14 15:16:28 MST 2007 - wberrier@suse.de
+
+- Update to 1.2.6
+ -New directives for controlling the life span of mod-mono-server
+ -Startup of mod_mono backends synchronized across all the child 
+  apache processes (via a shared memory dashboard). 
+
+-------------------------------------------------------------------
+Fri Aug 31 05:46:28 CEST 2007 - wberrier@suse.de
+
+- mod_mono_1.2.5_p5_final.patch: fix regression: avoid sem leak
+
+-------------------------------------------------------------------
+Fri Aug 17 17:58:55 CEST 2007 - wberrier@suse.de
+
+- put mod_mono.conf in /etc/apache2/conf.d instead of /etc/apache2
+- mod_mono_1.2.5_p4.patch.bz2: Bugfixes found in 1.2.5
+ -stabilization and performance fixes that accompany the bugs
+  found in xsp 1.2.5
+
+-------------------------------------------------------------------
 Fri Aug  3 18:21:18 CEST 2007 - wberrier@suse.de
 
 - Update to 1.2.5

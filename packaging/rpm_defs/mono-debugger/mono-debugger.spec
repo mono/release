@@ -67,8 +67,6 @@ Authors:
 %doc AUTHORS COPYING ChangeLog README README.FreeBSD README.build TODO NEWS RELEASE-NOTES*
 /usr/bin/mdb
 %{_libdir}/*.so*
-%{_libdir}/*.a
-%{_libdir}/*.la
 %{_prefix}/lib/mono/1.0/*
 %{_prefix}/lib/mono/gac/Mono.Debugger
 %{_prefix}/lib/mono/gac/Mono.Debugger.Cecil
@@ -90,6 +88,10 @@ make
 %install
 %{?env_options}
 make DESTDIR="$RPM_BUILD_ROOT" install
+
+# Remove unnecessary devel files
+rm -f $RPM_BUILD_ROOT%_libdir/libmonodebuggerreadline.*a
+rm -f $RPM_BUILD_ROOT%_libdir/libmonodebuggerserver.*a
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}

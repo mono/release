@@ -11,7 +11,7 @@ License:	LGPL
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Autoreqprov:    on
 BuildArch:      noarch
-URL:		http://www.go-mono.com
+URL:		http://www.monodevelop.com
 Source0:	%{name}-%{version}.tar.bz2
 BuildRequires:	mono-devel monodevelop %db_packages
 Requires:	%db_packages
@@ -27,11 +27,12 @@ BuildRequires:  gtksourceview-sharp2 monodoc-core
 %description
 Monodevelop Database Addin
 	  
-%files
+%files -f %{name}.lang
 %defattr(-, root, root)
 %_prefix/share/pkgconfig/monodevelop-database.pc
 %_prefix/lib/monodevelop/AddIns/MonoDevelop.Database/*.dll
-%_prefix/lib/monodevelop/AddIns/MonoDevelop.Database/locale/*/LC_MESSAGES/monodevelop-database.mo
+%dir %_prefix/lib/monodevelop/AddIns/MonoDevelop.Database
+%dir %_prefix/lib/monodevelop/AddIns/MonoDevelop.Database/locale
 
 %prep
 %setup -q
@@ -47,6 +48,8 @@ make install DESTDIR=${RPM_BUILD_ROOT}
 
 mkdir -p $RPM_BUILD_ROOT%_prefix/share/pkgconfig
 mv $RPM_BUILD_ROOT%_prefix/lib/pkgconfig/*.pc $RPM_BUILD_ROOT%_prefix/share/pkgconfig
+
+%find_lang %{name}
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"

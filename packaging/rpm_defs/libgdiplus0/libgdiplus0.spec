@@ -1,18 +1,22 @@
 
 # norootforbuild
 
-Name:           libgdiplus
+%define real_name libgdiplus
+
+Name:           libgdiplus0
 Version:	1.2.6
 Release:	0
 Vendor:         Novell, Inc.
 License:        GPL
 URL:            http:/www.go-mono.com
-Source0:        %{name}-%{version}.tar.bz2
+Source0:        %{real_name}-%{version}.tar.bz2
 Summary:        libgdiplus: An Open Source implementation of the GDI+ API.
 Group:          Development/Libraries
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Obsoletes:      libgdiplus-devel
 Provides:	libgdiplus-devel
+Obsoletes:      libgdiplus
+Provides:	libgdiplus
 
 ####  suse  ####
 %if 0%{?suse_version}
@@ -33,10 +37,6 @@ BuildRequires:  giflib-devel xorg-x11-devel
 %endif
 
 %if %suse_version == 1010
-BuildRequires:  giflib-devel xorg-x11-devel
-%endif
-
-%if %suse_version == 1000
 BuildRequires:  giflib-devel xorg-x11-devel
 %endif
 
@@ -67,11 +67,11 @@ libgdiplus: An Open Source implementation of the GDI+ API, it is part of the Mon
 %defattr(-, root, root)
 %_libdir/libgdiplus.so*
 %_libdir/pkgconfig/libgdiplus.pc
-%doc AUTHORS COPYING ChangeLog* INSTALL NEWS README
+%doc AUTHORS COPYING ChangeLog* NEWS README
 
 %debug_package
 %prep
-%setup -q
+%setup -q -n %{real_name}-%{version}
 
 %build
 # Set PKG_CONFIG_PATH for sles9
@@ -91,6 +91,10 @@ make install DESTDIR=$RPM_BUILD_ROOT
 # Unwanted files:
 rm -f $RPM_BUILD_ROOT/usr/%_lib/libgdiplus.a
 rm -f $RPM_BUILD_ROOT/usr/%_lib/libgdiplus.la
+
+# Remove generic non-usefull INSTALL file... (appeases
+#  suse rpmlint checks, saves 3kb)
+find . -name INSTALL | xargs rm -f
 
 %clean
 rm -rf "$RPM_BUILD_ROOT"

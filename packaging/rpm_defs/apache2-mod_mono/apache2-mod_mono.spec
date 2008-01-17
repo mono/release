@@ -8,7 +8,6 @@ Name:		mod_mono
 %else
 Name:           apache2-mod_mono
 Obsoletes:	mod_mono
-Provides:	mod_mono
 %endif
 
 %define modname mod_mono

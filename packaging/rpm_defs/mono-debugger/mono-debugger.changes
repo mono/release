@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 14 16:54:53 MST 2007 - wberrier@novell.com
+
+- Update to 0.60
+ -Updated to run with mono 1.2.6 runtime
+ -Various bux fixes
+
+-------------------------------------------------------------------
 Sat Jun  9 03:54:53 MST 2007 - wberrier@novell.com
 
 - Add post/un ldconfig scripts

@@ -12,7 +12,7 @@ BuildArch:      noarch
 URL:		http://www.go-mono.com
 Source0:	%{name}-%{version}.tar.bz2
 BuildRequires:	mono-devel gtk-sharp2
-Summary:	Mono Addins
+Summary:	Mono Addins Framework
 Group:		Development/Tools
 
 %if 0%{?fedora_version}
@@ -21,11 +21,14 @@ Group:		Development/Tools
 
 
 %description
-Mono Addin Support
+Mono.Addins is a generic framework for creating extensible applications,
+and for creating libraries which extend those applications.
 	  
 
 %files
 %defattr(-, root, root)
+%dir %_prefix/lib/mono/mono-addins
+
 %_prefix/bin/mautil
 %_prefix/lib/mono/mono-addins/mautil.exe
 
@@ -42,6 +45,7 @@ Mono Addin Support
 %_prefix/lib/mono/mono-addins/Mono.Addins.Gui.dll
 %_prefix/share/pkgconfig/*.pc
 
+%debug_package
 %prep
 %setup -q
 

@@ -1,4 +1,61 @@
 -------------------------------------------------------------------
+Wed Jan 16 17:23:23 MST 2008 - wberrier@suse.de
+
+- libgdiplus -> libgdiplus0 rename
+- add libgluezilla0 to recommends
+
+-------------------------------------------------------------------
+Mon Jan 14 13:23:23 MST 2008 - wberrier@suse.de
+
+- Update to 1.2.6
+ -Support for the ASP.NET AJAX APIs and controls
+ -Support for FastCGI deployments
+ -Windows.Forms WebControl for Windows and Linux using Mozilla
+ -Reduced memory usage in the runtime for 2.0 apps
+ -Updated verifier
+ -Implementation of CoreCLR security
+ -More C# compiler 3.0 completion
+ -Mono 1.2.6 can now be used as an SDK for creating Silverlight 
+  1.1 applications on all platforms.
+ -Support for the PE32+ assembly file format
+ -Managed allocations support
+ -SslStream support
+ -System.Net.Mail improvements
+ -Fixed SSL/TLS thread-synchronization
+  (for LDAPS over multiple threads)
+ -Novell.Directory.Ldap synchronized with the Novell's CSHARP 
+  LDAP SDK (version 2.1.8)
+
+-------------------------------------------------------------------
+Tue Oct 23 21:37:23 CEST 2007 - wberrier@suse.de
+
+- mono-boo_ia64_fix.patch: fix boo build on ia64.
+
+-------------------------------------------------------------------
+Thu Sep 20 05:41:09 CEST 2007 - wberrier@suse.de
+
+- BigInteger Security fix: bnc #310044
+ -MaintenanceTracker-13335
+
+-------------------------------------------------------------------
+Fri Aug 31 05:55:26 CEST 2007 - wberrier@suse.de
+
+- Regressions found in 1.2.5:
+ -Bug #82428: crypto buffer length fix
+ -Bug #82481: StatusStrip focus regression fix
+ -Bug #82499: GlobalReAlloc fix
+- System.Web regression fixes:
+ -Bug #82193: System.Web regression fixes
+ -Bug #82392: SessionState fix for asp.net regression
+
+-------------------------------------------------------------------
+Fri Aug 17 17:00:27 CEST 2007 - wberrier@suse.de
+
+- Fix some COM and Winforms regressions in 1.2.5 p3
+ -fixes bxc: 82433, 82344, 82405, 82406, #82187, 82348
+- Threading fix for bxc #82145 when using LDAP and TLS
+
+-------------------------------------------------------------------
 Fri Aug  3 17:40:00 CEST 2007 - wberrier@suse.de
 
 - Update to 1.2.5

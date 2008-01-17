@@ -15,12 +15,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %if 0%{?suse_version}
 BuildRequires:	update-desktop-files
-
-%if %suse_version <= 1000
-# Doesn't work on 9.3 and 10.0...
-%define suse_update_desktop_file true
-%endif
-
 %endif
 
 # Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')
@@ -53,7 +47,7 @@ Authors:
     Duncan Mak <duncan@ximian.com>
 
 
-%files
+%files -f %{name}.lang
 %defattr(-, root, root)
 %_bindir/*
 %_prefix/lib/monodoc
@@ -61,7 +55,6 @@ Authors:
 %_prefix/share/pixmaps/monodoc.png
 %_prefix/lib/mono/1.0
 %_prefix/lib/mono/2.0
-%{_datadir}/locale/*/*/*
 %_prefix/lib/create-native-map
 %_prefix/share/create-native-map
 %_prefix/share/pkgconfig/create-native-map.pc
@@ -87,6 +80,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 mkdir $RPM_BUILD_ROOT/%_prefix/share/create-native-map
 mv $RPM_BUILD_ROOT/%_prefix/lib/create-native-map/MapAttribute.cs $RPM_BUILD_ROOT/%_prefix/share/create-native-map
 mv $RPM_BUILD_ROOT/%_prefix/lib/pkgconfig $RPM_BUILD_ROOT/%_prefix/share
+
+%find_lang %{name}
 
 %clean
 rm -Rf "$RPM_BUILD_ROOT"

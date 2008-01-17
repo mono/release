@@ -1,13 +1,14 @@
 
 # norootforbuild
+%define real_name gluezilla
 
-Name:           gluezilla
+Name:           libgluezilla0
 Version:	1.2.6
 Release:	0
 Vendor:         Novell, Inc.
 License:        GPL
-URL:            http:/www.go-mono.com
-Source0:        %{name}-%{version}.tar.bz2
+URL:            http://www.go-mono.com
+Source0:        %{real_name}-%{version}.tar.bz2
 Summary:        Glue library for Winforms Web Control
 Group:          Development/Libraries
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -31,13 +32,6 @@ BuildRequires: mozilla-nspr-devel mozilla-xulrunner gecko-sdk
 
 %if %suse_version == 1010
 BuildRequires: mozilla-nspr-devel mozilla-xulrunner gecko-sdk
-%endif
-
-%if %suse_version == 1000
-# Broken: missing nsEmbedCID.h
-# Forget about it... eol in 3 weeks
-# mozilla-devel-1.7.11-9
-BuildRequires: mozilla-nspr-devel mozilla-devel mozilla-nss-devel
 %endif
 
 %if %sles_version == 9
@@ -83,12 +77,11 @@ Glue library for Winforms Web control
 %files
 %defattr(-, root, root)
 %_libdir/libgluezilla.so*
-#%_libdir/pkgconfig/libgdiplus.pc
-%doc AUTHORS COPYING ChangeLog* INSTALL NEWS README TODO
+%doc AUTHORS COPYING ChangeLog* INSTALL README TODO
 
 %debug_package
 %prep
-%setup -q
+%setup -q -n %{real_name}-%{version}
 
 %build
 # Set PKG_CONFIG_PATH for sles9

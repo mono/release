@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Jan 14 11:47:05 MST 2008 - wberrier@suse.de
+
+- Renamed package to libgdiplus0 to follow suse lib packaging
+  standards
+- Update to 1.2.6
+ -Internal Cairo updated to 1.4.10
+ -Special case for handling path/region excludes from infinity
+ -Added GdipCloneFontFamily function
+ -TextureBrush now supports transparent bitmaps
+
+-------------------------------------------------------------------
 Fri Aug  3 16:47:05 CEST 2007 - wberrier@suse.de
 
 - Update to 1.2.5

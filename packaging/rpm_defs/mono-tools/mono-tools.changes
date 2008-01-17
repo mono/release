@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Jan 14 15:12:25 MST 2008 - wberrier@novell.com
+
+- Update to 1.2.6
+ -Always uses gtkhtml instead of xulrunner, which crashes
+ -Various bug fixes
+- Patch desktop files: mono-tools-desktop_standards.patch
+- use find_lang for translation files
+
+-------------------------------------------------------------------
 Wed Jun  6 18:12:25 MST 2007 - wberrier@novell.com
 
 - add post script to index documentation

@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Mon Jan 14 15:08:49 MST 2007 - wberrier@suse.de
+
+- update to 1.2.6
+ -FastCGI support
+
+-------------------------------------------------------------------
+Fri Aug 31 05:42:49 CEST 2007 - wberrier@suse.de
+
+- xsp_1.2.5_p5_final.patch: Fix for regression in the request
+  broker
+
+-------------------------------------------------------------------
+Fri Aug 17 17:32:59 CEST 2007 - wberrier@suse.de
+
+- xsp_1.2.5_p4.patch.bz2: Bugfixes found in 1.2.5
+ -bugs: 81699, 81906, 82379, 82057
+ -fixes ability to handle large (GB) uploads (needed for iFolder)
+
+-------------------------------------------------------------------
 Fri Aug  3 18:09:29 CEST 2007 - wberrier@suse.de
 
 - Update to 1.2.5

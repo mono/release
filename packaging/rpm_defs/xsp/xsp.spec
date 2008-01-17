@@ -29,10 +29,6 @@ BuildRequires:  sqlite
 
 %define old_suse_buildrequires mono-data mono-winforms
 
-%if %suse_version == 1000
-BuildRequires:  %{old_suse_buildrequires}
-%endif
-
 %if %sles_version == 9
 BuildRequires:  %{old_suse_buildrequires}
 %endif

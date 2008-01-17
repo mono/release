@@ -20,14 +20,6 @@ PreReq:         shared-mime-info
 
 %if 0%{?suse_version}
 BuildRequires: desktop-file-utils update-desktop-files
-
-%if %suse_version <= 1000
-# Doesn't work on 9.3 and 10.0...
-# Syntax must have changed... skip for now
-%define suse_update_desktop_file true
-%endif
-
-
 %endif
 
 # TODO: Add build requirements for xulrunner/mozilla, etc... md does some checks at build time for aspnetedit
@@ -71,6 +63,7 @@ mkdir -p $RPM_BUILD_ROOT/usr/share/pkgconfig
 mv $RPM_BUILD_ROOT/usr/lib/pkgconfig/* $RPM_BUILD_ROOT/usr/share/pkgconfig
 
 %suse_update_desktop_file -N "Mono Development Environment" -G "Integrated Development Environment" -C "Develop software using Mono tools" %name "Application Development IDE"
+
 %find_lang %{name}
 
 %clean

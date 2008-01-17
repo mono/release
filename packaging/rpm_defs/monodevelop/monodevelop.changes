@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Mon Jan 14 17:11:07 MST 2008 - wberrier@suse.de
+
+- Fixed .desktop file to adhear to standards
+- Fix naming of Slovenian translation
+- Update to 0.18
+ -packaging split (database, boo, and java in separate packages)
+ -Improved Dock Manager
+ -Circa 75 bugfixes
+- Update to 0.17
+ -Deployment of ASP.NET projects
+ -Support for VS 2005 Web Application projects
+ -ASP.NET Codebehind Generation Improvements
+ -Generation of Satellite Assemblies
+ -Makefile generation improvements
+ -Various other IDE enhancements
+ -Circa 90 bugfixes
+
+-------------------------------------------------------------------
+Wed Oct 10 23:27:58 CEST 2007 - wberrier@suse.de
+ 
+- Don't use fdupes afterall (fails build)
+
+-------------------------------------------------------------------
 Tue Oct  9 21:11:07 CEST 2007 - wberrier@suse.de
 
 - Update to 0.16
@@ -11,6 +34,16 @@ Tue Oct  9 21:11:07 CEST 2007 - wberrier@suse.de
  -Multiple GTK# versions
  -ChangeLog add-in
  -More than 100 bugs fixed
+
+-------------------------------------------------------------------
+Mon Sep 24 19:46:01 CEST 2007 - wberrier@suse.de
+
+- monodevelop-fix_kde_crash_r86138.patch: fix #309204
+
+-------------------------------------------------------------------
+Fri Aug  3 22:58:23 CEST 2007 - maw@suse.de
+
+- Use %fdupes.
 
 -------------------------------------------------------------------
 Fri Aug  3 21:20:14 CEST 2007 - wberrier@suse.de

@@ -36,11 +36,14 @@ Conflicts:	f-spot <= 0.3.5
 
 # Require when in the buildserivce
 %if 0%{?opensuse_bs}
-Requires:	libgdiplus
+Requires:	libgdiplus0
+# Not all distros build this... can't require it
+#Requires:	libgluezilla0
 %else
 # suse would rather have recommends so that all sorts of graphic libs aren't 
 #  pulled in when libgdiplus is installed
-Recommends:	libgdiplus
+Recommends:	libgdiplus0
+Recommends:	libgluezilla0
 %endif
 
 BuildRequires:	glib2-devel 
@@ -176,6 +179,7 @@ Authors:
 %dir %_prefix/lib/mono
 %dir %_prefix/lib/mono/1.0
 %dir %_prefix/lib/mono/2.0
+%dir %_prefix/lib/mono/2.1
 %dir %_prefix/lib/mono/gac
 %config %_sysconfdir/mono/config
 %config %_sysconfdir/mono/1.0/machine.config
@@ -602,6 +606,7 @@ Authors:
 %_mandir/man1/xsd.1.gz
 %_mandir/man1/mconfig.1.gz
 %config %_sysconfdir/mono/browscap.ini
+%dir %_sysconfdir/mono/mconfig
 %config %_sysconfdir/mono/mconfig/config.xml
 %config %_sysconfdir/mono/1.0/DefaultWsdlHelpGenerator.aspx
 %config %_sysconfdir/mono/2.0/DefaultWsdlHelpGenerator.aspx
