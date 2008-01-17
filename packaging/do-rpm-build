@@ -76,6 +76,7 @@ open('monobuild.rpmmacros', 'w').write("""
 %%_rpmfilename	%%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm
 %%buildroot	%s/buildroot
 %%_unpackaged_files_terminate_build	0
+%%monobuild	1
 %s
 """ % (temp_build_dir, temp_build_dir, version_macro) )
 
@@ -93,11 +94,6 @@ for f in glob.glob('*.spec'):
 	utils.substitute_parameters_in_file(f, {
 		'Version:.*':		'Version:\t%s' % version,
 		'Release:.*':		'Release:\t%s' % rev,
-
-		# Newer versions of suse implement a "Recommends" tag, replace with requires for
-		# compatibility
-		'Recommends:':		'Requires:',
-		# TODO: This should be handled in the spec file
 
 		# How to define using patches? will need to pass this in, disable for now...
 		#'.*%patch.*':		'',

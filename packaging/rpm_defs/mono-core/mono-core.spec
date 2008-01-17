@@ -39,11 +39,22 @@ Conflicts:	f-spot <= 0.3.5
 Requires:	libgdiplus0
 # Not all distros build this... can't require it
 #Requires:	libgluezilla0
-%else
+%endif
+
+%if 0%{?monobuild}
+# We can require libgdiplus since it's on all distros
+#  but not for gluezilla since we share rpms
+Requires:	libgdiplus0
+%endif
+
+# for autobuild
+%if 0%{?monobuild} == 0
+%if 0%{?opensuse_bs} == 0
 # suse would rather have recommends so that all sorts of graphic libs aren't 
 #  pulled in when libgdiplus is installed
 Recommends:	libgdiplus0
 Recommends:	libgluezilla0
+%endif
 %endif
 
 BuildRequires:	glib2-devel 
@@ -69,6 +80,11 @@ BuildRequires: pkgconfig
 # Why was this needed?
 %ifarch s390 s390x
 PreReq:         grep
+%endif
+
+# This lib only needed for ia64
+%ifarch ia64
+BuildRequires: libunwind-devel
 %endif
 
 # TODO:

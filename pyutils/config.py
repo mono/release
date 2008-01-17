@@ -73,10 +73,15 @@ td_packages = """
 	libgdiplus
 	mod_mono
 	mono
+	mono-addins
+	mono-branch
 	mono-basic
 	mono-debugger
 	mono-tools
 	monodevelop
+	monodevelop-boo
+	monodevelop-database
+	monodevelop-java
 	monodoc
 	moon
 	olive
