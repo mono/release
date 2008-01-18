@@ -222,7 +222,7 @@ class package:
 		if self.get_info_var('def_alias'):
 			# TODO: pass all contructor vars to this new object?
 			# has_parent_pack must always be true so that def_aliased packages create their dir structure
-			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'), source_basepath=source_basepath, package_basepath=package_basepath, inside_jail=inside_jail, create_dirs_links=create_dirs_links, has_parent_pack=True)
+			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'), source_basepath=source_basepath, package_basepath=package_basepath, inside_jail=inside_jail, create_dirs_links=create_dirs_links, has_parent_pack=True, bundle_obj=bundle_obj)
 			for k, v in self.alias_pack_obj.info.iteritems():
 				# There's some type of data we don't want to copy: def_alias to avoid recursive loops...
 				#   Ignore POSTBUILD stuff.... sort of a hack, but ignoring reduces the amount of redundancy
@@ -445,16 +445,18 @@ class package:
 
 		return files
 
+	# Only use the version_selection_reg on RELEASE, since 'version' is replaced with the subversion revision
+	def get_version_selection_reg(self):
+		if self.HEAD_or_RELEASE == "RELEASE":
+			return self.get_info_var('version_selection_reg')
+		else:
+			return ""
+
 	def get_version(self, fail_on_missing=True):
 
 		if not self.version:
 			if not self.latest_version:
-				# Only use the version_selection_reg on RELEASE, since 'version' is replaced with the subversion revision
-				#  with HEAD
-				version_selection_reg = ""
-				if self.HEAD_or_RELEASE == "RELEASE":
-					version_selection_reg = self.get_info_var('version_selection_reg')
-				self.latest_version = utils.get_latest_ver(self.package_fullpath, fail_on_missing=fail_on_missing, version_reg=version_selection_reg )
+				self.latest_version = utils.get_latest_ver(self.package_fullpath, fail_on_missing=fail_on_missing, version_reg=self.get_version_selection_reg() )
 
 			if self.bundle_obj.version_map_exists:
 				# Cases
@@ -518,7 +520,7 @@ class package:
 			candidates = []
 			for file in os.listdir(self.source_fullpath):
 				# Also match against the version selection reg for this pack def
-				if reg.search(file) and re.compile(self.get_info_var('version_selection_reg')).search(file):
+				if reg.search(file) and re.compile(self.get_version_selection_reg()).search(file):
 					candidates.append(file)
 
 			# TODO: need to use rpm sorting on this?

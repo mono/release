@@ -104,18 +104,24 @@ def get_external_deps(conf_obj, archive=False):
 
 	return return_text
 
+distros = build.get_platforms()
 # Command line options
 try:
-	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_zip"])
+	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_zip", "platforms=" ])
 	(bundle, output_dir, webroot_path, package_src_dir, hostname_url) = remaining_args
 except:
         print "Usage: ./mk-distro-index.py [--skip_zip] <bundle name> <package source dir> <output webdir> <hostname_url> <webroot_path>"
+	print " --platforms: comma separated list of platforms (distros) to include"
+
         sys.exit(1)
 
 skip_zip = False
 for option, value in opts:
         if option == "--skip_zip":
                  skip_zip = True
+	# override distro list
+        if option == "--platforms":
+                 distros = value.split(",")
 
 bundle_conf = packaging.bundle(bundle_name=bundle)
 url_prefix = 'download-' + bundle_conf.info['bundle_urlname']
@@ -138,7 +144,6 @@ if not package_src_url:
 
 # Go here so the rpm file globbings look right
 os.chdir(package_src_dir)
-distros = build.get_platforms()
 for distro_conf in distros:
 
 	build_conf = packaging.buildconf(os.path.basename(distro_conf), exclusive=False)

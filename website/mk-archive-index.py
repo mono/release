@@ -5,6 +5,7 @@ import os
 import distutils.dir_util
 import re
 import glob
+import getopt
 
 import pdb
 
@@ -15,11 +16,24 @@ import config
 import utils
 import build
 
+skip_installers = False
+distros = build.get_platforms()
 # Command line options
 try:
-	(script_name, bundle, output_dir, webroot_path) = sys.argv
+        opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_installers", "platforms=" ])
+
+	(bundle, output_dir, webroot_path) = remaining_args
+
+        for option, value in opts:
+                if option == "--skip_installers":
+                         skip_installers = True
+                if option == "--platforms":
+                        distros = value.split(",")
+
 except:
-        print "Usage: ./mk-archive-index.py <bundle name> <output webdir> <webroot_path>"
+        print "Usage: ./mk-archive-index.py [ --skip_installers | --platforms=distros ] <bundle name> <output webdir> <webroot_path>"
+        print " --platforms: comma separated list of platforms (distros) to include"
+        print " --skip_installers: don't include installers in listing"
         sys.exit(1)
 
 bundle_conf = packaging.bundle(bundle_name=bundle)
@@ -53,6 +67,8 @@ installers = ""
 distro_installers = ""
 for installer_map in installer_info:
 
+	if skip_installers: continue
+
 	my_dir = os.path.join(output_dir, 'archive', version, installer_map['dir_name'])
 
 	# Skip if the installer doesn't exist for this release
@@ -75,7 +91,6 @@ for installer_map in installer_info:
 packages = "<ul>"
 
 # Links to distros
-distros = build.get_platforms()
 for distro_conf in distros:
 	conf = packaging.buildconf(os.path.basename(distro_conf), exclusive=False)
 	# Skip the distros that use zip packaging system

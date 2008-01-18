@@ -7,10 +7,7 @@ import distutils.dir_util
 import glob
 import time
 import re
-
-import xml.xpath
-import xml.dom.minidom
-import gzip
+import getopt
 
 import pdb
 
@@ -22,12 +19,20 @@ import packaging
 import utils
 import rpm_utils
 
+distros = build.get_platforms()
 # Command line options
 try:
-	(script_name, bundle, output_dir, webroot_path, package_src_dir, hostname_url) = sys.argv
+	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "platforms=" ])
+	for option, value in opts:
+		if option == "--platforms":
+			distros = value.split(",")
+
+	(bundle, output_dir, webroot_path, package_src_dir, hostname_url) = remaining_args
+
 	package_src_dir = os.path.abspath(package_src_dir)
 except:
-        print "Usage: ./mk-repos.py <bundle name> <package source dir> <output webdir> <hostname_url> <webroot_path>"
+        print "Usage: ./mk-repos.py [ --platforms=<distros> ] <bundle name> <package source dir> <output webdir> <hostname_url> <webroot_path>"
+	print " --platforms: comma separated list of platforms (distros) to create distros for"
         sys.exit(1)
 
 bundle_conf = packaging.bundle(bundle_name=bundle)
@@ -40,12 +45,12 @@ os.chdir(base_dir)
 # Load up packages to include in repository (packages_in_repo)
 execfile(os.path.join(config.release_repo_root, 'website', 'repo-config', 'config.py') )
 
-distro_objs = build.get_platform_objs()
-
 # TODO: maybe we should generate the repo data for all repo types for all distros... ?  That might be just confusing...
 
 # Create hard links to real packages to use in repo
-for distro_obj in distro_objs:
+for distro in distros:
+
+        distro_obj = packaging.buildconf(distro, exclusive=False)
 
 	# TODO: Come up with repo system for zip system
 	if utils.get_dict_var('USE_ZIP_PKG', distro_obj.info):

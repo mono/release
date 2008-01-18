@@ -1,0 +1,33 @@
+#!/bin/sh
+
+BUNDLE="trunk"
+TARGET_USER="mono-web"
+TARGET_HOST="mono.ximian.com"
+
+BASE_DIR="~/release/monobuild/www/snapshot"
+BASE_URL="/monobuild/snapshot"
+
+# Hack: flag to mono-basic to grab from noarch instead of $DISTRO
+#export UPLOAD_SNAPSHOT=1
+
+distros="suse-101-x86_64,suse-103-i586"
+
+ssh $TARGET_USER@$TARGET_HOST "mkdir -p $BASE_DIR"
+cd ../website
+# TODO: the delete option isn't working... run a script that cleans up all but one version... do this before sync?
+UPLOAD_SNAPSHOT=1 ./sync-bundle.py  --platforms=$distros --skip_installers $BUNDLE $TARGET_USER@$TARGET_HOST:$BASE_DIR || exit 1
+
+# Copy non snapshot packages and sources (external stuff) to the snapshot_ dirs
+#  This shouldn't have much of an impact on rsync since we'll leave the originals in place
+#  also clean up generated stuff
+ssh $TARGET_USER@$TARGET_HOST "cd $BASE_DIR; cp -a sources/* snapshot_sources; cp -a packages/* snapshot_packages ; rm -Rf download-trunk sources-trunk archive/trunk"	|| exit 1
+
+# problem: it's possible a tarball will be built, but we won't have any packages... issue?
+#   possible long solution: generate bundles/trunk to have all the right info... ugh
+
+scp packaging.css $TARGET_USER@$TARGET_HOST:$BASE_DIR
+ssh $TARGET_USER@$TARGET_HOST "cd release/website; UPLOAD_SNAPSHOT=1 ./mk-sources-index.py           				$BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/snapshot_sources"			|| exit 1
+ssh $TARGET_USER@$TARGET_HOST "cd release/website; UPLOAD_SNAPSHOT=1 ./mk-distro-index.py --platforms=$distros --skip_zip	$BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/snapshot_packages $TARGET_HOST"	|| exit 1
+ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-archive-index.py --platforms=$distros --skip_installers			$BUNDLE $BASE_DIR $BASE_URL"						|| exit 1
+ssh $TARGET_USER@$TARGET_HOST "cd release/website; UPLOAD_SNAPSHOT=1 ./mk-repos.py --platforms=$distros				$BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/snapshot_packages $TARGET_HOST"	|| exit 1
+

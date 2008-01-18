@@ -47,6 +47,8 @@ get_destroot () {
 	# For building...
         elif test "x$DISTRO" = "xsuse-101-i586" ; then
                 DEST_ROOT=noarch
+	elif test "x$UPLOAD_SNAPSHOT" = "x1" ; then
+		DEST_ROOT=noarch
 	else
 		if test "x$HEAD_or_RELEASE" = "xHEAD" ; then
 			# for monobuild (building on all archs)

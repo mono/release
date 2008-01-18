@@ -17,13 +17,13 @@ import build
 import utils
 import config
 
-#pdb.set_trace()
 include_zip = False
 fail_on_missing=True
 skip_installers = False
+config.sd_latest_build_distros = build.get_platforms()
 try:
 
-	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "include_zip", "skip_missing", "skip_installers" ])
+	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "include_zip", "skip_missing", "skip_installers", "platforms=" ])
 	for option, value in opts:
 		if option == "--include_zip":
 			 include_zip = True
@@ -31,6 +31,8 @@ try:
 			 fail_on_missing = False
 		if option == "--skip_installers":
 			 skip_installers = True
+		if option == "--platforms":
+			config.sd_latest_build_distros = value.split(",")
 
 	(bundle_name, dest) = remaining_args
 except:
@@ -38,6 +40,7 @@ except:
 	print " --include_zip includes zip based distros"
 	print " --skip_installers will not copy installers"
 	print " --skip_missing will allow missing packages for a various platform"
+	print " --platforms: comma separated list of platforms (distros) to sync"
 	print " Ex: ./sync-bundle.py RELEASE wblinux.provo.novell.com:wa/msvn/release/packaging"
 	sys.exit(1)
 
@@ -54,11 +57,9 @@ execfile('repo-config/config.py')
 # (for packages_in_repo)
 bundle_obj = packaging.bundle(bundle_name=bundle_name)
 
-# Testing
-#config.sd_latest_build_distros = ['redhat-9-i386', 'suse-101-i586']
-#config.sd_latest_build_distros = ['suse-101-i586']
-config.sd_latest_build_distros = build.get_platforms()
 
+# TODO: how to make sure we avoid the inprogress builds
+#  which can be done by looking at the xml metadata for the build step...
 # Gather rpms for this bundle
 for plat in config.sd_latest_build_distros:
 	plat_obj = packaging.buildconf(plat, exclusive=False)
@@ -94,6 +95,7 @@ for dir in	['linux-installer/output/[[version]]/linux-installer',
 		'sunos/output/[[version]]/sunos-8-sparc',
 		]:
 
+	if skip_installers: continue
 	try:
 		candidates = glob.glob(dir.replace('[[version]]', archive_version) + os.sep + "*")
 		latest = utils.version_sort(candidates).pop()
@@ -104,8 +106,7 @@ for dir in	['linux-installer/output/[[version]]/linux-installer',
 		(prefix, sync_dir) = latest.split(splitter)
 		os.chdir(prefix)
 
-		if not skip_installers:
-			status, output = utils.launch_process('rsync -avzR -e ssh %s %s/archive' % (archive_version + os.sep + sync_dir, dest))
+		status, output = utils.launch_process('rsync -avzR -e ssh %s %s/archive' % (archive_version + os.sep + sync_dir, dest))
 
 		os.chdir(cwd)
 	except:
