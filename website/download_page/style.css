@@ -18,6 +18,12 @@ td.os
 	border: 1px solid #ffffff;
 	width: 70px;
 	cursor: pointer;
+	border: 1px solid #fff;
+}
+
+td.os:hover
+{
+	border: 1px solid #aaa;
 }
 
 div.os
