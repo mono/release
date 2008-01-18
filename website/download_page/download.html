@@ -118,15 +118,6 @@ function windows_step2()
 
 function macosx_step2()
 {
-	var html = "<h2>2. Mac OS X Version</h2>";
-	html += "<br><select size='3'><option selected>Tiger (10.4), Leopard (10.5)</option></select>";
-	document.getElementById("step2").innerHTML = html;
-
-	macosx_step3();
-}
-
-function macosx_step2()
-{
 	var html = "<h2>2. Download Mono for Mac OS X</h2>";
 	html += "<br><table><tr><td colspan='2'>This version of Mono works on Mac OS X Tiger (10.4) and Leopard (10.5).</tr>";
 	html += "<tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/b/bf/Mono_icon_mac.gif'>";
@@ -143,9 +134,9 @@ function suse_step2()
 
 	var html = "<h2>2. openSUSE Version</h2>";
 	html += "<br><select size='4'>";
-	html += "<option onclick='suse_step3(\"suse\",\"101\")'>openSUSE 10.1</option>";
-	html += "<option onclick='suse_step3(\"suse\",\"102\")'>openSUSE 10.2</option>";
-	html += "<option onclick='suse_step3(\"suse\",\"103\")'>openSUSE 10.3</option>";
+	html += "<option style='cursor: pointer;' onclick='suse_step3(\"suse\",\"101\")'>openSUSE 10.1</option>";
+	html += "<option style='cursor: pointer;' onclick='suse_step3(\"suse\",\"102\")'>openSUSE 10.2</option>";
+	html += "<option style='cursor: pointer;' onclick='suse_step3(\"suse\",\"103\")'>openSUSE 10.3</option>";
 	html += "</select><br><br>";
 	document.getElementById("step2").innerHTML = html;
 }
@@ -156,10 +147,10 @@ function sle_step2()
 
 	var html = "<h2>2. SLES/SLED Version</h2>";
 	html += "<br><select size='4'>";
-	html += "<option onclick='suse_step3(\"sles\",\"9\")'>Suse Linux Enterpise Server 9 (SLES)</option>";
-	html += "<option onclick='suse_step3(\"sles\",\"10\")'>Suse Linux Enterpise Server 10 (SLES)</option>";
-	html += "<option onclick='suse_step3(\"sled\",\"10\")'>Suse Linux Enterpise Desktop 10 (SLED)</option>";
-	html += "<option onclick='suse_step3(\"nld\",\"9\")'>Novell Linux Desktop 9 (NLD)</option>";
+	html += "<option style='cursor: pointer;' onclick='suse_step3(\"sles\",\"9\")'>Suse Linux Enterpise Server 9 (SLES)</option>";
+	html += "<option style='cursor: pointer;' onclick='suse_step3(\"sles\",\"10\")'>Suse Linux Enterpise Server 10 (SLES)</option>";
+	html += "<option style='cursor: pointer;' onclick='suse_step3(\"sled\",\"10\")'>Suse Linux Enterpise Desktop 10 (SLED)</option>";
+	html += "<option style='cursor: pointer;' onclick='suse_step3(\"nld\",\"9\")'>Novell Linux Desktop 9 (NLD)</option>";
 	html += "</select><br><br>";
 	document.getElementById("step2").innerHTML = html;
 }
@@ -174,31 +165,31 @@ function suse_step3(os_name, os_version)
 	switch (os_name)
 	{
 		case "suse": // openSUSE
-			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
-			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
+			html += "<option style='cursor: pointer;' onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
+			html += "<option style='cursor: pointer;' onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
 			if (os_version != "103")
-				html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"ppc\")'>" + ppc + "</option>";
+				html += "<option style='cursor: pointer;' onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"ppc\")'>" + ppc + "</option>";
 			break;
 
 		case "sled": // SLED
 		case "sles": // SLES
-			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
-			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
+			html += "<option style='cursor: pointer;' onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
+			html += "<option style='cursor: pointer;' onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
 			if (os_name != "sled")
 			{
-				html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"ppc\")'>" + ppc + "</option>";
-				html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"ia64\")'>" + ia64 + "</option>";
+				html += "<option style='cursor: pointer;' onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"ppc\")'>" + ppc + "</option>";
+				html += "<option style='cursor: pointer;' onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"ia64\")'>" + ia64 + "</option>";
 				if (os_version == "9")
 				{
-					html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"s390\")'>" + s390 + "</option>";
-					html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"s390x\")'>" + s390x + "</option>";
+					html += "<option style='cursor: pointer;' onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"s390\")'>" + s390 + "</option>";
+					html += "<option style='cursor: pointer;' onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"s390x\")'>" + s390x + "</option>";
 				}
 			}
 			break;
 
 		case "nld": // NLD
-			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
-			html += "<option onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
+			html += "<option style='cursor: pointer;' onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"i586\")'>" + i586 + "</option>";
+			html += "<option style='cursor: pointer;' onclick='suse_step4(\"" + os_name + "\",\"" + os_version + "\",\"x86_64\")'>" + x86_64 + "</option>";
 			break;
 	}
 
