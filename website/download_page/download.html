@@ -24,6 +24,24 @@ var ia64 = "Itanium (ia64)";
 var s390 = "IBM s390 32bit";
 var s390x = "IBM s390x 64bit";
 
+
+function loadpage()
+{
+   window.status = "Page is loaded";
+	/* Unselect other items */
+	for (i = 0; i < num_os; i++)
+		if (i != n)
+		{
+			document.getElementById("td"+i).style.background = "none";
+			document.getElementById("td"+i).style.border = "1px solid #ffffff";
+		}
+
+	// Clean out the html for steps after 1
+	document.getElementById("step2").innerHTML = "";
+	document.getElementById("step3").innerHTML = "";
+	document.getElementById("stepn").innerHTML = "";
+}
+
 function mouseOver(n)
 {
 	/* Draw a temporary border on any mouseover box that isn't already selected */
@@ -282,7 +300,7 @@ function vmware_step2()
 </script>
 
 </head>
-<body>
+<body onload="loadpage()">
 <div id="globalWrapper">
         <div id="bigWrapper">
             <div class="portlet" id="p-logo">
@@ -338,10 +356,10 @@ function vmware_step2()
 			<div class='os-id'><img alt='VMware' src='vmware_icon_2.jpg' width="40px"><br />VMware</div>
 		</div>
 	</td>
-	<td class='os' id='td2'>
-		<div class='os' onMouseOver="mouseOver(2)" onMouseOut="mouseOut(2)" onClick="selected(2)">
+	<td class='os' id='td2' align='center'>
+		<div class='os' onMouseOver="mouseOver(2)" onMouseOut="mouseOut(2)" onClick="selected(2)" align='center'>
 			<div class='os-rd'><input type='radio' name='os' id='rb2' onClick="selected(2)"></div>
-			<div class='os-id'><img alt='Suse' src='opensuse.jpg'><br />openSUSE</div>
+			<div class='os-id' align='center'><img alt='Suse' src='opensuse.jpg'><br />openSUSE</div>
 		</div>
 	</td>
 	<td class='os' id='td3'>

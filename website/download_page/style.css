@@ -14,7 +14,6 @@ img.osicon
 
 td.os
 {
-	position: relative;
 	border: 1px solid #ffffff;
 	width: 70px;
 	cursor: pointer;
@@ -28,7 +27,6 @@ td.os:hover
 
 div.os
 {
-	position: relative;
 	width: 100%;
 }
 
