@@ -27,11 +27,17 @@ div.os
 
 td.dl-tableborder
 {
-padding: 0px;
+	padding: 0px;
 }
+
 table.os
 {
         border-collapse: separate;
+}
+
+div.dl-content h2
+{
+   margin-top: 1ex;
 }
 
 table {

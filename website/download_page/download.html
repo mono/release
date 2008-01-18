@@ -60,7 +60,6 @@ function selected(n)
 	// Clean out the html for steps after 1
 	document.getElementById("step2").innerHTML = "";
 	document.getElementById("step3").innerHTML = "";
-	document.getElementById("step4").innerHTML = "";
 	document.getElementById("stepn").innerHTML = "";
 
 	switch (n)
@@ -141,7 +140,6 @@ function macosx_step2()
 function suse_step2()
 {
 	document.getElementById("step3").innerHTML = "";
-	document.getElementById("step4").innerHTML = "";
 
 	var html = "<h2>2. Suse Version</h2>";
 	html += "<br><select size='5'>";
@@ -155,7 +153,6 @@ function suse_step2()
 function sle_step2()
 {
 	document.getElementById("step3").innerHTML = "";
-	document.getElementById("step4").innerHTML = "";
 
 	var html = "<h2>2. Suse Version</h2>";
 	html += "<br><select size='5'>";
@@ -326,7 +323,7 @@ function vmware_step2()
 <td class="dl-tableborder" style="background-image:url('left_middle.jpg'); "></td>
 <td>
 <!-- contents go here -->
-<table width="100%"><tr><td width="70%">
+<table class="dl-content" width="100%"><tr><td width="70%">
 <h1>Download Mono</h1>
 <td align="right"><img src="source_code.jpg" width="35px">
 <a href="http://go-mono.com/sources-stable/">Mono 1.2.6 Sources</a></td>
@@ -340,7 +337,7 @@ function vmware_step2()
 
 
 
-<h2>1. Select Platform</h2>
+<h2 style="margin-top: 1ex;">1. Select Platform</h2>
 <br>
 	<table class="os" >
 	<tr>
@@ -403,17 +400,11 @@ function vmware_step2()
 
 <table>
 <tr valign='top'>
-<td><div id='step2'></div></td>
-<td width='50px'>
-<td><div id='step3'></div></td>
-</tr>
-<tr valign='top'>
-<td><div id='step4'></div></td>
-<td width='50px'>
+<td style='padding: 0px;'><div id='step2' class='dl-content'></div></td>
+<td style='padding: 0px; padding-left: 70px;'><div id='step3' class='dl-content'></div></td>
 </tr>
 </table>
-
-<div id='stepn'></div>
+<div id='stepn' class="dl-content"></div>
 
 
 <!-- End contents -->
