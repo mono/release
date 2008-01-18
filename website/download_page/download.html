@@ -113,7 +113,7 @@ function windows_step2()
 	html += "Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>";
 	html += "</tr></table>";
 
-	document.getElementById("stepn").innerHTML = html;
+	document.getElementById("step2").innerHTML = html;
 }
 
 function macosx_step2()
@@ -134,19 +134,19 @@ function macosx_step2()
 	html += "<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/macos-10-universal/4/MonoFramework-1.2.6_4.macos10.novell.universal.dmg'>Mono 1.2.6_4 Framework - Universal</a>";
 	html += "<li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>";
 	html += "</tr></table>";
-	document.getElementById("stepn").innerHTML = html;
+	document.getElementById("step2").innerHTML = html;
 }
 
 function suse_step2()
 {
 	document.getElementById("step3").innerHTML = "";
 
-	var html = "<h2>2. Suse Version</h2>";
-	html += "<br><select size='5'>";
+	var html = "<h2>2. openSUSE Version</h2>";
+	html += "<br><select size='4'>";
 	html += "<option onclick='suse_step3(\"suse\",\"101\")'>openSUSE 10.1</option>";
 	html += "<option onclick='suse_step3(\"suse\",\"102\")'>openSUSE 10.2</option>";
 	html += "<option onclick='suse_step3(\"suse\",\"103\")'>openSUSE 10.3</option>";
-	html += "</select>";
+	html += "</select><br><br>";
 	document.getElementById("step2").innerHTML = html;
 }
 
@@ -154,13 +154,13 @@ function sle_step2()
 {
 	document.getElementById("step3").innerHTML = "";
 
-	var html = "<h2>2. Suse Version</h2>";
-	html += "<br><select size='5'>";
+	var html = "<h2>2. SLES/SLED Version</h2>";
+	html += "<br><select size='4'>";
 	html += "<option onclick='suse_step3(\"sles\",\"9\")'>Suse Linux Enterpise Server 9 (SLES)</option>";
 	html += "<option onclick='suse_step3(\"sles\",\"10\")'>Suse Linux Enterpise Server 10 (SLES)</option>";
 	html += "<option onclick='suse_step3(\"sled\",\"10\")'>Suse Linux Enterpise Desktop 10 (SLED)</option>";
 	html += "<option onclick='suse_step3(\"nld\",\"9\")'>Novell Linux Desktop 9 (NLD)</option>";
-	html += "</select>";
+	html += "</select><br><br>";
 	document.getElementById("step2").innerHTML = html;
 }
 
@@ -169,7 +169,7 @@ function suse_step3(os_name, os_version)
 	document.getElementById("stepn").innerHTML = "";
 
 	var html = "<h2>3. Processor Architecture</h2>";
-	html += "<br><select size='5'>";
+	html += "<br><select size='4'>";
 
 	switch (os_name)
 	{
@@ -233,7 +233,7 @@ function redhat_step2()
 	html += "<td>The downloads are available <a href='http://www.go-mono.com/download-stable/rhel-4-i386'>here</a>.";
 	html += "</tr></table>";
 
-	document.getElementById("stepn").innerHTML = html;
+	document.getElementById("step2").innerHTML = html;
 }
 
 function linux_step2()
@@ -246,7 +246,7 @@ function linux_step2()
 	html += "<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/linux-installer/6/mono-1.2.6_6-installer.bin'>Mono 1.2.6_6 Installer</a></ul>";
 	html += "</tr></table>";
 
-	document.getElementById("stepn").innerHTML = html;
+	document.getElementById("step2").innerHTML = html;
 }
 
 function maemo_step2()
@@ -258,7 +258,7 @@ function maemo_step2()
 	html += "<ul><li><a href='http://go-mono.com/maemo/pool/bora/mono/mono.install'>Mono 1.2.5 Runtime Single Click Install</a>";
 	html += "<li><a href='http://go-mono.com/maemo/scratchbox-devkit-mono-1.2.3.1-2-i386.tar.gz'>Mono 1.2.3.1 Scratchbox developer kit</a></ul>";
 	html += "</tr></table>";
-	document.getElementById("stepn").innerHTML = html;
+	document.getElementById("step2").innerHTML = html;
 }
 
 function solaris_step2()
@@ -270,7 +270,7 @@ function solaris_step2()
 	html += "<ul><li><a href='ftp://www.go-mono.com/archive/1.2.4/sunos-8-sparc/4/mono-1.2.4_4.sunos8.novell.sparc.pkg.gz'>Mono 1.2.4_4 Package</a></ul>";
 	html += "</tr></table>";
 
-	document.getElementById("stepn").innerHTML = html;
+	document.getElementById("step2").innerHTML = html;
 }
 function vmware_step2()
 {
@@ -284,7 +284,7 @@ function vmware_step2()
 	html += "</tr></table>";
 
 
-	document.getElementById("stepn").innerHTML = html;
+	document.getElementById("step2").innerHTML = html;
 	
 }
 
