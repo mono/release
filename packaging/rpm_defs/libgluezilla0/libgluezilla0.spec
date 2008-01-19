@@ -104,10 +104,8 @@ rm -f $RPM_BUILD_ROOT/usr/%_lib/libgluezilla.la
 %clean
 rm -rf "$RPM_BUILD_ROOT"
 
-%post
-/sbin/ldconfig
+%post -p /sbin/ldconfig
 
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %changelog

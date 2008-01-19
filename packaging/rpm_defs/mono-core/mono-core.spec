@@ -244,8 +244,7 @@ if grep -q "machine = 9672" /proc/cpuinfo 2>/dev/null ; then
 fi
 %endif
 
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %package -n mono-jscript
 Summary:        JScript .NET support for Mono
@@ -799,11 +798,9 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-%post -n mono-devel
-/sbin/ldconfig
+%post -n mono-devel -p /sbin/ldconfig
 
-%postun -n mono-devel
-/sbin/ldconfig
+%postun -n mono-devel -p /sbin/ldconfig
 
 %files -n mono-devel
 %defattr(-, root, root)

@@ -47,6 +47,7 @@ os.chdir(source_dir)
 # Apply patches if this package defines it
 if pack_def.get_info_var('USE_PATCHES'):
 	for patch in patches:
+		print "Applying patch: " + os.path.basename(patch)
 		if(os.system("patch -p1 < ../" + patch)):
 			print "Failed applying patch: " + os.path.basename(patch)
 			sys.exit(1)

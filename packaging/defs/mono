@@ -67,6 +67,7 @@ MONO_SOURCE_DEPS=(
 # (removing libgdiplus will remove mono-core and the rest of the chain, but mono-core is in this list since mono-core didn't
 #  always depend on libgdiplus)
 PACKS_TO_REMOVE=(
+	libgdiplus0
 	libgdiplus
 	mono-core
 )

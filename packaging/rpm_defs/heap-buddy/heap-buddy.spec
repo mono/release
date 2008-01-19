@@ -70,11 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/heap-buddy
 %{_libdir}/libmono-profiler-heap-buddy.so*
 
-%post
-/sbin/ldconfig
+%post -p /sbin/ldconfig
 
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %if 0%{?fedora_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)

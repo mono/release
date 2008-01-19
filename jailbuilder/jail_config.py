@@ -398,6 +398,7 @@ mknod -m 644 /dev/urandom c  1 9
 MAKEDEV in /dev for random, urandom and null, touch /etc/fstab""",
 
 	'fedora-5':	"""# MAKEDEV in /dev for random, urandom and null, Add /proc to /etc/fstab""",
+	'sles-9-ia64':	"""Had to copy /etc/sysconfig/security from another sles9 install (/usr/bin/Check called by rpm would fail)""",
 
 }
 
