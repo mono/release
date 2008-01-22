@@ -118,7 +118,7 @@ for arch in targets:
 	conf.buildenv.print_output=debug
 	framework_prefix = "/Library/Frameworks/Mono.framework"
 	prefix = "%s/Versions/%s" % (framework_prefix, version)
-	(code, output) = conf.buildenv.execute_command("%s/do-install-zip-pkgs --relative_paths %s%s %s %s " % (arch_remote_packages_loc, arch_remote_PKGROOT, prefix, prefix, arch_remote_packages_loc) )
+	(code, output) = conf.buildenv.execute_command("%s/do-install-zip-pkgs %s%s %s %s " % (arch_remote_packages_loc, arch_remote_PKGROOT, prefix, prefix, arch_remote_packages_loc) )
 	if code:
 		print "Error extracting and installing packages"
 		sys.exit(1)
