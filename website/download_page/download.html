@@ -218,6 +218,11 @@ function suse_step3(os_name, os_version)
 function suse_step4(os_name, os_version, arch)
 {
 	var html = "<h2>4. Download Mono for SuSE</h2>";
+	if (os_name == "sled")
+	{
+		os_name = "sles";
+	}
+
 	if ((arch != "ia64") && (os_name == "sles") && (os_version == "10"))
 	{
 		os_name = "suse";
