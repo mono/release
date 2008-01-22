@@ -233,12 +233,9 @@ function suse_step4(os_name, os_version, arch)
 	url += os_name + "-" + os_version + "-" + arch;
 
 	html += "<br><table><tr><td class='osicon'><img class='osicon' src='http://www.mono-project.com/files/d/dd/Mono_icon_suse.gif'>";
-	//html += "<td>The downloads are available <a href='" + url + "'>here</a>.";
-
-	html += "<td>This distro supports installing packages via YaST. Add the following installation source to YaST:";
+	html += "<td>Your Mono packages can be found at the following URL. You can add the URL as a YaST repository, or you can download the individual packages manually.";
 	html += "<ul><li><a href='" + url + "'>" + url + "</a></ul>";
-	html += "For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit opensuse.org</a>";
-
+	html += "<br>For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit opensuse.org</a>";
 	html += "</td></tr></table>";
 
 	document.getElementById("stepn").innerHTML = html;
