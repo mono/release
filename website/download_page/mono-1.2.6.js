@@ -5,6 +5,9 @@ var ia64 = "Itanium (ia64)";
 var s390 = "IBM s390 32bit";
 var s390x = "IBM s390x 64bit";
 
+suseDownloadText1 = "Your Mono packages can be found at the following URL. You can add the URL as a YaST reposit ory, or you can download the individual packages manually. <ul><li><a href='";
+suseDownloadText2 = "</a></ul><br>For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit opensuse.org</a>";
+
 var data =
 {
 	"release" : "1.2.6",
@@ -38,17 +41,17 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : ""
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-101-i586'>http://www.go-mono.com/download-stable/suse-101-i586" + suseDownloadText2
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : ""
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-101-x86_64'>http://www.go-mono.com/download-stable/suse-101-x86_64" + suseDownloadText2
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : "",
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-101-ppc'>http://www.go-mono.com/download-stable/suse-101-ppc" + suseDownloadText2
 			}
 			]
 		},
@@ -58,17 +61,17 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : ""
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-102-i586'>http://www.go-mono.com/download-stable/suse-102-i586" + suseDownloadText2
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : ""
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-102-x86_64'>http://www.go-mono.com/download-stable/suse-102-x86_64" + suseDownloadText2
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : "",
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-102-ppc'>http://www.go-mono.com/download-stable/suse-102-ppc" + suseDownloadText2
 			}
 			]
 		},
@@ -78,12 +81,12 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : ""
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-103-i586'>http://www.go-mono.com/download-stable/suse-103-i586" + suseDownloadText2
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : ""
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-103-x86_64'>http://www.go-mono.com/download-stable/suse-103-x86_64" + suseDownloadText2
 			}
 			]
 		}
@@ -101,32 +104,32 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : ""
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-i586'>http://www.go-mono.com/download-stable/sles-9-i586" + suseDownloadText2
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : ""
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-x86_64'>http://www.go-mono.com/download-stable/sles-9-x86_64" + suseDownloadText2
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : "",
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-ppc'>http://www.go-mono.com/download-stable/sles-9-ppc" + suseDownloadText2
 			},
 			{
 				"name" : ia64,
 				"desc" : "",
-				"downloadText" : "",
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-ia64'>http://www.go-mono.com/download-stable/sles-9-ia64" + suseDownloadText2
 			},
 			{
 				"name" : s390,
 				"desc" : "",
-				"downloadText" : "",
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-s390'>http://www.go-mono.com/download-stable/sles-9-s390" + suseDownloadText2
 			},
 			{
 				"name" : s390x,
 				"desc" : "",
-				"downloadText" : "",
+				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-s390x'>http://www.go-mono.com/download-stable/sles-9-s390x" + suseDownloadText2
 			}
 			]
 		},
