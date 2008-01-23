@@ -6,7 +6,7 @@
 <link type="text/css" rel="stylesheet" href="http://mono-project.com/skins/monoproject/main.css">
     <link type="text/css" rel="stylesheet" href="http://mono-project.com/skins/monoproject/niftycorners.css">
 
-
+<script type="text/javascript" src="mono-1.2.6.js"></script>
 <script type="text/javascript">
 var num_os = 9;
 var windows = 0;
@@ -328,7 +328,7 @@ function vmware_step2()
 				<!--  BEGIN CONTENT -->
 
 
-<table width="910">
+<table width="910" cellpadding="0" cellspacing="0">
 <tr height="11">
 <td width="9" class="dl-tableborder"><img src='top_left.jpg'></td>
 <td width="800" class="dl-tableborder" style="background-image:url('top_middle.jpg');"></td>
@@ -342,11 +342,21 @@ function vmware_step2()
 <table class="dl-content" width="100%"><tr><td width="70%">
 <h1>Download Mono</h1>
 </td><td align="right"><table><tr><td style="padding: 0px;"><img src="source_code.jpg" width="35"></td><td style="padding: 7px;">
-<a href="http://go-mono.com/sources-stable/">Mono 1.2.6 Sources</a></td></tr></table></td>
+
+<script type="text/javascript">
+	var html = "<a href='http://go-mono.com/sources-stable/'>Mono " + data.release + " Sources</a>";
+	document.write(html);
+</script>
+</td></tr></table></td>
 </tr><tr>
+
 <td>
-<h4>Latest Version: 1.2.6 (<a href="http://www.go-mono.com/archive/1.2.6">Release Notes</a>)</h4>
-	<a href="http://mono-project.com/OldReleases">Older Releases</a>
+<script type="text/javascript">
+	var html = "<h4>Latest Version: " + data.release + " (<a href='http://www.go-mono.com/archive/" + data.release + "'>Release Notes</a>)</h4>";
+	html += "<a href='http://mono-project.com/OldReleases'>Older Releases</a>";
+	document.write(html);
+
+</script>
 </td></tr></table>
 
 
