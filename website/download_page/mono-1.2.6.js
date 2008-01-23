@@ -231,6 +231,7 @@ var data =
 		"name" : "RedHat",
 		"icon" : "http://www.mono-project.com/files/6/6e/Mono_icon_redhat.gif",
 		"dlicon" : "http://www.mono-project.com/files/6/6e/Mono_icon_redhat.gif",
+		"desc" : "This version of Mono works on RedHat Enterprise Linux 4 on x86 32bit (i586).",
 		"version" : [
 		{
 			"name" : "RedHat Enterprise Linux 4",
