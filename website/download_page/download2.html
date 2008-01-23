@@ -61,6 +61,48 @@ function mouseOut(n)
 	}
 }
 
+function selected(os_num)
+{
+	/* Highlight and select the chosen item */
+	document.getElementById("td"+os_num).style.border = "1px solid #aaa";
+	document.getElementById("td"+os_num).style.background = "#eee";
+	document.getElementById("rb"+os_num).click();
+
+	/* Unselect other items */
+	for (i = 0; i < data.platforms.length; i++)
+		if (i != os_num)
+		{
+			document.getElementById("td"+i).style.background = "none";
+			document.getElementById("td"+i).style.border = "1px solid #ffffff";
+		}
+
+	// Clean out the html for steps after 1
+	document.getElementById("step2").innerHTML = "";
+	document.getElementById("step3").innerHTML = "";
+	document.getElementById("stepn").innerHTML = "";
+
+	if ((data.platforms[os_num].version.length == 1) &&
+	    (data.platforms[os_num].version[0].arch.length == 1))
+	{
+		download_step("2", os_num, 0, 0);
+	}
+}
+
+function download_step(step_number, os_num, ver_num, arch_num)
+{
+	var html = "<h2>" + step_number + ". Download Mono for "+ data.platforms[os_num].name + "</h2>";
+	html += "<br><table><tr><td colspan='2'>" + data.platforms[os_num].version[ver_num].arch[arch_num].desc + "</tr>";
+	html += "<tr><td class='osicon'><img class='osicon' src='" + data.platforms[os_num].dlicon + "'></td><td>";
+	html +=  data.platforms[os_num].version[ver_num].arch[arch_num].downloadText;
+	//html += "<td>Mono for Windows, Gtk#, and XSP";
+	//html += "<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/windows-installer/4/mono-1.2.6-gtksharp-2.10.2-win32-4.exe'>Mono 1.2.6_4 Setup</a></ul>";
+	//html += "Only Gtk# for .NET: <ul><li><a href=' http://forge.novell.com/modules/xfmod/project/?gtks-inst4win'>SDK and Runtime</a></ul>";
+	//html += "Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>";
+	html += "</td></tr></table>";
+
+	document.getElementById("step2").innerHTML = html;
+}
+
 function selected1(n)
 {
 	/* Highlight and select the chosen item */
@@ -304,24 +346,6 @@ function vmware_step2()
 	
 }
 
-function selected(i)
-{
-	var html = '';
-	var d = data.platforms[i];
-	if ((d.name != "openSUSE") && (d.name != "SLES/SLED"))
-	{
-		alert("creating step2 for " + d.name);
-		html = "<h2>2. Download the " + d.name +  "</h2>";
-		html += "<br><table><tr valign='middle'><td><img src='" + d.dlicon + "' ></td>";
-		html += "<td>" + d.desc;
-		html += d.downloadText;
-
-		html += "</td></tr></table>";
-	
-	}
-	
-	document.getElementById("step2").innerHTML = html;
-}
 </script>
 
 </head>
@@ -362,7 +386,7 @@ function selected(i)
 </td><td align="right"><table><tr><td style="padding: 0px;"><img src="source_code.jpg" width="35"></td><td style="padding: 7px;">
 
 <script type="text/javascript">
-	var html = "<a href='http://go-mono.com/sources-stable/'>Mono " + data.release + " Sources</a>";
+	var html = "<a href='http://go-mono.com/sources-stable/'>Mono&nbsp;" + data.release + "&nbsp;Sources</a>";
 	document.write(html);
 </script>
 </td></tr></table></td>
@@ -390,7 +414,7 @@ function selected(i)
 		html += "<td class='os' id='td"+i+"'>";
 		html += "<div class='os' onMouseOver='mouseOver("+i+")' onMouseOut='mouseOut("+i+")' onClick='selected("+i+")'>";
 		html += "<div class='os-rd'><input type='radio' name='os' id='rb"+i+"' onClick='selected("+i+")'></div>";
-		html += "<div class='os-id'><img alt='"+data.platforms[i].name+"' src='"+data.platforms[i].icon+"' width='40px'><br />"+data.platforms[i].name+"</div>";
+		html += "<div class='os-id'><img alt='"+data.platforms[i].name+"' src='"+data.platforms[i].icon+"'><br />"+data.platforms[i].name+"</div>";
 		html += "</div></td>";
 	}
 
