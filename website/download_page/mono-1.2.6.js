@@ -5,8 +5,45 @@ var ia64 = "Itanium (ia64)";
 var s390 = "IBM s390 32bit";
 var s390x = "IBM s390x 64bit";
 
-suseDownloadText1 = "Your Mono packages can be found at the following URL. You can add the URL as a YaST reposit ory, or you can download the individual packages manually. <ul><li><a href='";
-suseDownloadText2 = "</a></ul><br>For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit opensuse.org</a>";
+
+suse101i586 = "http://www.go-mono.com/download-stable/suse-101-i586";
+suse101x86_64 = 'http://www.go-mono.com/download-stable/suse-101-x86_64';
+suse101ppc = "http://www.go-mono.com/download-stable/suse-101-ppc";
+
+suse102i586 = "http://www.go-mono.com/download-stable/suse-102-i586";
+suse102x86_64 = 'http://www.go-mono.com/download-stable/suse-102-x86_64';
+suse102ppc = 'http://www.go-mono.com/download-stable/suse-102-ppc';
+
+suse103i586 = "http://www.go-mono.com/download-stable/suse-103-i586";
+suse103x86_64 = 'http://www.go-mono.com/download-stable/suse-103-x86_64';
+
+sles9i586 = 'http://www.go-mono.com/download-stable/sles-9-i586';
+sles9x86_64 = "http://www.go-mono.com/download-stable/sles-9-x86_64";
+sles9ppc = 'http://www.go-mono.com/download-stable/sles-9-ppc';
+
+sles9ia64 = "http://www.go-mono.com/download-stable/sles-9-ia64";
+sles9s390 = "http://www.go-mono.com/download-stable/sles-9-s390";
+sles9s390x = "http://www.go-mono.com/download-stable/sles-9-s390x";
+
+sles10i586 = suse101i586;
+sles10x86_64 = suse101x86_64;
+sles10ppc = suse101ppc;
+sles10ia64 = "http://www.go-mono.com/download-stable/sles-10-ia64";
+
+sled10i586 = suse101i586;
+sled10x86_64 = suse101x86_64;
+
+nld9i586 = "http://www.go-mono.com/download-stable/nld-9-i586";
+nld9x86_64 = "http://www.go-mono.com/download-stable/nld-9-x86_64";
+
+function create_download_text(url)
+{
+	suseDownloadText1 = "This distro supports installing packages via YaST (or yum). Add the following installation source to YaST:<ul><li><a href='";
+	suseDownloadText2 = "</a></ul><br>For individual packages, <a href='";
+	suseDownloadText3 = "'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit opensuse.org</a>";
+	
+	return suseDownloadText1 + url + "'>" + url + suseDownloadText2 + url + suseDownloadText3;
+}
 
 var data =
 {
@@ -41,17 +78,18 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-101-i586'>http://www.go-mono.com/download-stable/suse-101-i586" + suseDownloadText2
+				"url" : suse101i586,
+				"downloadText" : create_download_text(suse101i586)
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-101-x86_64'>http://www.go-mono.com/download-stable/suse-101-x86_64" + suseDownloadText2
+				"downloadText" : create_download_text(suse101x86_64)
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-101-ppc'>http://www.go-mono.com/download-stable/suse-101-ppc" + suseDownloadText2
+				"downloadText" : create_download_text(suse101ppc)
 			}
 			]
 		},
@@ -61,17 +99,17 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-102-i586'>http://www.go-mono.com/download-stable/suse-102-i586" + suseDownloadText2
+				"downloadText" : create_download_text(suse102i586)
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-102-x86_64'>http://www.go-mono.com/download-stable/suse-102-x86_64" + suseDownloadText2
+				"downloadText" :  create_download_text(suse102x86_64)
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-102-ppc'>http://www.go-mono.com/download-stable/suse-102-ppc" + suseDownloadText2
+				"downloadText" : create_download_text(suse102ppc)
 			}
 			]
 		},
@@ -81,12 +119,12 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-103-i586'>http://www.go-mono.com/download-stable/suse-103-i586" + suseDownloadText2
+				"downloadText" : create_download_text(suse103i586)
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-103-x86_64'>http://www.go-mono.com/download-stable/suse-103-x86_64" + suseDownloadText2
+				"downloadText" : create_download_text(suse103x86_64)
 			}
 			]
 		}
@@ -104,32 +142,32 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-i586'>http://www.go-mono.com/download-stable/sles-9-i586" + suseDownloadText2
+				"downloadText" : create_download_text(sles9i586)
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-x86_64'>http://www.go-mono.com/download-stable/sles-9-x86_64" + suseDownloadText2
+				"downloadText" : create_download_text(sles9x86_64)
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-ppc'>http://www.go-mono.com/download-stable/sles-9-ppc" + suseDownloadText2
+				"downloadText" : create_download_text(sles9ppc)
 			},
 			{
 				"name" : ia64,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-ia64'>http://www.go-mono.com/download-stable/sles-9-ia64" + suseDownloadText2
+				"downloadText" : create_download_text(sles9ia64)
 			},
 			{
 				"name" : s390,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-s390'>http://www.go-mono.com/download-stable/sles-9-s390" + suseDownloadText2
+				"downloadText" : create_download_text(sles9s390)
 			},
 			{
 				"name" : s390x,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-9-s390x'>http://www.go-mono.com/download-stable/sles-9-s390x" + suseDownloadText2
+				"downloadText" : create_download_text(sles9s390x)
 			}
 			]
 		},
@@ -139,22 +177,22 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-101-i586'>http://www.go-mono.com/download-stable/suse-101-i586" + suseDownloadText2
+				"downloadText" : create_download_text(sles10i586)
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-101-x86_64'>http://www.go-mono.com/download-stable/suse-101-x86_64" + suseDownloadText2
+				"downloadText" : create_download_text(sles10x86_64)
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-101-ppc'>http://www.go-mono.com/download-stable/suse-101-ppc" + suseDownloadText2
+				"downloadText" : create_download_text(sles10ppc)
 			},
 			{
 				"name" : ia64,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/sles-10-ia64'>http://www.go-mono.com/download-stable/sles-10-ia64" + suseDownloadText2
+				"downloadText" : create_download_text(sles10ia64)
 			}
 			]
 		},
@@ -164,12 +202,12 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-101-i586'>http://www.go-mono.com/download-stable/suse-101-i586" + suseDownloadText2
+				"downloadText" : create_download_text(sled10i586)
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/suse-101-x86_64'>http://www.go-mono.com/download-stable/suse-101-x86_64" + suseDownloadText2
+				"downloadText" : create_download_text(sled10x86_64)
 			}
 			]
 		},
@@ -179,12 +217,12 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/nld-9-i586'>http://www.go-mono.com/download-stable/nld-9-i586" + suseDownloadText2
+				"downloadText" : create_download_text(nld9i586)
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : suseDownloadText1 + "http://www.go-mono.com/download-stable/nld-9-x86_64'>http://www.go-mono.com/download-stable/nld-9-x86_64" + suseDownloadText2
+				"downloadText" : create_download_text(nld9x86_64)
 			}
 			]
 		}
