@@ -198,7 +198,7 @@ var data =
 			"arch" : [
 			{
 				"name" : "All",
-				"desc" : "This version of Mono works on all versions of Windows 2000, XP, 2003 and Vista.",
+				"desc" : "This download works on all versions of Windows 2000, XP, 2003 and Vista.",
 				"downloadText" : "Mono for Windows, Gtk#, and XSP <ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/windows-installer/4/mono-1.2.6-gtksharp-2.10.2-win32-4.exe'>Mono 1.2.6_4 Setup</a></ul>Only Gtk# for .NET: <ul><li><a href=' http://forge.novell.com/modules/xfmod/project/?gtks-inst4win'>SDK and Runtime</a></ul>Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>"
 			}
 			]
@@ -216,7 +216,7 @@ var data =
 			"arch" : [
 			{
 				"name" : "All",
-				"desc" : "This version of Mono works on Mac OS X Tiger (10.4) and Leopard (10.5).",
+				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
 				"downloadText" : "Includes Mono, Cocoa#, installs in /Library/Frameworks:<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/macos-10-universal/4/MonoFramework-1.2.6_4.macos10.novell.universal.dmg'>Mono 1.2.6_4 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>"
 			}
 			]
@@ -228,14 +228,14 @@ var data =
 		"name" : "RedHat",
 		"icon" : "http://www.mono-project.com/files/6/6e/Mono_icon_redhat.gif",
 		"dlicon" : "http://www.mono-project.com/files/6/6e/Mono_icon_redhat.gif",
-		"desc" : "This version of Mono works on RedHat Enterprise Linux 4 on x86 32bit (i586).",
+		"desc" : "This download works on RedHat Enterprise Linux 4 on x86 32bit (i586).",
 		"version" : [
 		{
 			"name" : "RedHat Enterprise Linux 4",
 			"arch" : [
 			{
 				"name" : i586,
-				"desc" : "This version of Mono works on RedHat Enterprise Linux 4 on " + i586 + ".",
+				"desc" : "This download works on RedHat Enterprise Linux 4 on " + i586 + ".",
 				"downloadText" : "The downloads are available <a href='http://www.go-mono.com/download-stable/rhel-4-i386'>here</a>."
 			}
 			]
@@ -253,26 +253,8 @@ var data =
 			"arch" : [
 			{
 				"name" : i586,
-				"desc" : "This version of Mono works on most generic Linux's on " + i586 + ".",
+				"desc" : "This download works on most generic Linux's on " + i586 + ".",
 				"downloadText" : "For help with the installation, see: <a href='http://mono-project.com/InstallerInstructions'>Instructions to use the Installer</a>.<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/linux-installer/6/mono-1.2.6_6-installer.bin'>Mono 1.2.6_6 Installer</a></ul>"
-			}
-			]
-		}
-		]
-	},
-
-	{
-		"name" : "Maemo",
-		"icon" : "http://www.mono-project.com/files/a/aa/Maemo.gif",
-		"dlicon" : "http://www.mono-project.com/files/a/aa/Maemo.gif",
-		"version" : [
-		{
-			"name" : "Maemo",
-			"arch" : [
-			{
-				"name" : "Nokia 770 and 800",
-				"desc" : "This version of Mono works on Maemo for the Nokia 770 and 800.",
-				"downloadText" : "For help with the installation, see <a href='http://mono-project.com/Maemo'>Mono for Nokia</a><ul><li><a href='http://go-mono.com/maemo/pool/bora/mono/mono.install'>Mono 1.2.5 Runtime Single Click Install</a><li><a href='http://go-mono.com/maemo/scratchbox-devkit-mono-1.2.3.1-2-i386.tar.gz'>Mono 1.2.3.1 Scratchbox developer kit</a></ul>"
 			}
 			]
 		}
@@ -289,7 +271,7 @@ var data =
 			"arch" : [
 			{
 				"name" : "SPARC",
-				"desc" : "This version of Mono works on Solaris 8 on SPARC.",
+				"desc" : "This download works on Solaris 8 on SPARC.",
 				"downloadText" : "<a href='http://mono-project.com/SolarisInstructions'>Solaris package instructions<ul><li><a href='ftp://www.go-mono.com/archive/1.2.4/sunos-8-sparc/4/mono-1.2.4_4.sunos8.novell.sparc.pkg.gz'>Mono 1.2.4_4 Package</a></ul>"
 			}
 			]

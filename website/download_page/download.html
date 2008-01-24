@@ -148,10 +148,10 @@ function download_step(step_number, os_num, ver_num, arch_num)
 				<!--  BEGIN CONTENT -->
 
 <div id="download_box" style="display:none">
-<table width="910" cellpadding="0" cellspacing="0">
+<table cellpadding="0" cellspacing="0">
 <tr height="11">
 <td width="9" class="dl-tableborder"><img src='top_left.jpg'></td>
-<td width="800" class="dl-tableborder" style="background-image:url('top_middle.jpg');"></td>
+<td class="dl-tableborder" style="background-image:url('top_middle.jpg');"></td>
 <td width="9" class="dl-tableborder"><img src='top_right.jpg'></td>
 </tr>
 
@@ -231,10 +231,13 @@ Can't find the specific download you want? We have some
 </p>
 
 </div>
+
 <div id="needs_javascript"><br><br><h1>Error: This page needs JavaScript</h1></div>
 <script type="text/javascript">
+// <!--
 	document.getElementById("needs_javascript").style.display = "none";
 	document.getElementById("download_box").style.display = "";
+// -->
 </script>
 
 				<!--  END CONTENT -->
