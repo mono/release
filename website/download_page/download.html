@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
 <title>Mono Downloads</title>
@@ -127,7 +126,11 @@ function arch_step(os_num, os_version)
 function download_step(step_number, os_num, ver_num, arch_num)
 {
 	var html = "<h2>" + step_number + ". Download Mono for "+ data.platforms[os_num].name + "</h2>";
-	html += "<br><table><tr><td colspan='2'>" + data.platforms[os_num].version[ver_num].arch[arch_num].desc + "</tr>";
+	html += "<br><table>";
+	if (data.platforms[os_num].version[ver_num].arch[arch_num].desc != "")
+	{
+		html += "<tr><td colspan='2'>" + data.platforms[os_num].version[ver_num].arch[arch_num].desc + "</tr>";
+	}
 	html += "<tr><td class='osicon'><img class='osicon' src='" + data.platforms[os_num].dlicon + "'></td><td>";
 	html +=  data.platforms[os_num].version[ver_num].arch[arch_num].downloadText;
 	//html += "<td>Mono for Windows, Gtk#, and XSP";
