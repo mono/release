@@ -236,7 +236,8 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "This download works on RedHat Enterprise Linux 4 on " + i586 + ".",
-				"downloadText" : "The downloads are available <a href='http://www.go-mono.com/download-stable/rhel-4-i386'>here</a>."
+				//"downloadText" : "The downloads are available <a href='http://www.go-mono.com/download-stable/rhel-4-i386'>here</a>."
+				"downloadText" : "The prefered method for installing Mono on RedHat is to use yum. Once yum is installed, putting the <a href='http://www.go-mono.com/download-stable/rhel-4-i386/mono.repo'>mono.repo</a> file in /etc/yum.repos.d will allow you to install mono and related packages.<br><br>For individual packages, <a href='http://www.go-mono.com/download-stable/rhel-4-i386'>go here</a>.<br><br>Note: You can get yum for RHEL from the <a href='http://www.centos.org/'>CentOS project</a>."
 			}
 			]
 		}
