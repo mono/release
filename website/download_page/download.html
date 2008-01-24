@@ -7,29 +7,12 @@
 
 <script type="text/javascript" src="release_data.js"></script>
 <script type="text/javascript">
-var num_os = 9;
-var windows = 0;
-var macosx = 1;
-var suse = 2;
-var sle = 3;
-var redhat = 4;
-var linux = 5;
-var maemo = 6;
-var solaris = 7;
-var vmware = 8;
-var i586 = "x86 32bit (i586)";
-var x86_64 = "x86 64bit (x86_64)";
-var ppc = "PowerPC 32bit (ppc32)";
-var ia64 = "Itanium (ia64)";
-var s390 = "IBM s390 32bit";
-var s390x = "IBM s390x 64bit";
-
 
 function loadpage()
 {
    //window.status = "Page is loaded";
 	/* Unselect other items */
-	for (i = 0; i < num_os; i++)
+	for (i = 0; i < data.platforms.length; i++)
 	{
 		document.getElementById("td"+i).style.background = "none";
 		document.getElementById("td"+i).style.border = "1px solid #ffffff";
@@ -164,7 +147,7 @@ function download_step(step_number, os_num, ver_num, arch_num)
                 <div id="content">
 				<!--  BEGIN CONTENT -->
 
-
+<div id="download_box" style="display:none">
 <table width="910" cellpadding="0" cellspacing="0">
 <tr height="11">
 <td width="9" class="dl-tableborder"><img src='top_left.jpg'></td>
@@ -195,6 +178,7 @@ function download_step(step_number, os_num, ver_num, arch_num)
 
 </script>
 </td></tr></table>
+
 
 
 
@@ -245,6 +229,13 @@ function download_step(step_number, os_num, ver_num, arch_num)
 Can't find the specific download you want? We have some 
 <a href="http://www.mono-project.com/Other_Downloads">unsupported downloads</a> you might be interested in.
 </p>
+
+</div>
+<div id="needs_javascript"><br><br><h1>Error: This page needs JavaScript</h1></div>
+<script type="text/javascript">
+	document.getElementById("needs_javascript").style.display = "none";
+	document.getElementById("download_box").style.display = "";
+</script>
 
 				<!--  END CONTENT -->
                 </div>
