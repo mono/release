@@ -79,6 +79,8 @@ env.write('MANPATH="%s/share/man:%s/man:$MANPATH"\n' % (reloc, reloc))
 # This is for macos
 # NOTE: This shouldn't be used... generally using this var on macos is a bad idea
 #env.write('DYLD_LIBRARY_PATH=%s/lib\n' % (reloc) )
+# man dyld
+#  DYLD_FALLBACK_LIBRARY_PATH (will avoid conflicts)
 
 # Use this method for older shells
 env.write('export PKG_CONFIG_PATH PATH LDFLAGS CPPFLAGS LD_LIBRARY_PATH MANPATH\n')
@@ -103,6 +105,8 @@ env.write('setenv MANPATH "%s/share/man:%s/man:$MANPATH"\n' % (reloc, reloc))
 env.close()
 os.chmod('env.csh', 0755)
 
+mac_prefix_regex = "/Library/Frameworks/Mono.framework/Versions/.*?"
+
 # Fake out .la files (for solaris, win32 doesn't seem to need this
 parameter_map = {}
 parameter_map[re.compile("^libdir=.*", re.M)] = "libdir='" + reloc + "/lib'"
@@ -110,6 +114,8 @@ parameter_map[re.compile("/usr/local")] = reloc
 parameter_map[re.compile("/opt/csw")] = reloc
 parameter_map[re.compile("/tmp/install")] = reloc
 parameter_map[re.compile("/tmp/build_deps")] = reloc
+parameter_map[re.compile("/tmp/build_deps")] = reloc
+parameter_map[re.compile(mac_prefix_regex + "/")] = reloc + "/"
 
 for root, dirs, files in os.walk('.'):
 	for file in files:
@@ -137,17 +143,19 @@ parameter_map = {}
 # For packages we build
 parameter_map[re.compile("/tmp/install")] = reloc
 # For mac builds
-mac_prefix_regex = "/Library/Frameworks/Mono.framework/Versions/.*?"
 parameter_map[re.compile(mac_prefix_regex + "/")] = reloc + "/"
 # For solaris builds
 parameter_map[re.compile("/opt/mono")] = reloc
 # For packages we consume (noarch rpms)
 parameter_map[re.compile("/usr")] = reloc
 
+# Monodevelop on Mac references the mono it was built with.  Replace it.
+parameter_map[re.compile("/tmp/build_deps")] = reloc
+
 for root, dirs, files in os.walk('bin'):
 	for file in files:
 		# Search and replace in all files containing #!/bin/sh and /tmp/install
-		utils.substitute_parameters_in_file(os.path.join(root, file), parameter_map, qualifier=re.compile('#!/bin/sh.*(/tmp/install|/usr|/Library/Framework|/opt/mono)', re.M | re.DOTALL))
+		utils.substitute_parameters_in_file(os.path.join(root, file), parameter_map, qualifier=re.compile('#!/bin/(ba)?sh.*(/tmp/install|/usr|/Library/Framework|/opt/mono)', re.M | re.DOTALL))
 
 # Relocate any .config files with our custom prefix
 #  (This was done so that the swf and sd .config files on mac could be used both in testing sd/swf inside monobuild as well as in the installer)
@@ -173,7 +181,7 @@ for root, dirs, files in os.walk('.'):
 			utils.substitute_parameters_in_file(os.path.join(root, file), parameter_map)
 
 # Relocate files on macos
-print "Relocating dylib files..."
+print "Relocating mach-o files (mac)..."
 # for all of the .dylib files
 # Notes from http://www.opendarwin.org/pipermail/darwinports/2004-August/021704.html
 #  So, each dylib needs to change the reference to itself using:
@@ -182,22 +190,15 @@ print "Relocating dylib files..."
 # And then each reference to a symbol that was in /tmp/install needs to be updated using
 #  install_name_tool -change <old> <new> <file>
 
-for root, dirs, files in os.walk('.'):
-	for file in files:
-		path_on_disk = root + os.sep + file
-		# Do this on dylib files as well as the files in bin
-		if ( re.compile('\.dylib$').search(file) or root == "./bin" ) and not os.path.islink(path_on_disk):
+full_filelist, native_filelist = utils.get_mac_filelists(include_ar_files=False)
+
+# Only look at mach-o files
+for path_on_disk in native_filelist:
 
 			utils.debug=0
 
-			old_filename = os.path.abspath('/tmp/install/%s/%s' % (root, file) )
+			old_filename = os.path.abspath('/tmp/install/%s' % (path_on_disk) )
 			new_filename = os.path.abspath( re.sub('/tmp/install', reloc, old_filename) )
-
-			(code, output) = utils.launch_process('otool -L %s' % path_on_disk, print_output=0)
-
-			# Skip non object files or if otool failed (doesn't exist)
-			if re.compile('is not an object file', re.M).search(output) or code:
-				continue
 
 			print 'Relocating %s' % path_on_disk
 			utils.launch_process('install_name_tool -id %s %s' % (new_filename, path_on_disk ) )

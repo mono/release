@@ -8,7 +8,7 @@ import shutil
 import distutils.dir_util
 import distutils.file_util
 
-import pdb
+import utils
 
 try:
 	(script, distro1, distro2, dest_dir) = sys.argv
@@ -22,29 +22,8 @@ except:
 
 os.chdir('PKGROOT_' + distro1)
 
-candidate_filelist = []
-full_filelist = []
-print "Gathering filelist..."
-# Get a list of all files (which are not symlinks)
-for root, dirs, files in os.walk('.'):
-        for file in files:
-		full_path = root + os.sep + file
-		full_filelist.append(full_path)
-		if os.path.isfile(full_path) and not os.path.islink(full_path):
-			candidate_filelist.append(full_path)
-
-# Get report from 'file' as to file types
-(code, output) = commands.getstatusoutput('file ' + ' '.join(candidate_filelist))
-
-# Find which files are native
-print "Determining native files..."
-native_reg = re.compile('(.*):.*(Mach-O|ar archive)')
-native_files = []
-for match in native_reg.finditer(output):
-	native_files.append(match.group(1))
-
-native_files.sort()
-print "\n".join(native_files)
+print "Gathering filelists..."
+full_filelist, native_files = utils.get_mac_filelists()
 
 os.chdir('..')
 

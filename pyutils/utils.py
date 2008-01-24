@@ -700,4 +700,49 @@ def get_dict_var(key, dict_hash):
 	if dict_hash.has_key(key):
 		return_val = dict_hash[key]
 	return return_val
+
+def get_mac_filelists(include_ar_files=True):
+	"""Return 2 lists: full filelist (excluding directories), mach-o filelist.  Each from current dir"""
+
+	# Used both in do-install-zip-pkg and universal merge.  Consolidate here.
+
+	full_filelist = []
+	native_filelist = []
+
+	candidate_filelist = []
+
+	# Max files to pass on the command line (croaks if it's too long)
+	max_num_files = 1000
+
+	# Get a list of all files (which are not symlinks)
+	for root, dirs, files in os.walk('.'):
+		for file in files:
+			full_path = root + os.sep + file
+			full_filelist.append(full_path)
+			if os.path.isfile(full_path) and not os.path.islink(full_path):
+				candidate_filelist.append(full_path)
+
+	# Get report from 'file' as to file types
+	filelist_string = ""
+	final_output = ""
+	while len(candidate_filelist):
+		(code, output) = launch_process('file ' + ' '.join(candidate_filelist[:max_num_files]), print_output=0)
+		final_output += "\n" + output
+
+		# Remove them from the list
+		candidate_filelist = candidate_filelist[max_num_files:]
+
+	# Find which files are native
+	if include_ar_files:
+		native_reg = re.compile('(.*):.*(Mach-O|ar archive)')
+	else:   
+		native_reg = re.compile('(.*):.*Mach-O')
+	for match in native_reg.finditer(final_output):
+		native_filelist.append(match.group(1))
+
+	full_filelist.sort()
+	native_filelist.sort()
+
+	return full_filelist, native_filelist
+
  
