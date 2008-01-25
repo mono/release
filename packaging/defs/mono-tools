@@ -5,8 +5,6 @@ BUILD_HOSTS=(
 )
 
 USE_HOSTS=(
-	nld-9-i586
-	nld-9-x86_64
 	rhel-4-i386
 	sles-10-ia64
 	suse-101-i586

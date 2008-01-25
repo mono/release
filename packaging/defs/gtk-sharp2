@@ -5,7 +5,6 @@ def_alias="gtk-sharp"
 version_selection_reg="2\.4\.\d+"
 
 BUILD_HOSTS=(
-	nld-9-i586
 	rhel-4-i386
 )
 
