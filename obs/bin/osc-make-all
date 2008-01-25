@@ -1,0 +1,66 @@
+#!/bin/sh
+#
+# Marc Christensen <mchristensen@novell.com>
+# 
+# Builds a package on all supported its distributions
+#
+
+# Include some pretty colors and functions that use them
+. ~/bin/include/colors
+
+# Get the name of out spec file.
+# This script expects to work with one spec file that has
+# the name of the project (should be the current direcory's
+# name followed by '.spec').
+SPEC_FILE=$(basename $(pwd)).spec
+
+# make a new timestamp file so we know which RPMs were made
+# during this run of the script.
+TM_STAMP=/tmp/make_all_tmstmp
+[ -f $TM_STAMP ] && rm $TM_STAMP
+touch $TM_STAMP
+
+# Create a new failed log
+FAILED_LOG=/tmp/make_all_failed
+[ -f $FAILED_LOG ] && rm $FAILED_LOG 
+touch $FAILED_LOG
+
+if [ ! -f ${SPEC_FILE} ]; then
+   echo
+   echo "A proper spec file could not be found. You must exicute this script from"
+   echo "within the package's directory.  Exiting"
+   echo
+   exit 1
+fi 
+
+# Build on each platform
+osc build 2> /dev/null | sed -e '/^[[:space:]]*$/,/^[[:space:]]*$/d' |
+while read I;
+do 
+   MYDIST=$(echo ${I} | sed -e 's@[[:space:]][[:space:]]*@ @g')
+   MYDISTUND=$(echo ${I} | sed -e 's@[[:space:]][[:space:]]*@_@g')
+   BUILD_LOG="/var/tmp/${MYDISTUND}-build.log"
+   echo 
+   echo "#############################################"
+   echo "Exicuting the following command:"
+   echo "osc build ${MYDIST} ${SPEC_FILE}"
+   osc build ${I} ${SPEC_FILE} > ${BUILD_LOG} 2>&1
+   if ! (tail -50 $BUILD_LOG | grep -E "/var/tmp/build-root.*/usr/src/(redhat|packages)/.*rpm"); then
+      echo "${MYDIST} build failed, check ${BUILD_LOG}" >> $FAILED_LOG
+      echo_in_red "${MYDIST} build failed, check ${BUILD_LOG}" 
+   else
+      echo_in_green "${MYDIST} build succeeded!"
+   fi
+done
+
+# Find the RPMs that were built
+echo 
+echo The following RPMs were built:
+echo
+find /var/tmp/build-root-Mono_*/usr/src/packages -cnewer $TM_STAMP -iname "*rpm"
+rm $TM_STAMP
+echo
+echo_in_red "The following builds failed:"
+echo 
+cat $FAILED_LOG
+echo

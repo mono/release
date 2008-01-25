@@ -1,0 +1,234 @@
+# Author: Thomas Wiest
+# Copyright (C) Novell Inc. 2007
+# Licence: GPL v2
+#
+# Initialize the color vars
+ESC=$(echo -e '\e')
+ENORM="${ESC}[0m"
+EBOLD="${ESC}[1m"
+EUNDERLINE="${ESC}[4m"
+EBLINK="${ESC}[5m"
+EREVVID="${ESC}[7m"
+EBLACK="${ESC}[30m"
+ERED="${ESC}[31m"
+EGREEN="${ESC}[32m"
+EYELLOW="${EBOLD}${ESC}[33m"
+EBLUE="${ESC}[34m"
+EMAGENTA="${ESC}[35m"
+ECYAN="${ESC}[36m"
+EWHITE="${ESC}[37m"
+
+function echo_in_blue()
+{
+        if [ "$1" != "" ] 
+        then
+                echo "${EBLUE}${1}${ENORM}"
+        fi
+}
+
+function echo_in_green()
+{
+        if [ "$1" != "" ] 
+        then
+                echo "${EGREEN}${1}${ENORM}"
+        fi
+}
+
+function echo_in_green_and_blink()
+{
+        if [ "$1" != "" ] 
+        then
+                echo "${EGREEN}${EBLINK}${1}${ENORM}"
+        fi
+}
+
+function echo_in_yellow()
+{
+        if [ "$1" != "" ] 
+        then
+                echo "${EYELLOW}${1}${ENORM}"
+        fi
+}
+
+function echo_in_red()
+{
+        if [ "$1" != "" ] 
+        then
+                echo "${ERED}${1}${ENORM}"
+        fi
+}
+
+function echo_passed()
+{
+        echo_in_green "Done."
+}
+
+function echo_passed_w_periods()
+{
+	echo
+	echo_w_periods "$1"
+	echo_passed
+}
+
+function echo_failed()
+{
+	echo "${ERED}${EBLINK}FAILED!${ENORM}"
+	if [ "$1" != "" ] && [ -f "$1" ]
+	then
+		echo "${ERED}$(cat $1)${ENORM}"
+		echo
+	fi
+}
+
+function echo_failed_n_exit()
+{
+	echo_failed "$1"
+
+	echo "Exiting..."
+	exit
+}
+
+function echo_failed_n_exit_w_periods()
+{
+	echo
+	echo_w_periods "$1"
+	echo_failed_n_exit
+}
+
+function echo_dash_line_by_size()
+{
+	echo_dash_line ${#1}
+}
+
+function echo_line()
+{
+	# $1 - Char
+	# $2 - How many
+
+	if [ "$2" != "" ]
+	then
+		for IX in $(seq $2)
+		do
+			echo -n "$1"
+		done
+	fi
+}
+
+function echo_dash_line()
+{
+	if [ "$1" != "" ]
+	then
+		echo_line '-' "$1"
+	fi
+}
+
+function echo_in_center()
+{
+	# $1 - Padding Char
+	# $2 - string
+	# $3 - total length with padding
+	
+	STRLEN=${#2}
+
+	if [ $STRLEN -gt $3 ]
+	then
+		STRLEN=${STRLEN:0:$3}
+	fi
+
+	STRLEN=$((STRLEN / 2))
+	ISSTRODD=$((${#2} % 2))
+
+
+	LINELEN=$3
+	LINELEN=$((LINELEN / 2))
+
+	LINELEN=$((LINELEN - $STRLEN))
+
+	if [ $ISSTRODD -eq 1 ]
+	then
+		LINELEN=$((LINELEN - 1))
+	fi
+
+	echo_line "$1" "$LINELEN"
+	echo -n $2
+	LINELEN=$((LINELEN - 1))
+	echo_line "$1" "$LINELEN"
+
+	if [ $ISSTRODD -eq 1 ]
+	then
+		echo -n "$1"
+	fi
+}
+
+function echo_in_center_of_dash_line()
+{
+	echo_in_center "-" "$1" "$2"
+}
+
+function echo_in_box()
+{
+	if [ -n "$1" ]
+	then
+		local PARAMLEN=${#1}
+		local DASHLEN=$((PARAMLEN+2))
+		local IX=
+
+		echo -n " "
+		echo_dash_line $DASHLEN
+		echo
+		echo "| $1 |"
+		echo -n " "
+		echo_dash_line $DASHLEN
+		echo
+	fi
+}
+
+function echo_w_periods()
+{
+	local PARAM1="$1"
+	local COUNTER2=
+	local NUMPRDS=
+	local IXLEN=
+
+	if [ "$MAXLEN" == "" ]
+	then
+		local MAXLEN=65
+	fi
+
+	if [ "$PARAM1" != "" ]
+	then
+		echo -n "$PARAM1"
+		IXLEN=${#PARAM1}
+		let NUMPRDS=$((MAXLEN-IXLEN))
+		for COUNTER2 in $(seq $NUMPRDS)
+		do
+			echo -n "."
+		done
+
+		echo -n " "
+	else
+		for COUNTER2 in $(seq $MAXLEN)
+		do
+			echo -n "."
+		done
+	fi
+}
+
+function unset_colors()
+{
+	ESC=
+	ENORM=
+	EBOLD=
+	EUNDERLINE=
+	EBLINK=
+	EREVVID=
+	EBLACK=
+	ERED=
+	EGREEN=
+	EYELLOW=
+	EBLUE=
+	EMAGENTA=
+	ECYAN=
+	EWHITE=
+}
+
