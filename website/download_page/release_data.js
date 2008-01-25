@@ -96,7 +96,7 @@ var data =
 		"dlicon" : "sles.jpg",
 		"version" : [
 		{
-			"name" : "Suse Linux Enterprise Server 9 (SLES)",
+			"name" : "Suse Linux Enterprise Server 9",
 			"arch" : [
 			{
 				"name" : i586,
@@ -131,7 +131,7 @@ var data =
 			]
 		},
 		{
-			"name" : "Suse Linux Enterprise Server 10 (SLES)",
+			"name" : "Suse Linux Enterprise Server 10",
 			"arch" : [
 			{
 				"name" : i586,
@@ -156,7 +156,7 @@ var data =
 			]
 		},
 		{
-			"name" : "Suse Linux Enterprise Desktop 10 (SLED)",
+			"name" : "Suse Linux Enterprise Desktop 10",
 			"arch" : [
 			{
 				"name" : i586,
@@ -171,7 +171,7 @@ var data =
 			]
 		},
 		{
-			"name" : "Novell Linux Desktop 9 (NLD)",
+			"name" : "Novell Linux Desktop 9",
 			"arch" : [
 			{
 				"name" : i586,
