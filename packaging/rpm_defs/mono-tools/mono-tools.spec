@@ -62,6 +62,7 @@ Authors:
 
 %_prefix/share/applications/ilcontrast.desktop
 %_prefix/lib/ilcontrast
+%_prefix/lib/gui-compare
 %_prefix/share/pixmaps/ilcontrast.png
 
 %prep
