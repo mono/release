@@ -179,6 +179,8 @@ Authors:
 %_prefix/lib/mono/2.0/System.Xml.dll
 %_prefix/lib/mono/gac/System.Xml.Core
 %_prefix/lib/mono/2.1/System.Xml.Core.dll
+%_prefix/lib/mono/gac/System.Xml.Linq
+%_prefix/lib/mono/3.5/System.Xml.Linq.dll
 %_prefix/lib/mono/gac/System
 %_prefix/lib/mono/1.0/System.dll
 %_prefix/lib/mono/2.0/System.dll
@@ -200,6 +202,7 @@ Authors:
 %config %_sysconfdir/mono/config
 %config %_sysconfdir/mono/1.0/machine.config
 %config %_sysconfdir/mono/2.0/machine.config
+%config %_sysconfdir/mono/2.0/settings.map
 %_prefix/lib/mono/gac/Mono.C5
 %_prefix/lib/mono/2.0/Mono.C5.dll
 # ikvm helper
@@ -823,6 +826,8 @@ Authors:
 %_prefix/lib/mono/1.0/ilasm.exe*
 %_prefix/lib/mono/2.0/ilasm.exe*
 %_prefix/lib/mono/1.0/installvst.exe*
+%_prefix/lib/mono/1.0/installutil.exe*
+%_prefix/lib/mono/2.0/installutil.exe*
 %_prefix/lib/mono/1.0/mkbundle.exe*
 %_prefix/lib/mono/2.0/mkbundle.exe*
 %_prefix/lib/mono/1.0/monop.exe*

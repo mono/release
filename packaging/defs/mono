@@ -354,14 +354,8 @@ POSTBUILD_STEP4 () {
 # Separate 1.0 and 2.0 profiles into different steps
 POSTBUILD_STEP_NAME5="test-cas"
 POSTBUILD_STEP5 () {
-	# These hang the tests on sles-9-ia64, so skip for now...
-	if test x$DISTRO != xsles-9-ia64 ; then
-		cd mono/tests/cas
-		$make_path -k test
-	else
-		echo "Skipping..."
-		false
-	fi
+	cd mono/tests/cas
+	$make_path -k test
 }
 
 POSTBUILD_STEP_NAME6="test-swf"
