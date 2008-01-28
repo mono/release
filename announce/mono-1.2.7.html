@@ -43,6 +43,11 @@
 
 <h2>Major Highlights</h2>
 
+	<p>This version fixes a bug in reflection that affects
+	existing Gtk# deployments;   To install this release you
+	should install the new version of Gtk# (released at the same
+	time as Mono).
+	
 	<p>Silverlight support is now enabled by default.
 	
 <a name="changes">
@@ -72,7 +77,8 @@
 
 <h2>Windows.Forms</h2>
 
-	<p>Improved native OSX driver for Windows Forms [Geoff].
+	<p>Improved native OSX driver for Windows Forms (Drag and
+	Drop, enhanced keyboard drivers) [Geoff].
 
 	<p>
 
@@ -80,6 +86,20 @@
 
 	<p>
 
+<h2>Visual Basic Runtime</h2>
+
+	<p>More support in the IO classes for Visual Basic [Rolf]
+
+<h2>mod_mono, xsp</h2>
+
+	<p>New support for controlling the number of requests that are
+	passed to the mod-mono-server process.   If you have not
+	changed the number of threads in the Mono thread pool, this
+	can help you prevent deadlocks caused to the Mono ThreadPool
+	getting exhausted by incoming HTTP connections ([Joshua]).
+
+	<p>This is controlled with two new Apache directives:
+	"MonoMaxActiveRequests" and "MonoMaxWaitingRequests". 
 CONFIRM BEFORE RELEASE:
 
 	<p>Completed verifier for 1.0 CIL bytecode [Rodrigo].
