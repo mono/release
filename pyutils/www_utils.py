@@ -14,8 +14,16 @@ def sanitize_args(args):
 	new_args = {}
 
 	for k,v in args.iteritems():
+
 		# Replace all non-safe chars with a period
-		new_args[safe_arg_reg.sub(".", k)] =  safe_arg_reg.sub(".", v)
+		k = safe_arg_reg.sub(".", k)
+		v = safe_arg_reg.sub(".", v)
+
+		# Convert '..' parent dir to underscores
+		k = k.replace("..", "__")
+		v = v.replace("..", "__")
+
+		new_args[k] = v
 
 	return new_args
 		

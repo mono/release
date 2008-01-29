@@ -398,3 +398,73 @@ def packagestatus(req, **vars):
 	</body>
 	</html>""")
 
+
+def download_latest(req, **vars):
+
+	# Validate/sanitize args to catch some common security errors
+	vars = www_utils.sanitize_args(vars)
+
+	try:
+		platform = vars['platform']
+		package = vars['package']
+		HEAD_or_RELEASE = vars['HEAD_or_RELEASE']
+	except KeyError:
+		return "Invalid arguments"
+
+	# If this is for a test step, use 'steps' instead of 'downloads', and also append the step name
+	if vars.has_key('step'):
+		step = 'steps/' + vars['step']
+	else:   step = "downloads"
+
+	# We can point to a filename instead of a dir listing
+	if vars.has_key('filename'):
+		filename = "/" + vars['filename']
+	else:   filename = ""
+
+	# Flag to allow 'failed' builds
+	if vars.has_key('allow_failures'):
+		allow_failures = vars['allow_failures']
+	else:   allow_failures = "1"
+
+	# TODO: should probably trim this down a bit... otherwise we're going to get a LOT of versions for some things
+	#  It will probably be ok to do on mono.ximian.com, but maybe not the main host
+	versions = build.get_versions(HEAD_or_RELEASE, platform, package)
+	versions.reverse()
+
+	download_link = ""
+	download_file = ""
+
+	for version in versions:
+
+		build_info = datastore.build_info(HEAD_or_RELEASE, platform, package, version)
+
+		# Skip this version if it failed when we don't allow failures
+		if allow_failures == "0" and build_info.get_collective_state() != "success": continue
+
+		temp_rel_path =  os.path.join(build_info.rel_files_dir, "files", step) + filename
+
+		# Make sure path or file exists
+		if os.path.exists(os.path.join(config.web_root_dir, 'builds', temp_rel_path)):
+
+			download_file = os.path.join(config.build_info_url, temp_rel_path)
+
+			download_link = '<a href="%s">Download %s</a>' % (download_file, version)
+			break
+
+
+	if download_file:
+		# Redirect client
+		req.headers_out['Location'] = download_file
+		req.status = 302
+
+		# Print out a link just in case the browser doesn't redirect
+		req.content_type = "text/html"
+		req.write(doc_type)
+		req.write(download_link)
+
+	else:
+		# Sent 404 error message since no valid download was found
+		req.status = 404
+		req.content_type = "text/plain"
+		req.write("File not found")
+
