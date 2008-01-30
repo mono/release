@@ -1,5 +1,5 @@
 username=builder
-hostname=mono-itanium.boston.ximian.com
+hostname=ia64-linux-1.mono.lab.novell.com
 root_dir=/jails/sles-10-ia64
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"
