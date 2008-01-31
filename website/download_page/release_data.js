@@ -245,7 +245,7 @@ var data =
 	},
 
 	{
-		"name" : "Other&nbsp;Linux's",
+		"name" : "Other&nbsp;Linuxes",
 		"icon" : "linux.jpg",
 		"dlicon" : "linux.jpg",
 		"version" : [
@@ -254,7 +254,7 @@ var data =
 			"arch" : [
 			{
 				"name" : i586,
-				"desc" : "This download works on most generic Linux's on " + i586 + ".",
+				"desc" : "This download works on most generic Linuxes on " + i586 + ".",
 				"downloadText" : "For help with the installation, see: <a href='http://mono-project.com/InstallerInstructions'>Instructions to use the Installer</a>.<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/linux-installer/6/mono-1.2.6_6-installer.bin'>Mono 1.2.6_6 Installer</a></ul>"
 			}
 			]
