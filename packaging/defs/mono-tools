@@ -51,5 +51,5 @@ POSTBUILD_STEP1 () {
 }
 
 update_version_file () {
-	        sed -i "s/\(AC_INIT.*, \).*,/\1$VERSION,/" configure.in
+	        sed -i "s/\(AC_INIT(\[.*\], \[\).*\(\])\)/\1$VERSION\2/" configure.in
 }
