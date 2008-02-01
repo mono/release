@@ -45,6 +45,7 @@ Authors:
     John Luke <jluke@cfl.rr.com>
     Ben Maurer
     Duncan Mak <duncan@ximian.com>
+    Sebastien Pouliot <sebastien@ximian.com>
 
 
 %files -f %{name}.lang
@@ -59,6 +60,10 @@ Authors:
 %_prefix/share/create-native-map
 %_prefix/share/pkgconfig/create-native-map.pc
 %_mandir/man1/create-native-map*
+
+%_prefix/lib/gendarme
+%_prefix/share/pkgconfig/gendarme-framework.pc
+%_mandir/man1/gendarme*
 
 %_prefix/share/applications/ilcontrast.desktop
 %_prefix/lib/ilcontrast

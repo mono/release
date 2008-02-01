@@ -44,3 +44,6 @@ RELEASE_PATH=(
 	tags/mono-[[version]]/mono-tools
 )
 
+update_version_file () {
+	        sed -i "s/\(AC_INIT.*, \).*,/\1$VERSION,/" configure.in
+}
