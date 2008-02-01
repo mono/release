@@ -46,7 +46,7 @@ RELEASE_PATH=(
 
 POSTBUILD_STEP_NAME1="test-gendarme"
 POSTBUILD_STEP1 () {
-	cd mono-tools/gendarme
+	cd gendarme
 	$make_path run-test
 }
 
