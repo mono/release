@@ -530,7 +530,7 @@ class package:
 
 
 	# Get all url deps, as well as mono_deps zip/rpms files, and their url deps
-	def get_dep_files(self, build_deps=False, recommend_deps=False, source_deps=False):
+	def get_dep_files(self, build_deps=False, recommend_deps=False, source_deps=False, zip_runtime_deps=False):
 		files = []
 
 		url_dest = config.packaging_dir + os.sep + 'external_zip_pkg'
@@ -557,12 +557,18 @@ class package:
 			files += package.get_files(fail_on_missing=fail_flag)
 
 			# Get url files
-			for url in package.get_distro_zip_deps():
+			urls = package.get_distro_zip_deps()
+			if zip_runtime_deps:
+				urls += package.get_distro_zip_runtime_deps()
+			for url in urls:
 				files += [ url_dest + os.sep + os.path.basename(url) ]
 				utils.get_url(url, url_dest)
 
 		# Get url files
-		for url in self.get_distro_zip_deps():
+		urls = self.get_distro_zip_deps()
+		if zip_runtime_deps:
+			urls += self.get_distro_zip_runtime_deps()
+		for url in urls:
 			files += [ url_dest + os.sep + os.path.basename(url) ]
 			utils.get_url(url, url_dest)
 

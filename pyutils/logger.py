@@ -50,7 +50,9 @@ class Logger:
 			# Append extension
 			self.full_path = self.full_path + ".gz"
 			if self.print_file:
-				self.fd = gzip.open(self.full_path, 'a')
+				# Truncate instead of append, because apache doesn't send anything that has been appended
+				#  (maybe apache stops at EOF?, even though there could be more data?)
+				self.fd = gzip.open(self.full_path, 'w')
 		else:
 			if self.print_file:
 				self.fd = open(self.full_path, 'a')

@@ -40,9 +40,7 @@ temp_dir = build_location + os.sep + 'build'
 # Load in package info
 execfile(def_filename)
 
-if os.path.exists(temp_dir):
-	shutil.rmtree(temp_dir)
-os.mkdir(temp_dir)
+if not os.path.exists(temp_dir): os.mkdir(temp_dir)
 os.chdir(temp_dir)
 
 if not BUILD_HOSTS.count(distro):
@@ -50,8 +48,7 @@ if not BUILD_HOSTS.count(distro):
 
 built_packages = []
 
-if os.path.exists('built-packages'): shutil.rmtree('built-packages')
-os.mkdir('built-packages')
+if not os.path.exists('built-packages'): os.mkdir('built-packages')
 if not os.path.exists('sources'): os.mkdir('sources')
 
 for pack in packages:
@@ -107,6 +104,16 @@ for pack in packages:
 		utils.get_url(pack['source'], '../sources')
 		source = utils.unpack_source('../sources/' + os.path.basename(pack['source']), tar_path=conf.get_info_var('tar_path'))
 		os.chdir(source)
+
+		# Run a pre command if there is one
+		pre_command = utils.get_dict_var('pre', pack)
+		if pre_command:
+			print " --- Pre Build: " + pack['name'] + " ---"
+			code, output = utils.launch_process(env_string + pre_command)
+
+			if code:
+				print "Error running pre command for " + pack['name']
+				sys.exit(1)
 
 		print " --- Building: " + pack['name'] + " ---"
 		code, output = utils.launch_process(env_string + script)

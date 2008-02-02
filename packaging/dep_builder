@@ -1,30 +1,38 @@
 #!/usr/bin/env python
 
 import sys
+import getopt
 
-import pdb
-
-sys.path+=['../pyutils']
+sys.path.append('../pyutils')
 
 import packaging
+import logger
 
-if len(sys.argv) < 4:
-        print "Usage: dep_builder <jail> <dep_def filename> <release>"
+noclean = False
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "noclean" ])
+for option, value in opts:
+        if option == "--noclean":
+                noclean = True
+
+try:
+	(jail, def_filename, release) = remaining_args
+except:
+        print "Usage: dep_builder [ --noclean ] <jail> <dep_def filename> <release>"
+        print "  where --noclean will skip successful builds"
         sys.exit(1)
-
-jail = sys.argv[1]
-def_filename = sys.argv[2]
-release = sys.argv[3]
 
 conf = packaging.buildconf(jail)
 
 build_location = conf.env_vars['build_location']
 
-#pdb.set_trace()
+# Clean up
+if not noclean:
+	conf.buildenv.remove_path(build_location + "/build")
 
 conf.buildenv.copy_to(['do-dep-build', 'dep_defs/' + def_filename, '../pyutils/*.py', 'do-install-zip-pkgs', '../pyutils/rpm2cpio.py', 'conf/' + jail], build_location)
 
-code, output = conf.buildenv.execute_command('%s/do-dep-build %s %s %s' % (build_location, jail, def_filename, release) )
+log_obj = logger.Logger(filename="logs/%s.%s.log" % (def_filename, jail))
+code, output = conf.buildenv.execute_command('%s/do-dep-build %s %s %s' % (build_location, jail, def_filename, release), my_logger=log_obj )
 
 if code:
 	print "Error building deps..."
