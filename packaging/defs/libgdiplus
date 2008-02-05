@@ -136,6 +136,24 @@ Libs: -L\${libdir} -lfontconfig -lexpat
 Cflags: -I\${includedir}
 EOF
 
+
+	# fake freetype2.pc files for Apple's libs
+	cat <<EOF > /tmp/build_deps/lib/pkgconfig/freetype2.pc
+prefix=/usr/X11R6
+exec_prefix=\${prefix}
+libdir=/usr/X11R6/lib
+includedir=\${prefix}/include
+
+Name: FreeType 2
+Description: A free, high-quality, and portable font engine.
+Version: 9.16.3
+Requires:
+Libs: -L\${libdir} -lfreetype -lz 
+Cflags: -I\${includedir}/freetype2 -I\${includedir}
+EOF
+
+	export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig:/usr/lib/pkgconfig
+	# TODO: any other options needed here to build to use without x11?
 	./configure --enable-quartz --prefix=/tmp/install --with-libjpeg --includedir=/tmp/build_deps/include || exit 1
         make || exit 1
         make install || exit 1
@@ -146,21 +164,21 @@ macos_10_ppc_ZIP_DEPS=(
 
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
 
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.14.1-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.22-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.16.1-1.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.14.1-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.22-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.16.1-0.macos10.novell.ppc.zip
 
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/jpeg-6b-1.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/libpng-1.2.20-1.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/giflib-4.1.6-2.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/tiff-3.8.2-1.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/jpeg-6b-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/libpng-1.2.20-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/giflib-4.1.6-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/tiff-3.8.2-0.macos10.novell.ppc.zip
 
 	# Freetype...
 	# Panther's freetype is too old... Tiger's is ok.  we need it here
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/freetype-2.1.10-2.macos10.novell.ppc.zip
+	#http://primates.ximian.com/~wberrier/macos/deps/ppc/freetype-2.1.10-2.macos10.novell.ppc.zip
 
-	# 10.3 and 10.4 have differing expat versions, use our own
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/expat-2.0.1-1.macos10.novell.ppc.zip
+	# 10.4 and 10.5 have differing expat versions, use our own
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/expat-2.0.1-0.macos10.novell.ppc.zip
 
 )
 
@@ -168,21 +186,21 @@ macos_10_x86_ZIP_DEPS=(
 
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
 
-        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.14.1-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.22-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.16.1-1.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.14.1-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.22-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.16.1-0.macos10.novell.x86.zip
 
-	http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-6b-1.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.20-1.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/giflib-4.1.6-2.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.8.2-1.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-6b-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.20-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/giflib-4.1.6-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.8.2-0.macos10.novell.x86.zip
 
 	# Freetype...
 	# Panther's freetype is too old... Tiger's is ok.  we need it here
-	http://primates.ximian.com/~wberrier/macos/deps/x86/freetype-2.1.10-2.macos10.novell.x86.zip
+	#http://primates.ximian.com/~wberrier/macos/deps/x86/freetype-2.1.10-2.macos10.novell.x86.zip
 
-	# 10.3 and 10.4 have differing expat versions, use our own
-	http://primates.ximian.com/~wberrier/macos/deps/x86/expat-2.0.1-1.macos10.novell.x86.zip
+	# 10.4 and 10.5 have differing expat versions, use our own
+	http://primates.ximian.com/~wberrier/macos/deps/x86/expat-2.0.1-0.macos10.novell.x86.zip
 
 )
 

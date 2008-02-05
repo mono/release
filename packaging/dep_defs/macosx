@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 
-# Hmm... pkgconfig fails when building with 10.3 sdk on 10.4... build the ppc deps on 10.3 for now.
-# Ok, pkg is building, but now glib fails... fixed with LDFLAGS fixes in do-install-zip-pkgs
-# Now build is failing on 10.4 with 10.3 sdk because we can't find /Developer/SDKs/MacOSX10.3.9.sdk glib stuff
-#  Ugh.. had to do a symlink from /Developer/SDKs/MacOSX10.3.9.sdk/tmp to /tmp as a workaround
+# We support 10.4 and up
+
+# gtk+ build notes:
+#
+#http://developer.imendio.com/projects/gtk-macosx/build-instructions
+#http://developer.imendio.com/svn/gtk-osx-build/gtk-osx.modules
+
 
 BUILD_HOSTS = ['macos-10-ppc', 'macos-10-x86']
+
+prefix = "/Library/Frameworks/Mono.framework/Versions/Current"
 
 packages = [
 	{
@@ -42,8 +47,13 @@ EOF
 	{
 		'name': 'glib', 
 		'source': 'ftp://ftp.gtk.org/pub/glib/2.14/glib-2.14.1.tar.bz2',
+		'pre':"""
+			sed -e "s/\/usr\/local\/share\/:\/usr\/share\//\/usr\/local\/share\/:\/usr\/share\/:\/Library\/Frameworks\/Mono.framework\/Versions\/Current\/share\//g" glib/gutils.c > new
+			mv new glib/gutils.c
+			""",
 		'post':"""
-			rm -Rf /tmp/install/bin/*
+			# glib-mkenums is required for pango, maybe others
+			#rm -Rf /tmp/install/bin/*
 			rm -Rf /tmp/install/share/gtk-doc
 			"""
 	},
@@ -94,16 +104,17 @@ EOF
 			rm -Rf /tmp/install/bin/*
 			"""
 	},
-	# Include this because macosx freetype is too old for the new cairo
-	# (Tiger's used to be sufficient, but it looks like the new cairo needs newer than Tiger's)
-	{
-		'name': 'freetype', 
-		'source': 'http://download.savannah.gnu.org/releases/freetype/freetype-2.1.10.tar.bz2',
-		'post':"""
-			rm -Rf /tmp/install/bin/*
-			"""
-	},
-	# Include our own because 10.3 and 10.4 ppc have differing expat versions
+#	# Include this because macosx freetype is too old for the new cairo
+#	# (Tiger's used to be sufficient, but it looks like the new cairo needs newer than Tiger's)
+#	#  Note: we may not even need this if we're dropping support for 10.3
+#	{
+#		'name': 'freetype', 
+#		'source': 'http://download.savannah.gnu.org/releases/freetype/freetype-2.1.10.tar.bz2',
+#		'post':"""
+#			rm -Rf /tmp/install/bin/*
+#			"""
+#	},
+	# Include our own because 10.4 and 10.5 ppc have differing expat versions
 	{
 		'name': 'expat', 
 		'source': 'http://easynews.dl.sourceforge.net/sourceforge/expat/expat-2.0.1.tar.gz',
@@ -112,6 +123,216 @@ EOF
 			rm -Rf /tmp/install/man
 			"""
 	},
-]
+	{
+		'name': 'pixman', 
+		'source': 'http://cairographics.org/snapshots/pixman-0.9.6.tar.gz',
+	},
+	{
+		'name': 'cairo', 
+		#'source': 'http://www.cairographics.org/releases/cairo-1.4.10.tar.gz',
+		'source': 'http://cairographics.org/snapshots/cairo-1.5.8.tar.gz',
+		'build': """
+			PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig FONTCONFIG_CFLAGS=" -I /usr/X11R6/include " FONTCONFIG_LDFLAGS=" -lfontconfig " ./configure --prefix=/tmp/install --enable-quartz --enable-atsui --enable-pdf --disable-xlib
+			make
+			make install
+			""",
+		'post':"""
+			# Remove docs
+			rm -Rf /tmp/install/share
+			"""
+	},
+	#  TODO: There are problems relocating these binaries... is the max header flag not getting passed in?
+	#  Hrm... the flag is getting set... which binary is failing?
+	{
+		'name': 'pango', 
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.19/pango-1.19.0.tar.bz2',
+		'build': """
 
+			# Hrm... LDFLAGS not getting set for atsui basic... for it (TODO: file bug)
+			sed -e "s/framework Carbon/framework Carbon -headerpad_max_install_names/g" modules/basic/Makefile.in > new
+			mv new modules/basic/Makefile.in
+
+			# Use this prefix so we don't have to do any tricks to relocate (Do this with all modules?)
+			PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig PATH=$PATH:/usr/X11R6/bin ./configure --prefix=%s --without-x
+			make
+
+			rm -Rf /tmp/temp_install
+			make install DESTDIR=/tmp/temp_install || exit 1
+
+			# Do this so all the zip files have the same base, and we can lay them back here later
+			mkdir -p /tmp/install
+			cd /tmp/temp_install%s
+			mv * /tmp/install
+			""" % (prefix, prefix),
+	},
+	{
+		'name': 'atk', 
+		'source': 'http://ftp.gnome.org/pub/gnome/sources/atk/1.20/atk-1.20.0.tar.bz2',
+	},
+#	## Tarball generated on linux (opensuse 10.3) using:
+#	# Applied patch: http://people.imendio.com/richard/patches/gtk-configure.patch
+#	# Applied patch: from Geoff to remove some spew
+#	./autogen.sh  --enable-gtk-doc
+#	make
+#	#  had to remove gtk/test from 'configure' script and from gtk/Makefile.am SUBDIRS ... why wasn't that in the tarball?
+#	make dist-bzip2
+	{
+		'name': 'gtk+', 
+		'version': '2.15.0', 
+		'source': 'http://primates.ximian.com/~wberrier/macos/sources/gtk+-2.15.0.tar.bz2',
+		'build': """
+
+			# Dah... 10.3 sdk doesn't have cups.h in the devkit, don't use 10.3 to build
+			#/usr/include/cups/cups.h
+			unset CC
+			unset MACOSX_DEPLOYMENT_TARGET
+
+			./configure --prefix=%s --with-gdktarget=quartz --disable-gtk-doc --disable-docs
+			make
+			cd gtk/xdgmime
+			make
+			cd -
+			make
+			cp /usr/share/automake-*/mkinstalldirs .
+			make install DESTDIR=/tmp/temp_install || exit 1
+
+			# Do this so all the zip files have the same base, and we can lay them back here later
+			mkdir -p /tmp/install
+			cd /tmp/temp_install%s
+			mv * /tmp/install
+			""" % (prefix, prefix),
+	},
+	{
+		'name': 'libglade', 
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/libglade/2.6/libglade-2.6.2.tar.bz2',
+		'build':"""
+			export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig
+			./configure --prefix=/tmp/install
+			make
+			make install
+		"""
+	},
+	{
+		'name': 'XML-Parser', 
+		'source': 'http://search.cpan.org/CPAN/authors/id/M/MS/MSERGEANT/XML-Parser-2.36.tar.gz',
+		'build':"""
+			perl Makefile.PL PREFIX=/tmp/install EXPATLIBPATH=/usr/X11R6/lib EXPATINCPATH=/usr/X11R6/include
+			make
+			make install
+		"""
+	},
+	{
+		'name': 'XML-Simple', 
+		'source': 'http://search.cpan.org/CPAN/authors/id/G/GR/GRANTM/XML-Simple-2.18.tar.gz',
+		'build':"""
+			perl Makefile.PL PREFIX=/tmp/install
+			make
+			make install
+		"""
+	},
+	{
+		'name': 'gtksourceview',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gtksourceview/2.0/gtksourceview-2.0.2.tar.bz2',
+		'build':"""
+			# We have a libxml-2.0.pc file... even though mac doesn't ship with pkg-config :)
+			export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig
+			./configure --prefix=/tmp/install
+			make
+			make install
+		"""
+	},
+#	# Dah... this isn't needed for gtk#... it's in gnome#.
+#	{
+#		'name': 'librsvg', 
+#		'source': 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.18/librsvg-2.18.2.tar.bz2',
+#		'build':"""
+#			# fake freetype2.pc files for Apple's libs
+#			cat <<EOF > /tmp/build_deps/lib/pkgconfig/freetype2.pc
+#prefix=/usr/X11R6
+#exec_prefix=\${prefix}
+#libdir=/usr/X11R6/lib
+#includedir=\${prefix}/include
+#
+#Name: FreeType 2
+#Description: A free, high-quality, and portable font engine.
+#Version: 9.16.3
+#Requires:
+#Libs: -L\${libdir} -lfreetype -lz 
+#Cflags: -I\${includedir}/freetype2 -I\${includedir}
+#EOF
+#			export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig:/usr/lib/pkgconfig
+#			./configure --prefix=/tmp/install
+#			make
+#			make install
+#
+#		"""
+#	},
+	#################
+	# Theme stuff
+	#################
+	{
+		'name': 'hicolor-icon-theme',
+		'source': 'http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.10.tar.gz',
+	},
+	{
+		'name': 'icon-naming-utils',
+		'source': 'http://tango.freedesktop.org/releases/icon-naming-utils-0.8.6.tar.gz',
+	},
+	{
+		'name': 'gnome-icon-theme',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gnome-icon-theme/2.20/gnome-icon-theme-2.20.0.tar.bz2',
+		'build':"""
+			export INU_DATA_DIR=/tmp/build_deps/share/icon-naming-utils
+			./configure --prefix=/tmp/install
+			make
+			make install
+		""",
+	},
+	{
+		'name': 'gtk-engines',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gtk-engines/2.12/gtk-engines-2.12.2.tar.bz2',
+	},
+	#####
+	#  fontconfig and freetype disabled... enable them?
+	{
+		'name': 'ImageMagick',
+		'version': '6.3.8',
+		'source': 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.3.8-2.tar.bz2',
+		'build':"""
+			./configure --prefix=/tmp/install
+			make
+			make install SITEPREFIX=/tmp/install
+			# Remove docs
+			rm -Rf /tmp/install/share/doc/ImageMagick-6.3.8
+			#  We don't have to worry too much, because we don't ship ImageMagick
+		""",
+	},
+	#  Ugh... requires imagemagick
+	{
+		'name': 'tango-icon-theme',
+		'source': 'http://tango.freedesktop.org/releases/tango-icon-theme-0.8.1.tar.gz',
+		'build':"""
+			export MAGICK_CONFIGURE_PATH=/tmp/build_deps/lib/ImageMagick-6.3.8/config
+			export MAGICK_CODER_MODULE_PATH=/tmp/build_deps/lib/ImageMagick-6.3.8/modules-Q16/coders
+			export INU_DATA_DIR=/tmp/build_deps/share/icon-naming-utils
+			./configure --prefix=/tmp/install
+			make
+			make install
+		""",
+	},
+	{
+		'name': 'tango-icon-theme-extras',
+		'source': 'http://tango.freedesktop.org/releases/tango-icon-theme-extras-0.1.0.tar.gz',
+		'build':"""
+			export MAGICK_CONFIGURE_PATH=/tmp/build_deps/lib/ImageMagick-6.3.8/config
+			export MAGICK_CODER_MODULE_PATH=/tmp/build_deps/lib/ImageMagick-6.3.8/modules-Q16/coders
+			export INU_DATA_DIR=/tmp/build_deps/share/icon-naming-utils
+			./configure --prefix=/tmp/install
+			make
+			make install
+		""",
+	},
+
+
+]
 

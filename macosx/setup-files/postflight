@@ -21,4 +21,12 @@ for i in man*; do
      ln -sf $PWD/${j} /usr/share/man/${i}/${j}
    done)
 done
+
+# gtk+ setup
+cd /Library/Frameworks/Mono.framework/Versions/Current/etc
+gdk-pixbuf-query-loaders > gtk-2.0/gdk-pixbuf.loaders
+
+# pango setup
+mkdir -p pango
+pango-querymodules >  pango/pango.modules
 fi

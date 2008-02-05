@@ -1,0 +1,79 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import glob
+
+import utils
+
+try:
+	(script, dest_dir, prefix) = sys.argv
+except:
+	print "Usage: dllmap_munge <dest_dir> <prefix>"
+	print " where dest_dir is where files are located"
+	print " where prefix is the final install path"
+	sys.exit(1)
+
+os.chdir(dest_dir)
+
+print "Replace intl in etc/mono/config"
+parameter_map = {}
+parameter_map['libintl.dylib'] = prefix + '/lib/libintl.dylib'
+utils.substitute_parameters_in_file("etc/mono/config", parameter_map)
+
+print "Replace gtk# dllmaps"
+file_map = {
+	'libglib-2.0.0.dylib':		'',
+	'libgdk-x11-2.0.0.dylib':	'libgdk-quartz-2.0.0.dylib',
+	'libgtk-x11-2.0.0.dylib':	'libgtk-quartz-2.0.0.dylib',
+	'libgobject-2.0.0.dylib':	'',
+	'libgdk_pixbuf-2.0.0.dylib':	'',
+	'libatk-1.0.0.dylib':		'',
+	'libglade-2.0.0.dylib':		'',
+	'libgthread-2.0.0.dylib':	'',
+	'libpango-1.0.0.dylib':		'',
+	'libpangocairo-1.0.0.dylib':	'',
+
+	# these are for mconfig
+	'libgmodule-2.0.so':		'libgmodule-2.0.0.dylib',
+	'libglib-2.0.so':		'libglib-2.0.0.dylib',
+
+	# gtksourceview2-sharp
+	'libgobject-2.0.so.0':		'libgobject-2.0.0.dylib',
+	'libglib-2.0.so.0':		'libglib-2.0.0.dylib',
+	'libgtksourceview-2.0.so.0':	'libgtksourceview-2.0.dylib',
+
+	# shlib-cop
+	'libgmodule-2.0.so.0':		'libgmodule-2.0.0.dylib',
+}
+
+parameter_map = {}
+for k,v in file_map.iteritems():
+	if v == '':
+		parameter_map['target="' + k + '"'] = 'target="' + os.path.join(prefix, 'lib', k) + '"'
+	else:
+		parameter_map['target="' + k + '"'] = 'target="' + os.path.join(prefix, 'lib', v) + '"'
+
+code, config_list = utils.launch_process('find . -name "*\.config"', print_output=0)
+for file in config_list.split("\n"):
+	print "Substituting: " + file
+	utils.substitute_parameters_in_file(file, parameter_map)
+
+
+print "Add glue dllmaps"
+file_map = [
+	[ 'lib/mono/gac/glib-sharp/*/glib-sharp.dll.config',	'glibsharpglue-2',	'libglibsharpglue-2.so'		],
+	[ 'lib/mono/gac/gdk-sharp/*/gdk-sharp.dll.config',	'gdksharpglue-2',	'libgdksharpglue-2.so'		],
+	[ 'lib/mono/gac/gtk-sharp/*/gtk-sharp.dll.config',	'gtksharpglue-2',	'libgtksharpglue-2.so'		],
+	[ 'lib/mono/gac/pango-sharp/*/pango-sharp.dll.config',	'pangosharpglue-2',	'libpangosharpglue-2.so'	],
+	[ 'lib/mono/gac/glade-sharp/*/glade-sharp.dll.config',	'gladesharpglue-2',	'libgladesharpglue-2.so'	],
+
+	# Extra maps... more?
+	[ 'lib/mono/gac/gtk-sharp/*/gtk-sharp.dll.config',	'glibsharpglue-2',	'libglibsharpglue-2.so'		],
+]
+
+for a in file_map:
+	file = glob.glob(a[0]).pop()
+	print "adding dllmap to: " + file
+	utils.add_dll_map(file, '<dllmap dll="%s" target="%s/lib/%s"/>' % (a[1], prefix, a[2]))
+

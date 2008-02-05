@@ -94,6 +94,7 @@ class Selection:
 
 	def get_filelist(self):
 		# Only compute once
+		# TODO: could be redone to use updated runtime_deps stuff in packaging.py, but this should still be ok
 		try:
 			return self.files
 		except AttributeError:

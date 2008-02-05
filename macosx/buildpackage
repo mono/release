@@ -20,7 +20,7 @@ import packaging
 # Which noarch packages to include in the various packages
 packages_to_include = {}
 
-packages_to_include['macos-10-ppc'] = ['mono', 'cocoa-sharp', 'libgdiplus', 'xsp', 'monodoc', 'boo', 'ikvm', 'nant', 'IPCE', 'mono-basic' ]
+packages_to_include['macos-10-ppc'] = ['libgdiplus', 'mono', 'cocoa-sharp', 'xsp', 'monodoc', 'boo', 'ikvm', 'nant', 'IPCE', 'mono-basic', 'gtk-sharp210', 'mono-addins', 'gtksourceview2-sharp', 'monodevelop' ]
 
 packages_to_include['macos-10-x86'] = packages_to_include['macos-10-ppc']
 
@@ -75,6 +75,7 @@ if os.path.exists(output_dir):
 
 # Keep list of files used to build this package
 packages_used = []
+dep_packages_used = []
 versions = {}
 
 # Clean up
@@ -87,20 +88,24 @@ for arch in targets:
 	files = []
 	for pac in packages_to_include[arch]:
 		package = packaging.package(arch_conf, pac)
-		versions[pac] = package.get_version()
-		files += package.get_files()
-		files += package.get_dep_files()
+
+		for f in package.get_files():
+			files.append(f)
+			packages_used.append(os.path.basename(f))
+
+		for f in package.get_dep_files(zip_runtime_deps=True):
+			files.append(f)
+			dep_packages_used.append(os.path.basename(f))
 
 	# Remove duplicates
 	files = utils.remove_list_duplicates(files)
-
-	packages_used += map(os.path.basename, files)
 
 	# Add helper files to the list
 	files += [config.packaging_dir + '/do-install-zip-pkgs']
 	files += [config.packaging_dir + '/../pyutils/utils.py']
 	files += [config.packaging_dir + '/../pyutils/rpm2cpio.py']
 	files += ['./universal_merge']
+	files += ['./dllmap_munge']
 
 	for file in files:
 		print file
@@ -118,7 +123,8 @@ for arch in targets:
 	conf.buildenv.print_output=debug
 	framework_prefix = "/Library/Frameworks/Mono.framework"
 	prefix = "%s/Versions/%s" % (framework_prefix, version)
-	(code, output) = conf.buildenv.execute_command("%s/do-install-zip-pkgs %s%s %s %s " % (arch_remote_packages_loc, arch_remote_PKGROOT, prefix, prefix, arch_remote_packages_loc) )
+	# TODO: don't use executable_path anymore (fix pango issues... ?) (maybe we could use a really long path instead of build_deps, and that would allow enough room?  lame...)
+	(code, output) = conf.buildenv.execute_command("%s/do-install-zip-pkgs --relative_paths %s%s %s %s " % (arch_remote_packages_loc, arch_remote_PKGROOT, prefix, prefix, arch_remote_packages_loc) )
 	if code:
 		print "Error extracting and installing packages"
 		sys.exit(1)
@@ -133,7 +139,6 @@ if build_universal:
 # Otherwise, just move the one arch into PKGROOT
 else:
 	(code, output) = conf.buildenv.execute_command("cd %s; rmdir PKGROOT; mv %s PKGROOT " % (remote_temp, 'PKGROOT_' + target) )
-
 
 #### Strip files to save space
 
@@ -161,10 +166,39 @@ distutils.dir_util.mkpath(temp_dir)
 print "Saving list of packages..."
 packages_used = utils.remove_list_duplicates(packages_used)
 packages_used.sort()
+
+dep_packages_used = utils.remove_list_duplicates(dep_packages_used)
+dep_packages_used.sort()
+
 fd = open("%s/packages_used.txt" % temp_dir, 'w')
-for file in packages_used:
+for file in packages_used + dep_packages_used:
 	fd.write(file + "\n")
 fd.close()
+
+# Get list of components for readme
+def package_pretty_name(package_name):
+	return package_name.replace(".novell.noarch.rpm", "").replace(".macos10.novell.ppc.zip", "").replace(".macos10.novell.x86.zip", "")
+
+packages = []
+packages_text = ""
+dep_packages = []
+dep_packages_text = ""
+
+for file in packages_used:
+	packages.append(package_pretty_name(file))
+packages = utils.remove_list_duplicates(packages)
+packages.sort()
+
+for file in dep_packages_used:
+	dep_packages.append(package_pretty_name(file))
+dep_packages = utils.remove_list_duplicates(dep_packages)
+dep_packages.sort()
+
+# Collect text for packages
+for f in packages:
+	packages_text += "\n\t" + f + "\\\\"
+for f in dep_packages:
+	dep_packages_text += "\n\t" + f + "\\\\"
 
 #  Get some version information
 mono_package = packaging.package(conf, 'mono')
@@ -174,17 +208,14 @@ revision = mono_package.get_revision(release)
 package_filename = "MonoFramework-%s_%s.%s" % (version, revision, arch_name)
 
 # Substitue versions in setup files
-# TODO: This needs to be redone to make new packages automatic
 parameter_map = {}
 parameter_map[re.compile("@@MONO_VERSION@@")] = version
 parameter_map[re.compile("@@MONO_RELEASE@@")] = release
 parameter_map[re.compile("@@MONO_VERSION_RELEASE@@")] = version + '_' + release
-parameter_map[re.compile("@@COCOASHARP_VERSION@@")] = versions['cocoa-sharp']
-parameter_map[re.compile("@@LIBGDIPLUS_VERSION@@")] = versions['libgdiplus']
-parameter_map[re.compile("@@XSP_VERSION@@")] = versions['xsp']
-parameter_map[re.compile("@@MONODOC_VERSION@@")] = versions['monodoc']
-parameter_map[re.compile("@@BOO_VERSION@@")] = versions['boo']
-parameter_map[re.compile("@@IKVM_VERSION@@")] = versions['ikvm']
+
+parameter_map[re.compile("@@PACKAGES@@")] = packages_text
+parameter_map[re.compile("@@DEP_PACKAGES@@")] = dep_packages_text
+
 parameter_map[re.compile("@@MONO_PACKAGE_FILENAME@@")] = package_filename + ".pkg"
 
 cwd = os.getcwd()
@@ -227,6 +258,13 @@ for k,v in symlinks.iteritems():
 
 print "Done creating symlinks...."
 
+# assembly .config munge
+(code, output) = conf.buildenv.execute_command("%s/dllmap_munge %s %s" % (arch_remote_packages_loc, remote_PKGROOT + os.sep + prefix, prefix) )
+if code:
+	print "Error munging dllmaps for .config files"
+	sys.exit(1)
+
+
 # Note: DiskManagementTool hangs this has been fixed in 10.4 ( http://lists.apple.com/archives/installer-dev/2005/Jul/msg00005.html )
 #  This doesn't happen all the time... in fact, never on macbld1.provo.novell.com running 10.3 ... ?
 # Maybe we make sudo not ask for a password and then prepend this with sudo?
@@ -236,12 +274,19 @@ print "Done creating symlinks...."
 exit_reg = ""
 #exit_reg = re.compile('PackageMaker.* done \(.*\)')
 
-# TODO: need to figure out how to set 'Allows Back Rev.' flag, or possibly clean up 'receipt'
+# We are setting 'Allows Back Rev.' flag.
+# TODO: Do we need to clean up 'receipt'?
+
+# Move .app files out of the .pkg
+(code, output) = conf.buildenv.execute_command("cd %s; mkdir new; mv PKGROOT/Library/Frameworks/Mono.framework/Versions/Current/*.app new" % (remote_temp) )
+
+# Copy .dmg readme
+conf.buildenv.copy_to('setup-files/README.rtf', remote_temp + os.sep + 'new')
 
 packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
-conf.buildenv.execute_command('cd %s; %s -build -p %s/%s.pkg -f %s -r %s -i %s/Info.plist -d %s/Description.plist' % (remote_PKGROOT, packagemaker, remote_temp, package_filename, remote_PKGROOT, resources_dir, framework_resources_dir, framework_resources_dir), terminate_reg=exit_reg)
+conf.buildenv.execute_command('cd %s; %s -build -p %s/new/%s.pkg -f %s -r %s -i %s/Info.plist -d %s/Description.plist' % (remote_PKGROOT, packagemaker, remote_temp, package_filename, remote_PKGROOT, resources_dir, framework_resources_dir, framework_resources_dir), terminate_reg=exit_reg)
 
-conf.buildenv.execute_command('/usr/bin/hdiutil create -ov -srcfolder %s/%s.pkg -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, package_filename, version, remote_temp, package_filename) )
+conf.buildenv.execute_command('/usr/bin/hdiutil create -ov -srcfolder %s/new -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, version, remote_temp, package_filename) )
 
 distutils.dir_util.mkpath(output_dir)
 

@@ -1,6 +1,6 @@
 web_index=0
 
-#USE_PATCHES=1
+USE_PATCHES=1
 
 BUILD_HOSTS=(
 	debian-4-arm
@@ -134,16 +134,22 @@ sunos_8_sparc_ZIP_DEPS=(
 
 macos_10_ppc_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.14.1-1.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.22-1.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.16.1-1.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.14.1-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.22-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.16.1-0.macos10.novell.ppc.zip
+
+	# Temporarily inject updated mwf (need to name this file so it gets unpacked last)
+	http://primates.ximian.com/~wberrier/macos/deps/various/native_mwf-1.2.6_updated.tar.gz
 )
 
 macos_10_x86_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-	http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.14.1-1.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.22-1.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.16.1-1.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.14.1-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.22-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.16.1-0.macos10.novell.x86.zip
+
+	# Temporarily inject updated mwf (need to name this file so it gets unpacked last)
+	http://primates.ximian.com/~wberrier/macos/deps/various/native_mwf-1.2.6_updated.tar.gz
 )
 
 sunos_8_sparc_ZIP_BUILD () {

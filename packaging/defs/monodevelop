@@ -3,11 +3,15 @@ web_index=2
 # Not needed anymore... ?
 #fresh_checkout=1
 
+USE_PATCHES=1
+
 BUILD_HOSTS=(
 	suse-101-i586
+	macos-10-x86
 )
 
 USE_HOSTS=(
+	macos-10-x86
 	suse-101-i586
 	suse-101-ppc
 	suse-101-x86_64
@@ -22,7 +26,6 @@ USE_HOSTS=(
 MONO_DEPS=(
 	mono
 	monodoc
-	gtksourceview-sharp2
 	mono-addins
 	mono-basic
 	xsp
@@ -34,10 +37,18 @@ MONO_RECOMMEND_DEPS=(
 	gtk-sharp28
 	gtk-sharp210
 	gnome-sharp2
+	gtksourceview-sharp2
+	gtksourceview2-sharp
 )
 
 get_destroot () {
-	DEST_ROOT=noarch
+        if test "x$DISTRO" = "xmacos-10-x86" ; then
+                DEST_ROOT=$DISTRO
+        elif test "x$DISTRO" = "xmacos-10-ppc" ; then
+                DEST_ROOT="macos-10-x86"
+        else
+		DEST_ROOT=noarch
+        fi
 }
 
 HEAD_PATH=(
@@ -50,3 +61,44 @@ RELEASE_PATH=(
 update_version_file () {
 	sed -i "s/\(AC_INIT.*, \).*,/\1$VERSION,/" configure.in
 }
+
+
+macos_10_ZIP_BUILD () {
+
+        # This is so we can use the relocated mono (Will probably have to do this for all builds on mac)
+        export  MONO_GAC_PREFIX=/tmp/build_deps
+        export  MONO_PREFIX=/tmp/build_deps
+        export  MONO_CFG_DIR=/tmp/build_deps/etc
+        export  MONO_PATH=/tmp/build_deps/lib
+
+	export PERL5LIB=/tmp/build_deps/lib/perl5/site_perl
+
+        ./configure --prefix=/tmp/install --enable-gtksourceview2 --disable-versioncontrol --disable-update-mimedb --disable-update-desktopdb --disable-gnomeplatform --enable-macplatform || exit 1
+
+        make || exit 1
+        make install || exit 1
+}
+
+macos_10_x86_ZIP_DEPS=(
+
+	http://primates.ximian.com/~wberrier/macos/deps/x86/XML-Parser-2.36-0.macos10.novell.x86.zip
+)
+
+# Even though we only build on x86, we need this dep for a mach-o file included in XML-Parser
+#  otherwise, our universal_merge fails because of missing files
+macos_10_ppc_ZIP_DEPS=(
+
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/XML-Parser-2.36-0.macos10.novell.ppc.zip
+)
+
+# Not sure if rpm and .tar.gz will work... we'll find out
+macos_10_x86_ZIP_RUNTIME_DEPS=(
+	http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/noarch/moma-1.2.6.94332-2.2.noarch.rpm
+	http://primates.ximian.com/~wberrier/macos/deps/various/app-bundles.tar.gz
+)
+
+macos_10_ppc_ZIP_RUNTIME_DEPS=(
+	http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/noarch/moma-1.2.6.94332-2.2.noarch.rpm
+	http://primates.ximian.com/~wberrier/macos/deps/various/app-bundles.tar.gz
+)
+

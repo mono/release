@@ -3,6 +3,8 @@ def_alias="gtk-sharp2"
 web_index=6
 
 BUILD_HOSTS=(
+	macos-10-ppc
+	macos-10-x86
 	suse-102-i586
 	suse-102-ppc
 	suse-102-x86_64
@@ -49,5 +51,92 @@ make_dist () {
         . /etc/profile
         ./bootstrap-2.10
         make dist-bzip2
+}
+
+macos_10_x86_ZIP_DEPS=(
+
+        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.14.1-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.22-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.16.1-0.macos10.novell.x86.zip
+
+        http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-6b-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.20-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/giflib-4.1.6-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.8.2-0.macos10.novell.x86.zip
+
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pixman-0.9.6-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/cairo-1.5.8-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pango-1.19.0-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/atk-1.20.0-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk+-2.15.0-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/libglade-2.6.2-0.macos10.novell.x86.zip
+
+        # Probably not needed
+        #http://primates.ximian.com/~wberrier/macos/deps/x86/XML-Parser-2.36-0.macos10.novell.x86.zip
+)
+
+macos_10_x86_ZIP_RUNTIME_DEPS=(
+
+        http://primates.ximian.com/~wberrier/macos/deps/x86/hicolor-icon-theme-0.10-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/icon-naming-utils-0.8.6-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gnome-icon-theme-2.20.0-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk-engines-2.12.2-0.macos10.novell.x86.zip
+        #http://primates.ximian.com/~wberrier/macos/deps/x86/ImageMagick-6.3.8-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/tango-icon-theme-0.8.1-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/tango-icon-theme-extras-0.1.0-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/various/gtkrc_mac.zip
+)
+
+macos_10_ppc_ZIP_DEPS=(
+
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.14.1-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.22-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.16.1-0.macos10.novell.ppc.zip
+
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/jpeg-6b-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/libpng-1.2.20-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/giflib-4.1.6-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/tiff-3.8.2-0.macos10.novell.ppc.zip
+
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/pixman-0.9.6-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/cairo-1.5.8-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/pango-1.19.0-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/atk-1.20.0-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/gtk+-2.15.0-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/libglade-2.6.2-0.macos10.novell.ppc.zip
+
+        # Probably not needed
+        #http://primates.ximian.com/~wberrier/macos/deps/x86/XML-Parser-2.36-0.macos10.novell.ppc.zip
+)
+
+macos_10_ppc_ZIP_RUNTIME_DEPS=(
+
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/hicolor-icon-theme-0.10-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/icon-naming-utils-0.8.6-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/gnome-icon-theme-2.20.0-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/gtk-engines-2.12.2-0.macos10.novell.ppc.zip
+        #http://primates.ximian.com/~wberrier/macos/deps/ppc/ImageMagick-6.3.8-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/tango-icon-theme-0.8.1-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/tango-icon-theme-extras-0.1.0-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/various/gtkrc_mac.zip
+)
+
+
+macos_10_ZIP_BUILD () {
+
+        # This is so we can use the relocated mono (Will probably have to do this for all builds on mac)
+        export  MONO_GAC_PREFIX=/tmp/build_deps
+        export  MONO_PREFIX=/tmp/build_deps
+        export  MONO_CFG_DIR=/tmp/build_deps/etc
+        export  MONO_PATH=/tmp/build_deps/lib
+
+        # add this so libxml is found
+        export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig
+
+        ./configure --prefix=/tmp/install || exit 1
+
+        make || exit 1
+        make install || exit 1
+
 }
 
