@@ -26,7 +26,23 @@ var data =
 		}
 		]
 	},
-
+	{
+		"name" : "LiveCD",
+		"icon" : "livecd.jpg",
+		"dlicon" : "livecd.jpg",
+		"version" : [
+		{
+			"name" : "openSUSE 10.3 Live CD",
+			"arch" : [
+			{
+				"name" : "Mono 1.2.6",
+				"desc" : "",
+				"downloadText" : "Download the openSUSE 10.3 Live CD which includes Mono 1.2.6 <ul><li><a href='http://anonsvn.mono-project.com/Mono-1.2.6_openSUSE-10.3.i686.iso.torrent'>via Torrent</a> <li><a href='http://anonsvn.mono-project.com/Mono-1.2.6_openSUSE-10.3.i686.iso'>via http</a> </ul><a href='http://mono-project.com/LiveCD'>Instructions for using the Live CD</a>."
+			}
+			]
+		}
+		]
+	},
 	{
 		"name" : "openSUSE",
 		"icon" : "opensuse.jpg",

@@ -108,7 +108,11 @@ function arch_step(os_num, os_version)
 
 function download_step(step_number, os_num, ver_num, arch_num)
 {
-	var html = "<h2>" + step_number + ". Download Mono for "+ data.platforms[os_num].name + "</h2>";
+	if (data.platforms[os_num].name == "LiveCD")
+		html = "<h2>" + step_number + ". Download Mono "+ data.platforms[os_num].name + "</h2>";
+	else
+		html = "<h2>" + step_number + ". Download Mono for "+ data.platforms[os_num].name + "</h2>";
+
 	html += "<br><table>";
 	if (data.platforms[os_num].version[ver_num].arch[arch_num].desc != "")
 	{
