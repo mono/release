@@ -15,12 +15,12 @@ var data =
 		"dlicon" : "vmware_icon.jpg",
 		"version" : [
 		{
-			"name" : "openSUSE 10.2",
+			"name" : "openSUSE 10.3",
 			"arch" : [
 			{
-				"name" : "Mono 1.2.5.1",
+				"name" : "Mono 1.2.6",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 10.2 VMWare image which includes Mono 1.2.5.1 <ul><li><a href='http://anonsvn.mono-project.com/mono1.2.5.1_opensuse10.2_vmware_0.zip.torrent'>via Torrent</a> <li><a href='http://anonsvn.mono-project.com/mono1.2.5.1_opensuse10.2_vmware_0.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
+				"downloadText" : "Download the openSUSE 10.3 VMWare image which includes Mono 1.2.6 <ul><li><a href='http://anonsvn.mono-project.com/Mono-1.2.6_openSUSE-10.3.i686.zip.torrent'>via Torrent</a> <li><a href='http://anonsvn.mono-project.com/Mono-1.2.6_openSUSE-10.3.i686.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
 			}
 			]
 		}
