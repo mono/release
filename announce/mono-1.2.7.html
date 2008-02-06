@@ -82,7 +82,13 @@
 	<p>Improved native OSX driver for Windows Forms (Drag and
 	Drop, enhanced keyboard drivers) [Geoff].
 
-	<p>
+	<p>More support for WebBrowser events/DOM [Andreia].
+
+	<p>Many fixes for RichTextBox, AutoScaling, and PropertyGrid 
+	[Luke Page, James Purcell, Ivan, respectively].
+
+	<p>Over 100 reported bugs fixed for this release.
+	[Winforms team and contributors].
 
 <h2>Class Libraries</h2>
 
@@ -108,7 +114,21 @@
 	<p>SSL/TLS now support X.509 server certificate using 
 	wildcards (e.g. *.novell.com) [Sebastien]
 
-CONFIRM BEFORE RELEASE:
+<h1>Contributors:</h1>
+
+	Luke Page, James Purcell, Srikanth Madikeri
+
+<h1>CONFIRM BEFORE RELEASE:</h1>
 
 	<p>Completed verifier for 1.0 CIL bytecode [Rodrigo].
+
+	<p>Please document that the default for gmcs is now
+	C#3 instead of C#2 and document the -langversion
+	switch to go back to C#2, as this is probably going
+	to cause _a lot_ of problems for people.
+
+	<p>Please document that the default MWF driver on mac
+	has changed, what the new one may require, and the
+	environment variable to force the old X11 driver to run
+	for people who depend on it.
 
