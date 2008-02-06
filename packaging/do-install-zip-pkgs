@@ -12,6 +12,7 @@ import os
 import glob
 import re
 import getopt
+import stat
 
 import utils
 
@@ -205,6 +206,12 @@ for path_on_disk in native_filelist:
 
 	old_filename = os.path.abspath('/tmp/install/%s' % (path_on_disk) )
 	new_filename = os.path.abspath( re.sub('/tmp/install', reloc, old_filename) )
+
+	#  This is needed because some files (XML-Parser) weren't writable for relocation
+	# add owner write support
+	#os.system("chmod +w " + path_on_disk)
+	# Do it the python way (wow, kinda uuuugly)
+	os.chmod(path_on_disk, stat.S_IMODE(os.stat(path_on_disk)[0]) | stat.S_IWUSR)
 
 	print 'Relocating %s' % path_on_disk
 	utils.launch_process('install_name_tool -id %s %s' % (new_filename, path_on_disk ) )

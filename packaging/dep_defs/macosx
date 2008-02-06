@@ -22,7 +22,7 @@ packages = [
 			mv pkg-config pkg-config.bin
 			cat <<EOF > pkg-config
 #!/bin/sh
-PKG_CONFIG_PATH=/tmp/install/lib/pkgconfig:\$PKG_CONFIG_PATH /tmp/install/bin/pkg-config.bin "\$@"
+PKG_CONFIG_PATH=/tmp/install/lib/pkgconfig:/tmp/install/share/pkgconfig:\$PKG_CONFIG_PATH /tmp/install/bin/pkg-config.bin "\$@"
 EOF
 			chmod 755 pkg-config
 			"""

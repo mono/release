@@ -70,9 +70,6 @@ macos_10_x86_ZIP_DEPS=(
         http://primates.ximian.com/~wberrier/macos/deps/x86/atk-1.20.0-0.macos10.novell.x86.zip
         http://primates.ximian.com/~wberrier/macos/deps/x86/gtk+-2.15.0-0.macos10.novell.x86.zip
         http://primates.ximian.com/~wberrier/macos/deps/x86/libglade-2.6.2-0.macos10.novell.x86.zip
-
-        # Probably not needed
-        #http://primates.ximian.com/~wberrier/macos/deps/x86/XML-Parser-2.36-0.macos10.novell.x86.zip
 )
 
 macos_10_x86_ZIP_RUNTIME_DEPS=(
@@ -104,9 +101,6 @@ macos_10_ppc_ZIP_DEPS=(
         http://primates.ximian.com/~wberrier/macos/deps/ppc/atk-1.20.0-0.macos10.novell.ppc.zip
         http://primates.ximian.com/~wberrier/macos/deps/ppc/gtk+-2.15.0-0.macos10.novell.ppc.zip
         http://primates.ximian.com/~wberrier/macos/deps/ppc/libglade-2.6.2-0.macos10.novell.ppc.zip
-
-        # Probably not needed
-        #http://primates.ximian.com/~wberrier/macos/deps/x86/XML-Parser-2.36-0.macos10.novell.ppc.zip
 )
 
 macos_10_ppc_ZIP_RUNTIME_DEPS=(
