@@ -168,7 +168,11 @@ else:
 			command = 'cd %s/%s; svn switch %s %s/%s' % (cache_dir, module, rev_arg, MONO_ROOT, path)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
 
-			command = 'cd %s/%s; svn log -v %s' % (cache_dir, module, rev_arg)
+			command = 'cd %s/%s; svn info' % (cache_dir, module)
+			(status, output) = utils.launch_process(command, output_timeout=output_timeout)
+			new_revision, = re.compile("Revision: (.*)").search(output).groups()
+
+			command = 'cd %s/%s; svn log -v -r%s:%s' % (cache_dir, module, new_revision, old_revision)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
 		else:
 			# create cache dir
