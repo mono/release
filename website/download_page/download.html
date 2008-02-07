@@ -48,7 +48,6 @@ function selected(os_num)
 	/* Highlight and select the chosen item */
 	document.getElementById("td"+os_num).style.border = "1px solid #aaa";
 	document.getElementById("td"+os_num).style.background = "#eee";
-	document.getElementById("rb"+os_num).click();
 
 	/* Unselect other items */
 	for (i = 0; i < data.platforms.length; i++)
