@@ -88,7 +88,7 @@ BuildRequires: gnome-panel-devel gtkhtml3-devel libgnomeprintui22-devel librsvg2
 
 # Need to put this stuff down here after Version: gets defined
 Version:	%_version
-Source:         %{_name}-%{version}.tar.bz2
+Source:         %{_name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
@@ -231,13 +231,16 @@ This package contains Mono bindings for gconf and gconf peditors.
 %debug_package
 %prep
 %setup -q -n %{_name}-%{version}
+
+if [ %version \< 2.10.3 ] ; then
 %patch0 -p1
+fi
 
 %if %platform_desktop_split == 0
 %patch1 -p1
 
 # 2.8.4 and later on 2.8.x branch doesn't need this patch
-if [ %version <= 2.8.3 ] ; then
+if [ %version \< 2.8.4 ] ; then
 %patch2
 fi
 

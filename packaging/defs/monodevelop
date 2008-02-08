@@ -3,8 +3,6 @@ web_index=2
 # Not needed anymore... ?
 #fresh_checkout=1
 
-USE_PATCHES=1
-
 BUILD_HOSTS=(
 	suse-101-i586
 	macos-10-x86

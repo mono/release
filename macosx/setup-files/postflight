@@ -22,6 +22,10 @@ for i in man*; do
    done)
 done
 
+# Make sure we run the files we lay down, and not other stuff installed
+#  on the system
+export PATH=/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH
+
 # gtk+ setup
 cd /Library/Frameworks/Mono.framework/Versions/Current/etc
 gdk-pixbuf-query-loaders > gtk-2.0/gdk-pixbuf.loaders

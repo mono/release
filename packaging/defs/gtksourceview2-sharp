@@ -1,31 +1,29 @@
 web_index=7
 
 BUILD_HOSTS=(
-	suse-103-x86_64
+	macos-10-x86
 )
 
 USE_HOSTS=(
-	suse-103-i586
-	suse-103-x86_64
 	macos-10-ppc
 	macos-10-x86
 )
 
 get_destroot () {
-	DEST_ROOT=noarch
+	DEST_ROOT=macos-10-x86
 }
 
 MONO_DEPS=(
 	mono
 	monodoc
 	gtk-sharp210
-	gnome-sharp2
 )
 
 MONO_RECOMMEND_DEPS=(
 	libgdiplus
 )
 
+#  Hrm... we need to build this on mac instead...
 macos_10_ppc_ZIP_DEPS=(
 	http://primates.ximian.com/~wberrier/macos/deps/ppc/gtksourceview-2.0.2-0.macos10.novell.ppc.zip
 )
@@ -34,10 +32,29 @@ macos_10_x86_ZIP_DEPS=(
 	http://primates.ximian.com/~wberrier/macos/deps/x86/gtksourceview-2.0.2-0.macos10.novell.x86.zip
 )
 
+macos_10_ZIP_BUILD () {
+
+        # This is so we can use the relocated mono (Will probably have to do this for all builds on mac)
+        export  MONO_GAC_PREFIX=/tmp/build_deps
+        export  MONO_PREFIX=/tmp/build_deps
+        export  MONO_CFG_DIR=/tmp/build_deps/etc
+        export  MONO_PATH=/tmp/build_deps/lib
+
+	# We have a libxml-2.0.pc file... even though mac doesn't ship with pkg-config :)
+	export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig
+	./configure --prefix=/tmp/install
+	make || exit 1
+
+	make install
+	mkdir -p /tmp/install/share/pkgconfig
+	mv /tmp/install/lib/pkgconfig/gtksourceview2-sharp.pc /tmp/install/share/pkgconfig
+
+}
+
 HEAD_PATH=(
 	trunk/gtksourceview2-sharp
 )
+
 RELEASE_PATH=(
 	tags/gtksourceview-sharp-[[version]]
 )
-

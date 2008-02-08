@@ -15,6 +15,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:    noarch
 Requires:       xsp
 Requires:       mono-basic
+Requires:	pkgconfig
 PreReq:         shared-mime-info
 
 
@@ -74,11 +75,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/bin/*
 %{_prefix}/share/applications/monodevelop.desktop
 %{_prefix}/share/mime/packages/monodevelop.xml
-%{_prefix}/share/pixmaps/monodevelop.png
+%{_datadir}/icons/hicolor/*/apps/monodevelop.png
+%{_datadir}/icons/hicolor/scalable/apps/monodevelop.svg
 %{_prefix}/lib/monodevelop
 %{_prefix}/share/pkgconfig/monodevelop.pc
 %{_prefix}/share/pkgconfig/monodevelop-core-addins.pc
 %{_mandir}/man1/mdtool.1.gz
+%{_mandir}/man1/monodevelop.1.gz
 
 %post
 update-mime-database /usr/share/mime >/dev/null || :

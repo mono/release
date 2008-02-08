@@ -12,14 +12,13 @@ License:        GNU General Public License (GPL), GNU Library General Public Lic
 Group:          System/GUI/GNOME
 Release:        52
 Summary:        .Net Language Bindings for Gnome
-Patch0:         gnome-sharp-optflags.patch
-Patch1:         gnome-sharp-makefile.patch
 Patch2:         gnome-sharp-find_gtkhtml_ver.patch
-Patch3:         gnome-sharp-revert_unportable_relocatable.patch
 Source:         %{_name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires:	gtk-sharp2 glade-sharp2 gtk-sharp2-gapi
+
+%define minimum_glib_sharp_version 2.10.3
 
 #####  suse  ####
 %if 0%{?suse_version}
@@ -58,6 +57,7 @@ Requires:       gnome-vfs-sharp2 = %{version}-%{release}
 Requires:       gtkhtml-sharp2 = %{version}-%{release}
 Requires:       rsvg-sharp2 = %{version}-%{release}
 Requires:       vte-sharp2 = %{version}-%{release}
+Requires:	glib-sharp2 >= %minimum_glib_sharp_version
 
 %description -n gnome-sharp2-complete
 Gtk# is a library that allows you to build fully native graphical GNOME
@@ -71,6 +71,7 @@ Summary:        Mono bindings for rsvg
 Group:          System/GUI/GNOME
 # Not needed with rpm .config dep search
 #Requires:       librsvg
+Requires:	glib-sharp2 >= %minimum_glib_sharp_version
 
 %description -n rsvg-sharp2
 This package contains Mono bindings for librsvg.
@@ -80,6 +81,7 @@ Summary:        Mono bindings for gtkhtml
 Group:          System/GUI/GNOME
 # Not needed with rpm .config dep search
 #Requires:       %gtkhtml_requires
+Requires:	glib-sharp2 >= %minimum_glib_sharp_version
 
 %description -n gtkhtml-sharp2
 This package contains Mono bindings for gtkhtml.
@@ -90,6 +92,7 @@ Summary:        Mono bindings for gnomevfs
 Group:          System/GUI/GNOME
 # Not needed with rpm .config dep search
 #Requires:       gnome-vfs2
+Requires:	glib-sharp2 >= %minimum_glib_sharp_version
 
 %description -n gnome-vfs-sharp2
 This package contains Mono bindings gnomevfs.
@@ -100,6 +103,7 @@ Summary:        Mono bindings for libart
 Group:          System/GUI/GNOME
 # Not needed with rpm .config dep search
 #Requires:       libart_lgpl
+Requires:	glib-sharp2 >= %minimum_glib_sharp_version
 
 %description -n art-sharp2
 This package contains Mono bindings for libart.
@@ -109,6 +113,7 @@ Group:          System/GUI/GNOME
 Summary:        Mono bindings for vte
 # Not needed with rpm .config dep search
 #Requires:       vte
+Requires:	glib-sharp2 >= %minimum_glib_sharp_version
 
 %description -n vte-sharp2
 This package contains Mono bindings for vte.
@@ -116,6 +121,7 @@ This package contains Mono bindings for vte.
 %package -n gconf-sharp2
 Summary:        Mono bindings for gconf
 Group:          System/GUI/GNOME
+Requires:	glib-sharp2 >= %minimum_glib_sharp_version
 
 %description -n gconf-sharp2
 This package contains Mono bindings for gconf and gconf peditors.
@@ -124,10 +130,7 @@ This package contains Mono bindings for gconf and gconf peditors.
 %debug_package
 %prep
 %setup -q -n %{_name}-%{version}
-%patch0 -p1
-%patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 %{?env_options}

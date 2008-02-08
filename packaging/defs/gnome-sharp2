@@ -49,9 +49,6 @@ make_dist () {
 }
 
 win_4_i386_ZIP_BUILD () {
-	# Make sure it's not dependent on cygwin
-	# Fixed at least in 2.8.2
-	#export CC="gcc -mno-cygwin"
 
 	CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322`
 	CSC=`cygpath -a $CSC`
@@ -66,10 +63,6 @@ win_4_i386_ZIP_BUILD () {
 	mv /tmp/build_deps/lib/pkgconfig/mono.pc /tmp/backup
 
 	./configure --prefix=/tmp/install
-
-	# let's just skip the gnomevfs sample instead of disabling gnome-vfs
-	# Unnecessary in 2.8.1... doh, still another problem: Mono.GetOptions isn't on mssdk
-	sed -i "s/gnomevfs valtest/valtest/" sample/Makefile
 
 	# Clean up the MS gac of gtk-sharp
 	rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp
