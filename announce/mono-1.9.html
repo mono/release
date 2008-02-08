@@ -94,6 +94,35 @@
 
 	<p>
 
+<h2>Mono.Posix Improvements</h2>
+
+	<p><a href="http://www.go-mono.com/docs/index.aspx?tlink=0@ecma%3a149%23Stdlib%2fM%2f53"
+	>Stdlib.signal()</a> has been deprecated, as its use was inherently usafe.
+	<tt>Stdlib.signal()</tt>'s functionality has been replaced with a pair of
+	members: [Jonathan Pryor]</p>
+	<ul>
+		<li>
+			<tt>Mono.Unix.Native.Stdlib.SetSignalAction (Mono.Unix.Native.Signum, Mono.Unix.Native.SignalAction)</tt> 
+			permits specifying whether to perform the default action
+			(<tt>SignalAction.Default</tt>), ignore the signal
+			(<tt>SignalAction.Ignore</tt>), or generate an error 
+			(<tt>SignalAction.Error</tt>) when the specified signal is generated.
+		</li>
+		<li>
+			The <tt>Mono.Unix.UnixSignal</tt> class permits instances to represents 
+			the signal itself, supporting polling to see if the signal has been 
+			generated via the <tt>UnixSignal.IsSet</tt> instance property, or 
+			blocking the current thread until the signal has been generated with
+			<tt>UnixSignal.WaitOne()</tt>.
+		</li>
+	</ul>
+
+<h2><tt>mono-service</tt></h2>
+
+	<p>The <tt>mono-service</tt> and <tt>mono-service2</tt> programs no longer
+	poll every 500ms to pause, continue, or stop a service.  They will instead
+	sleep until the signal is generated. [Jonathan Pryor]</p>
+
 <h2>Visual Basic Runtime</h2>
 
 	<p>More support in the IO classes for Visual Basic [Rolf]
