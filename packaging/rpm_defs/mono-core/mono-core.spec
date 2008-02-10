@@ -180,7 +180,7 @@ Authors:
 %_prefix/lib/mono/gac/System.Xml.Core
 %_prefix/lib/mono/2.1/System.Xml.Core.dll
 %_prefix/lib/mono/gac/System.Xml.Linq
-%_prefix/lib/mono/3.5/System.Xml.Linq.dll
+%_prefix/lib/mono/2.0/System.Xml.Linq.dll
 %_prefix/lib/mono/gac/System
 %_prefix/lib/mono/1.0/System.dll
 %_prefix/lib/mono/2.0/System.dll
