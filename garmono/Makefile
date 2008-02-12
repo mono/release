@@ -38,25 +38,9 @@ clean:
 
 help:
 	@echo -e $(HELPMSG) 
-	@echo -e "Usage: make [task or target]\n"
+	@echo -e "Usage: make [task]\n"
 	@echo -e "Tasks:\n"
 	@for i in $(TASKS) ; do \
-		echo "    $$i" ; \
-	done
-	@echo -e "\nTo show all available targets type 'make targets' \n"
-
-tasks:
-	@echo -e $(HELPMSG)
-	@echo -e "\nAvailable tasks:\n"
-	@for i in $(TASKS) ; do \
-		echo "    $$i" ; \
-	done
-	@echo ""
-
-targets:
-	@echo -e $(HELPMSG)
-	@echo -e "\nTargets:\n"
-	@for i in $(TARGETS) ; do \
 		echo "    $$i" ; \
 	done
 	@echo ""
@@ -64,12 +48,9 @@ targets:
 $(TASKS):
 	$(MAKE) -C $(subst /,/tasks/,$@) install
 
-$(TARGETS):
-	$(MAKE) -C $@ install
-
 %:
-	@echo -e "Invalid task/target, use 'make help' to see available options\n"
+	@echo -e "Invalid task, use 'make help' to see available options\n"
 
 .SILENT:
-.PHONY: default build clean help tasks targets $(TASKS) $(TARGETS)
+.PHONY: default build clean help $(TASKS)
 
