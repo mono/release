@@ -43,11 +43,12 @@ do
    echo 
    echo "#############################################"
    echo "Exicuting the following command:"
-   echo "osc build ${MYDIST} ${SPEC_FILE}"
-   osc build ${I} ${SPEC_FILE} > ${BUILD_LOG} 2>&1
-   if ! (tail -50 $BUILD_LOG | grep -E "/var/tmp/build-root.*/usr/src/(redhat|packages)/.*rpm"); then
-      echo "${MYDIST} build failed, check ${BUILD_LOG}" >> $FAILED_LOG
-      echo_in_red "${MYDIST} build failed, check ${BUILD_LOG}" 
+   echo "osc build --no-verify ${MYDIST} ${SPEC_FILE}"
+   ecbo "Log file: ${BUILD_LOG}"
+   osc build --no-verify ${I} ${SPEC_FILE} > ${BUILD_LOG} 2>&1
+   if ! (tail -50 ${BUILD_LOG} | grep -E "/var/tmp/build-root.*/usr/src/(redhat|packages)/.*rpm"); then
+      echo "${MYDIST} build failed, check ${BUILD_LOG}" >> ${FAILED_LOG}
+      echo_in_red "${MYDIST} build failed"
    else
       echo_in_green "${MYDIST} build succeeded!"
    fi
