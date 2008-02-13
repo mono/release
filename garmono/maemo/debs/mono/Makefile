@@ -12,7 +12,7 @@ endef
 ifeq ($(shell arch), arm)
 DPKG_PARAMS = -B
 else
-DPKG_PARAMS = -b
+DPKG_PARAMS = 
 endif
 
 CONFIGURE_SCRIPTS = deb
