@@ -7,7 +7,9 @@
 GARMONO_DESTDIR ?= $(HOME)/mono
 GARMONO_SOURCES ?= $(GARMONO_DESTDIR)/src
 GARMONO_CACHE   ?= $(GARDIR)/cache
+GARMONO_DEBSDIR ?= $(GARMONO_CACHE)/$(GARNAME)
 GARMONO_SVNROOT = svn+ssh://everaldo@mono-cvs.ximian.com/source/trunk/
+
 
 # Versions.
 GARMONO_VERSION   = 1.2.6

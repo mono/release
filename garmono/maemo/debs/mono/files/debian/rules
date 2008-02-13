@@ -1,0 +1,123 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper.
+#
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+#
+# Modified to make a template file for a multi-binary package with separated
+# build-arch and build-indep targets  by Bill Allombert 2001
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platform (since we know it already)
+DEB_BUILD_ARCH     := $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+DEB_BUILD_GNU_TYPE := $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_GNU_TYPE  := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
+CFLAGS = -Wall -g
+
+ifeq ($(DEB_BUILD_ARCH), armel)
+	CONF_FLAGS += --with-sigaltstack=no
+	CONF_FLAGS += --with-tls=pthread
+else
+	CONF_FLAGS += --with-sigaltstack=yes
+	CONF_FLAGS += --with-tls=__thread
+endif
+
+CONFIGURE = CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --enable-minimal=debug,large_code,logging,com,aot $(CONF_FLAGS)
+
+configure-arch: configure-arch-stamp
+configure-arch-stamp:
+	dh_testdir
+	#cp debian/mono-wrapper.in runtime/mono-wrapper.in
+	$(CONFIGURE) --disable-mcs-build
+	touch configure-arch-stamp
+
+configure-indep: configure-indep-stamp
+configure-indep-stamp:
+	dh_testdir
+	$(CONFIGURE) --enable-mcs-build
+	touch configure-indep-stamp
+
+build: build-arch
+
+build-arch: configure-arch build-arch-stamp
+build-arch-stamp: configure-arch
+	dh_testdir
+	$(MAKE) 
+	touch build-arch-stamp
+
+build-indep: build-indep-stamp
+build-indep-stamp: configure-indep
+	dh_testdir
+	$(MAKE)
+	touch build-indep-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-arch-stamp build-indep-stamp
+	rm -f configure-arch-stamp configure-indep-stamp
+	rm -f install-arch-stamp install-indep-stamp
+	-$(MAKE) distclean
+	dh_clean 
+
+install: install-arch install-indep
+
+install-arch:
+	dh_testdir
+	dh_testroot
+	dh_installdirs -s
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	cd mcs/jay && \
+	  $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp prefix=/usr INSTALL=../../install-sh
+	touch install-arch-stamp
+
+install-indep:
+	dh_testdir
+	dh_testroot
+	dh_installdirs -i
+	cd mcs && \
+	  $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp && \
+	  $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp PROFILE=net_2_0
+	touch install-indep-stamp
+
+binary: binary-arch binary-indep
+
+binary-indep: build-indep install-indep
+	dh_testdir -i
+	dh_testroot -i
+	dh_link -i
+	dh_strip -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_makeshlibs -i
+	dh_installdeb -i
+	dh_shlibdeps -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary-arch: build-arch install-arch
+	dh_testdir -s
+	dh_testroot -s
+	dh_link -s
+	dh_strip -s
+	dh_compress -s
+	dh_fixperms -s
+	dh_makeshlibs -s
+	dh_installdeb -s
+	dh_shlibdeps -s
+	dh_gencontrol -s
+	dh_md5sums -s
+	dh_builddeb -s
+
+.PHONY: clean build binary-indep binary-arch install binary

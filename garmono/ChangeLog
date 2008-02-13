@@ -1,5 +1,13 @@
 2008-02-12  Everaldo Canuto <ecanuto@novell.com>
 
+	* maemo/*: Maemo stuff added, task maemo/debs could be used to generate .deb
+	packages.
+
+	* gar.conf.mk: GARMONO_DEBSDIR var added to set the place where .deb 
+	packages will be generated.
+
+2008-02-12  Everaldo Canuto <ecanuto@novell.com>
+
 	* cache: Cache dir added, it could use to prevent download from internet 
 	every time you need one package.
 
