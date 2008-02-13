@@ -1,5 +1,12 @@
 2008-02-12  Everaldo Canuto <ecanuto@novell.com>
 
+	* cache: Cache dir added, it could use to prevent download from internet 
+	every time you need one package.
+
+	* gar.conf.mk: Fixes to check new cache dir.
+
+2008-02-12  Everaldo Canuto <ecanuto@novell.com>
+
 	* Makefile: Remove targets since we will use root dir only for tasks.
 
 2008-01-12  Everaldo Canuto <ecanuto@novell.com>
