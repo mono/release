@@ -100,6 +100,11 @@ var data =
 				"name" : x86_64,
 				"desc" : "",
 				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-103-x86_64'>http://www.go-mono.com/download-stable/suse-103-x86_64" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-103-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+			},
+			{
+				"name" : ppc,
+				"desc" : "",
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-103-ppc'>http://www.go-mono.com/download-stable/suse-103-ppc" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-103-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
 		}
