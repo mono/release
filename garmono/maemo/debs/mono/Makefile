@@ -33,6 +33,8 @@ install-deb:
 	@cd $(WORKSRC)
 	install -d $(GARMONO_DEBSDIR)
 	mv $(WORKSRC)/../*.deb $(GARMONO_DEBSDIR)
+ifneq ($(shell arch), arm)
 	mv $(WORKSRC)/../*.tar.gz $(GARMONO_DEBSDIR)
+endif
 	$(MAKECOOKIE)
 

@@ -36,11 +36,35 @@ XB-Maemo-Icon-26:
 
 Package: mono-runtime
 Architecture: any
+Depends: mono-jit (= ${Source-Version}), mono-gac (= ${Source-Version})
 Description: Mono runtime
  Mono is a platform for running and developing .NET client and server applications
  on Linux, Solaris, Mac OS X, Windows, and Unix.
  .
  This package contains the Mono runtime.
+
+Package: mono-jit
+Architecture: i386 kfreebsd-i386 powerpc amd64 kfreebsd-amd64 ia64 arm armeb armel
+Depends: ${shlibs:Depends}
+Description: fast CLI JIT/AOT compiler for Mono
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Virtual Execution Environment and the JIT
+ (Just-in-Time) and AOT (Ahead-of-Time) code generator "mono".
+ "mono" runs CLI applications, which is currently only available for i386,
+ powerpc, arm, amd64 kfreebsd-amd64 and ia64 architectures.
+
+Package: mono-gac
+Section: devel
+Architecture: all
+Depends: mono-jit (= ${Source-Version}), mono-runtime (>= ${Source-Version})
+Description: Mono GAC tool
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package includes the GAC (Global Assembly Cache) tool (gacutil)
+ used by Mono to store shared CIL (Common Intermediate Language) libraries.
 
 Package: libmono-system1.0-cil
 Section: user/libs
@@ -141,3 +165,155 @@ Description: Mono System.Runtime Library
  on Linux, Solaris, Mac OS X, Windows, and Unix.
  .
  This package contains the Mono System.Runtime library version 2.0.
+
+Package: libmono-ldap1.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system1.0-cil (>= ${Source-Version})
+Description: Mono LDAP library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono LDAP library version 1.0.
+
+Package: libmono-ldap2.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (>= ${Source-Version})
+Description: Mono LDAP library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono LDAP library version 2.0.
+
+Package: libmono-system-ldap1.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system1.0-cil (>= ${Source-Version})
+Description: Mono System.DirectoryServices library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.DirectoryServices library version 1.0.
+
+Package: libmono-system-ldap2.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (>= ${Source-Version})
+Description: Mono System.DirectoryServices library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.DirectoryServices library version 2.0.
+
+Package: libmono-peapi1.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system1.0-cil (>= ${Source-Version})
+Description: Mono PEAPI library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono PEAPI library version 1.0.
+
+Package: libmono-peapi2.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (>= ${Source-Version})
+Description: Mono PEAPI library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono PEAPI library version 2.0.
+
+Package: libmono-relaxng1.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system1.0-cil (>= ${Source-Version})
+Description: Mono Relaxng library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono Relaxng library version 1.0.
+
+Package: libmono-relaxng2.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (>= ${Source-Version})
+Description: Mono Relaxng library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono Relaxng library version 2.0.
+
+Package: libmono-system-messaging1.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system1.0-cil (>= ${Source-Version})
+Description: Mono System.Messaging library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Messaging library version 1.0.
+
+Package: libmono-system-messaging2.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (>= ${Source-Version})
+Description: Mono System.Messaging Library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Messaging library version 2.0.
+
+Package: libmono-system-web1.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system1.0-cil (>= ${Source-Version}), mono-jit (>= ${Source-Version})
+Description: Mono System.Web library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Web library version 1.0.
+
+Package: libmono-system-web2.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (>= ${Source-Version}), mono-jit (>= ${Source-Version})
+Description: Mono System.Web Library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Web library version 2.0.
+
+Package: libmono-microsoft-build2.0-cil
+Section: libs
+Architecture: all
+Depends: ${cli:Depends}
+Description: Mono Microsoft.Build libraries
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono Microsoft.Build libraries version 2.0.
+
+Package: libmono-microsoft7.0-cil
+Section: libs
+Architecture: all
+Depends: mono-runtime (>= ${Source-Version})
+Description: Mono Microsoft libraries
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono Microsoft libraries version 7.0.
+
+Package: libmono-microsoft8.0-cil
+Section: libs
+Architecture: all
+Depends: mono-runtime (>= ${Source-Version})
+Description: Mono Microsoft libraries
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono Microsoft libraries version 8.0.
+
+

@@ -2,11 +2,6 @@ GARNAME    = debs
 CATEGORIES = maemo/tasks
 GARVERSION = $(GARMONO_VERSION)
 
-#ifeq ($(shell arch), arm)
-#DEPENDS  = maemo/debs/mono-arm
-#else
-#DEPENDS  = maemo/debs/mono-x86
-#endif
 DEPENDS  = maemo/debs/mono
 
 DESCRIPTION = Meta package to generate Mono packages for Maemo

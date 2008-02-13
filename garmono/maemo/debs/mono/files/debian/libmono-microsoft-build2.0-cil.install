@@ -1,0 +1,9 @@
+debian/tmp/usr/lib/mono/gac/Microsoft.Build.Engine.dll/2.0.*/Microsoft.Build.Engine.dll
+debian/tmp/usr/lib/mono/gac/Microsoft.Build.Tasks.dll/2.0.*/Microsoft.Build.Tasks.dll
+debian/tmp/usr/lib/mono/gac/Microsoft.Build.Framework.dll/2.0.*/Microsoft.Build.Framework.dll
+debian/tmp/usr/lib/mono/gac/Microsoft.Build.Utilities.dll/2.0.*/Microsoft.Build.Utilities.dll
+debian/tmp/usr/lib/mono/2.0/Microsoft.Build.Engine.dll
+debian/tmp/usr/lib/mono/2.0/Microsoft.Build.Tasks.dll
+debian/tmp/usr/lib/mono/2.0/Microsoft.Build.Framework.dll
+debian/tmp/usr/lib/mono/2.0/Microsoft.Build.Utilities.dll
+

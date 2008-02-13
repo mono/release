@@ -79,6 +79,7 @@ install-arch:
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
 	cd mcs/jay && \
 	  $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp prefix=/usr INSTALL=../../install-sh
+	dh_install -s
 	touch install-arch-stamp
 
 install-indep:
@@ -88,6 +89,7 @@ install-indep:
 	cd mcs && \
 	  $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp && \
 	  $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp PROFILE=net_2_0
+	dh_install -i
 	touch install-indep-stamp
 
 binary: binary-arch binary-indep
