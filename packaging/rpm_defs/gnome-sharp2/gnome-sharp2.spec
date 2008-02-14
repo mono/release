@@ -2,7 +2,7 @@
 # norootforbuild
 
 Name:           gnome-sharp2
-Version:	2.16.0
+Version:	2.16.1
 %define _name gnome-sharp
 %ifarch ppc64
 BuildRequires:  mono-biarchcompat
@@ -209,6 +209,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/mono/gac/*gconf-sharp
 %{_prefix}/lib/mono/gtk-sharp-2.0/*gconf-sharp.dll
 # Other distros place these in gnome-sharp2??
+%{_libdir}/pkgconfig/gconf-sharp-peditors-2.0.pc
 %{_prefix}/lib/mono/gac/*gconf-sharp-peditors
 %{_prefix}/lib/mono/gtk-sharp-2.0/*gconf-sharp-peditors.dll
 
