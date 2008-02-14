@@ -2,7 +2,7 @@
 # norootforbuild
 
 Name:     	mono-addins
-Version: 	0.3
+Version: 	0.3.1
 Release:	0
 Vendor:		Novell, Inc.
 License:	LGPL
