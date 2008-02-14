@@ -2,7 +2,7 @@
 # norootforbuild
 
 Name:     	monodevelop-java
-Version: 	0.18
+Version: 	0.19
 Release:	0
 Vendor:		Novell, Inc.
 License:	LGPL
