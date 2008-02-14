@@ -19,8 +19,8 @@ Patch4:		gtk-sharp-fix_vte_so_version.patch
 Patch5:		gnome-sharp-revert_unportable_relocatable.patch
 
 %define old_version 2.4.3
-%define new_version 2.8.4
-%define new_split_version 2.10.2
+%define new_version 2.8.5
+%define new_split_version 2.10.3
 
 %define platform_desktop_split 0
 
@@ -88,7 +88,7 @@ BuildRequires: gnome-panel-devel gtkhtml3-devel libgnomeprintui22-devel librsvg2
 
 # Need to put this stuff down here after Version: gets defined
 Version:	%_version
-Source:         %{_name}-%{version}.tar.gz
+Source:         %{_name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
