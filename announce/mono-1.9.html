@@ -103,12 +103,18 @@
 	
 <h2>ASP.NET</h2>
 
-	<p>New mapping feature [Marek]
-
-<h2>Sqlite</h2>
-
-	<p>Updated the Mono.Data.Sqlite assembly to the latest version
-	(which is a port of XXXX) [Marek].
+	<p>New mapping feature. This feature makes it easier to make your cross-platform 
+           applications work on many platforms without changing the configuration settings.
+           More information can be found on <a href="http://mono-project.com/ASP.NET_Settings_Mapping">this page</a>. [Marek]
+	<p>Batch compilation of sites. Unlike previously, the 2.0 applications
+           are now by default compiled in the batch mode. That means, the first
+           time a request is made to a location, files from the location are compiled
+           together into one assembly (separate assemblies are used for .aspx and .as[hmc]x
+           files). It makes the requests to other files at the same location much faster
+           and reduces clutter in the temporary directory. [Marek]
+        <p>The XSP test suite has been given a facelift. Both 1.1 and 2.0 sets of tests now
+           share the design and navigation. Many samples were fixed or completed. [Marek]
+        <p>Speed optimization in the System.Web assembly [Mainsoft, Marek]
 
 <h2>Windows.Forms</h2>
 
