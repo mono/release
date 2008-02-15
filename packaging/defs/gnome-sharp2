@@ -22,7 +22,7 @@ MONO_DEPS=(
 	gtk-sharp210
 )
 
-MONO_RECOMMENDED_DEPS=(
+MONO_RECOMMEND_DEPS=(
 	libgdiplus
 )
 
