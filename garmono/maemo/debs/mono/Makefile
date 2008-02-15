@@ -10,9 +10,9 @@ define BLURB
 endef
 
 ifeq ($(shell arch), arm)
-DPKG_PARAMS = -B
+DPKG_PARAMS = -tc -B
 else
-DPKG_PARAMS = 
+DPKG_PARAMS = -tc
 endif
 
 CONFIGURE_SCRIPTS = deb

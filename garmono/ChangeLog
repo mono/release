@@ -1,3 +1,16 @@
+2008-02-14  Everaldo Canuto <ecanuto@novell.com>
+
+	* gar.conf.mk: SBOX_PREFIX added.
+
+	* gar.lib.mk: Disable extra inclusions.
+
+	* linux/tasks/build/Makefile: Fix gar.mk location.
+	* linux/tasks/build-full/Makefile: Fix gar.mk location.
+	* linux/tasks/build-web/Makefile: Fix gar.mk location.
+
+	* maemo/debs/mono/Makefile: Fix dpkg params to clean source tree after 
+	package creation.
+
 2008-02-13  Everaldo Canuto <ecanuto@novell.com>
 
 	* maemo/debs/mono/Makefile: Fix i386 packages and also add sources package

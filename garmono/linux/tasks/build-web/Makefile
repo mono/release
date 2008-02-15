@@ -14,5 +14,5 @@ define BLURB
 endef
 
 # This should go before any hand-made rules.
-include ../../gar.mk
+include ../../../gar.mk
 

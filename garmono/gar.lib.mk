@@ -735,7 +735,8 @@ valueof-%:
 show-%s:
 	@$(MAKE) -s DESTIMG=$(DESTIMG) deep-valueof-$* | sort | uniq
 
-include $(addprefix $(GARDIR)/,$(sort $(GAR_EXTRA_LIBS)))
+# Disable extra inclusions for now.
+#include $(addprefix $(GARDIR)/,$(sort $(GAR_EXTRA_LIBS)))
 
 # Mmm, yesssss.  cookies my preciousssss!  Mmm, yes downloads it
 # is!  We mustn't have nasty little gmakeses deleting our

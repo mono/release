@@ -19,6 +19,9 @@ GLUEZILLA_VERSION = $(MONO_VERSION).1
 XSP_VERSION       = $(MONO_VERSION)
 MODMONO_VERSION   = $(MONO_VERSION)
 
+# Scratchbox
+SBOX_PREFIX ?= /scratchbox/devkits/mono
+
 # Remote addresses.
 MASTER_SITES += http://go-mono.com/sources/$(GARNAME)/
 
