@@ -65,6 +65,11 @@ for p in "redhat-release fedora-release centos-release".split():
 		if p == "centos-release":
 			version_macro = "%%rhel_version\t%s" % output
 
+# Ignore unpackaged files for HEAD, but not for RELEASE
+if os.environ['HEAD_or_RELEASE'] == 'RELEASE':
+	unpack_term_build = 1
+else:
+	unpack_term_build = 0
 
 # need to set some rpmrc macros to be able to build in this directory
 # can't use $build_arch in rpmfilename, need to find out why some distros build as i686
@@ -75,10 +80,10 @@ open('monobuild.rpmmacros', 'w').write("""
 %%_rpmdir	%%{_topdir}/built-packages
 %%_rpmfilename	%%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm
 %%buildroot	%s/buildroot
-%%_unpackaged_files_terminate_build	0
+%%_unpackaged_files_terminate_build	%s
 %%monobuild	1
 %s
-""" % (temp_build_dir, temp_build_dir, version_macro) )
+""" % (temp_build_dir, temp_build_dir, unpack_term_build, version_macro) )
 
 for d in "BUILD built-packages".split():
 	if os.path.exists(d): shutil.rmtree(d) # normall won't have to be cleaned up, but do it so we can rerun builds inside jail

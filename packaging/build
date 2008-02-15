@@ -298,7 +298,7 @@ conf.buildenv.copy_to(files_to_copy, temp_build_dir, compress=0)
 conf.buildenv.copy_to(support_files_to_copy, conf.env_vars['build_location'], compress=0)
 
 # Set up env for the build and for tests
-conf.env_vars['HEAD_or_RELEASE'] = "HEAD"
+conf.env_vars['HEAD_or_RELEASE'] = HEAD_or_RELEASE
 conf.env_vars['DISTRO'] = distro
 conf.env_vars['BUILD_OS'] = conf.info['os']
 conf.env_vars['BUILD_ARCH'] = conf.info['arch']
