@@ -1,3 +1,12 @@
+2008-02-16  Everaldo Canuto <ecanuto@novell.com>
+
+	* maemo/tasks/devkit/Makefile: Environment vars added to devkit.
+	* maemo/devkit/environment/files/target_setup.sh: Environment vars added to 
+	devkit.
+	* maemo/devkit/environment/files/environment: Environment vars added to 
+	devkit.
+	* maemo/devkit/environment/Makefile: Environment vars added to devkit.
+
 2008-02-14  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.conf.mk: SBOX_PREFIX added.
