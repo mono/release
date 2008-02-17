@@ -4,7 +4,7 @@ GARVERSION = $(MAEMOSHARP_VERSION)
 DISTFILES  = $(GARNAME)-$(GARVERSION).tar.gz
 
 DEPENDS  = maemo/devkit/mono
-DEPENDS += maemo/devkit/gtk
+DEPENDS += maemo/devkit/gtk-sharp
 
 DESCRIPTION = Maemo# is a Gtk# bindings for Maemo libraries.
 define BLURB
