@@ -1,0 +1,93 @@
+#!/usr/bin/make -f
+
+#export DH_VERBOSE=1
+export MONO_SHARED_DIR=$(CURDIR)
+export MONO_GAC_PREFIX=$(CURDIR)/debian/tmp/usr
+
+config: config-stamp
+config-stamp:
+	dh_testdir
+	CSC=/scratchbox/devkits/mono/bin/mcs ./configure --prefix=/usr
+	touch config-stamp
+
+#configure-arch: configure-arch-stamp
+#configure-arch-stamp:
+#	dh_testdir
+#	$(CONFIGURE) --disable-mcs-build
+#	touch configure-arch-stamp
+
+#configure-indep: configure-indep-stamp
+#configure-indep-stamp:
+#	dh_testdir
+#	$(CONFIGURE) --enable-mcs-build
+#	touch configure-indep-stamp
+
+build: build-arch
+
+build-indep: build-indep-stamp
+build-indep-stamp: config-stamp
+	dh_testdir
+	$(MAKE)
+	touch build-indep-stamp
+
+build-arch: build-arch-stamp
+build-arch-stamp: config-stamp
+	dh_testdir
+	$(MAKE)
+	touch build-arch-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-arch-stamp build-indep-stamp
+	rm -f configure-arch-stamp configure-indep-stamp
+	rm -f install-arch-stamp install-indep-stamp
+	-$(MAKE) distclean
+	dh_clean
+
+install:
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	# fixing file permissions
+	cd debian && find -type f -name "*.dll" -or -name "*.mdb" -or -name "*.cs" | xargs chmod -x
+	cd debian && find -type f -name "*.exe" | xargs chmod +x
+
+binary: binary-arch binary-indep
+
+binary-indep: build-indep install
+	dh_testdir
+	dh_testroot
+	dh_installdirs -i
+	dh_movefiles -i
+	dh_link -i
+	dh_install
+	dh_installchangelogs -i ChangeLog
+	dh_installdocs -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary-arch: build-arch install
+	dh_testdir
+	dh_testroot
+	dh_movefiles -s
+	dh_link -s
+	dh_install
+	dh_installchangelogs -s ChangeLog
+	dh_installdocs -s
+	dh_strip -s
+	dh_compress -s
+	dh_fixperms -s
+	dh_installdeb -s
+	dh_shlibdeps -s
+	dh_gencontrol -s
+	dh_md5sums -s
+	dh_builddeb -s
+
+.PHONY: config clean build-indep build-arch clean binary-indep binary-arch build binary

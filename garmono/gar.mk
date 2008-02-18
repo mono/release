@@ -160,8 +160,8 @@ ROOTFROMDEST = $(call DIRSTODOTS,$(DESTDIR))
 
 # Allow us to use programs we just built
 PATH := $(DESTDIR)$(bindir):$(DESTDIR)$(sbindir):$(PATH)
-LD_LIBRARY_PATH := $(DESTDIR)$(libdir):/lib:/usr/lib:/usr/local/lib
-PKG_CONFIG_PATH := $(DESTDIR)$(libdir)/pkgconfig/:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/gnome/lib/pkgconfig
+LD_LIBRARY_PATH := $(DESTDIR)$(libdir):/lib:/usr/lib:/usr/local/lib:$(LD_LIBRARY_PATH)
+PKG_CONFIG_PATH := $(DESTDIR)$(libdir)/pkgconfig/:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/gnome/lib/pkgconfig:$(PKG_CONFIG_PATH)
 C_INCLUDE_PATH := $(DESTDIR)/$(includedir):/opt/gnome/include
 ACLOCAL_PATH := $(DESTDIR)$(datadir)/aclocal
 

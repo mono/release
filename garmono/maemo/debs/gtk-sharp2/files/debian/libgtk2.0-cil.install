@@ -1,0 +1,15 @@
+debian/tmp/usr/lib/libgtksharpglue-2.so 	/usr/lib/mono/gtk-sharp-2.0/
+debian/tmp/usr/lib/libgdksharpglue-2.so		/usr/lib/mono/gtk-sharp-2.0/
+debian/tmp/usr/lib/libpangosharpglue-2.so	/usr/lib/mono/gtk-sharp-2.0/
+debian/tmp/usr/lib/pkgconfig/gtk-sharp-2.0.pc
+debian/tmp/usr/lib/pkgconfig/gtk-dotnet-2.0.pc
+debian/tmp/usr/lib/mono/gac/gtk-sharp/
+debian/tmp/usr/lib/mono/gac/gdk-sharp/
+debian/tmp/usr/lib/mono/gac/atk-sharp/
+debian/tmp/usr/lib/mono/gac/pango-sharp/
+debian/tmp/usr/lib/mono/gac/gtk-dotnet/
+debian/tmp/usr/lib/mono/gtk-sharp-2.0/gtk-sharp.dll
+debian/tmp/usr/lib/mono/gtk-sharp-2.0/gdk-sharp.dll
+debian/tmp/usr/lib/mono/gtk-sharp-2.0/atk-sharp.dll
+debian/tmp/usr/lib/mono/gtk-sharp-2.0/pango-sharp.dll
+debian/tmp/usr/lib/mono/gtk-sharp-2.0/gtk-dotnet.dll

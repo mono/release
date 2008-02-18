@@ -1,0 +1,4 @@
+debian/tmp/usr/lib/mono/gac/glade-sharp/
+debian/tmp/usr/lib/pkgconfig/glade-sharp-2.0.pc
+debian/tmp/usr/lib/libgladesharpglue-2.so		/usr/lib/mono/gtk-sharp-2.0/
+debian/tmp/usr/lib/mono/gtk-sharp-2.0/glade-sharp.dll

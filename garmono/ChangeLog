@@ -1,3 +1,13 @@
+2008-02-17  Everaldo Canuto <ecanuto@novell.com>
+
+	* gar.mk: Add current paths to LD_LIBRARY_PATH and PKG_CONFIG_PATH, it fixes
+	problem on gtk-sharp packages generation.
+
+	* maemo/tasks/debs/Makefile: Add gtk-sharp deb task as dependency, it
+	enabled this task to build also gtk-sharp packages.
+
+	* maemo/debs/gtk-sharp2/*: gtk-sharp2 package scripts.
+
 2008-02-16  Everaldo Canuto <ecanuto@novell.com>
 
 	* maemo/tasks/devkit/Makefile: Environment vars added to devkit.
