@@ -7,7 +7,8 @@ hostname=g5-mono.boston.ximian.com
 
 #  Can't build gtk+ on 10.3
 #  Seems we need to set this.  Otherwise it gets set to 10.1
-env="MACOSX_DEPLOYMENT_TARGET=10.4,LDFLAGS= -headerpad_max_install_names "
+#  use -Xlinker so libtool doesn't drop the headerpad flag
+env="MACOSX_DEPLOYMENT_TARGET=10.4,LDFLAGS= -Xlinker -headerpad_max_install_names "
 
 # 10.3 settings
 #username=nds_cm

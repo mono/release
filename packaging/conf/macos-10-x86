@@ -3,7 +3,8 @@ hostname=x32-macos-1.mono.lab.novell.com
 USE_ZIP_PKG=1
 
 # Helps with relocating binaries
-env="LDFLAGS= -headerpad_max_install_names "
+#  use -Xlinker so libtool doesn't drop the headerpad flag
+env="MACOSX_DEPLOYMENT_TARGET=10.4,LDFLAGS= -Xlinker -headerpad_max_install_names "
 
 web_index=7
 

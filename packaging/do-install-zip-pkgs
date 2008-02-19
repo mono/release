@@ -249,11 +249,12 @@ for path_on_disk in native_filelist:
 			if not relative_paths:
 				(code, output) = utils.launch_process(command1)
 				if code:
-					print "*** WARNING *** problems executing: %s" % command1
+					print "*** ERROR *** problems executing: %s" % command1
 					print output
-					print "Falling back to @executable_path with install_name_tool ... "
+					# Don't fall back to @executable_path any more...
+					sys.exit(1)
 
-			if code or relative_paths:
+			else:
 
 				# This string is shorter so it works with libmono-profiler-cov
 				# But doesn't seem to work when I install to /tmp/build_deps... (libgdiplus configure test for libtiff fails)

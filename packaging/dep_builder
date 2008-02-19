@@ -40,6 +40,7 @@ if code:
 	sys.exit(1)
 
 # Copy files back
+log_obj.log("Copying files back...\n")
 conf.buildenv.copy_from(build_location + '/build/built-packages/*', 'external_zip_pkg')
 
 conf.buildenv.unlock_env()

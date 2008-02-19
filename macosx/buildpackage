@@ -124,7 +124,7 @@ for arch in targets:
 	framework_prefix = "/Library/Frameworks/Mono.framework"
 	prefix = "%s/Versions/%s" % (framework_prefix, version)
 	# TODO: don't use executable_path anymore (fix pango issues... ?) (maybe we could use a really long path instead of build_deps, and that would allow enough room?  lame...)
-	(code, output) = conf.buildenv.execute_command("%s/do-install-zip-pkgs --relative_paths %s%s %s %s " % (arch_remote_packages_loc, arch_remote_PKGROOT, prefix, prefix, arch_remote_packages_loc) )
+	(code, output) = conf.buildenv.execute_command("%s/do-install-zip-pkgs %s%s %s %s " % (arch_remote_packages_loc, arch_remote_PKGROOT, prefix, prefix, arch_remote_packages_loc) )
 	if code:
 		print "Error extracting and installing packages"
 		sys.exit(1)
