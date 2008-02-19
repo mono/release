@@ -22,6 +22,9 @@ for i in man*; do
    done)
 done
 
+# Only run if the X11 package is installed
+if [ -e /usr/X11R6/lib/libX11.dylib ]; then
+
 # Make sure we run the files we lay down, and not other stuff installed
 #  on the system
 export PATH=/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH
@@ -33,4 +36,6 @@ gdk-pixbuf-query-loaders > gtk-2.0/gdk-pixbuf.loaders
 # pango setup
 mkdir -p pango
 pango-querymodules >  pango/pango.modules
+fi
+
 fi
