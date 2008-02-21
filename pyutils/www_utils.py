@@ -36,7 +36,9 @@ def get_tz_cookie(headers_in):
 
         if headers_in.has_key('Cookie'):
                 my_cookie.load(headers_in['Cookie'])
-                return_val = my_cookie['monobuild_tzo'].value
+		# workaround for firefox 3 (js probably doesn't work in ff3)
+		if my_cookie.has_key('monobuild_tzo'):
+			return_val = my_cookie['monobuild_tzo'].value
 
         return return_val
 

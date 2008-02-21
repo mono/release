@@ -32,16 +32,19 @@ EOF
 		'source': 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.16.1.tar.gz',
 		'post':"""
 			# Save msgfmt, as this is needed for building glib
+			#  we also need msgmerge for intltool... (monodevelop)
 			rm -Rf /tmp/temp_install
 			mkdir -p /tmp/temp_install/bin
-			mv /tmp/install/bin/msgfmt /tmp/temp_install/bin
+			cd /tmp/install/bin
+			mv msgfmt msgmerge /tmp/temp_install/bin
+			cd -
 
 			rm -Rf /tmp/install/bin/*
 			rm -Rf /tmp/install/share/doc
 			rm -Rf /tmp/install/share/emacs
 			rm -Rf /tmp/install/share/gettext
 
-			mv /tmp/temp_install/bin/msgfmt /tmp/install/bin
+			mv /tmp/temp_install/bin/* /tmp/install/bin
 			"""
 	},
 	{
@@ -93,8 +96,6 @@ EOF
 		'source': 'http://superb-east.dl.sourceforge.net/sourceforge/libpng/libpng-1.2.20.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
-			# How did this get installed?? (we want .dylib, not .so)
-			rm -Rf /tmp/install/lib/libpng.so
 			"""
 	},
 	{
@@ -177,16 +178,11 @@ EOF
 #	#  had to remove gtk/test from 'configure' script and from gtk/Makefile.am SUBDIRS ... why wasn't that in the tarball?
 #	make dist-bzip2
 	{
+		# Requires 10.4 or above
 		'name': 'gtk+', 
 		'version': '2.15.0', 
 		'source': 'http://primates.ximian.com/~wberrier/macos/sources/gtk+-2.15.0.tar.bz2',
 		'build': """
-
-			# Dah... 10.3 sdk doesn't have cups.h in the devkit, don't use 10.3 to build
-			#/usr/include/cups/cups.h
-			unset CC
-			unset MACOSX_DEPLOYMENT_TARGET
-
 			./configure --prefix=%s --with-gdktarget=quartz --disable-gtk-doc --disable-docs
 			make
 			cd gtk/xdgmime
@@ -297,7 +293,8 @@ EOF
 	{
 		'name': 'ImageMagick',
 		'version': '6.3.8',
-		'source': 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.3.8-2.tar.bz2',
+		# Dah, the url keeps getting updated... without saving the old ones.  (Use previous version?)
+		'source': 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.3.8-5.tar.bz2',
 		'build':"""
 			./configure --prefix=/tmp/install
 			make

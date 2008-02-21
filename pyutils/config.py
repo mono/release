@@ -123,6 +123,7 @@ sd_latest_build_distros = """
 	suse-101-i586
 	suse-101-x86_64
 	suse-103-i586
+	suse-103-x86_64
 	win-4-i386
 """.split()
 sd_latest_build_packages = td_packages

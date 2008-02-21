@@ -34,6 +34,10 @@ Conflicts:	helix-banshee <= 0.13.1
 Conflicts:	banshee <= 0.13.1
 Conflicts:	f-spot <= 0.3.5
 
+# 1.9 branch conflicts:
+#  Can't do this because this rpm could be used on a distro with gtk# 2.8...
+#Conflicts:	gtk-sharp2 < 2.10.3
+
 # Require when in the buildserivce
 %if 0%{?opensuse_bs}
 Requires:	libgdiplus0
@@ -180,7 +184,7 @@ Authors:
 %_prefix/lib/mono/gac/System.Xml.Core
 %_prefix/lib/mono/2.1/System.Xml.Core.dll
 %_prefix/lib/mono/gac/System.Xml.Linq
-%_prefix/lib/mono/2.0/System.Xml.Linq.dll
+%_prefix/lib/mono/3.5/System.Xml.Linq.dll
 %_prefix/lib/mono/gac/System
 %_prefix/lib/mono/1.0/System.dll
 %_prefix/lib/mono/2.0/System.dll

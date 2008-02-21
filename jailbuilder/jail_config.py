@@ -96,6 +96,7 @@ required_rpms = {
 	""",
 
 	'suse-101': """
+		ImageMagick-Magick++-devel
 		aaa_base
 		apache2-devel
 		apache2-prefork
@@ -393,7 +394,10 @@ mknod -m 644 /dev/urandom c  1 9
 
 	Also, had to comment out my_test_for_space in SuSEconfig script
 """,
-
+	'suse-103':	"""# vi is messed up:
+rm /bin/vim
+/bin/vim-normal /bin/vim
+""",
 	'fedora-4':	"""Disable gpg keys and set gpgcheck to 0 in /etc/yum.repos.d/*
 MAKEDEV in /dev for random, urandom and null, touch /etc/fstab""",
 

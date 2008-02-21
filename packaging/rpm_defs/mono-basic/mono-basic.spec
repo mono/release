@@ -1,6 +1,8 @@
 
 # norootforbuild
 
+%define prebuilt_release 1
+
 Name:           mono-basic
 BuildRequires:  mono-devel
 License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL)
@@ -11,7 +13,7 @@ Version:	1.2.6
 Release:	0.novell
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.bz2
-Source1:        %{name}-%{version}-0.novell.noarch.rpm
+Source1:        %{name}-%{version}-%{prebuilt_release}.novell.noarch.rpm
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
@@ -69,14 +71,19 @@ if [ -e %{S:1} ] ; then
 	gacutil -package 2.0 -root ${RPM_BUILD_ROOT}/usr/lib -i usr/lib/mono/2.0/Microsoft.VisualBasic.dll
 else
         # Check for binaries built on windows (for building on monobuild)
-        f="mono-basic-%{version}-0.win4.novell.x86.zip"
-        p="win-4-i386/mono-basic/%{version}/files/downloads/$f"
+	if test %{prebuilt_release} == 0 ; then
+		release_dir=""
+	else
+		release_dir="-%{prebuilt_release}"
+	fi
+        f="mono-basic-%{version}-%{prebuilt_release}.win4.novell.x86.zip"
+        p="win-4-i386/mono-basic/%{version}${release_dir}/files/downloads/$f"
         wget --tries=1 --timeout=10 http://build.mono.lab.novell.com/builds/RELEASE/$p || true
         wget --tries=1 --timeout=10 http://build.mono.lab.novell.com/builds/HEAD/$p || true
 
         # If we have windows built binaries, inject them into the package (to provide the 1.0 runtime)
         if [ -e "$f" ] ; then 
-                unzip mono-basic-%{version}-0.win4.novell.x86.zip
+                unzip $f
                 # Remove vbnc built runtime
                 rm -Rf ${RPM_BUILD_ROOT}/%_prefix/lib/mono/gac/Microsoft.VisualBasic
                 rm -Rf ${RPM_BUILD_ROOT}/%_prefix/lib/mono/2.0/Microsoft.VisualBasic.dll
