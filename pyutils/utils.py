@@ -513,22 +513,25 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 	return exit_code, "".join(collected).rstrip()
 
 
-def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
+
+def get_versions(dir, version="", fail_on_missing=True, version_reg=""):
 	"""args: dir, and optional version.
 	If version is specified, the latest release of that version will be selected.
 
 	version_reg: select version only based on files matching regular expression,
 		but verion has high precedence than version_reg.
+
+	returns all versions (sorted)
 	"""
 
 	files = []
 	if os.path.exists(dir):
 		files = os.listdir(dir)
 	elif fail_on_missing:
-		print "utils.get_latest_ver: Path does not exist: %s" % dir
+		print "utils.get_versions: Path does not exist: %s" % dir
 		sys.exit(1)
 	else:
-		print "utils.py: get_latest_ver: fail_on_missing=False, Warning: path does not exist: " + dir
+		print "utils.py: get_versions: fail_on_missing=False, Warning: path does not exist: " + dir
 
 	# If a version is specified, find latest release of that version
 	#  and also take precedence over a version_reg
@@ -551,6 +554,20 @@ def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
 				candidates.append(file)
 		files = candidates
 
+	return version_sort(files)
+
+def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
+	"""args: dir, and optional version.
+	If version is specified, the latest release of that version will be selected.
+
+	version_reg: select version only based on files matching regular expression,
+		but verion has high precedence than version_reg.
+
+	returns the latest version
+	"""
+
+	files = get_versions(dir, version, fail_on_missing, version_reg)
+
 	if len(files) == 0:
 		latest_version = ""
 		if fail_on_missing:
@@ -558,10 +575,9 @@ def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
 			sys.exit(1)
 
 	else:
-		latest_version = version_sort(files).pop()
+		latest_version = files.pop()
 
         return latest_version
-
 
 
 # TODO: Might implement this in python later... ?

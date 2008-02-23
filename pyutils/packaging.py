@@ -222,7 +222,7 @@ class package:
 		if self.get_info_var('def_alias'):
 			# TODO: pass all contructor vars to this new object?
 			# has_parent_pack must always be true so that def_aliased packages create their dir structure
-			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'), source_basepath=source_basepath, package_basepath=package_basepath, inside_jail=inside_jail, create_dirs_links=create_dirs_links, has_parent_pack=True, bundle_obj=bundle_obj)
+			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'), source_basepath=source_basepath, package_basepath=package_basepath, inside_jail=inside_jail, create_dirs_links=create_dirs_links, has_parent_pack=True, bundle_obj=bundle_obj, HEAD_or_RELEASE=HEAD_or_RELEASE)
 			for k, v in self.alias_pack_obj.info.iteritems():
 				# There's some type of data we don't want to copy: def_alias to avoid recursive loops...
 				#   Ignore POSTBUILD stuff.... sort of a hack, but ignoring reduces the amount of redundancy
@@ -269,6 +269,7 @@ class package:
 
 		# Initialize for later... (for caching)
 		self.version = ""
+		self.versions = []
 		self.latest_version = ""
 		self.source_filename = ""
 
@@ -347,6 +348,7 @@ class package:
 			for dir in (dirs):
 				if not os.path.islink(dir) and not self.inside_jail:
 					if os.path.exists(dir):
+						print "HEAD_or_RELEASE: " + self.HEAD_or_RELEASE
 						print "%s is not a symbolic link (it should be)" % dir
 						sys.exit(1)
 					try:
@@ -452,11 +454,34 @@ class package:
 		else:
 			return ""
 
+
+	# these fuctions got split out a bit so they could be used externally
+	def get_versions(self, fail_on_missing=True):
+		if not self.versions:
+			self.versions = utils.get_versions(self.package_fullpath, fail_on_missing=fail_on_missing, version_reg=self.get_version_selection_reg() )
+
+		return self.versions
+
+	def get_latest_version(self, fail_on_missing=True):
+
+		if not self.versions:
+			self.get_versions(fail_on_missing=fail_on_missing)
+
+		if not self.latest_version:
+			try:
+				self.latest_version = self.versions.pop()
+			except:
+				if fail_on_missing:
+					print "packaging.get_version: No candidates for latest version for package: " + self.name
+					sys.exit(1)
+
+		return self.latest_version
+
 	def get_version(self, fail_on_missing=True):
 
 		if not self.version:
 			if not self.latest_version:
-				self.latest_version = utils.get_latest_ver(self.package_fullpath, fail_on_missing=fail_on_missing, version_reg=self.get_version_selection_reg() )
+				self.get_latest_version()
 
 			if self.bundle_obj.version_map_exists:
 				# Cases
@@ -496,38 +521,40 @@ class package:
 
 		return self.version
 
+	def get_source_files(self):
+		if self.bundle_obj.version_map_exists and self.bundle_obj.version_map.has_key(self.name):
+			# Strip release version if it exists (so that a bundle conf may have a release attached, 
+			#   but that it won't apply to the source)
+			ver_wo_rel, = re.compile("(.*)-?").search(self.bundle_obj.version_map[self.name]).groups(1)
+			# Can't include self.name as part of reg because of cases like gtk-sharp-2.x
+
+			# Account for empty string versions, ex:  gtk-sharp=""
+			if ver_wo_rel == "":
+				ver_wo_rel = ".*?"
+
+			reg = re.compile(".*?-%s%s" % (ver_wo_rel, config.sources_ext_re_string) )
+
+		# There's a version map, but this component isn't listed, return nothing
+		elif self.bundle_obj.version_map_exists:
+			return ""
+		# There's no version map, get the latest
+		else:
+			reg = re.compile(".*")
+
+		candidates = []
+		for file in os.listdir(self.source_fullpath):
+			# Also match against the version selection reg for this pack def
+			if reg.search(file) and re.compile(self.get_version_selection_reg()).search(file):
+				candidates.append(file)
+
+		# TODO: need to use rpm sorting on this?
+		return utils.version_sort(candidates)
+
 	def get_source_file(self):
 		if not self.source_filename:
-			if self.bundle_obj.version_map_exists and self.bundle_obj.version_map.has_key(self.name):
-				# Strip release version if it exists (so that a bundle conf may have a release attached, 
-				#   but that it won't apply to the source)
-				ver_wo_rel, = re.compile("(.*)-?").search(self.bundle_obj.version_map[self.name]).groups(1)
-				# Can't include self.name as part of reg because of cases like gtk-sharp-2.x
-
-				# Account for empty string versions, ex:  gtk-sharp=""
-				if ver_wo_rel == "":
-					ver_wo_rel = ".*?"
-
-				reg = re.compile(".*?-%s%s" % (ver_wo_rel, config.sources_ext_re_string) )
-
-			# There's a version map, but this component isn't listed, return nothing
-			elif self.bundle_obj.version_map_exists:
-				return ""
-			# There's no version map, get the latest
-			else:
-				reg = re.compile(".*")
-
-			candidates = []
-			for file in os.listdir(self.source_fullpath):
-				# Also match against the version selection reg for this pack def
-				if reg.search(file) and re.compile(self.get_version_selection_reg()).search(file):
-					candidates.append(file)
-
-			# TODO: need to use rpm sorting on this?
-			self.source_filename = self.name + os.sep + utils.version_sort(candidates).pop()
+			self.source_filename = self.name + os.sep + self.get_source_files().pop()
 
 		return self.source_filename
-
 
 	# Get all url deps, as well as mono_deps zip/rpms files, and their url deps
 	def get_dep_files(self, build_deps=False, recommend_deps=False, source_deps=False, zip_runtime_deps=False):

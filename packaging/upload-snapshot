@@ -5,6 +5,8 @@ TARGET_USER="mono-web"
 TARGET_HOST="mono.ximian.com"
 
 BASE_DIR="~/release/monobuild/www/snapshot"
+# (can't use ~ with getopt.... hrm)
+FULL_BASE_DIR="/var/www/mono-website/release/monobuild/www/snapshot"
 BASE_URL="/monobuild/snapshot"
 
 # Hack: flag to mono-basic to grab from noarch instead of $DISTRO
@@ -14,7 +16,9 @@ distros="suse-101-i586,suse-103-x86_64"
 
 ssh $TARGET_USER@$TARGET_HOST "mkdir -p $BASE_DIR"
 cd ../website
-# TODO: the delete option isn't working... run a script that cleans up all but one version... do this before sync?
+# run a script that cleans up all but one version... 
+ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./clean-downloads.py --source_basepath=$FULL_BASE_DIR/snapshot_sources --package_basepath=$FULL_BASE_DIR/snapshot_packages --platforms=$distros HEAD 1"
+
 UPLOAD_SNAPSHOT=1 ./sync-bundle.py  --platforms=$distros --skip_installers $BUNDLE $TARGET_USER@$TARGET_HOST:$BASE_DIR || exit 1
 
 # Copy non snapshot packages and sources (external stuff) to the snapshot_ dirs
