@@ -348,7 +348,6 @@ class package:
 			for dir in (dirs):
 				if not os.path.islink(dir) and not self.inside_jail:
 					if os.path.exists(dir):
-						print "HEAD_or_RELEASE: " + self.HEAD_or_RELEASE
 						print "%s is not a symbolic link (it should be)" % dir
 						sys.exit(1)
 					try:
@@ -481,7 +480,7 @@ class package:
 
 		if not self.version:
 			if not self.latest_version:
-				self.get_latest_version()
+				self.get_latest_version(fail_on_missing=fail_on_missing)
 
 			if self.bundle_obj.version_map_exists:
 				# Cases

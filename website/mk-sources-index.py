@@ -56,8 +56,9 @@ for line in template:
 		arc_out.write("<ul>\n")
 		for i in tarballs:
 			n = os.path.basename(i)
-			out.write("<li><a href='../sources/%s'>%s</a></li>\n" % (i, n))
-			arc_out.write("<li><a href='../../../sources/%s'>%s</a></li>\n" % (i, n))
+			s = os.path.basename(sources_dir)
+			out.write("<li><a href='../%s/%s'>%s</a></li>\n" % (s, i, n))
+			arc_out.write("<li><a href='../../../%s/%s'>%s</a></li>\n" % (s, i, n))
 
 		out.write("</ul>\n")
 		arc_out.write("</ul>\n")
