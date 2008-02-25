@@ -238,7 +238,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk#, MonoDevelop installs in /Library/Frameworks:<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/macos-10-universal/6/MonoFramework-1.2.6_6.macos10.novell.universal.dmg'>Mono 1.2.6_6 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>"
+				"downloadText" : "Includes Mono, Cocoa#, Gtk#, MonoDevelop installs in /Library/Frameworks:<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/macos-10-universal/6/MonoFramework-1.2.6_6.macos10.novell.universal.dmg'>Mono 1.2.6_6 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk#, MonoDevelop, and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
