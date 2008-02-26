@@ -6,7 +6,7 @@
 #
 
 # Include some pretty colors and functions that use them
-. ~/bin/include/colors
+. $(dirname $0)/include/colors
 
 # Get the name of out spec file.
 # This script expects to work with one spec file that has
@@ -42,7 +42,7 @@ do
    BUILD_LOG="/var/tmp/${MYDISTUND}-build.log"
    echo 
    echo "#############################################"
-   echo "Exicuting the following command:"
+   echo "Executing the following command:"
    echo "osc build --no-verify ${MYDIST} ${SPEC_FILE}"
    echo "Log file: ${BUILD_LOG}"
    osc build --no-verify ${I} ${SPEC_FILE} > ${BUILD_LOG} 2>&1
@@ -58,7 +58,7 @@ done
 echo 
 echo The following RPMs were built:
 echo
-find /var/tmp/build-root-Mono_*/usr/src/packages -cnewer $TM_STAMP -iname "*rpm"
+find /var/tmp/build-root-*/usr/src/packages -cnewer $TM_STAMP -iname "*rpm"
 rm $TM_STAMP
 echo
 echo_in_red "The following builds failed:"
