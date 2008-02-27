@@ -165,11 +165,10 @@ selections += [ Selection('gecko-sharp', packages = "gecko-sharp gecko-sharp2".s
 
 # Hmm... needs to be a better way to package up these samples...
 selections += [ Selection('samples', urls = """
-http://primates.ximian.com/~wberrier/windows-installer/sqlsharpgtk-0.3-appguidelines.zip
+http://developer.novell.com/wiki/index.php/Special:File/sqlsharpgtk/SQL-Sharp~~~For~~~GTK-Sharp~~~0.4/sqlsharpgtk-0.4-bin.zip
 http://primates.ximian.com/~wberrier/windows-installer/samples-1.zip
 """.split()
  ) ]
-#http://primates.ximian.com/~wberrier/windows-installer/sqlsharpgtk-0.3-0-bin.tar.gz 
 
 selections += [ Selection('xsp', packages = "xsp".split() ) ]
 
@@ -200,25 +199,26 @@ for selection in selections:
 # uniqify the files array
 files_used_in_installer = utils.remove_list_duplicates(files_used_in_installer)
 
-# Not needed anymore... (had to rebuild for some reason...)
-###########################################
-## Special case for sqlsharpgtk, massage it
-#os.chdir('samples')
-#dir = glob.glob('sqlsharpgtk*').pop()
-#print dir
-#distutils.dir_util.mkpath('share/doc' + os.sep + dir)
-#os.chdir(dir)
-#
-#output = commands.getoutput("cp -f *.TXT ../share/doc/%s" % dir)
-#output = commands.getoutput("mv sqlsharpgtk ../bin")
-#output = commands.getoutput("cp -f sqlsharpgtk.* ../lib")
-#output = commands.getoutput("cp -f Mono.Data.SqlSharp.DatabaseBrowser.* ../lib")
-#
-#os.chdir("..")
-#shutil.rmtree(dir)
-#os.chdir("..")
-## End of sqlsharpgtk special case
 ##########################################
+# Special case for sqlsharpgtk, massage it
+os.chdir('samples')
+
+dirutils.dir_util.mkpath("lib/mono")
+shutil.move("sqlsharpgtk", "lib/mono")
+
+durutils.dir_util.mkpath("bin")
+
+# Create wrapper
+fd = open('bin/sqlsharpgtk', 'w')
+fd.write("""#!/bin/sh
+exec /tmp/install/bin/mono $MONO_OPTIONS C:/cygwin/tmp/install/lib/mono/sqlsharpgtk/sqlsharpgtk.exe "$@""""
+""")
+fd.close()
+os.chmod('bin/sqlsharpgtk', config.shell_perms)
+
+os.chdir("..")
+# End of sqlsharpgtk special case
+#########################################
 
 ##########################################
 # Special case for gtk-sharp samples
