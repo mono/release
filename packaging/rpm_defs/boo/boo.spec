@@ -2,12 +2,11 @@
 # norootforbuild
 
 Name:           boo
-Version:        0.8.0.2730
+Version:        0.8.1.2865
 Release:        1
 License:        X11/MIT
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        boo-%{version}-src.zip
-Patch0:		boo-disable_vs2005_update.patch
 Patch1:		boo-pkgconfig_path_fix.patch
 Group:          Development/Languages/Other
 Summary:        A CLI Scripting Language
@@ -83,7 +82,6 @@ Boo is a new object oriented statically typed programming language for the Commo
 %prep
 # use '-c' because this tarball doesn't come with a top-level dir
 %setup -q -c %name-%version
-%patch0
 %patch1
 
 %build
@@ -93,7 +91,7 @@ sed -i "s/\${pkg-config::get-variable('shared-mime-info','prefix')}/\/opt\/gnome
 %endif
 
 %{?env_options}
-nant -D:install.prefix=%{_prefix}
+nant -D:install.prefix=%{_prefix} -D:skip.vs2005=True
 
 %install
 %{?env_options}
@@ -138,6 +136,7 @@ rm -rf "$RPM_BUILD_ROOT"
 %{_prefix}/lib/mono/gac/Boo.Lang.Interpreter
 %{_prefix}/lib/mono/gac/Boo.Lang.Parser
 %{_prefix}/lib/mono/gac/Boo.Lang.Useful
+%{_prefix}/lib/mono/gac/Boo.Lang.Extensions
 %{mime_info_prefix}/share/mime/packages/boo-mime-info.xml
 
 %post

@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Wed Feb 27 13:18:43 MST 2008 - wberrier@suse.de
+
+- Update to 0.8.1.2865
+ - a simpler way for writing macros
+ - support for nested functions
+ - generic methods overloading works
+ - support for CLR 3.5 extension methods (moreover boo extension methods)
+ - compile-time conditionals through ConditionalAttribute and the new -define SYMBOL booc option
+ - AttributeUsageAttribute is now supported and enforced
+ - a better interactive interpreter (previously known as booish2)
+ - warnings about unused private members, unused namespaces, unreachable code
+ - new error messages, including suggestions for misspelled members or types
+ - exception filters, exception fault handlers
+ - for loop IDisposeable.Dispose integration
+
+-------------------------------------------------------------------
 Wed Nov 02 12:18:43 MST 2007 - wberrier@suse.de
 
 - Update to 0.8.0.2730
