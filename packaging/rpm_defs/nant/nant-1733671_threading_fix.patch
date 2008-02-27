@@ -1,25 +1,0 @@
-diff -ru old/nant-0.85/src/NAnt.Core/Tasks/ExternalProgramBase.cs nant-0.85/src/NAnt.Core/Tasks/ExternalProgramBase.cs
---- old/nant-0.85/src/NAnt.Core/Tasks/ExternalProgramBase.cs	2005-04-04 14:08:28.000000000 +0200
-+++ nant-0.85/src/NAnt.Core/Tasks/ExternalProgramBase.cs	2007-08-06 22:03:42.205183000 +0200
-@@ -452,7 +452,9 @@
-                     }
-                 }
-             }
--            OutputWriter.Flush();
-+            lock (_lockObject) {
-+                OutputWriter.Flush();
-+            }
-         }
-         /// <summary>        /// Reads from the stream until the external program is ended.        /// </summary>
-         private void StreamReaderThread_Error() {
-@@ -476,7 +478,9 @@
-                     }
-                 }
-             }
--            ErrorWriter.Flush();
-+            lock (_lockObject) {
-+                ErrorWriter.Flush();
-+            }
-         }
- 
-         /// <summary>
