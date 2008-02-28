@@ -55,8 +55,7 @@ mkdir -p ${RPM_BUILD_ROOT}/usr/lib/ikvm
 mkdir -p ${RPM_BUILD_ROOT}/usr/share/pkgconfig
 
 #Install binaries
-#  (iname catches JVM.DLL)
-find bin . -iname "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
+find bin . -name "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 find bin . -name "*\.exe" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 
 # Install some in gac (By request of Jeroen)
