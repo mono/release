@@ -117,6 +117,7 @@ required_rpms = {
 		gtk2-devel
 		gtkhtml2-devel
 		gtksourceview
+		gtksourceview-devel
 		iputils
 		libart_lgpl-devel
 		libglade2-devel
@@ -263,6 +264,7 @@ required_rpms = {
 		gtk2-devel
 		gtkhtml2-devel
 		gtksourceview-devel
+		gtksourceview18-devel
 		intltool
 		iputils
 		libart_lgpl-devel

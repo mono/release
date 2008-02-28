@@ -12,7 +12,7 @@ BASE_URL="/monobuild/snapshot"
 # Hack: flag to mono-basic to grab from noarch instead of $DISTRO
 #export UPLOAD_SNAPSHOT=1
 
-distros="suse-101-i586,suse-103-x86_64"
+distros="suse-101-i586,suse-103-i586,suse-103-x86_64"
 
 ssh $TARGET_USER@$TARGET_HOST "mkdir -p $BASE_DIR"
 cd ../website

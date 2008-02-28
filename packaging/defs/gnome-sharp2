@@ -31,7 +31,7 @@ get_destroot () {
 }
 
 HEAD_PATH=(
-	trunk/gnome-sharp
+	branches/gnome-sharp-2-16-branch
 )
 RELEASE_PATH=(
 	tags/gnome-sharp/[[versiondot]]/gnome-sharp

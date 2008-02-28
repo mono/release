@@ -203,15 +203,17 @@ files_used_in_installer = utils.remove_list_duplicates(files_used_in_installer)
 # Special case for sqlsharpgtk, massage it
 os.chdir('samples')
 
-dirutils.dir_util.mkpath("lib/mono")
-shutil.move("sqlsharpgtk", "lib/mono")
+distutils.dir_util.mkpath("lib/mono/sqlsharpgtk")
+# Weird... but it works (moves all files from the sqlsharpgtk dir into the dest dir
+#  (I would assume it moved the whole directory... but no)
+shutil.move("sqlsharpgtk", "lib/mono/sqlsharpgtk")
 
-durutils.dir_util.mkpath("bin")
+distutils.dir_util.mkpath("bin")
 
 # Create wrapper
 fd = open('bin/sqlsharpgtk', 'w')
 fd.write("""#!/bin/sh
-exec /tmp/install/bin/mono $MONO_OPTIONS C:/cygwin/tmp/install/lib/mono/sqlsharpgtk/sqlsharpgtk.exe "$@""""
+exec /tmp/install/bin/mono $MONO_OPTIONS C:/cygwin/tmp/install/lib/mono/sqlsharpgtk/sqlsharpgtk.exe "$@"
 """)
 fd.close()
 os.chmod('bin/sqlsharpgtk', config.shell_perms)

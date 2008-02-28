@@ -10,7 +10,9 @@ USE_HOSTS=(
 
 # nant uses a numbering scheme that rpm doesn't like for upgrade paths
 #  we'll have to manually tweak this here and there
-APPEND_ZERO_TO_RPM_VERSION=1
+#  Uncomment this when nant does a final release.  For betas and rcs,
+#   comment this out.
+#APPEND_ZERO_TO_RPM_VERSION=1
 
 MONO_DEPS=(
 	mono

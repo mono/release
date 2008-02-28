@@ -40,7 +40,7 @@ make_dist () {
 
 POSTBUILD_STEP_NAME1="test"
 POSTBUILD_STEP1 () {
-	$make_path run-test
+	$make_path -k run-test
 }
 
 POSTBUILD_STEP_NAME2="api-diff"
