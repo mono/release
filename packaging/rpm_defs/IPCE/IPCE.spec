@@ -10,6 +10,7 @@ BuildArch:      noarch
 BuildRequires:  mono-core mono-devel mono-winforms unzip
 URL:            http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython
 Source0:        %{name}-%{version}.zip
+Patch0:		IPCE-fix_fepy_init.patch
 Summary:        Implementation of the Python programming language running on .NET
 Group:          Development/Languages/Python
 Provides:       IronPython
@@ -46,34 +47,47 @@ Authors:
 /usr/lib/IPCE
 %prep
 %setup -n %{name}-%{version} -q
+%patch0 -p1
 
 %build
 # For now, package prebuilt version, as it would be a lot of work
 #  to put together the sources that fepy does for it's builds
 #  (They don't ship them)  If the point does come where we need
 #  to patch a build, we could include the ironpython source, add their
-#  patches, and then their supplementary files, but what a mess...
+#  patches, and then their supplementary files.
 true
 
 %install
 # Create dirs
 mkdir -p ${RPM_BUILD_ROOT}/usr/bin
 mkdir -p ${RPM_BUILD_ROOT}/usr/lib/IPCE
-mkdir -p ${RPM_BUILD_ROOT}/usr/lib/IPCE/Lib
 
 #Install binaries
-# Only install 1.1 for now... do 2.0 later
-cp ipy/*.exe ipy/*.dll ${RPM_BUILD_ROOT}/usr/lib/IPCE
-cp -R Lib/* ${RPM_BUILD_ROOT}/usr/lib/IPCE/Lib
+cp -a ipy  ${RPM_BUILD_ROOT}/usr/lib/IPCE
+cp -a ipy2 ${RPM_BUILD_ROOT}/usr/lib/IPCE
+cp -a Lib  ${RPM_BUILD_ROOT}/usr/lib/IPCE
+
 # Generate wrapper scripts
-for f in `find . -name "*\.exe"` ; do
-        script_name=${RPM_BUILD_ROOT}/usr/bin/`basename $f .exe`
-        cat <<EOF > $script_name
+for f in $(find . -name "*\.exe") ; do
+
+	# For the 2.x assemblies...
+	if test x$(dirname $f) == x"./ipy2" ; then
+		script_name="/usr/bin/$(basename $f .exe)2"
+		assembly="ipy2/$(basename $f)"
+	else
+		script_name="/usr/bin/$(basename $f .exe)"
+		assembly="ipy/$(basename $f)"
+	fi
+
+        cat <<EOF > ${RPM_BUILD_ROOT}$script_name
 #!/bin/sh
-exec `which mono` /usr/lib/IPCE/`basename $f` "\$@"
+exec $(which mono) /usr/lib/IPCE/$assembly "\$@"
 EOF
-        chmod 755 $script_name
+        chmod 755 ${RPM_BUILD_ROOT}$script_name
 done
+
+# TODO: patch site.py
+
 # Substitute location of python interpreter to make sure the rpm doesn't depend on /usr/local/bin/python
 for i in lib/IPCE/Lib/cgi.py lib/IPCE/Lib/Crypto/Util/RFC1751.py ; do
         sed -i "s/\/usr\/local\/bin\/python/\/usr\/bin\/python/" ${RPM_BUILD_ROOT}/usr/$i
