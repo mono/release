@@ -3,7 +3,6 @@ Wed Feb 27 19:16:25 MST 2008 - wberrier@novell.com
 
 - Update to 0.36.0.5
  -Adjust filelist
- -remove ikvm-native.dll win32 binary
  -Don't provide ziplib
 
 -------------------------------------------------------------------

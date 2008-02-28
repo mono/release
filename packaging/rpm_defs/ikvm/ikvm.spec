@@ -55,7 +55,8 @@ mkdir -p ${RPM_BUILD_ROOT}/usr/lib/ikvm
 mkdir -p ${RPM_BUILD_ROOT}/usr/share/pkgconfig
 
 #Install binaries
-find bin . -name "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
+#  (do iname for JVM.DLL)
+find bin . -iname "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 find bin . -name "*\.exe" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 
 # Install some in gac (By request of Jeroen)
@@ -65,7 +66,8 @@ for i in IKVM.AWT.WinForms.dll IKVM.OpenJDK.ClassLibrary.dll IKVM.Runtime.dll ; 
 done
 
 # Remove win32 native dll
-rm -f ${RPM_BUILD_ROOT}/usr/lib/ikvm/ikvm-native.dll
+#  (Keep it, because these don't get built as part of the Mono build)
+#rm -f ${RPM_BUILD_ROOT}/usr/lib/ikvm/ikvm-native.dll
 
 # Generate wrapper scripts
 for f in `find bin . -name "*\.exe"` ; do
