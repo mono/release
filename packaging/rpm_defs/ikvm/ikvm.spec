@@ -3,7 +3,7 @@
 
 Name:           ikvm
 BuildRequires:  mono-core mono-devel unzip dos2unix
-Version:	0.34.0.2
+Version:	0.36.0.5
 Release:	0.novell
 License:        BSD License and BSD-like
 BuildArch:      noarch
@@ -55,14 +55,18 @@ mkdir -p ${RPM_BUILD_ROOT}/usr/lib/ikvm
 mkdir -p ${RPM_BUILD_ROOT}/usr/share/pkgconfig
 
 #Install binaries
-find bin . -name "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
+#  (iname catches JVM.DLL)
+find bin . -iname "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 find bin . -name "*\.exe" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 
 # Install some in gac (By request of Jeroen)
-for i in IKVM.AWT.WinForms.dll IKVM.GNU.Classpath.dll IKVM.Runtime.dll ; do
+for i in IKVM.AWT.WinForms.dll IKVM.OpenJDK.ClassLibrary.dll IKVM.Runtime.dll ; do
 	gacutil -i ${RPM_BUILD_ROOT}/usr/lib/ikvm/$i -package ikvm -root ${RPM_BUILD_ROOT}/usr/lib
 	rm -f ${RPM_BUILD_ROOT}/usr/lib/ikvm/$i
 done
+
+# Remove win32 native dll
+rm -f ${RPM_BUILD_ROOT}/usr/lib/ikvm/ikvm-native.dll
 
 # Generate wrapper scripts
 for f in `find bin . -name "*\.exe"` ; do
@@ -105,7 +109,7 @@ rm -rf "$RPM_BUILD_ROOT"
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif
-%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
+%define __find_provides env sh -c 'filelist=($(grep -v SharpZipLib)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
