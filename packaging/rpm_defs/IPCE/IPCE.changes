@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Feb 27 20:15:21 MST 2008 - wberrier@suse.de
+
+- Update to r7
+ -fix some path issues
+ -don't include 2.x for now
+
+-------------------------------------------------------------------
 Fri Aug  3 20:15:21 CEST 2007 - wberrier@suse.de
 
 - Update to r6 (Includes IronPython 1.1)

@@ -2,8 +2,8 @@
 # norootforbuild
 
 Name:           IPCE
-Version:	r6
-Release:	0.novell
+Version:	r7
+Release:	1
 License:        Freely Redistributable Software (FSR)
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -41,7 +41,7 @@ Authors:
 
 %files
 %defattr(-, root, root)
-%doc License.html FAQ.html Readme.html
+%doc License.html
 /usr/bin/*
 /usr/lib/IPCE
 %prep
@@ -60,8 +60,10 @@ true
 mkdir -p ${RPM_BUILD_ROOT}/usr/bin
 mkdir -p ${RPM_BUILD_ROOT}/usr/lib/IPCE
 mkdir -p ${RPM_BUILD_ROOT}/usr/lib/IPCE/Lib
+
 #Install binaries
-cp *.exe *.dll ${RPM_BUILD_ROOT}/usr/lib/IPCE
+# Only install 1.1 for now... do 2.0 later
+cp ipy/*.exe ipy/*.dll ${RPM_BUILD_ROOT}/usr/lib/IPCE
 cp -R Lib/* ${RPM_BUILD_ROOT}/usr/lib/IPCE/Lib
 # Generate wrapper scripts
 for f in `find . -name "*\.exe"` ; do
