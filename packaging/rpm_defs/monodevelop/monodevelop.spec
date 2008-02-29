@@ -32,6 +32,7 @@ BuildRequires: desktop-file-utils update-desktop-files
 
 # TODO: what to do here on fedora?
 %define suse_update_desktop_file true
+%define run_suseconfig true
 
 %endif
 
@@ -85,9 +86,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 update-mime-database /usr/share/mime >/dev/null || :
+%run_suseconfig -m gtk2
 
 %postun
 update-mime-database /usr/share/mime >/dev/null || :
+%run_suseconfig -m gtk2
 
 %if 0%{?fedora_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
