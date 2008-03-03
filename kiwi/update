@@ -1,0 +1,7 @@
+#! /bin/sh
+
+rm -f config.xml
+
+lftp -f list.lftp > list
+
+(sed -n -e '1,/ PACKAGES BEGIN MONO/p' config.xml.in ; cat list | while read pack; do echo '<package name="'$pack'"/>'; done; sed -n -e '/ PACKAGES END MONO/,$p' config.xml.in ) | xmllint --format - > t && mv t config.xml

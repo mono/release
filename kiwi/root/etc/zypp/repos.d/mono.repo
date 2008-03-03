@@ -1,0 +1,7 @@
+[mono-stable]
+name=Mono Stable
+baseurl=http://www.go-mono.com/download-stable/suse-103-i586/
+type=rpm-md
+enabled=1
+autorefresh=0
+gpgcheck=1

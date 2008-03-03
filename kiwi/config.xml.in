@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<image name="Mono-1.9_openSUSE-10.3" schemeversion="1.4">
+  <description type="system">
+    <author>Andrew Jorgensen</author>
+    <contact>ajorgensen@novell.com</contact>
+    <specification>Mono Live system</specification>
+  </description>
+  <preferences>
+    <type primary="true" boot="isoboot/suse-10.3" flags="unified">iso</type>
+    <type boot="vmxboot/suse-10.3" filesystem="ext3" format="vmdk">vmx</type>
+    <type boot="xenboot/suse-10.3" filesystem="ext3">xen</type>
+    <type boot="usbboot/suse-10.3" filesystem="squashfs">usb</type>
+    <version>0</version>
+    <size unit="M">40000</size>
+    <packagemanager>smart</packagemanager>
+    <rpm-check-signatures>False</rpm-check-signatures>
+    <rpm-force>False</rpm-force>
+    <locale>en_US.UTF-8</locale>
+  </preferences>
+  <profiles>
+    <profile name="GNOME" description="Gnome desktop system"/>
+  </profiles>
+  <users group="users">
+    <user name="linux" pwd="$2a$05$DlJal4RD7tKd3trZ6Qjb5ufS7cJ4R7O56g8yNn8SYcLPvpelTl7lq" home="/home/linux" realname="Rupert Monkey"/>
+  </users>
+  <users group="root">
+    <user name="root" pwd="$2a$05$DlJal4RD7tKd3trZ6Qjb5ufS7cJ4R7O56g8yNn8SYcLPvpelTl7lq" home="/root"/>
+  </users>
+  <repository type="rpm-md">
+    <source path="http://mono.ximian.com/monobuild/preview/download-preview/suse-103-i586/"/>
+  </repository>
+  <repository type="yast2">
+    <source path="http://kirk.provo.novell.com/install/10.3/i386/"/>
+  </repository>
+  <repository type="yast2">
+    <source path="http://download.opensuse.org/repositories/openSUSE:10.3/standard/"/>
+  </repository>
+  <repository type="yast2">
+    <source path="http://download.opensuse.org/distribution/10.3/repo/non-oss/"/>
+  </repository>
+  <repository type="yast2">
+    <source path="http://download.opensuse.org/distribution/10.3/repo/debug/"/>
+  </repository>
+  <!--repository type="rpm-md">
+    <source path="http://download.opensuse.org/update/10.3/"/>
+  </repository-->
+  <repository type="rpm-md">
+    <source path="http://download.opensuse.org/repositories/GNOME:/Community/openSUSE_10.3/"/>
+  </repository>
+  <repository type="rpm-md">
+    <source path="http://download.opensuse.org/repositories/Banshee/openSUSE_10.3/"/>
+  </repository>
+  <repository type="rpm-md">
+    <source path="http://download.opensuse.org/repositories/Mono/openSUSE_10.3/"/>
+  </repository>
+  <repository type="rpm-md">
+    <source path="http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/"/>
+  </repository>
+  <!--repository type="rpm-md">
+    <source path=""/>
+  </repository-->
+  <packages type="image">
+    <!--package name="yast2-live-installer"/-->
+    <package name="pam"/>
+    <package name="pam-config"/>
+    <package name="pam-modules"/>
+    <package name="udev"/>
+    <package name="aaa_base"/>
+    <package name="tar"/>
+    <package name="patch"/>
+    <package name="zypper"/>
+  </packages>
+  <packages type="image" patternType="onlyRequired" patternPackageType="plusRecommended" profiles="GNOME">
+    <!-- PACKAGES BEGIN MONO -->
+    <!-- PACKAGES END MONO -->
+
+    <package name="mysql"/>
+    <package name="mysql-client"/>
+    <package name="postgresql"/>
+    <package name="postgresql-server"/>
+
+    <package name="xchat"/>
+
+    <!-- ASP.NET APPS -->
+    <package name="mojoportal"/>
+    <package name="Mono_ASP.NET_IBuySpyPortal"/>
+    <package name="Mono_ASP.NET_MonoBlog"/>
+    <package name="Mono_ASP.NET_MonoForums"/>
+    <package name="Mono_ASP.NET_BlogStarterKit"/>
+    <package name="Mono_ASP.NET_ClassifiedsStarterKit"/>
+    <package name="Mono_ASP.NET_ClubWebSite"/>
+
+    <package name="wf-apps"/>
+    <package name="f-spot"/>
+    <package name="gbrainy"/>
+    <package name="gnome-do"/>
+
+    <package name="banshee"/>
+    <package name="banshee-engine-gst"/>
+    <package name="banshee-plugins-default"/>
+    <package name="banshee-plugins-extra"/>
+    <package name="banshee-plugins-DAAP"/>
+    <package name="podsleuth"/>
+
+    <package name="gcc"/>
+    <package name="gtk2-devel"/>
+
+    <package name="phpMyAdmin"/>
+    <package name="phpPgAdmin"/>
+
+    <package name="samba"/>
+  </packages>
+  <packages type="image" patternType="onlyRequired" patternPackageType="plusRecommended" profiles="GNOME">
+    <opensusePattern name="gnome_basis"/>
+    <opensusePattern name="devel_basis"/>
+    <ignore name="ggreeter"/>
+    <ignore name="SuSEfirewall2"/>
+    <ignore name="mono-core"/>
+    <ignore name="mono-core-debuginfo"/>
+  </packages>
+  <packages type="boot">
+    <package name="filesystem"/>
+    <package name="glibc-locale"/>
+    <package name="kernel-default"/>
+    <package name="udev"/>
+    <package name="bundle-lang-common-en"/>
+  </packages>
+</image>

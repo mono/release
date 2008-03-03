@@ -1,0 +1,7 @@
+# This file is the authentication source for Samba if 'passdb backend' is set
+# to 'smbpasswd' and 'encrypt passwords' is 'Yes' in the [global] section of
+# /etc/samba/smb.conf
+#
+# See section 'passdb backend' and 'encrypt passwords' in the manual page of
+# smb.conf for more information.
+linux:1000:54FB905347FB3850AAD3B435B51404EE:A9D31A2BB68D6C08133C86A425068A1F:[U          ]:LCT-47A3B3D8:

@@ -1,0 +1,8 @@
+#!/bin/sh
+cat <<EOF >> /usr/lib/firefox/defaults/profile/prefs.js
+user_pref("browser.startup.homepage", "http://localhost/");
+EOF
+
+cd /usr/lib/firefox/defaults/profile
+patch < /tmp/bookmarks.patch
+rm /tmp/bookmarks.patch
