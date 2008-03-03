@@ -17,7 +17,7 @@
 <html>
 <body onload='paintColors();'>
 
-<h1>Mono 1.9 Release, 2007</h1>
+<h1>Mono 1.9 Release, March 2008</h1>
 
 	<p>Mono 1.9 is our last release before Mono turns 2.0, it is a
 	stable release and an update
@@ -46,11 +46,17 @@
 
 <h2>Major Highlights</h2>
 
+	<p>This is the last release before the 2.0 release of Mono, it
+	is a stable release and at this point the generics and the VM
+	are supported feature complete.
+	
 	<p>This version fixes a bug in reflection that affects
 	existing Gtk# deployments;   To install this release you
 	should install the new version of Gtk# (released at the same
 	time as Mono).
-	
+
+	<p>C# compiler now defaults to the C# 3.0 mode.
+
 	<p>Silverlight support is now enabled by default.
 	
 <a name="changes">
@@ -60,7 +66,11 @@
 
 	<p>AOT support for ARM processors [Zoltan].
 
-	<p><a href="https://bugzilla.novell.com/buglist.cgi?query_format=advanced&short_desc_type=allwordssubstr&short_desc=&long_desc_type=fulltext&long_desc=&classification=Mono&product=Mono%3A+Runtime&bug_file_loc_type=allwordssubstr&bug_file_loc=&status_whiteboard_type=allwordssubstr&status_whiteboard=&keywords_type=allwords&keywords=&bug_status=UNCONFIRMED&bug_status=NEEDINFO&bug_status=RESOLVED&bug_status=VERIFIED&emailtype1=substring&email1=&emailtype2=substring&email2=&bugidtype=include&bug_id=&votes=&chfieldfrom=2007-11-09&chfieldto=2008-01-28&chfieldvalue=&cmdtype=doit&order=Reuse+same+sort+as+last+time&field0-0-0=noop&type0-0-0=noop&value0-0-0=">Runtime bugs fixed/closed in this release</a>
+	<p><a href="https://bugzilla.novell.com/buglist.cgi?query_format=advanced&short_desc_type=allwordssubstr&short_desc=&long_desc_type=fulltext&long_desc=&classification=Mono&product=Mono%3A+Runtime&bug_file_loc_type=allwordssubstr&bug_file_loc=&status_whiteboard_type=allwordssubstr&status_whiteboard=&keywords_type=allwords&keywords=&bug_status=UNCONFIRMED&bug_status=NEEDINFO&bug_status=RESOLVED&bug_status=VERIFIED&emailtype1=substring&email1=&emailtype2=substring&email2=&bugidtype=include&bug_id=&votes=&chfieldfrom=2007-11-09&chfieldto=2008-01-28&chfieldvalue=&cmdtype=doit&order=Reuse+same+sort+as+last+time&field0-0-0=noop&type0-0-0=noop&value0-0-0=">Runtime
+	bugs fixed/closed in this release</a>
+
+	<p>Continued the work on the Mono verifier and making the
+	runtime more robust when coping with broken assemblies.
 
 <h2>LINQ</h2>
 
@@ -202,17 +212,10 @@
 	<p>SSL/TLS now support X.509 server certificate using 
 	wildcards (e.g. *.novell.com) [Sebastien]
 
-<h1>Contributors:</h1>
+<!--<h1>Contributors:</h1>
 
 	Luke Page, James Purcell, Srikanth Madikeri
+  -->
 
-<h1>CONFIRM BEFORE RELEASE:</h1>
-
-	<p>Completed verifier for 1.0 CIL bytecode [Rodrigo].
-
-	<p>Please document that the default for gmcs is now
-	C#3 instead of C#2 and document the -langversion
-	switch to go back to C#2, as this is probably going
-	to cause _a lot_ of problems for people.
 
 
