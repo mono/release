@@ -12,7 +12,7 @@
     <type boot="usbboot/suse-10.3" filesystem="squashfs">usb</type>
     <version>0</version>
     <size unit="M">40000</size>
-    <packagemanager>smart</packagemanager>
+    <packagemanager>zypper</packagemanager>
     <rpm-check-signatures>False</rpm-check-signatures>
     <rpm-force>False</rpm-force>
     <locale>en_US.UTF-8</locale>
@@ -52,9 +52,6 @@
   </repository>
   <repository type="rpm-md">
     <source path="http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/"/>
-  </repository>
-  <repository type="rpm-dir">
-    <source path="this://rpms"/>
   </repository>
   <!--repository type="rpm-md">
     <source path=""/>
@@ -121,7 +118,6 @@
   </packages>
   <packages type="vmware">
     <package name="kernel-source"/>
-    <package name="VMwareTools"/>
   </packages>
   <packages type="boot">
     <package name="filesystem"/>
