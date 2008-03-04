@@ -319,7 +319,7 @@ def packagestatus(req, **vars):
 
 			req.write("""
 
-			<h3>Build status - %s</h3>
+			<h3><a href="%s#%s" name="%s">Build status - %s</a></h3>
 
 			<div>
 			<table>
@@ -348,7 +348,7 @@ def packagestatus(req, **vars):
 			<h4>Build Steps</h4>
 			<div>
 			<table>
-			<tbody>""" % (version, tz_start, tz_finish, duration, values['buildhost']) )
+			<tbody>""" % (req.unparsed_uri, version, version, version, tz_start, tz_finish, duration, values['buildhost']) )
 
 			# Start through the build steps...	
 			for step in build_info.get_steps_info(read_info=0):
