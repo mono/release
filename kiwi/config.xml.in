@@ -51,10 +51,10 @@
     <source path="http://download.opensuse.org/repositories/Banshee/openSUSE_10.3/"/>
   </repository>
   <repository type="rpm-md">
-    <source path="http://download.opensuse.org/repositories/Mono/openSUSE_10.3/"/>
-  </repository>
-  <repository type="rpm-md">
     <source path="http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/"/>
+  </repository>
+  <repository type="rpm-dir">
+    <source path="this://rpms"/>
   </repository>
   <!--repository type="rpm-md">
     <source path=""/>
@@ -116,7 +116,12 @@
     <ignore name="ggreeter"/>
     <ignore name="SuSEfirewall2"/>
     <ignore name="mono-core"/>
+    <ignore name="mono-debugger"/>
     <ignore name="mono-core-debuginfo"/>
+  </packages>
+  <packages type="vmware">
+    <package name="kernel-source"/>
+    <package name="VMwareTools"/>
   </packages>
   <packages type="boot">
     <package name="filesystem"/>
