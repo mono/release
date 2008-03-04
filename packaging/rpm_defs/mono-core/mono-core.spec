@@ -33,6 +33,7 @@ Provides:	mono-ziplib
 Conflicts:	helix-banshee <= 0.13.1
 Conflicts:	banshee <= 0.13.1
 Conflicts:	f-spot <= 0.3.5
+Conflicts:     mono-addins <= 0.3
 
 # 1.9 branch conflicts:
 #  Can't do this because this rpm could be used on a distro with gtk# 2.8...
@@ -591,6 +592,7 @@ Authors:
 %_prefix/lib/mono/gac/Mono.Http
 %_prefix/lib/mono/1.0/Mono.Http.dll
 %_prefix/lib/mono/2.0/Mono.Http.dll
+%_prefix/lib/mono/gac/Mono.Web
 %_prefix/lib/mono/gac/System.Runtime.Remoting
 %_prefix/lib/mono/1.0/System.Runtime.Remoting.dll
 %_prefix/lib/mono/2.0/System.Runtime.Remoting.dll

@@ -22,6 +22,8 @@ import utils
 
 output_timeout = 600
 
+retry_exit_code = 5
+
 # Some things we'll need to run as root
 EXEC_AS_ROOT = 'sudo'
 
@@ -127,12 +129,28 @@ get_source = package_obj.get_info_var('get_source')
 ### Execute the source creating functions ###
 def_file = temp_dir + os.sep + package
 
+def exit_on_error(command, status, output, exit_code=0, exit_msg=""):
+	"""Function to call to check errors.  Exit code is for exiting with a different value than status. """
+	if status:
+		print "Error executing: " + command
+		print "Exit code of command: %d" % status
+		print "Output: " + output
+		if exit_msg:
+			print exit_msg
+		if exit_code:
+			print "Exiting with: %d" % exit_code
+			sys.exit(exit_code)
+		else:
+			sys.exit(status)
+
 # get_source
 if get_source:
 	utils.launch_process(get_source, print_command=1, output_timeout=output_timeout)
 else:
 	# Put cachedir up two levels so it will remain through cleanup
 	cache_dir = os.path.abspath( os.path.join(temp_dir, "..", "..", "src_cache", package, HEAD_or_RELEASE) )
+
+	failure_message = "*** Error *** getting/updating source failed (this is usually because of a malformed url, ex: invalid version, or svn/ssh failed)"
 
 	# Potentially clean up source to do a fresh checkout (required for modules that use 'svn:external'
 	if fresh_checkout:
@@ -147,10 +165,9 @@ else:
 			# svn switch  (will update if the path in the working copy hasn't changed, this ensures have the right path)
 
 			# rewrite the url, just in case we've changed it (it's a really fast command, nothing to loose)
-			(status, output) = utils.launch_process("cd %s/%s; svn info" % (cache_dir, module), output_timeout=output_timeout )
-			if status:
-				print "Error getting repo url..."
-				sys.exit(1)
+			command = "cd %s/%s; svn info" % (cache_dir, module)
+			(status, output) = utils.launch_process(command, output_timeout=output_timeout )
+			exit_on_error(command, status, output, exit_code=1)
 			old_revision, = re.compile("Revision: (.*)").search(output).groups()
 
 			old_mono_host, = re.compile("Repository Root: (.*)").search(output).groups()
@@ -160,30 +177,32 @@ else:
 			stuff = urlparse.urlparse(MONO_ROOT)
 			new_mono_host = stuff[0] + "://" + stuff[1]
 
-			(status, output) = utils.launch_process("cd %s/%s; svn switch --relocate %s %s" % (cache_dir, module, old_mono_host, new_mono_host), output_timeout=output_timeout )
-			if status:
-				print "Error relocating repo... exiting."
-				sys.exit(1)
+			command = "cd %s/%s; svn switch --relocate %s %s" % (cache_dir, module, old_mono_host, new_mono_host)
+			(status, output) = utils.launch_process(command, output_timeout=output_timeout )
+			exit_on_error(command, status, output, exit_code=1)
 
 			command = 'cd %s/%s; svn switch %s %s/%s' % (cache_dir, module, rev_arg, MONO_ROOT, path)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
+			# TODO: exit with retry when ssh/svn errors happen
+			exit_on_error(command, status, output, exit_code=1)
 
 			command = 'cd %s/%s; svn info' % (cache_dir, module)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout)
+			exit_on_error(command, status, output, exit_code=1, exit_msg=failure_message)
 			new_revision, = re.compile("Revision: (.*)").search(output).groups()
 
 			command = 'cd %s/%s; svn log -v -r%s:%s' % (cache_dir, module, new_revision, old_revision)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
+			exit_on_error(command, status, output, exit_code=1)
 		else:
 			# create cache dir
 			if not os.path.exists(cache_dir): distutils.dir_util.mkpath(cache_dir)
 			#check out working copy
 			command = "cd %s; svn checkout -q %s %s/%s" % (cache_dir, rev_arg, MONO_ROOT, path)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
+			# TODO: exit with retry when ssh/svn errors happen
+			exit_on_error(command, status, output, exit_code=1, exit_msg=failure_message)
 
-		if status:
-			print "*** Error *** getting/updating source failed (this is usually because of a malformed url, ex: invalid version, or svn/ssh failed)"
-			sys.exit(1)
 
 
 		# svn export from working copy
@@ -198,9 +217,7 @@ else:
 		# results: using this instead of svn export recovers those 3 minutes
 		command = "rsync -a --exclude '.svn/' %s/%s ." % (cache_dir, module)
 		(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
-		if status:
-			print "Error making clean copy of the source tree (did rsync fail, or is it installed?)"
-			sys.exit(1)
+		exit_on_error(command, status, output, exit_code=1, exit_msg="Error making clean copy of the source tree (did rsync fail, or is it installed?)")
 
 
 # Go inside the source tree

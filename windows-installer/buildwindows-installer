@@ -645,6 +645,7 @@ shutil.rmtree('mono/buildtools')
 #   we package this win32 specific file
 #  Move it into the correct dir for win installer
 shutil.move("mono/lib/ikvm/ikvm-native.dll", "mono/bin")
+shutil.move("mono/lib/ikvm/JVM.DLL", "mono/bin")
 #
 ##############################################
 

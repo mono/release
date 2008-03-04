@@ -66,10 +66,15 @@ td_max_poll_interval = 60
 td_num_sequential = 10
 
 # static list of packages to create tarballs for
+	# More difficult to build head versions of these...
+	#gtk-sharp
 td_packages = """
 	gecko-sharp2
 	gluezilla
-	gtk-sharp
+	gnome-sharp2
+	gtk-sharp28
+	gtk-sharp210
+	gtksourceview-sharp2
 	libgdiplus
 	mod_mono
 	mono

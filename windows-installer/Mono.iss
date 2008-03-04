@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Mono 1.9 with GTK# 2.10.3
+AppName=Mono 1.9 with GTK# 2.10.4
 AppVerName=Mono for Windows 1.9
 AppPublisher=Mono
 AppPublisherURL=http://www.mono-project.com
@@ -10,14 +10,14 @@ AppSupportURL=http://www.mono-project.com/about/faq.html
 AppUpdatesURL=http://www.mono-project.com/downloads/index.html
 DefaultDirName={pf}\Mono-1.9
 DefaultGroupName=Mono 1.9 for Windows
-AppID={{5d800ff2-336d-4849-a18b-849bd8bfa948}
+AppID={{f8a8e845-687e-4090-82d4-5c482a0552a6}
 Compression=lzma/max
 ;Compression=bzip/4
 ;Compression=zip
 SolidCompression=true
 DisableDirPage=false
 DisableReadyPage=false
-OutputBaseFilename=mono-1.9-gtksharp-2.10.3-win32-2
+OutputBaseFilename=mono-1.9-gtksharp-2.10.4-win32-3
 VersionInfoVersion=1.9
 VersionInfoDescription=Mono 1.9 with Gtk# Installer for Win32
 VersionInfoCompany=Mono
@@ -40,7 +40,7 @@ Name: custom; Description: Custom installation; Flags: iscustom
 [Components]
 Name: mono; Description: Mono Files; Types: full compact custom; Flags: fixed
 Name: gtk; Description: GTK+ 2.10 and Gnome 2.16 Files; Types: full custom
-Name: gtk\gtkSharp; Description: Gtk# 2.10.3 Files; Types: full custom
+Name: gtk\gtkSharp; Description: Gtk# 2.10.4 Files; Types: full custom
 Name: gtk\gtkSharp\monodoc; Description: Monodoc; Types: full custom
 Name: gtk\gtkSharp\geckosharp; Description: Gecko# Files; Types: full custom
 Name: gtk\gtkSharp\samples; Description: Samples; Types: full custom
