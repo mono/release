@@ -56,8 +56,8 @@ mkdir -p ${RPM_BUILD_ROOT}/usr/share/pkgconfig
 
 #Install binaries
 #  (do iname for JVM.DLL)
-find bin . -iname "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
-find bin . -name "*\.exe" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
+find bin -iname "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
+find bin -name "*\.exe" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 
 # Install some in gac (By request of Jeroen)
 for i in IKVM.AWT.WinForms.dll IKVM.OpenJDK.ClassLibrary.dll IKVM.Runtime.dll ; do
@@ -99,7 +99,6 @@ rm -rf "$RPM_BUILD_ROOT"
 
 %files
 %defattr(-, root, root)
-%doc LICENSE
 %_bindir/*
 %_prefix/lib/ikvm
 %_prefix/lib/mono/ikvm
