@@ -20,7 +20,7 @@ var data =
 			{
 				"name" : "Mono 1.2.6",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 10.3 VMWare image which includes Mono 1.2.6 <ul><li><a href='http://anonsvn.mono-project.com/Mono-1.2.6_openSUSE-10.3.i686.zip.torrent'>via Torrent</a> <li><a href='http://anonsvn.mono-project.com/Mono-1.2.6_openSUSE-10.3.i686.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
+				"downloadText" : "Download the openSUSE 10.3 VMWare image which includes Mono 1.2.6 <ul><li><a href='http://anonsvn.mono-project.com/Mono-1.2.6_openSUSE-10.3.i686.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-1.2.6_openSUSE-10.3.i686.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
 			}
 			]
 		}
@@ -37,7 +37,7 @@ var data =
 			{
 				"name" : "Mono 1.2.6",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 10.3 Live CD which includes Mono 1.2.6 <ul><li><a href='http://anonsvn.mono-project.com/Mono-1.2.6_openSUSE-10.3.i686.iso.torrent'>via Torrent</a> <li><a href='http://anonsvn.mono-project.com/Mono-1.2.6_openSUSE-10.3.i686.iso'>via http</a> </ul><a href='http://mono-project.com/LiveCD'>Instructions for using the Live CD</a>."
+				"downloadText" : "Download the openSUSE 10.3 Live CD which includes Mono 1.2.6 <ul><li><a href='http://anonsvn.mono-project.com/Mono-1.2.6_openSUSE-10.3.i686.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-1.2.6_openSUSE-10.3.i686.iso'>via http</a> </ul><a href='http://mono-project.com/LiveCD'>Instructions for using the Live CD</a>."
 			}
 			]
 		}
