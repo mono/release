@@ -50,8 +50,6 @@ Some Linq and other various .NET 3.0 bits.
 %_prefix/lib/mono/3.0/System.Workflow.Activities.dll*
 %_prefix/lib/mono/gac/System.Workflow.ComponentModel
 %_prefix/lib/mono/3.0/System.Workflow.ComponentModel.dll*
-%_prefix/lib/mono/gac/System.Data.Linq
-%_prefix/lib/mono/3.5/System.Data.Linq.dll
 %_prefix/lib/mono/gac/System.ServiceModel.Web
 %_prefix/lib/mono/3.5/System.ServiceModel.Web.dll
 %_prefix/lib/mono/gac/PresentationCore
