@@ -10,7 +10,7 @@
     <type boot="vmxboot/suse-10.3" filesystem="ext3" format="vmdk">vmx</type>
     <type boot="xenboot/suse-10.3" filesystem="ext3">xen</type>
     <type boot="usbboot/suse-10.3" filesystem="squashfs">usb</type>
-    <version>0</version>
+    <version>1</version>
     <size unit="M">40000</size>
     <packagemanager>zypper</packagemanager>
     <rpm-check-signatures>False</rpm-check-signatures>
@@ -26,6 +26,9 @@
   <users group="root">
     <user name="root" pwd="$2a$05$DlJal4RD7tKd3trZ6Qjb5ufS7cJ4R7O56g8yNn8SYcLPvpelTl7lq" home="/root"/>
   </users>
+  <repository type="rpm-md">
+    <source path="http://www.go-mono.com/download-stable/suse-103-i586/"/>
+  </repository>
   <repository type="rpm-md">
     <source path="http://mono.ximian.com/monobuild/preview/download-preview/suse-103-i586/"/>
   </repository>
@@ -44,12 +47,6 @@
   <!--repository type="rpm-md">
     <source path="http://download.opensuse.org/update/10.3/"/>
   </repository-->
-  <repository type="rpm-md">
-    <source path="http://download.opensuse.org/repositories/GNOME:/Community/openSUSE_10.3/"/>
-  </repository>
-  <repository type="rpm-md">
-    <source path="http://download.opensuse.org/repositories/Banshee/openSUSE_10.3/"/>
-  </repository>
   <repository type="rpm-md">
     <source path="http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/"/>
   </repository>
@@ -91,6 +88,7 @@
     <package name="f-spot"/>
     <package name="gbrainy"/>
     <package name="gnome-do"/>
+    <package name="gnome-do-plugins"/>
 
     <package name="banshee"/>
     <package name="banshee-engine-gst"/>
@@ -125,5 +123,8 @@
     <package name="kernel-default"/>
     <package name="udev"/>
     <package name="bundle-lang-common-en"/>
+  </packages>
+  <packages type="delete">
+    <package name="SuSEfirewall2"/>
   </packages>
 </image>

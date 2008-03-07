@@ -2,13 +2,21 @@
 
 ########################
 # zypper repositories
+zypper addrepo http://download.opensuse.org/update/10.3 10.3-update
+zypper addrepo http://download.opensuse.org/distribution/10.3/repo/debug 10.3-debug
+zypper addrepo http://www.go-mono.com/download-stable/suse-103-i586 mono
+zypper addrepo http://mono.ximian.com/monobuild/preview/download-preview/suse-103-i586 mono-preview
+
 #disabled until bug 353489 is fixed
-#zypper addrepo http://download.opensuse.org/update/10.3/ 10.3-update
-zypper addrepo http://download.opensuse.org/distribution/10.3/repo/debug/ 10.3-debug
-# This doesn't work like it should so we just drop the files in
-#for repo in /tmp/*.repo; do
-#	zypper addrepo --repo $repo
-#done
+zypper modifyrepo --disable 10.3-update
+
+zypper modifyrepo --disable mono-preview
+
+for repo in "10.3-oss" "10.3-non-oss" "10.3-update" "10.3-debug" "mono" "mono-preview"; do
+	zypper modifyrepo --disable-autorefresh $repo
+done
+
+rpm -ev $delete
 
 # Turn ssh back on
 chkconfig sshd on
@@ -18,11 +26,6 @@ chkconfig smb on
 
 ########################
 # Kiwi hacks
-# Kiwi doesn't let us have swap
-#dd if=/dev/zero of=/swap bs=1024 count=512000
-#mkswap /swap
-# Kiwi only gives us 100MB free
-#dd if=/dev/zero of=/extra bs=1024 count=512000
 
 ########################
 # Default files for home
