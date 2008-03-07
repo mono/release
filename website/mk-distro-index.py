@@ -110,7 +110,7 @@ try:
 	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_zip", "platforms=" ])
 	(bundle, output_dir, webroot_path, package_src_dir, hostname_url) = remaining_args
 except:
-        print "Usage: ./mk-distro-index.py [--skip_zip] <bundle name> <package source dir> <output webdir> <hostname_url> <webroot_path>"
+        print "Usage: ./mk-distro-index.py [--skip_zip] <bundle name> <output webdir> <webroot_path> <package source dir> <hostname_url>"
 	print " --platforms: comma separated list of platforms (distros) to include"
 
         sys.exit(1)

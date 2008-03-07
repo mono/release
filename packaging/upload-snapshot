@@ -1,37 +1,44 @@
 #!/bin/sh
 
 BUNDLE="trunk"
+STAGE_DIR="$(pwd)/stage/snapshot"
+
 TARGET_USER="mono-web"
 TARGET_HOST="mono.ximian.com"
-
-BASE_DIR="~/release/monobuild/www/snapshot"
-# (can't use ~ with getopt.... hrm)
-FULL_BASE_DIR="/var/www/mono-website/release/monobuild/www/snapshot"
-BASE_URL="/monobuild/snapshot"
+TARGET_DIR="~/release/monobuild/www"
+TARGET_URL="/monobuild/snapshot"
 
 # Hack: flag to mono-basic to grab from noarch instead of $DISTRO
-#export UPLOAD_SNAPSHOT=1
+export UPLOAD_SNAPSHOT=1
 
 distros="suse-101-i586,suse-103-i586,suse-103-x86_64"
 
-ssh $TARGET_USER@$TARGET_HOST "mkdir -p $BASE_DIR"
+mkdir -p $STAGE_DIR
 cd ../website
-# run a script that cleans up all but one version... 
-ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./clean-downloads.py --source_basepath=$FULL_BASE_DIR/snapshot_sources --package_basepath=$FULL_BASE_DIR/snapshot_packages --platforms=$distros HEAD 1"
+cp packaging.css $STAGE_DIR
 
-UPLOAD_SNAPSHOT=1 ./sync-bundle.py  --platforms=$distros --skip_installers $BUNDLE $TARGET_USER@$TARGET_HOST:$BASE_DIR || exit 1
+# run a script that cleans up all but one version... 
+./clean-downloads.py --source_basepath=$STAGE_DIR/snapshot_sources --package_basepath=$STAGE_DIR/snapshot_packages --platforms=$distros HEAD 1
+
+./sync-bundle.py  --platforms=$distros --skip_installers $BUNDLE $STAGE_DIR || exit 1
 
 # Copy non snapshot packages and sources (external stuff) to the snapshot_ dirs
 #  This shouldn't have much of an impact on rsync since we'll leave the originals in place
 #  also clean up generated stuff
-ssh $TARGET_USER@$TARGET_HOST "cd $BASE_DIR; cp -a sources/* snapshot_sources; cp -a packages/* snapshot_packages ; rm -Rf download-trunk sources-trunk archive/trunk"	|| exit 1
+cd $STAGE_DIR
+cp -a sources/* snapshot_sources
+cp -a packages/* snapshot_packages
+rm -Rf download-trunk sources-trunk archive/trunk
+cd -
 
 # problem: it's possible a tarball will be built, but we won't have any packages... issue?
 #   possible long solution: generate bundles/trunk to have all the right info... ugh
 
-scp packaging.css $TARGET_USER@$TARGET_HOST:$BASE_DIR
-ssh $TARGET_USER@$TARGET_HOST "cd release/website; UPLOAD_SNAPSHOT=1 ./mk-sources-index.py           				$BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/snapshot_sources"			|| exit 1
-ssh $TARGET_USER@$TARGET_HOST "cd release/website; UPLOAD_SNAPSHOT=1 ./mk-distro-index.py --platforms=$distros --skip_zip	$BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/snapshot_packages $TARGET_HOST"	|| exit 1
-ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-archive-index.py --platforms=$distros --skip_installers			$BUNDLE $BASE_DIR $BASE_URL"						|| exit 1
-ssh $TARGET_USER@$TARGET_HOST "cd release/website; UPLOAD_SNAPSHOT=1 ./mk-repos.py --platforms=$distros				$BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/snapshot_packages $TARGET_HOST"	|| exit 1
+./mk-sources-index.py           				$BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/snapshot_sources			|| exit 1
+./mk-distro-index.py	--platforms=$distros --skip_zip		$BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/snapshot_packages $TARGET_HOST	|| exit 1
+./mk-archive-index.py	--platforms=$distros --skip_installers	$BUNDLE $STAGE_DIR $TARGET_URL							|| exit 1
+./mk-repos.py		--platforms=$distros			$BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/snapshot_packages $TARGET_HOST	|| exit 1
 
+# Publish stage
+ssh $TARGET_USER@$TARGET_HOST "mkdir -p $TARGET_DIR"
+rsync -avzH --delete $STAGE_DIR $TARGET_USER@$TARGET_HOST:$TARGET_DIR

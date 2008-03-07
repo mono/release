@@ -31,7 +31,7 @@ try:
 
 	package_src_dir = os.path.abspath(package_src_dir)
 except:
-        print "Usage: ./mk-repos.py [ --platforms=<distros> ] <bundle name> <package source dir> <output webdir> <hostname_url> <webroot_path>"
+        print "Usage: ./mk-repos.py [ --platforms=<distros> ] <bundle name> <output webdir> <webroot_path> <package source dir> <hostname_url>"
 	print " --platforms: comma separated list of platforms (distros) to create distros for"
         sys.exit(1)
 
@@ -97,7 +97,9 @@ for distro in distros:
 
 		# Start creating repositories
 		if utils.get_dict_var('RPM_MD_REPO', distro_obj.info):
-			os.system("createrepo " + distro_obj.name)
+			if os.system("createrepo " + distro_obj.name):
+				print "Error. (Is createrepo installed?)"
+				sys.exit(1)
 
 			if utils.get_dict_var('YUM_INSTALL', distro_obj.info):
 				shutil.copy(config.release_repo_root + os.sep + 'website/repo-config/yum/mono.repo', distro_obj.name)
@@ -112,8 +114,12 @@ for distro in distros:
 				} )
 
 			# Sign repo
-			os.system("gpg -a --detach-sign %s/repodata/repomd.xml" % distro_obj.name)
-			os.system("gpg -a --export E1C55E73 > %s/repodata/repomd.xml.key" % distro_obj.name)
+			gpg_opts = "--no-default-keyring --secret-keyring %s --keyring %s" % (config.release_repo_root + os.sep + "website/secring.gpg", config.release_repo_root + os.sep + "website/pubring.gpg")
+			ret = os.system("gpg %s -a --detach-sign %s/repodata/repomd.xml" % (gpg_opts, distro_obj.name) )
+			ret2 = os.system("gpg %s -a --export E1C55E73 > %s/repodata/repomd.xml.key" % (gpg_opts, distro_obj.name) )
+			if ret or ret2:
+				print "Error signing repositories..."
+				sys.exit(1)
 
 
 		# Instructions about how to create a yast repo:
@@ -154,12 +160,12 @@ for distro in distros:
 			# The wiki page didn't say this directory.yast was needed, but newer zypp installation sources seem to require it
 			os.system("cd setup/descr ; ls -A1 > directory.yast")
 
-			# Look in the $HOME/bin and if it's not there, rely on it being in the path
-			create_yast_path = os.path.join(os.environ['HOME'], 'bin', 'create_package_descr')
-			if not os.path.exists(create_yast_path):
-				create_yast_path = 'create_package_descr'
+			# Use the one we checked in
+			create_yast_path = os.path.join(config.release_repo_root, 'website', 'create_package_descr')
 
-			os.system("ls -A1 > directory.yast; " + create_yast_path )
+			if os.system("ls -A1 > directory.yast; " + create_yast_path ):
+				print "Error running create_package_descr"
+				sys.exit(1)
 
 			os.chdir(current)
 			

@@ -4,6 +4,19 @@ BUNDLE=$1
 DRYRUN=$2
 
 DO_DRYRUN=0
+dry_run_opts=""
+
+STAGE_DIR="$(pwd)/stage/release"
+
+# go-mono.com
+TARGET_USER="mono-web"
+TARGET_HOST="go-mono.com"
+TARGET_DIR="~/go-mono/"
+
+## ftp.novell.com
+#TARGET_USER="wberrier"
+#TARGET_HOST="picard.provo.novell.com"
+#TARGET_DIR="/srv/ftp/pub/mono"
 
 if test x$BUNDLE = x || test x$BUNDLE = xdry ; then
 	echo "Usage: ./upload-prod <bundle> [<dry>]"
@@ -16,39 +29,40 @@ if [ ! -e  bundles/$BUNDLE ] ; then
 fi
 
 if test x$DRYRUN = xdry ; then
-	extra_options=n
+	dry_run_opts="n"
 	echo "Doing dry run..."
 	DO_DRYRUN=1
 fi
 
+# Remove missing packages from stage
 # Hack: Don't push the rtl releases
-extra_options="$extra_options --exclude *rtl*"
+extra_options=" --exclude *rtl* --delete"
 
 cd packages
-rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/download
+rsync -Cavz$extra_options . $STAGE_DIR/download
 
 cd ../external_packages
-rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/external_packages
+rsync -Cavz$extra_options . $STAGE_DIR/external_packages
 
 cd ../sources
-rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/sources
+rsync -Cavz$extra_options . $STAGE_DIR/sources
 cd ..
 
 # Push the installers
 cd ../linux-installer/output
-rsync -Cavz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
+rsync -Cavz$extra_options . $STAGE_DIR/archive
 cd -
 
 cd ../windows-installer/Output
-rsync -avz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
+rsync -avz$extra_options . $STAGE_DIR/archive
 cd -
 
 cd ../sunos/output
-rsync -avz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
+rsync -avz$extra_options . $STAGE_DIR/archive
 cd -
 
 cd ../macosx/output
-rsync -avz$extra_options -e ssh . mono-web@go-mono.com:go-mono/archive
+rsync -avz$extra_options . $STAGE_DIR/archive
 cd -
 
 if test x$DO_DRYRUN = x1 ; then
@@ -56,10 +70,16 @@ if test x$DO_DRYRUN = x1 ; then
 	exit
 fi
 
-ssh mono-web@go-mono.com "cp -f release/website/packaging.css		~/go-mono/"
-ssh mono-web@go-mono.com "cd release/website; ./mk-sources-index.py	$BUNDLE ~/go-mono '' ~/go-mono/sources"
-ssh mono-web@go-mono.com "cd release/website; ./mk-distro-index.py	$BUNDLE ~/go-mono '' ~/go-mono/download go-mono.com"
-ssh mono-web@go-mono.com "cd release/website; ./mk-archive-index.py	$BUNDLE ~/go-mono ''"
-ssh mono-web@go-mono.com "cd release/website; ./mk-repos.py		$BUNDLE ~/go-mono '' ~/go-mono/download go-mono.com"
+cd ../website
 
+cp -f packaging.css $STAGE_DIR
 
+./mk-sources-index.py	$BUNDLE $STAGE_DIR '' $STAGE_DIR/sources
+./mk-distro-index.py	$BUNDLE $STAGE_DIR '' $STAGE_DIR/download $TARGET_HOST
+./mk-archive-index.py	$BUNDLE $STAGE_DIR ''
+./mk-repos.py		$BUNDLE $STAGE_DIR '' $STAGE_DIR/download $TARGET_HOST
+
+# Publish stage
+ssh $TARGET_USER@$TARGET_HOST "mkdir -p $TARGET_DIR"
+cd $STAGE_DIR
+rsync -avzH${dry_run_opts} . $TARGET_USER@$TARGET_HOST:$TARGET_DIR

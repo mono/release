@@ -1,19 +1,26 @@
 #!/bin/sh
 
 BUNDLE="PRE-RELEASE"
+STAGE_DIR="$(pwd)/stage/preview"
+
 TARGET_USER="mono-web"
 TARGET_HOST="mono.ximian.com"
+TARGET_DIR="~/release/monobuild/www"
+TARGET_URL="/monobuild/preview"
 
-BASE_DIR="~/release/monobuild/www/preview"
-BASE_URL="/monobuild/preview"
+mkdir -p $STAGE_DIR
 
-ssh $TARGET_USER@$TARGET_HOST "mkdir -p $BASE_DIR"
+# Build up stage
 cd ../website
-./sync-bundle.py $BUNDLE $TARGET_USER@$TARGET_HOST:$BASE_DIR || exit 1
+cp packaging.css $STAGE_DIR
 
-scp packaging.css $TARGET_USER@$TARGET_HOST:$BASE_DIR
-ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-sources-index.py           $BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/sources"			|| exit 1
-ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-distro-index.py --skip_zip $BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/packages $TARGET_HOST"		|| exit 1
-ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-archive-index.py           $BUNDLE $BASE_DIR $BASE_URL"						|| exit 1
-ssh $TARGET_USER@$TARGET_HOST "cd release/website; ./mk-repos.py                   $BUNDLE $BASE_DIR $BASE_URL $BASE_DIR/packages $TARGET_HOST"		|| exit 1
+./sync-bundle.py $BUNDLE $STAGE_DIR || exit 1
 
+./mk-sources-index.py           $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/sources			|| exit 1
+./mk-distro-index.py --skip_zip $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/packages $TARGET_HOST		|| exit 1
+./mk-archive-index.py           $BUNDLE $STAGE_DIR $TARGET_URL						|| exit 1
+./mk-repos.py                   $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/packages $TARGET_HOST		|| exit 1
+
+# Publish stage
+ssh $TARGET_USER@$TARGET_HOST "mkdir -p $TARGET_DIR"
+rsync -avzH --delete $STAGE_DIR $TARGET_USER@$TARGET_HOST:$TARGET_DIR
