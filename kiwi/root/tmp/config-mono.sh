@@ -71,12 +71,12 @@ tar -xzf /tmp/WinFormsSource.tar.gz
 #tar -xzvf /tmp/xchat2.tar.gz
 
 # Music for Banshee
-tar xzf /tmp/Music.tar.gz
+curl http://mono.ximian.com/vm-data/Music.tar.gz | tar xz
 # Configs for Banshee
 tar xjf /tmp/banshee.tbz
 
 # Photos for F-Spot
-tar xjf /tmp/Photos.tbz
+curl http://mono.ximian.com/vm-data/Photos.tbz | tar xj
 # Configs for F-Spot
 tar xjf /tmp/f-spot.tbz
 
