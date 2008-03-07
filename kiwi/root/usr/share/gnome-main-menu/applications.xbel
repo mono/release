@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xbel version="1.0"
+      xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks"
+      xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info"
+>
+  <bookmark href="monodevelop.desktop">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="application/x-desktop"/>
+        <bookmark:groups>
+          <bookmark:group>rank-0</bookmark:group>
+        </bookmark:groups>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="monodoc.desktop">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="application/x-desktop"/>
+        <bookmark:groups>
+          <bookmark:group>rank-1</bookmark:group>
+        </bookmark:groups>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="banshee.desktop">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="application/x-desktop"/>
+        <bookmark:groups>
+          <bookmark:group>rank-2</bookmark:group>
+        </bookmark:groups>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="f-spot.desktop">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="application/x-desktop"/>
+        <bookmark:groups>
+          <bookmark:group>rank-3</bookmark:group>
+        </bookmark:groups>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="tomboy.desktop">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="application/x-desktop"/>
+        <bookmark:groups>
+          <bookmark:group>rank-4</bookmark:group>
+        </bookmark:groups>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="gbrainy.desktop">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="application/x-desktop"/>
+        <bookmark:groups>
+          <bookmark:group>rank-5</bookmark:group>
+        </bookmark:groups>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="MozillaFirefox.desktop">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="application/x-desktop"/>
+        <bookmark:groups>
+          <bookmark:group>rank-6</bookmark:group>
+        </bookmark:groups>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="beagle-search.desktop">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="application/x-desktop"/>
+        <bookmark:groups>
+          <bookmark:group>rank-7</bookmark:group>
+        </bookmark:groups>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="gnome-terminal.desktop">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="application/x-desktop"/>
+        <bookmark:groups>
+          <bookmark:group>rank-8</bookmark:group>
+        </bookmark:groups>
+      </metadata>
+    </info>
+  </bookmark>
+</xbel>

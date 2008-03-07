@@ -59,15 +59,8 @@ rm AlbumSurfer.desktop
 rm UsingWebBrowser.desktop
 popd
 
-mkdir 'Mono Web Applications'
-pushd 'Mono Web Applications'
-tar xjf /tmp/web-apps.tbz
-popd
-
-mkdir 'Mono Web Sites'
-pushd 'Mono Web Sites'
-tar xjf /tmp/web-sites.tbz
-popd
+mv /tmp/web-apps 'Mono Web Applications'
+mv /tmp/web-sites 'Mono Web Sites'
 
 popd
 
