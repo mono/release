@@ -4,7 +4,7 @@ BUNDLE=$1
 DRYRUN=$2
 
 DO_DRYRUN=0
-dry_run_opts=""
+rsync_opts="--delete -avz"
 
 STAGE_DIR="$(pwd)/stage/release"
 
@@ -29,40 +29,40 @@ if [ ! -e  bundles/$BUNDLE ] ; then
 fi
 
 if test x$DRYRUN = xdry ; then
-	dry_run_opts="n"
+	rsync_opts="${rsync_opts}n"
 	echo "Doing dry run..."
 	DO_DRYRUN=1
 fi
 
 # Remove missing packages from stage
 # Hack: Don't push the rtl releases
-extra_options=" --exclude *rtl* --delete"
+rsync_opts="$rsync_opts --exclude *rtl*"
 
 cd packages
-rsync -Cavz$extra_options . $STAGE_DIR/download
+rsync $rsync_opts -C . $STAGE_DIR/download
 
 cd ../external_packages
-rsync -Cavz$extra_options . $STAGE_DIR/external_packages
+rsync $rsync_opts -C . $STAGE_DIR/external_packages
 
 cd ../sources
-rsync -Cavz$extra_options . $STAGE_DIR/sources
+rsync $rsync_opts -C . $STAGE_DIR/sources
 cd ..
 
 # Push the installers
 cd ../linux-installer/output
-rsync -Cavz$extra_options . $STAGE_DIR/archive
+rsync $rsync_opts -C . $STAGE_DIR/archive
 cd -
 
 cd ../windows-installer/Output
-rsync -avz$extra_options . $STAGE_DIR/archive
+rsync $rsync_opts . $STAGE_DIR/archive
 cd -
 
 cd ../sunos/output
-rsync -avz$extra_options . $STAGE_DIR/archive
+rsync $rsync_opts . $STAGE_DIR/archive
 cd -
 
 cd ../macosx/output
-rsync -avz$extra_options . $STAGE_DIR/archive
+rsync $rsync_opts . $STAGE_DIR/archive
 cd -
 
 if test x$DO_DRYRUN = x1 ; then
@@ -82,4 +82,4 @@ cp -f packaging.css $STAGE_DIR
 # Publish stage
 ssh $TARGET_USER@$TARGET_HOST "mkdir -p $TARGET_DIR"
 cd $STAGE_DIR
-rsync -avzH${dry_run_opts} . $TARGET_USER@$TARGET_HOST:$TARGET_DIR
+rsync $rsync_opts -H . $TARGET_USER@$TARGET_HOST:$TARGET_DIR

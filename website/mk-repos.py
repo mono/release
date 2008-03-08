@@ -114,7 +114,7 @@ for distro in distros:
 				} )
 
 			# Sign repo
-			gpg_opts = "--no-default-keyring --secret-keyring %s --keyring %s" % (config.release_repo_root + os.sep + "website/secring.gpg", config.release_repo_root + os.sep + "website/pubring.gpg")
+			gpg_opts = "--no-random-seed-file --no-default-keyring --secret-keyring %s --keyring %s --trustdb-name %s" % (config.release_repo_root + os.sep + "website/secring.gpg", config.release_repo_root + os.sep + "website/pubring.gpg", config.release_repo_root + os.sep + "website/trustdb.gpg")
 			ret = os.system("gpg %s -a --detach-sign %s/repodata/repomd.xml" % (gpg_opts, distro_obj.name) )
 			ret2 = os.system("gpg %s -a --export E1C55E73 > %s/repodata/repomd.xml.key" % (gpg_opts, distro_obj.name) )
 			if ret or ret2:

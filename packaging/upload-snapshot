@@ -17,10 +17,10 @@ mkdir -p $STAGE_DIR
 cd ../website
 cp packaging.css $STAGE_DIR
 
+./sync-bundle.py  --platforms=$distros --skip_installers $BUNDLE $STAGE_DIR || exit 1
+
 # run a script that cleans up all but one version... 
 ./clean-downloads.py --source_basepath=$STAGE_DIR/snapshot_sources --package_basepath=$STAGE_DIR/snapshot_packages --platforms=$distros HEAD 1
-
-./sync-bundle.py  --platforms=$distros --skip_installers $BUNDLE $STAGE_DIR || exit 1
 
 # Copy non snapshot packages and sources (external stuff) to the snapshot_ dirs
 #  This shouldn't have much of an impact on rsync since we'll leave the originals in place
