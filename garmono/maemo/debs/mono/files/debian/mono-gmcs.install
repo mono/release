@@ -1,0 +1,3 @@
+debian/tmp/usr/bin/gmcs
+debian/tmp/usr/lib/mono/2.0/gmcs.exe
+debian/tmp/usr/lib/mono/2.0/gmcs.exe.config

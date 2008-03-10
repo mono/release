@@ -1,6 +1,6 @@
-debian/tmp/usr/lib/libgtksharpglue-2.so 	/usr/lib/mono/gtk-sharp-2.0/
-debian/tmp/usr/lib/libgdksharpglue-2.so		/usr/lib/mono/gtk-sharp-2.0/
-debian/tmp/usr/lib/libpangosharpglue-2.so	/usr/lib/mono/gtk-sharp-2.0/
+debian/tmp/usr/lib/libgtksharpglue-2.so
+debian/tmp/usr/lib/libgdksharpglue-2.so
+debian/tmp/usr/lib/libpangosharpglue-2.so
 debian/tmp/usr/lib/pkgconfig/gtk-sharp-2.0.pc
 debian/tmp/usr/lib/pkgconfig/gtk-dotnet-2.0.pc
 debian/tmp/usr/lib/mono/gac/gtk-sharp/

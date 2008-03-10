@@ -3,3 +3,8 @@ debian/tmp/usr/lib/mono/gac/System/1.0.*/System.dll
 debian/tmp/usr/lib/mono/1.0/System.dll
 debian/tmp/usr/lib/mono/gac/System.Xml/1.0.*/System.Xml.dll
 debian/tmp/usr/lib/mono/1.0/System.Xml.dll
+debian/tmp/usr/lib/mono/gac/System.Security/1.0.*/System.Security.dll
+debian/tmp/usr/lib/mono/1.0/System.Security.dll
+debian/tmp/usr/lib/mono/gac/System.Drawing/1.0.*/System.Drawing.dll
+debian/tmp/usr/lib/mono/1.0/System.Drawing.dll
+

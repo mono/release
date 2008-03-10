@@ -2,7 +2,7 @@ GARNAME = glib
 CATEGORIES = maemo/devkit
 GARVERSION = 2.12.12
 DISTFILES = $(GARNAME)-$(GARVERSION).tar.bz2
-MASTER_SITES = ftp://ftp.gtk.org/pub/glib/2.12
+MASTER_SITES = ftp://ftp.gtk.org/pub/glib/2.12/
 
 DESCRIPTION = $(GARNAME)
 

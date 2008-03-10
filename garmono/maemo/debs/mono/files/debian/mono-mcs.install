@@ -1,0 +1,3 @@
+debian/tmp/usr/bin/mcs
+debian/tmp/usr/lib/mono/1.0/mcs.exe
+debian/tmp/usr/lib/mono/1.0/mcs.exe.config
