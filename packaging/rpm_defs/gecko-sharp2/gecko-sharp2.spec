@@ -3,18 +3,24 @@
 
 Name:           gecko-sharp2
 BuildRequires:  gtk-sharp2 gtk-sharp2-gapi gtk2-devel mono-devel monodoc-core
-Version:        0.12
-Release:        66
+Version:        0.13
+Release:        0
 License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL), MOZILLA PUBLIC LICENSE (MPL/NPL)
 BuildArch:      noarch
 URL:            http://www.monodevelop.com
 Source0:        gecko-sharp-2.0-%{version}.tar.bz2
 Summary:        Gecko bindings for Mono
 Group:          Development/Libraries/Other
-Provides:       gecko-sharp-2_0 gecko-sharp2-docs
-Obsoletes:      gecko-sharp-2_0 gecko-sharp2-docs
+Provides:       gecko-sharp-2_0 gecko-sharp2-docs gecko-sharp-2.0
+Obsoletes:      gecko-sharp-2_0 gecko-sharp2-docs gecko-sharp-2.0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqprov:  on
+
+# To share the rpms in monobuild, ignore the .config from scanning
+%define requires_list cat
+%if 0%{?monobuild} == 01
+%define requires_list grep -v gecko-sharp.dll.config
+%endif
 
 %define xulrunner_version 181
 
@@ -31,7 +37,8 @@ BuildRequires:       mozilla-xulrunner
 # not needed with the .config scanning
 #  Turns out it is needed, otherwise build system doesn't know whether satisfy the dep with
 #  xulrunner or seamonkey.
-Requires:       mozilla-xulrunner
+# For monobuild, we can't depend on a package since we share rpms across distros. Disable.
+#Requires:       mozilla-xulrunner
 %endif
 
 %if %suse_version <= 1000
@@ -104,6 +111,6 @@ rm -rf "%{buildroot}"
 %define _use_internal_dependency_generator 0
 %endif
 %define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
-%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
+%define __find_requires env sh -c 'filelist=($(%requires_list)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog

@@ -5,8 +5,14 @@ STAGE_DIR="$(pwd)/stage/preview"
 
 TARGET_USER="mono-web"
 TARGET_HOST="mono.ximian.com"
-TARGET_DIR="~/release/monobuild/www"
+TARGET_DIR="~/release/monobuild/www/preview"
 TARGET_URL="/monobuild/preview"
+
+# For publishing to a local lan in Provo
+#TARGET_USER="root"
+#TARGET_HOST="c100.mono.lab.novell.com"
+#TARGET_DIR="/share/sw/mono-project.org/mono-previews/1.9p5"
+#TARGET_URL="/software/mono-project.org/mono-previews/1.9p5"
 
 mkdir -p $STAGE_DIR
 
@@ -14,7 +20,13 @@ mkdir -p $STAGE_DIR
 cd ../website
 cp packaging.css $STAGE_DIR
 
-./sync-bundle.py $BUNDLE $STAGE_DIR || exit 1
+# Remove all but one version
+#  Since this happens before sync-bundle, we'll have duplicate versions.
+#   But this is necessary since clean-downloads.py doesn't know how to handle the symlinked gtk# sources
+#    (which will get re-copied with sync-bundle.py)
+./clean-downloads.py --source_basepath=$STAGE_DIR/sources --package_basepath=$STAGE_DIR/packages RELEASE 1
+
+./sync-bundle.py --skip_missing $BUNDLE $STAGE_DIR || exit 1
 
 ./mk-sources-index.py           $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/sources			|| exit 1
 ./mk-distro-index.py --skip_zip $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/packages $TARGET_HOST		|| exit 1
@@ -23,4 +35,6 @@ cp packaging.css $STAGE_DIR
 
 # Publish stage
 ssh $TARGET_USER@$TARGET_HOST "mkdir -p $TARGET_DIR"
-rsync -avzH --delete $STAGE_DIR $TARGET_USER@$TARGET_HOST:$TARGET_DIR
+cd $STAGE_DIR
+rsync -avzH --delete . $TARGET_USER@$TARGET_HOST:$TARGET_DIR
+

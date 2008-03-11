@@ -6,8 +6,8 @@ License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL)
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 URL:            http://go-mono.org/
-Version:	1.2.6
-Release:	0.novell
+Version:	1.9
+Release:	3.novell
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
 
@@ -620,7 +620,7 @@ Authors:
 %_bindir/disco
 %_bindir/mconfig
 %_bindir/soapsuds
-%_bindir/wsdl1
+%_bindir/wsdl
 %_bindir/wsdl2
 %_bindir/xsd
 # man pages
@@ -882,7 +882,7 @@ Authors:
 %_mandir/man1/vbnc.1.gz
 %_mandir/man1/resgen.1.gz
 # Shell wrappers
-%_bindir/al1
+%_bindir/al
 %_bindir/al2
 %_bindir/caspol
 %_bindir/cert2spc
@@ -895,14 +895,14 @@ Authors:
 %_bindir/installvst
 %_bindir/macpack
 %_bindir/makecert
-%_bindir/mkbundle1
+%_bindir/mkbundle
 %_bindir/mkbundle2
 %_bindir/monodis
 %_bindir/monolinker
-%_bindir/monop1
+%_bindir/monop
 %_bindir/monop2
 %_bindir/mono-api-diff
-%_bindir/mono-api-info1
+%_bindir/mono-api-info
 %_bindir/mono-api-info2
 %_bindir/mono-find-provides
 %_bindir/mono-find-requires
@@ -911,7 +911,7 @@ Authors:
 %_bindir/pedump
 %_bindir/permview
 %_bindir/prj2make
-%_bindir/resgen1
+%_bindir/resgen
 %_bindir/resgen2
 %_bindir/secutil
 %_bindir/sgen

@@ -20,8 +20,6 @@ import packaging
 import src_repo_utils
 import utils
 
-import pdb
-
 ##############################################################
 # Tarball thread options
 
@@ -215,7 +213,7 @@ class build_scheduler(threading.Thread):
 				if self.cancelled(): continue
 
 				# Check to see what the latest tarball is
-				# The src_repo class is not threadsafe, so provide a mutex here
+				# The src_file_repo class is not threadsafe, so provide a mutex here
 				tarball_lock.acquire()
 				tarball_filename = tarballs.get_latest_tarball("HEAD", package_name)
 				tarball_lock.release()
@@ -357,7 +355,7 @@ class sync(threading.Thread):
 				# rsync all files over, and don't include the builds... just logs and info.xml
 				command = 'cd %s; rsync -avzR -e "ssh %s" --exclude "files/downloads" --exclude "files/*.tar.gz" --exclude "files/*.tar.bz2" %s %s:%s' % (config.release_repo_root, config.ssh_options, dir_string, self.sync_host, self.sync_target_dir)
 				#sync_log.log(command + "\n")
-				status, output = utils.launch_process(command, print_output=0)
+				status, output = utils.launch_process(command, print_output=0, output_timeout=600)
 			
 				#sync_log.log(output)
 				if status:

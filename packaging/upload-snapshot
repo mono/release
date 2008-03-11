@@ -5,7 +5,7 @@ STAGE_DIR="$(pwd)/stage/snapshot"
 
 TARGET_USER="mono-web"
 TARGET_HOST="mono.ximian.com"
-TARGET_DIR="~/release/monobuild/www"
+TARGET_DIR="~/release/monobuild/www/snapshot"
 TARGET_URL="/monobuild/snapshot"
 
 # Hack: flag to mono-basic to grab from noarch instead of $DISTRO
@@ -41,4 +41,5 @@ cd -
 
 # Publish stage
 ssh $TARGET_USER@$TARGET_HOST "mkdir -p $TARGET_DIR"
-rsync -avzH --delete $STAGE_DIR $TARGET_USER@$TARGET_HOST:$TARGET_DIR
+cd $STAGE_DIR
+rsync -avzH --delete . $TARGET_USER@$TARGET_HOST:$TARGET_DIR

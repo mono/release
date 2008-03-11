@@ -3,9 +3,6 @@ BUILD_HOSTS=(
 	suse-101-i586
 )
 
-# Temporary...
-MKTARBALL_HEAD_DEPS=1
-
 MKTARBALL_HOST="suse-101-i586"
 
 USE_HOSTS=(
