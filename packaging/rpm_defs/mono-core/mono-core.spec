@@ -203,6 +203,7 @@ Authors:
 %dir %_prefix/lib/mono/1.0
 %dir %_prefix/lib/mono/2.0
 %dir %_prefix/lib/mono/2.1
+%dir %_prefix/lib/mono/3.5
 %dir %_prefix/lib/mono/gac
 %config %_sysconfdir/mono/config
 %config %_sysconfdir/mono/1.0/machine.config
@@ -593,6 +594,7 @@ Authors:
 %_prefix/lib/mono/1.0/Mono.Http.dll
 %_prefix/lib/mono/2.0/Mono.Http.dll
 %_prefix/lib/mono/gac/Mono.Web
+%_prefix/lib/mono/2.0/Mono.Web.dll
 %_prefix/lib/mono/gac/System.Runtime.Remoting
 %_prefix/lib/mono/1.0/System.Runtime.Remoting.dll
 %_prefix/lib/mono/2.0/System.Runtime.Remoting.dll
@@ -607,8 +609,10 @@ Authors:
 %_prefix/lib/mono/2.0/System.Web.Services.dll
 %_prefix/lib/mono/gac/System.Web.Extensions
 %_prefix/lib/mono/2.0/System.Web.Extensions.dll
+%_prefix/lib/mono/3.5/System.Web.Extensions.dll
 %_prefix/lib/mono/gac/System.Web.Extensions.Design
 %_prefix/lib/mono/2.0/System.Web.Extensions.Design.dll
+%_prefix/lib/mono/3.5/System.Web.Extensions.Design.dll
 # exes
 %_prefix/lib/mono/1.0/disco.exe*
 %_prefix/lib/mono/1.0/soapsuds.exe*
@@ -777,12 +781,16 @@ Authors:
 %_prefix/lib/mono/2.0/nunit-console.exe*
 %_prefix/lib/mono/gac/nunit.util
 %_prefix/lib/mono/1.0/nunit.util.dll
+%_prefix/lib/mono/2.0/nunit.util.dll
 %_prefix/lib/mono/gac/nunit.core
 %_prefix/lib/mono/1.0/nunit.core.dll
+%_prefix/lib/mono/2.0/nunit.core.dll
 %_prefix/lib/mono/gac/nunit.framework
 %_prefix/lib/mono/1.0/nunit.framework.dll
+%_prefix/lib/mono/2.0/nunit.framework.dll
 %_prefix/lib/mono/gac/nunit.mocks
 %_prefix/lib/mono/1.0/nunit.mocks.dll
+%_prefix/lib/mono/2.0/nunit.mocks.dll
 %_libdir/pkgconfig/mono-nunit.pc
 %package -n mono-devel
 Summary:        Mono development tools
