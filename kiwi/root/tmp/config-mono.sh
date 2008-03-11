@@ -1,18 +1,16 @@
-#!/bin/sh
+#!/bin/bash -x
 
 ########################
 # zypper repositories
-zypper addrepo http://download.opensuse.org/update/10.3 10.3-update
-zypper addrepo http://download.opensuse.org/distribution/10.3/repo/debug 10.3-debug
-zypper addrepo http://www.go-mono.com/download-stable/suse-103-i586 mono
-zypper addrepo http://mono.ximian.com/monobuild/preview/download-preview/suse-103-i586 mono-preview
-
-#disabled until bug 353489 is fixed
-zypper modifyrepo --disable 10.3-update
+zypper addrepo "http://download.opensuse.org/update/10.3" 10.3-update
+zypper addrepo "http://download.opensuse.org/distribution/10.3/repo/debug" 10.3-debug
+zypper addrepo "http://www.go-mono.com/download-stable/suse-103-i586" mono
+zypper addrepo "http://mono.ximian.com/monobuild/preview/download-preview/suse-103-i586" mono-preview
+zypper addrepo "http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3" mono-community
 
 zypper modifyrepo --disable mono-preview
 
-for repo in "10.3-oss" "10.3-non-oss" "10.3-update" "10.3-debug" "mono" "mono-preview"; do
+for repo in "10.3-oss" "10.3-non-oss" "10.3-update" "10.3-debug" "mono" "mono-preview" "mono-community"; do
 	zypper modifyrepo --disable-autorefresh $repo
 done
 

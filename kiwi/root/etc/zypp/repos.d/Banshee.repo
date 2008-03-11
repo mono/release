@@ -1,8 +1,0 @@
-[Banshee]
-name=Banshee Music Player (openSUSE_10.3)
-type=rpm-md
-baseurl=http://download.opensuse.org/repositories/Banshee/openSUSE_10.3/
-gpgcheck=1
-gpgkey=http://download.opensuse.org/repositories/Banshee/openSUSE_10.3/repodata/repomd.xml.key
-enabled=1
-autorefresh=0

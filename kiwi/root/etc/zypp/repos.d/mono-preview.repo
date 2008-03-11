@@ -1,7 +1,0 @@
-[mono-preview]
-name=Mono Preview
-baseurl=http://mono.ximian.com/monobuild/preview/download-preview/suse-103-i586
-type=rpm-md
-enabled=0
-autorefresh=0
-gpgcheck=1

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<image name="Mono-1.9_openSUSE-10.3" schemeversion="1.4">
+<image name="Mono-1.9_openSUSE-10.3" schemeversion="2.0">
   <description type="system">
     <author>Andrew Jorgensen</author>
     <contact>ajorgensen@novell.com</contact>
@@ -10,9 +10,9 @@
     <type boot="vmxboot/suse-10.3" filesystem="ext3" format="vmdk">vmx</type>
     <type boot="xenboot/suse-10.3" filesystem="ext3">xen</type>
     <type boot="usbboot/suse-10.3" filesystem="squashfs">usb</type>
-    <version>1</version>
-    <size unit="M">40000</size>
-    <packagemanager>zypper</packagemanager>
+    <version>5</version>
+    <size unit="M">60000</size>
+    <packagemanager>smart</packagemanager>
     <rpm-check-signatures>False</rpm-check-signatures>
     <rpm-force>False</rpm-force>
     <locale>en_US.UTF-8</locale>
@@ -44,9 +44,9 @@
   <repository type="yast2">
     <source path="http://download.opensuse.org/distribution/10.3/repo/debug/"/>
   </repository>
-  <!--repository type="rpm-md">
+  <repository type="rpm-md">
     <source path="http://download.opensuse.org/update/10.3/"/>
-  </repository-->
+  </repository>
   <repository type="rpm-md">
     <source path="http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/"/>
   </repository>
@@ -62,6 +62,7 @@
     <package name="aaa_base"/>
     <package name="tar"/>
     <package name="patch"/>
+    <package name="kernel-source"/>
     <package name="zypper"/>
   </packages>
   <packages type="image" patternType="onlyRequired" patternPackageType="plusRecommended" profiles="GNOME">
@@ -113,11 +114,9 @@
     <ignore name="mono-core"/>
     <ignore name="mono-debugger"/>
     <ignore name="mono-core-debuginfo"/>
+    <package name="MozillaFirefox"/>
   </packages>
-  <packages type="vmware">
-    <package name="kernel-source"/>
-  </packages>
-  <packages type="boot">
+  <packages type="bootstrap">
     <package name="filesystem"/>
     <package name="glibc-locale"/>
     <package name="kernel-default"/>

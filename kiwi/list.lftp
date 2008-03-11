@@ -1,5 +1,5 @@
 connect http://mono.ximian.com/monobuild/preview/download-preview/suse-103-i586/
-cd i586
+cd i586/
 cls | sed s/-[0-9].*.rpm//
-cd ../noarch
+cd ../noarch/
 cls | sed s/-[0-9].*.rpm//
