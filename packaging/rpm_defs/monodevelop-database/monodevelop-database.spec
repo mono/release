@@ -4,7 +4,7 @@
 # norootforbuild
 
 Name:     	monodevelop-database
-Version: 	0.19
+Version: 	1.0
 Release:	0
 Vendor:		Novell, Inc.
 License:	LGPL
