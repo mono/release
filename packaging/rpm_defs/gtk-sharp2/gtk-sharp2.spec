@@ -20,7 +20,7 @@ Patch5:		gnome-sharp-revert_unportable_relocatable.patch
 
 %define old_version 2.4.3
 %define new_version 2.8.5
-%define new_split_version 2.10.3
+%define new_split_version 2.10.4
 
 %define platform_desktop_split 0
 
@@ -232,7 +232,7 @@ This package contains Mono bindings for gconf and gconf peditors.
 %prep
 %setup -q -n %{_name}-%{version}
 
-if [ %version \< 2.10.3 ] ; then
+if [ %version \< 2.10.4 ] ; then
 %patch0 -p1
 fi
 
