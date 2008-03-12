@@ -1,7 +1,13 @@
 #! /bin/sh
 
-rm -f config.xml
+if [ -e config.xml ]; then
+	mv config.xml config.xml~
+fi
 
 lftp -f list.lftp > list
 
 (sed -n -e '1,/ PACKAGES BEGIN MONO/p' config.xml.in ; cat list | while read pack; do echo '<package name="'$pack'"/>'; done; sed -n -e '/ PACKAGES END MONO/,$p' config.xml.in ) | xmllint --format - > t && mv t config.xml
+
+if [ -e config.xml~ ]; then
+	diff -u config.xml~ config.xml
+fi

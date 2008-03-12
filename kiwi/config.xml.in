@@ -6,16 +6,17 @@
     <specification>Mono Live system</specification>
   </description>
   <preferences>
-    <type primary="true" boot="isoboot/suse-10.3" flags="unified">iso</type>
-    <type boot="vmxboot/suse-10.3" filesystem="ext3" format="vmdk">vmx</type>
+    <type boot="isoboot/suse-10.3" flags="unified">iso</type>
+    <type primary="true" boot="vmxboot/suse-10.3" filesystem="ext3" format="vmdk">vmx</type>
     <type boot="xenboot/suse-10.3" filesystem="ext3">xen</type>
     <type boot="usbboot/suse-10.3" filesystem="squashfs">usb</type>
-    <version>5</version>
+    <version>6</version>
     <size unit="M">60000</size>
     <packagemanager>smart</packagemanager>
     <rpm-check-signatures>False</rpm-check-signatures>
     <rpm-force>False</rpm-force>
     <locale>en_US.UTF-8</locale>
+    <timezone>US/Mountain</timezone>
   </preferences>
   <profiles>
     <profile name="GNOME" description="Gnome desktop system"/>
@@ -122,8 +123,5 @@
     <package name="kernel-default"/>
     <package name="udev"/>
     <package name="bundle-lang-common-en"/>
-  </packages>
-  <packages type="delete">
-    <package name="SuSEfirewall2"/>
   </packages>
 </image>
