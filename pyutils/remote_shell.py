@@ -7,7 +7,11 @@ import os
 import re
 import glob
 import shutil
-import distutils.dir_util
+
+try:
+	import distutils.dir_util
+except ImportError:
+	pass
 
 import config
 import utils
@@ -108,6 +112,9 @@ class ssh:
 
 		return self.execute_command("mkdir -p -m777 " + dir)
 
+	def remove_path(self, dir):
+		"""Args: (dir) Returns: (rm exit code and output)."""
+		return self.execute_command("rm -Rf " + dir)
 
 class scp:
 
@@ -293,4 +300,22 @@ class local:
 			os.chmod(dir, 0777)
 		except distutils.errors.DistutilsFileError:
 			error = 1
-		return error
+		return error, ""
+
+	def remove_path(self, dir):
+
+		error = 0
+
+		try:
+			if os.path.exists(dir):
+				# Newer versions of python's rmtree will remove files, but not all versions
+				if os.path.isdir(dir):
+					shutil.rmtree(dir)
+				else:
+					os.unlink(dir)
+		except:
+			error = 1
+
+		return error, ""
+
+

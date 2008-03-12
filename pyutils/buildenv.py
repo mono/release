@@ -8,9 +8,12 @@ Also very handy for installer scripts
 
 import os
 import socket
-import distutils.dir_util
 import tempfile
 import getpass
+try:
+	import distutils.dir_util
+except ImportError:
+	print "Missing distutils.dir_util..."
 
 import config
 import remote_shell
@@ -221,8 +224,10 @@ class buildenv:
 		command = "%s %s" % (interpreter, self.build_location + os.sep + file_basename)
 		code, output = self.execute_command(command, **args)
 
-		# Clean up locally (and remote?)
+		# Clean up locally
 		os.remove(code_filename)
+		# And remote
+		self.remove_path(self.build_location + os.sep + file_basename)
 
 		return code, output
 
@@ -238,28 +243,20 @@ class buildenv:
 
 		return self.created_dest_dirs[dir]
 
-        def remove_path(self, dir):
-		"""Remove a path.  Since no internal functions depend on this, it can be a higher layer function"""
+        def remove_path(self, dir, mode=""):
+		"""Remove a path. 
+			This must be implemented in the lower layers since execute_* depend on it"""
 
-		remove_path_code = """
-import os
-import shutil
+		if not mode:
+			mode = self.exec_mode
 
-path = '%s'
-
-if os.path.exists(path):
-	# Newer versions of python's rmtree will remove files, but not all versions
-	if os.path.isdir(path):
-		shutil.rmtree(path)
-	else:
-		os.unlink(path)
-""" % dir
+		status, output = self.modes[mode].remove_path(self.root_dir + dir)
 
 		# Remove from listing so if we try to create again, it doesn't get skipped
 		if self.created_dest_dirs.has_key(dir):
 			self.created_dest_dirs.pop(dir)
 
-		return self.execute_code(remove_path_code, interpreter=self.env['python_path'], interruptable=False)
+		return status, output
 
         def copy_to(self, src, dest, compress=True, mode=""):
 
