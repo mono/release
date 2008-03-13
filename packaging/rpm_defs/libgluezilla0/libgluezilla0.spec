@@ -3,7 +3,7 @@
 %define real_name gluezilla
 
 Name:           libgluezilla0
-Version:	1.2.6
+Version:	1.9
 Release:	0
 Vendor:         Novell, Inc.
 License:        GPL
@@ -67,7 +67,7 @@ BuildRequires: mozilla-devel
 %endif
 
 %if 0%{?rhel_version}
-#BuildRequires: 
+BuildRequires: firefox-devel
 %endif
 
 

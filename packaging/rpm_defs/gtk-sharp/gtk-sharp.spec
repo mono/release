@@ -70,6 +70,13 @@ BuildRequires: librsvg2-devel mono-devel vte-devel libgnomeprintui22-devel gtkht
 #%define gtkhtml_requires gtkhtml3
 
 %endif
+
+# Rhel 4/5
+%if 0%{?rhel_version}
+%define env_options export MONO_SHARED_DIR=/tmp
+BuildRequires: librsvg2-devel mono-devel vte-devel libgnomeprintui22-devel gtkhtml3-devel
+%endif
+
 #################
 
 
@@ -311,7 +318,7 @@ libgnomecanvas. Gtk# 1.x binds GTK+ 2.2. (Virtual package which depends
 on all gtk-sharp subpackages)
 
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif

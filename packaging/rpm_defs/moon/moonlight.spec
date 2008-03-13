@@ -140,7 +140,7 @@ rm -rf ${RPM_BUILD_ROOT}
 #/sbin/ldconfig
 
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif

@@ -2,8 +2,8 @@
 # norootforbuild
 
 Name:           mono-tools
-BuildRequires:  gconf-sharp2 gecko-sharp2 gtkhtml-sharp2 mono-devel mono-nunit monodoc-core
-Version:        1.2.6
+BuildRequires:  gconf-sharp2 gecko-sharp2 gtkhtml-sharp2 mono-devel mono-nunit monodoc-core mono-jscript mono-data-oracle
+Version:        1.9
 Release:        0
 License:        GNU General Public License (GPL)
 BuildArch:    noarch
@@ -22,6 +22,11 @@ BuildRequires:	update-desktop-files
 %define env_options export MONO_SHARED_DIR=/tmp
 
 # Not sure of the equivalent for fedora...
+%define suse_update_desktop_file true
+%endif
+
+%if 0%{?rhel_version}
+%define env_options export MONO_SHARED_DIR=/tmp
 %define suse_update_desktop_file true
 %endif
 
@@ -95,7 +100,7 @@ rm -Rf "$RPM_BUILD_ROOT"
 %post
 monodoc --make-index
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif

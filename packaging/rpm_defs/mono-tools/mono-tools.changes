@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 26 15:12:25 MST 2008 - wberrier@novell.com
+
+- Add patch: mono-tools-fix_build_gnome_sharp.patch
+ to fix build with new gtk#/gnome#
+
+-------------------------------------------------------------------
 Mon Jan 14 15:12:25 MST 2008 - wberrier@novell.com
 
 - Update to 1.2.6

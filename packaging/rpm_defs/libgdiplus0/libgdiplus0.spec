@@ -4,7 +4,7 @@
 %define real_name libgdiplus
 
 Name:           libgdiplus0
-Version:	1.2.6
+Version:	1.9
 Release:	0
 Vendor:         Novell, Inc.
 License:        GPL
@@ -57,6 +57,11 @@ BuildRequires: libungif-devel libjpeg-devel libtiff-devel libpng-devel glib2-dev
 
 %if 0%{?rhel_version}
 BuildRequires: libungif-devel libjpeg-devel libtiff-devel libpng-devel glib2-devel fontconfig-devel libexif-devel
+
+%if %{rhel_version} >= 500
+BuildRequires: libXrender-devel libXt-devel
+%endif
+
 %endif
 
 

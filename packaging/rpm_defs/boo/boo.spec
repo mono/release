@@ -76,6 +76,13 @@ BuildRequires: mono-core
 
 %endif
 
+# RHEL
+%if 0%{?rhel_version}
+%define env_options export MONO_SHARED_DIR=/tmp
+BuildRequires:	gtksourceview-devel shared-mime-info
+%define include_boo_lang 0
+%endif
+
 %description
 Boo is a new object oriented statically typed programming language for the Common Language Infrastructure with a python inspired syntax and a special focus on language and compiler extensibility.
 
@@ -150,7 +157,7 @@ if test -x usr/bin/update-mime-database ; then
 fi
 
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif

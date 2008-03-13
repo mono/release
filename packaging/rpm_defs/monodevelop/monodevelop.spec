@@ -36,6 +36,12 @@ BuildRequires: desktop-file-utils update-desktop-files
 
 %endif
 
+%if 0%{?rhel_version}
+%define env_options export MONO_SHARED_DIR=/tmp
+%define suse_update_desktop_file true
+%define run_suseconfig true
+%endif
+
 
 %description
 MonoDevelop is intended to be a full-featured integrated development
@@ -92,7 +98,7 @@ update-mime-database /usr/share/mime >/dev/null || :
 update-mime-database /usr/share/mime >/dev/null || :
 %run_suseconfig -m gtk2
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif

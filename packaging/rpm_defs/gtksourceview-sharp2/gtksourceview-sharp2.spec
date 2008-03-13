@@ -3,7 +3,7 @@
 
 Name:           gtksourceview-sharp2
 BuildRequires:  gnome-sharp2 gtk-sharp2-gapi gtksourceview-devel mono-devel monodoc-core
-Version:        0.11
+Version:        0.12
 Release:        1
 License:        GNU General Public License (GPL)
 BuildArch:      noarch
@@ -81,7 +81,7 @@ rm -Rf ${DESTDIR}
 %{_prefix}/share/gapi-2.0/gtksourceview-api.xml
 %{_prefix}/lib/monodoc/sources/gtksourceview-sharp-docs*
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif

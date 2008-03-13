@@ -42,6 +42,13 @@ BuildRequires: libgnomedb-devel librsvg2-devel mono-devel vte-devel libgnomeprin
 #%define gtkhtml_requires gtkhtml2
 
 %endif
+
+# RHEL
+%if 0%{?rhel_version}
+%define env_options export MONO_SHARED_DIR=/tmp
+BuildRequires: librsvg2-devel mono-devel vte-devel libgnomeprintui22-devel gtkhtml3-devel gnome-panel-devel monodoc-core
+
+%endif
 #################
 
 %description
@@ -213,7 +220,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/mono/gac/*gconf-sharp-peditors
 %{_prefix}/lib/mono/gtk-sharp-2.0/*gconf-sharp-peditors.dll
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif

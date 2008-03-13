@@ -6,7 +6,7 @@ License:        GNU General Public License (GPL)
 Group:          Development/Tools/Other
 Summary:        Monodoc--A Documentation Browser Written in C#
 URL:            http://go-mono.org/
-Version:	1.2.6
+Version:	1.9
 Release:	0.novell
 Source0:        monodoc-%version.zip
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -93,7 +93,7 @@ rm -rf ${RPM_BUILD_ROOT}
 #%{_prefix}/share/pixmaps/monodoc.png
 %doc AUTHORS ChangeLog NEWS README
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif

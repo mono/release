@@ -84,6 +84,17 @@ BuildRequires: gnome-panel-devel gtkhtml3-devel libgnomeprintui22-devel librsvg2
 #%define gtkhtml_requires gtkhtml2
 
 %endif
+
+# RHEL
+%if 0%{?rhel_version} >= 500
+%define env_options export MONO_SHARED_DIR=/tmp
+
+%define _version %new_split_version
+%define platform_desktop_split 1
+
+BuildRequires: gnome-panel-devel gtkhtml3-devel libgnomeprintui22-devel librsvg2-devel mono-devel monodoc-core vte-devel
+
+%endif
 #################
 
 # Need to put this stuff down here after Version: gets defined
@@ -232,7 +243,7 @@ This package contains Mono bindings for gconf and gconf peditors.
 %prep
 %setup -q -n %{_name}-%{version}
 
-if [ %version \< 2.10.4 ] ; then
+if [ %version \< 2.10.3 ] ; then
 %patch0 -p1
 fi
 
@@ -381,7 +392,7 @@ rm -rf $RPM_BUILD_ROOT
 ##############################################################################
 
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif

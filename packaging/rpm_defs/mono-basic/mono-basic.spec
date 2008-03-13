@@ -9,7 +9,7 @@ License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL)
 Group:          Development/Languages/Other
 Summary:        Mono's VB runtime
 URL:            http://go-mono.org/
-Version:	1.2.6
+Version:	1.9
 Release:	0.novell
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.bz2
@@ -123,7 +123,7 @@ rm -f .%{_prefix}/lib/mono/2.0/rt.exe*
 %clean
 rm -rf ${RPM_BUILD_ROOT}
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif

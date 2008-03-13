@@ -6,7 +6,7 @@ URL:            http://go-mono.com/
 License:        GNU General Public License (GPL)
 Group:          Productivity/Networking/Web/Servers
 Autoreqprov:    on
-Version:        1.2.6
+Version:        1.9
 Release:        0
 Summary:        Small Web Server Hosting ASP.NET
 Source:         %{name}-%{version}.tar.bz2
@@ -94,7 +94,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/mono/2.0/fastcgi-mono-server2.exe
 %doc NEWS README
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 26 15:56:57 MST 2008 - wberrier@novell.com
+
+- Update to 0.12 (new gtk# requires this version)
+
+-------------------------------------------------------------------
 Thu Aug 16 23:56:57 CEST 2007 - wberrier@suse.de
 
 - add noarch again (even though this package depends on binary
