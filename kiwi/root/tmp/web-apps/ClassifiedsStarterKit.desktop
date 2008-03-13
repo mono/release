@@ -3,5 +3,5 @@ Version=1.0
 Encoding=UTF-8
 Name=Classifieds Starter Kit\n[ASP.NET 2.0]
 Type=Link
-URL=http://localhost/ClassifiedsStarterKit/
+URL=http://localhost/ClassifiedsStarterKit/default.aspx
 Icon=gnome-fs-bookmark
