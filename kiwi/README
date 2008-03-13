@@ -1,0 +1,3 @@
+/usr/sbin/kiwi --prepare $(pwd) --root /kiwi/mono-system --force-new-root --add-profile=GNOME
+/usr/sbin/kiwi --type vmx --create /kiwi/mono-system --destdir /kiwi/images
+/usr/sbin/kiwi --type iso --create /kiwi/mono-system --destdir /kiwi/images
