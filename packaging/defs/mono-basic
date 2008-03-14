@@ -19,6 +19,7 @@ BUILD_HOSTS=(
 	macos-10-ppc
 	macos-10-x86
 	sunos-8-sparc
+	sunos-10-sparc
 	sunos-10-x86
 	win-4-i386
 	debian-4-arm

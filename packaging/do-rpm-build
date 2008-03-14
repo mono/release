@@ -56,8 +56,13 @@ for p in "redhat-release fedora-release centos-release".split():
 	if not code:
 		if p == "redhat-release":
 			mat = re.search("(\d)[aew]s", output, re.I)
+			mat2 = re.search("(\d)Server", output, re.I)
 			if mat:
-				version_macro = "%%rhel_version\t%s" % mat.group(1)
+				# works for rhel4
+				version_macro = "%%rhel_version\t%s00" % mat.group(1)
+			elif mat2:
+				# rhel5 uses version 501 in build service, so append 00 to rhel versions
+				version_macro = "%%rhel_version\t%s00" % mat2.group(1)
 			else:
 				version_macro = "%%redhat_version\t%s" % output
 		if p == "fedora-release":

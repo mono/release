@@ -14,7 +14,7 @@ import packaging
 def usage():
 	print "Usage: ./jail-do <distro conf> <action> [ <action args> ]"
 	print "  where <action> is one of: login | run | lock | unlock | is_locked | interrupt"
-	print "  Example: ./jail-do exec suse-102-i586 run ls"
+	print "  Example: ./jail-do suse-102-i586 run ls"
 	print "  'run' is the only action that takes <action args>,"
 	print "         which will run that command"
 	print "  'unlock' also removes interrupt file flag"
