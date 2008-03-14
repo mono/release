@@ -148,11 +148,70 @@
 
 	<p>More support for WebBrowser events/DOM [Andreia].
 
-	<p>Many fixes for RichTextBox, AutoScaling, and PropertyGrid 
-	[Luke Page, James Purcell, Ivan, respectively].
+	<p>Many fixes for RichTextBox and AutoScaling [Luke Page and James Purcell respectively].
+
+	<p>Major improvements to the PropertyGrid control some of which are listed below [Ivan N. Zlatev].
+	<ul>
+		<li>
+			Merged properties support.
+		</li>
+		<li>
+			Full support of Structures, Arrays and other Value Types.
+		</li>
+		<li>
+			Full support of TypeConverters and UITypeEditors and their features. 
+			Also many fixes and improvements to our TypeConverters and UITypeEditors.
+		</li>
+		<li>
+			ICustomTypeDescriptor support.
+		</li>
+		<li>
+			Support for attributes that can be applied to properties and influence 
+			their behavior in the PropertyGrid (e.g PasswordPropertyTextAttribute).
+		</li>
+		<li>
+			Graceful error handling and reporting.
+		</li>
+		<li> 
+			Over 50 bugs have been fixed in the PropertyGrid. 
+			Special credits go to [Andy Hume] for his extensive testing.
+		</li>
+	</ul>
 
 	<p>Over 100 reported bugs fixed for this release.
 	[Winforms team and contributors].
+
+<h2>System.Design</h2>
+
+	<p>Implementation of the .NET 1.1 and 2.0 Design-Time framework [Ivan N. Zlatev].
+	<ul>
+		<li>
+			<strong>Hosting:</strong> DesignSurface, DesignSurfaceManager.
+		</li>
+		<li>
+			<strong>Loaders:</strong> BasicDesignerLoader, CodeDomDesignerLoader.
+		</li>
+		<li>
+			<strong>Serialization:</strong> DesignerSerializationManager, CodeDomSerializerBase, CodeDomSerializer, 
+			MemberCodeDomSerializer, RootContext, ExpressionContext, StatementContext, etc.
+
+			<p>Out of the box support for serializing and deserializing Components, WinForms Controls, 
+			Properties, Events, Primitives, Enums, Collections, etc is provided.
+		</li>
+		<li>
+			<strong>WinForms Designers:</strong> ComponentDesigner, ControlDesigner, ScrollableControlDesigner, 
+			ParentControlDesigner, DocumentDesigner, FormDocumentDesigner, PanelDesigner, SplitContainerDesigner, etc.
+		</li>
+		<li>
+			<strong>Services implementations provided:</strong> UndoEngine, EventBindingService, MenuCommandsService, 
+			ISelectionService, IReferenceService, IExtenderProviderService, IExtenderListService, 
+			ITypeDescriptorFilterService, IDesignerHost, IComponentChangeService, etc.
+		</li>
+	</ul>
+	
+	<p>The implementation should be sufficient to implement at least a Windows Forms designer. 
+	An example can be found in the <a href=http://anonsvn.mono-project.com/viewcvs/trunk/mwf-designer/>mwf-designer</a> 
+	module in our Subversion repository. One major missing bit is the BehaviorService to aid the designer interaction.
 
 <h2>Class Libraries</h2>
 
@@ -216,6 +275,7 @@
 
 	Luke Page, James Purcell, Srikanth Madikeri
   -->
+
 
 
 
