@@ -1,3 +1,0 @@
-#!/bin/sh
-# hack to get boo shell working in monodevelop
-mv /usr/lib/monodevelop/AddIns/BooBinding/*.dll /usr/lib/monodevelop/AddIns/BackendBindings/
