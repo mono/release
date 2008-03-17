@@ -91,11 +91,8 @@ POSTBUILD_STEP4 () {
 
 POSTBUILD_STEP_NAME5="test"
 POSTBUILD_STEP5 () {
-	curl -s http://go-mono.com/moon/moonlight-harness-0.2.tar.gz | tar xz
 	curl -s http://go-mono.com/moon/drop1030.tar.bz2 | tar xj
 
-	cd moonlight-harness-0.2
-	./configure
 	DISPLAY=x32-linux-1.mono.lab.novell.com:2.0 make run-tests
 
 	target=$build_location/steps/test
