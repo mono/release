@@ -1,4 +1,3 @@
-debian/tmp/usr/lib/mono/2.0/mscorlib.dll
 debian/tmp/usr/lib/mono/gac/System/2.0.*/System.dll
 debian/tmp/usr/lib/mono/2.0/System.dll
 debian/tmp/usr/lib/mono/gac/System.Xml/2.0.*/System.Xml.dll

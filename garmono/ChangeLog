@@ -1,3 +1,8 @@
+2008-03-17  Everaldo Canuto <ecanuto@novell.com>
+
+	* libmono-system1.0-cil.install: Remove core lib.
+	* libmono-system1.0-cil.install: Remove core lib.
+	
 2008-02-17  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.mk: Add current paths to LD_LIBRARY_PATH and PKG_CONFIG_PATH, it fixes
