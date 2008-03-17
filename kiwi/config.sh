@@ -50,16 +50,16 @@ suseRemoveService mdadmd
 suseRemoveService multipathd
 suseRemoveService rpmconfigcheck
 suseRemoveService waitfornm
-suseRemoveService smb
+#suseRemoveService smb
 suseRemoveService xfs
-suseRemoveService nmb
+#suseRemoveService nmb
 suseRemoveService autofs
 suseRemoveService rpasswdd
 suseRemoveService boot.scsidev
 suseRemoveService boot.md
 suseService boot.rootfsck off
 # these two we want to disable for policy reasons
-chkconfig sshd off
+#chkconfig sshd off
 chkconfig cron off
 
 # these are disabled because kiwi enables them without being default

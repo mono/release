@@ -14,14 +14,16 @@ for repo in "10.3-oss" "10.3-non-oss" "10.3-update" "10.3-debug" "mono" "mono-pr
 	zypper modifyrepo --disable-autorefresh $repo
 done
 
-# Turn ssh back on
-suseInsertService sshd
-suseService sshd on
-# Turn on samba
-suseInsertService nmb
-suseService nmb on
-suseInsertService smb
-suseService smb on
+# Turn required services on
+chkconfig dbus on
+chkconfig haldaemon on
+chkconfig network on
+
+# Turn ssh on
+chkconfig ssh on
+# Turn samba on
+chkconfig nmb on
+chkconfig smb on
 
 ########################
 # Kiwi hacks
