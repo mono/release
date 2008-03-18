@@ -1,3 +1,9 @@
+mono (1.9-1) unstable; urgency=low
+
+  * Upgrade to Mono 1.9.
+
+ -- Everaldo Canuto <ecanuto@novell.com>  Mon, 17 Mar 2008 09:22:15 -0300
+
 mono (1.2.6-1) unstable; urgency=low
 
   * Upgrade to Mono 1.2.6 and Maemo 4 (OS2008).
