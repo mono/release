@@ -32,7 +32,7 @@ else
 	CONF_FLAGS += --with-tls=__thread
 endif
 
-CONFIGURE = CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --enable-minimal=debug,large_code,logging,com,aot $(CONF_FLAGS)
+CONFIGURE = CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --enable-minimal=debug,large_code,logging,com $(CONF_FLAGS)
 
 configure-arch: configure-arch-stamp
 configure-arch-stamp:

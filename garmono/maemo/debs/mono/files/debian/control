@@ -35,7 +35,7 @@ XB-Maemo-Icon-26:
   mPp+6vbt2/T/n57e3nR6u1KKiP4B8dAIDfLz7yoAAAAASUVORK5CYII=
 
 Package: mono-runtime
-Section: devel
+Section: user/devel
 Architecture: any
 Replaces: mono-jit
 Depends: ${shlibs:Depends}
@@ -49,7 +49,7 @@ Description: Mono runtime
  powerpc, arm, amd64 kfreebsd-amd64 and ia64 architectures.
 
 Package: mono-gac
-Section: devel
+Section: user/devel
 Architecture: all
 Depends: mono-runtime (>= ${Source-Version})
 Description: Mono GAC tool
@@ -514,4 +514,24 @@ Description: Mono C# 2.0 compiler
  .
  Mono is a platform for running and developing .NET client and server applications
  on Linux, Solaris, Mac OS X, Windows, and Unix.
+
+Package: libmono-winforms1.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system1.0-cil (>= ${Source-Version}), libgdiplus, libmono-accessibility1.0-cil (>= ${Source-Version}),  libmono-posix1.0-cil (>= ${Source-Version})
+Description: Mono System.Windows.Forms library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Windows.Forms library version 1.0.
+
+Package: libmono-winforms2.0-cil
+Section: user/libs
+Architecture: all
+Depends: libmono-system2.0-cil (>= ${Source-Version}), libgdiplus, libmono-accessibility2.0-cil (>= ${Source-Version}),  libmono-posix2.0-cil (>= ${Source-Version})
+Description: Mono System.Windows.Forms library
+ Mono is a platform for running and developing .NET client and server applications
+ on Linux, Solaris, Mac OS X, Windows, and Unix.
+ .
+ This package contains the Mono System.Windows.Forms library version 2.0.
 

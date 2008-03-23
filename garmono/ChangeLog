@@ -1,3 +1,10 @@
+2008-03-23  Everaldo Canuto <ecanuto@novell.com>
+
+	* Added libgdiplus.
+	* Added WinForms.
+	* Added Mono.Web to libmono-system-web2.0-cil.
+	* Added AOT.
+
 2008-03-17  Everaldo Canuto <ecanuto@novell.com>
 
 	* Move to Mono 1.9 and gtk-sharp 2.10.4.

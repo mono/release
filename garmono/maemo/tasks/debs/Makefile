@@ -4,6 +4,7 @@ GARVERSION = $(GARMONO_VERSION)
 
 DEPENDS  = maemo/debs/mono
 DEPENDS += maemo/debs/gtk-sharp2
+DEPENDS += maemo/debs/libgdiplus
 
 DESCRIPTION = Meta package to generate Mono packages for Maemo
 define BLURB

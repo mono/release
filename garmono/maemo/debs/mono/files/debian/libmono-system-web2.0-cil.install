@@ -1,4 +1,6 @@
 debian/tmp/usr/lib/mono/gac/System.Web/2.0.*/System.Web.dll
 debian/tmp/usr/lib/mono/gac/System.Web.Services/2.0.*/System.Web.Services.dll
+debian/tmp/usr/lib/mono/gac/Mono.Web/2.0.*/Mono.Web.dll
 debian/tmp/usr/lib/mono/2.0/System.Web.dll
 debian/tmp/usr/lib/mono/2.0/System.Web.Services.dll
+debian/tmp/usr/lib/mono/2.0/Mono.Web.dll
