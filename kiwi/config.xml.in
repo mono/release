@@ -55,7 +55,7 @@
     <source path=""/>
   </repository-->
   <packages type="image">
-    <!--package name="yast2-live-installer"/-->
+    <package name="yast2-live-installer"/>
     <package name="pam"/>
     <package name="pam-config"/>
     <package name="pam-modules"/>
