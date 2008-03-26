@@ -7,6 +7,7 @@ web_index=6
 USE_HOSTS=(
 	rhel-4-i386
 	sles-10-ia64
+	sles-10-s390x
 	suse-101-i586
 	suse-101-ppc
 	suse-101-x86_64
