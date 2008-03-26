@@ -5,7 +5,7 @@ Name:           gecko-sharp2
 BuildRequires:  gtk-sharp2 gtk-sharp2-gapi gtk2-devel mono-devel monodoc-core
 Version:        0.13
 Release:        0
-License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL), MOZILLA PUBLIC LICENSE (MPL/NPL)
+License:        LGPL v2.1 or later; MOZILLA PUBLIC LICENSE (MPL/NPL)
 BuildArch:      noarch
 URL:            http://www.monodevelop.com
 Source0:        gecko-sharp-2.0-%{version}.tar.bz2
@@ -54,11 +54,11 @@ BuildRequires:       mozilla
 %define env_options export MONO_SHARED_DIR=/tmp
 # Only needed to resolve libgtkembedmoz.so at mono-find-requires time
 %if %fedora_version <= 5
-BuildRequires:	mozilla
+BuildRequires:  mozilla
 %endif
 
 %if %fedora_version >= 6
-BuildRequires:	firefox
+BuildRequires:  firefox
 %endif
 %endif
 

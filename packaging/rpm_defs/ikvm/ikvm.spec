@@ -2,10 +2,10 @@
 # norootforbuild
 
 Name:           ikvm
-BuildRequires:  mono-core mono-devel unzip dos2unix
-Version:	0.36.0.5
-Release:	0.novell
-License:        BSD License and BSD-like
+BuildRequires:  dos2unix mono-devel unzip
+Version:        0.36.0.5
+Release:        0.novell
+License:        BSD 3-Clause
 BuildArch:      noarch
 URL:            http://www.ikvm.net
 Source0:        ikvmbin-%{version}.zip
@@ -18,7 +18,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora_version}
 # All fedora distros (5 and 6) have the same names, requirements
 # Needed to generate wrapper
-BuildRequires: which
+BuildRequires:  which
 # Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')
 %define env_options export MONO_SHARED_DIR=/tmp
 %endif
@@ -99,6 +99,7 @@ rm -rf "$RPM_BUILD_ROOT"
 
 %files
 %defattr(-, root, root)
+%doc LICENSE
 %_bindir/*
 %_prefix/lib/ikvm
 %_prefix/lib/mono/ikvm
