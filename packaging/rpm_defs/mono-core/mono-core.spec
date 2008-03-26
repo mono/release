@@ -70,8 +70,11 @@ BuildRequires:	glib2-devel
 # For some reason these weren't required in 10.2 and before... ?
 %if %{suse_version} > 1020
 BuildRequires: bison
-# Add valgrind support for 10.3 and above
-BuildRequires: valgrind
+# Add valgrind support for 10.3 and above on archs that have it
+%ifarch %ix86 x86_64 ppc ppc64
+BuildRequires:  valgrind-devel
+%endif
+
 %endif
 
 %if %{sles_version} == 9

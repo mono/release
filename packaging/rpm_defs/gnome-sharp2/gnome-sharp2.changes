@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Mar 26 18:25:27 MST 2008 - wberrier@novell.com
+
+- Update to 2.16.1
+ -Allow storage of empty lists in gconf
+ -Bug fixes:
+  #325516
+  Comment #8 of #327058
+
+-------------------------------------------------------------------
 Sat Jul 03 18:25:27 MST 2007 - wberrier@suse.de
 
 - Initial package of gnome-sharp2 2.16.0

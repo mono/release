@@ -7,7 +7,7 @@ Release:	1
 License:        Freely Redistributable Software (FSR)
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-BuildRequires:  mono-core mono-devel mono-winforms unzip
+BuildRequires:  mono-devel mono-winforms unzip
 URL:            http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython
 Source0:        %{name}-%{version}.zip
 Patch0:		IPCE-fix_fepy_init.patch

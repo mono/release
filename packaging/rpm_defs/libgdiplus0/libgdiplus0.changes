@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Mar 25 11:47:05 MST 2008 - wberrier@suse.de
+
+- Update to 1.9
+ -Disable internal cairo png support, since libgdiplus uses it's
+  own.  Saves about 26kb of code size.
+ -Fixes related to gdi+ on MacOS.
+- Call ldconfig directly instead of invoking a shell.
+
+-------------------------------------------------------------------
 Mon Jan 14 11:47:05 MST 2008 - wberrier@suse.de
 
 - Renamed package to libgdiplus0 to follow suse lib packaging

@@ -1,4 +1,46 @@
 -------------------------------------------------------------------
+Tue Mar 25 17:23:23 MST 2008 - wberrier@suse.de
+
+- Filelist changes for System.Xml.Linq and Mono.Web
+- Call ldconfig directly instead of invoking a shell
+- Update to 1.9
+ -More than 80 bugs closed/fixed in the runtime
+ -Reflection bug fix
+ -C# compiler defaults to 3.0
+ -Silverlight support enabled by default
+ -Generics code sharing
+ -AOT support for ARM
+ -Verifier improvements
+ -Updated Core Linq api
+ -Now includes System.Xml.Linq
+ -mcs/gmcs parser code base has been unified
+ -ASP.Net:
+  -Batch Compilation
+  -Mapping configuration
+ -Winforms:
+  -more support for browser events
+  -Several fixes to RichTextBox
+  -Major improvements to PropertyGridControl
+  -Over 100 fixed bugs
+ -System.Design implementation
+ -DLR support
+ -Mono.Posix:
+  -Stdlib.signal() has been deprecated.  Replaced with:
+   -Mono.Unix.Native.Stdlib.SetSignalAction
+   -Mono.Unix.UnixSignal
+
+-------------------------------------------------------------------
+Fri Feb 15 03:13:55 CET 2008 - dmueller@suse.de
+
+- only require valgrind for archs that provide it
+
+-------------------------------------------------------------------
+Wed Jan 23 17:52:56 CET 2008 - wberrier@suse.de
+
+- mono-93665_find_requires_ignore_missing.patch: warn on missing
+  files found in .config files instead of generating invalid deps.
+
+-------------------------------------------------------------------
 Wed Jan 16 17:23:23 MST 2008 - wberrier@suse.de
 
 - libgdiplus -> libgdiplus0 rename

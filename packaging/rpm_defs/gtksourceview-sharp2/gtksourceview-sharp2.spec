@@ -27,11 +27,6 @@ AutoReqprov:  on
 BuildRequires: -gtksourceview-devel gtksourceview18-devel
 %endif
 
-# So that .config references can be resolved...
-%if %suse_version == 1000
-BuildRequires: gtksourceview
-%endif
-
 %endif
 
 # Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')

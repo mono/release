@@ -45,11 +45,6 @@ BuildRequires:	gtksourceview-devel shared-mime-info
 BuildRequires:	gtksourceview-devel shared-mime-info
 %endif
 
-%if %{suse_version} == 1000
-BuildRequires:  %{pre_expansion_requires}
-BuildRequires:	shared-mime-info
-%endif
-
 %if %{sles_version} == 9
 BuildRequires:	%{pre_expansion_requires}
 BuildRequires:	pkgconfig

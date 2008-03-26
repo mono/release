@@ -28,7 +28,7 @@ Patch5:		gnome-sharp-revert_unportable_relocatable.patch
 %if 0%{?suse_version}
 
 ## which gtk version ###
-%if %suse_version >= 1000
+%if %suse_version >= 1010
 %define _version %new_version
 %else
 %define _version %old_version
@@ -57,11 +57,6 @@ BuildRequires:	%{new_suse_buildrequires}
 
 %if %suse_version == 1010
 BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel
-%endif
-
-%if %suse_version == 1000
-# vte for .config resolution...
-BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel vte
 %endif
 
 %endif

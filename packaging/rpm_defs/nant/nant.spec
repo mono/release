@@ -25,10 +25,6 @@ BuildRequires:  mono-data mono-devel pkgconfig
 
 %define old_suse_buildrequires mono-winforms mono-web
 
-%if %suse_version == 1000
-BuildRequires:  %{old_suse_buildrequires}
-%endif
-
 %if %sles_version == 9
 BuildRequires:  %{old_suse_buildrequires}
 %define env_options export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/gnome/%_lib/pkgconfig

@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Tue Mar 25 16:49:10 MST 2008 - wberrier@suse.de
+
+- Remove off_t patch now that it's in 2.10.4
+- Update to 2.10.4
+ -Various gug fixes, including: bnc #359561
+- Changes in 2.10.3:
+ -Performance, memory management, and object finalization 
+  improvements.
+ -GLib.ExceptionManager to support exception handling in signal
+  callbacks.
+ -GLib.IOChannel and GLib.Spawn classes for process spawning.
+ -Numerous bugfixes
+
+-------------------------------------------------------------------
+Wed Dec  5 17:11:40 CET 2007 - sbrabec@suse.cz
+
+- Handle off_t as long (#319824),
+
+-------------------------------------------------------------------
 Fri Aug  3 20:49:10 CEST 2007 - wberrier@suse.de
 
 - Update to bigfix release: 2.10.2

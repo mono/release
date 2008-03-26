@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Wed Mar 26 17:11:07 MST 2008 - wberrier@suse.de
+
+- Update to 1.0
+ -Bug fixes:
+  #363865
+  #362596
+  #361650
+  #363858
+  #325469
+  #362567
+  #361045
+  #359567
+  #368436
+  #358361
+- Changes in 0.19 (1.0 RC1)
+ -Will use 2.0 runtime as default
+ -Icons have been tango-ified
+ -More than 85 bugs fixed
+
+-------------------------------------------------------------------
 Mon Jan 14 17:11:07 MST 2008 - wberrier@suse.de
 
 - Fixed .desktop file to adhear to standards

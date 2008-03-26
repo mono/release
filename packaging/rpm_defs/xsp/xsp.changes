@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Mar 25 15:08:49 MST 2008 - wberrier@suse.de
+
+- update to 1.9
+ -minor test updates
+ -BaseRequestBroker fix: Check if the request ID is valid inside 
+  the lock.
+
+-------------------------------------------------------------------
 Mon Jan 14 15:08:49 MST 2008 - wberrier@suse.de
 
 - update to 1.2.6

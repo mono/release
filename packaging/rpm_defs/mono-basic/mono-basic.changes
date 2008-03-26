@@ -1,5 +1,12 @@
 -------------------------------------------------------------------
-Mon Jan 14 15:87:32 MST 2008 - wberrier@suse.de
+Tue Mar 25 15:37:32 MST 2008 - wberrier@suse.de
+
+- Automatically pick the correct file for the prebuilt vb runtime
+- Update to 1.9
+ -More support in the IO classes for Visual Basic
+
+-------------------------------------------------------------------
+Mon Jan 14 15:37:32 MST 2008 - wberrier@suse.de
 
 - Update to 1.2.6
  -Updated internal version to work with versions of .net > 2.0

@@ -25,8 +25,13 @@ Requires:       boo >= %boo_version
 BuildRequires:	gtksourceview-sharp2 monodoc-core
 %endif
 
+%if 0%{?rhel_version}
+%define env_options export MONO_SHARED_DIR=/tmp
+%endif
+
 %description
-Monodevelop Boo Addin
+Boo language integration with MonoDevelop.  Supports syntax highlighting
+and code completion.
 
 %files -f %{name}.lang
 %defattr(-, root, root)

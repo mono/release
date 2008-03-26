@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Mar 25 13:58:18 MST 2008 - wberrier@suse.de
+
+- Update to 1.9:
+ -Fixed to support more versions of windows, not just the one 
+  it was built for.
+ -call ldconfig directly instead of invoking a shell
+ -Several other bug fixes
+
+-------------------------------------------------------------------
 Sat Jan 16 13:58:18 MST 2008 - wberrier@suse.de
 
 - rename gluezilla -> libgluezilla0

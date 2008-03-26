@@ -72,7 +72,7 @@ BuildRequires: firefox-devel
 
 
 %description
-Glue library for Winforms Web control
+A simple library to embed Gecko (xulrunner) for the Mono Winforms WebControl.
 
 %files
 %defattr(-, root, root)

@@ -22,7 +22,7 @@ BuildRequires:  gtksourceview-sharp2 monodoc-core
 %endif
 
 %description
-Monodevelop Java Addin
+Java language integration with MonoDevelop based on ikvm.
 
 %files -f %{name}.lang
 %defattr(-, root, root)

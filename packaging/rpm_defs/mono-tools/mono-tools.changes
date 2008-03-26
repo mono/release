@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Mar 26 15:12:25 MST 2008 - wberrier@novell.com
+
+- Update to 1.9:
+ -Includes new tools: gui-compare and Gendarme
+ -Fix to check for new version of gtkhtml# (3.14)
+ -Fixed docbrowser to work with gecko# again (#341815)
+
+-------------------------------------------------------------------
 Tue Feb 26 15:12:25 MST 2008 - wberrier@novell.com
 
 - Add patch: mono-tools-fix_build_gnome_sharp.patch

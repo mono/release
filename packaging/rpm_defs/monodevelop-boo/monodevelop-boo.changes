@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Mar 26 09:36:07 MST 2008 - wberrier@novell.com
+
+- Update to 1.0:
+ -updated translations
+ -Bug fixes:
+  #350626
+  #358368
+  #361267
+
+-------------------------------------------------------------------
 Tue Jan 15 09:36:07 MST 2008 - wberrier@suse.de
 
 - Initial package (split out from monodevelop at the source level)

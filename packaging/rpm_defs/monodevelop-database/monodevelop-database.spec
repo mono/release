@@ -25,7 +25,7 @@ BuildRequires:  gtksourceview-sharp2 monodoc-core
 %endif
 
 %description
-Monodevelop Database Addin
+Addin for MonoDevelop for an integrated database explorer and editor.
 	  
 %files -f %{name}.lang
 %defattr(-, root, root)

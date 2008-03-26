@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Mar 25 15:16:28 MST 2008 - wberrier@suse.de
+
+- Update to 1.9
+ -New support for controlling the number of requests that are 
+  passed to the mod-mono-server process
+
+-------------------------------------------------------------------
 Mon Jan 14 15:16:28 MST 2008 - wberrier@suse.de
 
 - Update to 1.2.6

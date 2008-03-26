@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Mar 26 16:56:07 MST 2008 - wberrier@suse.de
+
+- Update to 0.3.1
+ -Fix compatibility with new Mono
+ -Delete subdirectory when uninstalling
+ -Improve error reporting
+
+-------------------------------------------------------------------
 Mon Jan 14 16:56:07 MST 2008 - wberrier@suse.de
 
 - Initial package (needed by MD and other mono apps)
