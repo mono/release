@@ -88,6 +88,7 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_prefix}/lib/monodoc
 %{_prefix}/share/pkgconfig/monodoc.pc
 %{_mandir}/man1/*
+%{_mandir}/man5/*
 # Should be in mono-tools now...?
 #%{_prefix}/share/applications/monodoc.desktop
 #%{_prefix}/share/pixmaps/monodoc.png

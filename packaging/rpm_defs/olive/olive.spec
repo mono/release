@@ -18,7 +18,7 @@ Summary:	Mono Olive
 Group:		Development/Tools
 
 %description
-Some Linq and other various .NET 3.0 bits.
+Various .NET 3.0 bits.
 	  
 
 %files
@@ -34,6 +34,10 @@ Some Linq and other various .NET 3.0 bits.
 %_prefix/lib/mono/3.0/xamlc.exe*
 %_prefix/lib/mono/gac/PresentationFramework
 %_prefix/lib/mono/3.0/PresentationFramework.dll*
+%_prefix/lib/mono/gac/UIAutomationProvider
+%_prefix/lib/mono/3.0/UIAutomationProvider.dll
+%_prefix/lib/mono/gac/UIAutomationTypes
+%_prefix/lib/mono/3.0/UIAutomationTypes.dll
 %_prefix/lib/mono/gac/WindowsBase
 %_prefix/lib/mono/3.0/WindowsBase.dll*
 %_prefix/lib/mono/gac/System.IdentityModel

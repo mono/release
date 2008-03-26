@@ -36,7 +36,7 @@ try:
 
 	(bundle_name, dest) = remaining_args
 except:
-	print "Usage: ./sync-bundle.py [ --include_zip | --skip_installers | --skip_missing ] <bundle name> <rsync dest>"
+	print "Usage: ./sync-bundle.py [ --include_zip | --skip_installers | --skip_missing | --platforms=<csv distro list> ] <bundle name> <rsync dest>"
 	print " --include_zip includes zip based distros"
 	print " --skip_installers will not copy installers"
 	print " --skip_missing will allow missing packages for a various platform"
@@ -153,5 +153,6 @@ print "\n".join(sources)
 print ""
 
 print "Starting rsync..."
+print 'rsync -avzR -e ssh %s %s %s' % (" ".join(sources), " ".join(dirs), dest)
 status, output = utils.launch_process('rsync -avzR -e ssh %s %s %s' % (" ".join(sources), " ".join(dirs), dest))
 

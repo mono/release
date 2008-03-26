@@ -6,8 +6,8 @@ License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL)
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 URL:            http://go-mono.org/
-Version:	1.9
-Release:	3.novell
+Version:	1.2.6
+Release:	0.novell
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
 
@@ -148,6 +148,7 @@ Authors:
 %_bindir/gmcs
 %_bindir/mono-test-install
 %_bindir/mcs
+%_bindir/mcs1
 %_bindir/smcs
 %_bindir/mozroots
 %_bindir/setreg
@@ -188,7 +189,7 @@ Authors:
 %_prefix/lib/mono/gac/System.Xml.Core
 %_prefix/lib/mono/2.1/System.Xml.Core.dll
 %_prefix/lib/mono/gac/System.Xml.Linq
-%_prefix/lib/mono/3.5/System.Xml.Linq.dll
+%_prefix/lib/mono/2.0/System.Xml.Linq.dll
 %_prefix/lib/mono/gac/System
 %_prefix/lib/mono/1.0/System.dll
 %_prefix/lib/mono/2.0/System.dll
@@ -358,6 +359,8 @@ Authors:
 %_prefix/lib/mono/gac/System.Data
 %_prefix/lib/mono/1.0/System.Data.dll
 %_prefix/lib/mono/2.0/System.Data.dll
+%_prefix/lib/mono/gac/System.Data.Linq
+%_prefix/lib/mono/2.0/System.Data.Linq.dll
 %_prefix/lib/mono/gac/Mono.Data
 %_prefix/lib/mono/1.0/Mono.Data.dll
 %_prefix/lib/mono/2.0/Mono.Data.dll
@@ -628,6 +631,7 @@ Authors:
 %_bindir/mconfig
 %_bindir/soapsuds
 %_bindir/wsdl
+%_bindir/wsdl1
 %_bindir/wsdl2
 %_bindir/xsd
 # man pages
@@ -894,6 +898,7 @@ Authors:
 %_mandir/man1/resgen.1.gz
 # Shell wrappers
 %_bindir/al
+%_bindir/al1
 %_bindir/al2
 %_bindir/caspol
 %_bindir/cert2spc
@@ -902,18 +907,22 @@ Authors:
 %_bindir/genxs
 %_bindir/httpcfg
 %_bindir/ilasm
+%_bindir/ilasm1
 %_bindir/ilasm2
 %_bindir/installvst
 %_bindir/macpack
 %_bindir/makecert
 %_bindir/mkbundle
+%_bindir/mkbundle1
 %_bindir/mkbundle2
 %_bindir/monodis
 %_bindir/monolinker
 %_bindir/monop
+%_bindir/monop1
 %_bindir/monop2
 %_bindir/mono-api-diff
 %_bindir/mono-api-info
+%_bindir/mono-api-info1
 %_bindir/mono-api-info2
 %_bindir/mono-find-provides
 %_bindir/mono-find-requires
@@ -923,6 +932,7 @@ Authors:
 %_bindir/permview
 %_bindir/prj2make
 %_bindir/resgen
+%_bindir/resgen1
 %_bindir/resgen2
 %_bindir/secutil
 %_bindir/sgen

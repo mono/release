@@ -10,7 +10,7 @@ BuildRoot:	/var/tmp/%{name}-%{version}-root
 Autoreqprov:    on
 BuildArch:      noarch
 URL:		http://www.go-mono.com
-Source0:	%{name}-%{version}.tar.bz2
+Source0:	%{name}-%{version}.zip
 BuildRequires:	mono-devel gtk-sharp2
 Summary:	Mono Addins Framework
 Group:		Development/Tools
@@ -38,16 +38,24 @@ and for creating libraries which extend those applications.
 
 %_prefix/lib/mono/gac/Mono.Addins
 %_prefix/lib/mono/gac/policy.0.2.Mono.Addins
+%_prefix/lib/mono/gac/policy.0.3.Mono.Addins
 %_prefix/lib/mono/mono-addins/Mono.Addins.dll
 
 %_prefix/lib/mono/gac/Mono.Addins.Setup
 %_prefix/lib/mono/gac/policy.0.2.Mono.Addins.Setup
+%_prefix/lib/mono/gac/policy.0.3.Mono.Addins.Setup
 %_prefix/lib/mono/mono-addins/Mono.Addins.Setup.dll
 
 %_prefix/lib/mono/gac/Mono.Addins.Gui
 %_prefix/lib/mono/gac/policy.0.2.Mono.Addins.Gui
+%_prefix/lib/mono/gac/policy.0.3.Mono.Addins.Gui
 %_prefix/lib/mono/mono-addins/Mono.Addins.Gui.dll
 %_prefix/share/pkgconfig/*.pc
+
+%_prefix/lib/mono/mono-addins/Mono.Addins.CecilReflector.dll
+%_prefix/lib/mono/gac/Mono.Addins.CecilReflector
+%_prefix/lib/mono/gac/policy.0.2.Mono.Addins.CecilReflector
+%_prefix/lib/mono/gac/policy.0.3.Mono.Addins.CecilReflector
 
 %debug_package
 %prep

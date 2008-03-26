@@ -25,25 +25,35 @@ get_destroot () {
 
 HEAD_PATH=(
 	trunk/monodoc
-	trunk/mcs/errors
+	trunk/mono/man
 	trunk/mono/mono
+	trunk/mcs/errors
 )
 RELEASE_PATH=(
 	tags/mono-[[version]]/monodoc
-	tags/mono-[[version]]/mcs/errors
+	tags/mono-[[version]]/mono/man
 	tags/mono-[[version]]/mono/mono
+	tags/mono-[[version]]/mcs/errors
 )
 
 make_dist () {
-	#Take care of cs-errors and monoapi docs
+
+	# Switch things around to fake parallel checkouts
+	mv ../mono ../mono_subdir
+	mkdir ../mono
+	mv ../mono_subdir ../mono/mono
+
+	mv ../man ../mono
+
 	mkdir ../mcs
 	mv ../errors ../mcs
 
-	cd ../mono/docscripts
+	#Include cs-errors and monoapi docs
+	cd ../mono/mono/docscripts
 	make extract
 	make
 	cd -
-	cp ../mono/docscripts/*zip ../mono/docscripts/*tree ../mono/docscripts/*source extras || exit 1
+	cp ../mono/mono/docscripts/*zip ../mono/mono/docscripts/*tree ../mono/mono/docscripts/*source extras || exit 1
 
 	. /etc/profile
 	./autogen.sh

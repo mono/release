@@ -31,3 +31,11 @@ update_version_file () {
 	sed -i "s/\(AC_INIT.*,\\).*)/\\1 [$VERSION])/" configure.ac
 }
 
+make_dist () {
+        . /etc/profile
+        ./autogen.sh
+
+        # Use dist-zip instead, otherwise long filenames get chopped
+        #make dist
+        make dist-zip
+}

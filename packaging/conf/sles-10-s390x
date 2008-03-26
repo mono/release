@@ -1,0 +1,11 @@
+username=builder
+hostname=aussie-1.osdl.marist.edu
+target_command_prefix=". /etc/profile;"
+
+# /tmp on this machine doesn't have enough space... build here instead
+#build_location="/FS/fs0154/builder/tmp/monobuild"
+
+web_index=5
+
+YAST_REPO=1
+YAST_INSTALL=1
