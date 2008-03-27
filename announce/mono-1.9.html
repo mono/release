@@ -44,6 +44,7 @@
 	<a href="http://www.go-mono.com/archive/1.2.5">1.2.5</a> and
 	<a href="http://www.go-mono.com/archive/1.2.6">1.2.6</a>.
 
+<a name="changes"/>
 <h2>Major Highlights</h2>
 
 	<p>This is the last release before the 2.0 release of Mono, it
@@ -271,6 +272,56 @@
 	<p>SSL/TLS now support X.509 server certificate using 
 	wildcards (e.g. *.novell.com) [Sebastien]
 
+<a name="install">
+<h1>Installing Mono 1.9</h1>
+	
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p><b>Binary Packages and Source Code Downloads:</b>
+	<blockquote>
+	<p>Source code and pre-compiled packages for Linux, Solaris,
+	MacOS X and Windows is available from our web site from the <a
+	href="http://www.mono-project.com/Downloads">download</a>
+	section.
+
+	</blockquote>
+
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-1.9.tar.gz
+    $ cd mono-1.9
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+
+	<p>Then compile libgdiplus:
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.9.tar.gz
+    $ cd libgdiplus-1.9
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+	</blockquote>
+		
+</blockquote>
+	
 <!--<h1>Contributors:</h1>
 
 	Luke Page, James Purcell, Srikanth Madikeri
