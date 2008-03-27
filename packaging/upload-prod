@@ -1,85 +1,132 @@
-#!/bin/sh -e
+#!/usr/bin/env python
 
-BUNDLE=$1
-DRYRUN=$2
+import os
+import sys
+import getopt
 
-DO_DRYRUN=0
-rsync_opts="--delete -avz"
+import distutils.dir_util
 
-STAGE_DIR="$(pwd)/stage/release"
+generate = False
+publish = False
 
-# go-mono.com
-TARGET_USER="mono-web"
-TARGET_HOST="go-mono.com"
-TARGET_DIR="~/go-mono/"
+try:
+	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "generate", "publish" ])
+	for option, value in opts:
+		if option == "--generate":
+			 generate = True
+		if option == "--publish":
+			 publish = True
 
-## ftp.novell.com
-#TARGET_USER="wberrier"
-#TARGET_HOST="picard.provo.novell.com"
-#TARGET_DIR="/srv/ftp/pub/mono"
+	(BUNDLE,) = remaining_args
 
-if test x$BUNDLE = x || test x$BUNDLE = xdry ; then
-	echo "Usage: ./upload-prod <bundle> [<dry>]"
-	exit 1
-fi
+except: 
 
-if [ ! -e  bundles/$BUNDLE ] ; then
-	echo "Bundle $BUNDLE does not exist"
-	exit 1
-fi
+        print ""
+        print "Usage: ./upload-prod [--generate] [--publish] <BUNDLE>"
+        print "  --generate will copy to staging, and generate repos and html"
+        print "  --publish will rsync staging to destination. "
+        print "     Without --publish, a test rsync run will be performed"
+        print ""
+        print " General idea is to generate and then to a test publish to see if anything"
+        print "  needs to be pruned.  And once we find no files to delete, we can publish"
+        print "  without generating again"
+        print ""
+        print "Synopsis:"
+        print ""
+        print " # Build stage, and generate stage html/repos"
+        print " ./upload-prod --generate RELEASE"
+        print " # test publish.  If you need to clean up, do so and start from the generate step"
+        print " ./upload-prod            RELEASE"
+        print " # actual publish"
+        print " ./upload-prod --publish  RELEASE"
+        print ""
 
-if test x$DRYRUN = xdry ; then
-	rsync_opts="${rsync_opts}n"
-	echo "Doing dry run..."
-	DO_DRYRUN=1
-fi
+        sys.exit(1)
 
-# Remove missing packages from stage
-# Hack: Don't push the rtl releases
-rsync_opts="$rsync_opts --exclude *rtl*"
+def do(command):
+	ret = os.system(command)
+	if ret:
+		print "Exiting..."
+		sys.exit(1)
 
-cd packages
-rsync $rsync_opts -C . $STAGE_DIR/download
 
-cd ../external_packages
-rsync $rsync_opts -C . $STAGE_DIR/external_packages
+# Can't use '--delete' to build up the staging area... otherwise we remove stuff we just copied
+rsync_opts = "-avz"
 
-cd ../sources
-rsync $rsync_opts -C . $STAGE_DIR/sources
-cd ..
+STAGE_DIR = os.getcwd() + "/stage/release"
+
+## go-mono.com
+#TARGET_USER="mono-web"
+#TARGET_HOST="go-mono.com"
+#TARGET_DIR="~/go-mono/"
+#TARGET_URL="''"
+
+# ftp.novell.com
+#  TODO: Maybe before we change people's repo urls, we should make our repos look more like the
+#   the build service repos?  So that when we start using obs' generated repos... ?
+TARGET_USER = "wberrier"
+TARGET_HOST = "ftp.novell.com"
+TARGET_DIR = "/srv/ftp/pub/mono"
+TARGET_URL = "/pub/mono"
+
+if not os.path.exists("bundles/" + BUNDLE):
+	print "Bundle %s does not exist" % BUNDLE
+	sys.exit(1)
+
+final_rsync_opts=""
+if not publish:
+	final_rsync_opts="n"
+	print "Doing dry run..."
+
+distutils.dir_util.mkpath(STAGE_DIR)
+
+# We can call delete on so that stuff that gets deleted in the source will be deleted from the stage
+os.chdir('packages')
+do("rsync %s --delete -C . %s/download" % (rsync_opts, STAGE_DIR))
+
+os.chdir("../external_packages")
+do("rsync %s --delete -C . %s/external_packages" % (rsync_opts, STAGE_DIR))
+
+os.chdir("../sources")
+do("rsync %s --delete -C . %s/sources" % (rsync_opts, STAGE_DIR))
+os.chdir("..")
+
+current_dir = os.getcwd()
 
 # Push the installers
-cd ../linux-installer/output
-rsync $rsync_opts -C . $STAGE_DIR/archive
-cd -
+# If these need to be cleaned up, you need to clean from source and stage (ugh)
+os.chdir("../linux-installer/output")
+do("rsync %s -C . %s/archive" % (rsync_opts, STAGE_DIR))
+os.chdir(current_dir)
 
-cd ../windows-installer/Output
-rsync $rsync_opts . $STAGE_DIR/archive
-cd -
+os.chdir("../windows-installer/Output")
+do("rsync %s -C . %s/archive" % (rsync_opts, STAGE_DIR))
+os.chdir(current_dir)
 
-cd ../sunos/output
-rsync $rsync_opts . $STAGE_DIR/archive
-cd -
+os.chdir("../sunos/output")
+do("rsync %s -C . %s/archive" % (rsync_opts, STAGE_DIR))
+os.chdir(current_dir)
 
-cd ../macosx/output
-rsync $rsync_opts . $STAGE_DIR/archive
-cd -
+os.chdir("../macosx/output")
+do("rsync %s -C . %s/archive" % (rsync_opts, STAGE_DIR))
+os.chdir(current_dir)
 
-if test x$DO_DRYRUN = x1 ; then
-	echo "Stopping because of dry run"
-	exit
-fi
+os.chdir("../website")
 
-cd ../website
+if generate:
+	do("cp -f packaging.css " + STAGE_DIR)
+	do("cp -f zip-icon.png  " + STAGE_DIR)
 
-cp -f packaging.css $STAGE_DIR
-
-./mk-sources-index.py	$BUNDLE $STAGE_DIR '' $STAGE_DIR/sources
-./mk-distro-index.py	$BUNDLE $STAGE_DIR '' $STAGE_DIR/download $TARGET_HOST
-./mk-archive-index.py	$BUNDLE $STAGE_DIR ''
-./mk-repos.py		$BUNDLE $STAGE_DIR '' $STAGE_DIR/download $TARGET_HOST
+	do("./mk-sources-index.py	%s %s %s %s/sources" % 		(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR))
+	do("./mk-distro-index.py	%s %s %s %s/download %s" % 	(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR, TARGET_HOST))
+	do("./mk-archive-index.py	%s %s %s" % 			(BUNDLE, STAGE_DIR, TARGET_URL))
+	do("./mk-repos.py		%s %s %s %s/download %s" % 	(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR, TARGET_HOST))
 
 # Publish stage
-ssh $TARGET_USER@$TARGET_HOST "mkdir -p $TARGET_DIR"
-cd $STAGE_DIR
-rsync $rsync_opts -H . $TARGET_USER@$TARGET_HOST:$TARGET_DIR
+if publish:
+	do('ssh %s@%s "mkdir -p %s"' % (TARGET_USER, TARGET_HOST, TARGET_DIR))
+
+os.chdir(STAGE_DIR)
+# Can't use --delete here either... because we don't want to remove release notes or generated html from previous releases
+do('rsync %s%s -H . %s@%s:%s' % (rsync_opts, final_rsync_opts, TARGET_USER, TARGET_HOST, TARGET_DIR))
+

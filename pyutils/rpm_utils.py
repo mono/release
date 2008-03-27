@@ -99,7 +99,8 @@ def rpm_query(query_format, file, installed=False):
                 #print "Cache hit!"
                 output = rpm_query_cache[key]
         else:   
-                (code, output) = commands.getstatusoutput("rpm -q%s --queryformat \"%s\" %s" % (installed, query_string, file))
+		# Must use "nosignature", otherwise that output from stderr gets interpreted as part of the query results
+                (code, output) = commands.getstatusoutput("rpm -q%s --nosignature --queryformat \"%s\" %s" % (installed, query_string, file))
                 rpm_query_cache[key] = output
 
         results = output.split(marker)

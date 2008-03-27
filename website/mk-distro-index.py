@@ -201,7 +201,7 @@ for distro_conf in distros:
 				# rpms are compressed anyways -- doing any compression is a waste of time
 				os.system("zip -j -0 %s %s" % (zip_filename, " ".join(RPMS)) )
 				
-				out.write("<p><a href='%s.zip'><img src='/zip-icon.png' />All of these RPMs in a ZIP file</a></p>\n" % (zipname))
+				out.write("<p><a href='%s.zip'><img src='%s/zip-icon.png' />All of these RPMs in a ZIP file</a></p>\n" % (zipname, webroot_path))
 
 
 			out.write("<ul>\n")
