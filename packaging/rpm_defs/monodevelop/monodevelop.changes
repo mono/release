@@ -3,16 +3,20 @@ Wed Mar 26 17:11:07 MST 2008 - wberrier@suse.de
 
 - Update to 1.0
  -Bug fixes:
-  #363865
-  #362596
-  #361650
-  #363858
-  #325469
-  #362567
-  #361045
-  #359567
-  #368436
-  #358361
+  - MD Crashes when you drag a menu inside its own submenu 
+    (bnc#363865)
+  - Monodevelop and stetic destroy forms (bnc#362596)
+  - Problem with subclassing any container widget (bnc#361650)
+  - Version Control doesn't behave propertly (bnc#363858)
+  - Comment and uncomment function (bnc#325469)
+  - Create Package fails on projects with translations (bnc#362567)
+  - Exception with null arguments or nonexistant paths when 
+    compiling/cleaning C project (bnc#361045)
+  - MonoDevelop crashes when creating/opening C++ Console Project
+    (bnc#359567)
+  - Build Output autohide button missing (bnc#368436)
+  - Have to hit esc twice to close the file/new file dialog 
+    (bnc#358361)
 - Changes in 0.19 (1.0 RC1)
  -Will use 2.0 runtime as default
  -Icons have been tango-ified

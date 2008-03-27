@@ -4,9 +4,10 @@ Wed Mar 26 09:36:07 MST 2008 - wberrier@novell.com
 - Update to 1.0:
  -updated translations
  -Bug fixes:
-  #350626
-  #358368
-  #361267
+  - Boo templates syntactically incorrect (bnc#350626)
+  - Boo library template fails to compile (bnc#358368)
+  - Boo Code Completion appends instead of replaces what you've 
+    typed (bnc#361267)
 
 -------------------------------------------------------------------
 Tue Jan 15 09:36:07 MST 2008 - wberrier@suse.de
