@@ -54,17 +54,17 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-101-i586'>http://www.go-mono.com/download-stable/suse-101-i586" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-101-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-i586'>http://ftp.novell.com/pub/mono/download-stable/suse-101-i586" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-101-x86_64'>http://www.go-mono.com/download-stable/suse-101-x86_64" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-101-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-101-ppc'>http://www.go-mono.com/download-stable/suse-101-ppc" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-101-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-ppc'>http://ftp.novell.com/pub/mono/download-stable/suse-101-ppc" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
 		},
@@ -74,17 +74,17 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-102-i586'>http://www.go-mono.com/download-stable/suse-102-i586" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-102-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-102-i586'>http://ftp.novell.com/pub/mono/download-stable/suse-102-i586" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-102-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-102-x86_64'>http://www.go-mono.com/download-stable/suse-102-x86_64" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-102-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-102-x86_64'>http://ftp.novell.com/pub/mono/download-stable/suse-102-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-102-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-102-ppc'>http://www.go-mono.com/download-stable/suse-102-ppc" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-102-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-102-ppc'>http://ftp.novell.com/pub/mono/download-stable/suse-102-ppc" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-102-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
 		},
@@ -94,17 +94,17 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-103-i586'>http://www.go-mono.com/download-stable/suse-103-i586" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-103-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-103-i586'>http://ftp.novell.com/pub/mono/download-stable/suse-103-i586" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-103-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-103-x86_64'>http://www.go-mono.com/download-stable/suse-103-x86_64" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-103-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-103-x86_64'>http://ftp.novell.com/pub/mono/download-stable/suse-103-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-103-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-103-ppc'>http://www.go-mono.com/download-stable/suse-103-ppc" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-103-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-103-ppc'>http://ftp.novell.com/pub/mono/download-stable/suse-103-ppc" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-103-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
 		}
@@ -122,32 +122,32 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/sles-9-i586'>http://www.go-mono.com/download-stable/sles-9-i586" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/sles-9-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-i586'>http://ftp.novell.com/pub/mono/download-stable/sles-9-i586" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/sles-9-x86_64'>http://www.go-mono.com/download-stable/sles-9-x86_64" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/sles-9-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-x86_64'>http://ftp.novell.com/pub/mono/download-stable/sles-9-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/sles-9-ppc'>http://www.go-mono.com/download-stable/sles-9-ppc" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/sles-9-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-ppc'>http://ftp.novell.com/pub/mono/download-stable/sles-9-ppc" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : ia64,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/sles-9-ia64'>http://www.go-mono.com/download-stable/sles-9-ia64" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/sles-9-ia64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-ia64'>http://ftp.novell.com/pub/mono/download-stable/sles-9-ia64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-ia64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : s390,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/sles-9-s390'>http://www.go-mono.com/download-stable/sles-9-s390" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/sles-9-s390'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-s390'>http://ftp.novell.com/pub/mono/download-stable/sles-9-s390" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-s390'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : s390x,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/sles-9-s390x'>http://www.go-mono.com/download-stable/sles-9-s390x" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/sles-9-s390x'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-s390x'>http://ftp.novell.com/pub/mono/download-stable/sles-9-s390x" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-s390x'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
 		},
@@ -157,22 +157,27 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-101-i586'>http://www.go-mono.com/download-stable/suse-101-i586" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-101-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-i586'>http://ftp.novell.com/pub/mono/download-stable/suse-101-i586" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-101-x86_64'>http://www.go-mono.com/download-stable/suse-101-x86_64" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-101-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : ppc,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-101-ppc'>http://www.go-mono.com/download-stable/suse-101-ppc" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-101-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-ppc'>http://ftp.novell.com/pub/mono/download-stable/suse-101-ppc" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : ia64,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/sles-10-ia64'>http://www.go-mono.com/download-stable/sles-10-ia64" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/sles-10-ia64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-10-ia64'>http://ftp.novell.com/pub/mono/download-stable/sles-10-ia64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-10-ia64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+			},
+			{
+				"name" : s390x,
+				"desc" : "",
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-10-s390x'>http://ftp.novell.com/pub/mono/download-stable/sles-10-s390x" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-10-s390x'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
 		},
@@ -182,30 +187,15 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-101-i586'>http://www.go-mono.com/download-stable/suse-101-i586" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-101-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-i586'>http://ftp.novell.com/pub/mono/download-stable/suse-101-i586" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : x86_64,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/suse-101-x86_64'>http://www.go-mono.com/download-stable/suse-101-x86_64" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/suse-101-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
 		},
-		{
-			"name" : "Novell Linux Desktop 9",
-			"arch" : [
-			{
-				"name" : i586,
-				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/nld-9-i586'>http://www.go-mono.com/download-stable/nld-9-i586" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/nld-9-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : x86_64,
-				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://www.go-mono.com/download-stable/nld-9-x86_64'>http://www.go-mono.com/download-stable/nld-9-x86_64" + "</a></ul>For individual packages, <a href='http://www.go-mono.com/download-stable/nld-9-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			}
-			]
-		}
 		]
 	},
 
@@ -220,7 +210,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on all versions of Windows 2000, XP, 2003 and Vista.",
-				"downloadText" : "Mono for Windows, Gtk#, and XSP <ul><li><a href='ftp://www.go-mono.com/archive/1.9/windows-installer/4/mono-1.9-gtksharp-2.10.4-win32-4.exe'>Mono 1.9_4 Setup</a></ul>Only Gtk# for .NET: <ul><li><a href='http://sourceforge.net/project/showfiles.php?group_id=74626&package_id=223067'>SDK and Runtime</a></ul>Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>"
+				"downloadText" : "Mono for Windows, Gtk#, and XSP <ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9/windows-installer/4/mono-1.9-gtksharp-2.10.4-win32-4.exe'>Mono 1.9_4 Setup</a></ul>Only Gtk# for .NET: <ul><li><a href='http://sourceforge.net/project/showfiles.php?group_id=74626&package_id=223067'>SDK and Runtime</a></ul>Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>"
 			}
 			]
 		}
@@ -238,7 +228,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk#, MonoDevelop installs in /Library/Frameworks:<ul><li><a href='ftp://www.go-mono.com/archive/1.9/macos-10-universal/5/MonoFramework-1.9_5.macos10.novell.universal.dmg'>Mono 1.9_5 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk#, MonoDevelop, and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
+				"downloadText" : "Includes Mono, Cocoa#, Gtk#, MonoDevelop installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9/macos-10-universal/5/MonoFramework-1.9_5.macos10.novell.universal.dmg'>Mono 1.9_5 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk#, MonoDevelop, and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
@@ -257,8 +247,8 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "This download works on RedHat Enterprise Linux 4 on " + i586 + ".",
-				//"downloadText" : "The downloads are available <a href='http://www.go-mono.com/download-stable/rhel-4-i386'>here</a>."
-				"downloadText" : "The prefered method for installing Mono on RedHat is to use yum. Once yum is installed, putting the <a href='http://www.go-mono.com/download-stable/rhel-4-i386/mono.repo'>mono.repo</a> file in /etc/yum.repos.d will allow you to install mono and related packages.<br><br>For individual packages, <a href='http://www.go-mono.com/download-stable/rhel-4-i386'>go here</a>.<br><br>Note: You can get yum for RHEL from the <a href='http://www.centos.org/'>CentOS project</a>."
+				//"downloadText" : "The downloads are available <a href='http://ftp.novell.com/pub/mono/download-stable/rhel-4-i386'>here</a>."
+				"downloadText" : "The prefered method for installing Mono on RedHat is to use yum. Once yum is installed, putting the <a href='http://ftp.novell.com/pub/mono/download-stable/rhel-4-i386/mono.repo'>mono.repo</a> file in /etc/yum.repos.d will allow you to install mono and related packages.<br><br>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/rhel-4-i386'>go here</a>.<br><br>Note: You can get yum for RHEL from the <a href='http://www.centos.org/'>CentOS project</a>."
 			}
 			]
 		}
@@ -276,7 +266,7 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "This download works on most generic Linuxes on " + i586 + ".",
-				"downloadText" : "For help with the installation, see: <a href='http://mono-project.com/InstallerInstructions'>Instructions to use the Installer</a>.<ul><li><a href='ftp://www.go-mono.com/archive/1.9/linux-installer/5/mono-1.9_5-installer.bin'>Mono 1.9_5 Installer</a></ul>"
+				"downloadText" : "For help with the installation, see: <a href='http://mono-project.com/InstallerInstructions'>Instructions to use the Installer</a>.<ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9/linux-installer/5/mono-1.9_5-installer.bin'>Mono 1.9_5 Installer</a></ul>"
 			}
 			]
 		}
@@ -294,7 +284,7 @@ var data =
 			{
 				"name" : "SPARC",
 				"desc" : "This download works on Solaris 8 on SPARC.",
-				"downloadText" : "<a href='http://mono-project.com/SolarisInstructions'>Solaris package instructions<ul><li><a href='ftp://www.go-mono.com/archive/1.2.4/sunos-8-sparc/4/mono-1.2.4_4.sunos8.novell.sparc.pkg.gz'>Mono 1.2.4_4 Package</a></ul>"
+				"downloadText" : "<a href='http://mono-project.com/SolarisInstructions'>Solaris package instructions<ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.2.4/sunos-8-sparc/4/mono-1.2.4_4.sunos8.novell.sparc.pkg.gz'>Mono 1.2.4_4 Package</a></ul>"
 			}
 			]
 		}
