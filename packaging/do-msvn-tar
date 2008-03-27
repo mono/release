@@ -152,6 +152,11 @@ else:
 
 	failure_message = "*** Error *** getting/updating source failed (this is usually because of a malformed url, ex: invalid version, or svn/ssh failed)"
 
+	# Fail if diffstat isn't installed
+	if os.system("which diffstat > /dev/null 2>&1"):
+		print "Exiting: You must install diffstat"
+		sys.exit(1)
+
 	# Potentially clean up source to do a fresh checkout (required for modules that use 'svn:external'
 	if fresh_checkout:
 		print "Removing cache..."
@@ -162,38 +167,53 @@ else:
 
 		# Do we have a working copy already?
 		if os.path.exists("%s/%s" % (cache_dir, module)):
-			# svn switch  (will update if the path in the working copy hasn't changed, this ensures have the right path)
+
+			# Get current state of checkout
+			command = "cd %s/%s; svn info" % (cache_dir, module)
+			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
+			exit_on_error(command, status, output, exit_code=1)
+
+			#old_revision, = re.compile("Revision: (.*)").search(output).groups()
+			old_mono_host, = re.compile("Repository Root: (.*)").search(output).groups()
 
 			# rewrite the url, just in case we've changed it (it's a really fast command, nothing to loose)
-			command = "cd %s/%s; svn info" % (cache_dir, module)
-			(status, output) = utils.launch_process(command, output_timeout=output_timeout )
-			exit_on_error(command, status, output, exit_code=1)
-			old_revision, = re.compile("Revision: (.*)").search(output).groups()
-
-			old_mono_host, = re.compile("Repository Root: (.*)").search(output).groups()
+			#  (useful for going back and forth between the anonymous readonly server and the main server)
 			stuff = urlparse.urlparse(old_mono_host)
 			old_mono_host = stuff[0] + "://" + stuff[1]
-
 			stuff = urlparse.urlparse(MONO_ROOT)
 			new_mono_host = stuff[0] + "://" + stuff[1]
-
 			command = "cd %s/%s; svn switch --relocate %s %s" % (cache_dir, module, old_mono_host, new_mono_host)
-			(status, output) = utils.launch_process(command, output_timeout=output_timeout )
+			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
 			exit_on_error(command, status, output, exit_code=1)
 
+			# Update svn to the specific revision
+			# svn switch  (will update if the path in the working copy hasn't changed, this ensures have the right path)
 			command = 'cd %s/%s; svn switch %s %s/%s' % (cache_dir, module, rev_arg, MONO_ROOT, path)
-			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
+			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1, print_output=1 )
 			# TODO: exit with retry when ssh/svn errors happen
 			exit_on_error(command, status, output, exit_code=1)
 
-			command = 'cd %s/%s; svn info' % (cache_dir, module)
-			(status, output) = utils.launch_process(command, output_timeout=output_timeout)
-			exit_on_error(command, status, output, exit_code=1, exit_msg=failure_message)
-			new_revision, = re.compile("Revision: (.*)").search(output).groups()
+			#command = 'cd %s/%s; svn info' % (cache_dir, module)
+			#(status, output) = utils.launch_process(command, output_timeout=output_timeout)
+			#exit_on_error(command, status, output, exit_code=1, exit_msg=failure_message)
+			#new_revision, = re.compile("Revision: (.*)").search(output).groups()
 
-			command = 'cd %s/%s; svn log -v -r%s:%s' % (cache_dir, module, new_revision, old_revision)
-			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
-			exit_on_error(command, status, output, exit_code=1)
+			# Used to do a log between the old state of the repo and the new updated state
+			#  Problems occur when:
+			#   1.  part of the repo gets updated, but svn fails at one point
+			#   2.  we do a manual mktarball of an older revision than what the cache was at
+			#   3.  mktarball was called on a backup jail that hadn't been updated for a long time
+			#  This way, we'll get the same results regardless of the state of the cache
+			#command = 'cd %s/%s; svn log -v -r%s:%s' % (cache_dir, module, new_revision, old_revision)
+			#(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
+			#exit_on_error(command, status, output, exit_code=1)
+
+			# TODO: print info from the last source update, even if inaccurate?
+			#print "----------------------------------------------------------------"
+			#print "--------  Revision details compared to the last update ---------"
+			#print "---------  (which are useful but could be inaccurate) ----------"
+			#print "----------------------------------------------------------------"
+
 		else:
 			# create cache dir
 			if not os.path.exists(cache_dir): distutils.dir_util.mkpath(cache_dir)
@@ -203,7 +223,19 @@ else:
 			# TODO: exit with retry when ssh/svn errors happen
 			exit_on_error(command, status, output, exit_code=1, exit_msg=failure_message)
 
+		#print "----------------------------------------------------------------"
+		#print "-----  Revision details pertaining to the last commit only -----"
+		# Get the log message of the last commit
+		command = 'cd %s/%s; svn log --limit 1' % (cache_dir, module)
+		(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
+		exit_on_error(command, status, output, exit_code=1)
 
+		# Show diff of this commit piped through diffstat
+		command = 'cd %s/%s; svn diff -r PREV | diffstat -p0' % (cache_dir, module)
+		(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
+		exit_on_error(command, status, output, exit_code=1)
+		print ""
+		#print "----------------------------------------------------------------"
 
 		# svn export from working copy
 		#command = "%s %s/%s" % (SVNEXPORT, MONO_ROOT, path)
