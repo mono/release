@@ -43,7 +43,7 @@ MKTARBALL_HOST="suse-101-i586"
 
 POSTBUILD_STEP_NAME1="plugin-1.0-ffmpeg"
 POSTBUILD_STEP1 () {
-	curl -s http://go-mono.com/moon/moon-ffmpeg.tar.bz2 | tar xj
+	curl -s http://build.mono.lab.novell.com/~builder/moon-ffmpeg.tar.bz2 | tar xj
 	pushd moon-ffmpeg
 	./configure --enable-gpl --disable-muxers --disable-encoders #--disable-demuxers --disable-parsers --disable-bsfs --disable-protocols --disable-decoders --enable-decoder=wmv1 --enable-decoder=wmv2 --enable-decoder=wmv3 --enable-decoder=vc1 --enable-decoder=wmva1 --enable-decoder=wmva2 --enable-decoder=mp3
 	make
@@ -91,7 +91,7 @@ POSTBUILD_STEP4 () {
 
 POSTBUILD_STEP_NAME5="test"
 POSTBUILD_STEP5 () {
-	curl -s http://go-mono.com/moon/drop1030.tar.bz2 | tar xj
+	curl -s http://build.mono.lab.novell.com/~builder/drop1030.tar.bz2 | tar xj
 
 	DISPLAY=x32-linux-1.mono.lab.novell.com:2.0 make run-tests
 
