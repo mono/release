@@ -1,15 +1,8 @@
 -------------------------------------------------------------------
-Wed Feb 27 19:16:25 MST 2008 - wberrier@novell.com
+Wed Mar 26 00:08:50 CET 2008 - ajorgensen@novell.com
 
 - Update to 0.36.0.5
- -Adjust filelist
- -Don't provide ziplib
-
--------------------------------------------------------------------
-Tue Dec  4 12:16:25 MST 2007 - wberrier@novell.com
-
-- Little cleanup
-- Install some assemblies in the GAC
+- Integrated OpenJDK Class Libraries to replace GNU Classpath
 
 -------------------------------------------------------------------
 Wed Aug  1 16:16:25 CET 2007 - wberrier@novell.com
