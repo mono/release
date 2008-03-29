@@ -91,7 +91,11 @@ POSTBUILD_STEP4 () {
 
 POSTBUILD_STEP_NAME5="test"
 POSTBUILD_STEP5 () {
+	wget http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
+	rpm -U ndesk-dbus.rpm 
 	curl -s http://build.mono.lab.novell.com/~builder/drop1030.tar.bz2 | tar xj
+	./configure
+	make
 
 	DISPLAY=x32-linux-1.mono.lab.novell.com:2.0 make run-tests
 
