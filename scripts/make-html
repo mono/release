@@ -3,6 +3,12 @@ cd /var/www/mono-website/go-mono/daily
 #./latest monolite- .tar.gz
 #./latest monocharge- .tar.gz
 
+# Only keep 100 days of files
+keep="100"
+(../../release/rpmvercmp/rpmvercmp  mono-*       | tail -n$keep ; ../../release/rpmvercmp/rpmvercmp  mono-*        ) | sort -r | uniq -u | grep -v latest | xargs rm -f
+(../../release/rpmvercmp/rpmvercmp  monolite-*   | tail -n$keep ; ../../release/rpmvercmp/rpmvercmp  monolite-*    ) | sort -r | uniq -u | grep -v latest | xargs rm -f
+(../../release/rpmvercmp/rpmvercmp  monocharge-* | tail -n$keep ; ../../release/rpmvercmp/rpmvercmp  monocharge-*  ) | sort -r | uniq -u | grep -v latest | xargs rm -f
+
 # Use rpm comparison instead (otherwise, the above ./latest puts 1.1.10 before 1.1.9)
 latest_mono=`../../release/rpmvercmp/rpmvercmp  mono-* | tail -n1`
 latest_monolite=`../../release/rpmvercmp/rpmvercmp  monolite-* | tail -n1`
