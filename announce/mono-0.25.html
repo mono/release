@@ -1,0 +1,384 @@
+<html>
+<head><title>Mono 0.25 Release</title>
+<style type="text/css">
+  body {
+       background-color: #dddddd;
+       margin-left: 20%;
+       margin-right: 20%;
+       margin-top: 40pt;
+  }
+
+  h3 {
+  margin-left: -5%
+  }
+	
+  h4 {
+  margin-left: -2.5%
+  }
+</style>
+</head>
+<body>
+
+<h3>Mono 0.25 Release</h3>
+		
+<p>Hello everyone,</p>
+
+	<p>A new release of the <a
+	href="http://www.go-mono.com">Mono</a> runtime and SDK is
+	available for UNIX and Windows.  Packages for various
+	distributions are also available from our download page.</p>
+
+	<p>This is a delicious release of Mono: so many new things have
+	been improved, implemented, fixed, and tuned from the last
+	release that it is hard to not be excited about it.</p>
+
+	<p>Our contract with SourceGear has had a big impact in Mono.
+	The team at Ximian has been working on three areas to pass the
+	rigorous tests provided by the SourceGear team:</p>
+
+	<ul>
+
+		<li>
+		  <b>SOAP Web Services client implementation.</b>
+
+		  <p>This includes both the SOAP support classes as well
+		  as a complete rewrite of the XmlSerializer by Lluis.</p>
+	 	</li>
+
+		<li><b>Scalability</b>
+
+		  <p>The SourceGear Vault software and its regression
+		  test suite require a much better implementation of
+		  our HTTP client so we have rewritten it completely
+		  for scalability.</p>
+
+		<li> <b>Robustness</b>
+
+		  <p>Plenty of changes for robustness and tests for
+		  stability were added.  The new io-layer changes from
+		  Dick remove the handle limits that we had in the
+		  past. </p>
+	</ul>
+
+	<p>With this release we are able to run their Vault command line
+	software out of the box. </p>
+
+	<p>The MonoDoc tool which includes API documentation for both
+	.NET classes, Gtk# has been updated to include the contents of
+	the Mono tutorial (thanks to Lee and Johannes for their work
+	on the provider).</p>
+
+<h3>1. Availability</h3>
+
+	<p>Binaries for various platforms is available from our web
+        site from the <a
+        href="http://www.go-mono.com/download.html">download</a>
+        section:
+
+	<ul> <a
+        href="http://www.go-mono.com/download.html">http://www.go-mono.com/download.html</a>
+	</ul>
+	
+        <p>Source code for Mono, MCS, and XSP is also available
+        from our web site</p>
+
+	<ul>
+		<li>MCS package (Class Libraries, C# and VB.NET compiler and managed tools):<br>
+
+			<a href="http://www.go-mono.com/archive/mcs-0.25.tar.gz">http://www.go-mono.com/archive/mcs-0.25.tar.gz</a>
+
+		<li>Mono package (Runtime engine, JIT compiler,
+		pre-compiled compiler and class libraries):<br>
+
+			<a
+        href="http://www.go-mono.com/archive/mono-0.25.tar.gz">http://www.go-mono.com/archive/mono-0.25.tar.gz</a>
+
+		<li>Mono Documentation Browser (GUI and command line),
+	which includes also the Mono tutorial:<br>
+	
+			<a
+        href="http://www.go-mono.com/archive/monodoc-0.5.tar.gz">http://www.go-mono.com/archive/monodoc-0.5.tar.gz</a>
+	
+
+	 </ul>
+
+<h3>2. Contributors </h3>
+
+	Carlos Alberto Cortes, Jean-Marc André, Jaime Anguiano, Joel Basson,
+	Martin Baulig, Tim Coleman, Mark Crichton, Miguel de Icaza, Nick
+	Drochak, Hector E. Gomez Morales, Atsushi Enomoto, Francisco
+	Figueiredo, Piers Haken, Jackson Harper, Dennis Hayes, Rachel Hestilow,
+	Mike Kestner, John Luke, Duncan Mak, Lee Mallabone, Pedro Martinez,
+	Ben Maurer, Dietmar Maurer, Paolo Molaro, Daniel Morgan, Cesar Octavio
+	Lopez Natare, Ville Palo, Gonzalo Paniagua, Alexandre Pigolkine, Dick
+	Porter, Sebastien Pouliot, Ravi Pratap, Marco Ridoni, Johannes Roith,
+	Aleksey Ryabchuk, Lluis Sanchez, Joshua Tauberer, Rafael Teixeira,
+	Gaurav Vaish, Philip Van Hoof, Zoltan Varga Martin Willemoes Hanse,
+	Peter Williams.
+
+<h3>3. Features</h3>
+
+	<p>This summary does not make justice to the hard work that
+	has gone into this release, so this is just a high-level
+	overview.</p>
+
+<h4>Java</h4>
+
+	<p>This release can run IKVM (<a
+	href="http://www.ikvm.net">http://www.ikvm.net</a>) out of the
+	box, and it can also run Eclipse with the add-on found at:
+	<a href="http://www.nexus.hu/vargaz">http://www.nexus.hu/vargaz</a></p>
+
+<h4>IL Assembler</h4>
+
+	<p>Jackson has made a tremendous amount of work on the Mono IL
+	assembler.  All the major features in the assembler are now
+	complete.</p>
+
+	<p>The big missing pieces now are: debugging support, marshalling
+	support, better error messages and generics support and of
+	course bug fixing.</p>
+
+<h4> Security Improvements</h4>
+
+	<p>Sebastien Pouliot reports the following changes since
+	0.24</p>
+
+	<ul>
+
+		<li>Changed System.Random to use a better implementation
+		(algorithm from Knuth) (Ben).
+
+		<li>Updated most class definitions for framework 1.1
+		compatibility.
+
+		<li>Fixed PKCS1MaskGenerationMethod to implement PKCS#1
+		MGF1 (MS implementation is broken) which corrected our
+		support for OAEP padding.
+
+		<li>More generic PKCS#1 handling so RSA can sign any hash
+		algorithm (defined in machine.config) which is far
+		more flexible than the current .NET (limited to SHA1
+		and MD5).
+
+		<li>Implemented CRT (Chinese Remainder Theorem) for MUCH
+		faster use of the RSA private key (decryption and
+		signature) with Ben's help.
+
+		<li>X509Certificate supports for CryptoAPI handles in constructor.
+
+		<li>Released GUI certificate viewer for both SWF and GTK#
+		(not yet part of the normal build).
+
+	</ul>
+
+<h4>System.Drawing</h4>
+
+	<p>System.Drawing has support for multiple-backends; Alexandre
+	Pigolkine has added a new backend based on Xr (<a
+	href="http://xr.xwin.org">http://xr.xwin.org</a>) to the
+	repository.</p>
+
+	<p>This backend is particularly interesting, because Xr
+	implements the PDF imaging system, which is exactly what is
+	required to implement all the features in System.Drawing on
+	multiple platforms.</p>
+
+	<p>Today we have three implementations of System.Drawing: XrImpl,
+	Win32Impl and GTKImpl.  XrImpl being the one we will use on
+	UNIX systems on the long run.   </p>
+
+	<p>Codecs for BMP and JPEG were added (they use directly the
+	underlying system libraries).</p>
+
+<h4>System.Windows.Forms</h4>
+
+	<p>Aleksey Ryabchuk continues to implement plenty of controls on
+	the Win32/WineLib based implementation of it as well as
+	improving focus, keyboard navigation, common dialog boxes and
+	layout computation.</p>
+
+	<p>Joel Basson and Philip Van Hoof continued to improve the
+	Gtk-based port of Windows.Forms.</p>
+
+<h4>XmlSerializer</h4>
+
+	<p>Lluis worked on a new implementation of the XmlSerialization
+	classes in record time.  The XmlSerializer is the foundation
+	for the Soap web services and is also one of the neatest
+	features in the .NET Framework.</p>
+
+	<p>It is possibly the best way of dealing with XML documents that
+	I have found so far, and I am kept wondering, why did I bother
+	processing XML in any other way before.</p>
+
+<h4>Web Services</h4>
+
+ 	<p>The Web services classes support both RPC and Document,
+	processing as well as Literal and Encoded mechanisms.  We have
+	only implemented the client side so far, but most of the
+	infrastructure is in place for authoring the server-side web
+	services. </p>
+
+	<p>Erik has written the beginning of our WSDL compiler, but this
+	compiler has not been checked into the repository yet, so
+	today you need to compile your WSDL files using the Microsoft
+	framework tools.</p>
+
+	<p>Gonzalo rewrote our Http client to conform to HTTP 1.1, and
+	support all the features in the .NET class library.</p>
+
+<h4>Remoting: Soap Formatter</h4>
+
+	<p>The .NET Framework supports also a Remoting-based SOAP
+	implementation.  Jean-Marc ANDRE has contributed a new
+	implementation of
+	System.Runtime.Serialization.Formatters.Soap</p>
+
+<h4>XSLT Extension Objects</h4>
+
+	<p>Joshua Tauberer has written extension object support for XSLT;
+	these are used extensively by the new Monodoc (which will be
+	released shortly after Mono 0.25).</p>
+
+<h4>XML Library.</h4>
+
+        <p>Atsushi Eno continued to improve our XML support and was
+	joined by Ben Maurer in optimizing the XML class libraries.
+	We now allocate about one fifth as much memory while having a 20%
+        speed gain.</p>
+
+<h4>Pluggable Profiling Interface</h4>
+
+	<p>Paolo has made the profiling code modular.</p>
+
+	<p>The user can provide new modules to perform profiling-like
+	operations on methods at runtime (see documentation).</p>
+
+	<p>The existing profiler has been turned into a module on its
+	own, and we are also shipping a sample code-coverage
+	instrumentation tool.</p>
+
+	<p>This interface will be of particular interest to anyone
+	building advanced tool, or who needs special tracing and
+	debugging facilities in the runtime.</p>
+
+<h4>Custom Marshallers</h4>
+
+	<p>We now support Custom Marshallers.  This allows fine-grained
+	control over the marshalling and de-marshalling of values
+	during P/Invoke.  If the default marshalling schemes provided
+	by Mono are not exactly what you need, you can now manually
+	tune the marshalling to be anything you can think of.</p>
+
+<h4> JIT Performance and Runtime Enhancements</h4>
+
+ 	<p>Plenty of exciting low-level development, but the high
+	level overview is: faster JITing and faster code generated.</p>
+
+	<p>Paolo and Dietmar added support for tail calls and
+	thread-static variables and faster type checking.</p>
+
+	<p>Many performance enhancements have been added to the JIT: faster
+ 	handling of valuetypes, faster calls to some internal helper
+ 	functions, faster access to two-dimensional arrays.</p>
+
+	<p>Dick reworked chunks of the IO-layer to remove the hardcoded
+	limits, and fixed multiple bugs on it.</p>
+
+<h4>Testing</h4>
+
+	<p>Our head of testing, Nick Drochak reports that we have managed
+	to get our regression test suite to run fully with .NET 1.1;
+	Ville was responsible for getting many of our System.IO tests
+	running on .NET, those were previously failing.</p>
+
+	<p>Patrik Kalkman responded brilliantly to the teams' call for
+	more unit tests.  He contributed some very nice
+	SingleFormatter and DoubleFormatter tests.</p>
+
+	<p>The good news in summary: we are down to 50 tests failing down
+	from 200+ just a few weeks ago.   There are plenty of tests,
+	but we need even more, here is the current state:</p>
+
+	<ul>
+		<br>corlib: 1855 tests
+		<br>Microsoft.VisualBasic: 41 tests
+		<br>Mono.Security.Win32: 25 tests
+		<br>Mono.Security: 27 tests
+		<br>System: 134 tests
+		<br>System.Configuration.Install: 1 tests
+		<br>System.Data: 503 tests
+		<br>System.Security: 101 tests
+		<br>System.Web.Services: 5 tests
+		<br>System.XML: 423 tests
+	</ul>
+
+	<p>It would be nice to use Paolo's new profiling code together
+	with NUnit tests to find out how much of the API we are
+	currently exercising.</p>
+
+<h4>Optimizations</h4>
+
+	<p>Nick Drochak, who typically is a C# developer has now gone
+	into the low-level code optimization world, and implemented
+	the optimization to improve the following pattern:</p>
+
+	<tt>
+		(long) uinta * (long) uintb
+	</tt>
+
+	<p>That pattern is used all over our cryptography classes, and
+	has increased the speed of them, and got a 20% performance
+	increase on the regression test suite for the integer code.</p>
+
+<H4>Mono Basic Compiler</h4>
+
+	<p>Marco has been very busy with the compiler: Plenty of bug
+	fixes in the compiler: methods without arguments do not need
+	parentheses; Various operators fixed; Endregion fixes; Late
+	binding support; Multi-line statements;  Redim.</p>
+
+	<p>Rafael fixed the Mono.GetOptions and improved some bits of the
+	compiler.</p>
+
+<h4>JScript</h4>
+
+	<p>Cesar has checked in the initial code to perform semantic
+	analysis on the JScript compiler</p>
+
+<h4>System.Data and System.Web Updates</h4>
+
+	<p>ADO.NET and ASP.NET got fixes from Ville Palo and Gonzalo:
+	many more regression tests, many fixes, and many
+	improvements.  These benefit XSP directly.</p>
+
+<h4>Gtk# bundle</h4>
+
+	<p>This release from Ximian includes Gtk# packages for a couple
+	of distributions.</P>
+
+<h4>Documentation</h4>
+
+	<p>This release also ships with MonoDoc.  MonoDoc has a few new
+	features: Joshua has redone our ECMA provider, so the
+	documentation is nicer, it has more features, and all the
+	links finally work.</p>
+	
+	<p>Lee and Johannes worked to get us a new provider for
+	MonoDoc: this new provider integrates the <a
+	href="http://www.go-mono.com/tutorial">Mono Tutorial</a> into
+	the documentation browser.</p>
+
+	<p>We need help continuing our Gtk# documentation effort, the
+	.NET documentation effort, and finally improving our tutorial
+	effort as well.  If you are interested, check the
+	mono-docs-list@ximian.com mailing list.</p>
+
+
+<h4>Bug Fixes</H4>
+
+	<p>And of course, plenty of bug fixes everywhere: class
+	libraries, compilers, tools, documentation, runtime,
+	and assembler.
+
