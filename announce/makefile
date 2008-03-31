@@ -11,7 +11,6 @@ push:
 	scp mono-1.2.2.html mono-web@www.go-mono.com:go-mono/archive/1.2.2/index.html
 	scp mono-1.2.1.html mono-web@www.go-mono.com:go-mono/archive/1.2.1/index.html
 	scp mono-1.2.html mono-web@www.go-mono.com:go-mono/archive/1.2/index.html
-	scp mono-1.1.19.html mono-web@www.go-mono.com:go-mono/archive/1.1.19/index.html
 	scp mono-1.1.18.html mono-web@www.go-mono.com:go-mono/archive/1.1.18/index.html
 	scp mono-1.1.17.2.html mono-web@www.go-mono.com:go-mono/archive/1.1.17.2/index.html
 	scp mono-1.1.17.1.html mono-web@www.go-mono.com:go-mono/archive/1.1.17.1/index.html
