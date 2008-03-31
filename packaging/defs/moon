@@ -97,7 +97,9 @@ POSTBUILD_STEP5 () {
 	./configure
 	make
 
+	DBUS=$(dbus-daemon --session --fork --print-pid)
 	DISPLAY=x32-linux-1.mono.lab.novell.com:2.0 make run-tests
+	kill $DBUS
 
 	target=$build_location/steps/test
 	mv html_report $target
