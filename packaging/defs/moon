@@ -94,12 +94,13 @@ POSTBUILD_STEP5 () {
 	wget http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
 	sudo rpm -U ndesk-dbus.rpm 
 	curl -s http://build.mono.lab.novell.com/~builder/drop1030.tar.bz2 | tar xj
+	make distclean
 	./configure
 	make
 
-	DBUS=$(dbus-daemon --session --fork --print-pid)
+	eval $(dbus-launch)
 	DISPLAY=x32-linux-1.mono.lab.novell.com:2.0 make run-tests
-	kill $DBUS
+	kill $DBUS_SESSION_BUS_PID
 
 	target=$build_location/steps/test
 	mv html_report $target
