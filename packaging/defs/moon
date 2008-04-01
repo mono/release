@@ -104,5 +104,5 @@ POSTBUILD_STEP5 () {
 	kill $DBUS_SESSION_BUS_PID
 
 	target=$build_location/steps/test
-	mv html_report $target
+	mv test/html_report $target
 }
