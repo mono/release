@@ -98,7 +98,7 @@ POSTBUILD_STEP5 () {
 	./configure
 	make
 
-	eval $(dbus-launch)
+	eval $(dbus-launch --auto-syntax)
 	DISPLAY=x32-linux-1.mono.lab.novell.com:2.0 make run-tests
 	kill $DBUS_SESSION_BUS_PID
 
