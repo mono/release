@@ -13,6 +13,7 @@ MONO_DEPS=(
 	mono
 	olive
 	monodoc
+	xsp
 )
 
 MONO_RECOMMEND_DEPS=(
