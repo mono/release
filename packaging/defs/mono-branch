@@ -1,0 +1,557 @@
+web_index=0
+
+#USE_PATCHES=1
+
+# NOTE: don't ever do release builds from this config!!
+#  It is only meant to run the test suites on the branch
+
+BUILD_HOSTS=(
+	debian-4-arm
+	debian-4-sparc
+	macos-10-ppc
+	macos-10-x86
+	sles-9-i586
+	sles-9-x86_64
+	sles-9-ia64
+	sles-9-ppc
+	sles-9-s390
+	sles-9-s390x
+	sunos-8-sparc
+	sunos-10-sparc
+	sunos-10-x86
+	win-4-i386
+)
+
+USE_HOSTS=(
+	debian-4-arm
+	debian-4-sparc
+	macos-10-ppc
+	macos-10-x86
+	rhel-4-i386
+	sles-9-i586
+	sles-9-ia64
+	sles-9-ppc
+	sles-9-s390
+	sles-9-s390x
+	sles-9-x86_64
+	sunos-8-sparc
+	sunos-10-sparc
+	sunos-10-x86
+	sles-10-ia64
+	sles-10-s390x
+	suse-101-i586
+	suse-101-ppc
+	suse-101-x86_64
+	suse-102-i586
+	suse-102-ppc
+	suse-102-x86_64
+	suse-103-i586
+	suse-103-ppc
+	suse-103-x86_64
+	win-4-i386
+)
+
+MONO_DEPS=(
+)
+
+# libgdiplus is here for System.Drawing tests and because mono-core now requires libgdiplus.
+# But, since it's 'recommended', it won't fail for windows
+MONO_RECOMMEND_DEPS=(
+	libgdiplus
+)
+
+# Since it's a source dep, it won't be installed on the machine during the build step, only for
+#  tarball creation
+#  (mono-core depends on libgdiplus)
+MONO_SOURCE_DEPS=(
+	mono
+	libgdiplus
+)
+
+# Always remove these packs before building or creating tarball (covers corner cases to not have mono installed when building)
+# (removing libgdiplus will remove mono-core and the rest of the chain, but mono-core is in this list since mono-core didn't
+#  always depend on libgdiplus)
+PACKS_TO_REMOVE=(
+	libgdiplus0
+	libgdiplus
+	mono-core
+)
+
+win_4_i386_ZIP_RUNTIME_DEPS=(
+	http://primates.ximian.com/~wberrier/windows-installer/ms_gdiplus/3102.1360/gdiplus.exe
+)
+
+## format: <$DISTRO>_ZIP_DEPS
+# Note: $DISTRO must have the hyphens converted to underscores
+win_4_i386_ZIP_DEPS=(
+
+	http://ftp.gtk.org/pub/glib/2.12/win32/glib-2.12.4.zip
+	http://ftp.gtk.org/pub/glib/2.12/win32/glib-dev-2.12.4.zip
+	http://ftp.gtk.org/pub/glib/2.12/win32/dependencies/gettext-0.14.5.zip
+	http://ftp.gtk.org/pub/glib/2.12/win32/dependencies/gettext-dev-0.14.5.zip
+	http://ftp.gtk.org/pub/glib/2.12/win32/dependencies/libiconv-1.9.1.bin.woe32.zip
+
+	# This pkg-config expects win32 names... not cygwin names...
+	#ftp://ftp.gtk.org/pub/gtk/v2.8/win32/dependencies/pkg-config-0.20.zip
+	http://www.gimp.org/~tml/gimp/win32/pkgconfig-0.15.zip
+
+	# zlib used to be in gtk-sharp deps, move to mono so libMonoPosixHelper
+	#  can use it (#79267)
+        # for libxml2 and other image deps
+        http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-bin.zip
+        http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-lib.zip
+
+)
+
+sunos_8_sparc_ZIP_DEPS=(
+
+	# Should we use blastwave instead?  they follow more package standards than smc does... (gmake, gtar, gm4, etc...)
+
+	# Sunfreeware packages
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libgcc-3.3-sol8-sparc-local.gz
+	# Have to use this one because above is not under $prefix/lib
+	# TODO: This packages doesn't have symbolic links, is this ok?
+	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libgcc-3.3-0-sunos8.sparc.zip
+
+	# 2.6.2 glib is missing a header file (glibconfig.h)
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/glib-2.6.2-sol8-sparc-local.gz
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/glib-2.2.3-sol8-sparc-local.gz 
+	# We need glib 2.4 or higher for the icall [un]setenv
+	http://primates.ximian.com/~wberrier/sunos/deps/novell/glib-2.8.3-0.sunos8.novell.sparc.zip
+
+	# Gettext needs expat
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/gettext-0.14.1-sol8-sparc-local.gz
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/expat-1.95.5-sol8-sparc-local.gz
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libiconv-1.8-sol8-sparc-local.gz
+
+	# Most packages need this
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libintl-3.4.0-sol8-sparc-local.gz 
+
+	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/pkgconfig-0.15.0-sol8-sparc-local.gz
+
+	# Random generator for crypto
+	# The other option is to require: a sun patch (http://www.cosy.sbg.ac.at/~andi/SUNrand/)
+	# For sunos8sparc, it's patch 112438
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/egd-0.8-sol8-sparc-local.gz
+	# Egd won't work here... users must use the patch
+
+	# For testing...
+	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/gdb-6.0-sol8-sparc-local.gz
+)
+
+macos_10_ppc_ZIP_DEPS=(
+	# See http://primates.ximian.com/~wberrier/macos/deps/README
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.14.1-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.22-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.16.1-0.macos10.novell.ppc.zip
+)
+
+macos_10_x86_ZIP_DEPS=(
+	# See http://primates.ximian.com/~wberrier/macos/deps/README
+	http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.14.1-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.22-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.16.1-0.macos10.novell.x86.zip
+)
+
+sunos_8_sparc_ZIP_BUILD () {
+	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
+
+	# Only if a non-gnu m4 is in the path
+	M4=/usr/local/bin/m4
+	export M4
+
+	# Do this to make sure libgcc is found.  Won't be needed when we install libgcc into build_deps
+	#export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+	# Use /opt/mono for prefix.  Even though env vars can be used for relocation, this will help
+	./configure --prefix=/opt/mono --with-moonlight=yes --with-ikvm=yes || exit 1
+	make || exit 1
+
+	rm -Rf /tmp/temp_install
+	make install DESTDIR=/tmp/temp_install || exit 1
+
+	# Do this so all the zip files have the same base, and we can lay them back here later
+	mkdir -p /tmp/install
+	cd /tmp/temp_install/opt/mono
+	mv * /tmp/install
+
+}
+
+sunos_10_ZIP_BUILD () {
+	# Installed the following packages from solaris cds: python, wget, gmake, gm4, bison, gccruntime, gcc
+	#  From this webpage: http://www.sunfreeware.com/faq.html#q5: SUNWbtool, SUNWsprot, SUNWhea, SUNWarc, SUNWlibm, SUNWlibms, SUNWdfbh, SUNWcg6h, SUNWxwinc, SUNWolinc, SUNWxglh
+	# also from the cds: gnome-common-devel, gnome-common-devel-share, SUNWperl-xml-parser, SUNWopenjade, opensp, SUNWgnome-base-libs-devel
+	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
+	# Only if a non-gnu m4 is in the path
+	M4=/usr/sfw/bin/gm4
+	MAKE=/usr/sfw/bin/gmake
+	export M4 MAKE
+
+	# Change offsize from 64 to 32 in configure
+	# Removed -mt option from gthread .pc file
+	
+	./configure --prefix=/opt/mono --with-moonlight=yes --with-ikvm=yes
+	gmake || exit 1
+
+	rm -Rf $build_location/temp_install
+	gmake install DESTDIR=$build_location/temp_install || exit 1
+
+	# Do this so all the zip files have the same base, and we can lay them back here later
+	mkdir /tmp/install
+	cd $build_location/temp_install/opt/mono
+	mv * /tmp/install
+
+}
+
+win_4_i386_ZIP_BUILD () {
+
+	./configure --prefix=/tmp/install --with-moonlight=yes
+
+	make || exit 1
+	make install || exit 1
+}
+
+macos_10_ZIP_BUILD () {
+
+	MONO_PREFIX=/Library/Frameworks/Mono.framework/Versions/$version
+
+	# This really should go in the autotooled build... ?
+	#Create gacutil config files specific to OS X
+	# New approach (site wide changes instead of for assemblies)
+	# The X11 dllmap needs to be a full path
+
+	# Both gdiplus.dll and gdiplus are dllimported, provide both
+	 #  Add both
+ 	python -c 'fd = open("data/config.in", "r+")
+text = fd.read()
+text = text.replace("libMonoPosixHelper", "/tmp/build_deps/lib/libMonoPosixHelper")
+text = text.replace("@X11@", "/usr/X11R6/lib/libX11.dylib")
+
+text = text.replace("</configuration>", """\t<dllmap dll="gdiplus.dll" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+\t<dllmap dll="gdiplus" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+</configuration>""")
+fd.seek(0)
+fd.write(text)
+fd.close()'
+
+	# Need a version here...
+	./configure --prefix=$MONO_PREFIX --with-moonlight=yes --with-ikvm=yes || exit 1
+
+	make || exit 1
+
+	# It appears that xsp doesn't use /etc/mono/config, so still provide 
+	#  these mappings with the assemblies like we used to
+	cat <<EOF > mcs/class/lib/default/System.Drawing.dll.config
+<configuration>
+        <dllmap dll="gdiplus" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+        <dllmap dll="gdiplus.dll" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+</configuration>
+EOF
+	cp mcs/class/lib/default/System.Drawing.dll.config mcs/class/lib/net_2_0/
+
+
+	cat <<EOF > mcs/class/lib/default/System.Windows.Forms.dll.config
+<configuration>
+        <dllmap dll="gdiplus" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+        <dllmap dll="gdiplus.dll" target="/tmp/build_deps/lib/libgdiplus.dylib" />
+        <dllmap dll="libX11" target="/usr/X11R6/lib/libX11.dylib" />
+</configuration>
+EOF
+	cp mcs/class/lib/default/System.Windows.Forms.dll.config mcs/class/lib/net_2_0/
+
+
+	cat<<EOF > mcs/class/lib/default/Mono.Posix.dll.config
+<configuration>
+        <dllmap dll="MonoPosixHelper" target="/tmp/build_deps/lib/libMonoPosixHelper.dylib"/>
+</configuration>
+EOF
+	cp mcs/class/lib/default/Mono.Posix.dll.config mcs/class/lib/net_2_0/
+
+
+	rm -Rf /tmp/temp_install
+	make install DESTDIR=/tmp/temp_install || exit 1
+
+	# Do this so all the zip files have the same base, and we can lay them back here later
+	mkdir -p /tmp/install
+	cd /tmp/temp_install/Library/Frameworks/Mono.framework/Versions/$version
+	mv * /tmp/install
+
+}
+
+debian_ZIP_BUILD () {
+
+	./configure --prefix=/tmp/install --with-moonlight=yes --with-ikvm=yes
+
+	make || exit 1
+	make install || exit 1
+}
+
+get_destroot () {
+	# rh9 rpms can't be used on sles-8-i386
+	if test x$DISTRO = xsles-8-i386 ; then
+		DEST_ROOT=$DISTRO
+	elif test x$USE_ZIP_PKG != x  ; then
+		DEST_ROOT=$DISTRO
+	else
+		DEST_ROOT=$ARCH
+	fi
+}
+
+HEAD_PATH=(
+	branches/mono-1-9/mono
+	branches/mono-1-9/mcs
+)
+
+RELEASE_PATH=(
+	tags/mono-[[version]]/mono
+	tags/mono-[[version]]/mcs
+)
+
+make_dist () {
+	. /etc/profile
+	./autogen.sh
+	#if [ $HEAD_or_RELEASE == "HEAD" ] ; then
+        #        make dist-zip MCS=mcs RESGEN=resgen
+        #else
+                make dist-bzip2 MCS=mcs RESGEN=resgen
+        #fi
+
+}
+
+POSTBUILD_STEP_NAME1="test-runtime"
+POSTBUILD_STEP1 () {
+	cd mono/tests
+	$make_path -k check
+}
+
+POSTBUILD_STEP_NAME2="test-mini"
+POSTBUILD_STEP2 () {
+	cd mono/mini
+	$make_path -k check
+}
+
+POSTBUILD_STEP_NAME3="test-aot"
+POSTBUILD_STEP3 () {
+	# Only run on linux x86 and x86_64, and now arm
+	if test x$BUILD_OS = xlinux ; then
+		if test x$BUILD_ARCH = x"x86" || test x$BUILD_ARCH = x"x86_64" || test x$BUILD_ARCH = x"arm" ; then
+			cd mono/mini
+			$make_path aotcheck
+			cd ../tests
+			$make_path testaot
+		else
+			echo "Skipping..."
+		fi
+	else
+		echo "Skipping..."
+	fi
+}
+
+POSTBUILD_STEP_NAME4="test-profiles"
+POSTBUILD_STEP4 () {
+	#TEST_HARNESS_VERBOSE=1
+	#export TEST_HARNESS_VERBOSE
+	#echo "Skipping..."
+	cd runtime
+	$make_path -k check
+
+}
+
+# TODO:
+# Separate 1.0 and 2.0 profiles into different steps
+POSTBUILD_STEP_NAME5="test-cas"
+POSTBUILD_STEP5 () {
+	cd mono/tests/cas
+	$make_path -k test
+}
+
+POSTBUILD_STEP_NAME6="test-swf"
+POSTBUILD_STEP6 () {
+	#TEST_HARNESS_VERBOSE=1
+	#export TEST_HARNESS_VERBOSE
+	DISPLAY=x64-linux-2.mono.lab.novell.com:1
+	export DISPLAY
+
+	failure=0
+
+	cd mcs/class/System.Drawing
+	$make_path run-test || failure=1
+	$make_path run-test PROFILE=net_2_0 || failure=1
+
+	cd ../Managed.Windows.Forms
+	$make_path run-test || failure=1
+	$make_path run-test PROFILE=net_2_0 || failure=1
+
+	exit $failure
+
+}
+
+POSTBUILD_STEP_NAME7="test-ondotnet"
+POSTBUILD_STEP7 () {
+	if test x$DISTRO = xwin-4-i386 ; then
+
+		OLD_PATH=$PATH
+
+		SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin"`
+		SDK=`cygpath -a $SDK`
+		export PATH=$SDK:$PATH
+
+		################# Installing nunit in msgac
+		for f in `find mcs/class/lib -name "*nunit*.dll"` ; do
+			gacutil /i $f /f
+		done
+
+		for f in `find mcs/class/lib -name "*nunit*.exe"` ; do
+			gacutil /i $f /f
+		done
+		export PATH=$OLD_PATH
+
+		################# run tests
+		cd mcs
+		$make_path -k run-test-ondotnet
+		$make_path -k run-test-ondotnet PROFILE=net_2_0
+		cd ..
+
+		################# uninstalling from msgac
+		export PATH=$SDK:$PATH
+		for f in `find mcs/class/lib -name "*nunit*.dll"` ; do
+			gacutil /u `basename $f .dll` /f
+		done
+
+		for f in `find mcs/class/lib -name "*nunit*.exe"` ; do
+			gacutil /u `basename $f .exe` /f
+		done
+
+		export PATH=$OLD_PATH
+
+	else
+		echo "Skipping... test only on windows"
+	fi
+}
+
+POSTBUILD_STEP_NAME8="api-diff"
+POSTBUILD_STEP8 () {
+
+	if test x$DISTRO = xsles-9-i586 ; then
+		VERSION=1.1
+	elif test x$DISTRO = xsles-9-x86_64 ; then
+		VERSION=2.0
+	else
+		echo "Class status pages not generated on this platform"
+		exit 0
+	fi
+
+        ASSEMBLIES=(
+                System
+                System.Configuration.Install
+                System.Data
+                System.Data.OracleClient
+                System.Design
+                System.DirectoryServices
+                System.Drawing
+                System.Drawing.Design
+                System.EnterpriseServices
+                System.Management
+                System.Messaging
+                System.Runtime.Remoting
+                System.Runtime.Serialization.Formatters.Soap
+                System.Security
+                System.ServiceProcess
+                System.Web
+                System.Web.Services
+                System.Windows.Forms
+                System.Xml
+                cscompmgd
+                mscorlib
+        )
+
+        case $VERSION in
+        1.1) PROFILE=default ;;
+        2.0) PROFILE=net_2_0 ; ASSEMBLIES=(
+                        ${ASSEMBLIES[@]}
+                        Microsoft.Build.Engine
+                        Microsoft.Build.Framework
+                        Microsoft.Build.Tasks
+                        Microsoft.Build.Utilities
+                        System.Configuration
+                        System.ServiceProcess
+                        System.Transactions
+                ) ;;
+        esac
+
+
+        mkdir status
+        cd status
+
+        wget http://mono.ximian.com/masterinfos/masterinfos-$VERSION.tar.gz
+
+        # todo: wget these out of subversion
+        wget http://primates.ximian.com/~wberrier/class_status/deploy.tar.bz2
+	wget http://anonsvn.mono-project.com/viewcvs/*checkout*/trunk/mcs/tools/corcompare/mono-api.xsl
+
+        tar -zxf masterinfos-$VERSION.tar.gz
+        tar -jxf deploy.tar.bz2
+
+        mkdir infos
+        mkdir src
+
+        echo "<p>Date: `date`</p>" >> deploy/index.html
+        echo "<p>Revision: $version</p>" >> deploy/index.html
+        echo "<ul>" >> deploy/index.html
+
+        export MONO_PATH=../mcs/class/lib/$PROFILE
+        RUNTIME=../runtime/mono-wrapper
+
+        # Output to step-output dir, which will get recursively copied back to the build info
+        # Are these per file, or can multiple namespaces be in a file... ??
+        # (ie: is it ok for this list to be generated dynamically?)
+        for i in  ${ASSEMBLIES[@]} ; do
+                i="../mcs/class/lib/$PROFILE/$i"
+                f=`basename $i .dll`
+
+                # Only generate for the files we have master infos for
+                if [ -e masterinfos/$f.xml ] ; then
+                        echo "building class status page for: $i"
+                        $RUNTIME ../mcs/class/lib/$PROFILE/mono-api-info.exe $i > infos/$f.xml
+                        $RUNTIME ../mcs/tools/corcompare/mono-api-diff.exe masterinfos/$f.xml infos/$f.xml > src/$f.src
+                        $RUNTIME ../mcs/tools/corcompare/transform.exe src/$f.src mono-api.xsl source-name=$f.src > deploy/$f.html
+                        echo "<li><a href=\"$f.html\">$f</a></li>" >> deploy/index.html
+                fi
+        done
+        echo "</ul>" >> deploy/index.html
+
+        target=$build_location/steps/api-diff
+        mkdir -p $target
+        cp -Rf deploy/*  $target
+
+
+}
+
+# This step gets executed after all tests, or after a build failure
+CLEAN_UP () {
+        #echo "Skipping..."
+        ./runtime/mono-wrapper --wapi=semdel
+
+	# Clean up tmp files, but don't fail if they are missing
+	# The /var/tmp is for solaris
+	rm -Rf	/tmp/ipc* 	/var/tmp/ipc*
+	rm -Rf	/tmp/tmp*tmp 	/var/tmp/tmp*tmp
+	rm -Rf	/tmp/*.exe	/var/tmp/*.exe
+
+	# for ia64
+	rm -Rf	/tmp/tmp*tmp.o	/var/tmp/tmp*tmp.o
+
+	# For s390
+	rm -Rf	/tmp/mono_aot_*	/var/tmp/mono_aot_*
+
+	rm -Rf	/tmp/Mono*	/var/tmp/Mono*
+
+	rm -Rf	/tmp/mcs*	/var/tmp/mcs*
+
+	# These tend to get left around on win32... ?
+	if test x$DISTRO = xwin-4-i386 ; then
+		/home/builder/bin/Process.exe   -k mono.exe || true
+	fi
+
+}
+
