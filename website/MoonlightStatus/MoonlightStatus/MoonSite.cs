@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace MoonlightStatus
 {
-	
+	[Serializable]
 	public class MoonSite
         {
                 public string Name;

@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace MoonlightStatus
 {
-	
+	[Serializable]
 	public class MoonIssue
         {
                 private static string bugzilla = "http://bugzilla.novell.com/show_bug.cgi?id=";
