@@ -100,17 +100,32 @@ namespace MoonlightStatus
 		}
 		private void WriteDataToFile(ArrayList list)
 		{
-			FileStream writer = new FileStream(cacheFile,FileMode.Create,FileAccess.Write,FileShare.None);
-			IFormatter formatter = new BinaryFormatter();
-			formatter.Serialize(writer,list);
-			writer.Close();
+			try
+			{
+				FileStream writer = new FileStream(cacheFile,FileMode.Create,FileAccess.Write,FileShare.None);
+				IFormatter formatter = new BinaryFormatter();
+				formatter.Serialize(writer,list);
+				writer.Close();
+			}
+			catch
+			{
+				//don't cache
+			}
 			
 		}
 		private void UpdateTimeStamp(DateTime time)
 		{
-			StreamWriter writer = new StreamWriter(timeStampFile);
-			writer.WriteLine(time.Ticks);
-			writer.Close();
+			try
+			{
+				
+				StreamWriter writer = new StreamWriter(timeStampFile);
+				writer.WriteLine(time.Ticks);
+				writer.Close();
+			}
+			catch
+			{
+			}
+			
 		}
         private string getHeader()
         {
