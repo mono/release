@@ -32,9 +32,39 @@
             </div>
             <div id="column-content">
                 <div id="content">
+               <h1 class="firstHeading">Moonlight 1.0 TestSites</h1>	
                                         <div id="bodyContent">
                                 <!--  BEGIN CONTENT -->
 
+				<p>This is a list of various Silverlight websites that we are using to test Moonlight 1.0, and the current status of each test.
+				To edit this page, modify trunk/moon/demo-status.txt.  Changes will be reflected here within 30 mins.</p> 
+				
+				<p>The rating of each site is a somewhat arbitrary rank of 0-4 based on the functionality and appearance of the site.
+				</p>
+				<br>
+				<table border="1" cellpadding ="0">
+				<tr>
+					 <th width=\"50\">Rating</th><th width=\"100\">Icons</th><th>Description</th></tr>
+				   <tr><td>-1</td><td><img src="http://www.mono-project.com/files/a/aa/Help.png"/></td>
+					<td>Site url is broken or the application is broken on Silverlight</td></tr>
+
+				   <tr><td>0</td><td><img src="http://www.mono-project.com/files/8/8c/Delete.png"/></td>
+					<td>Site has no functionality or crashes Firefox</td></tr>
+
+				   <tr><td>1</td><td><img src="http://www.mono-project.com/files/2/2e/Star.png"/></td>
+					<td>Site has minimal functionality and/or major cosmetic issues.</td></tr>
+
+				   <tr><td>2</td><td><img src="http://www.mono-project.com/files/2/2e/Star.png"/><img src="http://www.mono-project.com/files/2/2e/Star.png"/></td>
+					<td>Site has some functionality and/or cosmetic issues</td></tr>
+
+				   <tr><td>3</td><td><img src="http://www.mono-project.com/files/2/2e/Star.png"/><img src="http://www.mono-project.com/files/2/2e/Star.png"/><img src="http://www.mono-project.com/files/2/2e/Star.png"/></td>
+					<td>Site has most features working and/or has minor cosmetic issues</td></tr>
+
+				   <tr><td>4</td><td><img src="http://www.mono-project.com/files/2/22/Accept.png"/></td>
+					<td>All feature of the site work reliably and has proper appearance</td></tr>
+				</table>
+				<br>
+				<br>
                 <form id="form1" runat="server">
 
                         <div id="MoonContent" runat="server">

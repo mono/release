@@ -19,7 +19,7 @@ namespace MoonlightStatus
 
                 static string star = "<img src=\"http://www.mono-project.com/files/2/2e/Star.png\"/>";
                 static string accept = "<img src=\"http://www.mono-project.com/files/2/22/Accept.png\"/>";
-                static string help ="'<img src=\"http://www.mono-project.com/files/a/aa/Help.png\"/>";
+                static string help ="<img src=\"http://www.mono-project.com/files/a/aa/Help.png\"/>";
                 static string delete = "<img src=\"http://www.mono-project.com/files/8/8c/Delete.png\"/>";
 
 
