@@ -1,0 +1,16 @@
+<Combine name="MoonlightStatus" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="MoonlightStatus" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="MoonlightStatus" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="MoonlightStatus" single="True">
+    <Execute type="None" entry="MoonlightStatus" />
+  </StartMode>
+  <Entries>
+    <Entry filename="MoonlightStatus/MoonlightStatus.mdp" />
+  </Entries>
+</Combine>
