@@ -581,7 +581,7 @@ def get_latest_ver(dir, version="", fail_on_missing=True, version_reg=""):
 
 
 # TODO: Might implement this in python later... ?
-def version_sort(my_list):
+def version_sort_old(my_list):
 	"""returns list that was passed in in a sorted order."""
 
 
@@ -603,6 +603,27 @@ def version_sort(my_list):
 
 	return output.split()
 
+def version_sort(my_list):
+	"""returns list that was passed in in a sorted order.
+
+	Uses the rpmvercmp python extension to speed things up a bit.
+	"""
+
+	sys.path.append('../rpmvercmp')
+	try:
+		import rpmvercmp
+	except:
+		print "Warning, rpmvercmp extension not compiled"
+		cwd = os.getcwd()
+		os.chdir(os.path.dirname(rpmvercmp_path))
+		print "Attempting to fix..."
+		(code, make_output) = launch_process("make clean; make", print_output=debug)
+		os.chdir(cwd)
+		import rpmvercmp
+
+	my_list.sort(rpmvercmp.version_compare)
+
+	return my_list
 
 def remove_list_duplicates(my_list):
 	copy = my_list

@@ -209,7 +209,7 @@ class source_file_repo:
 				info['revisions'].append(revision)
 				info['state'][revision] = state
 
-		info['revisions'].sort()
+		info['revisions'] = utils.version_sort(info['revisions'])
 		info['revisions'].reverse()
 
 		return info
