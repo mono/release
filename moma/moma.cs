@@ -382,6 +382,16 @@ public class Report {
 				}
 				string rest = r.Substring (7);
 
+				if (rest.IndexOf (".Design") != -1){
+					if (rest.IndexOf ("System.ComponentModel.Design") != -1 ||
+					    rest.IndexOf ("System.Web.UI.Design") != -1 ||
+					    rest.IndexOf ("System.Drawing.Design") != -1 ||
+					    rest.IndexOf ("System.Data.Design") != -1 ||
+					    rest.IndexOf ("System.Windows.Forms.Design") != -1)
+						continue;
+					    
+				}
+
 				//
 				// If the API is not registered in the latest
 				// API tables, do not register it, it means it
@@ -586,6 +596,10 @@ public class Report {
 			else
 				Moma.p ("<b>Only P/Invokes pending</b>");
 			Moma.p ("<br>");
+		}
+		if (invalid == 0){
+			Console.WriteLine ("SS: {0} {1} {2} {3} {4} {5}", miss == 0 && niex == 0 ? "GO" : "NG", miss, niex, todo, pinv,
+					   meta["@Email"].IndexOf ("@") != -1);
 		}
 		if (miss != 0)
 			Moma.p ("{0} miss.", miss);

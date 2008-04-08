@@ -1,0 +1,20 @@
+report()
+{
+	echo For: $2
+	# no todo (dolar-5)
+	awk '/^SS/ { num++; t = $3 + $4 + $6; 
+	    	     if ($3 == 0 && $4 == 0 && $6 == 0) work++; 
+	     	     if (t == 1) one++; else { if (t == 2) two++; else {if (t == 3) three++; 
+		     else {if (t == 4) four++; else { if (t == 5) five++; else { if (t < 10) b++; 
+		     else { if (t < 30) c++; else { if (t < 50) d++; else e++; } }} } } } } } 
+
+        END { 
+	    print "    Applications: " num; 
+	    print "    Working out of the box: " work; 
+	    print "    Number of changes needed:"
+	    print "\t1:\t" one "\n\t2:\t" two "\n\t3:\t" three "\n\t4:\t" four "\n\t5:\t" five "\n\t6-10:\t" b "\n\t11-30:\t" c "\n\t31-50:\t" d "\n\t51+:\t " e;}' < $1
+}
+
+report stats "All submissions"
+grep -v False$ stats > contactable
+report contactable "Contactable submissions"
