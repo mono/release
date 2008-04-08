@@ -159,6 +159,8 @@ required_rpms = {
 		vte-devel
 		wget
 		xorg-x11-devel
+		xorg-x11-Xnest
+		xorg-x11-Xvfb
 		yast2
 		yast2-ncurses
 		zip
