@@ -46,6 +46,7 @@ module_dir = os.path.dirname(__file__)
 if module_dir != "": module_dir += os.sep
 rpmvercmp_path = os.path.abspath(module_dir + "../rpmvercmp/rpmvercmp")
 rpm2cpio_py_path = os.path.abspath(module_dir + "rpm2cpio.py")
+rpmvercmp_module_path = os.path.abspath(module_dir + "../rpmvercmp")
 
 debug=0
 KILLED_EXIT_CODE=-42
@@ -608,8 +609,7 @@ def version_sort(my_list):
 
 	Uses the rpmvercmp python extension to speed things up a bit.
 	"""
-
-	sys.path.append('../rpmvercmp')
+	sys.path.append(rpmvercmp_module_path)
 	try:
 		import rpmvercmp
 	except:

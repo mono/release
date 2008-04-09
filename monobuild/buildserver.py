@@ -329,8 +329,7 @@ class sync(threading.Thread):
 				if os.path.exists(tarball_path):
 					for component in os.listdir(tarball_path):
 						component_dir = tarball_path + os.sep + component
-						versions = os.listdir(component_dir)
-						versions.sort()
+						versions = utils.version_sort(os.listdir(component_dir))
 						for j in versions[-self.sync_num_builds:]:
 							dirs.append(os.path.join('monobuild/www/tarball_logs', i, component, j))
 

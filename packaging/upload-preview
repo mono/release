@@ -3,16 +3,16 @@
 BUNDLE="PRE-RELEASE"
 STAGE_DIR="$(pwd)/stage/preview"
 
-TARGET_USER="mono-web"
-TARGET_HOST="mono.ximian.com"
-TARGET_DIR="~/release/monobuild/www/preview"
-TARGET_URL="/monobuild/preview"
+#TARGET_USER="mono-web"
+#TARGET_HOST="mono.ximian.com"
+#TARGET_DIR="~/release/monobuild/www/preview"
+#TARGET_URL="/monobuild/preview"
 
 # For publishing to a local lan in Provo
-#TARGET_USER="root"
-#TARGET_HOST="c100.mono.lab.novell.com"
-#TARGET_DIR="/share/sw/mono-project.org/mono-previews/1.9p6"
-#TARGET_URL="/software/mono-project.org/mono-previews/1.9p6"
+TARGET_USER="root"
+TARGET_HOST="c100.mono.lab.novell.com"
+TARGET_DIR="/share/sw/mono-project.org/mono-previews/1.9.1p1"
+TARGET_URL="/software/mono-project.org/mono-previews/1.9.1p1"
 
 mkdir -p $STAGE_DIR
 
