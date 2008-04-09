@@ -99,8 +99,9 @@ POSTBUILD_STEP5 () {
 	./configure
 	make
 
-	Xvfb -ac -screen 0 1280x1280x24 :1 &
-	Xnest -ac -display :1 -depth 24 -geometry 1280x1280 :2 &
+	Xvfb -ac -nolisten tcp -screen 0 1280x1280x24 :1 &
+	sleep 3
+	Xnest -ac -nolisten tcp -display :1 -depth 24 -geometry 1280x1280 :2 &
 	eval $(dbus-launch --auto-syntax)
 	DISPLAY=:2 make run-tests
 	kill $DBUS_SESSION_BUS_PID
@@ -115,8 +116,9 @@ POSTBUILD_STEP_NAME6="ms-test"
 POSTBUILD_STEP6 () {
 	curl -s http://build.mono.lab.novell.com/~builder/drop1030.tar.bz2 | tar xj
 
-	Xvfb -ac -screen 0 1280x1280x24 :1 &
-	Xnest -ac -display :1 -depth 24 -geometry 1280x1280 :2 &
+	Xvfb -ac -nolisten tcp -screen 0 1280x1280x24 :1 &
+	sleep 3
+	Xnest -ac -nolisten tcp -display :1 -depth 24 -geometry 1280x1280 :2 &
 	eval $(dbus-launch --auto-syntax)
 	DISPLAY=:2 make run-ms-tests
 	kill $DBUS_SESSION_BUS_PID
