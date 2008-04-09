@@ -158,6 +158,7 @@ required_rpms = {
 		vim
 		vte-devel
 		wget
+		xorg-x11
 		xorg-x11-devel
 		xorg-x11-Xnest
 		xorg-x11-Xvfb
