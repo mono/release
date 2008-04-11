@@ -3,16 +3,16 @@
 BUNDLE="PRE-RELEASE"
 STAGE_DIR="$(pwd)/stage/preview"
 
-#TARGET_USER="mono-web"
-#TARGET_HOST="mono.ximian.com"
-#TARGET_DIR="~/release/monobuild/www/preview"
-#TARGET_URL="/monobuild/preview"
+TARGET_USER="mono-web"
+TARGET_HOST="mono.ximian.com"
+TARGET_DIR="~/release/monobuild/www/preview"
+TARGET_URL="/monobuild/preview"
 
-# For publishing to a local lan in Provo
-TARGET_USER="root"
-TARGET_HOST="c100.mono.lab.novell.com"
-TARGET_DIR="/share/sw/mono-project.org/mono-previews/1.9.1p1"
-TARGET_URL="/software/mono-project.org/mono-previews/1.9.1p1"
+## For publishing to a local lan in Provo
+#TARGET_USER="root"
+#TARGET_HOST="c100.mono.lab.novell.com"
+#TARGET_DIR="/share/sw/mono-project.org/mono-previews/1.9.1p2"
+#TARGET_URL="/software/mono-project.org/mono-previews/1.9.1p2"
 
 mkdir -p $STAGE_DIR
 
@@ -25,7 +25,7 @@ cp packaging.css $STAGE_DIR
 #   But this is necessary since clean-downloads.py doesn't know how to handle the symlinked gtk# RELEASE sources
 #    (which will get re-copied with sync-bundle.py)
 # (Hrm... posting this twice actually gives different results because of running clean-downloads.py ...)
-./clean-downloads.py --source_basepath=$STAGE_DIR/sources --package_basepath=$STAGE_DIR/packages RELEASE 1
+./clean-downloads.py --source_basepath=$STAGE_DIR/sources --package_basepath=$STAGE_DIR/packages --archive_basepath=$STAGE_DIR/archive RELEASE 1
 
 ./sync-bundle.py --skip_missing $BUNDLE $STAGE_DIR || exit 1
 
@@ -38,4 +38,6 @@ cp packaging.css $STAGE_DIR
 ssh $TARGET_USER@$TARGET_HOST "mkdir -p $TARGET_DIR"
 cd $STAGE_DIR
 rsync -avzH --delete . $TARGET_USER@$TARGET_HOST:$TARGET_DIR
+
+# TODO: notify x-m-l by mail
 
