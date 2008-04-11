@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Wed Apr  2 16:49:10 MST 2008 - wberrier@suse.de
+
+- Packaging updates to allow building of 2.12.0, and still build
+  older versions (for the build service)
+- Simplify (hopefully) version choosing for each distro
+- Tie differences between gtk# versions to versions and not 
+  distros
+- Update to 2.12.0
+ -Memory and Reference Management Improvements
+ -Gtk.Object destruction enhancements
+ -Revamped the GLib.Object finalization mechanism
+ -Better exception handling
+ -Structure marshaling
+ -GInterface Registration
+
+-------------------------------------------------------------------
 Tue Mar 25 16:49:10 MST 2008 - wberrier@suse.de
 
 - Remove off_t patch now that it's in 2.10.4

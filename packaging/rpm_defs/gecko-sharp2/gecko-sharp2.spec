@@ -42,9 +42,8 @@ BuildRequires:       mozilla-xulrunner
 %endif
 
 %if %suse_version <= 1000
+# needed in order to resolve .config scanning
 BuildRequires:       mozilla
-# not needed with the .config scanning
-#Requires:       mozilla
 %endif
 
 %endif
@@ -60,8 +59,15 @@ BuildRequires:  mozilla
 %if %fedora_version >= 6
 BuildRequires:  firefox
 %endif
+
 %endif
 
+%if 0%{?rhel_version}
+# Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')
+%define env_options export MONO_SHARED_DIR=/tmp
+# Doesn't seem to matter...
+#BuildRequires:  firefox
+%endif
 
 %description
 This package provides Mono bindings for the Gecko engine, through an

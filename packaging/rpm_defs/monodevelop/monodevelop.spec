@@ -2,7 +2,7 @@
 # norootforbuild
 
 Name:           monodevelop
-BuildRequires:  gconf-sharp2 gtk-sharp2-gapi gtksourceview-sharp2 intltool mono-basic mono-devel mono-nunit monodoc-core perl-XML-Parser vte-sharp2 xsp shared-mime-info mono-addins
+BuildRequires:  gconf-sharp2 gtk-sharp2-gapi gtksourceview-sharp2 intltool mono-basic mono-devel mono-nunit monodoc-core perl-XML-Parser xsp shared-mime-info mono-addins
 URL:            http://www.go-mono.com/
 License:        GNU General Public License (GPL)
 Group:          Development/Languages/Other

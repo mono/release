@@ -2,7 +2,7 @@
 # norootforbuild
 
 Name:           mono-tools
-BuildRequires:  gconf-sharp2 gecko-sharp2 gtkhtml-sharp2 mono-devel mono-nunit monodoc-core mono-jscript mono-data-oracle
+BuildRequires:  gconf-sharp2 gecko-sharp2 mono-devel mono-nunit monodoc-core mono-jscript mono-data-oracle
 Version:        1.9
 Release:        0
 License:        GNU General Public License (GPL)
@@ -15,6 +15,13 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %if 0%{?suse_version}
 BuildRequires:	update-desktop-files
+
+%if %suse_version >= 1030
+BuildRequires:	gtkhtml314-sharp
+%else
+BuildRequires:	gtkhtml-sharp2
+%endif
+
 %endif
 
 # Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')
@@ -23,11 +30,19 @@ BuildRequires:	update-desktop-files
 
 # Not sure of the equivalent for fedora...
 %define suse_update_desktop_file true
+
+%if %fedora_version >= 8
+BuildRequires:	gtkhtml314-sharp
+%else
+BuildRequires:	gtkhtml-sharp2
+%endif
+
 %endif
 
 %if 0%{?rhel_version}
 %define env_options export MONO_SHARED_DIR=/tmp
 %define suse_update_desktop_file true
+BuildRequires:	gtkhtml-sharp2
 %endif
 
 

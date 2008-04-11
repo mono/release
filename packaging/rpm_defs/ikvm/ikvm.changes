@@ -1,8 +1,16 @@
 -------------------------------------------------------------------
 Wed Mar 26 00:08:50 CET 2008 - ajorgensen@novell.com
-
+ 
 - Update to 0.36.0.5
-- Integrated OpenJDK Class Libraries to replace GNU Classpath
+ -Integrated OpenJDK Class Libraries to replace GNU Classpath
+-Adjust filelist
+-Don't provide ziplib
+ 
+-------------------------------------------------------------------
+Tue Dec  4 12:16:25 MST 2007 - wberrier@novell.com
+
+- Little cleanup
+- Install some assemblies in the GAC
 
 -------------------------------------------------------------------
 Wed Aug  1 16:16:25 CET 2007 - wberrier@novell.com

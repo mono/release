@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 03 18:25:27 MST 2008 - wberrier@novell.com
+
+- Can now build 2.16 and 2.20 from the same spec
+- Update to 2.20.0
+ -Updated bindings to coincide with gtk# 2.12
+ -Removed bindings: gtkhtml#, rsvg#, and vte#
+
+-------------------------------------------------------------------
 Wed Mar 26 18:25:27 MST 2008 - wberrier@novell.com
 
 - Update to 2.16.1

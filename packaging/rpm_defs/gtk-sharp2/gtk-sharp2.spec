@@ -21,22 +21,27 @@ Patch5:		gnome-sharp-revert_unportable_relocatable.patch
 %define old_version 2.4.3
 %define new_version 2.8.5
 %define new_split_version 2.10.4
-
-%define platform_desktop_split 0
+%define two_twelve_version 2.12.0
 
 #####  suse  ####
 %if 0%{?suse_version}
 
 ## which gtk version ###
-%if %suse_version >= 1010
-%define _version %new_version
-%else
+
+%if %suse_version < 1010
 %define _version %old_version
 %endif
 
-%if %suse_version >= 1020
+%if %suse_version == 1010
+%define _version %new_version
+%endif
+
+%if %suse_version == 1020
 %define _version %new_split_version
-%define platform_desktop_split 1
+%endif
+
+%if %suse_version >= 1030
+%define _version %two_twelve_version
 %endif
 
 # Not needed with rpm .config dep search
@@ -66,11 +71,20 @@ BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel
 %if 0%{?fedora_version}
 %define env_options export MONO_SHARED_DIR=/tmp
 
-%if 0%{?fedora_version} >= 7
-%define _version %new_split_version
-%define platform_desktop_split 1
-%else
+%if 0%{?fedora_version} < 6
 %define _version %new_version
+%endif
+
+%if 0%{?fedora_version} == 6
+%define _version %new_split_version
+%endif
+
+%if 0%{?fedora_version} == 7
+%define _version %new_split_version
+%endif
+
+%if 0%{?fedora_version} >= 8
+%define _version %two_twelve_version
 %endif
 
 # All fedora distros (5 and 6) have the same names, requirements
@@ -85,12 +99,25 @@ BuildRequires: gnome-panel-devel gtkhtml3-devel libgnomeprintui22-devel librsvg2
 %define env_options export MONO_SHARED_DIR=/tmp
 
 %define _version %new_split_version
-%define platform_desktop_split 1
 
 BuildRequires: gnome-panel-devel gtkhtml3-devel libgnomeprintui22-devel librsvg2-devel mono-devel monodoc-core vte-devel
 
 %endif
 #################
+
+##############
+### Options that relate to a version of gtk#, not necessarily a distro
+
+# Define true for 2.10 and 2.12
+#  (Must do this inside of shell... rpm can't handle this expression)
+%define platform_desktop_split %(if test x%_version = x%new_split_version || test x%_version = x%two_twelve_version ; then  echo "1" ; else echo "0" ; fi)
+
+# define true for 2.12.0
+%define include_atk_glue %(if test x%_version = x%two_twelve_version  ; then echo "1" ; else echo "0" ; fi )
+
+###
+##############
+
 
 # Need to put this stuff down here after Version: gets defined
 Version:	%_version
@@ -270,10 +297,19 @@ make
 %makeinstall
 rm $RPM_BUILD_ROOT%{_libdir}/*.*a
 
+# Special handling for new files
+touch %name.files
+# atk glue for now...
+%define atk_glue %{_libdir}/libatksharpglue-2.so
+
+%if 0%{?include_atk_glue}
+echo "%atk_glue" >> %name.files
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f %name.files
 %defattr(-, root, root)
 %{_libdir}/libgdksharpglue-2.so
 %{_libdir}/libgtksharpglue-2.so

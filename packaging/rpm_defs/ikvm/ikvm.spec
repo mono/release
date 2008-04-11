@@ -1,12 +1,3 @@
-#
-# spec file for package ikvm (Version 0.36.0.5)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
-#
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
 
 # norootforbuild
 
@@ -23,7 +14,7 @@ Group:          Development/Tools/Other
 Requires:       mono-ikvm
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 ####  fedora  ####
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # All fedora distros (5 and 6) have the same names, requirements
 # Needed to generate wrapper
 BuildRequires:  which
@@ -110,36 +101,3 @@ rm -rf "$RPM_BUILD_ROOT"
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Wed Mar 26 2008 ajorgensen@novell.com
-- Update to 0.36.0.5
-- Integrated OpenJDK Class Libraries to replace GNU Classpath
-* Wed Aug 01 2007 wberrier@novell.com
-- Update to 0.34.0.2
- -Updated GNU Classpath
- -Java 1.6 updates
- -Several bugfixes
- -class coverage improvements
- -Interface enhancements
-* Wed Apr 11 2007 wberrier@novell.com
-- Add mono dep/req for older distros
-* Thu Apr 05 2007 wberrier@novell.com
-- add unzip to buildrequires (factory in buildservice requires it)
-* Thu Mar 29 2007 coolo@suse.de
-- fix BuildRequires
-* Wed Oct 25 2006 wberrier@suse.de
-- Add mono-devel to BuildRequires so mono rpm deps and requires
-  get generated correctly
-* Wed Aug 02 2006 wberrier@suse.de
-- Update to 0.28.0.0
-- Package from original ikvm distribution instead of using a
-  prepackaged binary dist
-* Wed Jan 25 2006 mls@suse.de
-- converted neededforbuild to BuildRequires
-* Fri Dec 16 2005 wberrier@suse.de
-- Update to 0.22
-* Thu Oct 13 2005 ro@suse.de
-- changed mono-ikvm to mono-core in nfb
-* Sat Oct 08 2005 wberrier@suse.de
-- Updated to 0.20 .  Moved .pc file
-* Fri Aug 05 2005 wberrier@suse.de
-- Initial package

@@ -36,7 +36,7 @@ BuildRequires:  %{old_suse_buildrequires}
 %endif
 
 # Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 %define env_options export MONO_SHARED_DIR=/tmp
 %endif
 

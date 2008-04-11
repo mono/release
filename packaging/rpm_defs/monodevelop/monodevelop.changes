@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr 09 17:11:07 MST 2008 - wberrier@suse.de
+
+- Remove vte-sharp2 from build requires.  It's not needed,
+  and that package doesn't exist anymore.
+
+-------------------------------------------------------------------
 Wed Mar 26 17:11:07 MST 2008 - wberrier@suse.de
 
 - Update to 1.0
