@@ -5,10 +5,13 @@ gecko-sharp
 gecko-sharp2
 gluezilla
 gnome-sharp2
+gnome-sharp220
+gnome-desktop-sharp2
 gtk-sharp
 gtk-sharp2
 gtk-sharp28
 gtk-sharp210
+gtk-sharp212
 gtksourceview-sharp2
 heap-buddy
 ikvm

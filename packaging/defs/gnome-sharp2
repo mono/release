@@ -2,13 +2,12 @@ BUILD_HOSTS=(
 	suse-102-i586
 	suse-102-ppc
 	suse-102-x86_64
-	suse-103-i586
-	suse-103-ppc
-	suse-103-x86_64
 	win-4-i386
 )
 
 web_index=7
+
+version_selection_reg="2\.16\.\d+"
 
 USE_PATCHES=1
 

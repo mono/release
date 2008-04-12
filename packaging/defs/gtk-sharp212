@@ -1,0 +1,51 @@
+def_alias="gtk-sharp2"
+
+web_index=6
+
+version_selection_reg="2\.12\.\d+"
+
+BUILD_HOSTS=(
+	suse-103-i586
+	suse-103-ppc
+	suse-103-x86_64
+)
+
+USE_HOSTS=(${BUILD_HOSTS[@]})
+
+MONO_RECOMMEND_DEPS=(
+	libgdiplus
+)
+
+MONO_DEPS=(
+	mono
+	monodoc
+)
+
+MKTARBALL_HOST="suse-103-x86_64"
+
+get_destroot () {
+	DEST_ROOT=$DISTRO
+}
+
+HEAD_PATH=(
+	trunk/gtk-sharp
+)
+RELEASE_PATH=(
+        tags/gtk-sharp/[[versiondot]]
+)
+
+get_source () {
+        $SVNEXPORT $MONO_ROOT/$SVN_PATHS
+}
+
+update_version_file () {
+	sed -i "s/^\(GTK_SHARP_VERSION\)=.*/\1=$VERSION/" bootstrap-2.12
+}
+
+make_dist () {
+        # This is needed on suse systems with gnome in /opt
+        . /etc/profile
+        ./bootstrap-2.12
+        make dist-bzip2
+}
+

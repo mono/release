@@ -2,15 +2,14 @@ def_alias="gtk-sharp2"
 
 web_index=6
 
+version_selection_reg="2\.10\.\d+"
+
 BUILD_HOSTS=(
 	macos-10-ppc
 	macos-10-x86
 	suse-102-i586
 	suse-102-ppc
 	suse-102-x86_64
-	suse-103-i586
-	suse-103-ppc
-	suse-103-x86_64
 	win-4-i386
 )
 

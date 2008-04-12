@@ -1,0 +1,41 @@
+BUILD_HOSTS=(
+	suse-103-i586
+	suse-103-ppc
+	suse-103-x86_64
+)
+
+web_index=8
+
+MKTARBALL_HOST="suse-103-x86_64"
+
+USE_HOSTS=(${BUILD_HOSTS[@]})
+
+MONO_DEPS=(
+	mono
+	monodoc
+	gtk-sharp212
+	gnome-sharp220
+)
+
+MONO_RECOMMEND_DEPS=(
+	libgdiplus
+)
+
+get_destroot () {
+	DEST_ROOT=$DISTRO
+}
+
+HEAD_PATH=(
+	trunk/gnome-desktop-sharp
+)
+RELEASE_PATH=(
+	tags/gnome-desktop-sharp/[[versiondot]]
+)
+
+make_dist () {
+        # This is needed on suse systems with gnome in /opt
+        . /etc/profile
+	./autogen.sh
+        make dist-bzip2
+}
+
