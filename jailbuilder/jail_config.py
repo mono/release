@@ -288,11 +288,13 @@ required_rpms = {
 		librsvg-devel
 		libtiff-devel
 		libtool
+		libwnck-devel
 		libxslt-devel
 		make
 		makedev
 		mozilla-nspr-devel
 		mozilla-xulrunner181-devel
+		nautilus-cd-burner-devel
 		patch
 		perl-XML-LibXML
 		perl-XML-LibXML-Common
@@ -402,7 +404,7 @@ mknod -m 644 /dev/urandom c  1 9
 """,
 	'suse-103':	"""# vi is messed up:
 rm /bin/vim
-/bin/vim-normal /bin/vim
+ln -s /bin/vim-normal /bin/vim
 """,
 	'fedora-4':	"""Disable gpg keys and set gpgcheck to 0 in /etc/yum.repos.d/*
 MAKEDEV in /dev for random, urandom and null, touch /etc/fstab""",

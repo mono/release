@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import commands
+
+try:
+	(junk, branch_version, tag_version) = sys.argv
+except:
+	print "Usage: ./branch_diff <mono branch version> <mono tag version>"
+	print "  diff all modules in the tag against those in the branch."
+	print "  Places diffs in ./diffs ."
+	sys.exit(1)
+
+branch_version = branch_version.replace(".", "-")
+tag_version = tag_version.replace(".", "-")
+
+status, output = commands.getstatusoutput("svn ls $MSVN/tags/mono-" + tag_version)
+
+if not os.path.exists('diffs'): os.mkdir('diffs')
+
+updated_modules = []
+
+for module in output.split("\n"):
+	#  Call dirname to strip off ending '/'
+	module = os.path.dirname(module)
+	print "Checking for changes in: " + module
+	status, output = commands.getstatusoutput("svn diff $MSVN/tags/mono-%s/%s $MSVN/branches/mono-%s/%s" % (tag_version, module, branch_version, module))
+
+	if output:
+		print "Changes found for: " + module
+		fd = open('diffs/' + module, "w")
+		fd.write(output)
+		fd.close()
+		updated_modules.append(module)
+
+print "Updated modules: " + " ".join(updated_modules)

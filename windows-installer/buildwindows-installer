@@ -155,7 +155,7 @@ if gtk_sharp_version.count('-'):
 
 # Had to remove mono-tools, since the latest requires gtkhtml-sharp2 (which we don't ship on windows), 
 #  and 1.1.11 is crashing with the lib update (probably libglade?)
-selections += [ Selection('monodoc', packages = "monodoc".split() ) ]
+selections += [ Selection('monodoc', packages = "monodoc mono-tools".split() ) ]
 
 # TODO: Why am I distributing gecko-sharp without the GRE?
 # TODO: Also, why am I distributing gnome?.... ? adds some to gtk-sharp 1.0.10

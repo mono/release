@@ -189,7 +189,7 @@ else:
 			# Update svn to the specific revision
 			# svn switch  (will update if the path in the working copy hasn't changed, this ensures have the right path)
 			command = 'cd %s/%s; svn switch %s %s/%s' % (cache_dir, module, rev_arg, MONO_ROOT, path)
-			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1, print_output=1 )
+			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1, print_output=0 )
 			# TODO: exit with retry when ssh/svn errors happen
 			exit_on_error(command, status, output, exit_code=1)
 
