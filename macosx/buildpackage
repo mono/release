@@ -20,7 +20,7 @@ import packaging
 # Which noarch packages to include in the various packages
 packages_to_include = {}
 
-packages_to_include['macos-10-ppc'] = ['libgdiplus', 'mono', 'cocoa-sharp', 'xsp', 'monodoc', 'boo', 'ikvm', 'nant', 'IPCE', 'mono-basic', 'gtk-sharp210', 'mono-addins', 'gtksourceview2-sharp', 'monodevelop' ]
+packages_to_include['macos-10-ppc'] = ['libgdiplus', 'mono', 'cocoa-sharp', 'xsp', 'monodoc', 'boo', 'ikvm', 'nant', 'IPCE', 'mono-basic', 'gtk-sharp212', 'mono-addins', 'gtksourceview2-sharp', 'monodevelop' ]
 
 packages_to_include['macos-10-x86'] = packages_to_include['macos-10-ppc']
 
@@ -159,6 +159,9 @@ conf.buildenv.execute_command("cd %s%s/lib; mv %s ..;  strip -S *.dylib *.a; cd 
 
 # Miguel doesn't want to ship the .a files (but libmono.la ended up being needed to run mkbundle)
 #conf.buildenv.execute_command("cd %s%s/lib; rm -f *.a" % (remote_PKGROOT, prefix) )
+
+# Clean up gtk-docs (shaves ~2 mb off the installer image)
+conf.buildenv.execute_command("cd %s%s/share; rm -Rf gtk-doc" % (remote_PKGROOT, prefix) )
 
 if os.path.exists(temp_dir): shutil.rmtree(temp_dir)
 distutils.dir_util.mkpath(temp_dir)

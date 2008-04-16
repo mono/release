@@ -2,6 +2,7 @@
 
 import sys
 import getopt
+import time
 
 sys.path.append('../pyutils')
 
@@ -31,7 +32,7 @@ if not noclean:
 
 conf.buildenv.copy_to(['do-dep-build', 'dep_defs/' + def_filename, '../pyutils/*.py', 'do-install-zip-pkgs', '../pyutils/rpm2cpio.py', 'conf/' + jail], build_location)
 
-log_obj = logger.Logger(filename="logs/%s.%s.log" % (def_filename, jail))
+log_obj = logger.Logger(filename="logs/%s.%s.%s.log" % (def_filename, jail, time.strftime("%Y%m%d_%H%M%S")), compressed=0)
 code, output = conf.buildenv.execute_command('%s/do-dep-build %s %s %s' % (build_location, jail, def_filename, release), my_logger=log_obj )
 
 if code:

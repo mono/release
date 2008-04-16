@@ -4,6 +4,7 @@ BUILD_HOSTS=(
 	macos-10-x86
 )
 
+# TODO: this will eventually get replaced with gtksourceview2-sharp from gnome-desktop-sharp
 USE_HOSTS=(
 	macos-10-ppc
 	macos-10-x86
@@ -16,7 +17,7 @@ get_destroot () {
 MONO_DEPS=(
 	mono
 	monodoc
-	gtk-sharp210
+	gtk-sharp212
 )
 
 MONO_RECOMMEND_DEPS=(

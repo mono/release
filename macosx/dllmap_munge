@@ -16,10 +16,11 @@ except:
 
 os.chdir(dest_dir)
 
-print "Replace intl and cairo in etc/mono/config"
+print "Replace intl, cairo and sqlite3 in etc/mono/config"
 parameter_map = {}
 parameter_map['libintl.dylib'] = prefix + '/lib/libintl.dylib'
 parameter_map['libcairo.so.2'] = prefix + '/lib/libcairo.2.dylib'
+parameter_map['libsqlite3.0.dylib'] = prefix + '/lib/libsqlite3.0.dylib'
 utils.substitute_parameters_in_file("etc/mono/config", parameter_map)
 
 print "Replace gtk# dllmaps"

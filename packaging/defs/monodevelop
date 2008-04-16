@@ -33,7 +33,7 @@ MONO_RECOMMEND_DEPS=(
 	libgdiplus
 	gtk-sharp2
 	gtk-sharp28
-	gtk-sharp210
+	gtk-sharp212
 	gnome-sharp2
 	gtksourceview-sharp2
 	gtksourceview2-sharp
@@ -91,12 +91,12 @@ macos_10_ppc_ZIP_DEPS=(
 
 # Not sure if rpm and .tar.gz will work... we'll find out
 macos_10_x86_ZIP_RUNTIME_DEPS=(
-	http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/noarch/moma-1.2.6.94332-2.2.noarch.rpm
+	http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/noarch/moma-1.9.96831-3.25.noarch.rpm
 	http://primates.ximian.com/~wberrier/macos/deps/various/app-bundles.tar.gz
 )
 
 macos_10_ppc_ZIP_RUNTIME_DEPS=(
-	http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/noarch/moma-1.2.6.94332-2.2.noarch.rpm
+	http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/noarch/moma-1.9.96831-3.25.noarch.rpm
 	http://primates.ximian.com/~wberrier/macos/deps/various/app-bundles.tar.gz
 )
 

@@ -57,7 +57,6 @@ EOF
 		'post':"""
 			# glib-mkenums is required for pango, maybe others
 			#rm -Rf /tmp/install/bin/*
-			rm -Rf /tmp/install/share/gtk-doc
 			"""
 	},
 	{
@@ -126,27 +125,25 @@ EOF
 	},
 	{
 		'name': 'pixman', 
-		'source': 'http://cairographics.org/snapshots/pixman-0.9.6.tar.gz',
+		'source': 'http://cairographics.org/releases/pixman-0.10.0.tar.gz',
 	},
 	{
 		'name': 'cairo', 
-		#'source': 'http://www.cairographics.org/releases/cairo-1.4.10.tar.gz',
-		'source': 'http://cairographics.org/snapshots/cairo-1.5.8.tar.gz',
+		'source': 'http://cairographics.org/releases/cairo-1.6.4.tar.gz',
 		'build': """
 			PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig FONTCONFIG_CFLAGS=" -I /usr/X11R6/include " FONTCONFIG_LDFLAGS=" -lfontconfig " ./configure --prefix=/tmp/install --enable-quartz --enable-atsui --enable-pdf --disable-xlib
 			make
 			make install
+
+			# This file doesn't get copied because of a bug (filed and fixed upstream).  Copy manually.
+			cp src/cairo-quartz-font.pc /tmp/install/lib/pkgconfig || exit 1
 			""",
-		'post':"""
-			# Remove docs
-			rm -Rf /tmp/install/share
-			"""
 	},
 	#  TODO: There are problems relocating these binaries... is the max header flag not getting passed in?
 	#  Hrm... the flag is getting set... which binary is failing?
 	{
 		'name': 'pango', 
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.19/pango-1.19.0.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.20/pango-1.20.2.tar.bz2',
 		'build': """
 
 			# Hrm... LDFLAGS not getting set for atsui basic... for it (TODO: file bug)
@@ -158,11 +155,11 @@ EOF
 			make
 
 			rm -Rf /tmp/temp_install
-			make install DESTDIR=/tmp/temp_install || exit 1
+			make install DESTDIR=/tmp/temp_install
 
 			# Do this so all the zip files have the same base, and we can lay them back here later
 			mkdir -p /tmp/install
-			cd /tmp/temp_install%s
+			cd /tmp/temp_install%s || exit 1
 			mv * /tmp/install
 			""" % (prefix, prefix),
 	},
@@ -190,11 +187,11 @@ EOF
 			cd -
 			make
 			cp /usr/share/automake-*/mkinstalldirs .
-			make install DESTDIR=/tmp/temp_install || exit 1
+			make install DESTDIR=/tmp/temp_install
 
 			# Do this so all the zip files have the same base, and we can lay them back here later
 			mkdir -p /tmp/install
-			cd /tmp/temp_install%s
+			cd /tmp/temp_install%s || exit 1
 			mv * /tmp/install
 			""" % (prefix, prefix),
 	},
@@ -294,7 +291,9 @@ EOF
 		'name': 'ImageMagick',
 		'version': '6.3.8',
 		# Dah, the url keeps getting updated... without saving the old ones.  (Use previous version?)
-		'source': 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.3.8-5.tar.bz2',
+		#  The source is unmodified, but post a permanent copy
+		#'source': 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.3.8-5.tar.bz2',
+		'source': 'http://primates.ximian.com/~wberrier/macos/sources/ImageMagick-6.3.8-11.tar.bz2',
 		'build':"""
 			./configure --prefix=/tmp/install
 			make
@@ -329,6 +328,25 @@ EOF
 			make install
 		""",
 	},
+	{
+		'name': 'ige-mac-integration',
+		'source': 'http://ftp.imendio.com/pub/imendio/ige-mac-integration/ige-mac-integration-0.6.tar.gz',
+		'build':"""
+			./configure --prefix=/tmp/install
+			make
+			make install
+		""",
+	},
+	{
+		'name': 'sqlite',
+		'source': 'http://www.sqlite.org/sqlite-3.5.7.tar.gz',
+		'build':"""
+			./configure --prefix=/tmp/install --disable-tcl
+			make
+			make install
+		""",
+	},
+
 
 
 ]
