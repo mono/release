@@ -36,7 +36,7 @@ RELEASE_PATH=(
 )
 
 update_version_file () {
-        sed -i "s/\(AM_INIT_AUTOMAKE.*,\\).*)/\\1$VERSION)/" configure.ac
+        sed -i "s/\(AC_INIT(\[.*\], \[\).*\(\])\)/\1$VERSION\2/" configure.ac
 }
 
 # This jail has ffmpeg in it
