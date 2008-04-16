@@ -186,8 +186,7 @@ Authors:
 %_prefix/lib/mono/gac/System.Xml
 %_prefix/lib/mono/1.0/System.Xml.dll
 %_prefix/lib/mono/2.0/System.Xml.dll
-%_prefix/lib/mono/gac/System.Xml.Core
-%_prefix/lib/mono/2.1/System.Xml.Core.dll
+%_prefix/lib/mono/2.1/System.Xml.dll
 %_prefix/lib/mono/gac/System.Xml.Linq
 %_prefix/lib/mono/2.0/System.Xml.Linq.dll
 %_prefix/lib/mono/gac/System
@@ -247,6 +246,8 @@ Authors:
 %_prefix/lib/mono/gac/System.Core
 %_prefix/lib/mono/2.0/System.Core.dll
 %_prefix/lib/mono/2.1/System.Core.dll
+%_prefix/lib/mono/gac/System.Net
+%_prefix/lib/mono/2.1/System.Net.dll
 
 %post
 /sbin/ldconfig
@@ -381,6 +382,9 @@ Authors:
 %_prefix/lib/mono/2.0/System.DirectoryServices.dll
 %_prefix/lib/mono/gac/System.Transactions
 %_prefix/lib/mono/2.0/System.Transactions.dll
+%_prefix/lib/mono/gac/System.Data.DataSetExtensions
+%_prefix/lib/mono/3.5/System.Data.DataSetExtensions.dll
+
 %package -n mono-winforms
 Summary:        Mono's Windows Forms implementation
 Group:          Development/Languages/Mono
@@ -625,6 +629,7 @@ Authors:
 %_prefix/lib/mono/1.0/wsdl.exe*
 %_prefix/lib/mono/2.0/wsdl.exe*
 %_prefix/lib/mono/1.0/xsd.exe*
+%_prefix/lib/mono/2.0/xsd.exe*
 %_prefix/lib/mono/2.0/mconfig.exe*
 # shell wrappers
 %_bindir/disco
@@ -634,6 +639,7 @@ Authors:
 %_bindir/wsdl1
 %_bindir/wsdl2
 %_bindir/xsd
+%_bindir/xsd2
 # man pages
 %_mandir/man1/disco.1.gz
 %_mandir/man1/soapsuds.1.gz
@@ -646,6 +652,7 @@ Authors:
 %config %_sysconfdir/mono/1.0/DefaultWsdlHelpGenerator.aspx
 %config %_sysconfdir/mono/2.0/DefaultWsdlHelpGenerator.aspx
 %config %_sysconfdir/mono/2.0/web.config
+%config %_sysconfdir/mono/2.0/Browsers
 %package -n mono-data-oracle
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
@@ -905,6 +912,8 @@ Authors:
 %_bindir/dtd2xsd
 %_bindir/dtd2rng
 %_bindir/genxs
+%_bindir/genxs1
+%_bindir/genxs2
 %_bindir/httpcfg
 %_bindir/ilasm
 %_bindir/ilasm1
@@ -957,6 +966,7 @@ Authors:
 %_prefix/include/mono-1.0
 %_libdir/libmono-profiler-cov.*
 %_libdir/libmono-profiler-aot.*
+%_libdir/libmono-profiler-logging.*
 %_libdir/pkgconfig/mono.pc
 %_libdir/pkgconfig/dotnet.pc
 %_libdir/pkgconfig/mono-cairo.pc

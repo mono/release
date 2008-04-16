@@ -64,10 +64,10 @@ Authors:
 
 %files
 %defattr(-, root, root)
-%doc AUTHORS COPYING ChangeLog README README.FreeBSD README.build TODO NEWS RELEASE-NOTES*
+%doc AUTHORS COPYING ChangeLog README NEWS
 /usr/bin/mdb
 %{_libdir}/*.so*
-%{_prefix}/lib/mono/1.0/*
+%{_prefix}/lib/mono/2.0/mdb.exe
 %{_prefix}/lib/mono/gac/Mono.Debugger
 %{_prefix}/lib/mono/gac/Mono.Debugger.Cecil
 %{_prefix}/lib/mono/gac/Mono.Debugger.Backend
@@ -94,7 +94,7 @@ rm -f $RPM_BUILD_ROOT%_libdir/libmonodebuggerreadline.*a
 rm -f $RPM_BUILD_ROOT%_libdir/libmonodebuggerserver.*a
 
 %clean
-rm -rf ${RPM_BUILD_ROOT}
+#rm -rf ${RPM_BUILD_ROOT}
 
 %post -p /sbin/ldconfig
 

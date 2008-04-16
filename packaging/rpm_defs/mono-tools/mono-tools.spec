@@ -95,7 +95,7 @@ Authors:
 
 %build
 %{?env_options}
-./configure --prefix=/usr --libdir=/usr/lib --sysconfdir=/etc --mandir=/usr/share/man --infodir=/usr/share/info --localstatedir=/var
+./configure --prefix=/usr --libdir=/usr/lib --sysconfdir=/etc --mandir=/usr/share/man --infodir=/usr/share/info --localstatedir=/var --enable-monowebbrowser
 
 %install
 %{?env_options}
