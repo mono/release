@@ -25,6 +25,12 @@ source <install dir>/bin/setup.sh
 
 Installer changes:
 
+1.9.1-3:
+- Resctrict installation target to user's home dir and
+  /opt/mono for root.  This way it won't override the
+  system Mono in /usr.
+- Move environment setup to post install script.
+
 1.2.3-2:
 - Add postinstall script to find unresolved symbols for 
   native libraries

@@ -1,0 +1,69 @@
+#!/bin/bash
+
+installerdir=$1
+addmonoenv=$2
+
+# Add setup.sh to their environment profile if the user selected it
+if [ $addmonoenv -eq 1 ] ; then
+	added=0
+	for i in $HOME/.profile $HOME/.bash_profile ; do
+		if [ -e $i ] ; then
+			echo "" >> $i
+			echo ". $installerdir/bin/setup.sh" >> $i
+			echo "Successfully added environment (setup.sh) to $i"
+			echo ""
+			added=1
+		fi
+	done
+
+	if [ $added -eq 0 ] ; then
+		echo "An attempt was made to add setup.sh"
+		echo " to both .profile and .bash_profile,"
+		echo " but they both do not exist."
+		echo ""
+		echo "You will need to load"
+		echo "$installerdir/bin/setup.sh"
+		echo "manually."
+		echo ""
+		echo ""
+	fi
+
+fi
+
+# Check libs to see if md can be run (make sure to set LD_LIBRARY_PATH first)
+
+# Need to add $installerdir/lib to LD_LIBRARY_PATH
+cd $installerdir
+collective=""
+for i in $(find . -name "*\.so") ; do
+	files=$(LD_LIBRARY_PATH=$installerdir/lib ldd $i | grep "not found" | sed -e 's/=> not found//g' 2>&1)
+	if test "x$files" != "x" ; then
+		collective="$collective
+$files"
+	fi
+done
+
+if test "x$collective" == "x" ; then
+	echo "Congratulations!  You should "
+	echo " have no problems running winforms,"
+	echo " gtk#, and gecko# apps."
+else
+
+	collective=$(echo "$collective" | sort | uniq)
+		
+	echo "Missing libraries:"
+	echo "----------------"
+	for i in $collective ; do
+		echo $i
+	done
+	echo "----------------"
+	echo ""
+	echo "It appears your system may be unable"
+	echo " to run graphical apps included"
+	echo " in this installer.  You may be able"
+	echo " to fix this by installing the necessary"
+	echo " packages that provide the above libraries,"
+	echo " but it is also possible that they are"
+	echo " not available from your distribution."
+	echo ""
+fi

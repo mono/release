@@ -324,8 +324,7 @@ shutil.copy(p + "/../projects/mono/html/mono.css", p + "/html")
 shutil.copy(p + "/../projects/mono/html/bitrock.png", p + "/html")
 
 # Copy installer helper scripts
-shutil.copy(p + "/../projects/post_libscan", p + "/usr/bin/.installer_post_libscan")
-shutil.copy(p + "/../projects/pre_env_setup", p + "/usr/bin/.installer_pre_env_setup")
+shutil.copy(p + "/../projects/post_install", p + "/usr/bin/.installer_post_install")
 
 # Generate some stuff in mono.xml
 result = ""
