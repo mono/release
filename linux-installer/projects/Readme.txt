@@ -30,6 +30,8 @@ Installer changes:
   /opt/mono for root.  This way it won't override the
   system Mono in /usr.
 - Move environment setup to post install script.
+- Adding .desktop launch with a terminal that has the
+  environment set up.
 
 1.2.3-2:
 - Add postinstall script to find unresolved symbols for 

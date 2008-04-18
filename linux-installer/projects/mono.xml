@@ -22,10 +22,10 @@
       <selected>1</selected>
       <desktopShortcutList>
         <fileShortcut>
-           <comment>Mono Installation Directory</comment>
+           <comment>Mono @@VERSION@@ Installation Directory</comment>
            <filePath>${installdir}</filePath>
            <icon>${installdir}/share/pixmaps/monotm48x48.png</icon>
-           <name>Mono</name>
+           <name>Mono @@VERSION@@</name>
            <platforms>linux</platforms>
         </fileShortcut>
       </desktopShortcutList>
@@ -86,12 +86,20 @@
              <platforms>linux</platforms>
            </shortcut>
            <shortcut>
-             <comment>Mono Documentacion</comment>
+             <comment>Mono Documentation</comment>
              <exec>${installdir}/bin/monodoc</exec>
              <icon>${installdir}/share/pixmaps/monodoc.png</icon>
              <name>MonoDoc</name>
              <path>${installdir}/bin</path>
              <platforms>linux</platforms>
+           </shortcut>
+           <shortcut>
+             <comment>Mono @@VERSION@@ Terminal</comment>
+             <exec>/bin/bash --init-file ${installdir}/bin/setup.sh</exec>
+             <icon>${installdir}/share/pixmaps/monotm48x48.png</icon>
+             <name>MonoTerminal</name>
+             <platforms>linux</platforms>
+             <!-- we have to change "Terminal=False" to True in post install to .desktop entry -->
            </shortcut>
            <linkShortcut>
              <comment>Mono Project Website</comment>

@@ -67,3 +67,6 @@ else
 	echo " not available from your distribution."
 	echo ""
 fi
+
+# Fix terminal launcher (no support for this in bitrock)
+sed -i s/Terminal=False/Terminal=True/ig $installerdir/MonoTerminal.desktop
