@@ -494,6 +494,10 @@ POSTBUILD_STEP8 () {
         tar -zxf masterinfos-$VERSION.tar.gz
         tar -jxf deploy.tar.bz2
 
+        # update content that frequently changes from subversion
+        wget http://anonsvn.mono-project.com/source/trunk/mono/web/web/deploy/cm/cormissing.css -O deploy/cm/cormissing.css
+        wget http://anonsvn.mono-project.com/source/trunk/mono/web/web/deploy/cm/cormissing.js -O deploy/cm/cormissing.js
+
         mkdir infos
         mkdir src
 
