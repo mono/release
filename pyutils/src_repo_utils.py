@@ -15,12 +15,12 @@ import utils
 output_timeout=600
 
 # Wait at least x seconds between commands
-default_min_wait = 5
+default_min_wait = 10
 
 #  svn source repo utils
 class svn:
 
-	def __init__(self, root, key_file="", min_wait=default_min_wait):
+	def __init__(self, root, key_file="", min_wait=default_min_wait, debug=0):
 
 		self.root = root
 
@@ -33,20 +33,31 @@ class svn:
 
 		self.last_access = 0
 		self.min_wait = min_wait
+		self.debug = debug
+
+		# Cache vars
+		self.latest_path_revision_cache = {}
+		self.cache_max_size = 150
+		self.cache_lru = []
+
+	def debug_print(self, text):
+		if self.debug:
+			print text
 
 	def regulator(self):
 		"""Make sure we don't pound the svn server too hard"""
-		#print "DEBUG: Calling regulator"
+		self.debug_print("DEBUG: Calling regulator")
 
-		time_since_last = utils.time_duration_asc(self.last_access, utils.get_time() ) * 60
+		time_since_last = int(time.time()) - self.last_access
+		self.debug_print("time_since_last: %d" % time_since_last)
 		if time_since_last < self.min_wait:
 			wait_time = self.min_wait - time_since_last
-			#print "DEBUG: Sleeping: %d" % wait_time
+			self.debug_print("DEBUG: Sleeping: %d" % wait_time)
 			time.sleep(wait_time)
-		#else:
-		#	print "DEBUG: min_wait (%d) satisfied, not waiting" % self.min_wait
+		else:
+			self.debug_print("DEBUG: min_wait (%d) satisfied, not waiting" % self.min_wait)
 
-		self.last_access = utils.get_time()
+		self.last_access = int(time.time())
 		
 
 	def latest_tree_revision(self):
@@ -88,8 +99,27 @@ class svn:
 			dirname = os.path.dirname(item)
 			module = os.path.basename(item)
 
-			self.regulator()
-			code, output = utils.launch_process('%s svn ls %s/%s %s -v' % ( self.svn_env, self.root , dirname, rev_arg), print_output=0, output_timeout=output_timeout )
+			command = '%s svn ls %s/%s %s -v' % ( self.svn_env, self.root , dirname, rev_arg)
+			self.debug_print("Command: " + command)
+
+			# Cache output for this command, should lessen load from svn server
+			#  Only check if we have a revision
+			if revision and self.latest_path_revision_cache.has_key(command):
+				self.debug_print("CACHE:hit!")
+				(code, output) = self.latest_path_revision_cache[command]
+			else:
+				self.debug_print("CACHE:miss...")
+				self.regulator()
+
+				code, output = utils.launch_process(command, print_output=0, output_timeout=output_timeout)
+
+				self.latest_path_revision_cache[command] = (code, output)
+				self.cache_lru.append(command)
+
+				# Cache cleanup, so we don't use up all memory since this is a long running process
+				if len(self.cache_lru) > self.cache_max_size:
+					self.debug_print("Removing old item from cache")
+					self.latest_path_revision_cache.pop(self.cache_lru.pop(0))
 
 			for line in output.split('\n'):
 				list = line.split()

@@ -30,7 +30,7 @@ snapshot_sources_dir = packaging_dir + "/snapshot_sources"
 smb_passfile = packaging_dir + "/.smbpass"
 
 # Mono repo svn location
-#MONO_ROOT = "svn://anonsvn.mono-project.com/source"
+#MONO_ROOT = "http://anonsvn.mono-project.com/source"
 #src_key_file = ""
 MONO_ROOT = "svn+ssh://distro@mono-cvs.ximian.com/source"
 src_key_file = packaging_dir + os.sep + "distro_source_key"
