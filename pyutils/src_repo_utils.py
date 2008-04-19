@@ -107,6 +107,9 @@ class svn:
 			if revision and self.latest_path_revision_cache.has_key(command):
 				self.debug_print("CACHE:hit!")
 				(code, output) = self.latest_path_revision_cache[command]
+
+				# find hit and put it at the end of the list
+				self.cache_lru.append(self.cache_lru.pop(self.cache_lru.index(command)))
 			else:
 				self.debug_print("CACHE:miss...")
 				self.regulator()
