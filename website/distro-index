@@ -10,15 +10,12 @@
 
 	<h3>Mono</h3> 
 #	mono mono mono-basic libgdiplus gluezilla
-	
+
 	<h3>XSP/mod_mono</h3>
 #	webserver xsp mod_mono
-     
-	<h3>Gtk# 1</h3>
-#	gtk-sharp-1.0 gtk-sharp
-	
+
 	<h3>Development Tools</h3>
-#	devtools monodoc mono-tools gecko-sharp gecko-sharp2 gtksourceview-sharp2 boo ikvm mono-debugger heap-buddy nant IPCE mono-addins
+#	devtools monodoc mono-tools gecko-sharp2 gtksourceview-sharp2 boo ikvm mono-debugger heap-buddy nant IPCE mono-addins
 
 	<h3>Gtk# 2</h3>
 #	gtk-sharp-2.0 gtk-sharp2 gtk-sharp28 gtk-sharp210 gnome-sharp2 gtk-sharp212 gnome-sharp220 gnome-desktop-sharp2

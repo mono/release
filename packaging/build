@@ -207,10 +207,8 @@ build_info.update_build(state='inprogress', buildhost=conf.buildenv.uid, start=u
 #steps = build_info.get_steps_info()
 
 # Update step: Add link to mktarball log
-# Check for package aliases
 repo = datastore.source_file_repo()
-aliases = package.get_aliases()
-logfile = repo.get_log_file(source_file, package_name_aliases=aliases)
+logfile = repo.get_log_file(source_file)
 
 if logfile:
 	# Create symbolic link to tarball in 'files' dir
@@ -273,8 +271,6 @@ if conf.get_info_var('USE_ZIP_PKG'):
 	# Yikes... this dep list is getting big, ugh
 	for f in "config.py utils.py buildenv.py remote_shell.py logger.py packaging.py shell_parse.py".split():
 		support_files_to_copy += ['../pyutils/' + f]
-	for f in aliases:
-		files_to_copy += ['defs/' + f]
 	files_to_copy += ['do-zip-build', 'conf/' + distro, 'rpm_defs/%s/*.patch' % package_name, 'defs/%s' % package_name ]
 	build_command = '%s/do-zip-build %s %s %s %s' % (temp_build_dir, revision, package_name, distro, version)
 	remote_src_dir = "%s/BUILD/%s" % (temp_build_dir, build_dir)

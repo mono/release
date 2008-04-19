@@ -1,5 +1,3 @@
-def_alias="gtk-sharp2"
-
 web_index=6
 
 version_selection_reg="2\.12\.\d+"

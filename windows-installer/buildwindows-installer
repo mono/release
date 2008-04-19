@@ -144,9 +144,9 @@ selections = []
 
 selections += [ Selection('mono', packages = "mono boo ikvm nant IPCE mono-basic gluezilla".split(), deps='mono gluezilla'.split() ) ]
 
-selections += [ Selection('gtk', deps = "gtk-sharp gtk-sharp210 gnome-sharp2".split() ) ]
+selections += [ Selection('gtk', deps = "gtk-sharp210 gnome-sharp2".split() ) ]
 
-selections += [ Selection('gtk-sharp', packages = "gtk-sharp gtk-sharp210 gnome-sharp2".split() ) ]
+selections += [ Selection('gtk-sharp', packages = "gtk-sharp210 gnome-sharp2".split() ) ]
 
 # Grab the gtk# version, and if there's a revision, ditch it
 gtk_sharp_version = selections[len(selections) - 1].versions['gtk-sharp210']
@@ -508,21 +508,6 @@ for selection in selections:
 
 ##############################################
 # gtk-sharp hacks
-
-# Fix/remove some uneccessary wrappers (will become necessary once gtk-sharp2 is built with mono and mcs)
-# gapi-codegen (copy gapi_codegen.exe to gapi-codegen.exe and delete wrapper)
-shutil.copy("gtk-sharp/bin/gapi_codegen.exe", "gtk-sharp/bin/gapi-codegen.exe")
-os.remove("gtk-sharp/bin/gapi-codegen")
-os.remove("gtk-sharp/bin/gapi-codegen.bat")
-
-#gapi-fixup (just delete the wrappers)
-os.remove("gtk-sharp/bin/gapi-fixup")
-os.remove("gtk-sharp/bin/gapi-fixup.bat")
-
-#gconfsharp-schemagen (delete the wrappers)
-os.remove("gtk-sharp/bin/gconfsharp-schemagen")
-os.remove("gtk-sharp/bin/gconfsharp-schemagen.bat")
-
 
 # These are native binaries but are in the lib/gtk-sharp-2.0 dir (copy and rename!, and delete wrapper)
 # TODO: Should this happen in the gtk-sharp build?

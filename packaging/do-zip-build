@@ -90,7 +90,3 @@ if pack_def.get_info_var('USE_PATCHES'):
 	for patch in patches:
 		shutil.copy(temp_build_dir + os.sep + os.path.basename(patch), temp_build_dir + '/built-packages')
 
-# Save alias files
-for f in pack_def.get_aliases():
-	shutil.copy(temp_build_dir + os.sep + f, temp_build_dir + '/built-packages')
-

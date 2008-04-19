@@ -121,16 +121,6 @@ for dir in	['linux-installer/output/[[version]]/linux-installer',
 for file in rpms:
 	dirs.append(os.path.dirname(file))
 
-# For the dirs, if any is a symlink, add the real path as well
-#  For aliased packages
-new_dirs = []
-for dir in dirs:
-	package_path = os.path.dirname(dir)
-	version = os.path.basename(dir)
-	if os.path.islink(package_path):
-		new_dirs += [ os.path.dirname(package_path) + os.sep + os.readlink(package_path) + os.sep + version ]
-dirs += new_dirs
-
 # Clean up
 dirs = utils.remove_list_duplicates(dirs)
 sources = utils.remove_list_duplicates(sources)

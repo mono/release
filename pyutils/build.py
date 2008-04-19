@@ -98,7 +98,7 @@ def get_package_objs(honor_disable_webview=False):
 
         for package in packages:
 		# Don't try to create the dirs and links because this code is run by the web server
-                pack_obj = packaging.package("", package, create_dirs_links=False)
+                pack_obj = packaging.package("", package, create_dirs=False)
 
 		if honor_disable_webview and pack_obj.get_info_var("disable_webview"):
 			continue

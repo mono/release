@@ -1,5 +1,3 @@
-def_alias="gtk-sharp2"
-
 web_index=6
 
 version_selection_reg="2\.10\.\d+"
@@ -48,5 +46,214 @@ make_dist () {
         . /etc/profile
         ./bootstrap-2.10
         make dist-bzip2
+}
+
+win_4_i386_ZIP_RUNTIME_DEPS=(
+
+	# Runtime deps (for gtkhtml at least, it built fine, but this is needed to resolve deps in gtkhtml)
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/gail-1.9.2.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/gail-dev-1.9.2.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/dependencies/openssl-0.9.7c.zip
+	http://ftp.gnome.org/pub/GNOME/desktop/2.16/2.16.0/win32/dependencies/fontconfig-2.2.2-20040412.zip
+	http://ftp.gnome.org/pub/GNOME/desktop/2.16/2.16.0/win32/dependencies/fontconfig-dev-2.2.2-20040412.zip
+	http://ftp.gnome.org/pub/GNOME/desktop/2.16/2.16.0/win32/dependencies/expat-2.0.0.zip
+	http://ftp.gnome.org/pub/GNOME/desktop/2.16/2.16.0/win32/dependencies/regex-spencer-3.8.zip
+
+	# Deps that used to be listed in buildwindows script
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/jpeg-6b-4-bin.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/jpeg-6b-4-dep.zip
+	# Don't need this because it only contains zlib
+	#http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libpng-1.2.8-dep.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libpng-1.2.8-bin.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/tiff-3.7.3-dep.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/tiff-3.7.3-bin.zip
+
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libungif-4.1.4-bin.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libungif-4.1.4-lib.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/libungif-4.1.4-dep.zip
+
+	#http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/giflib-4.1.4-bin.zip
+	#http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/giflib-4.1.4-lib.zip
+	#http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/giflib-4.1.4-dep.zip
+
+	http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/freetype-2.1.10-bin.zip
+	# Don't need this because it only contains zlib
+	#http://easynews.dl.sourceforge.net/sourceforge/gnuwin32/freetype-2.1.10-dep.zip
+
+	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/glade-3-0-2-win32-1.zip
+	#http://easynews.dl.sourceforge.net/sourceforge/gladewin32/glade-2.12.1-rc1.zip
+	#http://easynews.dl.sourceforge.net/sourceforge/gladewin32/glade-2.6.0-rc1.zip
+	http://easynews.dl.sourceforge.net/sourceforge/gladewin32/gts-0.1.1.zip
+
+	# For GtkDemo iconview (Hmm... this didn't fix it... later)
+	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/dependencies/hicolor-icon-theme-0.5.zip
+	#ftp://ftp.gnome.org/pub/gnome/desktop/2.12/2.12.2/win32/dependencies/default-icon-theme-0.1.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-icon-theme/2.16/gnome-icon-theme-2.16.0.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-icon-theme/2.16/gnome-icon-theme-dev-2.16.0.zip
+
+)
+
+win_4_i386_ZIP_DEPS=(
+
+	http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2-2.6.27.win32-0.win4.novell.x86.zip
+
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/librsvg/2.16/librsvg-2.16.1.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/librsvg/2.16/librsvg-dev-2.16.1.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/librsvg/2.16/svg-gdk-pixbuf-loader-2.16.1.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/librsvg/2.16/svg-gtk-engine-2.16.1.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/libgsf/1.14/libgsf-1.14.3.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/libgsf/1.14/libgsf-dev-1.14.3.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/libgsf/1.14/libgsf-gnome-1.14.3.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/libgsf/1.14/libgsf-gnome-dev-1.14.3.zip
+
+	# gtk 2.10
+	http://ftp.gtk.org/pub/gtk/v2.10/win32/dependencies/atk-1.12.2.zip
+	http://ftp.gtk.org/pub/gtk/v2.10/win32/dependencies/atk-dev-1.12.2.zip
+	http://ftp.gtk.org/pub/gtk/v2.10/win32/gtk+-2.10.6.zip
+	http://ftp.gtk.org/pub/gtk/v2.10/win32/gtk+-dev-2.10.6.zip
+	http://ftp.gtk.org/pub/pango/1.14/win32/pango-1.14.5.zip
+	http://ftp.gtk.org/pub/pango/1.14/win32/pango-dev-1.14.5.zip
+
+	http://ftp.gtk.org/pub/gtk/v2.10/win32/cairo-1.2.6.zip
+	http://ftp.gtk.org/pub/gtk/v2.10/win32/cairo-dev-1.2.6.zip
+
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/GConf-2.14.0.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/GConf-dev-2.14.0.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/ORBit2-2.14.2.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/ORBit2-dev-2.14.2.zip
+	# ORBit dev depends on idl...
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libIDL-0.8.7.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libIDL-dev-0.8.7.zip
+
+	# For some extra dll's (art-sharp, glade-sharp, rsvg-sharp)
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libart_lgpl-2.3.17.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libart_lgpl-dev-2.3.17.zip
+
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libgnomecanvas-2.14.0.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libgnomecanvas-dev-2.14.0.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libgnomeui-2.16.0.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libgnomeui-dev-2.16.0.zip
+
+	# Hmm... gtk# apps don't like (the 2.5 version from 2.12, try 2.6)
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libglade-2.6.0.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libglade-dev-2.6.0.zip
+	#http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-dev.zip
+	#http://easynews.dl.sourceforge.net/sourceforge/gladewin32/libglade-2.4.0-bin.zip
+
+	# libgnomeprintui
+	http://ftp.gnome.org/pub/GNOME/desktop/2.16/2.16.0/win32/libgnomeprint-2.12.1.zip
+	http://ftp.gnome.org/pub/GNOME/desktop/2.16/2.16.0/win32/libgnomeprint-dev-2.12.1.zip
+	http://ftp.gnome.org/pub/GNOME/desktop/2.16/2.16.0/win32/libgnomeprintui-2.12.1.zip
+	http://ftp.gnome.org/pub/GNOME/desktop/2.16/2.16.0/win32/libgnomeprintui-dev-2.12.1.zip
+
+	# gtkhtml
+	http://ftp.gnome.org/pub/GNOME/desktop/2.16/2.16.0/win32/gtkhtml-3.12.0.zip
+	http://ftp.gnome.org/pub/GNOME/desktop/2.16/2.16.0/win32/gtkhtml-dev-3.12.0.zip
+
+	# libgnome
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libgnome-2.16.0-1.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libgnome-dev-2.16.0.zip
+
+	# gda and gnomedb? we don't ship them with anything else...
+
+	# libbonobo and bonoboui?  Not sure yet...  gdk, vfs, bonobo
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libbonobo-2.16.0.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libbonobo-dev-2.16.0.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libbonoboui-2.16.0.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/libbonoboui-dev-2.16.0.zip
+
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/gnome-vfs-2.14.2.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/gnome-vfs-dev-2.14.2.zip
+
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/dependencies/popt-1.10.2-tml-20050828.zip
+	http://ftp.gnome.org/pub/GNOME/platform/2.16/2.16.0/win32/dependencies/popt-dev-1.10.2-tml-20050828.zip
+
+)
+
+win_4_i386_ZIP_BUILD () {
+        # Make sure it's not dependent on cygwin
+        # Fixed at least in 2.8.2
+        #export CC="gcc -mno-cygwin"
+
+        CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322`
+        CSC=`cygpath -a $CSC`
+
+        # Add MS SDK to path for ilasm and ildasm
+        SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin"`
+        SDK=`cygpath -a $SDK`
+        export PATH=$SDK:$CSC:$PATH
+
+        # Since we're using MS compiler, fake like mono's not installed
+        mkdir -p /tmp/backup
+        mv /tmp/build_deps/lib/pkgconfig/mono.pc /tmp/backup
+
+        # Build fails on gnome-vfs tests, don't build those
+        # Actually, do sed below for sample/Makefile
+        #mv /tmp/build_deps/lib/pkgconfig/gnome-vfs-* /tmp/backup/
+
+        # TODO: Paco used to alter configure.in to change the dep on libart to 2.3.14
+        # Something like this:
+        #  Paco said people were using rsvg-sharp compiled in this manner with no problems... should probably investigate this
+        # Don't need this anymore since we have something newer than 2.3.16
+        #sed -i "s/2.3.16/2.3.14/" configure
+
+        # Patch configure to check for gtkhtml, even if gnome# isn't enabled
+        #if test "x$enable_gnome" = "xyes"; then
+        #if test "xyes" = "xyes"; then
+        # Can't do this... gtkhtml depends on gnome
+
+        ./configure --prefix=/tmp/install
+
+        # let's just skip the gnomevfs sample instead of disabling gnome-vfs
+        # Unnecessary in 2.8.1... doh, still another problem: Mono.GetOptions isn't on mssdk
+        sed -i "s/gnomevfs valtest/valtest/" sample/Makefile
+
+        # Don't have cyg in dll files
+        # Not needed (in 2.8.2 at least)
+        #sed -i "s/\/cyg\//\/\//" libtool
+
+        # Clean up the MS gac of gtk-sharp
+        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp
+        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet
+
+        make || exit 1
+        make install || exit 1
+
+        # Install the samples
+        mkdir -p /tmp/install/samples/gtk-sharp-2.0
+        cp -Rf sample/* /tmp/install/samples/gtk-sharp-2.0
+
+        # Move files out of MS gac and install them into the /tmp/install's gac
+        #mkdir -p /tmp/install/lib/mono/gac
+        #mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/install/lib/mono/gac
+
+        # Move them to a temp dir...
+        rm -Rf /tmp/temp_install
+        mkdir -p /tmp/temp_install
+        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/temp_install
+        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet /tmp/temp_install
+
+        # TODO: Should I be using mono's gacutil instead to install these files?  yes!
+
+        # Do some path manipulation so that "." is removed from the path.  This allows execdir to work
+        OLD_PATH=$PATH
+        export PATH=/tmp/build_deps/bin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS
+        find /tmp/temp_install -name "*.dll" -execdir /tmp/build_deps/bin/gacutil /i {} /f /package gtk-sharp-2.0 /gacdir `cygpath -m /tmp/install/lib` \;
+        export PATH=$OLD_PATH
+
+        # Remove some uneeded files
+        #  exit on the first failure, usually means windows find was used instead of cygwin's find
+        find /tmp/install -name "*\.a" | xargs rm -f || exit 1
+        find /tmp/install -name "*\.la" | xargs rm -f
+        find /tmp/install -name "__*\.ini" | xargs rm -f
+
+        ## Don't have to worry about removing the .config files because this is built with ms sdk.  Once we build with mono we'll have to remove them
+        ## We need to make sure we keep the policy .config files (but not the normal .config files)
+        #  The 2.8.2 build doesn't install .config files for non-policy assemblies... this should never be needed
+        #find /tmp/install -name "*\.config" | xargs rm -f
+
+        # Windows convention to have .dll files in the bin dir instead of lib
+        mv /tmp/install/lib/*.dll /tmp/install/bin
+
 }
 

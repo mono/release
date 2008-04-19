@@ -96,10 +96,7 @@ temp_dir = conf.env_vars['build_location'] + os.sep + 'source_dist_creator'
 conf.buildenv.remove_path(temp_dir)
 
 # Copy some files over and execute!
-# Also copy over def_alias files
 files_to_copy = [ 'distro_source_key', 'do-msvn-tar', 'defs/%s' % package]
-for f in package_obj.get_aliases():
-	files_to_copy += ['defs/' + f ]
 
 support_files_to_copy = []
 for i in 'buildenv.py config.py logger.py remote_shell.py packaging.py shell_parse.py utils.py'.split():

@@ -1,7 +1,5 @@
 web_index=5
 
-def_alias="gtk-sharp"
-
 version_selection_reg="2\.4\.\d+"
 
 BUILD_HOSTS=(
@@ -69,92 +67,4 @@ make_dist () {
 	./bootstrap-2.4
         make dist-bzip2
 }
-
-win_4_i386_ZIP_BUILD () {
-        # Make sure it's not dependent on cygwin
-	# Fixed at least in 2.8.2
-        #export CC="gcc -mno-cygwin"
-
-        CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322`
-        CSC=`cygpath -a $CSC`
-
-        # Add MS SDK to path for ilasm and ildasm
-        SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin"`
-        SDK=`cygpath -a $SDK`
-        export PATH=$SDK:$CSC:$PATH
-
-        # Since we're using MS compiler, fake like mono's not installed
-        mkdir -p /tmp/backup
-        mv /tmp/build_deps/lib/pkgconfig/mono.pc /tmp/backup
-
-        # Build fails on gnome-vfs tests, don't build those
-        # Actually, do sed below for sample/Makefile
-        #mv /tmp/build_deps/lib/pkgconfig/gnome-vfs-* /tmp/backup/
-
-        # TODO: Paco used to alter configure.in to change the dep on libart to 2.3.14
-        # Something like this:
-        #  Paco said people were using rsvg-sharp compiled in this manner with no problems... should probably investigate this
-        # Don't need this anymore since we have something newer than 2.3.16
-        #sed -i "s/2.3.16/2.3.14/" configure
-
-        # Patch configure to check for gtkhtml, even if gnome# isn't enabled
-        #if test "x$enable_gnome" = "xyes"; then
-        #if test "xyes" = "xyes"; then
-        # Can't do this... gtkhtml depends on gnome
-
-        ./configure --prefix=/tmp/install
-
-        # let's just skip the gnomevfs sample instead of disabling gnome-vfs
-	# Unnecessary in 2.8.1... doh, still another problem: Mono.GetOptions isn't on mssdk
-        sed -i "s/gnomevfs valtest/valtest/" sample/Makefile
-
-        # Don't have cyg in dll files
-	# Not needed (in 2.8.2 at least)
-        #sed -i "s/\/cyg\//\/\//" libtool
-
-        # Clean up the MS gac of gtk-sharp
-        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp
-        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet
-
-        make || exit 1
-        make install || exit 1
-
-	# Install the samples
-	mkdir -p /tmp/install/samples/gtk-sharp-2.0
-	cp -Rf sample/* /tmp/install/samples/gtk-sharp-2.0
-
-        # Move files out of MS gac and install them into the /tmp/install's gac
-        #mkdir -p /tmp/install/lib/mono/gac
-        #mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/install/lib/mono/gac
-
-	# Move them to a temp dir...
-	rm -Rf /tmp/temp_install
-        mkdir -p /tmp/temp_install
-        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/temp_install
-        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet /tmp/temp_install
-
-        # TODO: Should I be using mono's gacutil instead to install these files?  yes!
-
-	# Do some path manipulation so that "." is removed from the path.  This allows execdir to work
-	OLD_PATH=$PATH
-	export PATH=/tmp/build_deps/bin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS
-        find /tmp/temp_install -name "*.dll" -execdir /tmp/build_deps/bin/gacutil /i {} /f /package gtk-sharp-2.0 /gacdir `cygpath -m /tmp/install/lib` \;
-	export PATH=$OLD_PATH
-
-	# Remove some uneeded files
-        #  exit on the first failure, usually means windows find was used instead of cygwin's find
-        find /tmp/install -name "*\.a" | xargs rm -f || exit 1
-        find /tmp/install -name "*\.la" | xargs rm -f
-        find /tmp/install -name "__*\.ini" | xargs rm -f
-
-        ## Don't have to worry about removing the .config files because this is built with ms sdk.  Once we build with mono we'll have to remove them
-	## We need to make sure we keep the policy .config files (but not the normal .config files)
-	#  The 2.8.2 build doesn't install .config files for non-policy assemblies... this should never be needed
-        #find /tmp/install -name "*\.config" | xargs rm -f
-
-        # Windows convention to have .dll files in the bin dir instead of lib
-        mv /tmp/install/lib/*.dll /tmp/install/bin
-
-}
-
 

@@ -39,7 +39,7 @@ packages_to_include = {}
 
 packages_to_include['sunos-8-sparc']  = ['mono', 'libgdiplus', 'xsp', 'ikvm', 'boo', 'monodoc', 'nant', 'IPCE', 'mono-basic' ]
 
-packages_to_include['sunos-10-sparc'] = packages_to_include['sunos-8-sparc'] + ['gtk-sharp2', 'gtk-sharp', 'mono-tools', 'monodevelop', 'gtksourceview-sharp2' ]
+packages_to_include['sunos-10-sparc'] = packages_to_include['sunos-8-sparc'] + ['gtk-sharp2', 'mono-tools', 'monodevelop', 'gtksourceview-sharp2' ]
 
 debug=1
 

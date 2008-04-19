@@ -176,14 +176,11 @@ class buildconf:
 
 class package:
 
-	def __init__(self, package_env, name, bundle_obj="", bundle_name="", source_basepath="", package_basepath="", inside_jail=False, HEAD_or_RELEASE="", create_dirs_links=True, has_parent_pack=False):
+	def __init__(self, package_env, name, bundle_obj="", bundle_name="", source_basepath="", package_basepath="", inside_jail=False, HEAD_or_RELEASE="", create_dirs=True):
 		"""Args: buildconf object, string name of a file in packaging/defs.
 		source/package_basepath: full path to where packages are.  Can be overridden (used for web publishing)
 		inside_jail: this packaging module is used in release/pyutils and /tmp.  If it's in /tmp, that means we're inside the jail
 		   and there are certain things we shouldn't do.
-
-		has_parent_pack: used internally.  Set this flag when creating new package objects within the package constructor.  This
-		lets us know to create the dir structure, even if our buildconf isn't valid for this pack (used by def_alias packages).
 		"""
 
 		self.package_env = package_env
@@ -191,9 +188,7 @@ class package:
 		self.source_basepath = source_basepath
 		self.package_basepath = package_basepath
 		self.inside_jail = inside_jail
-		self.create_dirs_links = create_dirs_links
-
-		self.has_parent_pack = has_parent_pack
+		self.create_dirs = create_dirs
 
 		# Default to use the file in the current dir, otherwise look in the defs dir
 		#  (This change was for do-msvn tar)
@@ -211,29 +206,6 @@ class package:
 		# Shell config hack to properly populate USE_HOSTS 
 		if self.info['USE_HOSTS'] == ['${BUILD_HOSTS[@]}']:
 			self.info['USE_HOSTS'] = self.info['BUILD_HOSTS']
-
-		# keys (regs) to grab from the def_alias if they are not in this def file
-		valid_alias_key_regs = []
-		for reg in ['make_dist', 'HEAD_PATH', 'RELEASE_PATH', 'get_destroot', '_ZIP_', 'get_source']:
-			valid_alias_key_regs.append(re.compile(reg))
-
-		# Check alias package so we include any information from it that we don't include in this package (reduces maintenance redundancy)
-		self.alias_pack_obj = ""
-		if self.get_info_var('def_alias'):
-			# TODO: pass all contructor vars to this new object?
-			# has_parent_pack must always be true so that def_aliased packages create their dir structure
-			self.alias_pack_obj = packaging.package(self.package_env, self.get_info_var('def_alias'), source_basepath=source_basepath, package_basepath=package_basepath, inside_jail=inside_jail, create_dirs_links=create_dirs_links, has_parent_pack=True, bundle_obj=bundle_obj, HEAD_or_RELEASE=HEAD_or_RELEASE)
-			for k, v in self.alias_pack_obj.info.iteritems():
-				# There's some type of data we don't want to copy: def_alias to avoid recursive loops...
-				#   Ignore POSTBUILD stuff.... sort of a hack, but ignoring reduces the amount of redundancy
-				valid_key = False
-				for reg in valid_alias_key_regs:
-					if reg.search(k):
-						valid_key = True
-
-				# If we don't have the key, grab info from alias def
-				if valid_key and not self.info.has_key(k):
-					self.info[k] = v
 
 		# Handle bundle
 		if bundle_obj and bundle_name:
@@ -265,7 +237,6 @@ class package:
 			self.destroot = self.execute_function('get_destroot', 'DEST_ROOT')
 
 		self.setup_paths()
-		self.setup_symlinks()
 
 		# Initialize for later... (for caching)
 		self.version = ""
@@ -327,35 +298,18 @@ class package:
 
 		self.source_relpath = self.name
 		self.source_fullpath = self.source_basepath + os.sep + self.source_relpath
-		
 
-	def setup_symlinks(self):
-		"""Setup alias symlinks for sources and packages."""
 
-		if self.package_env and (self.valid_build_platform(self.package_env.name) or self.has_parent_pack):
+		# Create the directories for sources and packages
+
+		if self.package_env and self.valid_build_platform(self.package_env.name):
 			dirs = [ self.package_fullpath, self.source_fullpath ]
 		else:	dirs = [ self.source_fullpath ]
 
-		# Create the paths if it doesn't exist (and if this isn't an alias pack)
-		#  But create the dirs anyway if we're building a HEAD tarball, even if this is a def_alias package
-		if not self.inside_jail and self.create_dirs_links and (not self.get_info_var('def_alias') or self.HEAD_or_RELEASE == "HEAD"):
+		# Create the paths if it doesn't exist
+		if not self.inside_jail and self.create_dirs:
 			for path in (dirs):
 				if not os.path.exists(path): distutils.dir_util.mkpath(path)
-
-		# Create source and package symlinks if the dirs are there, but not the symlink
-		if self.info.has_key('def_alias') and self.HEAD_or_RELEASE == "RELEASE" and self.create_dirs_links:
-			#print "Link alias: %s" % self.info['def_alias']
-			for dir in (dirs):
-				if not os.path.islink(dir) and not self.inside_jail:
-					if os.path.exists(dir):
-						print "%s is not a symbolic link (it should be)" % dir
-						sys.exit(1)
-					try:
-						os.symlink(self.info['def_alias'], dir)
-					except:
-						print "Error creating symlink: %s" % dir
-						sys.exit(1)
-
 
 	# Used for constructing filenames
 	def get_revision(self, serial):
@@ -486,11 +440,6 @@ class package:
 				# Cases
 				# 1. version from bundle
 				name = self.name
-
-				# Why was this done?  I don't think def_alias should apply to bundle versioning
-				#  (Ex: 1.1.13 bundle: gtk-sharp-2.0 picks 1.0.10 stuff even though bundle says 2.4.2)
-				#if self.info.has_key('def_alias') and self.HEAD_or_RELEASE == "RELEASE":
-				#	name = self.info['def_alias']
 
 				if self.bundle_obj.version_map.has_key(name):
 					self.version = self.bundle_obj.version_map[name]
@@ -635,16 +584,6 @@ class package:
 
 	def get_info_var(self, key):
 		return utils.get_dict_var(key, self.info)
-		
-	def get_aliases(self):
-		"""Return all names of alises, recursively.
-
-		This was being done in the packaging scripts to copy stuff over.  Was put here for consolidation.
-		"""
-		if self.alias_pack_obj:
-			return [ self.get_info_var('def_alias') ] + self.alias_pack_obj.get_aliases()
-		else:
-			return []
 		
 
 class bundle:
