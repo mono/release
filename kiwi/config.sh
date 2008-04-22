@@ -131,6 +131,7 @@ rm /tmp/zypp.product
 # SuSEconfig
 #--------------------------------------
 mount -o bind /lib/udev/devices /dev
+rm -rf /usr/share/icons/*/icon-theme.cache
 suseConfig
 umount /dev
 
