@@ -42,11 +42,11 @@ pushd Desktop
 
 mkdir 'Gtk# Applications'
 pushd 'Gtk# Applications'
-for app in 'beagle-search' 'f-spot' 'gbrainy' 'tomboy' 'banshee'; do 
+for app in 'beagle-search' 'f-spot' 'gbrainy' 'tomboy' 'banshee-1'; do 
 	ln -s /usr/share/applications/$app.desktop
 done
 popd
-for app in 'monodevelop' 'monodoc'; do 
+for app in 'monodevelop' 'monodoc' 'moma'; do 
 	ln -s /usr/share/applications/$app.desktop
 done
 

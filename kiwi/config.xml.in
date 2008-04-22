@@ -10,7 +10,7 @@
     <type primary="true" boot="vmxboot/suse-10.3" filesystem="ext3" format="vmdk">vmx</type>
     <type boot="xenboot/suse-10.3" filesystem="ext3">xen</type>
     <type boot="usbboot/suse-10.3" filesystem="squashfs">usb</type>
-    <version>3</version>
+    <version>3.1</version>
     <size unit="M">60000</size>
     <packagemanager>smart</packagemanager>
     <rpm-check-signatures>False</rpm-check-signatures>

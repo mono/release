@@ -1,5 +1,5 @@
 #!/bin/sh
-echo > /usr/share/gnome/autostart/gnome-do.desktop << EOF
+cat > /usr/share/gnome/autostart/gnome-do.desktop << EOF
 [Desktop Entry]
 Name=GNOME Do
 Type=Application
