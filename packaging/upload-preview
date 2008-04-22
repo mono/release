@@ -11,8 +11,8 @@ TARGET_URL="/monobuild/preview"
 ## For publishing to a local lan in Provo
 #TARGET_USER="root"
 #TARGET_HOST="c100.mono.lab.novell.com"
-#TARGET_DIR="/share/sw/mono-project.org/mono-previews/1.9.1p2"
-#TARGET_URL="/software/mono-project.org/mono-previews/1.9.1p2"
+#TARGET_DIR="/share/sw/mono-project.org/mono-previews/1.9.1p3"
+#TARGET_URL="/software/mono-project.org/mono-previews/1.9.1p3"
 
 mkdir -p $STAGE_DIR
 
@@ -22,12 +22,8 @@ cp packaging.css $STAGE_DIR
 
 # Remove all but one version
 #  Since this happens before sync-bundle, we'll have duplicate versions.
-#   But this is necessary since clean-downloads.py doesn't know how to handle the symlinked gtk# RELEASE sources
-#    (which will get re-copied with sync-bundle.py)
-# (Hrm... posting this twice actually gives different results because of running clean-downloads.py ...)
-./clean-downloads.py --source_basepath=$STAGE_DIR/sources --package_basepath=$STAGE_DIR/packages --archive_basepath=$STAGE_DIR/archive RELEASE 1
-
 ./sync-bundle.py --skip_missing $BUNDLE $STAGE_DIR || exit 1
+./clean-downloads.py --source_basepath=$STAGE_DIR/sources --package_basepath=$STAGE_DIR/packages --archive_basepath=$STAGE_DIR/archive RELEASE 1
 
 ./mk-sources-index.py           $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/sources			|| exit 1
 ./mk-distro-index.py --skip_zip $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/packages $TARGET_HOST		|| exit 1

@@ -82,13 +82,13 @@ distutils.dir_util.mkpath(STAGE_DIR)
 
 # We can call delete on so that stuff that gets deleted in the source will be deleted from the stage
 os.chdir('packages')
-do("rsync %s --delete -C . %s/download" % (rsync_opts, STAGE_DIR))
+do("rsync %s --delete . %s/download" % (rsync_opts, STAGE_DIR))
 
 os.chdir("../external_packages")
-do("rsync %s --delete -C . %s/external_packages" % (rsync_opts, STAGE_DIR))
+do("rsync %s --delete . %s/external_packages" % (rsync_opts, STAGE_DIR))
 
 os.chdir("../sources")
-do("rsync %s --delete -C . %s/sources" % (rsync_opts, STAGE_DIR))
+do("rsync %s --delete . %s/sources" % (rsync_opts, STAGE_DIR))
 os.chdir("..")
 
 current_dir = os.getcwd()
@@ -96,19 +96,19 @@ current_dir = os.getcwd()
 # Push the installers
 # If these need to be cleaned up, you need to clean from source and stage (ugh)
 os.chdir("../linux-installer/output")
-do("rsync %s -C . %s/archive" % (rsync_opts, STAGE_DIR))
+do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
 os.chdir(current_dir)
 
 os.chdir("../windows-installer/Output")
-do("rsync %s -C . %s/archive" % (rsync_opts, STAGE_DIR))
+do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
 os.chdir(current_dir)
 
 os.chdir("../sunos/output")
-do("rsync %s -C . %s/archive" % (rsync_opts, STAGE_DIR))
+do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
 os.chdir(current_dir)
 
 os.chdir("../macosx/output")
-do("rsync %s -C . %s/archive" % (rsync_opts, STAGE_DIR))
+do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
 os.chdir(current_dir)
 
 os.chdir("../website")

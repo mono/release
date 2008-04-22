@@ -215,7 +215,11 @@ class build_scheduler(threading.Thread):
 				# Check to see what the latest tarball is
 				# The src_file_repo class is not threadsafe, so provide a mutex here
 				tarball_lock.acquire()
-				tarball_filename = tarballs.get_latest_tarball("HEAD", package_name)
+				try:
+					tarball_filename = tarballs.get_latest_tarball("HEAD", package_name)
+				except:
+					# catch this in case the filename is being edited by hand
+					tarball_filename = ""
 				tarball_lock.release()
 
 				if not tarball_filename:
