@@ -254,25 +254,6 @@ var data =
 		}
 		]
 	},
-
-	{
-		"name" : "Other&nbsp;Linuxes",
-		"icon" : "linux.jpg",
-		"dlicon" : "linux.jpg",
-		"version" : [
-		{
-			"name" : "Generic Linux",
-			"arch" : [
-			{
-				"name" : i586,
-				"desc" : "This download works on most generic Linuxes on " + i586 + ".",
-				"downloadText" : "For help with the installation, see: <a href='http://mono-project.com/InstallerInstructions'>Instructions to use the Installer</a>.<ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9.1/linux-installer/2/mono-1.9.1_2-installer.bin'>Mono 1.9.1_2 Installer</a></ul>"
-			}
-			]
-		}
-		]
-	},
-
 	{
 		"name" : "Solaris",
 		"icon" : "http://www.mono-project.com/files/2/2f/Mono_icon_solaris.gif",
