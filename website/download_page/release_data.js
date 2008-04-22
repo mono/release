@@ -7,7 +7,7 @@ var s390x = "IBM s390x 64bit";
 
 var data =
 {
-	"release" : "1.9",
+	"release" : "1.9.1",
 	"platforms" : [
 	{
 		"name" : "VMware",
@@ -210,7 +210,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on all versions of Windows 2000, XP, 2003 and Vista.",
-				"downloadText" : "Mono for Windows, Gtk#, and XSP <ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9/windows-installer/4/mono-1.9-gtksharp-2.10.4-win32-4.exe'>Mono 1.9_4 Setup</a></ul>Only Gtk# for .NET: <ul><li><a href='http://sourceforge.net/project/showfiles.php?group_id=74626&package_id=223067'>SDK and Runtime</a></ul>Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>"
+				"downloadText" : "Mono for Windows, Gtk#, and XSP <ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9.1/windows-installer/2/mono-1.9.1-gtksharp-2.10.4-win32-2.exe'>Mono 1.9.1_2 Setup</a></ul>Only Gtk# for .NET: <ul><li><a href='http://sourceforge.net/project/showfiles.php?group_id=74626&package_id=223067'>SDK and Runtime</a></ul>Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>"
 			}
 			]
 		}
@@ -228,7 +228,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk#, MonoDevelop installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9/macos-10-universal/5/MonoFramework-1.9_5.macos10.novell.universal.dmg'>Mono 1.9_5 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk#, MonoDevelop, and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
+				"downloadText" : "Includes Mono, Cocoa#, Gtk#, MonoDevelop installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9.1/macos-10-universal/3/MonoFramework-1.9.1_3.macos10.novell.universal.dmg'>Mono 1.9.1_3 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk#, MonoDevelop, and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
@@ -266,7 +266,7 @@ var data =
 			{
 				"name" : i586,
 				"desc" : "This download works on most generic Linuxes on " + i586 + ".",
-				"downloadText" : "For help with the installation, see: <a href='http://mono-project.com/InstallerInstructions'>Instructions to use the Installer</a>.<ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9/linux-installer/5/mono-1.9_5-installer.bin'>Mono 1.9_5 Installer</a></ul>"
+				"downloadText" : "For help with the installation, see: <a href='http://mono-project.com/InstallerInstructions'>Instructions to use the Installer</a>.<ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9.1/linux-installer/2/mono-1.9.1_2-installer.bin'>Mono 1.9.1_2 Installer</a></ul>"
 			}
 			]
 		}
