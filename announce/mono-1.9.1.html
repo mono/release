@@ -1,0 +1,150 @@
+ <html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+	<title>Mono 1.9.1: Release Notes.</title>
+	<link rel="stylesheet" type="text/css" href="http://www.go-mono.com/archive/1.0/mono.css"/>
+	<script src='http://www.go-mono.com/archive/prettyprint.js'
+	type='text/javascript'></script>
+    <style type="text/css" title="default">
+    pre {
+    padding: 6pt;
+    background-color: #f6f6f6;
+    border: 1px solid #ddd;    
+    }
+    </style>
+</head>   
+
+<html>
+<body onload='paintColors();'>
+
+<h1>Mono 1.9.1 Release, April 2008</h1>
+
+	<p>Mono 1.9.1 is a minor bugfix release for 
+	<a href="http://www.go-mono.com/archive/1.9">Mono 1.9</a>
+	 It is a stable release and an update
+	to <a href="http://www.go-mono.com/archive/1.2.6">Mono
+	to <a href="http://www.go-mono.com/archive/1.2.6">Mono
+	1.2.6</a> in
+	the <a href="http://www.go-mono.com/archive/1.2">Mono 1.2
+	series</a>.
+	
+	<ul>
+		<li><a href="#changes">Changes since version 1.9</a>
+		<li><a href="#install">Download and installation.</a>
+	</ul>
+
+	<p>All of the changes since 1.2 are documented in the
+	following release notes:
+
+	<a href="http://www.go-mono.com/archive/1.2.1">1.2.1</a>,
+	<a href="http://www.go-mono.com/archive/1.2.2">1.2.2</a>,
+	<a href="http://www.go-mono.com/archive/1.2.3">1.2.3</a>,
+	<a href="http://www.go-mono.com/archive/1.2.4">1.2.4</a>,
+	<a href="http://www.go-mono.com/archive/1.2.5">1.2.5</a>,
+	<a href="http://www.go-mono.com/archive/1.2.6">1.2.6</a> and
+	<a href="http://www.go-mono.com/archive/1.9">1.9</a>.
+
+<a name="changes"/>
+<h2>Major Highlights</h2>
+
+	<p>Between the release of 1.9 and 1.9.1 more than 15 bugs
+	were fixed.
+	
+<a name="changes">
+<h2>Runtime Engine</h2>
+
+	<p>G_DECL fixes: bnc#375188, bnc#375107
+
+<h2>C# Compiler</h2>
+
+	<p>Microsoft.CSharp: Emit bodyless getters and setters
+	for abstract properties
+	
+<h2>ASP.NET/xsp</h2>
+
+	<p>Don't output a date header from System.Web, let xsp do it
+
+	<p>Bug fixes: #376352, #371581, #379890, #379888, #377904 #363404
+
+<h2>System.XML/System.Web.Services</h2>
+
+	<p>Fix an issue with Groupwise WSDL (#336739)
+
+<h2>Mono.Mozilla/gluezilla</h2>
+
+	<p>Support more than one browser widget per application
+
+<h2>Windows.Forms</h2>
+
+	<p>Finish implementation for EventsTab and PropertiesTab
+
+	<p>Fix keyboard layout issue
+
+	<p>MenuAPI fixes (bugs #357638, #378721 and #379570)
+
+<h2>System.Design</h2>
+
+	<p>Cache editor widget instead of creating it each time
+
+	<p>Several bugfixes: #374334, #375786, #372264
+	
+<h2>Class Libraries</h2>
+
+	<p>System.Text: Fix possible integer overflow
+
+	<p>System.Net.Mail: Fix #366947 for filename handling
+
+<a name="install">
+<h1>Installing Mono 1.9.1</h1>
+	
+	<pre class="shell">
+	
+	$ ./configure --prefix=/devel
+	</pre>
+
+	<p><b>Binary Packages and Source Code Downloads:</b>
+	<blockquote>
+	<p>Source code and pre-compiled packages for Linux, Solaris,
+	MacOS X and Windows is available from our web site from the <a
+	href="http://www.mono-project.com/Downloads">download</a>
+	section.
+
+	</blockquote>
+
+	<p><b>Quick source code installation:</b>
+        
+	 <blockquote>
+	 <p>If we have no packages for your platform, installing from
+	 source code is very simple.
+	
+	 <p>mono:</p>
+	
+	<pre class="shell">
+	
+    $ tar xjf mono-1.9.1.tar.bz2
+    $ cd mono-1.9.1
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+
+	<p>Then compile libgdiplus:
+	
+	<pre class="shell">
+	
+    $ tar xzf libgdiplus-1.9.tar.bz2
+    $ cd libgdiplus-1.9
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+	</blockquote>
+		
+</blockquote>
+	
+<!--<h1>Contributors:</h1>
+
+	Luke Page, James Purcell, Srikanth Madikeri
+  -->
