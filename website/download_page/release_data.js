@@ -20,7 +20,7 @@ var data =
 			{
 				"name" : "Mono 1.9.1",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 10.3 VMWare image which includes Mono 1.9 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-1.9.1_openSUSE-10.3.i686-4.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-1.9.1_openSUSE-10.3.i686-4.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
+				"downloadText" : "Download the openSUSE 10.3 VMWare image which includes Mono 1.9.1 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-1.9.1_openSUSE-10.3.i686-4.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-1.9.1_openSUSE-10.3.i686-4.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
 			}
 			]
 		}
