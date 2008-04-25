@@ -11,7 +11,6 @@ USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
 	mono
-	olive
 	monodoc
 	xsp
 )
@@ -46,7 +45,7 @@ POSTBUILD_STEP_NAME1="plugin-1.0-ffmpeg"
 POSTBUILD_STEP1 () {
 	curl -s http://build.mono.lab.novell.com/~builder/moon-ffmpeg.tar.bz2 | tar xj
 	pushd moon-ffmpeg
-	./configure --enable-gpl --disable-muxers --disable-encoders #--disable-demuxers --disable-parsers --disable-bsfs --disable-protocols --disable-decoders --enable-decoder=wmv1 --enable-decoder=wmv2 --enable-decoder=wmv3 --enable-decoder=vc1 --enable-decoder=wmva1 --enable-decoder=wmva2 --enable-decoder=mp3
+	./configure --disable-muxers --disable-encoders --disable-demuxers --disable-parsers --disable-bsfs --disable-protocols #--disable-decoders --enable-decoder=wmv1 --enable-decoder=wmv2 --enable-decoder=wmv3 --enable-decoder=vc1 --enable-decoder=wmva1 --enable-decoder=wmva2 --enable-decoder=mp3
 	make
 	popd
 
