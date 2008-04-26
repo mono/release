@@ -6,8 +6,8 @@ License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL)
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 URL:            http://go-mono.org/
-Version:	1.2.6
-Release:	0.novell
+Version:	1.9.1
+Release:	0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
 
@@ -62,28 +62,54 @@ Recommends:	libgluezilla0
 %endif
 %endif
 
-BuildRequires:	glib2-devel 
+BuildRequires:	glib2-devel
+
+#######  distro specific changes  ########
+#####
 
 #### suse options ####
 %if 0%{?suse_version}
 
 # For some reason these weren't required in 10.2 and before... ?
-%if %{suse_version} > 1020
+%if %{suse_version} >= 1030
 BuildRequires: bison
 # Add valgrind support for 10.3 and above on archs that have it
 %ifarch %ix86 x86_64 ppc ppc64
 BuildRequires:  valgrind-devel
 %endif
+%endif
 
+%if %{suse_version} >= 1020
+BuildRequires: xorg-x11-libX11
+%endif
+
+%if %{sles_version} == 10
+BuildRequires: xorg-x11-devel
+%endif
+
+%if %{suse_version} == 1010
+BuildRequires: xorg-x11-devel
 %endif
 
 %if %{sles_version} == 9
 %define configure_options export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/gnome/%_lib/pkgconfig
-BuildRequires: pkgconfig
+BuildRequires: pkgconfig XFree86-libs XFree86-devel
 %endif
 
 %endif
 
+# Fedora x11
+%if 0%{?fedora_version}
+BuildRequires:	libX11
+%endif
+
+# rhel x11
+%if 0%{?rhel_version}
+BuildRequires:	libX11
+%endif
+
+#####
+#######  End of distro specific changes  ########
 
 # Why was this needed?
 %ifarch s390 s390x

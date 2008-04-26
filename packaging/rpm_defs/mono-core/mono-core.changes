@@ -1,4 +1,48 @@
 -------------------------------------------------------------------
+Fri Apr 25 10:23:23 MST 2008 - wberrier@suse.de
+
+- Make sure x11 headers/libs are installed so that 
+  /etc/mono/config has correct link to libX11.so.6.
+  Fixes (bnc#368436)
+
+-------------------------------------------------------------------
+Tue Apr 22 10:23:23 MST 2008 - wberrier@suse.de
+
+- Update to 1.9.1 (bugfix release)
+ -G_DECL fixes
+ -Microsoft.CSharp: Emit bodyless getters and setters for abstract 
+  properties
+ -ASP.NET: Don't output a date header from System.Web
+ -Fix an issue with Groupwise WSDL
+ -Mono.Mozilla: Support more than one browser widget per 
+  application Windows.Forms
+ -Winforms:
+  -Finish implementation for EventsTab and PropertiesTab
+  -Fix keyboard layout issue
+  -MenuAPI fixes
+ -System.Design: Cache editor widget instead of creating it each 
+  time
+ -System.Text: Fix possible integer overflow
+ -System.Net.Mail: Fix filename handling
+
+-------------------------------------------------------------------
+Fri Apr 11 15:45:33 CEST 2008 - schwab@suse.de
+
+- Work around broken configure script.
+
+-------------------------------------------------------------------
+Fri Apr 11 10:00:20 CEST 2008 - aj@suse.de
+
+- glibc does not define ARG_MAX anymore, use sysconf (_SC_ARG_MAX)
+  instead.
+
+-------------------------------------------------------------------
+Thu Apr 10 12:54:45 CEST 2008 - ro@suse.de
+
+- added baselibs.conf file to build xxbit packages
+  for multilib support
+
+-------------------------------------------------------------------
 Tue Mar 25 17:23:23 MST 2008 - wberrier@suse.de
 
 - Filelist changes for System.Xml.Linq and Mono.Web
