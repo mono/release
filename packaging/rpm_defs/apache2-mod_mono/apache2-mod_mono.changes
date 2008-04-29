@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 29 15:16:28 MST 2008 - wberrier@suse.de
+
+- Fix .conf and apxs file location for redhat/fedora
+
+-------------------------------------------------------------------
 Tue Mar 25 15:16:28 MST 2008 - wberrier@suse.de
 
 - Update to 1.9

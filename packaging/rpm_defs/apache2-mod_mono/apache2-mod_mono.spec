@@ -5,14 +5,16 @@
 #  (Is this going to cause grief later... ?)
 %if 0%{?fedora_version} || 0%{?rhel_version}
 Name:		mod_mono
+%define apxs /usr/sbin/apxs
+%define apache2_sysconfdir %(%{apxs} -q SYSCONFDIR)/../conf.d
 %else
 Name:           apache2-mod_mono
+%define apxs /usr/sbin/apxs2
+%define apache2_sysconfdir %(%{apxs} -q SYSCONFDIR)/conf.d
 Obsoletes:	mod_mono
 %endif
 
 %define modname mod_mono
-%define apxs /usr/sbin/apxs2
-%define apache2_sysconfdir %(%{apxs} -q SYSCONFDIR)
 %define apache2_libexecdir %(%{apxs} -q LIBEXECDIR)
 %define apache_mmn        %(MMN=$(%{apxs} -q LIBEXECDIR)_MMN; test -x $MMN && $MMN)
 
@@ -70,7 +72,7 @@ To load the module into Apache, run the command "a2enmod mono" as root.
 make
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT APXS_SYSCONFDIR="%{apache2_sysconfdir}/conf.d"
+make install DESTDIR=$RPM_BUILD_ROOT APXS_SYSCONFDIR="%{apache2_sysconfdir}"
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -78,7 +80,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %{apache2_libexecdir}/*
-%{apache2_sysconfdir}/conf.d/*
+%{apache2_sysconfdir}/*
 %{_mandir}/man8/mod_mono.8*
 
 %changelog
