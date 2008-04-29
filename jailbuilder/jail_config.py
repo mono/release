@@ -103,7 +103,7 @@ required_rpms = {
 		autoconf
 		automake
 		avahi
-		dbus-1-glib-devel
+		dbus-1-devel
 		dos2unix
 		esound-devel
 		file
