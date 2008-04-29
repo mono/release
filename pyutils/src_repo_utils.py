@@ -31,6 +31,8 @@ class svn:
 		# Even this won't be used when using svn:// protocol, it won't hurt
 		self.svn_env = "SVN_SSH='ssh %s'" % self.ssh_options
 
+		self.svn_options = config.svn_options
+
 		self.last_access = 0
 		self.min_wait = min_wait
 		self.debug = debug
@@ -65,7 +67,7 @@ class svn:
 		"""
 
 		self.regulator()
-		code, output = utils.launch_process('%s svn ls %s -v' % ( self.svn_env, self.root ), print_output=0, output_timeout=output_timeout )
+		code, output = utils.launch_process('%s svn %s ls %s -v' % ( self.svn_env, self.svn_options, self.root ), print_output=0, output_timeout=output_timeout )
 
 		versions = []
 		for line in output.split('\n'):
@@ -99,7 +101,7 @@ class svn:
 			dirname = os.path.dirname(item)
 			module = os.path.basename(item)
 
-			command = '%s svn ls %s/%s %s -v' % ( self.svn_env, self.root , dirname, rev_arg)
+			command = '%s svn %s ls %s/%s %s -v' % ( self.svn_env, self.svn_options, self.root , dirname, rev_arg)
 			self.debug_print("Command: " + command)
 
 			# Cache output for this command, should lessen load from svn server

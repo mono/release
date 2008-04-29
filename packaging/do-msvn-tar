@@ -75,7 +75,7 @@ else:
 # use the key in /usr/share/ximian-build-system/conf/ssh
 # This needs to be exported to the environment
 SVN_SSH = "ssh -i %s/distro_source_key %s " % (temp_dir, config.ssh_options)
-SVNEXPORT = "svn export -q " + rev_arg
+SVNEXPORT = "svn %s export -q %s" % (config.svn_options, rev_arg)
 MONO_ROOT = config.MONO_ROOT
 SVN_PATHS = ":".join(svn_paths)
 VERSION = version
@@ -169,7 +169,7 @@ else:
 		if os.path.exists("%s/%s" % (cache_dir, module)):
 
 			# Get current state of checkout
-			command = "cd %s/%s; svn info" % (cache_dir, module)
+			command = "cd %s/%s; svn %s info" % (cache_dir, module, config.svn_options)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
 			exit_on_error(command, status, output, exit_code=1)
 
@@ -182,13 +182,13 @@ else:
 			old_mono_host = stuff[0] + "://" + stuff[1]
 			stuff = urlparse.urlparse(MONO_ROOT)
 			new_mono_host = stuff[0] + "://" + stuff[1]
-			command = "cd %s/%s; svn switch --relocate %s %s" % (cache_dir, module, old_mono_host, new_mono_host)
+			command = "cd %s/%s; svn %s switch --relocate %s %s" % (cache_dir, module, config.svn_options, old_mono_host, new_mono_host)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
 			exit_on_error(command, status, output, exit_code=1)
 
 			# Update svn to the specific revision
 			# svn switch  (will update if the path in the working copy hasn't changed, this ensures have the right path)
-			command = 'cd %s/%s; svn switch %s %s/%s' % (cache_dir, module, rev_arg, MONO_ROOT, path)
+			command = 'cd %s/%s; svn %s switch %s %s/%s' % (cache_dir, module, config.svn_options, rev_arg, MONO_ROOT, path)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1, print_output=0 )
 			# TODO: exit with retry when ssh/svn errors happen
 			exit_on_error(command, status, output, exit_code=1)
@@ -218,7 +218,7 @@ else:
 			# create cache dir
 			if not os.path.exists(cache_dir): distutils.dir_util.mkpath(cache_dir)
 			#check out working copy
-			command = "cd %s; svn checkout -q %s %s/%s" % (cache_dir, rev_arg, MONO_ROOT, path)
+			command = "cd %s; svn %s checkout -q %s %s/%s" % (cache_dir, config.svn_options, rev_arg, MONO_ROOT, path)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
 			# TODO: exit with retry when ssh/svn errors happen
 			exit_on_error(command, status, output, exit_code=1, exit_msg=failure_message)
@@ -226,12 +226,12 @@ else:
 		#print "----------------------------------------------------------------"
 		#print "-----  Revision details pertaining to the last commit only -----"
 		# Get the log message of the last commit
-		command = 'cd %s/%s; svn log --limit 1' % (cache_dir, module)
+		command = 'cd %s/%s; svn %s log --limit 1' % (cache_dir, module, config.svn_options)
 		(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
 		exit_on_error(command, status, output, exit_code=1)
 
 		# Show diff of this commit piped through diffstat
-		command = 'cd %s/%s; svn diff -r PREV | diffstat -p0' % (cache_dir, module)
+		command = 'cd %s/%s; svn %s diff -r PREV | diffstat -p0' % (cache_dir, module, config.svn_options)
 		(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
 		exit_on_error(command, status, output, exit_code=1)
 		print ""
