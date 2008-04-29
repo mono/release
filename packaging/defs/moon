@@ -13,6 +13,10 @@ suse_101_i586_RPM_DEPS=(
 	http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
 )
 
+suse_101_x86_64_RPM_DEPS=(
+	http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
+)
+
 MONO_DEPS=(
 	mono
 	monodoc
