@@ -137,6 +137,7 @@ required_rpms = {
 		libxslt-devel
 		make
 		makedev
+		mDNSResponder-devel
 		ncurses-devel
 		patch
 		perl-XML-LibXML

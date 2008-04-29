@@ -1,0 +1,36 @@
+BUILD_HOSTS=(
+	suse-101-i586
+)
+
+USE_HOSTS=(
+	ALL
+)
+
+MONO_DEPS=(
+	mono
+	monodoc
+)
+
+HEAD_PATH=(
+        trunk/Mono.Zeroconf
+)
+
+RELEASE_PATH=(
+        tags/Mono.Zeroconf-[[versiondot]]
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+update_version_file () {
+        sed -i "s/\(AC_INIT(\[.*\], *\[\).*\(\])\)/\1$VERSION\2/" configure.ac
+}
+
+make_dist () {
+	. /etc/profile
+	# disabling avahi is ok since this is only building a tarball
+	./autogen.sh --disable-avahi
+	make dist-bzip2
+}
+

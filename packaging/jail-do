@@ -79,5 +79,6 @@ elif action == "copy_from":
 	sys.exit(1)
 else:
 	print "Unknown action: " + action
+	usage()
 	sys.exit(1)
 
