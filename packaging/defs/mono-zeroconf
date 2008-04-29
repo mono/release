@@ -11,6 +11,13 @@ MONO_DEPS=(
 	monodoc
 )
 
+RPM_DEPS=(
+)
+
+suse_101_i586_RPM_DEPS=(
+	http://download.opensuse.org/distribution/SL-10.1/inst-source/suse/i586/avahi-mono-0.6.5-27.i586.rpm
+)
+
 HEAD_PATH=(
         trunk/Mono.Zeroconf
 )

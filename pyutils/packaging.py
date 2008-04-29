@@ -364,6 +364,20 @@ class package:
 		else:
 			return []
 
+	def get_rpm_deps(self):
+		"""
+		Collect RPM_DEPS from the def file.  This is intended to only use with mono related packages.  
+		Large lists of packages should remain in jail_config.py.
+		"""
+
+		deps = []
+		name_underscored = self.package_env.name.replace("-", "_")
+		name_underscored += "_RPM_DEPS"
+		if self.info.has_key(name_underscored):
+			deps += self.info[name_underscored]
+
+		return deps
+
 	def get_files(self, ext=['rpm', 'zip'], fail_on_missing=True):
 		"""call get_files_relpath, then append basepath to the front."""
 
@@ -539,10 +553,14 @@ class package:
 				files += [ url_dest + os.sep + os.path.basename(url) ]
 				utils.get_url(url, url_dest)
 
+			# Get rpm deps
+			urls += self.get_rpm_deps()
+
 		# Get url files
 		urls = self.get_distro_zip_deps()
 		if zip_runtime_deps:
 			urls += self.get_distro_zip_runtime_deps()
+		urls += self.get_rpm_deps()
 		for url in urls:
 			files += [ url_dest + os.sep + os.path.basename(url) ]
 			utils.get_url(url, url_dest)

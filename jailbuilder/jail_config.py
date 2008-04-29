@@ -102,6 +102,7 @@ required_rpms = {
 		apache2-prefork
 		autoconf
 		automake
+		avahi
 		dos2unix
 		esound-devel
 		file
