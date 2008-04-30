@@ -9,11 +9,7 @@ BUILD_HOSTS=(
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
-suse_101_i586_RPM_DEPS=(
-	http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
-)
-
-suse_101_x86_64_RPM_DEPS=(
+suse_101_noarch_RPM_DEPS=(
 	http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
 )
 

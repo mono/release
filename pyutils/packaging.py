@@ -153,6 +153,7 @@ class buildconf:
 			print "%s is not a valid conf name, example: suse-93-i586" % self.name
 			sys.exit(1)
 
+		self.info['specific_arch'] = self.info['arch']
 		if re.compile(r'i[35]86').search(self.info['arch']): self.info['arch'] = 'x86'
 
 		### OS, OS_TYPE, OS_SUBTYPE ###
@@ -375,6 +376,15 @@ class package:
 		name_underscored += "_RPM_DEPS"
 		if self.info.has_key(name_underscored):
 			deps += self.info[name_underscored]
+
+		# System wide noarch
+		if self.info.has_key('noarch_RPM_DEPS'):
+			deps += self.info['noarch_RPM_DEPS']
+
+		# distro wide noarch
+		distro_noarch = name_underscored.replace(self.package_env.info['specific_arch'], "noarch")
+		if self.info.has_key(distro_noarch):
+			deps += self.info[distro_noarch]
 
 		return deps
 
