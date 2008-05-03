@@ -168,6 +168,12 @@ else:
 		# Do we have a working copy already?
 		if os.path.exists("%s/%s" % (cache_dir, module)):
 
+			# Experiment: run svn cleanup to clear up frozen commands... this SHOULD be safe... ?
+			#  (Can't run --non-interactive on this command...)
+			command = "cd %s/%s; svn cleanup" % (cache_dir, module)
+			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
+			exit_on_error(command, status, output, exit_code=1)
+
 			# Get current state of checkout
 			command = "cd %s/%s; svn %s info" % (cache_dir, module, config.svn_options)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
@@ -183,12 +189,6 @@ else:
 			stuff = urlparse.urlparse(MONO_ROOT)
 			new_mono_host = stuff[0] + "://" + stuff[1]
 			command = "cd %s/%s; svn %s switch --relocate %s %s" % (cache_dir, module, config.svn_options, old_mono_host, new_mono_host)
-			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
-			exit_on_error(command, status, output, exit_code=1)
-
-			# Experiment: run svn cleanup to clear up frozen commands... this SHOULD be safe... ?
-			#  (Can't run --non-interactive on this command...)
-			command = "cd %s/%s; svn cleanup" % (cache_dir, module)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
 			exit_on_error(command, status, output, exit_code=1)
 

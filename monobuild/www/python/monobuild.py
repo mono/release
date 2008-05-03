@@ -57,16 +57,16 @@ def index(req, **vars):
 	
 	<h3>Legend</h3>
 	<div>
-	<table class=legend>
+	<table class="legend">
 
 	<tbody>
 	<tr>
-	<th class=inprogress>In Progress</th>
-	<th class=success>Success</th>
-	<th class=failure>Failed</th>
-	<th class=testfailure>Tests Failed</th>
-	<th class=timeout>Timed Out</th>
-	<th class=new>New</th>
+	<th class="inprogress">In Progress</th>
+	<th class="success">Success</th>
+	<th class="failure">Failed</th>
+	<th class="testfailure">Tests Failed</th>
+	<th class="timeout">Timed Out</th>
+	<th class="new">New</th>
 	</tr>
 	</tbody>
 	</table>
@@ -136,18 +136,18 @@ def index(req, **vars):
 					state2 = info['state'][revision2]
 
 				if revision2:
-					req.write("<td class=%s>" % state2)
-					req.write("<center><table class=%s><tr><td>" % (state))
+					req.write('<td class="%s">' % state2)
+					req.write('<center><table class="%s"><tr><td>' % (state))
 					req.write(link)
 					req.write("</td></tr></table></center>")
 					req.write("</td>\n")
 				else:
-					req.write("<td class=%s>" % state)
+					req.write('<td class="%s">' % state)
 					req.write(link)
 					req.write("</td>\n")
 
 			else:
-				req.write("<td class=new>")
+				req.write('<td class="new">')
 				req.write("</td>\n")
 
 		req.write("</tr>\n")
@@ -195,18 +195,18 @@ def index(req, **vars):
 
 					# if there's a previous version, print a container table
 					if version2:
-						req.write("<td class=%s>" % state2)
-						req.write("<center><table class=%s><tr><td>" % (state))
+						req.write('<td class="%s">' % state2)
+						req.write('<center><table class="%s"><tr><td>' % (state))
 						req.write(link)
 						req.write("</td></tr></table></center>")
 						req.write("</td>\n")
 					else:
-						req.write("<td class=%s>" % state)
+						req.write('<td class="%s">' % state)
 						req.write(link)
 						req.write("</td>\n")
 				
 				else:
-					req.write("<td class=notused>")
+					req.write('<td class="notused">')
 					req.write("</td>\n")
 
 			req.write("</tr>\n")
