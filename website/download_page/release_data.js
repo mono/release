@@ -195,7 +195,7 @@ var data =
 				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
-		},
+		}
 		]
 	},
 
