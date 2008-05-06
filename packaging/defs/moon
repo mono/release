@@ -13,6 +13,16 @@ suse_101_noarch_RPM_DEPS=(
 	http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
 )
 
+suse_101_i586_RPM_DEPS=(
+	http://download.opensuse.org/repositories/home:/ajorgensen:/mozilla/SLE_10/i586/mozilla-xulrunner190-1.8.99.5-5.1.i586.rpm
+	http://download.opensuse.org/repositories/home:/ajorgensen:/mozilla/SLE_10/i586/mozilla-xulrunner190-devel-1.8.99.5-5.1.i586.rpm
+)
+
+suse_101_x86_64_RPM_DEPS=(
+	http://download.opensuse.org/repositories/home:/ajorgensen:/mozilla/SLE_10/x86_64/mozilla-xulrunner190-1.8.99.5-5.1.x86_64.rpm
+	http://download.opensuse.org/repositories/home:/ajorgensen:/mozilla/SLE_10/x86_64/mozilla-xulrunner190-devel-1.8.99.5-5.1.x86_64.rpm
+)
+
 MONO_DEPS=(
 	mono
 	monodoc
@@ -81,41 +91,82 @@ POSTBUILD_STEP3 () {
 
 	make distclean
 	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
-	./configure --without-mono-runtime --enable-user-plugin --with-ffmpeg
+	./configure --without-mono --enable-user-plugin --with-ffmpeg
 	make
 	target=$build_location/steps/plugin-1.0-ffmpeg
 	mkdir -p $target
 	cp plugin/novell-moonlight*.xpi $target/
 }
 
-POSTBUILD_STEP_NAME4="plugin-1.1-ffmpeg"
+POSTBUILD_STEP_NAME4="plugin-1.0-ffmpeg-xul-1.9"
 POSTBUILD_STEP4 () {
 	make distclean
 	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
-	./configure --enable-user-plugin --with-ffmpeg
+	./configure --without-mono --enable-user-plugin --with-ffmpeg --with-ff3
 	make
-	target=$build_location/steps/plugin-1.1-ffmpeg
+	target=$build_location/steps/plugin-1.0-ffmpeg-xul-1.9
 	mkdir -p $target
 	cp plugin/novell-moonlight*.xpi $target/
 }
 
-POSTBUILD_STEP_NAME5="plugin-1.0"
+POSTBUILD_STEP_NAME5="plugin-2.0-ffmpeg"
 POSTBUILD_STEP5 () {
 	make distclean
-	./configure --enable-user-plugin --without-ffmpeg --without-mono-runtime
+	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
+	./configure --enable-user-plugin --with-ffmpeg
+	make
+	target=$build_location/steps/plugin-2.0-ffmpeg
+	mkdir -p $target
+	cp plugin/novell-moonlight*.xpi $target/
+}
+
+POSTBUILD_STEP_NAME6="plugin-2.0-ffmpeg-xul-1.9"
+POSTBUILD_STEP6 () {
+	make distclean
+	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
+	./configure --enable-user-plugin --with-ffmpeg --with-ff3
+	make
+	target=$build_location/steps/plugin-2.0-ffmpeg-xul-1.9
+	mkdir -p $target
+	cp plugin/novell-moonlight*.xpi $target/
+}
+
+POSTBUILD_STEP_NAME7="plugin-1.0"
+POSTBUILD_STEP7 () {
+	make distclean
+	./configure --without-mono --enable-user-plugin --without-ffmpeg
 	make
 	target=$build_location/steps/plugin-1.0
 	mkdir -p $target
 	cp plugin/novell-moonlight*.xpi $target/
 }
 
-POSTBUILD_STEP_NAME6="plugin-1.1"
-POSTBUILD_STEP6 () {
+POSTBUILD_STEP_NAME8="plugin-1.0-xul-1.9"
+POSTBUILD_STEP8 () {
 	make distclean
-	./configure --enable-user-plugin --without-ffmpeg
+	./configure --without-mono --enable-user-plugin --without-ffmpeg --with-ff3
 	make
-	target=$build_location/steps/plugin-1.1
+	target=$build_location/steps/plugin-1.0-xul-1.9
 	mkdir -p $target
 	cp plugin/novell-moonlight*.xpi $target/
 }
 
+POSTBUILD_STEP_NAME9="plugin-2.0"
+POSTBUILD_STEP9 () {
+	make distclean
+	./configure --enable-user-plugin --without-ffmpeg
+	make
+	target=$build_location/steps/plugin-2.0
+	mkdir -p $target
+	cp plugin/novell-moonlight*.xpi $target/
+}
+
+POSTBUILD_STEP_NAME10="plugin-2.0-xul-1.9"
+POSTBUILD_STEP10 () {
+	make distclean
+	./configure --enable-user-plugin --without-ffmpeg --with-ff3
+	make
+	target=$build_location/steps/plugin-2.0-xul-1.9
+	mkdir -p $target
+	cp plugin/novell-moonlight*.xpi $target/
+}
