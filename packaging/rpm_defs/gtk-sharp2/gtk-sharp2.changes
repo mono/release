@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Thu Apr 24 15:49:10 MST 2008 - wberrier@suse.de
+
+- Update to 2.12.1
+
+ * Bugfix in GLib ref management for Gnome.Program crash in 
+   gnome-sharp
+ * Enhanced Null-terminated string array marshaling
+ * Bugfixes for Pango.AttrList
+ * Added missing virtual methods and some reference management 
+   fixes in Atk
+ * Bugfix for crash in Gtk.KeySnoopFunc delegate marshaling
+ * PrintOperation cairo context reference management fix
+
+-------------------------------------------------------------------
+Thu Apr 10 12:54:45 CEST 2008 - ro@suse.de
+
+- added baselibs.conf file to build xxbit packages
+  for multilib support
+
+-------------------------------------------------------------------
 Wed Apr  2 16:49:10 MST 2008 - wberrier@suse.de
 
 - Packaging updates to allow building of 2.12.0, and still build

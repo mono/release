@@ -21,7 +21,7 @@ Patch5:		gnome-sharp-revert_unportable_relocatable.patch
 %define old_version 2.4.3
 %define new_version 2.8.5
 %define new_split_version 2.10.4
-%define two_twelve_version 2.12.0
+%define two_twelve_version 2.12.1
 
 #####  suse  ####
 %if 0%{?suse_version}
@@ -53,11 +53,8 @@ Patch5:		gnome-sharp-revert_unportable_relocatable.patch
 BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel
 %endif
 
-# Wow, gtkhtml2-devel wasn't shipped in sles10, but it's in sled10... what to do?  Just build on 10.1, and that's it?
-#  10.1's support will run out before sle10... at that point, drop 10.1, and package sled10 and sles10 separately
-#  Update: sle10 will be fixed to have gtkhtml2-devel after sp1, at that point, no need to build on 10.1 anymore, right?
 %if %sles_version == 10
-BuildRequires:	%{new_suse_buildrequires}
+BuildRequires:	%{new_suse_buildrequires} gnome-panel-nld-devel -gnome-panel-devel
 %endif
 
 %if %suse_version == 1010
