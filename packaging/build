@@ -228,7 +228,8 @@ LOGFILE = os.path.join(config.build_info_dir, build_info.rel_files_dir, 'logs', 
 log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
 build_info.update_step("install-deps", state="inprogress", log=os.path.basename(log_obj.full_path), start=utils.get_time(), finish="")
 
-if install_release_packages:
+# This can be specified either on the command line or in the def file
+if install_release_packages or package.get_info_var("INSTALL_RELEASE_PACKAGES"):
 	install_deps_H_or_R = "RELEASE"
 	print "Overriding to use release packages..."
 else:
