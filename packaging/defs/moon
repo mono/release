@@ -60,7 +60,7 @@ POSTBUILD_STEP1 () {
 	Xvfb -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
 	DISPLAY=:3 make run-tests
-	kill $DBUS_SESSION_BUS_PID
+	kill -TERM $DBUS_SESSION_BUS_PID
 	kill %1
 
 	target=$build_location/steps/test
@@ -74,7 +74,7 @@ POSTBUILD_STEP2 () {
 	Xvfb -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
 	DISPLAY=:3 make MS_DRTLIST=$(pwd)/port/drop1030/built/drtlist.xml run-ms-tests
-	kill $DBUS_SESSION_BUS_PID
+	kill -TERM $DBUS_SESSION_BUS_PID
 	kill %1
 
 	target=$build_location/steps/ms-test
