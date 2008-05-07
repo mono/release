@@ -45,6 +45,9 @@ USE_HOSTS=(
 	suse-103-i586
 	suse-103-ppc
 	suse-103-x86_64
+        suse-110-i586
+        suse-110-ppc
+        suse-110-x86_64
 	win-4-i386
 )
 
@@ -371,7 +374,7 @@ POSTBUILD_STEP_NAME6="test-swf"
 POSTBUILD_STEP6 () {
 	#TEST_HARNESS_VERBOSE=1
 	#export TEST_HARNESS_VERBOSE
-	DISPLAY=x64-linux-2.mono.lab.novell.com:1
+	DISPLAY=x32-linux-1.mono.lab.novell.com:1
 	export DISPLAY
 
 	failure=0
@@ -556,7 +559,7 @@ CLEAN_UP () {
 
 	# These tend to get left around on win32... ?
 	if test x$DISTRO = xwin-4-i386 ; then
-		/home/builder/bin/Process.exe   -k mono.exe || true
+		taskkill /F /T /IM mono.exe || true
 	fi
 
 }

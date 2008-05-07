@@ -19,6 +19,9 @@ USE_HOSTS=(
 	suse-103-i586
 	suse-103-ppc
 	suse-103-x86_64
+        suse-110-i586
+        suse-110-ppc
+        suse-110-x86_64
 )
 
 MONO_DEPS=(
