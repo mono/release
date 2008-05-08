@@ -1,5 +1,9 @@
 2008-05-08  Everaldo Canuto <ecanuto@novell.com>
 
+	* Upgrade to Mono 1.9.1.
+	
+2008-05-08  Everaldo Canuto <ecanuto@novell.com>
+
 	* maemo/debs/maemo-sharp: maemo-sharp debian packages added.
 
 	* gar.conf.mk: Upgrade maemo-sharp release to 0.23.

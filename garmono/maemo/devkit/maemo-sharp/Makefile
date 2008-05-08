@@ -1,7 +1,7 @@
 GARNAME    = maemo-sharp
 CATEGORIES = maemo/devkit
 GARVERSION = $(MAEMOSHARP_VERSION)
-DISTFILES  = $(GARNAME)-$(GARVERSION).tar.gz
+DISTFILES  = $(GARNAME)-$(GARVERSION).tar.bz2
 
 DEPENDS  = maemo/devkit/mono
 DEPENDS += maemo/devkit/gtk-sharp
