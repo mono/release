@@ -133,3 +133,8 @@ table.legend td {
 	width: 10em;
 	padding: 1em;
 }
+
+table.packagestatus th {
+	text-align:left;
+}
+

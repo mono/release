@@ -129,7 +129,7 @@ def index(req, **vars):
 				revision = info['revisions'][0]
 				state = info['state'][revision]
 
-				link = "<a href='%s/tarball_logs/%s/%s/%s.log'>%s</a>" % (config.web_root_url, HEAD_or_RELEASE, package.name, revision, revision)
+				link = '<a href="%s/tarball_logs/%s/%s/%s.log">%s</a>' % (config.web_root_url, HEAD_or_RELEASE, package.name, revision, revision)
 
 				if len(info['revisions']) > 1:
 					revision2 = info['revisions'][1]
@@ -191,7 +191,7 @@ def index(req, **vars):
 						state = "new"
 						link = ""
 					else:
-						link = "<a href='%s/packagestatus?platform=%s&amp;package=%s&amp;HEAD_or_RELEASE=%s'>%s</a>" % ( scriptname, platform_name, package.name, HEAD_or_RELEASE, version)
+						link = '<a href="%s/packagestatus?platform=%s&amp;package=%s&amp;HEAD_or_RELEASE=%s">%s</a>' % ( scriptname, platform_name, package.name, HEAD_or_RELEASE, version)
 
 					# if there's a previous version, print a container table
 					if version2:
@@ -293,9 +293,9 @@ def packagestatus(req, **vars):
 		# Print out links...
 		if show_links:
 			if showall:
-				req.write("<p><a href='packagestatus?platform=%s&amp;package=%s&amp;HEAD_or_RELEASE=%s'>Show Latest 10 Builds</a></p>" % (platform, package, HEAD_or_RELEASE) )
+				req.write('<p><a href="packagestatus?platform=%s&amp;package=%s&amp;HEAD_or_RELEASE=%s">Show Latest 10 Builds</a></p>' % (platform, package, HEAD_or_RELEASE) )
 			else:
-				req.write("<p><a href='packagestatus?platform=%s&amp;package=%s&amp;HEAD_or_RELEASE=%s&amp;showall=1'>Show Full Build History</a></p>" % (platform, package, HEAD_or_RELEASE) )
+				req.write('<p><a href="packagestatus?platform=%s&amp;package=%s&amp;HEAD_or_RELEASE=%s&amp;showall=1">Show Full Build History</a></p>' % (platform, package, HEAD_or_RELEASE) )
 
 		for version in versions:
 
@@ -322,7 +322,7 @@ def packagestatus(req, **vars):
 			<h3><a href="%s#%s" name="%s">Build status - %s</a></h3>
 
 			<div>
-			<table>
+			<table class="packagestatus">
 			<tbody>
 			<tr>
 			<th>Build started:</th>
@@ -347,7 +347,7 @@ def packagestatus(req, **vars):
 
 			<h4>Build Steps</h4>
 			<div>
-			<table>
+			<table class="packagestatus">
 			<tbody>""" % (req.unparsed_uri, version, version, version, tz_start, tz_finish, duration, values['buildhost']) )
 
 			# Start through the build steps...	

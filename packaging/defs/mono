@@ -315,12 +315,7 @@ RELEASE_PATH=(
 make_dist () {
 	. /etc/profile
 	./autogen.sh
-	#if [ $HEAD_or_RELEASE == "HEAD" ] ; then
-        #        make dist-zip MCS=mcs RESGEN=resgen
-        #else
-                make dist-bzip2 MCS=mcs RESGEN=resgen
-        #fi
-
+	make dist-bzip2 MCS=mcs RESGEN=resgen
 }
 
 POSTBUILD_STEP_NAME1="test-runtime"
@@ -352,47 +347,270 @@ POSTBUILD_STEP3 () {
 	fi
 }
 
-POSTBUILD_STEP_NAME4="test-profiles"
+POSTBUILD_STEP_NAME4="test-cas"
 POSTBUILD_STEP4 () {
-	#TEST_HARNESS_VERBOSE=1
-	#export TEST_HARNESS_VERBOSE
-	#echo "Skipping..."
-	cd runtime
-	$make_path -k check
-
-}
-
-# TODO:
-# Separate 1.0 and 2.0 profiles into different steps
-POSTBUILD_STEP_NAME5="test-cas"
-POSTBUILD_STEP5 () {
 	cd mono/tests/cas
 	$make_path -k test
 }
 
-POSTBUILD_STEP_NAME6="test-swf"
+POSTBUILD_STEP_NAME5="test-compiler-1.0"
+POSTBUILD_STEP5 () {
+	cd mcs/tests
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME6="test-compiler-2.0"
 POSTBUILD_STEP6 () {
-	#TEST_HARNESS_VERBOSE=1
-	#export TEST_HARNESS_VERBOSE
+	cd mcs/tests
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME7="test-corlib-1.0"
+POSTBUILD_STEP7 () {
+
+	cd mcs/class/corlib
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME8="test-corlib-2.0"
+POSTBUILD_STEP8 () {
+	cd mcs/class/corlib
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME9="test-System-1.0"
+POSTBUILD_STEP9 () {
+	cd mcs/class/System
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME10="test-System-2.0"
+POSTBUILD_STEP10 () {
+	cd mcs/class/System
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME11="test-System_XML-1.0"
+POSTBUILD_STEP11 () {
+	cd mcs/class/System.XML
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME12="test-System_XML-2.0"
+POSTBUILD_STEP12 () {
+	cd mcs/class/System.XML
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME13="test-Mono_Security-1.0"
+POSTBUILD_STEP13 () {
+	cd mcs/class/Mono.Security
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME14="test-Mono_Security-2.0"
+POSTBUILD_STEP14 () {
+	cd mcs/class/Mono.Security
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME15="test-System_Security-1.0"
+POSTBUILD_STEP15 () {
+	cd mcs/class/System.Security
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME16="test-System_Security-2.0"
+POSTBUILD_STEP16 () {
+	cd mcs/class/System.Security
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME17="test-System_Drawing-1.0"
+POSTBUILD_STEP17 () {
 	DISPLAY=x32-linux-1.mono.lab.novell.com:1
 	export DISPLAY
 
-	failure=0
+	cd mcs/class/System.Drawing
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME18="test-System_Drawing-2.0"
+POSTBUILD_STEP18 () {
+	DISPLAY=x32-linux-1.mono.lab.novell.com:1
+	export DISPLAY
 
 	cd mcs/class/System.Drawing
-	$make_path run-test || failure=1
-	$make_path run-test PROFILE=net_2_0 || failure=1
+	$make_path run-test PROFILE=net_2_0
+}
 
-	cd ../Managed.Windows.Forms
-	$make_path run-test || failure=1
-	$make_path run-test PROFILE=net_2_0 || failure=1
+POSTBUILD_STEP_NAME19="test-Windows_Forms-1.0"
+POSTBUILD_STEP19 () {
+	DISPLAY=x32-linux-1.mono.lab.novell.com:1
+	export DISPLAY
 
-	exit $failure
+	cd mcs/class/Managed.Windows.Forms
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME20="test-Windows_Forms-2.0"
+POSTBUILD_STEP20 () {
+	DISPLAY=x32-linux-1.mono.lab.novell.com:1
+	export DISPLAY
+
+	cd mcs/class/Managed.Windows.Forms
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME21="test-System_Data-1.0"
+POSTBUILD_STEP21 () {
+	cd mcs/class/System.Data
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME22="test-System_Data-2.0"
+POSTBUILD_STEP22 () {
+	cd mcs/class/System.Data
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME23="test-Mono_Posix-1.0"
+POSTBUILD_STEP23 () {
+	cd mcs/class/Mono.Posix
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME24="test-Mono_Posix-2.0"
+POSTBUILD_STEP24 () {
+	cd mcs/class/Mono.Posix
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME25="test-System_Web_Services-1.0"
+POSTBUILD_STEP25 () {
+	cd mcs/class/System.Web.Services
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME26="test-System_Web_Services-2.0"
+POSTBUILD_STEP26 () {
+	cd mcs/class/System.Web.Services
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME27="test-System_Runtime_SFS-1.0"
+POSTBUILD_STEP27 () {
+	cd mcs/class/System.Runtime.Serialization.Formatters.Soap
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME28="test-System_Runtime_SFS-2.0"
+POSTBUILD_STEP28 () {
+	cd mcs/class/System.Runtime.Serialization.Formatters.Soap
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME29="test-System_Runtime_Remoting-1.0"
+POSTBUILD_STEP29 () {
+	cd mcs/class/System.Runtime.Remoting
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME30="test-System_Runtime_Remoting-2.0"
+POSTBUILD_STEP30 () {
+	cd mcs/class/System.Runtime.Remoting
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME31="test-Cscompmgd-1.0"
+POSTBUILD_STEP31 () {
+	cd mcs/class/Cscompmgd
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME32="test-Cscompmgd-2.0"
+POSTBUILD_STEP32 () {
+	cd mcs/class/Cscompmgd
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME33="test-Commons_Xml_Relaxng-1.0"
+POSTBUILD_STEP33 () {
+	cd mcs/class/Commons.Xml.Relaxng
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME34="test-Commons_Xml_Relaxng-2.0"
+POSTBUILD_STEP34 () {
+	cd mcs/class/Commons.Xml.Relaxng
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME35="test-System_Messaging-1.0"
+POSTBUILD_STEP35 () {
+	cd mcs/class/System.Messaging
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME36="test-System_Messaging-2.0"
+POSTBUILD_STEP36 () {
+	cd mcs/class/System.Messaging
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME37="test-System_ServiceProcess-1.0"
+POSTBUILD_STEP37 () {
+	cd mcs/class/System.ServiceProcess
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME38="test-System_ServiceProcess-2.0"
+POSTBUILD_STEP38 () {
+	cd mcs/class/System.ServiceProcess
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME39="test-Microsoft_JScript-1.0"
+POSTBUILD_STEP39 () {
+	cd mcs/class/Microsoft.JScript
+	$make_path run-test
+}
+
+POSTBUILD_STEP_NAME40="test-Microsoft_JScript-2.0"
+POSTBUILD_STEP40 () {
+	cd mcs/class/Microsoft.JScript
+	$make_path run-test PROFILE=net_2_0
+}
+
+POSTBUILD_STEP_NAME41="test-profiles"
+POSTBUILD_STEP41 () {
+	#TEST_HARNESS_VERBOSE=1
+	#export TEST_HARNESS_VERBOSE
+	echo "Skipping..."
+	#cd runtime
+	#$make_path -k check
 
 }
 
-POSTBUILD_STEP_NAME7="test-ondotnet"
-POSTBUILD_STEP7 () {
+POSTBUILD_STEP_NAME42="test-results"
+POSTBUILD_STEP42 () {
+
+	mkdir -p test_results
+        target=$build_location/steps/test-results
+        mkdir -p $target
+
+	# Collect xml files
+	for i in $(find . -name "TestResult*.xml") ; do
+		cp $i test_results/$(basename $(dirname $i))-$(basename $i)
+	done
+
+	cp -a mcs/tools/nunitreport/Media $target
+
+	MONO_PATH="mcs/class/lib/net_2_0:$MONO_PATH" runtime/mono-wrapper mcs/tools/nunitreport/nunitreport.exe test_results $target/index.html
+}
+
+POSTBUILD_STEP_NAME43="test-ondotnet"
+POSTBUILD_STEP43 () {
 	if test x$DISTRO = xwin-4-i386 ; then
 
 		OLD_PATH=$PATH
@@ -434,8 +652,8 @@ POSTBUILD_STEP7 () {
 	fi
 }
 
-POSTBUILD_STEP_NAME8="api-diff"
-POSTBUILD_STEP8 () {
+POSTBUILD_STEP_NAME44="api-diff"
+POSTBUILD_STEP44 () {
 
 	if test x$DISTRO = xsles-9-i586 ; then
 		VERSION=1.1
@@ -563,4 +781,5 @@ CLEAN_UP () {
 	fi
 
 }
+
 
