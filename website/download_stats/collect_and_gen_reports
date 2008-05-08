@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Gather ftp (wow, even though we have no links using ftp://, people are using them)
+#  Relatively few... but I think we'll need to rotate our own ftp logs.  Looks like they
+#   only keep a week at a time
+
+# Note: webalizer expects to see these in order... it doesn't like the urls out of order
+
+rsync -avz wberrier@ftp.novell.com:/var/log/proftpd/xferlog* ftp/
+
+rm -f xferlog.total
+echo "Concatenating and filtering ftp logs"
+for i in $(ls -rt ftp/*) ; do
+	cat $i | grep "\/pub\/mono" >> xferlog.total
+done
+
+rm -Rf www_ftp
+mkdir -p www_ftp
+webalizer -c webalizer.conf -F ftp -o www_ftp xferlog.total
+
+# http
+rsync -avz wberrier@ftp.novell.com:/var/log/apache2/access_log* http/
+
+echo "Concatenating and filtering http logs"
+rm -f access_log.total
+for i in $(ls -rt http/*.gz) ; do
+	zcat $i | grep "\/pub\/mono" >> access_log.total
+done
+
+cat http/access_log | grep "\/pub\/mono" >> access_log.total
+
+rm -Rf www_http
+mkdir -p www_http
+webalizer -c webalizer.conf -o www_http access_log.total
+
+# Collect and save stats
+mkdir -p output
+cp -a www_ftp www_http output
+
+./distro_stats.py > output/distro_stats.txt
+
