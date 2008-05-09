@@ -582,18 +582,8 @@ POSTBUILD_STEP40 () {
 	$make_path run-test PROFILE=net_2_0
 }
 
-POSTBUILD_STEP_NAME41="test-profiles"
+POSTBUILD_STEP_NAME41="test-results"
 POSTBUILD_STEP41 () {
-	#TEST_HARNESS_VERBOSE=1
-	#export TEST_HARNESS_VERBOSE
-	echo "Skipping..."
-	#cd runtime
-	#$make_path -k check
-
-}
-
-POSTBUILD_STEP_NAME42="test-results"
-POSTBUILD_STEP42 () {
 
 	mkdir -p test_results
         target=$build_location/steps/test-results
@@ -609,8 +599,8 @@ POSTBUILD_STEP42 () {
 	MONO_PATH="mcs/class/lib/net_2_0:$MONO_PATH" runtime/mono-wrapper mcs/tools/nunitreport/nunitreport.exe test_results $target/index.html
 }
 
-POSTBUILD_STEP_NAME43="test-ondotnet"
-POSTBUILD_STEP43 () {
+POSTBUILD_STEP_NAME42="test-ondotnet"
+POSTBUILD_STEP42 () {
 	if test x$DISTRO = xwin-4-i386 ; then
 
 		OLD_PATH=$PATH
@@ -652,8 +642,8 @@ POSTBUILD_STEP43 () {
 	fi
 }
 
-POSTBUILD_STEP_NAME44="api-diff"
-POSTBUILD_STEP44 () {
+POSTBUILD_STEP_NAME43="api-diff"
+POSTBUILD_STEP43 () {
 
 	if test x$DISTRO = xsles-9-i586 ; then
 		VERSION=1.1
