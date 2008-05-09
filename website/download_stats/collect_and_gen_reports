@@ -6,34 +6,60 @@
 
 # Note: webalizer expects to see these in order... it doesn't like the urls out of order
 
+# check for fastzolver (speeds up reverse dns lookups)
+which fastzolver > /dev/null 2>&1
+
+if [ $? -eq 0 ] ; then
+	run_fastzolver=1
+
+	# Disable dns lookups for webalizer if we have fastzolver
+	dns_threads=0
+else
+	echo "Warning, fastzolver not installed"
+	run_fastzolver=0
+	dns_threads=20
+fi
+
+
+###############################################
+##  Process FTP
 rsync -avz wberrier@ftp.novell.com:/var/log/proftpd/xferlog* ftp/
 
 rm -f xferlog.total
 echo "Concatenating and filtering ftp logs"
 for i in $(ls -rt ftp/*) ; do
-	cat $i | grep "\/pub\/mono" >> xferlog.total
+	cat $i | perl -e "while(<>) { if(/\/pub\/mono/) { print } }" >> xferlog.total
 done
 
 rm -Rf www_ftp
 mkdir -p www_ftp
-webalizer -c webalizer.conf -F ftp -o www_ftp xferlog.total
+webalizer -c webalizer.conf -N $dns_threads -F ftp -o www_ftp xferlog.total
 
-# http
+
+###############################################
+##  Process HTTP
 rsync -avz wberrier@ftp.novell.com:/var/log/apache2/access_log* http/
 
 echo "Concatenating and filtering http logs"
 rm -f access_log.total
 for i in $(ls -rt http/*.gz) ; do
-	zcat $i | grep "\/pub\/mono" >> access_log.total
+	zcat $i | perl -e "while(<>) { if(/\/pub\/mono/) { print } }" >> access_log.total
 done
 
-cat http/access_log | grep "\/pub\/mono" >> access_log.total
+cat http/access_log | perl -e "while(<>) { if(/\/pub\/mono/) { print } }" >> access_log.total
+
+# Run fastzolver if we have it to build up the cache
+#  (note: don't run for ftp, but I don't think fastzolver recognizes the ftp file format)
+if [ $run_fastzolver -eq 1 ] ; then
+	fastzolver -s access_log.total
+fi
 
 rm -Rf www_http
 mkdir -p www_http
-webalizer -c webalizer.conf -o www_http access_log.total
+webalizer -c webalizer.conf -N $dns_threads -o www_http access_log.total
 
-# Collect and save stats
+###############################################
+## Save to output dir and collect distro stats
 mkdir -p output
 cp -a www_ftp www_http output
 
