@@ -95,7 +95,7 @@ POSTBUILD_STEP3 () {
 	make
 	target=$build_location/steps/plugin-1.0-ffmpeg
 	mkdir -p $target
-	cp plugin/novell-moonlight*.xpi $target/
+	cp plugin/install/novell-moonlight*.xpi $target/
 }
 
 POSTBUILD_STEP_NAME4="plugin-2.0-ffmpeg"
@@ -106,7 +106,7 @@ POSTBUILD_STEP4 () {
 	make
 	target=$build_location/steps/plugin-2.0-ffmpeg
 	mkdir -p $target
-	cp plugin/novell-moonlight*.xpi $target/
+	cp plugin/install/novell-moonlight*.xpi $target/
 }
 
 POSTBUILD_STEP_NAME5="plugin-1.0"
@@ -116,7 +116,7 @@ POSTBUILD_STEP5 () {
 	make
 	target=$build_location/steps/plugin-1.0
 	mkdir -p $target
-	cp plugin/novell-moonlight*.xpi $target/
+	cp plugin/install/novell-moonlight*.xpi $target/
 }
 
 POSTBUILD_STEP_NAME6="plugin-2.0"
@@ -126,5 +126,5 @@ POSTBUILD_STEP6 () {
 	make
 	target=$build_location/steps/plugin-2.0
 	mkdir -p $target
-	cp plugin/novell-moonlight*.xpi $target/
+	cp plugin/install/novell-moonlight*.xpi $target/
 }
