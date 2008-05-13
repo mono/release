@@ -197,6 +197,7 @@ sources_ext_re_string = "(" + "|".join(source_extensions).replace(".", "\.") + "
 all_rwx = stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO # 777
 shell_perms = stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH # 755
 data_perms = stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH # 644
+dir_perms = stat.S_IRWXU | stat.S_IRWXG | stat.S_IROTH | stat.S_IXOTH # 775
 
 ######################################
 

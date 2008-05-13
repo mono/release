@@ -310,7 +310,11 @@ class package:
 		# Create the paths if it doesn't exist
 		if not self.inside_jail and self.create_dirs:
 			for path in (dirs):
-				if not os.path.exists(path): distutils.dir_util.mkpath(path)
+				if not os.path.exists(path):
+					distutils.dir_util.mkpath(path, mode=0775)
+					# there's a bug where mode is ignored in mkpath... chmod as well
+					os.chmod(path, config.dir_perms)
+				
 
 	# Used for constructing filenames
 	def get_revision(self, serial):
