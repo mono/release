@@ -1,5 +1,7 @@
 web_index=8
 
+#INSTALL_RELEASE_PACKAGES=1
+
 MKTARBALL_HEAD_DEPS=1
 
 BUILD_HOSTS=(
@@ -45,7 +47,7 @@ HEAD_PATH=(
         trunk/moon
 )
 RELEASE_PATH=(
-        tags/mono-[[version]]/moon
+        tags/moon/[[versiondot]]
 )
 
 update_version_file () {
