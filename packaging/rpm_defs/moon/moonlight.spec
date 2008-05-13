@@ -6,12 +6,13 @@ License:        GNU General Public License (GPL), X11/MIT
 Group:          Development/Languages/Other
 Summary:        Moonlight
 URL:            http://www.mono-project.com/Moonlight
-Version:        0.1
+Version:        0.6
 Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        moon-%{version}.tar.bz2
 ExclusiveArch: %ix86 x86_64
-Requires:       mono-core
+BuildRequires:  mozilla-xulrunner181-devel mozilla-nspr-devel mono-devel gcc-c++ gtk-sharp2 rsvg-sharp2 gtk2-devel alsa-devel monodoc-core
+Requires:       mono-core gtk2 mozilla-xulrunner181
 
 #### suse options ###
 %if 0%{?suse_version}
@@ -51,6 +52,7 @@ Silverlight 1.0 (canvas + browser-based scripting) as well as 1.1 applications
 Summary:        Moonlight libmoon
 Group:          Development/Languages/Other
 Requires:       libmoon = %{version}
+AutoReqProv:    on
 
 %description devel
 libmoon development files
@@ -63,6 +65,7 @@ libmoon development files
 %{_prefix}/lib/pkgconfig/agmono.pc
 %{_prefix}/lib/pkgconfig/silver.pc
 %{_prefix}/lib/pkgconfig/silverdesktop.pc
+%{_prefix}/include/libmoon/*.h
 
 %package tools
 Summary:        Moonlight tools
@@ -122,6 +125,8 @@ Browser plugin for Moonlight
 %{_libdir}/moon/plugin/libmoonloader.so
 %{_libdir}/moon/plugin/libmoonplugin.la
 %{_libdir}/moon/plugin/libmoonplugin.so
+%{_libdir}/moon/plugin/libmoonplugin-*bridge.la
+%{_libdir}/moon/plugin/libmoonplugin-*bridge.so*
 %{_libdir}/moon/plugin/moonlight.exe
 %{_libdir}/browser-plugins/libmoonloader.so
 
@@ -140,7 +145,7 @@ Example programs for Moonlight including desklets
 
 %prep
 %setup  -q -n moon-%{version}
-#%patch0
+#%patch0 -p1
 
 %build
 %{?env_options}
