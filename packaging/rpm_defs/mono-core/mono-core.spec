@@ -409,7 +409,7 @@ Authors:
 %_prefix/lib/mono/gac/System.Transactions
 %_prefix/lib/mono/2.0/System.Transactions.dll
 %_prefix/lib/mono/gac/System.Data.DataSetExtensions
-%_prefix/lib/mono/3.5/System.Data.DataSetExtensions.dll
+%_prefix/lib/mono/2.0/System.Data.DataSetExtensions.dll
 
 %package -n mono-winforms
 Summary:        Mono's Windows Forms implementation
