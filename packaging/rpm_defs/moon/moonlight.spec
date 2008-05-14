@@ -11,8 +11,8 @@ Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        moon-%{version}.tar.bz2
 ExclusiveArch: %ix86 x86_64
-BuildRequires:  mozilla-xulrunner181-devel mozilla-nspr-devel mono-devel gcc-c++ gtk-sharp2 rsvg-sharp2 gtk2-devel alsa-devel monodoc-core
-Requires:       mono-core gtk2 mozilla-xulrunner181
+#BuildRequires:  mozilla-xulrunner181-devel mozilla-nspr-devel mono-devel gcc-c++ gtk-sharp2 rsvg-sharp2 gtk2-devel alsa-devel monodoc-core
+#Requires:       mono-core gtk2 mozilla-xulrunner181
 
 #### suse options ###
 %if 0%{?suse_version}
