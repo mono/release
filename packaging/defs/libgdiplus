@@ -1,4 +1,4 @@
-web_index=4
+web_index=1
 
 BUILD_HOSTS=(
         debian-4-arm
