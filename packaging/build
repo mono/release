@@ -95,20 +95,20 @@ def run_postbuild_step(name, step_key, test=0):
 # Collect optional opts
 skip_steps = False
 # This is to specify installing release packages even when building a package from head
-install_release_packages = False
+HEAD_or_RELEASE_deps = ""
 # Don't print to the screen
 print_screen = 1
-opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_steps", "install_release_packages", "suppress_output" ])
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_steps", "HEAD_or_RELEASE_deps=", "suppress_output" ])
 for option, value in opts:
 	if option == "--skip_steps":
-		 skip_steps = True
-	if option == "--install_release_packages":
-		 install_release_packages = True
+		skip_steps = True
+	if option == "--HEAD_or_RELEASE_deps":
+		HEAD_or_RELEASE_deps = value
 	if option == "--suppress_output":
-		 print_screen = 0
+		print_screen = 0
 
 if len(remaining_args) < 3:
-	print "Usage is: ./build [--skip_steps] [--install_release_packages] [--suppress_output] configuration package version <release>"
+	print "Usage is: ./build [--skip_steps] [--HEAD_or_RELEASE_deps=(HEAD|RELEASE)] [--suppress_output] configuration package version <release>"
         print "  <release> is optional"
 	sys.exit(1)
 
@@ -229,9 +229,12 @@ log_obj = logger.Logger(filename=LOGFILE, print_screen=print_screen)
 build_info.update_step("install-deps", state="inprogress", log=os.path.basename(log_obj.full_path), start=utils.get_time(), finish="")
 
 # This can be specified either on the command line or in the def file
-if install_release_packages or package.get_info_var("INSTALL_RELEASE_PACKAGES"):
+if package.get_info_var("RELEASE_DEPS") or HEAD_or_RELEASE_deps == "RELEASE":
 	install_deps_H_or_R = "RELEASE"
 	print "Overriding to use release packages..."
+elif package.get_info_var("HEAD_DEPS") or HEAD_or_RELEASE_deps == "HEAD":
+	install_deps_H_or_R = "HEAD"
+	print "Overriding to use snapshot packages..."
 else:
 	install_deps_H_or_R = HEAD_or_RELEASE
 print "Installing dependencies..."
@@ -298,6 +301,7 @@ conf.buildenv.copy_to(support_files_to_copy, conf.env_vars['build_location'], co
 conf.env_vars['HEAD_or_RELEASE'] = HEAD_or_RELEASE
 conf.env_vars['DISTRO'] = distro
 conf.env_vars['BUILD_OS'] = conf.info['os']
+conf.env_vars['BUILD_GENERIC_OS'] = conf.info['generic_os']
 conf.env_vars['BUILD_ARCH'] = conf.info['arch']
 conf.env_vars['version'] = version
 

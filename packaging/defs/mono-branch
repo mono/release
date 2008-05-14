@@ -60,7 +60,7 @@ MONO_DEPS=(
 # libgdiplus is here for System.Drawing tests and because mono-core now requires libgdiplus.
 # But, since it's 'recommended', it won't fail for windows
 MONO_RECOMMEND_DEPS=(
-	libgdiplus
+	libgdiplus-branch
 )
 
 # Since it's a source dep, it won't be installed on the machine during the build step, only for
@@ -336,7 +336,7 @@ POSTBUILD_STEP2 () {
 POSTBUILD_STEP_NAME3="test-aot"
 POSTBUILD_STEP3 () {
 	# Only run on linux x86 and x86_64, and now arm
-	if test x$BUILD_OS = xlinux ; then
+	if test x$BUILD_GENERIC_OS = xlinux ; then
 		if test x$BUILD_ARCH = x"x86" || test x$BUILD_ARCH = x"x86_64" || test x$BUILD_ARCH = x"arm" ; then
 			cd mono/mini
 			$make_path aotcheck

@@ -333,7 +333,7 @@ POSTBUILD_STEP2 () {
 POSTBUILD_STEP_NAME3="test-aot"
 POSTBUILD_STEP3 () {
 	# Only run on linux x86 and x86_64, and now arm
-	if test x$BUILD_OS = xlinux ; then
+	if test x$BUILD_GENERIC_OS = xlinux ; then
 		if test x$BUILD_ARCH = x"x86" || test x$BUILD_ARCH = x"x86_64" || test x$BUILD_ARCH = x"arm" ; then
 			cd mono/mini
 			$make_path aotcheck

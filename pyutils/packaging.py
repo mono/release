@@ -144,11 +144,12 @@ class buildconf:
 		# Linux distros
 		redhat_distros = "fedora redhat rhel".split()
 		suse_distros = "suse nld sles sled".split()
+		debian_distros = "debian".split()
 
 		### VERSION, ARCH ###
 		try:
 		# Parse out distro info
-			build_os, self.info['version'], self.info['arch'] = re.compile(r'(.*)-(.*)-(.*)').search(self.name).groups()
+			self.info['os'], self.info['version'], self.info['arch'] = re.compile(r'(.*)-(.*)-(.*)').search(self.name).groups()
 		except AttributeError:
 			print "%s is not a valid conf name, example: suse-93-i586" % self.name
 			sys.exit(1)
@@ -156,18 +157,19 @@ class buildconf:
 		self.info['specific_arch'] = self.info['arch']
 		if re.compile(r'i[35]86').search(self.info['arch']): self.info['arch'] = 'x86'
 
-		### OS, OS_TYPE, OS_SUBTYPE ###
+		### OS (DISTRO), GENERIC_OS, GENERIC_DISTRO ###
 		# If our os is either suse or redhat
-		if (redhat_distros + suse_distros).count(build_os):
-			self.info['os'] = 'linux'
-			self.info['os_subtype'] = build_os
-			if build_os in redhat_distros:
-				self.info['os_type'] = 'redhat'
-			elif build_os in suse_distros:
-				self.info['os_type'] = 'suse'
+		if (redhat_distros + suse_distros + debian_distros).count(self.info['os']):
+			self.info['generic_os'] = 'linux'
+			if self.info['os'] in redhat_distros:
+				self.info['generic_distro'] = 'redhat'
+			elif self.info['os'] in suse_distros:
+				self.info['generic_distro'] = 'suse'
+			elif self.info['os'] in debian_distros:
+				self.info['generic_distro'] = 'debian'
 		else:
-			self.info['os'] = build_os
-
+			self.info['generic_os'] = self.info['os']
+			self.info['generic_distro'] = self.info['os']
 
 
 	def get_info_var(self, key):

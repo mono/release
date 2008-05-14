@@ -80,6 +80,7 @@ td_packages = """
 	mono
 	mono-addins
 	mono-branch
+	libgdiplus-branch
 	mono-basic
 	mono-debugger
 	mono-tools
