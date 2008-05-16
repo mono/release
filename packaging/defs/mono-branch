@@ -372,7 +372,7 @@ POSTBUILD_STEP_NAME6="test-swf"
 POSTBUILD_STEP6 () {
 	#TEST_HARNESS_VERBOSE=1
 	#export TEST_HARNESS_VERBOSE
-	DISPLAY=x64-linux-2.mono.lab.novell.com:1
+	DISPLAY=x32-linux-1.mono.lab.novell.com:1
 	export DISPLAY
 
 	failure=0
