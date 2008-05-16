@@ -486,11 +486,11 @@ POSTBUILD_STEP8 () {
         mkdir status
         cd status
 
-        wget http://mono.ximian.com/masterinfos/masterinfos-$VERSION.tar.gz
+        wget --tries=1 --timeout=10 http://mono.ximian.com/masterinfos/masterinfos-$VERSION.tar.gz
 
         # todo: wget these out of subversion
-        wget http://primates.ximian.com/~wberrier/class_status/deploy.tar.bz2
-	wget http://anonsvn.mono-project.com/source/trunk/olive/status/mono-api.xsl
+        wget --tries=1 --timeout=10 http://primates.ximian.com/~wberrier/class_status/deploy.tar.bz2
+	wget --tries=1 --timeout=10 http://anonsvn.mono-project.com/source/trunk/olive/status/mono-api.xsl
 
         tar -zxf masterinfos-$VERSION.tar.gz
         tar -jxf deploy.tar.bz2
