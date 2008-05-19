@@ -6,8 +6,9 @@ HEAD_DEPS=1
 MKTARBALL_HEAD_DEPS=1
 
 BUILD_HOSTS=(
-        suse-101-i586
-        suse-101-x86_64
+	suse-101-i586
+	suse-101-x86_64
+	suse-101-ppc
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
