@@ -138,3 +138,11 @@ table.packagestatus th {
 	text-align:left;
 }
 
+.cleanuptimecolor {
+	color:lightgrey;
+}
+
+.faillinkcolor {
+	color:red;
+}
+

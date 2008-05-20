@@ -303,10 +303,10 @@ def packagestatus(req, **vars):
 			values = build_info.get_build_info()
 
 			if values['start'] and values['finish']:
-				duration = utils.time_duration_asc(values['start'], values['finish'])
+				duration = www_utils.timecolor(utils.time_duration_clock(values['start'], values['finish']))
 			# Sometimes the latest build isn't the one running (usually a bug), but still show the running time
 			elif values['start']:
-				duration = "Running for %s" % utils.time_duration_asc(values['start'], utils.get_time())
+				duration = "Running for %s" % www_utils.timecolor(utils.time_duration_clock(values['start'], utils.get_time()))
 			else:
 				duration = "?"
 
@@ -333,7 +333,7 @@ def packagestatus(req, **vars):
 			<td>%s</td>
 
 			<th>Duration:</th>
-			<td>%s min(s)</td>
+			<td>%s</td>
 
 			</tr>
 
@@ -356,11 +356,15 @@ def packagestatus(req, **vars):
 				# Remove .gz extensions since apache will handle it
 				log = os.path.join(config.build_info_url, build_info.rel_files_dir, 'logs', step['log']).replace(".gz", "")
 
+				h_class = ""
+				if not ["success", "inprogress"].count(step['state']):
+					h_class = 'class="faillinkcolor"'
+
 				req.write("""
 				<tr>
 				<th>%s</th>
-				<td><a href="%s">%s</a></td>
-				""" % (step['name'], log, step['state']) )
+				<td><a %s href="%s">%s</a></td>
+				""" % (step['name'], h_class, log, step['state']) )
 
 				# If there's download info, and it exists, add it to the html
 				#  (It won't exist on the mirrored public site)
@@ -379,10 +383,10 @@ def packagestatus(req, **vars):
 					req.write("<td></td>")
 
 				if step['start'] and step['finish']:
-					req.write("<td>[ %s min(s) ] </td>" % utils.time_duration_asc(step['start'], step['finish']) )
+					req.write("<td>[ %s ] </td>" % www_utils.timecolor(utils.time_duration_clock(step['start'], step['finish']) ))
 				# Sometimes the latest build isn't the one running (usually a bug), but still show the running time
 				elif step['start']:
-					req.write("<td>[ Running for %s min(s) ] </td>" % utils.time_duration_asc(step['start'], utils.get_time()) )
+					req.write("<td>[ Running for %s ] </td>" % www_utils.timecolor(utils.time_duration_clock(step['start'], utils.get_time()) ))
 				req.write("</tr>")
 
 				

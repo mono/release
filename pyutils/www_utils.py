@@ -3,6 +3,7 @@ import re
 import Cookie
 import time
 import calendar
+import re
 
 # all the arguments should be validated to only contain letters, a dash and numbers
 # Any characters outside of that range should be changed to '.'
@@ -42,4 +43,8 @@ def get_tz_cookie(headers_in):
 
         return return_val
 
+color_reg = re.compile("^([0:]+)")
+def timecolor(duration):
+
+	return color_reg.sub("<FONT class=cleanuptimecolor>\g<1></FONT>", duration, 1)
 

@@ -652,6 +652,41 @@ def time_duration_asc(start, finish):
 	# Return minutes of duration
 	return (finish_time - start_time) / 60
 
+def time_duration_clock(start, finish):
+	"""Returns duration in [x days] hh:mm:ss format (times in time.asctime format)
+
+	x days shows up only on long (usually frozen) times
+	"""
+
+	# Construct time time tuple
+	try:
+		start_time = calendar.timegm( time.strptime(start) )
+		finish_time = calendar.timegm( time.strptime(finish) )
+	except:
+		return "?"
+
+	# seconds of duration
+	duration = finish_time - start_time
+
+	days = duration / 86400
+	duration %= 86400
+
+	hours = duration / 3600
+	duration %= 3600
+
+	mins = duration / 60
+	duration %= 60
+
+	secs = duration
+
+	ret = "%.2d:%.2d:%.2d" % (hours, mins, secs)
+
+	if days:
+		ret = "%d day(s) %s" % (days, ret)
+
+	return ret
+
+
 def adjust_for_timezone(tzo_seconds, time_string):
 
 	return_string = time_string
