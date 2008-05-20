@@ -59,6 +59,10 @@ POSTBUILD_STEP2 () {
 	tar -zxf masterinfos-3.0.tar.gz
 	tar -jxf deploy.tar.bz2
 
+	# update content that frequently changes from subversion
+	wget --tries=1 --timeout=10 http://anonsvn.mono-project.com/source/trunk/mono/web/web/deploy/cm/cormissing.css -O deploy/cm/cormissing.css
+	wget --tries=1 --timeout=10 http://anonsvn.mono-project.com/source/trunk/mono/web/web/deploy/cm/cormissing.js -O deploy/cm/cormissing.js
+
 	mkdir infos
 	mkdir src
 
