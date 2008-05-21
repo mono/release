@@ -73,7 +73,6 @@ local_rpms = {
                 "monodevelop-boo",
                 "monodevelop-database",
                 "monodevelop-java",
-                "gecko-sharp",
                 "gecko-sharp2",
                 "gtksourceview-sharp2",
 		],
@@ -228,7 +227,7 @@ for f in glob.glob(p + "/usr/bin/*"):
 	text = fd.read()
 	fd.close()
 
-	if re.compile("#! ?\/bin\/sh").search(text):
+	if re.compile("(#! ?\/bin\/sh|#! ?\/bin\/bash)").search(text):
 		executable_wrappers.append(os.path.basename(f))
 
 
