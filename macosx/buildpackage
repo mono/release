@@ -5,11 +5,10 @@ import os
 import os.path
 import sys
 import shutil
-import pdb
 import glob
 import re
 import distutils.dir_util
-import threading
+import getopt
 
 sys.path += ['../pyutils']
 import config
@@ -31,19 +30,26 @@ debug=1
 
 ####  Main execution ####
 # Collect args
-try:
-	try:
-		(script_name, target, version) = sys.argv
-		release = "0"
-	except:
-		(script_name, target, version, release) = sys.argv
 
-except:
+HEAD_or_RELEASE = "RELEASE"
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "HEAD_or_RELEASE=" ])
+for option, value in opts:
+	if option == "--HEAD_or_RELEASE":
+		HEAD_or_RELEASE = value
 
-	print "Usage: ./buildpackage <target> <version> [<release>]"
+if len(remaining_args) == 1:
+	(target,) = remaining_args
+	release = "0"
+elif len(remaining_args) == 2:
+	(target, release) = remaining_args
+
+else:
+
+	print "Usage: ./buildpackage [ --HEAD_or_RELEASE=HEAD|RELEASE ] <target> [<release>]"
 	print " target is the 'distro name', or 'universal' for all mac builds"
-	print " Example: ./buildpackage macos-10-ppc 1.1.13.2 1"
-	print "          ./buildpackage universal 1.2"
+	print " Example: ./buildpackage macos-10-ppc 1"
+	print "          ./buildpackage universal"
+	print "Note: version is automatically retrieved from the 'mono' package"
 	sys.exit(1)
 
 if target == 'universal':
@@ -67,7 +73,18 @@ remote_PKGROOT = remote_temp + os.sep + 'PKGROOT'
 remote_packages_loc = remote_temp + os.sep + 'install-packages'
 temp_dir = "build" + os.sep + target
 
+#  Get some version information
+mono_package = packaging.package(conf, 'mono', HEAD_or_RELEASE=HEAD_or_RELEASE)
+version = mono_package.get_latest_version()
+revision = mono_package.get_revision(release)
+
+# Remove revision from version if there is one
+version = version.split("-")[0]
+
 output_dir = os.path.join("output", version, target, release) 
+
+if HEAD_or_RELEASE == "HEAD":
+	output_dir = "snapshot_" + output_dir
 
 if os.path.exists(output_dir):
 	print "%s exists, bump release number" % output_dir
@@ -87,7 +104,7 @@ for arch in targets:
 	# Get list of files we're going to install
 	files = []
 	for pac in packages_to_include[arch]:
-		package = packaging.package(arch_conf, pac)
+		package = packaging.package(arch_conf, pac, HEAD_or_RELEASE=HEAD_or_RELEASE)
 
 		for f in package.get_files():
 			files.append(f)
@@ -202,10 +219,6 @@ for f in packages:
 	packages_text += "\n\t" + f + "\\\\"
 for f in dep_packages:
 	dep_packages_text += "\n\t" + f + "\\\\"
-
-#  Get some version information
-mono_package = packaging.package(conf, 'mono')
-revision = mono_package.get_revision(release)
 
 # Start process of making the package
 package_filename = "MonoFramework-%s_%s.%s" % (version, revision, arch_name)
