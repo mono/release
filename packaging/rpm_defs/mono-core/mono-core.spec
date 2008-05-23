@@ -451,9 +451,9 @@ Authors:
 %_prefix/lib/mono/1.0/System.Drawing.Design.dll
 %_prefix/lib/mono/2.0/System.Drawing.Design.dll
 # TODO: Post 1.2.5:
-%_prefix/lib/mono/1.0/Mono.Mozilla.dll
-%_prefix/lib/mono/2.0/Mono.Mozilla.dll
-%_prefix/lib/mono/gac/Mono.Mozilla
+%_prefix/lib/mono/1.0/Mono.WebBrowser.dll
+%_prefix/lib/mono/2.0/Mono.WebBrowser.dll
+%_prefix/lib/mono/gac/Mono.WebBrowser
 
 %package -n ibm-data-db2
 Summary:        Database connectivity for DB2
