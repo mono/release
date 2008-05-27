@@ -82,6 +82,7 @@ required_rpms = {
 		sudo
 		tar
 		termcap
+		timezone
 		unzip
 		util-linux
 		vim
