@@ -11,8 +11,8 @@ BUILD_HOSTS=(
 	suse-101-ppc
 	debian-4-arm
 	debian-4-sparc
-	sunos-10-sparc
-	sunos-10-x86
+	#sunos-10-sparc
+	#sunos-10-x86
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
