@@ -17,7 +17,6 @@ sys.path += [ '../pyutils' ] #or whatever path contains utils.py
 import sys
 import os
 import os.path
-import shutil
 import re
 import tempfile
 import string
@@ -102,7 +101,7 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
                 tempdir = "___EXTRACT___"
 
                 if os.path.exists(tempdir):
-                        shutil.rmtree(tempdir)
+                        distutils.dir_util.remove_tree(tempdir)
                 os.mkdir(tempdir)
                 os.chdir(tempdir)
 
@@ -136,6 +135,23 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
 				print output
 				sys.exit(1)
 
+		# .mdb handling for broken -debug packages
+		for root, dirs, files in os.walk('.'):
+			for file in files:
+				full_path = root + os.sep + file
+				m1 = re.search("usr\/lib\/debug\/(.*\.mdb)", full_path)
+				if m1:
+
+					#print "Current: " + os.getcwd()
+
+					dest_dir = os.path.dirname(m1.group(1))
+					#print "Creating: " + dest_dir
+					distutils.dir_util.mkpath(dest_dir)
+
+					#print "Moving: " + full_path
+					#print "to:                     " + m1.group(1)
+					os.rename(full_path, m1.group(1))
+
 		if truncate_path:
 			current = os.getcwd()
 			try:
@@ -150,7 +166,7 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
 
 
                 os.chdir("..")
-                shutil.rmtree(tempdir)
+                distutils.dir_util.remove_tree(tempdir)
 
 	# If it's a .tar.gz or tar.bz2
         elif (ext == ".gz" and re.compile('\.tar\.gz$').search(filename) ) or (ext == ".bz2" and re.compile('\.tar\.bz2$').search(filename) ):
@@ -173,7 +189,7 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
 		final_dest_dir = os.getcwd()
 
                 if os.path.exists(tempdir):
-                        shutil.rmtree(tempdir)
+                        distutils.dir_util.remove_tree(tempdir)
                 os.mkdir(tempdir)
                 os.chdir(tempdir)
 
@@ -208,12 +224,12 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
 		distutils.dir_util.copy_tree(".", final_dest_dir, preserve_symlinks=preserve_symlinks)
 
                 os.chdir(final_dest_dir)
-                shutil.rmtree(tempdir)
+                distutils.dir_util.remove_tree(tempdir)
 
 		# need to do some cleanup here (/var/tmp/<something>) (created by pkgtrans)
 		for dir in glob.glob("/var/tmp/aaa*"):
 			try:
-				shutil.rmtree(dir)
+				distutils.dir_util.remove_tree(dir)
 			except:
 				#print "Unable to remove: " + dir
 				pass
