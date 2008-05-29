@@ -354,6 +354,9 @@ os.chdir('mono')
 #fd.write("\n")
 #fd.close()
 
+# create mono.lib so end user doesn't have to
+shutil.copy('lib/libmono.dll.a', 'lib/mono.lib')
+
 os.chdir("..")
 
 #
