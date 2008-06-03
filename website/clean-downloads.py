@@ -90,10 +90,13 @@ def clean_installers(installer, path):
 	cwd = os.getcwd()
 	global archive_basepath
 
-	if archive_basepath:
-		os.chdir(archive_basepath)
-	else:
-		os.chdir(config.release_repo_root)
+	try:
+		if archive_basepath:
+			os.chdir(archive_basepath)
+		else:
+			os.chdir(config.release_repo_root)
+	except OSError:
+		return
 
 	installers = utils.version_sort( glob.glob("*/%s/*" % installer) )
 	if installers:

@@ -1,0 +1,10 @@
+username=builder
+hostname=ppc-linux-1.mono.lab.novell.com
+root_dir=/jails/suse-110-ppc
+target_command_prefix=". /etc/profile;"
+
+chroot_path=/usr/bin/chroot
+
+# Repo conf
+YAST_INSTALL=1
+RPM_MD_REPO=1

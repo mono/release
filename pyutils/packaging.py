@@ -491,7 +491,7 @@ class package:
 					self.version = utils.get_latest_ver(self.package_fullpath, version=self.version, fail_on_missing=fail_on_missing)
 
 				if not os.path.exists(self.package_fullpath + os.sep + self.version):
-					print "Trying to use %s/%s but this path does not exist!" % (self.package_fullpath, self.version)
+					print "Bundle selection: trying to use %s/%s but this path does not exist!" % (self.package_fullpath, self.version)
 					sys.exit(1)
 
 			else:
@@ -660,4 +660,32 @@ class bundle:
 		else:
 			#print "No bundle specified.  Using latest version of packages..."
 			pass
+
+	def add_version(self, name, version):
+		"""dynamically add version to bundle conf"""
+		self.version_map[name] = version
+		self.version_map_exists = True
+
+	def remove_version(self, name):
+		"""dynamically remove version to bundle conf
+		This will silently do nothing if you try to remove something that isn't there
+		(Currently unused)"""
+
+		if self.version_map.has_key(name):
+			self.version_map.pop(name)
+
+		if len(self.version_map.keys()) == 0:
+			self.version_map_exists = False
+
+	def force_version_map(self):
+		self.version_map_exists = True
+
+	def ignore_version_map(self):
+		self.version_map_exists = False
+
+	def HEAD_or_RELEASE(self):
+		if self.info.has_key("HEAD_or_RELEASE"):
+			return self.info['HEAD_or_RELEASE']
+		else:
+			return "RELEASE"
 

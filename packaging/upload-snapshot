@@ -1,12 +1,22 @@
 #!/bin/sh
 
+if test x$1 == xvalidated ; then
+	sync_profile="validated"
+	sync_args="--skip_missing --validated"
+else
+	sync_profile="snapshot"
+	sync_args=""
+fi
+
+echo "Using sync profile: $sync_profile"
+
 BUNDLE="trunk"
-STAGE_DIR="$(pwd)/stage/snapshot"
+STAGE_DIR="$(pwd)/stage/$sync_profile"
 
 TARGET_USER="mono-web"
 TARGET_HOST="mono.ximian.com"
-TARGET_DIR="~/release/monobuild/www/snapshot"
-TARGET_URL="/monobuild/snapshot"
+TARGET_DIR="~/release/monobuild/www/$sync_profile"
+TARGET_URL="/monobuild/$sync_profile"
 
 # Hack: flag to mono-basic to grab from noarch instead of $DISTRO
 export UPLOAD_SNAPSHOT=1
@@ -17,7 +27,7 @@ mkdir -p $STAGE_DIR
 cd ../website
 cp packaging.css $STAGE_DIR
 
-./sync-bundle.py  --platforms=$distros --skip_installers $BUNDLE $STAGE_DIR || exit 1
+./sync-bundle.py  --platforms=$distros --skip_installers $sync_args $BUNDLE $STAGE_DIR || exit 1
 
 # run a script that cleans up all but one version... 
 ./clean-downloads.py --source_basepath=$STAGE_DIR/snapshot_sources --package_basepath=$STAGE_DIR/snapshot_packages --archive_basepath=$STAGE_DIR/archive --platforms=$distros HEAD 1
