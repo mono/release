@@ -6,6 +6,13 @@
 
 # Note: webalizer expects to see these in order... it doesn't like the urls out of order
 
+which webalizer > /dev/null 2>&1
+
+if [ $? -ne 0 ] ; then
+	echo "webalizer not found.  Exiting..."
+	exit 1
+fi
+
 # check for fastzolver (speeds up reverse dns lookups)
 which fastzolver > /dev/null 2>&1
 

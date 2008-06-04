@@ -58,15 +58,6 @@ Various .NET 3.0 bits.
 %_prefix/lib/mono/3.5/System.ServiceModel.Web.dll
 %_prefix/lib/mono/gac/PresentationCore
 %_prefix/lib/mono/3.0/PresentationCore*
-%_prefix/lib/mono/gac/System.SilverLight
-%_prefix/lib/mono/2.1/System.SilverLight*
-%_prefix/lib/mono/3.0/System.SilverLight*
-%_prefix/lib/mono/gac/agmono
-%_prefix/lib/mono/2.1/agmono*
-%_prefix/lib/mono/3.0/agmono*
-%_prefix/lib/mono/gac/agclr
-%_prefix/lib/mono/2.1/agclr*
-%_prefix/lib/mono/3.0/agclr*
 %_prefix/lib/pkgconfig/*.pc
 
 

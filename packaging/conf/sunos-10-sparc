@@ -1,5 +1,6 @@
 username=builder
-hostname=sparc-sunos-1.mono-project.com
+#hostname=sparc-sunos-1.mono-project.com
+hostname=sparc-sunos-2.mono.lab.novell.com
 USE_ZIP_PKG=1
 
 # Use the gnu and opensource software
@@ -10,6 +11,10 @@ env="CC=/usr/sfw/bin/gcc"
 
 # put path here because python (launch process) needs to be findable
 target_command_prefix="export PATH=/usr/sfw/bin:/usr/ccs/bin:$PATH; "
+
+# There are 2 pythons... one with distutils, and one without.  Use /usr/bin/python instead of /usr/sfw/bin/python
+#target_command_prefix="export PATH=$PATH:/usr/sfw/bin:/usr/ccs/bin; "
+# This didn't work because it tries to use the solaris 'mcs'.  Just rename /usr/sfw/bin/python so it's unusable.
 
 strip_path=/usr/ccs/bin/strip
 tar_path=/usr/sfw/bin/gtar

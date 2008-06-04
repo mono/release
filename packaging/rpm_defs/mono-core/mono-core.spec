@@ -274,6 +274,8 @@ Authors:
 %_prefix/lib/mono/2.1/System.Core.dll
 %_prefix/lib/mono/gac/System.Net
 %_prefix/lib/mono/2.1/System.Net.dll
+# Not sure if autobuild allows this...
+%_libdir/pkgconfig/smcs.pc
 
 %post
 /sbin/ldconfig

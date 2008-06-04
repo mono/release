@@ -114,7 +114,6 @@ sd_sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
 
 # List of platforms/packages
 	#sunos-8-sparc
-	#sunos-10-sparc
 sd_latest_build_distros = """
 	debian-4-arm
 	debian-4-sparc
@@ -126,8 +125,10 @@ sd_latest_build_distros = """
 	sles-9-s390
 	sles-9-s390x
 	sles-9-x86_64
+	sunos-10-sparc
 	sunos-10-x86
 	suse-101-i586
+	suse-101-ppc
 	suse-101-x86_64
 	suse-103-i586
 	suse-103-x86_64
