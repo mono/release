@@ -1,10 +1,10 @@
 username=builder
-hostname=monobuild2.boston.ximian.com
+hostname=x32-linux-2.mono.lab.novell.com
 root_dir=/jails/suse-103-i586
 target_command_prefix=". /etc/profile;"
 
 chroot_path=/usr/bin/chroot
-arch_change_path=/usr/bin/linux32
+#arch_change_path=/usr/bin/linux32
 
 # NOTE: We edited /usr/lib/libmoon.la to replace /opt/gnome with /usr
 
