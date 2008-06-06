@@ -9,6 +9,9 @@ BUILD_HOSTS=(
 	suse-101-i586
 	suse-101-x86_64
 	suse-101-ppc
+	suse-103-i586
+	suse-103-x86_64
+	suse-103-ppc
 	debian-4-arm
 	debian-4-sparc
 	#sunos-10-sparc
