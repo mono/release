@@ -42,6 +42,24 @@
 <a name="changes">
 <h2>Changes Since Release 1.9</h2>
 
+<h2>Runtime Engine</h2>
+
+<p>The performance of operations on decimals is significally improved.
+
+<p>The performance of locking (Monitor.Enter/Monitor.Exit) is significally improved.
+
+<p>The memory usage of the runtime is reduced, especially when using generics.
+
+<p>Many race conditions and threading problems were fixed, improving reliability.
+
+<p>Math.Min/Math.Max and some forms of Interlocked.CompareExhange (CAS) are now implemented using fast inline code on x86/amd64.
+
+<p>Some progress has been made on the Winx64 port [Bill Holmes, Jonathan Chambers]
+
+<p>It is now possible to build the runtime using the dolt libtool replacement (http://dolt.freedesktop.org/) by passing --enable-dolt to configure.
+
+<p>There is now a --debug=casts command line option to the runtime which turns on the reporting of better InvalidCastException message details.
+
 <h3>Performance Counters Implementation</h3>
 
 	<p>Mono now has a performance counters implementation that can
