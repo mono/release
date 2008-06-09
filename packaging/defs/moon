@@ -30,6 +30,10 @@ suse_101_noarch_RPM_DEPS=(
 	http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
 )
 
+suse_103_noarch_RPM_DEPS=(
+	http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
+)
+
 suse_101_i586_RPM_DEPS=(
 	http://download.opensuse.org/repositories/home:/ajorgensen:/mozilla/SLE_10/i586/mozilla-xulrunner190-1.8.99.5-5.1.i586.rpm
 	http://download.opensuse.org/repositories/home:/ajorgensen:/mozilla/SLE_10/i586/mozilla-xulrunner190-devel-1.8.99.5-5.1.i586.rpm
