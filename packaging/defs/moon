@@ -70,7 +70,7 @@ RELEASE_PATH=(
 )
 
 update_version_file () {
-	sed -i "s,/opt/gnome,/usr/lib,g" /usr/lib/libmono.la
+	sudo sed -i "s,/opt/gnome,/usr/lib,g" /usr/lib/libmono.la
         sed -i "s/\(AC_INIT(\[.*\], *\[\).*\(\])\)/\1$VERSION\2/" configure.ac
 }
 
