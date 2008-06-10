@@ -47,18 +47,18 @@ Patch5:		gnome-sharp-revert_unportable_relocatable.patch
 # Not needed with rpm .config dep search
 #%define gtkhtml_requires gtkhtml2
 
-%define new_suse_buildrequires librsvg-devel mono-devel vte-devel gnome-panel-devel  monodoc-core update-desktop-files
+%define new_suse_buildrequires librsvg-devel mono-devel vte-devel monodoc-core update-desktop-files
 
 %if %suse_version >= 1020
-BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel
+BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel gnome-panel-devel
 %endif
 
 %if %sles_version == 10
-BuildRequires:	%{new_suse_buildrequires} gnome-panel-nld-devel -gnome-panel-devel
+BuildRequires:	%{new_suse_buildrequires} gnome-panel-nld-devel
 %endif
 
 %if %suse_version == 1010
-BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel
+BuildRequires:	%{new_suse_buildrequires} gtkhtml2-devel gnome-panel-devel
 %endif
 
 %endif
