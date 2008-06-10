@@ -79,7 +79,7 @@ class Selection:
 
 			## Total hack to pick the rpm version of mono-basic (contains compiler and runtime) instead of the zip version (only has the runtime)
 			if pack == "mono-basic":
-				self.pack_objs[pack] = packaging.package(packaging.buildconf('suse-101-i586', exclusive=False),pack)
+				self.pack_objs[pack] = packaging.package(packaging.buildconf('sles-10-i586', exclusive=False),pack)
 			else:
 				self.pack_objs[pack] = packaging.package(installer_conf,pack)
 
@@ -355,7 +355,7 @@ os.chdir('mono')
 #fd.close()
 
 # create mono.lib so end user doesn't have to
-shutil.copy('lib/libmono.dll.a', 'lib/mono.lib')
+shutil.copy('lib/libmono.a', 'lib/mono.lib')
 
 os.chdir("..")
 

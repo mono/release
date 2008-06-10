@@ -4,15 +4,15 @@ web_index=2
 #fresh_checkout=1
 
 BUILD_HOSTS=(
-	suse-101-i586
+	sles-10-i586
 	macos-10-x86
 )
 
 USE_HOSTS=(
 	macos-10-x86
-	suse-101-i586
-	suse-101-ppc
-	suse-101-x86_64
+	sles-10-i586
+	sles-10-ppc
+	sles-10-x86_64
 	suse-102-i586
 	suse-102-ppc
 	suse-102-x86_64
@@ -102,4 +102,9 @@ macos_10_ppc_ZIP_RUNTIME_DEPS=(
 	http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/noarch/moma-1.9.96831-3.25.noarch.rpm
 	http://primates.ximian.com/~wberrier/macos/deps/various/app-bundles.tar.gz
 )
+
+POSTBUILD_STEP_NAME1="test"
+POSTBUILD_STEP1 () {
+        $make_path test
+}
 

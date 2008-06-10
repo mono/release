@@ -9,7 +9,7 @@ version_selection_reg="1\.\d+"
 
 BUILD_HOSTS=(
 	win-4-i386
-        suse-101-i586
+        sles-10-i586
 
 	sles-9-x86_64
 	sles-9-ia64
@@ -46,7 +46,7 @@ get_destroot () {
         elif test "x$DISTRO" = "xsuse-103-x86_64" ; then
                 DEST_ROOT=noarch
 	# For building...
-        elif test "x$DISTRO" = "xsuse-101-i586" ; then
+        elif test "x$DISTRO" = "xsles-10-i586" ; then
                 DEST_ROOT=noarch
 	elif test "x$UPLOAD_SNAPSHOT" = "x1" ; then
 		DEST_ROOT=noarch
@@ -154,7 +154,7 @@ POSTBUILD_STEP_NAME1="test"
 POSTBUILD_STEP1 () {
         if test "x$DISTRO" = "xwin-4-i386" ; then
 		$make_path test
-        elif test "x$DISTRO" = "xsuse-101-i586" ; then
+        elif test "x$DISTRO" = "xsles-10-i586" ; then
 		$make_path test
         else
                 true
@@ -164,7 +164,7 @@ POSTBUILD_STEP1 () {
 POSTBUILD_STEP_NAME2="api-diff"
 POSTBUILD_STEP2 () {
 
-	if test x$DISTRO != xsuse-101-i586 ; then
+	if test x$DISTRO != xsles-10-i586 ; then
                 echo "Class status pages not generated on this platform"
                 exit 0
 	fi

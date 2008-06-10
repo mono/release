@@ -7,16 +7,16 @@ MKTARBALL_HEAD_DEPS=1
 BUILD_HOSTS=(
 	sles-9-i586
 	sles-9-x86_64
-	suse-101-i586
-	suse-101-x86_64
+	sles-10-i586
+	sles-10-x86_64
 )
 
 USE_HOSTS=(
 	rhel-4-i386
 	sles-9-i586
 	sles-9-x86_64
-	suse-101-i586
-	suse-101-x86_64
+	sles-10-i586
+	sles-10-x86_64
 	suse-102-i586
 	suse-102-x86_64
 	suse-103-i586
@@ -35,9 +35,9 @@ MONO_RECOMMEND_DEPS=(
 
 get_destroot () {
 	# Run tests on suse 10.1
-        if test "x$DISTRO" = "xsuse-101-i586" ; then
+        if test "x$DISTRO" = "xsles-10-i586" ; then
                 DEST_ROOT=$DISTRO
-        elif test "x$DISTRO" = "xsuse-101-x86_64" ; then
+        elif test "x$DISTRO" = "xsles-10-x86_64" ; then
                 DEST_ROOT=$DISTRO
 	else
 		DEST_ROOT=$ARCH

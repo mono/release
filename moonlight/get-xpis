@@ -14,7 +14,7 @@ for version in "1.0" "1.1"; do
 	for arch in "i586" "x86_64"; do
 		basearch="$arch"
 		[ "$arch" == "i586" ] && basearch="i386"
-		DISTRO="suse-101-$arch"
+		DISTRO="sles-10-$arch"
 		echo "Fetching $NAME-$version-$basearch.xpi"
 		curl -o "$NAME-$version-$basearch.xpi" "$BASEURL/$TYPE/$DISTRO/moon/$REVISION/files/steps/plugin-$version/novell-moonlight.xpi"
 		mkdir "$NAME-$version-$basearch"

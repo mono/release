@@ -6,3 +6,6 @@ USE_ZIP_PKG=1
 target_command_prefix='source /etc/profile;'
 
 web_index=10
+
+# updated winnt.h from a new cygwin install (from Jonathan Chambers)
+

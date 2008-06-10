@@ -8,6 +8,16 @@ sys.path.append("../pyutils")
 
 import build
 
+# TODO: 
+#  Instead, these urls: they are fully dynamic, and get updated more often.  Only problem: harder to bookmark.  Issue?
+
+# http://mono.ximian.com/monobuild/python/monobuild.py/download_latest?platform=sles-9-i586&package=mono&HEAD_or_RELEASE=HEAD&step=api-diff
+# http://mono.ximian.com/monobuild/python/monobuild.py/download_latest?platform=sles-9-x86_64&package=mono&HEAD_or_RELEASE=HEAD&step=api-diff
+# http://mono.ximian.com/monobuild/python/monobuild.py/download_latest?platform=sles-10-i586&package=mono-basic&HEAD_or_RELEASE=HEAD&step=api-diff
+# http://mono.ximian.com/monobuild/python/monobuild.py/download_latest?platform=sles-10-i586&package=olive&HEAD_or_RELEASE=HEAD&step=api-diff
+
+# The class status pages are up in the air... wait until the new ones come to make any changes
+
 #output_dir = "tmp"
 output_dir = "/var/www/mono-website/go-mono/class-status"
 
@@ -16,8 +26,8 @@ output_dir = "/var/www/mono-website/go-mono/class-status"
 status_config = [
 	['1.1',		'sles-9-i586',		'mono'],
 	['2.0',		'sles-9-x86_64',	'mono'],
-	['mono-basic',	'suse-101-i586',	'mono-basic'],
-	['olive',	'suse-101-i586',	'olive'],
+	['mono-basic',	'sles-10-i586',	'mono-basic'],
+	['olive',	'sles-10-i586',	'olive'],
 ]
 
 # Collect latest

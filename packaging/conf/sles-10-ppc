@@ -1,0 +1,8 @@
+username=builder
+hostname=ppc-macos-1.mono.lab.novell.com
+root_dir=/jails/sles-10-ppc
+chroot_path=/usr/bin/chroot
+target_command_prefix=". /etc/profile;"
+
+YAST_INSTALL=1
+RPM_MD_REPO=1
