@@ -1,4 +1,5 @@
-
+%define with_mono no
+%define with_ffmpeg no
 # norootforbuild
 
 Name:           libmoon
@@ -11,8 +12,14 @@ Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        moon-%{version}.tar.bz2
 ExclusiveArch: %ix86 x86_64 ppc
-#BuildRequires:  mozilla-xulrunner181-devel mozilla-nspr-devel mono-devel gcc-c++ gtk-sharp2 rsvg-sharp2 gtk2-devel alsa-devel monodoc-core
-#Requires:       mono-core gtk2 mozilla-xulrunner181
+%if %{with_mono} == yes
+#BuildRequires:  mono-devel gtk-sharp2 rsvg-sharp2 monodoc-core
+%endif
+%if %{with_ffmpeg} == yes
+#BuildRequires:  libffmpeg-devel
+%endif
+#BuildRequires:  gtk2-devel gcc-c++ alsa-devel
+#BuildRequires:  mozilla-xulrunner181-devel mozilla-nspr-devel gtk2-devel gcc-c++ alsa-devel
 
 #### suse options ###
 %if 0%{?suse_version}
@@ -40,11 +47,13 @@ Silverlight 1.0 (canvas + browser-based scripting) as well as 1.1 applications
 %defattr(-, root, root)
 %doc AUTHORS COPYING ChangeLog README TODO NEWS
 %{_libdir}/libmoon.so.*
+%if %{with_mono} == yes
 %{_prefix}/lib/mono/2.1/*
 %{_prefix}/lib/mono/3.0/*
 %{_prefix}/lib/mono/gac/Mono.Moonlight/*
 %{_prefix}/lib/mono/gac/System.Windows/*
 %{_prefix}/lib/mono/gac/System.Windows.Browser/*
+%endif
 
 %debug_package
 
@@ -62,9 +71,11 @@ libmoon development files
 %{_libdir}/pkgconfig/moon.pc
 %{_libdir}/libmoon.la
 %{_libdir}/libmoon.so
+%if %{with_mono} == yes
 %{_prefix}/lib/pkgconfig/agmono.pc
 %{_prefix}/lib/pkgconfig/silver.pc
 %{_prefix}/lib/pkgconfig/silverdesktop.pc
+%endif
 %{_prefix}/include/libmoon/*.h
 
 %package tools
@@ -77,8 +88,9 @@ Moonlight library tools (mopen, xamlg, svg2xaml, xaml2html)
 
 %files tools
 %defattr(-, root, root)
-%{_prefix}/bin/mopen
 %{_prefix}/bin/mopen1
+%if %{with_mono} == yes
+%{_prefix}/bin/mopen
 %{_prefix}/bin/svg2xaml
 %{_prefix}/bin/svg2xaml-gui
 %{_prefix}/bin/xamlg
@@ -92,7 +104,9 @@ Moonlight library tools (mopen, xamlg, svg2xaml, xaml2html)
 %{_mandir}/man1/mopen.1.gz
 %{_mandir}/man1/svg2xaml.1.gz
 %{_mandir}/man1/xamlg.1.gz
+%endif
 
+%if %{with_mono} == yes
 %package sharp
 Summary:        Moonlight gtksilver
 Group:          Development/Languages/Other
@@ -109,6 +123,7 @@ gtksilver provides a gtk-sharp object that can be used to embed a moonlight surf
 %{_prefix}/lib/monodoc/sources/gtksilver.source
 %{_prefix}/lib/monodoc/sources/gtksilver.tree
 %{_prefix}/lib/monodoc/sources/gtksilver.zip
+%endif
 
 %package -n moonlight-plugin
 Summary:        Moonlight browser plugin
@@ -127,9 +142,12 @@ Browser plugin for Moonlight
 %{_libdir}/moon/plugin/libmoonplugin.so
 %{_libdir}/moon/plugin/libmoonplugin-*bridge.la
 %{_libdir}/moon/plugin/libmoonplugin-*bridge.so*
+%if %{with_mono} == yes
 %{_libdir}/moon/plugin/moonlight.exe
+%endif
 %{_libdir}/browser-plugins/libmoonloader.so
 
+%if %{with_mono} == yes
 %package examples
 Summary:        Moonlight example programs
 Group:          Development/Languages/Other
@@ -142,6 +160,7 @@ Example programs for Moonlight including desklets
 %defattr(-, root, root)
 %{_bindir}/example-*
 %{_libdir}/desklets/example-*
+%endif
 
 %prep
 %setup  -q -n moon-%{version}
@@ -150,14 +169,16 @@ Example programs for Moonlight including desklets
 %build
 %{?env_options}
 %{?configure_options}
-%configure
+%configure --with-ffmpeg=%{with_ffmpeg} --with-mono=%{with_mono}
 make
 
 %install
 %{?env_options}
 make DESTDIR="$RPM_BUILD_ROOT" install
+%if 0%{?suse_version}
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/browser-plugins
 ln -s %{_libdir}/moon/plugin/libmoonloader.so $RPM_BUILD_ROOT%{_libdir}/browser-plugins/libmoonloader.so
+%endif
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
