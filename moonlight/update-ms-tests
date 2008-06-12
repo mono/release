@@ -1,0 +1,12 @@
+#!/bin/bash
+NAME=ms-tests
+SVN_WA=$HOME/$NAME
+SVN_URL=svn+ssh://mono-cvs.ximian.com/extras/moonlight-ms/tests/port/drop1030/built
+TARBALL=$HOME/public_html/$NAME.tar.gz
+
+cd "$SVN_WA"
+if svn switch "$SVN_URL" | grep "^[UADG] " > /dev/null
+then
+cd ..
+tar czf "$TARBALL" --exclude-vcs "$NAME"
+fi
