@@ -31,6 +31,7 @@ Addin for MonoDevelop for an integrated database explorer and editor.
 %defattr(-, root, root)
 %_prefix/share/pkgconfig/monodevelop-database.pc
 %_prefix/lib/monodevelop/AddIns/MonoDevelop.Database/*.dll
+%_prefix/lib/monodevelop/AddIns/MonoDevelop.Database/*.dll.mdb
 %dir %_prefix/lib/monodevelop/AddIns/MonoDevelop.Database
 %dir %_prefix/lib/monodevelop/AddIns/MonoDevelop.Database/locale
 

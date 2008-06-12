@@ -15,17 +15,23 @@
 	<h3>Development Tools</h3>
 #	monodoc mono-tools gecko-sharp2 gtksourceview-sharp2 boo ikvm mono-debugger heap-buddy cocoa-sharp nant IPCE mono-addins
 
-	<h3>Gtk# 2</h3>
+	<h3>Gtk# 2.4</h3>
 #	gtk-sharp2
 
-	<h3>Other</h3>
-#	maemo-sharp
+	<h3>Gtk# 2.8</h3>
+#	gtk-sharp28
 
-	<h3>Latest Gtk# (which are only supported on newer distros)</h3>
-#	gtk-sharp28 gnome-sharp2 gtk-sharp210 gtk-sharp212 gnome-sharp220 gnome-desktop-sharp2
+	<h3>Gtk# 2.10</h3>
+#	gtk-sharp210 gnome-sharp2
+
+	<h3>Gtk# 2.12</h3>
+#	gtk-sharp212 gnome-sharp220 gnome-desktop-sharp2
 
 	<h3>MonoDevelop</h3>
 #	monodevelop monodevelop-boo monodevelop-database monodevelop-java
+
+	<h3>Other</h3>
+#	maemo-sharp webkit-sharp
 
 </body>
 </html>

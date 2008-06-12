@@ -428,6 +428,12 @@ class package:
 		# Sort the files (for consistency on the web pages)
 		files.sort()
 
+		if len(files) == 0:
+			print "WARNING: no files found at %s/%s" % (self.package_relpath, version)
+			if fail_on_missing:
+				print "Exiting..."
+				sys.exit(1)
+
 		return files
 
 	# Only use the version_selection_reg on RELEASE, since 'version' is replaced with the subversion revision
@@ -488,9 +494,13 @@ class package:
 					self.version, = re.compile('([\d\.]*)-0').search(self.version).groups(1)
 				# 5. If version doesn't have a release (signified by a dash), get the latest release of that version
 				elif not re.compile('[\d\.]*-').search(self.version):
-					self.version = utils.get_latest_ver(self.package_fullpath, version=self.version, fail_on_missing=fail_on_missing)
+					my_version = utils.get_latest_ver(self.package_fullpath, version=self.version, fail_on_missing=fail_on_missing)
+					if not my_version:
+						print "WARNING: no packages available for version: %s" % self.version
+					self.version = my_version
 
-				if not os.path.exists(self.package_fullpath + os.sep + self.version):
+				# If we don't have a valid version or the path doesn't exist, fail if fail_on_missing is set
+				if (not self.version or not os.path.exists(self.package_fullpath + os.sep + self.version)) and fail_on_missing:
 					print "Bundle selection: trying to use %s/%s but this path does not exist!" % (self.package_fullpath, self.version)
 					sys.exit(1)
 
@@ -530,7 +540,9 @@ class package:
 
 	def get_source_file(self):
 		if not self.source_filename:
-			self.source_filename = self.name + os.sep + self.get_source_files().pop()
+			files = self.get_source_files()
+			if files:
+				self.source_filename = self.name + os.sep +files.pop()
 
 		return self.source_filename
 

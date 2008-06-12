@@ -116,9 +116,10 @@ for plat in config.sd_latest_build_distros:
 
 					build_info = datastore.build_info(bundle_obj2.HEAD_or_RELEASE(), base_distro, pack, ver)
 
-					# Skip this version if it failed when we don't allow failures
-					if build_info.get_collective_state() == "success":
+					# check for a build that passed all tests
+					if build_info.get_state() == "success":
 						target_ver = ver
+						print "Found validated build for %s: %s" % (pack, target_ver)
 						break
 
 				if target_ver:
@@ -134,7 +135,7 @@ for plat in config.sd_latest_build_distros:
 				rpms += pack_obj.get_files(fail_on_missing=fail_on_missing)
 
 # Gather sources
-for pack in packages_in_repo:
+for pack in build.get_packages():
 	pack_obj = packaging.package("", pack, bundle_obj=bundle_obj)
 	source_file = pack_obj.get_source_file()
 	# Make sure there is a valid source before adding (it will be missing if it's not in the bundle)

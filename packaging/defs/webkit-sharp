@@ -1,0 +1,39 @@
+BUILD_HOSTS=(
+	suse-103-x86_64
+)
+
+USE_HOSTS=(
+	ALL
+)
+
+MONO_DEPS=(
+	mono
+)
+
+MONO_RECOMMEND_DEPS=(
+	gtk-sharp2
+	gtk-sharp28
+	gtk-sharp210
+	gtk-sharp212
+)
+
+suse_103_x86_64_RPM_DEPS=(
+	http://download.opensuse.org/repositories/home:/ecanuto:/webkit/openSUSE_10.3/x86_64/libwebkit-1.0.r34469-1.1.x86_64.rpm
+	http://download.opensuse.org/repositories/home:/ecanuto:/webkit/openSUSE_10.3/x86_64/libwebkit-devel-1.0.r34469-1.1.x86_64.rpm
+)
+
+PACKS_TO_REMOVE=(
+	libwebkit
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH=(
+	trunk/webkit-sharp
+)
+RELEASE_PATH=(
+	tags/webkit-sharp/[[versiondot]]
+)
+

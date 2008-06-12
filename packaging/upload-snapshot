@@ -2,10 +2,12 @@
 
 if test x$1 == xvalidated ; then
 	sync_profile="validated"
-	sync_args="--skip_missing --validated"
+	# Don't skip missing because we don't want a sync when packages are missing
+	#sync_args="--skip_missing --validated"
+	sync_args="--validated"
 else
 	sync_profile="snapshot"
-	sync_args=""
+	sync_args="--skip_missing"
 fi
 
 echo "Using sync profile: $sync_profile"

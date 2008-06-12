@@ -20,11 +20,11 @@
 	<h3>Gtk# 2</h3>
 #	gtk-sharp-2.0 gtk-sharp2 gtk-sharp28 gtk-sharp210 gnome-sharp2 gtk-sharp212 gnome-sharp220 gnome-desktop-sharp2
 
-	<h3>Other</h3>
-#	mono-other
-
 	<h3>MonoDevelop</h3>
 #	monodevelop monodevelop monodevelop-boo monodevelop-database monodevelop-java
+
+	<h3>Other</h3>
+#	mono-other
 
 !	get_external_deps
 
