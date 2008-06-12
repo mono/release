@@ -108,8 +108,8 @@ insserv
 : > /var/log/zypper.log
 rm -rf /var/cache/zypp/raw/*
 
-zypper addrepo http://download.opensuse.org/repositories/openSUSE:10.3/standard/ 10.3-oss
-zypper addrepo http://download.opensuse.org/distribution/10.3/repo/non-oss/ 10.3-non-oss
+zypper addrepo http://download.opensuse.org/repositories/openSUSE:11.0/standard/ 11.0-oss
+zypper addrepo http://download.opensuse.org/distribution/11.0/repo/non-oss/ 11.0-non-oss
 
 #======================================
 # /etc/sudoers hack to fix #297695 
@@ -118,12 +118,21 @@ zypper addrepo http://download.opensuse.org/distribution/10.3/repo/non-oss/ 10.3
 sed -e "s/ALL ALL=(ALL) ALL/ALL ALL=(ALL) NOPASSWD: ALL/" /etc/sudoers > /tmp/sudoers && mv /tmp/sudoers /etc/sudoers
 chmod 0440 /etc/sudoers
 
+## delete passwords
+#passwd -d root
+#passwd -d linux
+## empty password is ok
+#pam-config -a --nullok
+
 mkdir /var/lib/zypp/db/products/
 if [ `eval baseGetProfilesUsed` != "KDE" ]; then
-   sed -e "s,@NAME@,openSUSE-10.3-Live-Gnome," /tmp/zypp.product > /var/lib/zypp/db/products/aae0a680f12121130067466712844104
+   sed -e "s,@NAME@,openSUSE-Live-Gnome," /tmp/zypp.product > /var/lib/zypp/db/products/aae0a680f12121130067466712844104
 else
-   sed -e "s,@NAME@,openSUSE-10.3-Live-KDE," /tmp/zypp.product > /var/lib/zypp/db/products/aae0a680f12121130067466712844104
+   sed -e "s,@NAME@,openSUSE-Live-KDE," /tmp/zypp.product > /var/lib/zypp/db/products/aae0a680f12121130067466712844104
 fi
+time=`date +%s`
+sed -i -e "s,@INSTALLTIME@,$time," /var/lib/zypp/db/products/aae0a680f12121130067466712844104
+
 rm /tmp/zypp.product
 : > /var/log/zypper.log
 

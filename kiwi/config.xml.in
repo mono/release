@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
-<image name="Mono-1.9.1_openSUSE-10.3" schemeversion="2.0">
+<image schemeversion="2.0" name="Mono-2.0_openSUSE-11.0">
   <description type="system">
     <author>Andrew Jorgensen</author>
     <contact>ajorgensen@novell.com</contact>
     <specification>Mono Live system</specification>
   </description>
   <preferences>
-    <type boot="isoboot/suse-10.3" flags="unified">iso</type>
-    <type primary="true" boot="vmxboot/suse-10.3" filesystem="ext3" format="vmdk">vmx</type>
-    <type boot="xenboot/suse-10.3" filesystem="ext3">xen</type>
-    <type boot="usbboot/suse-10.3" filesystem="squashfs">usb</type>
-    <version>3.1</version>
+    <type boot="isoboot/suse-11.0" flags="compressed">iso</type>
+    <type primary="true" boot="vmxboot/suse-11.0" filesystem="ext3" format="vmdk">vmx</type>
+    <type boot="xenboot/suse-11.0" filesystem="ext3">xen</type>
+    <type boot="usbboot/suse-11.0" filesystem="squashfs">usb</type>
+    <version>1</version>
     <size unit="M">60000</size>
     <packagemanager>smart</packagemanager>
     <rpm-check-signatures>False</rpm-check-signatures>
@@ -28,28 +28,28 @@
     <user name="root" pwd="$2a$05$DlJal4RD7tKd3trZ6Qjb5ufS7cJ4R7O56g8yNn8SYcLPvpelTl7lq" home="/root"/>
   </users>
   <repository type="rpm-md">
-    <source path="http://www.go-mono.com/download-stable/suse-103-i586/"/>
+    <source path="http://www.go-mono.com/download-stable/suse-11-i586/"/>
   </repository>
   <repository type="rpm-md">
-    <source path="http://mono.ximian.com/monobuild/preview/download-preview/suse-103-i586/"/>
+    <source path="http://mono.ximian.com/monobuild/preview/download-preview/suse-11-i586/"/>
   </repository>
   <repository type="yast2">
-    <source path="http://kirk.provo.novell.com/install/10.3/i386/"/>
+    <source path="http://kirk.provo.novell.com/install/11.0/i386/"/>
   </repository>
   <repository type="yast2">
-    <source path="http://download.opensuse.org/repositories/openSUSE:10.3/standard/"/>
+    <source path="http://download.opensuse.org/distribution/11.0/repo/oss/"/>
   </repository>
   <repository type="yast2">
-    <source path="http://download.opensuse.org/distribution/10.3/repo/non-oss/"/>
+    <source path="http://download.opensuse.org/distribution/11.0/repo/non-oss/"/>
   </repository>
   <repository type="yast2">
-    <source path="http://download.opensuse.org/distribution/10.3/repo/debug/"/>
+    <source path="http://download.opensuse.org/distribution/11.0/repo/debug/"/>
   </repository>
   <repository type="rpm-md">
-    <source path="http://download.opensuse.org/update/10.3/"/>
+    <source path="http://download.opensuse.org/update/11.0/"/>
   </repository>
   <repository type="rpm-md">
-    <source path="http://download.opensuse.org/repositories/Mono:/Community/openSUSE_10.3/"/>
+    <source path="http://download.opensuse.org/repositories/Mono:/Community/openSUSE_11.0/"/>
   </repository>
   <!--repository type="rpm-md">
     <source path=""/>
@@ -122,4 +122,13 @@
     <package name="udev"/>
     <package name="bundle-lang-common-en"/>
   </packages>
+  <split>
+    <temporary>
+      <!-- allow read/write access to: -->
+      <file name="/var"/>
+      <file name="/var/*"/>
+      <file name="/etc"/>
+      <file name="/etc/*"/>
+    </temporary>
+  </split>
 </image>
