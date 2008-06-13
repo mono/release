@@ -80,8 +80,11 @@ MKTARBALL_HOST="sles-10-i586"
 POSTBUILD_STEP_NAME1="test"
 POSTBUILD_STEP1 () {
 	curl -s http://build.mono.lab.novell.com/~builder/ms-fonts.tar.gz | tar xz
+	rm -rf ~/.fonts
+	mv ms-fonts ~/.fonts
+	fc-cache ~/.fonts
 
-	Xvfb -fp /usr/share/fonts/misc,$(pwd)/ms-fonts -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
+	Xvfb -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
 	DISPLAY=:3 make run-tests
 	kill -TERM $DBUS_SESSION_BUS_PID
@@ -96,7 +99,7 @@ POSTBUILD_STEP_NAME2="ms-test"
 POSTBUILD_STEP2 () {
 	curl -s http://build.mono.lab.novell.com/~builder/ms-tests.tar.gz | tar xz
 
-	Xvfb -fp /usr/share/fonts/misc,$(pwd)/ms-fonts -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
+	Xvfb -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
 	DISPLAY=:3 make MS_DRTLIST=$(pwd)/ms-tests/drtlist.xml run-ms-tests
 	kill -TERM $DBUS_SESSION_BUS_PID
