@@ -60,7 +60,8 @@ SharpDevelop 0.98. See http://monodevelop.com/ for more information.
 	    --enable-monoextensions \
 	    --enable-aspnet \
 	    --disable-update-mimedb \
-	    --disable-update-desktopdb
+	    --disable-update-desktopdb \
+	    --enable-tests
 make
 
 %install
