@@ -70,7 +70,6 @@ Authors:
 %{_prefix}/lib/mono/2.0/mdb.exe
 %{_prefix}/lib/mono/gac/Mono.Debugger
 %{_prefix}/lib/mono/gac/Mono.Debugger.Cecil
-%{_prefix}/lib/mono/gac/Mono.Debugger.Backend
 %{_prefix}/lib/mono/mono-debugger
 %{_libdir}/pkgconfig/mono-debugger.pc
 
