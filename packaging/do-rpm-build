@@ -30,14 +30,14 @@ for f in os.listdir('.'):
 
 macrofiles = """
 	/usr/lib/rpm/macros
-	/usr/lib/rpm/x86_64-linux/macros
+	/usr/lib/rpm/%{_target}/macros
 	/usr/lib/rpm/suse_macros
 	/etc/rpm/macros.specspo
 	/etc/rpm/macros.prelink
 	/etc/rpm/macros.solve
 	/etc/rpm/macros.up2date
 	/etc/rpm/macros
-	/etc/rpm/x86_64-linux/macros
+	/etc/rpm/%{_target}/macros
 	monobuild.rpmmacros
 """.split()
 

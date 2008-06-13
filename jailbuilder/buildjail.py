@@ -137,7 +137,7 @@ class rpm_query_cache:
 		"""Load Package object from cache, otherwise create a new one, store it in the cache,
 		and return the new object."""
 
-		filename = os.path.basename(dir_and_filename)
+		filename = dir_and_filename.replace("/", "_")
 
 		pickle_path = self.cache_dir + os.sep + filename + ".Package.pickle"
 

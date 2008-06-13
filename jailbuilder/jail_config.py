@@ -8,6 +8,8 @@ valid_arch = {
 	'i386':		'i686 i586 i386 noarch',
 	'i586':		'i686 i586 i386 noarch',
         'ppc':		'ppc noarch',
+	's390':		's390 noarch',
+	's390x':	's390x s390 noarch',
 	'x86_64':	'x86_64 i686 i586 i386 noarch',
 }
 

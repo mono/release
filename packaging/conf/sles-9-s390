@@ -1,13 +1,18 @@
-username=builder
-hostname=aussie-2.osdl.marist.edu
-build_location="/home/builder/tmp/monobuild"
+# osdl machine
+#username=builder
+#hostname=aussie-2.osdl.marist.edu
+#build_location="/home/builder/tmp/monobuild"
 
 # Box in Germany
-#target_host=builder@s390zvi38.suse.de
-#root_dir=/mono/jails/sles-9-s390
+username=builder
+hostname=s390a07.suse.de
+root_dir=/mono/jails/sles-9-s390
 
+arch_change_path=/usr/bin/s390
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"
+
+# Note: had to grab /etc/sysconfig/security from any other sles9 install
 
 web_index=4
 
