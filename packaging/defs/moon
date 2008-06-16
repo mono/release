@@ -79,25 +79,39 @@ MKTARBALL_HOST="sles-10-i586"
 
 POSTBUILD_STEP_NAME1="test"
 POSTBUILD_STEP1 () {
-	curl -s http://build.mono.lab.novell.com/~builder/ms-fonts.tar.gz | tar xz
+	# Get and setup the MS fonts
+	curl -s "http://build.mono.lab.novell.com/~builder/ms-fonts.tar.gz" | tar xz
 	rm -rf ~/.fonts
 	mv ms-fonts ~/.fonts
 	fc-cache ~/.fonts
 
+	# Get the test-run-data for the last run
+	rm -rf test/test-run-data
+	curl -s "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=test&filename=test-run-data.tar.gz" | tar xz
+
+	# Run the tests
 	Xvfb -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
 	DISPLAY=:3 make run-tests
 	kill -TERM $DBUS_SESSION_BUS_PID
 	kill %1
 
+	# Copy out the results
 	target=$build_location/steps/test
 	mkdir $build_location/steps
 	mv test/html_report $target
+	# Include historical data
+	mv test/comparison_report.html $target/
+	tar czf test-run-data.tar.gz test/test-run-data
+	mv test-run-data.tar.gz $target/
 }
 
 POSTBUILD_STEP_NAME2="ms-test"
 POSTBUILD_STEP2 () {
-	curl -s http://build.mono.lab.novell.com/~builder/ms-tests.tar.gz | tar xz
+	curl -s "http://build.mono.lab.novell.com/~builder/ms-tests.tar.gz" | tar xz
+
+	rm -rf test/test-run-data
+	curl -s "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=ms-test&filename=test-run-data.tar.gz" | tar xz
 
 	Xvfb -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
@@ -108,6 +122,9 @@ POSTBUILD_STEP2 () {
 	target=$build_location/steps/ms-test
 	mkdir $build_location/steps
 	mv test/html_report $target
+	mv test/comparison_report.html $target/
+	tar czf test-run-data.tar.gz test/test-run-data
+	mv test-run-data.tar.gz $target/
 }
 
 POSTBUILD_STEP_NAME3="plugin-1.0-ffmpeg"
