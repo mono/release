@@ -9,6 +9,10 @@ arch_change_path=/usr/bin/linux32
 
 target_command_prefix=". /etc/profile;"
 
+# sles9 doesn't include /usr/share/pkgconfig
+#  Force it (monodebugger needs it because xsp has .pc files there)
+env="PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig"
+
 # Repo conf
 YAST_REPO=1
 YAST_INSTALL=1

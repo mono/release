@@ -10,6 +10,9 @@ root_dir=/mono/jails/sles-9-s390x
 
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"
+# sles9 doesn't include /usr/share/pkgconfig
+#  Force it (monodebugger needs it because xsp has .pc files there)
+env="PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig"
 
 # Note: had to grab /etc/sysconfig/security from any other sles9 install
 

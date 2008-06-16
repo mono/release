@@ -6,6 +6,9 @@ hostname=ppc-macos-1.mono.lab.novell.com
 root_dir=/jails/sles-9-ppc
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"
+# sles9 doesn't include /usr/share/pkgconfig
+#  Force it (monodebugger needs it because xsp has .pc files there)
+env="PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig"
 
 web_index=3
 

@@ -38,6 +38,8 @@ Various .NET 3.0 bits.
 %_prefix/lib/mono/3.0/UIAutomationProvider.dll
 %_prefix/lib/mono/gac/UIAutomationTypes
 %_prefix/lib/mono/3.0/UIAutomationTypes.dll
+%_prefix/lib/mono/gac/UIAutomationBridge
+%_prefix/lib/mono/3.0/UIAutomationBridge.dll
 %_prefix/lib/mono/gac/WindowsBase
 %_prefix/lib/mono/3.0/WindowsBase.dll*
 %_prefix/lib/mono/gac/System.IdentityModel

@@ -74,6 +74,7 @@ td_packages = """
 	gnome-sharp2
 	gtk-sharp28
 	gtk-sharp210
+	gtk-sharp212
 	gtksourceview-sharp2
 	libgdiplus
 	mod_mono
