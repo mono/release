@@ -87,7 +87,7 @@ POSTBUILD_STEP1 () {
 
 	# Get the test-run-data for the last run
 	rm -rf test/test-run-data
-	curl -s "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=test&filename=test-run-data.tar.gz" | tar xz
+	curl -sL "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=test&filename=test-run-data.tar.gz" | tar xz
 
 	# Run the tests
 	Xvfb -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
@@ -111,7 +111,7 @@ POSTBUILD_STEP2 () {
 	curl -s "http://build.mono.lab.novell.com/~builder/ms-tests.tar.gz" | tar xz
 
 	rm -rf test/test-run-data
-	curl -s "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=ms-test&filename=test-run-data.tar.gz" | tar xz
+	curl -sL "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=ms-test&filename=test-run-data.tar.gz" | tar xz
 
 	Xvfb -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
