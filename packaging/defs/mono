@@ -747,7 +747,7 @@ POSTBUILD_STEP67 () {
 POSTBUILD_STEP_NAME68="test-System_Core-3.5"
 POSTBUILD_STEP68 () {
 	cd mcs/class/System.Core
-	strace $make_path run-test PROFILE=net_2_0
+	$make_path run-test PROFILE=net_2_0
 }
 
 POSTBUILD_STEP_NAME69="test-System_Xml_Linq-3.5"

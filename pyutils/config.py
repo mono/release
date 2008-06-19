@@ -3,7 +3,7 @@ import os
 import stat
 
 # Default distro to make tarballs on (can be overridden in def file)
-mktarball_host = "suse-103-x86_64"
+mktarball_host = "suse-110-x86_64"
 
 # Set release base dir
 #  Must do at startup, opposed to doing this in a function
@@ -132,7 +132,10 @@ sd_latest_build_distros = """
 	sunos-10-sparc
 	sunos-10-x86
 	suse-103-i586
+	suse-103-ppc
 	suse-103-x86_64
+	suse-110-i586
+	suse-110-x86_64
 	win-4-i386
 """.split()
 sd_latest_build_packages = td_packages

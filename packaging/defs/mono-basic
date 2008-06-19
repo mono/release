@@ -43,7 +43,7 @@ get_destroot () {
         if test "x$DISTRO" = "xwin-4-i386" ; then
                 DEST_ROOT=$DISTRO
 	# For mktarball
-        elif test "x$DISTRO" = "xsuse-103-x86_64" ; then
+        elif test "x$DISTRO" = "xsuse-110-x86_64" ; then
                 DEST_ROOT=noarch
 	# For building...
         elif test "x$DISTRO" = "xsles-10-i586" ; then

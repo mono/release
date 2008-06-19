@@ -15,5 +15,5 @@ cd ..
 
 for jail in ${jails[@]}; do
 	echo === $jail ===
-	./jail-do $jail run $*
+	./jail-do $jail $*
 done

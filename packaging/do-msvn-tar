@@ -224,7 +224,8 @@ else:
 			# create cache dir
 			if not os.path.exists(cache_dir): distutils.dir_util.mkpath(cache_dir)
 			#check out working copy
-			command = "cd %s; svn %s checkout -q %s %s/%s" % (cache_dir, config.svn_options, rev_arg, MONO_ROOT, path)
+			# (don't use -q, because the procress may get killed)
+			command = "cd %s; svn %s checkout %s %s/%s" % (cache_dir, config.svn_options, rev_arg, MONO_ROOT, path)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
 			# TODO: exit with retry when ssh/svn errors happen
 			exit_on_error(command, status, output, exit_code=1, exit_msg=failure_message)

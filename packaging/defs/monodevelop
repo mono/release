@@ -38,6 +38,7 @@ MONO_RECOMMEND_DEPS=(
 	gtk-sharp28
 	gtk-sharp212
 	gnome-sharp2
+	gnome-sharp220
 	gtksourceview-sharp2
 	gtksourceview2-sharp
 )
@@ -63,6 +64,13 @@ update_version_file () {
 	sed -i "s/\(AC_INIT.*, \).*,/\1$VERSION,/" configure.in
 }
 
+make_dist () {
+
+	. /etc/profile
+	./autogen.sh --enable-tests
+	make dist-bzip2
+
+}
 
 macos_10_ZIP_BUILD () {
 
@@ -105,7 +113,6 @@ macos_10_ppc_ZIP_RUNTIME_DEPS=(
 
 POSTBUILD_STEP_NAME1="test"
 POSTBUILD_STEP1 () {
-	cd tests/UnitTests
         $make_path test
 }
 
