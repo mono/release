@@ -103,6 +103,7 @@ POSTBUILD_STEP1 () {
 	# Include historical data
 	mv test/comparison_report.html $target/
 	tar czf test-run-data.tar.gz test/test-run-data
+	mv test/test-run-data $target/
 	mv test-run-data.tar.gz $target/
 }
 
@@ -124,6 +125,7 @@ POSTBUILD_STEP2 () {
 	mv test/html_report $target
 	mv test/comparison_report.html $target/
 	tar czf test-run-data.tar.gz test/test-run-data
+	mv test/test-run-data $target/
 	mv test-run-data.tar.gz $target/
 }
 
