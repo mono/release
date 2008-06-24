@@ -114,7 +114,13 @@ log_obj.log("Starting to build source dist...\n")
 # Make this non-interruptable because we don't want the source cache corrupted
 (status, output) = conf.buildenv.execute_command('%s/do-msvn-tar %s %s %s %s' % (temp_dir, fresh_checkout, HEAD_or_RELEASE, package, version), interruptable=False )
 
-if status:
+log_obj.log("do-msvn-tar exit code: %d\n" % status)
+if status == utils.KILLED_EXIT_CODE:
+        conf.buildenv.unlock_env()
+        log_obj.log("Source dist file creation failed because svn timeout error... retry again\n")
+	repo.remove_file(HEAD_or_RELEASE, package, version)
+        sys.exit(utils.KILLED_EXIT_CODE)
+elif status:
         conf.buildenv.unlock_env()
         log_obj.log("Source dist file creation failed\n")
 	repo.add_file(HEAD_or_RELEASE, package, version, "failure")

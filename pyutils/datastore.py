@@ -67,10 +67,23 @@ class source_file_repo:
 
 
         # Probably won't need this...
-        def remove_file(self):
+        def remove_file(self, HEAD_or_RELEASE, package_name, version):
                 # Remove from map
-                # delete file from disk?
-                pass
+
+                self.load_info()
+                # Add to structure
+                key = ":".join([HEAD_or_RELEASE, package_name, version])
+
+		try:
+			self.info.pop(key)
+		except:
+			print "Error removing key: " + key
+			return
+
+                # Lock file
+                # Write out file
+                self.write_info()
+
 
         def load_info(self):
                 # Ex: HEAD:mono-1.1.13:57664=snapshot_sources/mono-1.1.13/mono-1.1.13.4.57664.tar.gz

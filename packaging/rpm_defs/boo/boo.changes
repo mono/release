@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue Jun 17 14:18:43 MST 2008 - wberrier@suse.de
+
+- Update to 0.8.2.2960
+ - (almost) complete nullable type support
+ - shorthandsfor nullable types (T?) and enumerables 
+   (T* instead of IEnumerable[of T])
+ - improved booish behavior with nicer colors 
+   (and it should work inside emacs now )
+ - 'else' block for 'for' and 'while loops
+ - fixes and improvement related to generic methods 
+   (overloads and interface declarations)
+
+-------------------------------------------------------------------
 Wed Feb 27 13:18:43 MST 2008 - wberrier@suse.de
 
 - Update to 0.8.1.2865

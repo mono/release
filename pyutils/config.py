@@ -208,7 +208,7 @@ dir_perms = stat.S_IRWXU | stat.S_IRWXG | stat.S_IROTH | stat.S_IXOTH # 775
 ######################################
 
 # Common place to put all ssh options
-ssh_options = '-o BatchMode=yes -o StrictHostKeyChecking=no -o Cipher=blowfish -o ConnectTimeout=10'
+ssh_options = '-o BatchMode=yes -o StrictHostKeyChecking=no -o Cipher=blowfish'
 
 # Add key file to options for all ssh stuff, so all you need is the distro key
 if os.path.exists(buildenv_key_file) and buildenv_key_file != "":

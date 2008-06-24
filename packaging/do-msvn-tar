@@ -129,8 +129,19 @@ get_source = package_obj.get_info_var('get_source')
 ### Execute the source creating functions ###
 def_file = temp_dir + os.sep + package
 
-def exit_on_error(command, status, output, exit_code=0, exit_msg=""):
-	"""Function to call to check errors.  Exit code is for exiting with a different value than status. """
+def exit_on_error(command, status, output, exit_code=0, exit_msg="", exit_if_str=[], exit_if_str_code=0):
+	"""Function to call to check errors.  Exit code is for exiting with a different value than status. 
+
+	Give text output errors priority, since we're using them because exit codes are not verbose enough.
+	"""
+
+	if exit_if_str:
+		for error in exit_if_str:
+			if output.find(error) >= 0:
+				print "Exiting because '%s' was found in output: %s" % (error, output)
+				print "Exiting with: %d" % exit_if_str_code
+				sys.exit(exit_if_str_code)
+
 	if status:
 		print "Error executing: " + command
 		print "Exit code of command: %d" % status
@@ -141,7 +152,13 @@ def exit_on_error(command, status, output, exit_code=0, exit_msg=""):
 			print "Exiting with: %d" % exit_code
 			sys.exit(exit_code)
 		else:
+			print "Exiting with: %d" % status
 			sys.exit(status)
+
+
+svn_connection_errors = [
+	'svn: Connection closed unexpectedly',
+]
 
 # get_source
 if get_source:
@@ -172,12 +189,12 @@ else:
 			#  (Can't run --non-interactive on this command...)
 			command = "cd %s/%s; svn cleanup" % (cache_dir, module)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
-			exit_on_error(command, status, output, exit_code=1)
+			exit_on_error(command, status, output)
 
 			# Get current state of checkout
 			command = "cd %s/%s; svn %s info" % (cache_dir, module, config.svn_options)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
-			exit_on_error(command, status, output, exit_code=1)
+			exit_on_error(command, status, output)
 
 			#old_revision, = re.compile("Revision: (.*)").search(output).groups()
 			old_mono_host, = re.compile("Repository Root: (.*)").search(output).groups()
@@ -190,18 +207,18 @@ else:
 			new_mono_host = stuff[0] + "://" + stuff[1]
 			command = "cd %s/%s; svn %s switch --relocate %s %s" % (cache_dir, module, config.svn_options, old_mono_host, new_mono_host)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
-			exit_on_error(command, status, output, exit_code=1)
+			exit_on_error(command, status, output, )
 
 			# Update svn to the specific revision
 			# svn switch  (will update if the path in the working copy hasn't changed, this ensures have the right path)
 			command = 'cd %s/%s; svn %s switch %s %s/%s' % (cache_dir, module, config.svn_options, rev_arg, MONO_ROOT, path)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1, print_output=0 )
 			# TODO: exit with retry when ssh/svn errors happen
-			exit_on_error(command, status, output, exit_code=1)
+			exit_on_error(command, status, output, exit_if_str=svn_connection_errors, exit_if_str_code=utils.KILLED_EXIT_CODE)
 
 			#command = 'cd %s/%s; svn info' % (cache_dir, module)
 			#(status, output) = utils.launch_process(command, output_timeout=output_timeout)
-			#exit_on_error(command, status, output, exit_code=1, exit_msg=failure_message)
+			#exit_on_error(command, status, output, exit_msg=failure_message)
 			#new_revision, = re.compile("Revision: (.*)").search(output).groups()
 
 			# Used to do a log between the old state of the repo and the new updated state
@@ -212,7 +229,7 @@ else:
 			#  This way, we'll get the same results regardless of the state of the cache
 			#command = 'cd %s/%s; svn log -v -r%s:%s' % (cache_dir, module, new_revision, old_revision)
 			#(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
-			#exit_on_error(command, status, output, exit_code=1)
+			#exit_on_error(command, status, output)
 
 			# TODO: print info from the last source update, even if inaccurate?
 			#print "----------------------------------------------------------------"
@@ -228,19 +245,19 @@ else:
 			command = "cd %s; svn %s checkout %s %s/%s" % (cache_dir, config.svn_options, rev_arg, MONO_ROOT, path)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
 			# TODO: exit with retry when ssh/svn errors happen
-			exit_on_error(command, status, output, exit_code=1, exit_msg=failure_message)
+			exit_on_error(command, status, output, exit_msg=failure_message, exit_if_str=svn_connection_errors, exit_if_str_code=utils.KILLED_EXIT_CODE)
 
 		#print "----------------------------------------------------------------"
 		#print "-----  Revision details pertaining to the last commit only -----"
 		# Get the log message of the last commit
 		command = 'cd %s/%s; svn %s log --limit 1' % (cache_dir, module, config.svn_options)
 		(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
-		exit_on_error(command, status, output, exit_code=1)
+		exit_on_error(command, status, output, exit_if_str=svn_connection_errors, exit_if_str_code=utils.KILLED_EXIT_CODE)
 
 		# Show diff of this commit piped through diffstat
 		command = 'cd %s/%s; svn %s diff -r PREV | diffstat -p0' % (cache_dir, module, config.svn_options)
 		(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
-		exit_on_error(command, status, output, exit_code=1)
+		exit_on_error(command, status, output, exit_if_str=svn_connection_errors, exit_if_str_code=utils.KILLED_EXIT_CODE)
 		print ""
 		#print "----------------------------------------------------------------"
 
@@ -256,7 +273,7 @@ else:
 		# results: using this instead of svn export recovers those 3 minutes
 		command = "rsync -a --exclude '.svn/' %s/%s ." % (cache_dir, module)
 		(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_command=1)
-		exit_on_error(command, status, output, exit_code=1, exit_msg="Error making clean copy of the source tree (did rsync fail, or is it installed?)")
+		exit_on_error(command, status, output, exit_msg="Error making clean copy of the source tree (did rsync fail, or is it installed?)")
 
 
 # Go inside the source tree

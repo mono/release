@@ -8,6 +8,8 @@ import time
 import re
 import signal
 
+# TODO: this need some profiling... it uses too much processor...
+
 # Note: if for some reason you use os.chdir, and try to reload a module in this dir, it won't work!
 #  Either don't use os.chdir, or put a full path in here
 sys.path.append('../pyutils')
@@ -147,6 +149,10 @@ class tarball_builder(threading.Thread):
 						# handle jail busy errors (exit code of 2)
 						if code == 2:
 							tarball_log.log("Jail busy, retrying later... (%s)\n" % pack_name)
+
+						# handle svn timeouts
+						elif code == utils.KILLED_EXIT_CODE:
+							tarball_log.log("svn commands killed, retrying later... (%s)\n" % pack_name)
 
 						# Handle failed tarballs...
 						elif code:
