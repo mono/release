@@ -6,9 +6,6 @@ HEAD_DEPS=1
 MKTARBALL_HEAD_DEPS=1
 
 BUILD_HOSTS=(
-	sles-10-i586
-	sles-10-x86_64
-	sles-10-ppc
 	suse-103-i586
 	suse-103-x86_64
 	suse-103-ppc
@@ -32,16 +29,6 @@ sles_10_noarch_RPM_DEPS=(
 
 suse_103_noarch_RPM_DEPS=(
 	http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
-)
-
-sles_10_i586_RPM_DEPS=(
-	http://download.opensuse.org/repositories/home:/ajorgensen:/mozilla/SLE_10/i586/mozilla-xulrunner190-1.8.99.5-5.1.i586.rpm
-	http://download.opensuse.org/repositories/home:/ajorgensen:/mozilla/SLE_10/i586/mozilla-xulrunner190-devel-1.8.99.5-5.1.i586.rpm
-)
-
-sles_10_x86_64_RPM_DEPS=(
-	http://download.opensuse.org/repositories/home:/ajorgensen:/mozilla/SLE_10/x86_64/mozilla-xulrunner190-1.8.99.5-5.1.x86_64.rpm
-	http://download.opensuse.org/repositories/home:/ajorgensen:/mozilla/SLE_10/x86_64/mozilla-xulrunner190-devel-1.8.99.5-5.1.x86_64.rpm
 )
 
 MONO_DEPS=(
