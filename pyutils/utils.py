@@ -48,7 +48,8 @@ rpm2cpio_py_path = os.path.abspath(module_dir + "rpm2cpio.py")
 rpmvercmp_module_path = os.path.abspath(module_dir + "../rpmvercmp")
 
 debug=0
-KILLED_EXIT_CODE=-42
+# These exit codes can't be negative... probably 8 bit unsigned
+KILLED_EXIT_CODE=42
 INTERRUPTED_EXIT_CODE=10 # Should be arbitrary... ?
 
 match_all = re.compile('')

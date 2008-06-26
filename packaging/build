@@ -44,7 +44,9 @@ def get_state(code, test=0):
 	#  255 seems to be returned through ssh on a killed process...
 	#  How accurrate are these exit codes??
 	#  Some tests are reporting 255 on killed processes?
-	if code == utils.KILLED_EXIT_CODE or code == 214 or code == 137 or code == 255:
+	#if code == utils.KILLED_EXIT_CODE or code == 214 or code == 137 or code == 255:
+	#  now that we're not using negative exit codes, we shouldn't need the extra values
+	if code == utils.KILLED_EXIT_CODE:
 		return "timeout"
 	# Most of the time interrupts will show as 'timeout'
 	elif code == utils.INTERRUPTED_EXIT_CODE:
