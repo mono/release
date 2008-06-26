@@ -1,0 +1,40 @@
+web_index=17
+
+MKTARBALL_HEAD_DEPS=1
+
+BUILD_HOSTS=(
+	suse-103-i586
+	suse-103-ppc
+	suse-103-x86_64
+	suse-110-i586
+	suse-110-ppc
+	suse-110-x86_64
+)
+
+USE_HOSTS=(${BUILD_HOSTS[@]})
+
+MONO_DEPS=(
+	mono
+	gtk-sharp212
+	olive
+)
+
+MONO_RECOMMEND_DEPS=(
+        libgdiplus
+)
+
+get_destroot () {
+	DEST_ROOT=$DISTRO
+}
+
+HEAD_PATH=(
+	trunk/uia2atk/src/UIAutomationWinforms
+)
+RELEASE_PATH=(
+	tags/UIAutomationWinforms-[[version]]
+)
+
+update_version_file () {
+        sed -i "s/\(AC_INIT(\[.*\], *\[\).*\(\])\)/\1$VERSION\2/" configure.ac
+}
+
