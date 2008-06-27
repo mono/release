@@ -22,7 +22,7 @@ PIDS=()
 mkdir -p logs
 for distro in  ${BUILD_HOSTS[@]}; do
 	echo Starting $distro
-	./build --suppress_output --skip_steps $distro $package $version $release > logs/build-all.$distro.$package.$version-$release 2>&1 &
+	./build --suppress_output --skip_steps --skip_tests $distro $package $version $release > logs/build-all.$distro.$package.$version-$release 2>&1 &
 	PIDS=(${PIDS[@]} $!)
 done
 

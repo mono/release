@@ -388,7 +388,7 @@ if not skip_tests:
 
 		counter += 1
 
-# Run postbuild steps
+# Run postbuild packaging steps
 if not skip_steps:
 	counter = 1
 	while(1):
