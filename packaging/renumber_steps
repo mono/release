@@ -16,17 +16,31 @@ fd = open("defs/" + def_file, 'r')
 contents = fd.read()
 fd.close()
 
-bs_count = 1
+bs_test_count = 1
+bs_step_count = 1
 fd = open("defs/" + def_file, 'w')
+
+# Renumber the steps
 for line in contents.split("\n"):
 	m1 = re.search("POSTBUILD_STEP_NAME\d+(.*)", line)
 	m2 = re.search("POSTBUILD_STEP\d+(.*)", line)
 
+	m3 = re.search("POSTBUILD_TEST_NAME\d+(.*)", line)
+	m4 = re.search("POSTBUILD_TEST\d+(.*)", line)
+
+
 	if m1:
-		fd.write("POSTBUILD_STEP_NAME%d%s\n" % (bs_count, m1.group(1)))
+		fd.write("POSTBUILD_STEP_NAME%d%s\n" % (bs_step_count, m1.group(1)))
 	elif m2:
-		fd.write("POSTBUILD_STEP%d%s\n" % (bs_count, m2.group(1)))
-		bs_count += 1
+		fd.write("POSTBUILD_STEP%d%s\n" % (bs_step_count, m2.group(1)))
+		bs_step_count += 1
+
+	elif m3:
+		fd.write("POSTBUILD_TEST_NAME%d%s\n" % (bs_test_count, m3.group(1)))
+	elif m4:
+		fd.write("POSTBUILD_TEST%d%s\n" % (bs_test_count, m4.group(1)))
+		bs_test_count += 1
+
 	else:
 		fd.write(line + "\n")
 
