@@ -96,21 +96,24 @@ def run_postbuild_step(name, step_key, test=0):
 
 # Collect optional opts
 skip_steps = False
+skip_tests = False
 # This is to specify installing release packages even when building a package from head
 HEAD_or_RELEASE_deps = ""
 # Don't print to the screen
 print_screen = 1
-opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_steps", "HEAD_or_RELEASE_deps=", "suppress_output" ])
+opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_steps", "skip_tests", "HEAD_or_RELEASE_deps=", "suppress_output" ])
 for option, value in opts:
 	if option == "--skip_steps":
 		skip_steps = True
+	if option == "--skip_tests":
+		skip_tests = True
 	if option == "--HEAD_or_RELEASE_deps":
 		HEAD_or_RELEASE_deps = value
 	if option == "--suppress_output":
 		print_screen = 0
 
 if len(remaining_args) < 3:
-	print "Usage is: ./build [--skip_steps] [--HEAD_or_RELEASE_deps=(HEAD|RELEASE)] [--suppress_output] configuration package version <release>"
+	print "Usage is: ./build [--skip_steps] [--skip_tests] [--HEAD_or_RELEASE_deps=(HEAD|RELEASE)] [--suppress_output] configuration package version <release>"
         print "  <release> is optional"
 	sys.exit(1)
 
@@ -370,6 +373,21 @@ except OSError:
 
 build_info.update_step("build", state="success", download=os.path.basename('downloads'), finish=utils.get_time())
 
+# Run postbuild tests
+if not skip_tests:
+	counter = 1
+	while(1):
+		name = package.get_info_var('POSTBUILD_TEST_NAME%d' % counter)
+		step_key = 'POSTBUILD_TEST%d' % counter
+		
+		if name and package.info.has_key(step_key):
+			run_postbuild_step(name, step_key, test=1)
+		else:
+			# We've run out of steps, stop
+			break
+
+		counter += 1
+
 # Run postbuild steps
 if not skip_steps:
 	counter = 1
@@ -384,6 +402,7 @@ if not skip_steps:
 			break
 
 		counter += 1
+
 
 # Run cleanup step
 if package.get_info_var('CLEAN_UP'):

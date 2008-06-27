@@ -64,8 +64,8 @@ update_version_file () {
 # This jail has ffmpeg in it
 MKTARBALL_HOST="sles-10-i586"
 
-POSTBUILD_STEP_NAME1="test"
-POSTBUILD_STEP1 () {
+POSTBUILD_TEST_NAME1="test"
+POSTBUILD_TEST1 () {
 	# Get and setup the MS fonts
 	curl -s "http://build.mono.lab.novell.com/~builder/ms-fonts.tar.gz" | tar xz
 	rm -rf ~/.fonts
@@ -94,8 +94,8 @@ POSTBUILD_STEP1 () {
 	mv test-run-data.tar.gz $target/
 }
 
-POSTBUILD_STEP_NAME2="ms-test"
-POSTBUILD_STEP2 () {
+POSTBUILD_TEST_NAME2="ms-test"
+POSTBUILD_TEST2 () {
 	curl -s "http://build.mono.lab.novell.com/~builder/ms-tests.tar.gz" | tar xz
 
 	rm -rf test/test-run-data
@@ -116,8 +116,8 @@ POSTBUILD_STEP2 () {
 	mv test-run-data.tar.gz $target/
 }
 
-POSTBUILD_STEP_NAME3="plugin-1.0-ffmpeg"
-POSTBUILD_STEP3 () {
+POSTBUILD_STEP_NAME1="plugin-1.0-ffmpeg"
+POSTBUILD_STEP1 () {
 	curl -s http://build.mono.lab.novell.com/~builder/moon-ffmpeg.tar.bz2 | tar xj
 	pushd moon-ffmpeg
 	./configure --disable-static --enable-shared --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-zlib --disable-network --disable-vhook --disable-debug --disable-muxers --disable-encoders --disable-demuxers --disable-bsfs --disable-protocols
@@ -133,8 +133,8 @@ POSTBUILD_STEP3 () {
 	cp plugin/install/novell-moonlight*.xpi $target/
 }
 
-POSTBUILD_STEP_NAME4="plugin-2.0-ffmpeg"
-POSTBUILD_STEP4 () {
+POSTBUILD_STEP_NAME2="plugin-2.0-ffmpeg"
+POSTBUILD_STEP2 () {
 	make distclean
 	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
 	./configure --enable-user-plugin --with-ffmpeg
@@ -144,8 +144,8 @@ POSTBUILD_STEP4 () {
 	cp plugin/install/novell-moonlight*.xpi $target/
 }
 
-POSTBUILD_STEP_NAME5="plugin-1.0"
-POSTBUILD_STEP5 () {
+POSTBUILD_STEP_NAME3="plugin-1.0"
+POSTBUILD_STEP3 () {
 	make distclean
 	./configure --without-mono --enable-user-plugin --without-ffmpeg
 	make
@@ -154,8 +154,8 @@ POSTBUILD_STEP5 () {
 	cp plugin/install/novell-moonlight*.xpi $target/
 }
 
-POSTBUILD_STEP_NAME6="plugin-2.0"
-POSTBUILD_STEP6 () {
+POSTBUILD_STEP_NAME4="plugin-2.0"
+POSTBUILD_STEP4 () {
 	make distclean
 	./configure --enable-user-plugin --without-ffmpeg
 	make
