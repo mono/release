@@ -38,13 +38,13 @@ make_dist () {
 	make dist
 }
 
-POSTBUILD_STEP_NAME1="test"
-POSTBUILD_STEP1 () {
+POSTBUILD_TEST_NAME1="test"
+POSTBUILD_TEST1 () {
 	$make_path -k run-test
 }
 
-POSTBUILD_STEP_NAME2="api-diff"
-POSTBUILD_STEP2 () {
+POSTBUILD_STEP_NAME1="api-diff"
+POSTBUILD_STEP1 () {
 
 	mkdir status
 	cd status

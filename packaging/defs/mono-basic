@@ -150,8 +150,8 @@ win_4_i386_ZIP_BUILD () {
 
 }
 
-POSTBUILD_STEP_NAME1="test"
-POSTBUILD_STEP1 () {
+POSTBUILD_TEST_NAME1="test"
+POSTBUILD_TEST1 () {
         if test "x$DISTRO" = "xwin-4-i386" ; then
 		$make_path test
         elif test "x$DISTRO" = "xsles-10-i586" ; then
@@ -161,8 +161,8 @@ POSTBUILD_STEP1 () {
 	fi
 }
 
-POSTBUILD_STEP_NAME2="api-diff"
-POSTBUILD_STEP2 () {
+POSTBUILD_STEP_NAME1="api-diff"
+POSTBUILD_STEP1 () {
 
 	if test x$DISTRO != xsles-10-i586 ; then
                 echo "Class status pages not generated on this platform"

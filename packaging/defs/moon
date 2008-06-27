@@ -117,7 +117,7 @@ POSTBUILD_TEST2 () {
 }
 
 POSTBUILD_STEP_NAME1="plugin-1.0-ffmpeg"
-POSTBUILD_STEP1 () {
+POSTBUILD_STEP1() {
 	curl -s http://build.mono.lab.novell.com/~builder/moon-ffmpeg.tar.bz2 | tar xj
 	pushd moon-ffmpeg
 	./configure --disable-static --enable-shared --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-zlib --disable-network --disable-vhook --disable-debug --disable-muxers --disable-encoders --disable-demuxers --disable-bsfs --disable-protocols
@@ -163,3 +163,4 @@ POSTBUILD_STEP4 () {
 	mkdir -p $target
 	cp plugin/install/novell-moonlight*.xpi $target/
 }
+

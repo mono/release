@@ -52,8 +52,8 @@ RELEASE_PATH=(
 	tags/debugger-[[version]]
 )
 
-POSTBUILD_STEP_NAME1="test"
-POSTBUILD_STEP1 () {
+POSTBUILD_TEST_NAME1="test"
+POSTBUILD_TEST1 () {
 	$make_path check
 }
 

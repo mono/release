@@ -321,20 +321,20 @@ make_dist () {
 
 }
 
-POSTBUILD_STEP_NAME1="test-runtime"
-POSTBUILD_STEP1 () {
+POSTBUILD_TEST_NAME1="test-runtime"
+POSTBUILD_TEST1 () {
 	cd mono/tests
 	$make_path -k check
 }
 
-POSTBUILD_STEP_NAME2="test-mini"
-POSTBUILD_STEP2 () {
+POSTBUILD_TEST_NAME2="test-mini"
+POSTBUILD_TEST2 () {
 	cd mono/mini
 	$make_path -k check
 }
 
-POSTBUILD_STEP_NAME3="test-aot"
-POSTBUILD_STEP3 () {
+POSTBUILD_TEST_NAME3="test-aot"
+POSTBUILD_TEST3 () {
 	# Only run on linux x86 and x86_64, and now arm
 	if test x$BUILD_GENERIC_OS = xlinux ; then
 		if test x$BUILD_ARCH = x"x86" || test x$BUILD_ARCH = x"x86_64" || test x$BUILD_ARCH = x"arm" ; then
@@ -350,8 +350,8 @@ POSTBUILD_STEP3 () {
 	fi
 }
 
-POSTBUILD_STEP_NAME4="test-profiles"
-POSTBUILD_STEP4 () {
+POSTBUILD_TEST_NAME4="test-profiles"
+POSTBUILD_TEST4 () {
 	#TEST_HARNESS_VERBOSE=1
 	#export TEST_HARNESS_VERBOSE
 	#echo "Skipping..."
@@ -362,14 +362,14 @@ POSTBUILD_STEP4 () {
 
 # TODO:
 # Separate 1.0 and 2.0 profiles into different steps
-POSTBUILD_STEP_NAME5="test-cas"
-POSTBUILD_STEP5 () {
+POSTBUILD_TEST_NAME5="test-cas"
+POSTBUILD_TEST5 () {
 	cd mono/tests/cas
 	$make_path -k test
 }
 
-POSTBUILD_STEP_NAME6="test-swf"
-POSTBUILD_STEP6 () {
+POSTBUILD_TEST_NAME6="test-swf"
+POSTBUILD_TEST6 () {
 	#TEST_HARNESS_VERBOSE=1
 	#export TEST_HARNESS_VERBOSE
 	DISPLAY=x32-linux-1.mono.lab.novell.com:1
@@ -389,8 +389,8 @@ POSTBUILD_STEP6 () {
 
 }
 
-POSTBUILD_STEP_NAME7="test-ondotnet"
-POSTBUILD_STEP7 () {
+POSTBUILD_TEST_NAME7="test-ondotnet"
+POSTBUILD_TEST7 () {
 	if test x$DISTRO = xwin-4-i386 ; then
 
 		OLD_PATH=$PATH
@@ -432,8 +432,8 @@ POSTBUILD_STEP7 () {
 	fi
 }
 
-POSTBUILD_STEP_NAME8="api-diff"
-POSTBUILD_STEP8 () {
+POSTBUILD_STEP_NAME1="api-diff"
+POSTBUILD_STEP1 () {
 
 	if test x$DISTRO = xsles-9-i586 ; then
 		VERSION=1.1
