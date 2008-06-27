@@ -27,5 +27,7 @@ monodoc
 mono-debugger
 mono-tools
 nant
+uiaatkbridge
+uiautomationwinforms
 xsp
 """.split()

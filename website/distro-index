@@ -24,7 +24,7 @@
 #	monodevelop monodevelop monodevelop-boo monodevelop-database monodevelop-java
 
 	<h3>Other</h3>
-#	mono-other
+#	mono-other uiaatkbridge uiautomationwinforms
 
 !	get_external_deps
 
