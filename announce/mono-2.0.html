@@ -44,22 +44,55 @@
 
 <h2>Runtime Engine</h2>
 
-<p>The performance of operations on decimals is significally improved.
+	<p>The performance of operations on decimals has significally
+	improved.
+	
+	<p>The performance of locking (Monitor.Enter/Monitor.Exit) is
+	significally improved.
+	
+	<p>The memory usage of the runtime is reduced, especially when
+	using generics.   
+	
+	<p>Many race conditions and threading problems were fixed,
+	improving reliability.
+	
+	<p>Math.Min/Math.Max and some forms of
+	Interlocked.CompareExhange (CAS) are now implemented using
+	fast inline code on x86/amd64.
+	
+	<p>Some progress has been made on the Winx64 port [Bill
+	Holmes, Jonathan Chambers]
+	
+	<p>It is now possible to build the runtime using the dolt
+	libtool replacement (http://dolt.freedesktop.org/) by passing
+	--enable-dolt to configure.
+	
+	<p>There is now a --debug=casts command line option to the
+	runtime which turns on the reporting of better
+	InvalidCastException message details.
 
-<p>The performance of locking (Monitor.Enter/Monitor.Exit) is significally improved.
+	<p>There is now a --debug=dont-free-domains option that --
+	improves the performance of ASP.NET-based applications. 
 
-<p>The memory usage of the runtime is reduced, especially when using generics.
+<h3>C# Compiler</h3>
 
-<p>Many race conditions and threading problems were fixed, improving reliability.
+	<p>Over 60 reported bugs in the compiler were fixed and
+	many of the internals have been cleaned up.   Extensive
+	refactoring and hardening of the C# 2.0 and 3.0 support are
+	now better integrated.
 
-<p>Math.Min/Math.Max and some forms of Interlocked.CompareExhange (CAS) are now implemented using fast inline code on x86/amd64.
+	<p>A major rewrite of the anonymous method/lambda support in
+	the internals of the compiler now optimizes the resulting
+	code, and fixes several bugs in this area.
 
-<p>Some progress has been made on the Winx64 port [Bill Holmes, Jonathan Chambers]
+	<p>The compiler is now dual licensed under the MIT X11 and the
+	GNU GPL version 2 (only).
 
-<p>It is now possible to build the runtime using the dolt libtool replacement (http://dolt.freedesktop.org/) by passing --enable-dolt to configure.
-
-<p>There is now a --debug=casts command line option to the runtime which turns on the reporting of better InvalidCastException message details.
-
+	<p>The compiler now supports #pragma checksum for use with
+	ASP.NET debugging and #line hidden, as well as flagging more
+	compiler-generated code properly (to avoid the debugger
+	single-stepping into those bits).
+	
 <h3>Performance Counters Implementation</h3>
 
 	<p>Mono now has a performance counters implementation that can
@@ -72,3 +105,5 @@
 	<p>This was one of the missing features from our ASP.NET 2.0
 	implementation, we now have a it available (Marek).
 	
+	<p>Increased performance is now available if you use the
+	option --debug=dont-free-domains on ASP.NET sites.
