@@ -66,6 +66,11 @@ MKTARBALL_HOST="sles-10-i586"
 
 POSTBUILD_TEST_NAME1="test"
 POSTBUILD_TEST1 () {
+	# Only run tests on suse-103-x86_64
+	if [[ ! "$DISTRO" =~ "suse-103-x86_64" ]]; then
+	  exit 0
+	fi
+
 	# Get and setup the MS fonts
 	curl -s "http://build.mono.lab.novell.com/~builder/ms-fonts.tar.gz" | tar xz
 	rm -rf ~/.fonts
@@ -96,6 +101,11 @@ POSTBUILD_TEST1 () {
 
 POSTBUILD_TEST_NAME2="ms-test"
 POSTBUILD_TEST2 () {
+	# Only run tests on suse-103-x86_64
+	if [[ ! "$DISTRO" =~ "suse-103-x86_64" ]]; then
+	  exit 0
+	fi
+
 	curl -s "http://build.mono.lab.novell.com/~builder/ms-tests.tar.gz" | tar xz
 
 	rm -rf test/test-run-data
