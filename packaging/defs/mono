@@ -822,8 +822,8 @@ POSTBUILD_TEST72 () {
 	fi
 }
 
-POSTBUILD_STEP_NAME73="api-diff"
-POSTBUILD_STEP73 () {
+POSTBUILD_STEP_NAME1="api-diff"
+POSTBUILD_STEP1 () {
 
 	if test x$DISTRO = xsles-9-i586 ; then
 		VERSION=1.1
