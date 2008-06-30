@@ -3,6 +3,8 @@ hostname=ppc-linux-1.mono.lab.novell.com
 root_dir=/jails/suse-103-ppc
 target_command_prefix=". /etc/profile;"
 
+env="PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig"
+
 chroot_path=/usr/bin/chroot
 
 # Repo conf
