@@ -22,7 +22,7 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 AutoReqProv:	on
 #Requires:	mono-core >= 1.9 mono-uia uiaatkbridge
-Requires:	mono-core >= 1.9 uiaatkbridge
+Requires:	mono-core >= 1.9 olive uiaatkbridge
 BuildRequires:	mono-devel
 Summary:        Mono UIA Provider
 

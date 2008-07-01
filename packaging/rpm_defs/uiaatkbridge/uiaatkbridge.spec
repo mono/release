@@ -20,7 +20,7 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on
 #Requires:	mono-core >= 1.9 mono-uia gtk-sharp2
-Requires:	mono-core >= 1.9 gtk-sharp2
+Requires:	mono-core >= 1.9 gtk-sharp2 olive
 BuildRequires:	mono-devel gcc 
 Summary:        UIA to ATK Bridge
 
