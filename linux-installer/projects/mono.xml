@@ -77,6 +77,7 @@
              <path>${installdir}</path>
              <platforms>linux</platforms>
            </shortcut>
+           <!--
            <shortcut>
              <comment>Mono Develop</comment>
              <exec>${installdir}/bin/monodevelop</exec>
@@ -93,6 +94,7 @@
              <path>${installdir}/bin</path>
              <platforms>linux</platforms>
            </shortcut>
+           -->
            <shortcut>
              <comment>Mono @@VERSION@@ Terminal</comment>
              <exec>/bin/bash --init-file ${installdir}/bin/setup.sh</exec>

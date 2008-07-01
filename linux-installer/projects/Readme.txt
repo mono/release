@@ -1,14 +1,6 @@
 Visit http://mono-project.com/Downloads for release details.
 
-Please file any bugs or issues at http://bugzilla.ximian.com
-
-Warning: gtk-sharp apps (Monodoc, MonoDevelop, etc...)
-  may not work on all distros.  This is due to differing
-  gtk+ versions.  Also, if you want to run MonoDevelop,
-  you must have the Gnome libraries installed.  During the
-  installation, bin/.installer_post_libscan was run to try
-  to find any libraries with unresolved symbols.  This should
-  help locate missing libraries.
+Please file any bugs or issues at http://bugzilla.novell.com
 
 Note: If you selected to have your environment modified by
   the installer, you will need to restart your shell for
@@ -24,6 +16,11 @@ source <install dir>/bin/setup.sh
   and will only affect the current environment.
 
 Installer changes:
+
+1.9.2:
+- Remove MonoDevelop from installer (it will be reinstated
+  when we ship our own gtk+ in order to reliably run on
+  several distros)
 
 1.9.1-3:
 - Resctrict installation target to user's home dir and

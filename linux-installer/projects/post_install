@@ -45,8 +45,8 @@ done
 
 if test "x$collective" == "x" ; then
 	echo "Congratulations!  You should "
-	echo " have no problems running winforms,"
-	echo " gtk#, and gecko# apps."
+	echo " have no problems running winforms."
+	#echo " gtk#, and gecko# apps."
 else
 
 	collective=$(echo "$collective" | sort | uniq)

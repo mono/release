@@ -161,7 +161,7 @@ selections += [ Selection('monodoc', packages = "monodoc mono-tools".split() ) ]
 # TODO: Also, why am I distributing gnome?.... ? adds some to gtk-sharp 1.0.10
 #   monodoc browser needs gconf-sharp, which depends on gnome-sharp...
 #  So, until the GRE for gecko-sharp gets easier to distribute, including gnome is how it is
-selections += [ Selection('gecko-sharp', packages = "gecko-sharp gecko-sharp2".split() ) ]
+selections += [ Selection('gecko-sharp', packages = "gecko-sharp2".split() ) ]
 
 # Hmm... needs to be a better way to package up these samples...
 selections += [ Selection('samples', urls = """

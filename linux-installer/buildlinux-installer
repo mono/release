@@ -40,12 +40,12 @@ external_rpms_list = """
 	ftp://ftp.suse.com/pub/suse/discontinued/i386/9.1/suse/i586/libexif-0.5.12-118.i586.rpm
 """.split()
 
-# What's gal2 for?
-	#http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.0-OSS/inst-source/suse/i586/gal2-2.5.3-5.i586.rpm
-custom_rpms_list = """
-	http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/suse/i586/gtkhtml2-3.10.0-15.i586.rpm
-	http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/suse/i586/gtksourceview-1.5.6-18.i586.rpm
-""".split()
+## What's gal2 for?
+#	#http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.0-OSS/inst-source/suse/i586/gal2-2.5.3-5.i586.rpm
+#custom_rpms_list = """
+#	http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/suse/i586/gtkhtml2-3.10.0-15.i586.rpm
+#	http://suse.mirrors.tds.net/pub/opensuse/distribution/SL-10.1/inst-source/suse/i586/gtksourceview-1.5.6-18.i586.rpm
+#""".split()
 
 # rpm locations we build locally
 local_rpms = { 
@@ -64,18 +64,19 @@ local_rpms = {
 		"mono-basic",
 
 		],
-	'suse-101-i586': [
-		"gluezilla",
-		"gtk-sharp28",
-                "mono-tools",
-                "mono-addins",
-                "monodevelop",
-                "monodevelop-boo",
-                "monodevelop-database",
-                "monodevelop-java",
-                "gecko-sharp2",
-                "gtksourceview-sharp2",
-		],
+#	'sles-10-i586': [
+#		"gluezilla",
+#		"gtk-sharp28",
+#		"mono-tools",
+#		"mono-addins",
+#		"monodevelop",
+#		"monodevelop-boo",
+#		"monodevelop-database",
+#		"monodevelop-java",
+#		"gecko-sharp",
+#		"gecko-sharp2",
+#		"gtksourceview-sharp2",
+#		],
 }
 
 prefix = os.getcwd()
@@ -168,7 +169,8 @@ cwd = os.getcwd()
 if not os.path.exists(external_rpms):
 	os.mkdir(external_rpms)
 
-for url in external_rpms_list + custom_rpms_list:
+#for url in external_rpms_list + custom_rpms_list:
+for url in external_rpms_list:
 	utils.get_url(url, external_rpms)
 	files.append(external_rpms + os.sep + os.path.basename(url))
 
@@ -197,9 +199,10 @@ p = buildroot
 
 os.chdir(p)
 
-## Move files under usr instead of using opt
-distutils.dir_util.copy_tree("opt/gnome", "usr", preserve_symlinks=1)
-shutil.rmtree('opt')
+# This is only when we're shipping gtk# and friends
+### Move files under usr instead of using opt
+#distutils.dir_util.copy_tree("opt/gnome", "usr", preserve_symlinks=1)
+#shutil.rmtree('opt')
 
 # Move etc under usr since we will collect all files under usr for installer
 os.rename("etc", "usr/etc")
@@ -243,18 +246,19 @@ for f in executable_wrappers:
 	else:
 		print "***Not found %s/usr/bin/%s***" % (p, f)
 
-# Fix wrappers that have .desktop entries so that the user doesn't need to reload their environment in order to load the apps
-# TODO: These may need to be updated as these wrappers change
-for f in ['monodoc', 'monodevelop']:
-	utils.substitute_parameters_in_file(p + "/usr/bin/" + f,
-		{ '#! ?/bin/sh'	:
-"""#!/bin/sh
-
-# Added by Mono Bitrock installer
-. @@BITROCK_MONO_ROOTDIR@@/bin/setup.sh
-"""
-		}
-	)
+# Don't substitute these anymore because we don't ship md and mono-tools
+## Fix wrappers that have .desktop entries so that the user doesn't need to reload their environment in order to load the apps
+## TODO: These may need to be updated as these wrappers change
+#for f in ['monodoc', 'monodevelop']:
+#	utils.substitute_parameters_in_file(p + "/usr/bin/" + f,
+#		{ '#! ?/bin/sh'	:
+#"""#!/bin/sh
+#
+## Added by Mono Bitrock installer
+#. @@BITROCK_MONO_ROOTDIR@@/bin/setup.sh
+#"""
+#		}
+#	)
 
 
 # This glob should only return one file...

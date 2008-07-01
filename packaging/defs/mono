@@ -513,13 +513,13 @@ POSTBUILD_TEST28 () {
 POSTBUILD_TEST_NAME29="test-System_Data_OracleClient-1.0"
 POSTBUILD_TEST29 () {
 	cd mcs/class/System.Data.OracleClient
-	$make_path run-test || true
+	$make_path run-test
 }
 
 POSTBUILD_TEST_NAME30="test-System_Data_OracleClient-2.0"
 POSTBUILD_TEST30 () {
 	cd mcs/class/System.Data.OracleClient
-	$make_path run-test PROFILE=net_2_0 || true
+	$make_path run-test PROFILE=net_2_0
 }
 
 POSTBUILD_TEST_NAME31="test-System_Design-1.0"
@@ -954,5 +954,6 @@ CLEAN_UP () {
 	fi
 
 }
+
 
 
