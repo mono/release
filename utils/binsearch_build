@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+
+import sys
+import time
+
+import pdb
+
+sys.path += ['../pyutils']
+
+import datastore
+import utils
+
+
+if len(sys.argv) < 5:
+	print "Usage: ./binsearch_build configuration package start_rev end_rev"
+	print "  Note: start and end are inclusive"
+	sys.exit(1)
+
+distro = sys.argv[1]
+pack_name = sys.argv[2]
+start = sys.argv[3]
+end = sys.argv[4]
+
+sources = datastore.source_file_repo()
+
+sources.load_info()
+
+revs = []
+for key, value in sources.info.iteritems():
+	HEAD_or_RELEASE, name, rev = key.split(":")
+	if HEAD_or_RELEASE == "HEAD" and name == pack_name and rev >= start and rev <= end:
+		revs.append(rev)
+
+# Put known outputs here
+known = {}
+known['61090'] = 0
+revs.sort()
+#print "\n".join(revs)
+
+print "%d possibilities" % len(revs)
+
+
+# Start binary searching through the revs to find the failure...
+# TODO: For this to be useful anywhere else, 'failure' must be defined somehow.  Here, it's easy: build failures
+
+left = 0
+right = len(revs) - 1
+
+while left <= right:
+	mid = ((right - left) / 2) + left
+	version = sources.get_tarball_version('HEAD', pack_name, revs[mid])
+
+	if known.has_key(revs[mid]):
+		code = known[revs[mid]]
+		print "Previously known result!  code = %d" % code
+	else:
+		
+		if not version:
+			print "Failed tarball (%s)..." % revs[mid]
+			code = 1
+		else:
+			print "Starting build: Rev %s (Version %s) (index: %s)" % (revs[mid], version, mid)
+			print time.asctime(time.gmtime())
+			code, output = utils.launch_process("./build --skip_steps %s %s %s" % (distro, pack_name, version), print_command=1 )
+			#code = 1
+
+	# Did the build succeed? (or had already succeeded before?)
+	if code == 0 or code == 5:
+		print "Build succeeded!"
+		left = mid + 1
+	else:
+		print "Build failed (or missing tarball)..."
+		right = mid - 1
+		
+

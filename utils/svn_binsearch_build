@@ -1,0 +1,68 @@
+#!/usr/bin/env python
+
+import time
+import sys
+import commands
+import os
+
+execfile('revs.py')
+
+#
+# 
+# 61155: succeeded
+# 61173: succeeded
+# 61179: succeeded
+# 61180: succeeded
+# 61181: failed (GC failure)
+# 61183: failed
+# 61186: failed (sigsev on mwf)
+# 61215: failed (sigsev)
+
+# 61615 (without inline ops) (Succeeded!)
+
+left = 0
+right = len(revs) - 1
+
+while left <= right:
+        mid = ((right - left) / 2) + left
+	revision = revs[mid]
+	print revision
+
+	code = 1
+	while code:
+		print "Updating source to rev: %d (index: %d)" % (revision, mid)
+		code, output = commands.getstatusoutput('cd trunk/mono && svn update -r %d && cd ../mcs && svn update -r %d' % (revision, revision) )
+
+		if code:
+			print "Error updating code to rev %d" % revision
+			print output
+			print "Sleeping 5 seconds..."
+			time.sleep(5)
+			#sys.exit(1)
+
+	print "Copying sources rev: %d (index: %d)" % (revision, mid)
+	code, output = commands.getstatusoutput("rsync -a --exclude '.svn/' trunk/mono trunk/mcs .")
+	if code:
+		print "Error rsyncing code to rev %d" % revision
+		print output
+		sys.exit(1)
+
+	print "Starting build: Rev %s (index: %d)" % (revision, mid)
+	print time.asctime(time.gmtime())
+	code = 0
+	code = os.system('cd mono && ./autogen.sh > ../%d.log 2>&1 && make >> ../%d.log 2>&1' % (revision, revision) )
+	code /= 256
+
+	# Call semdel?  (We'd need to install the 1.1.15 package)
+
+        # Did the build succeed?
+        if code == 0:
+                print "Build succeeded!"
+                left = mid + 1
+        else:
+                print "Build failed"
+                right = mid - 1
+
+
+
+
