@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+
+# TODO: 
+# Consistent way to snapshot for releases... careful when doing automatic tags!
+
+# Inputs: version, modules, source (HEAD or branch version?)
+
+# Support for retagging?
+
+# Definitely have an --execute flag and confirmation so you can preview before execution
+
+

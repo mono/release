@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+
+import sys
+import os
+
+sys.path.append("../pyutils")
+
+import utils
+
+
+try:
+	(script, jail) = sys.argv
+except:
+	print "Usage: ./multi-build jail"
+	sys.exit(1)
+
+builds = [
+	[ 'libgdiplus', '90681' ],
+	[ 'mono', '1.2.6' ],
+	[ 'cocoa-sharp', '0.9.4' ],
+	[ 'gtk-sharp210', '2.10.2' ],
+	[ 'monodevelop', '0.18.1' ],
+]
+
+for build in builds:
+	(code, output) = utils.launch_process("./build --skip_steps %s %s %s" % (jail, build[0], build[1]) )
+	if code == 5:
+		print "Build exists... skipping and continuing"
+	elif code:
+		print "Build failed..."
+		sys.exit(code)
+
