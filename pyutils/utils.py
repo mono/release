@@ -34,7 +34,7 @@ import urllib2
 try:
 	import distutils.dir_util
 except ImportError:
-	print "Missing distutils.dir_util..."
+	print "Safely ignored warning: Missing distutils.dir_util..."
 
 
 import pdb

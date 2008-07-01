@@ -13,7 +13,7 @@ import getpass
 try:
 	import distutils.dir_util
 except ImportError:
-	print "Missing distutils.dir_util..."
+	print "Safely ignored warning: Missing distutils.dir_util..."
 
 import config
 import remote_shell
