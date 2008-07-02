@@ -207,7 +207,7 @@ else:
 			new_mono_host = stuff[0] + "://" + stuff[1]
 			command = "cd %s/%s; svn %s switch --relocate %s %s" % (cache_dir, module, config.svn_options, old_mono_host, new_mono_host)
 			(status, output) = utils.launch_process(command, output_timeout=output_timeout, print_output=0 )
-			exit_on_error(command, status, output, )
+			exit_on_error(command, status, output, exit_if_str=svn_connection_errors, exit_if_str_code=utils.KILLED_EXIT_CODE)
 
 			# Update svn to the specific revision
 			# svn switch  (will update if the path in the working copy hasn't changed, this ensures have the right path)
