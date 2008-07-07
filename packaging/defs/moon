@@ -84,6 +84,7 @@ POSTBUILD_TEST1 () {
 	# Run the tests
 	Xvfb -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
+	xsetroot -bg white -display :3
 	DISPLAY=:3 make run-tests
 	kill -TERM $DBUS_SESSION_BUS_PID
 	kill %1
@@ -113,6 +114,7 @@ POSTBUILD_TEST2 () {
 
 	Xvfb -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
+	xsetroot -bg white -display :3
 	DISPLAY=:3 make MS_DRTLIST=$(pwd)/ms-tests/drtlist.xml run-ms-tests
 	kill -TERM $DBUS_SESSION_BUS_PID
 	kill %1
