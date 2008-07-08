@@ -82,9 +82,8 @@ POSTBUILD_TEST1 () {
 	curl -sL "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=test&filename=test-run-data.tar.gz" | tar xz
 
 	# Run the tests
-	Xvfb -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
+	Xvfb -wr -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
-	xsetroot -solid white -display :3
 	DISPLAY=:3 make run-tests
 	kill -TERM $DBUS_SESSION_BUS_PID
 	kill %1
@@ -112,7 +111,7 @@ POSTBUILD_TEST2 () {
 	rm -rf test/test-run-data
 	curl -sL "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=ms-test&filename=test-run-data.tar.gz" | tar xz
 
-	Xvfb -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
+	Xvfb -wr -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
 	xsetroot -solid white -display :3
 	DISPLAY=:3 make MS_DRTLIST=$(pwd)/ms-tests/drtlist.xml run-ms-tests
