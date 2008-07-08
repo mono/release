@@ -412,8 +412,6 @@ Authors:
 %_prefix/lib/mono/2.0/System.Transactions.dll
 %_prefix/lib/mono/gac/System.Data.DataSetExtensions
 %_prefix/lib/mono/2.0/System.Data.DataSetExtensions.dll
-%_prefix/lib/mono/gac/IBM.Data.DB2
-%_prefix/lib/mono/2.0/IBM.Data.DB2.dll
 
 %package -n mono-winforms
 Summary:        Mono's Windows Forms implementation
@@ -486,6 +484,7 @@ Authors:
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/IBM.Data.DB2
 %_prefix/lib/mono/1.0/IBM.Data.DB2.dll
+%_prefix/lib/mono/2.0/IBM.Data.DB2.dll
 %package -n mono-extras
 Summary:        Extra packages
 Group:          Development/Languages/Mono
