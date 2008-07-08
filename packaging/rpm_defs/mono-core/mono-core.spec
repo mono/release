@@ -412,6 +412,8 @@ Authors:
 %_prefix/lib/mono/2.0/System.Transactions.dll
 %_prefix/lib/mono/gac/System.Data.DataSetExtensions
 %_prefix/lib/mono/2.0/System.Data.DataSetExtensions.dll
+%_prefix/lib/mono/gac/IBM.Data.DB2
+%_prefix/lib/mono/2.0/IBM.Data.DB2.dll
 
 %package -n mono-winforms
 Summary:        Mono's Windows Forms implementation
@@ -997,6 +999,7 @@ Authors:
 %_libdir/libmono-profiler-logging.*
 %_libdir/pkgconfig/mono.pc
 %_libdir/pkgconfig/dotnet.pc
+%_libdir/pkgconfig/dotnet35.pc
 %_libdir/pkgconfig/mono-cairo.pc
 %_libdir/pkgconfig/cecil.pc
 %_mandir/man1/monoburg.*
