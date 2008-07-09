@@ -822,6 +822,12 @@ POSTBUILD_TEST72 () {
 	fi
 }
 
+POSTBUILD_TEST_NAME73="tests-verify"
+POSTBUILD_TEST73 () {
+	cd mono/runtime
+	make mcs-compileall
+}
+
 POSTBUILD_STEP_NAME1="api-diff"
 POSTBUILD_STEP1 () {
 
