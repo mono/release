@@ -38,7 +38,7 @@ get_destroot () {
 }
 
 HEAD_PATH=(
-	branches/mono-1-9/libgdiplus
+	branches/mono-2-0/libgdiplus
 )
 RELEASE_PATH=(
 	tags/mono-[[version]]/libgdiplus
