@@ -1,9 +1,9 @@
 USE_ZIP_PKG=1
 
-username=builder
-hostname=g5-mono.boston.ximian.com
 #username=builder
-#hostname=ppc-macos-1.mono.lab.novell.com
+#hostname=g5-mono.boston.ximian.com
+username=builder
+hostname=ppc-macos-1.mono.lab.novell.com
 
 #  Can't build gtk+ on 10.3
 #  Seems we need to set this.  Otherwise it gets set to 10.1
