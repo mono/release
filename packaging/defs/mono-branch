@@ -301,8 +301,8 @@ get_destroot () {
 }
 
 HEAD_PATH=(
-	branches/mono-1-9/mono
-	branches/mono-1-9/mcs
+	branches/mono-2-0/mono
+	branches/mono-2-0/mcs
 )
 
 RELEASE_PATH=(
