@@ -43,7 +43,8 @@ except:
 
         sys.exit(1)
 
-def do(command):
+def do(command): 
+	print command
 	ret = os.system(command)
 	if ret:
 		print "Exiting..."
@@ -64,7 +65,7 @@ STAGE_DIR = os.getcwd() + "/stage/release"
 # ftp.novell.com
 #  TODO: Maybe before we change people's repo urls, we should make our repos look more like the
 #   the build service repos?  So that when we start using obs' generated repos... ?
-TARGET_USER = "wberrier"
+TARGET_USER = "ajorgensen"
 TARGET_HOST = "ftp.novell.com"
 TARGET_DIR = "/srv/ftp/pub/mono"
 TARGET_URL = "/pub/mono"
@@ -82,7 +83,8 @@ distutils.dir_util.mkpath(STAGE_DIR)
 
 # We can call delete on so that stuff that gets deleted in the source will be deleted from the stage
 os.chdir('packages')
-do("rsync %s --delete . %s/download" % (rsync_opts, STAGE_DIR))
+# Exclude moon packages because they are built against ffmpeg
+do("rsync %s --delete --exclude '*/moon/' . %s/download" % (rsync_opts, STAGE_DIR))
 
 os.chdir("../external_packages")
 do("rsync %s --delete . %s/external_packages" % (rsync_opts, STAGE_DIR))
@@ -114,8 +116,8 @@ os.chdir(current_dir)
 os.chdir("../website")
 
 if generate:
-	do("cp -f packaging.css " + STAGE_DIR)
-	do("cp -f zip-icon.png  " + STAGE_DIR)
+	do("cp -fp packaging.css " + STAGE_DIR)
+	do("cp -fp zip-icon.png  " + STAGE_DIR)
 
 	do("./mk-sources-index.py	%s %s %s %s/sources" % 		(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR))
 	do("./mk-distro-index.py	%s %s %s %s/download %s" % 	(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR, TARGET_HOST))
@@ -127,6 +129,9 @@ if publish:
 	do('ssh %s@%s "mkdir -p %s"' % (TARGET_USER, TARGET_HOST, TARGET_DIR))
 
 os.chdir(STAGE_DIR)
+do('chmod -R ug+rwX .')
 # Can't use --delete here either... because we don't want to remove release notes or generated html from previous releases
 do('rsync %s%s -H . %s@%s:%s' % (rsync_opts, final_rsync_opts, TARGET_USER, TARGET_HOST, TARGET_DIR))
 
+if publish:
+	do('ssh %s@%s "chgrp -R mono %s"' % (TARGET_USER, TARGET_HOST, TARGET_DIR))
