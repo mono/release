@@ -3,7 +3,7 @@
 
 Name:           ikvm
 BuildRequires:  dos2unix mono-devel unzip
-Version:        0.36.0.5
+Version:        0.36.0.11
 Release:        1
 License:        BSD 3-Clause
 BuildArch:      noarch

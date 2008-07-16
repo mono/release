@@ -3,7 +3,7 @@
 
 Name:           mono-tools
 BuildRequires:  gconf-sharp2 gecko-sharp2 mono-devel mono-nunit monodoc-core mono-jscript mono-data-oracle
-Version:        1.9
+Version:        2.0
 Release:        0
 License:        GNU General Public License (GPL)
 BuildArch:    noarch

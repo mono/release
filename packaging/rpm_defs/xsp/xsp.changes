@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Apr 22 15:08:49 MST 2008 - wberrier@suse.de
+
+- update to 1.9.1 (bugfix release)
+ -Output date header (instead of asp.net doing it)
+
+-------------------------------------------------------------------
 Tue Mar 25 15:08:49 MST 2008 - wberrier@suse.de
 
 - update to 1.9

@@ -6,7 +6,7 @@ License:        GNU General Public License (GPL)
 Group:          Development/Tools/Other
 Summary:        Monodoc--A Documentation Browser Written in C#
 URL:            http://go-mono.org/
-Version:	1.9
+Version:	2.0
 Release:	0.novell
 Source0:        monodoc-%version.zip
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
