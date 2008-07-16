@@ -82,7 +82,11 @@ POSTBUILD_TEST1 () {
 	curl -sL "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=test&filename=test-run-data.tar.gz" | tar xz
 
 	# Get the connection string for the mysql database.
-	wget http://c100.cim.lab.novell.com/software/mono-project.org/mysql/.dbconnection.txt
+	rm -rf test/.dbconnection
+	curl "http://c100.cim.lab.novell.com/software/mono-project.org/mysql/.dbconnection.txt" > test/.dbconnection.txt
+
+	# Get the revision for Moonlight
+	export SVN_REVISON=`cat configure.ac | grep AC_INIT | sed -e 's/.*\[\(.*\)\])/\1/'`  # Gets the revision
 
 	# Run the tests
 	Xvfb -wr -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
@@ -113,6 +117,13 @@ POSTBUILD_TEST2 () {
 
 	rm -rf test/test-run-data
 	curl -sL "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=ms-test&filename=test-run-data.tar.gz" | tar xz
+
+	# Get the connection string for the mysql database.
+	rm -rf test/.dbconnection
+	curl "http://c100.cim.lab.novell.com/software/mono-project.org/mysql/.dbconnection.txt" > test/.dbconnection.txt
+
+	# Get the revision for Moonlight
+	export SVN_REVISON=`cat configure.ac | grep AC_INIT | sed -e 's/.*\[\(.*\)\])/\1/'`
 
 	Xvfb -wr -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
