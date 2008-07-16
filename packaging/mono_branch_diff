@@ -4,6 +4,9 @@ import os
 import sys
 import commands
 
+sys.path.append("../pyutils")
+import config
+
 try:
 	(junk, branch_version, tag_version) = sys.argv
 except:
@@ -15,7 +18,8 @@ except:
 branch_version = branch_version.replace(".", "-")
 tag_version = tag_version.replace(".", "-")
 
-status, output = commands.getstatusoutput("svn ls $MSVN/tags/mono-" + tag_version)
+ssh_env = 'SVN_SSH="ssh %s"' % config.ssh_options
+status, output = commands.getstatusoutput("%s svn ls %s/tags/mono-%s" % (ssh_env, config.MONO_ROOT, tag_version))
 
 if not os.path.exists('diffs'): os.mkdir('diffs')
 
@@ -25,7 +29,7 @@ for module in output.split("\n"):
 	#  Call dirname to strip off ending '/'
 	module = os.path.dirname(module)
 	print "Checking for changes in: " + module
-	status, output = commands.getstatusoutput("svn diff $MSVN/tags/mono-%s/%s $MSVN/branches/mono-%s/%s" % (tag_version, module, branch_version, module))
+	status, output = commands.getstatusoutput("%s svn diff %s/tags/mono-%s/%s %s/branches/mono-%s/%s" % (ssh_env, config.MONO_ROOT, tag_version, module, config.MONO_ROOT, branch_version, module))
 
 	if output:
 		print "Changes found for: " + module
