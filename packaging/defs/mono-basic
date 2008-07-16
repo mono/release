@@ -135,7 +135,7 @@ win_4_i386_ZIP_BUILD () {
         CSC=`cygpath -a $CSC`
 
         # Add MS SDK to path for ilasm and ildasm
-        SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v2.0/Bin"`
+        SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft Visual Studio 8/SDK/v2.0/Bin"`
         SDK=`cygpath -a $SDK`
         export PATH=$SDK:$CSC:$OLDPATH
 
