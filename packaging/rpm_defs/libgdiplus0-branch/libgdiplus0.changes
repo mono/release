@@ -1,6 +1,13 @@
 -------------------------------------------------------------------
 Tue Mar 25 11:47:05 MST 2008 - wberrier@suse.de
 
+- Update to 1.9.1
+ - Fix screen re-draw artifacts in winforms (bnc#388520)
+ - Support for limited color displays
+
+-------------------------------------------------------------------
+Tue Mar 25 11:47:05 MST 2008 - wberrier@suse.de
+
 - Update to 1.9
  -Disable internal cairo png support, since libgdiplus uses it's
   own.  Saves about 26kb of code size.

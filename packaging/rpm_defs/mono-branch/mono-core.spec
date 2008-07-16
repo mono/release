@@ -6,8 +6,8 @@ License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL)
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 URL:            http://go-mono.org/
-Version:	1.9
-Release:	3.novell
+Version:	2.0
+Release:	0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
 
@@ -62,25 +62,54 @@ Recommends:	libgluezilla0
 %endif
 %endif
 
-BuildRequires:	glib2-devel 
+BuildRequires:	glib2-devel
+
+#######  distro specific changes  ########
+#####
 
 #### suse options ####
 %if 0%{?suse_version}
 
 # For some reason these weren't required in 10.2 and before... ?
-%if %{suse_version} > 1020
+%if %{suse_version} >= 1030
 BuildRequires: bison
-# Add valgrind support for 10.3 and above
-BuildRequires: valgrind
+# Add valgrind support for 10.3 and above on archs that have it
+%ifarch %ix86 x86_64 ppc ppc64
+BuildRequires:  valgrind-devel
+%endif
+%endif
+
+%if %{suse_version} >= 1020
+BuildRequires: xorg-x11-libX11
+%endif
+
+%if %{sles_version} == 10
+BuildRequires: xorg-x11-devel
+%endif
+
+%if %{suse_version} == 1010
+BuildRequires: xorg-x11-devel
 %endif
 
 %if %{sles_version} == 9
 %define configure_options export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/gnome/%_lib/pkgconfig
-BuildRequires: pkgconfig
+BuildRequires: pkgconfig XFree86-libs XFree86-devel
 %endif
 
 %endif
 
+# Fedora x11
+%if 0%{?fedora_version}
+BuildRequires:	libX11
+%endif
+
+# rhel x11
+%if 0%{?rhel_version}
+BuildRequires:	libX11
+%endif
+
+#####
+#######  End of distro specific changes  ########
 
 # Why was this needed?
 %ifarch s390 s390x
@@ -98,7 +127,7 @@ BuildRequires: libunwind-devel
 #%define __find_requires env MONO_PREFIX=%{buildroot}/usr /usr/lib/rpm/find-requires
 
 
-%if 0%{?fedora_version}
+%if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif
@@ -145,6 +174,7 @@ Authors:
 %_bindir/gmcs
 %_bindir/mono-test-install
 %_bindir/mcs
+%_bindir/mcs1
 %_bindir/smcs
 %_bindir/mozroots
 %_bindir/setreg
@@ -182,10 +212,9 @@ Authors:
 %_prefix/lib/mono/gac/System.Xml
 %_prefix/lib/mono/1.0/System.Xml.dll
 %_prefix/lib/mono/2.0/System.Xml.dll
-%_prefix/lib/mono/gac/System.Xml.Core
-%_prefix/lib/mono/2.1/System.Xml.Core.dll
+%_prefix/lib/mono/2.1/System.Xml.dll
 %_prefix/lib/mono/gac/System.Xml.Linq
-%_prefix/lib/mono/3.5/System.Xml.Linq.dll
+%_prefix/lib/mono/2.0/System.Xml.Linq.dll
 %_prefix/lib/mono/gac/System
 %_prefix/lib/mono/1.0/System.dll
 %_prefix/lib/mono/2.0/System.dll
@@ -243,6 +272,10 @@ Authors:
 %_prefix/lib/mono/gac/System.Core
 %_prefix/lib/mono/2.0/System.Core.dll
 %_prefix/lib/mono/2.1/System.Core.dll
+%_prefix/lib/mono/gac/System.Net
+%_prefix/lib/mono/2.1/System.Net.dll
+# Not sure if autobuild allows this...
+%_libdir/pkgconfig/smcs.pc
 
 %post
 /sbin/ldconfig
@@ -355,6 +388,8 @@ Authors:
 %_prefix/lib/mono/gac/System.Data
 %_prefix/lib/mono/1.0/System.Data.dll
 %_prefix/lib/mono/2.0/System.Data.dll
+%_prefix/lib/mono/gac/System.Data.Linq
+%_prefix/lib/mono/2.0/System.Data.Linq.dll
 %_prefix/lib/mono/gac/Mono.Data
 %_prefix/lib/mono/1.0/Mono.Data.dll
 %_prefix/lib/mono/2.0/Mono.Data.dll
@@ -375,6 +410,9 @@ Authors:
 %_prefix/lib/mono/2.0/System.DirectoryServices.dll
 %_prefix/lib/mono/gac/System.Transactions
 %_prefix/lib/mono/2.0/System.Transactions.dll
+%_prefix/lib/mono/gac/System.Data.DataSetExtensions
+%_prefix/lib/mono/2.0/System.Data.DataSetExtensions.dll
+
 %package -n mono-winforms
 Summary:        Mono's Windows Forms implementation
 Group:          Development/Languages/Mono
@@ -415,9 +453,9 @@ Authors:
 %_prefix/lib/mono/1.0/System.Drawing.Design.dll
 %_prefix/lib/mono/2.0/System.Drawing.Design.dll
 # TODO: Post 1.2.5:
-%_prefix/lib/mono/1.0/Mono.Mozilla.dll
-%_prefix/lib/mono/2.0/Mono.Mozilla.dll
-%_prefix/lib/mono/gac/Mono.Mozilla
+%_prefix/lib/mono/1.0/Mono.WebBrowser.dll
+%_prefix/lib/mono/2.0/Mono.WebBrowser.dll
+%_prefix/lib/mono/gac/Mono.WebBrowser
 
 %package -n ibm-data-db2
 Summary:        Database connectivity for DB2
@@ -446,6 +484,7 @@ Authors:
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/IBM.Data.DB2
 %_prefix/lib/mono/1.0/IBM.Data.DB2.dll
+%_prefix/lib/mono/2.0/IBM.Data.DB2.dll
 %package -n mono-extras
 Summary:        Extra packages
 Group:          Development/Languages/Mono
@@ -619,14 +658,17 @@ Authors:
 %_prefix/lib/mono/1.0/wsdl.exe*
 %_prefix/lib/mono/2.0/wsdl.exe*
 %_prefix/lib/mono/1.0/xsd.exe*
+%_prefix/lib/mono/2.0/xsd.exe*
 %_prefix/lib/mono/2.0/mconfig.exe*
 # shell wrappers
 %_bindir/disco
 %_bindir/mconfig
 %_bindir/soapsuds
 %_bindir/wsdl
+%_bindir/wsdl1
 %_bindir/wsdl2
 %_bindir/xsd
+%_bindir/xsd2
 # man pages
 %_mandir/man1/disco.1.gz
 %_mandir/man1/soapsuds.1.gz
@@ -639,6 +681,7 @@ Authors:
 %config %_sysconfdir/mono/1.0/DefaultWsdlHelpGenerator.aspx
 %config %_sysconfdir/mono/2.0/DefaultWsdlHelpGenerator.aspx
 %config %_sysconfdir/mono/2.0/web.config
+%config %_sysconfdir/mono/2.0/Browsers
 %package -n mono-data-oracle
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
@@ -891,26 +934,33 @@ Authors:
 %_mandir/man1/resgen.1.gz
 # Shell wrappers
 %_bindir/al
+%_bindir/al1
 %_bindir/al2
 %_bindir/caspol
 %_bindir/cert2spc
 %_bindir/dtd2xsd
 %_bindir/dtd2rng
 %_bindir/genxs
+%_bindir/genxs1
+%_bindir/genxs2
 %_bindir/httpcfg
 %_bindir/ilasm
+%_bindir/ilasm1
 %_bindir/ilasm2
 %_bindir/installvst
 %_bindir/macpack
 %_bindir/makecert
 %_bindir/mkbundle
+%_bindir/mkbundle1
 %_bindir/mkbundle2
 %_bindir/monodis
 %_bindir/monolinker
 %_bindir/monop
+%_bindir/monop1
 %_bindir/monop2
 %_bindir/mono-api-diff
 %_bindir/mono-api-info
+%_bindir/mono-api-info1
 %_bindir/mono-api-info2
 %_bindir/mono-find-provides
 %_bindir/mono-find-requires
@@ -920,6 +970,7 @@ Authors:
 %_bindir/permview
 %_bindir/prj2make
 %_bindir/resgen
+%_bindir/resgen1
 %_bindir/resgen2
 %_bindir/secutil
 %_bindir/sgen
@@ -944,8 +995,10 @@ Authors:
 %_prefix/include/mono-1.0
 %_libdir/libmono-profiler-cov.*
 %_libdir/libmono-profiler-aot.*
+%_libdir/libmono-profiler-logging.*
 %_libdir/pkgconfig/mono.pc
 %_libdir/pkgconfig/dotnet.pc
+%_libdir/pkgconfig/dotnet35.pc
 %_libdir/pkgconfig/mono-cairo.pc
 %_libdir/pkgconfig/cecil.pc
 %_mandir/man1/monoburg.*

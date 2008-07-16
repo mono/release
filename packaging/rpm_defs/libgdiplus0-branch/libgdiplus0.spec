@@ -4,7 +4,7 @@
 %define real_name libgdiplus
 
 Name:           libgdiplus0
-Version:	1.9
+Version:	2.0
 Release:	0
 Vendor:         Novell, Inc.
 License:        GPL

@@ -1,4 +1,147 @@
 -------------------------------------------------------------------
+Fri Apr 25 10:23:23 MST 2008 - wberrier@suse.de
+
+- Make sure x11 headers/libs are installed so that 
+  /etc/mono/config has correct link to libX11.so.6.
+  Fixes (bnc#368436)
+
+-------------------------------------------------------------------
+Tue Apr 22 10:23:23 MST 2008 - wberrier@suse.de
+
+- Update to 1.9.1 (bugfix release)
+ -G_DECL fixes
+ -Microsoft.CSharp: Emit bodyless getters and setters for abstract 
+  properties
+ -ASP.NET: Don't output a date header from System.Web
+ -Fix an issue with Groupwise WSDL
+ -Mono.Mozilla: Support more than one browser widget per 
+  application Windows.Forms
+ -Winforms:
+  -Finish implementation for EventsTab and PropertiesTab
+  -Fix keyboard layout issue
+  -MenuAPI fixes
+ -System.Design: Cache editor widget instead of creating it each 
+  time
+ -System.Text: Fix possible integer overflow
+ -System.Net.Mail: Fix filename handling
+
+-------------------------------------------------------------------
+Fri Apr 11 15:45:33 CEST 2008 - schwab@suse.de
+
+- Work around broken configure script.
+
+-------------------------------------------------------------------
+Fri Apr 11 10:00:20 CEST 2008 - aj@suse.de
+
+- glibc does not define ARG_MAX anymore, use sysconf (_SC_ARG_MAX)
+  instead.
+
+-------------------------------------------------------------------
+Thu Apr 10 12:54:45 CEST 2008 - ro@suse.de
+
+- added baselibs.conf file to build xxbit packages
+  for multilib support
+
+-------------------------------------------------------------------
+Tue Mar 25 17:23:23 MST 2008 - wberrier@suse.de
+
+- Filelist changes for System.Xml.Linq and Mono.Web
+- Call ldconfig directly instead of invoking a shell
+- Update to 1.9
+ -More than 80 bugs closed/fixed in the runtime
+ -Reflection bug fix
+ -C# compiler defaults to 3.0
+ -Silverlight support enabled by default
+ -Generics code sharing
+ -AOT support for ARM
+ -Verifier improvements
+ -Updated Core Linq api
+ -Now includes System.Xml.Linq
+ -mcs/gmcs parser code base has been unified
+ -ASP.Net:
+  -Batch Compilation
+  -Mapping configuration
+ -Winforms:
+  -more support for browser events
+  -Several fixes to RichTextBox
+  -Major improvements to PropertyGridControl
+  -Over 100 fixed bugs
+ -System.Design implementation
+ -DLR support
+ -Mono.Posix:
+  -Stdlib.signal() has been deprecated.  Replaced with:
+   -Mono.Unix.Native.Stdlib.SetSignalAction
+   -Mono.Unix.UnixSignal
+
+-------------------------------------------------------------------
+Fri Feb 15 03:13:55 CET 2008 - dmueller@suse.de
+
+- only require valgrind for archs that provide it
+
+-------------------------------------------------------------------
+Wed Jan 23 17:52:56 CET 2008 - wberrier@suse.de
+
+- mono-93665_find_requires_ignore_missing.patch: warn on missing
+  files found in .config files instead of generating invalid deps.
+
+-------------------------------------------------------------------
+Wed Jan 16 17:23:23 MST 2008 - wberrier@suse.de
+
+- libgdiplus -> libgdiplus0 rename
+- add libgluezilla0 to recommends
+
+-------------------------------------------------------------------
+Mon Jan 14 13:23:23 MST 2008 - wberrier@suse.de
+
+- Update to 1.2.6
+ -Support for the ASP.NET AJAX APIs and controls
+ -Support for FastCGI deployments
+ -Windows.Forms WebControl for Windows and Linux using Mozilla
+ -Reduced memory usage in the runtime for 2.0 apps
+ -Updated verifier
+ -Implementation of CoreCLR security
+ -More C# compiler 3.0 completion
+ -Mono 1.2.6 can now be used as an SDK for creating Silverlight 
+  1.1 applications on all platforms.
+ -Support for the PE32+ assembly file format
+ -Managed allocations support
+ -SslStream support
+ -System.Net.Mail improvements
+ -Fixed SSL/TLS thread-synchronization
+  (for LDAPS over multiple threads)
+ -Novell.Directory.Ldap synchronized with the Novell's CSHARP 
+  LDAP SDK (version 2.1.8)
+
+-------------------------------------------------------------------
+Tue Oct 23 21:37:23 CEST 2007 - wberrier@suse.de
+
+- mono-boo_ia64_fix.patch: fix boo build on ia64.
+
+-------------------------------------------------------------------
+Thu Sep 20 05:41:09 CEST 2007 - wberrier@suse.de
+
+- BigInteger Security fix: bnc #310044
+ -MaintenanceTracker-13335
+
+-------------------------------------------------------------------
+Fri Aug 31 05:55:26 CEST 2007 - wberrier@suse.de
+
+- Regressions found in 1.2.5:
+ -Bug #82428: crypto buffer length fix
+ -Bug #82481: StatusStrip focus regression fix
+ -Bug #82499: GlobalReAlloc fix
+- System.Web regression fixes:
+ -Bug #82193: System.Web regression fixes
+ -Bug #82392: SessionState fix for asp.net regression
+
+-------------------------------------------------------------------
+Fri Aug 17 17:00:27 CEST 2007 - wberrier@suse.de
+
+- Fix some COM and Winforms regressions in 1.2.5 p3
+ -fixes bxc: 82433, 82344, 82405, 82406, #82187, 82348
+- Threading fix for bxc #82145 when using LDAP and TLS
+
+-------------------------------------------------------------------
 Fri Aug  3 17:40:00 CEST 2007 - wberrier@suse.de
 
 - Update to 1.2.5
