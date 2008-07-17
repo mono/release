@@ -1,7 +1,7 @@
 
 # norootforbuild
 
-%define prebuilt_release 1
+%define prebuilt_release 0
 
 Name:           mono-basic
 BuildRequires:  mono-devel
@@ -9,7 +9,7 @@ License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL)
 Group:          Development/Languages/Other
 Summary:        Mono's VB runtime
 URL:            http://go-mono.org/
-Version:	1.9
+Version:	2.0
 Release:	0.novell
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.bz2
