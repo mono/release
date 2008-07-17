@@ -1047,6 +1047,9 @@ This package contains all runtime Mono packages
 %debug_package
 %prep
 %setup -q -n mono-%{version}
+%patch0
+%patch1
+%patch2
 
 %build
 # These are only needed if there are patches to the runtime
