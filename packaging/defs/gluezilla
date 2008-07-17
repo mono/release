@@ -84,8 +84,8 @@ win_4_i386_ZIP_BUILD () {
 	my_dir=`cygpath -w $PWD`
 	# both vcvars and SetEnv need to be called because one has cl.exe, and the latter has the win32 api headers
 	cat <<EOF > build.bat
-call "c:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat"
-call "c:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd"
+call "c:\Program Files\Microsoft Visual Studio 8\VC\bin\vcvars32.bat"
+call "c:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd" /RETAIL
 nmake /f windows.mak CFG=Release all
 EOF
 
