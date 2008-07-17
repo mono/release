@@ -1047,9 +1047,11 @@ This package contains all runtime Mono packages
 %debug_package
 %prep
 %setup -q -n mono-%{version}
+pushd "mcs"
 %patch0
 %patch1
 %patch2
+popd
 
 %build
 # These are only needed if there are patches to the runtime

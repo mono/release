@@ -1,7 +1,7 @@
 Index: class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs
 ===================================================================
---- mcs/class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs	(revision 107148)
-+++ mcs/class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs	(working copy)
+--- class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs	(revision 107148)
++++ class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs	(working copy)
 @@ -80,6 +80,21 @@
  		bool thumb_entered;
  		#endregion	// Local Variables
