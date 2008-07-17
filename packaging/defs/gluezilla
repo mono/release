@@ -88,13 +88,8 @@ call "c:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat"
 call "c:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd"
 nmake /f windows.mak CFG=Release all
 EOF
-	output=`rsh localhost "cd $my_dir && build.bat > out.log && echo exit:%ERRORLEVEL%"`
 
-	# echo output locally
-	rsh localhost "cd $my_dir && type out.log"
-
-	# test for failure
-	echo $output | grep "exit:0" || exit 1
+	build.bat
 
 	mkdir -p /tmp/install/bin
 	cp gluezilla.dll /tmp/install/bin
