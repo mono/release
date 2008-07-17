@@ -85,16 +85,14 @@ else
         if [ -e "$f" ] ; then 
                 unzip $f
                 # Remove vbnc built runtime
-                rm -Rf ${RPM_BUILD_ROOT}/%_prefix/lib/mono/gac/Microsoft.VisualBasic
-                rm -Rf ${RPM_BUILD_ROOT}/%_prefix/lib/mono/2.0/Microsoft.VisualBasic.dll
+                rm -Rf ${RPM_BUILD_ROOT}/%_prefix/lib/mono/gac/Microsoft.VisualBasic/7.0.*
 
                 # Fix permissions on files so they are readable
-                chmod 755 lib/mono/1.0/Microsoft.VisualBasic.dll lib/mono/2.0/Microsoft.VisualBasic.dll
+                chmod 755 lib/mono/1.0/Microsoft.VisualBasic.dll
 
                 ## Install into new gac
 
                 gacutil -package 1.0 -root ${RPM_BUILD_ROOT}/usr/lib -i lib/mono/1.0/Microsoft.VisualBasic.dll
-                gacutil -package 2.0 -root ${RPM_BUILD_ROOT}/usr/lib -i lib/mono/2.0/Microsoft.VisualBasic.dll
         else
                 # If we're building from HEAD, print warning (HEAD doesn't have a version with periods)
                 if test `echo "%{version}" | sed -e 's/\.//g'` == "%{version}" ; then
