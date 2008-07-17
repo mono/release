@@ -1,0 +1,104 @@
+web_index=2
+
+#USE_PATCHES=1
+
+# NOTE: don't ever do release builds from this config!!
+#  It is only meant to run the test suites on the branch
+
+BUILD_HOSTS=(
+        suse-110-i586
+        suse-110-x86_64
+)
+
+USE_HOSTS=(
+        suse-110-i586
+        suse-110-x86_64
+)
+
+MONO_DEPS=(
+)
+
+# libgdiplus is here for System.Drawing tests and because mono-core now requires libgdiplus.
+# But, since it's 'recommended', it won't fail for windows
+MONO_RECOMMEND_DEPS=(
+	libgdiplus-branch
+)
+
+# Since it's a source dep, it won't be installed on the machine during the build step, only for
+#  tarball creation
+#  (mono-core depends on libgdiplus)
+MONO_SOURCE_DEPS=(
+	mono
+	libgdiplus
+)
+
+# Always remove these packs before building or creating tarball (covers corner cases to not have mono installed when building)
+# (removing libgdiplus will remove mono-core and the rest of the chain, but mono-core is in this list since mono-core didn't
+#  always depend on libgdiplus)
+PACKS_TO_REMOVE=(
+	libgdiplus0
+	libgdiplus
+	mono-core
+)
+
+get_destroot () {
+	# rh9 rpms can't be used on sles-8-i386
+	if test x$DISTRO = xsles-8-i386 ; then
+		DEST_ROOT=$DISTRO
+	elif test x$USE_ZIP_PKG != x  ; then
+		DEST_ROOT=$DISTRO
+	else
+		DEST_ROOT=$ARCH
+	fi
+}
+
+HEAD_PATH=(
+	trunk/mono
+	trunk/mcs
+)
+
+RELEASE_PATH=(
+	tags/mono-uia-branch-[[version]]/mono
+	tags/mono-uia-branch-[[version]]/mcs
+)
+
+make_dist () {
+	. /etc/profile
+	./autogen.sh
+	make dist-bzip2 MCS=mcs RESGEN=resgen
+}
+
+# This step gets executed after all tests, or after a build failure
+CLEAN_UP () {
+        #echo "Skipping..."
+        ./runtime/mono-wrapper --wapi=semdel
+
+	# Clean up tmp files, but don't fail if they are missing
+	# The /var/tmp is for solaris
+	rm -Rf	/tmp/ipc* 	/var/tmp/ipc*
+	rm -Rf	/tmp/tmp*tmp 	/var/tmp/tmp*tmp
+	rm -Rf	/tmp/*.exe	/var/tmp/*.exe
+
+	# for ia64
+	rm -Rf	/tmp/tmp*tmp.o	/var/tmp/tmp*tmp.o
+
+	# For s390
+	rm -Rf	/tmp/mono_aot_*	/var/tmp/mono_aot_*
+
+	rm -Rf	/tmp/Mono*	/var/tmp/Mono*
+
+	rm -Rf	/tmp/mcs*	/var/tmp/mcs*
+
+	# clean up asp.net (linux and solaris)
+	rm -Rf  /tmp/*-temp-aspnet-0 /var/tmp/*-temp-aspnet-0
+
+	# These tend to get left around on win32... ?
+	if test x$DISTRO = xwin-4-i386 ; then
+		taskkill /F /T /IM mono.exe || true
+	fi
+
+}
+
+
+
+
