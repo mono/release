@@ -89,7 +89,7 @@ call "c:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.
 nmake /f windows.mak CFG=Release all
 EOF
 
-	build.bat
+	cmd /C build.bat
 
 	mkdir -p /tmp/install/bin
 	cp gluezilla.dll /tmp/install/bin
