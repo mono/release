@@ -92,6 +92,9 @@ td_packages = """
 	monodoc
 	moon
 	olive
+	uiaatkbridge
+	uiautomationwinforms
+	mono-uia-branch
 	xsp
 """.split()
 
