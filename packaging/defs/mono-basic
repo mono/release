@@ -130,6 +130,8 @@ win_4_i386_ZIP_BUILD () {
 	/tmp/build_deps/bin/gacutil -package 1.0 -i Microsoft.VisualBasic.dll -root `cygpath -m /tmp/install/lib` || exit 1
 	cd ..
 
+	# Disable 2.0 Build as it's broken but we replace the 2.0 binaries anyway
+	exit 0
 	########################## 2.0 build #################################
         CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v2.0.50727`
         CSC=`cygpath -a $CSC`
