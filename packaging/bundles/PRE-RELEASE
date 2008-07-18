@@ -1,14 +1,42 @@
 # Directory used when created go-mono.com/archive/<archive_version>
 #  This will need to be manually bumped each time on head... don't forget!!
-archive_version="1.9.1"
+archive_version="2.0"
 
 bundle_urlname="preview"
 
-bundle_short_desc="Preview 5"
+bundle_short_desc="Preview 1"
 bundle_desc="Preview packages before an official release"
 
-# This is left empty, because versions on RELEASE will always be the latest from sources/packages
-#  specifying versions is more for a released branch
-#versions=(
-#)
-
+versions=(
+	mono=""
+	mono-basic=""
+	libgdiplus=""
+	gluezilla=""
+	webserver=""
+	xsp=""
+	mod_mono=""
+	devtools=""
+	monodoc=""
+	mono-tools=""
+	gecko-sharp2=""
+	gtksourceview-sharp2=""
+	boo=""
+	ikvm=""
+	mono-debugger=""
+	heap-buddy=""
+	nant=""
+	IPCE=""
+	mono-addins=""
+	gtk-sharp-2.0=""
+	gtk-sharp2=""
+	gtk-sharp28=""
+	gtk-sharp210=""
+	gnome-sharp2=""
+	gtk-sharp212=""
+	gnome-sharp220=""
+	gnome-desktop-sharp2=""
+	monodevelop="1.0"
+	monodevelop-boo="1.0"
+	monodevelop-database="1.0"
+	monodevelop-java="1.0"
+)
