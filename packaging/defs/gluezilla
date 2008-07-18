@@ -89,7 +89,13 @@ call "c:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.
 nmake /f windows.mak CFG=Release all
 EOF
 
-	cmd /C build.bat
+	output=`rsh localhost "cd $my_dir && build.bat > out.log && echo exit:%ERRORLEVEL%"`
+
+	# echo output locally
+	cat out.log
+
+	# test for failure
+	echo $output | grep "exit:0" || exit 1
 
 	mkdir -p /tmp/install/bin
 	cp gluezilla.dll /tmp/install/bin
