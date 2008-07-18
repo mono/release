@@ -126,6 +126,7 @@
 	<a href="http://www.go-mono.com/archive/1.9">1.9</a> and
 	<a href="http://www.go-mono.com/archive/1.9.1">1.9.1</a>.
 
+<h2>
 <h2>Runtime: Performance</h2>
 
 	<p>The performance of operations on decimals has significally
@@ -161,8 +162,23 @@
 	runtime which turns on the reporting of better
 	InvalidCastException message details.
 
-<h3>C# Compiler</h3>
+<h2>Gendarme</h2>
 
+	<p>We are now shipping the <a href="http://www.mono-project.com/Gendarme">Gendarme tool</a>.  Gendarme is an
+	extensible rule-based tool to find problems in .NET
+	applications and libraries. Gendarme inspects programs and
+	libraries that contain code in ECMA CIL format (Mono and .NET)
+	and looks for common problems with the code, problems that
+	compiler do not typically check or have not historically
+	checked.
+
+<h2>C# Compiler</h2>
+
+	<p>The compiler now support expression trees (turning
+	expressions into an AST at compile time when the type of a
+	parameter is a System.Query.Expression).   This completes the
+	C# 3.0 support.
+	
 	<p>Over 60 reported bugs in the compiler were fixed and
 	many of the internals have been cleaned up.   Extensive
 	refactoring and hardening of the C# 2.0 and 3.0 support are
@@ -179,20 +195,26 @@
 	ASP.NET debugging and #line hidden, as well as flagging more
 	compiler-generated code properly (to avoid the debugger
 	single-stepping into those bits).
+
+<h2>LINQ</h2>
+
+	<p>LINQ and LINQ to XML are now complete, support for
+	expression trees is now available as well as the backend to
+	support expression tree compilation.
 	
-<h3>Performance Counters Implementation</h3>
+<h2>Performance Counters Implementation</h2>
 
 	<p>Mono now has a performance counters implementation that can
 	be used to monitor various statistics of Mono processes.  To
 	access this API you use the
 	System.Diagnostics.PerformanceCounter classes.
 
-<h3>ASP.NET: VirtualPathProvider</h3>
+<h2>ASP.NET: VirtualPathProvider</h2>
 
 	<p>This was one of the missing features from our ASP.NET 2.0
 	implementation, we now have a it available (Marek).
 	
-<h3>Mixed Mode Assemblies.</h3>
+<h2>Mixed Mode Assemblies.</h2>
 
 	<p>Support for mixed-mode assemblies developed by Kornél Pál.
 	These are assemblies that contain CIL bytecode as well as x86
@@ -200,7 +222,7 @@
 
 	<p>This feature is only supported for Windows.
 
-<h3>Big Arrays</h3>
+<h2>Big Arrays</h2>
 
 	<p>Mono now supports 64-bit indexed arrays on 64-bit systems.
 	Although this is permitted by the ECMA standard, this today is
@@ -215,7 +237,7 @@
 	<p>To use this feature, you must configure Mono with
 	--enable-big-arrays.
 	
-<h3>DTrace Support</h3>
+<h2>DTrace Support</h2>
 
 	<p>On MacOS and Solaris Mono supports DTrace probes.
 
@@ -223,7 +245,7 @@
 	with --enable-dtrace.
 	
 
-<h3>ASP.NET and ADO.NET</h3>
+<h2>ASP.NET and ADO.NET</h2>
 
 	<p>Several changes to improve the scaling and performance of
 	both ASP.NET and ADO.NET (Christian, Gonzalo, Marek,
