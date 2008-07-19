@@ -162,6 +162,12 @@
 	runtime which turns on the reporting of better
 	InvalidCastException message details.
 
+	<p>The mono_method_get_unmanaged_thunk () has been implemented
+        for
+        developers <a href="http://www.mono-project.com/Embedding_Mono">embedding
+        Mono</a> which simplifies calling managed methods from
+        unmanaged code. 
+	
 <h2>Gendarme</h2>
 
 	<p>We are now shipping the <a href="http://www.mono-project.com/Gendarme">Gendarme tool</a>.  Gendarme is an
@@ -201,6 +207,8 @@
 	<p>LINQ and LINQ to XML are now complete, support for
 	expression trees is now available as well as the backend to
 	support expression tree compilation.
+
+	<p>LINQ to Dataset has also been implemented.
 	
 <h2>Performance Counters Implementation</h2>
 
@@ -253,3 +261,10 @@
 
 	<p>Increased performance is now available if you use the
 	option --debug=dont-free-domains on ASP.NET sites.
+
+<h2>Windows.Forms</h2>
+
+	<p>Windows.Forms now supports international keyboard input
+	through XIM.  This new support has been tested with both
+	scim-anthy and Atok X3 (iiimx).
+
