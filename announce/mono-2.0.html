@@ -145,7 +145,7 @@
 	Interlocked.CompareExhange (CAS) are now implemented using
 	fast inline code on x86/amd64.
 
-	<p>There is now a --debug=dont-free-domains option that --
+	<p>There is now a MONO_DEBUG=dont-free-domains option that
 	improves the performance of ASP.NET-based applications. 
 
 <h2>Runtime: Features</h2>
@@ -153,16 +153,19 @@
 	<p>Some progress has been made on the Winx64 port [Bill
 	Holmes, Jonathan Chambers]
 
-	<p>It is now possible to build the runtime using the dolt
-	libtool replacement (http://dolt.freedesktop.org/) by passing
-	--enable-dolt to configure, this speeds up Mono compilations
+	<p>The runtime is now built using the dolt libtool replacement 
+	(http://dolt.freedesktop.org/) this speeds up runtime compilations
 	by about 30%.
-	
+
+	<p>The runtime build process is now less verbose on some platforms, 
+	similar to the way the linux kernel is built. To turn it off, use the 
+	--enable-quiet-build=no argument to configure, or pass the V=1 argument to make.
+
 	<p>There is now a --debug=casts command line option to the
 	runtime which turns on the reporting of better
 	InvalidCastException message details.
 
-	<p>The mono_method_get_unmanaged_thunk () has been implemented
+	<p>The mono_method_get_unmanaged_thunk () function has been implemented
         for
         developers <a href="http://www.mono-project.com/Embedding_Mono">embedding
         Mono</a> which simplifies calling managed methods from
