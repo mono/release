@@ -362,7 +362,7 @@ class sync(threading.Thread):
 				#sync_log.log(" *** Syncing ***\n")
 				#  For some reason the --delete option crashes when running the second time to go-mono.com and mono.ximian.com ... ?
 				# rsync all files over, and don't include the builds... just logs and info.xml
-				command = 'cd %s; rsync -avzR -e "ssh %s" --exclude "files/downloads" --exclude "files/*.tar.gz" --exclude "files/*.tar.bz2" %s %s:%s' % (config.release_repo_root, config.ssh_options, dir_string, self.sync_host, self.sync_target_dir)
+				command = 'cd %s; rsync -avzR -e "ssh %s" --exclude "files/downloads" --exclude "files/*.tar.*" --exclude "files/steps/*/*.tar.*" %s %s:%s' % (config.release_repo_root, config.ssh_options, dir_string, self.sync_host, self.sync_target_dir)
 				#sync_log.log(command + "\n")
 				status, output = utils.launch_process(command, print_output=0, output_timeout=600)
 			
