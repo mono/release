@@ -90,6 +90,11 @@ for plat in config.sd_latest_build_distros:
 		bundle_obj2.force_version_map()
 
 	plat_obj = packaging.buildconf(plat, exclusive=False)
+
+	# Don't gather RPMs from distros published via OBS
+	if plat_obj.get_info_var('OBS_REPO'):
+		continue
+
 	if not plat_obj.get_info_var('USE_ZIP_PKG') or include_zip:
 		print plat_obj.info['distro']
 		# Add external dependencies for this distro
