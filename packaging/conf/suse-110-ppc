@@ -7,4 +7,5 @@ chroot_path=/usr/bin/chroot
 
 # Repo conf
 YAST_INSTALL=1
-RPM_MD_REPO=1
+OBS_REPO=1
+OBS_REPO_URL=http://widehat.opensuse.org/repositories/Mono:/Preview/openSUSE_11.0/
