@@ -8,6 +8,7 @@ import glob
 import time
 import re
 import getopt
+import string
 
 import pdb
 
@@ -47,6 +48,9 @@ execfile(os.path.join(config.release_repo_root, 'website', 'repo-config', 'confi
 
 # TODO: maybe we should generate the repo data for all repo types for all distros... ?  That might be just confusing...
 
+# Keep track of OBS repos because they are multi-arch
+obs_repos = set([])
+
 # Create hard links to real packages to use in repo
 for distro in distros:
 
@@ -55,6 +59,17 @@ for distro in distros:
 	# TODO: Come up with repo system for zip system
 	if utils.get_dict_var('USE_ZIP_PKG', distro_obj.info):
 		pass
+
+	elif utils.get_dict_var('OBS_REPO', distro_obj.info):
+		repo_url = utils.get_dict_var('OBS_REPO_URL', distro_obj.info)
+		distro_name = string.split(repo_url, "/")[-2]
+		# OBS is multi-distro, so we will hit this more than once
+		if distro_name in obs_repos:
+			continue
+		if os.system("lftp -c mirror " + repo_url):
+			print "Error. (Is lftp installed?)"
+		else:
+			obs_repos.add(distro_name)
 
 	# Only non-zip distros and valid distros for this package
 	else: 
