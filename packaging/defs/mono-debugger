@@ -26,7 +26,7 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
-	mono
+	mono-branch
 	xsp
 )
 
@@ -46,7 +46,7 @@ get_destroot () {
 }
 
 HEAD_PATH=(
-	trunk/debugger
+	branches/mono-2-0/debugger
 )
 RELEASE_PATH=(
 	tags/debugger-[[version]]
