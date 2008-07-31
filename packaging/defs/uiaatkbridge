@@ -10,7 +10,7 @@ BUILD_HOSTS=(
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
-	mono
+	mono-uia-branch
 	gtk-sharp212
 	olive
 )
