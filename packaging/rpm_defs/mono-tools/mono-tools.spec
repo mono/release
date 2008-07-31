@@ -113,7 +113,7 @@ mv $RPM_BUILD_ROOT/%_prefix/lib/pkgconfig $RPM_BUILD_ROOT/%_prefix/share
 rm -Rf "$RPM_BUILD_ROOT"
 
 %post
-monodoc --make-index
+#monodoc --make-index
 
 %if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
