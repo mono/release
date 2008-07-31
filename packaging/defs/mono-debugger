@@ -52,8 +52,9 @@ get_destroot () {
 HEAD_PATH=(
 	branches/mono-2-0/debugger
 )
+
 RELEASE_PATH=(
-	tags/debugger-[[version]]
+	tags/mono-[[version]]/debugger
 )
 
 POSTBUILD_TEST_NAME1="test"
