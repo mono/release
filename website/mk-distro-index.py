@@ -152,6 +152,9 @@ for distro_conf in distros:
 	# Skip the distros that use zip packaging system
 	if utils.get_dict_var('USE_ZIP_PKG', build_conf.info): continue
 
+	# Skip the distros that use OBS
+	if utils.get_dict_var('OBS_REPO', build_conf.info): continue
+
 	distro_out_dir = os.path.join(output_dir, url_prefix, build_conf.name)
 	out_file = distro_out_dir + os.sep + 'index.html'
 	arc_out_file = os.path.join(output_dir, 'archive',  version, 'download', build_conf.name, 'index.html')
