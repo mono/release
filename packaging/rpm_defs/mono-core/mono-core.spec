@@ -859,6 +859,7 @@ Authors:
     Dietmar Maurer <dietmar@ximian.com>
 
 %post -n mono-devel -p /sbin/ldconfig
+sed -i 's:/opt/gnome:/usr:g' %_libdir/libmono.la
 
 %postun -n mono-devel -p /sbin/ldconfig
 
@@ -866,7 +867,7 @@ Authors:
 %defattr(-, root, root)
 # libs
 %_libdir/libmono.a
-%_libdir/libmono.la
+%verify(not size md5 mtime) %_libdir/libmono.la
 # exes
 %_prefix/lib/mono/1.0/makecert.exe*
 %_prefix/lib/mono/1.0/mono-api-info.exe*
