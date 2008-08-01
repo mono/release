@@ -6,14 +6,13 @@ License:        GNU General Public License (GPL), X11/MIT
 Group:          Development/Languages/Other
 Summary:        Mono Debugger
 URL:            http://www.mono-project.com/Debugger
-Version:        0.60
+Version:        2.0
 Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.bz2
-Patch0:         mono-debugger_libedit_cast.patch
 Provides:       mono-debugger = %{version}-%{release}
 ExclusiveArch: %ix86 x86_64
-Requires:       mono-core >= 1.1.16
+Requires:       mono-core = %{version}
 
 
 BuildRequires:  mono-devel mono-nunit
@@ -68,14 +67,15 @@ Authors:
 /usr/bin/mdb
 %{_libdir}/*.so*
 %{_prefix}/lib/mono/2.0/mdb.exe
+%{_prefix}/lib/mono/2.0/mdb-symbolreader.exe
 %{_prefix}/lib/mono/gac/Mono.Debugger
+%{_prefix}/lib/mono/gac/Mono.Debugger.SymbolWriter
 %{_prefix}/lib/mono/mono-debugger
 %{_libdir}/pkgconfig/mono-debugger.pc
 
 %debug_package
 %prep
 %setup  -q -n mono-debugger-%{version}
-%patch0
 
 %build
 %{?env_options}
@@ -92,7 +92,7 @@ rm -f $RPM_BUILD_ROOT%_libdir/libmonodebuggerreadline.*a
 rm -f $RPM_BUILD_ROOT%_libdir/libmonodebuggerserver.*a
 
 %clean
-#rm -rf ${RPM_BUILD_ROOT}
+rm -rf ${RPM_BUILD_ROOT}
 
 %post -p /sbin/ldconfig
 
