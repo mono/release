@@ -84,6 +84,7 @@ td_packages = """
 	libgdiplus-branch
 	mono-basic
 	mono-debugger
+	mono-debugger-branch
 	mono-tools
 	monodevelop
 	monodevelop-boo
