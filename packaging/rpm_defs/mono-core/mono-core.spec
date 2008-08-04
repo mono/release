@@ -858,7 +858,8 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-%post -n mono-devel -p /sbin/ldconfig
+%post -n mono-devel
+/sbin/ldconfig
 sed -i 's:/opt/gnome:/usr:g' %_libdir/libmono.la
 
 %postun -n mono-devel -p /sbin/ldconfig
