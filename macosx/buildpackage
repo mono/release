@@ -297,7 +297,7 @@ exit_reg = ""
 (code, output) = conf.buildenv.execute_command("cd %s; mkdir new; mv PKGROOT/Library/Frameworks/Mono.framework/Versions/Current/*.app new" % (remote_temp) )
 
 # Copy .dmg readme
-conf.buildenv.copy_to('setup-files/README.rtf', remote_temp + os.sep + 'new')
+conf.buildenv.copy_to('setup-files/Notes.rtf', remote_temp + os.sep + 'new')
 
 packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
 conf.buildenv.execute_command('cd %s; %s -build -p %s/new/%s.pkg -f %s -r %s -i %s/Info.plist -d %s/Description.plist' % (remote_PKGROOT, packagemaker, remote_temp, package_filename, remote_PKGROOT, resources_dir, framework_resources_dir, framework_resources_dir), terminate_reg=exit_reg)
