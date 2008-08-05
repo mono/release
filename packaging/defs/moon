@@ -162,7 +162,7 @@ POSTBUILD_STEP_NAME2="plugin-2.0-ffmpeg"
 POSTBUILD_STEP2 () {
 	make distclean
 	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
-	./configure --enable-user-plugin --with-ffmpeg
+	./configure --with-mono --enable-user-plugin --with-ffmpeg
 	make
 	target=$build_location/steps/plugin-2.0-ffmpeg
 	mkdir -p $target
@@ -182,7 +182,7 @@ POSTBUILD_STEP3 () {
 POSTBUILD_STEP_NAME4="plugin-2.0"
 POSTBUILD_STEP4 () {
 	make distclean
-	./configure --enable-user-plugin --without-ffmpeg
+	./configure --with-mono --enable-user-plugin --without-ffmpeg
 	make
 	target=$build_location/steps/plugin-2.0
 	mkdir -p $target
