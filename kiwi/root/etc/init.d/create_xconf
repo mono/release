@@ -34,9 +34,15 @@ case "$1" in
 		rm /etc/X11/xorg.conf
 	fi
 	if [ ! -f /etc/X11/xorg.conf ];then
+if false; then
+                /usr/sbin/configure-x.sh
+else
 		test -e /proc/splash && echo verbose > /proc/splash
-		/usr/sbin/sax2 -c 0 -a -i &>/dev/null
+		/usr/sbin/sax2 -c 0 -a &>/dev/null
 		test -e /proc/splash && echo silent > /proc/splash
+fi
+                /usr/bin/perl /etc/langset-xkb.pl
+
 	fi
 	rc_status -v
 	;;

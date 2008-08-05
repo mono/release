@@ -1,0 +1,3 @@
+KEYTABLE=cz-lat2.map.gz
+RC_LANG=cs_CZ.UTF-8
+XKBLAYOUT=czech

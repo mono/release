@@ -4,15 +4,23 @@
 # image. So the goal of this script is to fix whatever configs were changed for the
 # live system
 
-chkconfig boot.rootfsck on
+is_usb=0
+if test "$1" = usb; then
+  is_usb=1
+fi
+
 chkconfig sshd on
 chkconfig cron on
+if test "$is_usb" = 0; then
+ chkconfig create_xconf off
+ chkconfig boot.langset off
+fi
 
 #======================================
 # /etc/sudoers hack to fix #297695 
 # (Installation Live CD: no need to ask for password of root)
 #--------------------------------------
-sed -e "s/ALL ALL=(ALL) NOPASSWD: ALL/ALL ALL=(ALL) ALL/" /etc/sudoers > /tmp/sudoers && mv /tmp/sudoers /etc/sudoers
+sed -i -e "s/ALL ALL=(ALL) NOPASSWD: ALL/ALL ALL=(ALL) ALL/" /etc/sudoers
 chmod 0440 /etc/sudoers
 
 # remove live-cd user
@@ -21,11 +29,35 @@ userdel linux
 # reset pam config
 pam-config -d --nullok
 
-# remove unneeded /license.tar.gz
-rm /license.tar.gz
+if test "$is_usb" = 0; then
+  # remove unneeded /license.tar.gz
+  rm /license.tar.gz
+fi
 
 # remove langset stuff
 rm /etc/langset.pl
 rm -rf /etc/langset/
 grep -v ^perl /etc/init.d/boot.local > /etc/init.d/boot.local.1 && mv /etc/init.d/boot.local.1 /etc/init.d/boot.local
 chmod 0755 /etc/init.d/boot.local
+
+
+cd /
+# patch -R -p0 < /etc/YaST2/policy.patch
+rm /etc/YaST2/policy.patch
+
+if test "$is_usb" = 0; then
+  rm /etc/init.d/create_xconf
+fi
+
+rm -r /etc/langset*
+rm /etc/init.d/boot.langset
+rm /usr/sbin/configure-x.sh
+
+cd /etc/zypp/repos.d
+for i in openSUSE-11.0-Oss openSUSE-11.0-Non-Oss openSUSE-11.0-Updates; do
+  sed -i -e "s,enabled=0,enabled=1," $i.repo
+done
+
+# bug 391798
+sed -i -e 's,DISPLAYMANAGER_AUTOLOGIN="linux",DISPLAYMANAGER_AUTOLOGIN="",'  /etc/sysconfig/displaymanager
+

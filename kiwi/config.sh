@@ -3,23 +3,19 @@
 # FILE          : config.sh
 #----------------
 # PROJECT       : OpenSuSE KIWI Image System
-# COPYRIGHT     : (c) 2006 SUSE LINUX Products GmbH. All rights reserved
+# COPYRIGHT     : (c) 2006,2007,2008 SUSE LINUX Products GmbH. All rights reserved
 #               :
-# AUTHOR        : Marcus Schaefer <ms@suse.de>
+# AUTHOR        : Marcus Schaefer <ms@suse.de>, Stephan Kulow <coolo@suse.de>
 #               :
-# BELONGS TO    : Operating System images
-#               :
-# DESCRIPTION   : configuration script for SUSE based
-#               : operating systems
-#               :
-#               :
-# STATUS        : BETA
-#----------------
+# LICENSE       : BSD
 #======================================
 # Functions...
 #--------------------------------------
 test -f /.kconfig && . /.kconfig
 test -f /.profile && . /.profile
+
+exec > /var/log/config.log
+exec 2>&1
 
 #======================================
 # Greeting...
@@ -36,105 +32,60 @@ perl -ni -e 'm,^blacklist snd-, || print;' \
 perl -pi -e 's,/sbin/alsactl -F restore,/bin/set_default_volume -f,;' \
 	/etc/udev/rules.d/40-alsa.rules
 
-#======================================
-# Activate services
 #--------------------------------------
-suseActivateServices
-
-#======================================
-# Deactivate services
-#--------------------------------------
-suseRemoveService boot.multipath
-suseRemoveService boot.device-mapper
-suseRemoveService mdadmd
-suseRemoveService multipathd
-suseRemoveService rpmconfigcheck
-suseRemoveService waitfornm
-#suseRemoveService smb
-suseRemoveService xfs
-#suseRemoveService nmb
-suseRemoveService autofs
-suseRemoveService rpasswdd
-suseRemoveService boot.scsidev
-suseRemoveService boot.md
-suseService boot.rootfsck off
 # these two we want to disable for policy reasons
 #chkconfig sshd off
 chkconfig cron off
 
-# these are disabled because kiwi enables them without being default
-chkconfig aaeventd off
-chkconfig autoyast off
-chkconfig boot.sched off
-chkconfig dvb off
-chkconfig esound off
-chkconfig fam off
-chkconfig festival off
-chkconfig hotkey-setup off
-chkconfig ipxmount off
-chkconfig irda off
-chkconfig java.binfmt_misc off
-chkconfig joystick off
-chkconfig lirc off
-chkconfig lm_sensors off
-chkconfig nfs off
-chkconfig ntp off
-chkconfig openct off
-chkconfig pcscd off
-chkconfig powerd off
-chkconfig raw off
-chkconfig saslauthd off
-chkconfig spamd off
-chkconfig xinetd off
-chkconfig ypbind off
-
 # enable create_xconf
 chkconfig create_xconf on
+chkconfig boot.langset on
 
 cd /
 patch -p0 < /tmp/config.patch
-patch -p0 < /tmp/config-$profiles.patch
 rm /tmp/config.patch
-rm /tmp/config-$profiles.patch
 
-tar xvf /tmp/gpg-pubkey.tgz
-rm /tmp/gpg-pubkey.tgz
-for i in gpg*.asc; do 
+# disabled for now - if you reenable, don't forget correct_live_install
+# bnc#382158
+# patch -p0 < /etc/YaST2/policy.patch
+
+for i in /rpmkeys/gpg*.asc; do 
    rpm --import $i && rm $i
 done
+rmdir /rpmkeys
 
 insserv 
 
-: > /var/log/zypper.log
 rm -rf /var/cache/zypp/raw/*
 
-zypper addrepo http://download.opensuse.org/repositories/openSUSE:11.0/standard/ 11.0-oss
-zypper addrepo http://download.opensuse.org/distribution/11.0/repo/non-oss/ 11.0-non-oss
+# TODO: take them directly out of control.xml
+zypper addrepo -d http://download.opensuse.org/distribution/11.0/repo/oss/ "11.0-oss"
+zypper addrepo -d http://download.opensuse.org/distribution/11.0/repo/non-oss/ "11.0-non-oss"
+zypper addrepo -d http://download.opensuse.org/update/11.0/ "11.0-updates"
+zypper mr -p 120 "11.0-oss"
+zypper mr -p 120 "11.0-non-oss"
+zypper mr -p 20 "11.0-updates"
+
+rm -rf /var/cache/zypp/raw/*
 
 #======================================
 # /etc/sudoers hack to fix #297695 
 # (Installation Live CD: no need to ask for password of root)
 #--------------------------------------
-sed -e "s/ALL ALL=(ALL) ALL/ALL ALL=(ALL) NOPASSWD: ALL/" /etc/sudoers > /tmp/sudoers && mv /tmp/sudoers /etc/sudoers
+sed -i -e "s/ALL ALL=(ALL) ALL/ALL ALL=(ALL) NOPASSWD: ALL/" /etc/sudoers 
 chmod 0440 /etc/sudoers
 
-## delete passwords
+/usr/sbin/useradd -m -u 999 linux -c "Rupert Monkey" -p "$2a$05$DlJal4RD7tKd3trZ6Qjb5ufS7cJ4R7O56g8yNn8SYcLPvpelTl7lq"
+
+# delete passwords
 #passwd -d root
 #passwd -d linux
-## empty password is ok
+# empty password is ok
 #pam-config -a --nullok
 
-mkdir /var/lib/zypp/db/products/
-if [ `eval baseGetProfilesUsed` != "KDE" ]; then
-   sed -e "s,@NAME@,openSUSE-Live-Gnome," /tmp/zypp.product > /var/lib/zypp/db/products/aae0a680f12121130067466712844104
-else
-   sed -e "s,@NAME@,openSUSE-Live-KDE," /tmp/zypp.product > /var/lib/zypp/db/products/aae0a680f12121130067466712844104
-fi
-time=`date +%s`
-sed -i -e "s,@INSTALLTIME@,$time," /var/lib/zypp/db/products/aae0a680f12121130067466712844104
-
-rm /tmp/zypp.product
 : > /var/log/zypper.log
+
+mv /tmp/*.pdf /home/linux
 
 #======================================
 # SuSEconfig
@@ -143,6 +94,8 @@ mount -o bind /lib/udev/devices /dev
 rm -rf /usr/share/icons/*/icon-theme.cache
 suseConfig
 umount /dev
+
+test -x /usr/bin/kbuildsycoca4 && su - linux -c /usr/bin/kbuildsycoca4
 
 #======================================
 # Mono System configuration
@@ -154,16 +107,6 @@ rm /tmp/config-mono.sh
 # Umount kernel filesystems
 #--------------------------------------
 baseCleanMount
-
-#!/bin/sh
-
-rpm -e smart
-rpm -e rpm-python
-# needed, at least in GNOME!
-if [ `eval baseGetProfilesUsed` == "KDE" ]; then
-  rpm -e python-xml
-  rpm -e python
-fi
 
 rm -rf /var/lib/smart
 

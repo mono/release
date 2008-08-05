@@ -1,0 +1,3 @@
+KEYTABLE=de-latin1-nodeadkeys.map.gz
+RC_LANG=de_DE.UTF-8
+XKBLAYOUT=german

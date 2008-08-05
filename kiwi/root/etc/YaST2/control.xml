@@ -24,7 +24,18 @@ textdomain="control"
         <disable_register_w3m config:type="boolean">true</disable_register_w3m>
         <register_monthly config:type="boolean">false</register_monthly>
 	<manual_online_update config:type="boolean">true</manual_online_update>
+
+	<!-- bnc #359115 comment #14 -->
+	<root_password_as_first_user config:type="boolean">true</root_password_as_first_user>
 	<root_password_ca_check config:type="boolean">false</root_password_ca_check>
+
+	<!-- Offer online repositories feature in the installation -->
+	<show_online_repositories config:type="boolean">false</show_online_repositories>
+	<online_repositories_default config:type="boolean">true</online_repositories_default>
+
+	<!-- Offer add-ons in the installation -->
+	<show_addons config:type="boolean">true</show_addons>
+	<addons_default config:type="boolean">false</addons_default>
 
 	<!-- FATE #301937, Save /root content from the installation system to the installed system -->
 	<save_instsys_content config:type="list">
@@ -33,14 +44,68 @@ textdomain="control"
 		<system_directory>/root/inst-sys/</system_directory>
 	    </save_instsys_item>
 	</save_instsys_content>
+
+	<!-- FATE #303396, Make second stage non-interactive -->
+	<enable_autoconfiguration config:type="boolean">true</enable_autoconfiguration>
+	<autoconfiguration_default config:type="boolean">true</autoconfiguration_default>
+
+	<!-- FATE #303395, Kexec instead of reboot (default 'false') -->
+	<kexec_reboot config:type="boolean">true</kexec_reboot>
     </globals>
 
     <software>
         <delete_old_packages config:type="boolean">true</delete_old_packages>
         <selection_type config:type="symbol">auto</selection_type>
 
+	<!-- Bugzilla #327791, if not set, default is true -->
+	<online_repos_preselected config:type="boolean">false</online_repos_preselected>
+
 	<!-- FATE #300898, List of external sources accesible during the installation time -->
-	<external_sources_link>http://download.opensuse.org/YaST/Repos/openSUSE_103_Servers.xml</external_sources_link>
+	<external_sources_link>http://download.opensuse.org/YaST/Repos/openSUSE_110_Servers.xml</external_sources_link>
+
+	<!-- Dropped packages, bnc #300540 -->
+	<dropped_packages>ant-jai art-sharp asterisk asterisk-alsa asterisk-capi asterisk-spandsp asterisk-zaptel astools avalon-framework avalon-framework-manual avalon-logkit avalon-logkit-javadoc avmailgate bbtools bitchx blackbox colorgcc compat-curl2 cpp41 cpp42 cups-SUSE-ppds-dat db42 dbus-1-gtk devs dockutils dragonegg ejb-javadoc gal2 gcc41 gcc41-32bit gcc41-ada gcc41-c++ gcc41-fortran gcc41-fortran-32bit gcc41-gij gcc41-gij-32bit gcc41-java gcc41-locale gcc41-objc gcc41-obj-c++ gcc41-objc-32bit gcc42 gcc42-32bit gcc42-c++ gcc42-fortran gcc42-fortran-32bit gcc42-gij gcc42-info gcc42-java gcc42-objc gcc42-objc-32bit gconf-sharp gecko-sharp glade-sharp glib-sharp gnome-keyring-manager gnome-sharp gtk-engines gtkglarea gtkhtml-sharp2 gtk-qt-engine gtk-sharp gtk-sharp-complete gtk-sharp-gapi hermes ial indeview ipgrab ipw3945d ircd jaf-demo jaf-javadoc jaf-manual jai java-1_4_2-cacao java-1_4_2-cacao-devel java-1_4_2-sun java-1_4_2-sun-devel java-1_4_2-sun-plugin javamail-manual jms-javadoc jmx jmx-javadoc jta jta-javadoc kbilliards kfs kino knx kssh libcurl2 libexiv2 libgcc41 libgcc41-32bit libgcj41 libgcj41-32bit libgcj41-devel libgcj42 libgcj42-devel libgfortran42 libgfortran42-32bit libgmime-2_0-2 libgpod libgpod2 libipoddevice libkdcraw1 libkexiv2 libMagick10 libmudflap41 libmudflap41-32bit libpri libqtpod libsoprano3 libsoprano3-32bit libstdc++41 libstdc++41-32bit libstdc++41-devel libstdc++42-devel libWand10 libzypp-zmd-backend limal-bootloader openbox perl-Xmms planmaker qjackconnect radiusclient rsaref rsvg-sharp2 rug samba-pdb sax2-libsax-csharp simutrans sqlite-zmd synce synce-kde tei_3 textmaker tomcat5 tomcat55 tomcat55-common-lib tomcat55-jasper tomcat55-jsp-2_0-api tomcat55-server-lib tomcat55-servlet-2_4-api tpb varmon vte-sharp vte-sharp2 websh wlan-kmp-xen xen-doc-ps xmms xmms-jack xmms-lib yast2-bluetooth yast2-bootfloppy yast2-power-management yast2-powertweak zaptel zaptel-kmp-default zen-updater zmd zope</dropped_packages>
+	<extra_urls config:type="list">
+	    <!-- Default update repository, bnc #381360 -->
+	    <extra_url>
+		<baseurl>http://download.opensuse.org/update/11.0/</baseurl>
+                <name>Updates for 11.0</name>
+                <alias>openSUSE-11.0-Updates</alias>
+		<prod_dir>/</prod_dir>
+		<enabled config:type="boolean">true</enabled>
+		<autorefresh config:type="boolean">true</autorefresh>
+		<priority config:type="integer">20</priority>
+	    </extra_url>
+
+	    <!-- Replacement for EXTRAURLS and OPTIONALURLS -->
+	    <extra_url>
+		<baseurl>http://download.opensuse.org/distribution/11.0/repo/oss/</baseurl>
+                <name>openSUSE-11.0-Oss</name>
+                <alias>repo-oss</alias>
+		<prod_dir>/</prod_dir>
+		<enabled config:type="boolean">true</enabled>
+		<autorefresh config:type="boolean">false</autorefresh>
+		<priority config:type="integer">120</priority>
+	    </extra_url>
+	    <extra_url>
+		<baseurl>http://download.opensuse.org/distribution/11.0/repo/non-oss/</baseurl>
+                <alias>repo-non-oss</alias>
+                <name>openSUSE-11.0-Non-Oss</name>
+		<prod_dir>/</prod_dir>
+		<enabled config:type="boolean">true</enabled>
+		<autorefresh config:type="boolean">false</autorefresh>
+		<priority config:type="integer">120</priority>
+	    </extra_url>
+	    <extra_url>
+		<baseurl>http://download.opensuse.org/distribution/11.0/repo/debug/</baseurl>
+                <alias>repo-debug</alias>
+                <name>openSUSE-11.0-Debug</name>
+		<prod_dir>/</prod_dir>
+		<enabled config:type="boolean">false</enabled>
+		<autorefresh config:type="boolean">false</autorefresh>
+		<priority config:type="integer">120</priority>
+	    </extra_url>
+	</extra_urls>
     </software>
 
     <partitioning>
@@ -50,11 +115,11 @@ textdomain="control"
         <root_space_percent>40</root_space_percent>
         <root_base_size>5G</root_base_size>
         <root_max_size>20G</root_max_size>
-	<proposal_lvm>false</proposal_lvm>
-	<proposal_evms>false</proposal_evms>
+	<proposal_lvm config:type="boolean">false</proposal_lvm>
+	<proposal_evms config:type="boolean">false</proposal_evms>
 	<vm_desired_size>15G</vm_desired_size>
 	<vm_home_max_size>25G</vm_home_max_size>
-	<boot_evms>false</boot_evms>
+	<boot_evms config:type="boolean">false</boot_evms>
     </partitioning>
 
     <network>
@@ -79,6 +144,7 @@ textdomain="control"
 	<clone_module>ldap</clone_module>
 	<clone_module>printer</clone_module>
 	<clone_module>add-on</clone_module>
+	<clone_module>iscsi-client</clone_module>
     </clone_modules>
 
     <texts>
@@ -101,16 +167,52 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
             <name>initial</name>
             <enable_skip>no</enable_skip>
             <proposal_modules config:type="list">
-                <proposal_module>hwinfo</proposal_module>
-                <proposal_module>keyboard</proposal_module>
-                <proposal_module>mouse</proposal_module>
-                <proposal_module>partitions</proposal_module>
-                <proposal_module>software</proposal_module>
-                <proposal_module>bootloader</proposal_module>
-                <proposal_module>timezone</proposal_module>
-                <proposal_module>language</proposal_module>
-                <proposal_module>runlevel</proposal_module>
+		<proposal_module>
+		    <name>partitions</name>
+		    <presentation_order>10</presentation_order>
+		</proposal_module>
+		<proposal_module>
+		    <name>bootloader</name>
+		    <presentation_order>20</presentation_order>
+		</proposal_module>
+		<proposal_module>
+		    <name>country_simple</name>
+		    <presentation_order>40</presentation_order>
+		</proposal_module>
+		<proposal_module>
+		    <name>timezone</name>
+		    <presentation_order>50</presentation_order>
+		</proposal_module>
+		<!-- FATE #302980 -->
+		<proposal_module>
+		    <name>users</name>
+		    <presentation_order>60</presentation_order>
+		</proposal_module>
+		<proposal_module>
+		    <name>hwinfo</name>
+		    <presentation_order>80</presentation_order>
+		</proposal_module>
+		<proposal_module>
+		    <name>mouse</name>
+		    <presentation_order>90</presentation_order>
+		</proposal_module>
+		<!-- software proposal should be computed almost at the end -->
+		<proposal_module>
+		    <name>software</name>
+		    <presentation_order>30</presentation_order>
+		</proposal_module>
+		<!-- propose the default runlevel after software is selected, bnc #380141 -->
+		<proposal_module>
+		    <name>runlevel</name>
+		    <presentation_order>70</presentation_order>
+		</proposal_module>
+		<!-- finds images to deploy -->
+		<proposal_module>
+		    <name>deploying</name>
+		    <presentation_order>95</presentation_order>
+		</proposal_module>
             </proposal_modules>
+<!--
             <proposal_tabs config:type="list">
                 <proposal_tab>
                     <label>Overview</label>
@@ -131,10 +233,28 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
                         <proposal_module>bootloader</proposal_module>
                         <proposal_module>timezone</proposal_module>
                         <proposal_module>language</proposal_module>
+                        <proposal_module>users</proposal_module>
                         <proposal_module>runlevel</proposal_module>
                     </proposal_modules>
                 </proposal_tab>
             </proposal_tabs>
+-->
+        </proposal>
+
+        <proposal>
+            <label>Live Installation Settings</label>
+            <mode>live_installation</mode>
+            <stage>initial</stage>
+            <name>initial</name>
+            <enable_skip>no</enable_skip>
+            <proposal_modules config:type="list">
+                <proposal_module>hwinfo</proposal_module>
+                <proposal_module>partitions</proposal_module>
+                <proposal_module>bootloader</proposal_module>
+                <proposal_module>keyboard</proposal_module>
+                <proposal_module>timezone</proposal_module>
+                <proposal_module>runlevel</proposal_module>
+            </proposal_modules>
         </proposal>
 
         <proposal>
@@ -240,22 +360,14 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
             <stage>initial</stage>
             <modules  config:type="list">
                 <module>
-                    <name>language</name>
-	            <label>Language</label>
+		    <label>Welcome</label>
+                    <name>complex_welcome</name>
                     <enable_back>no</enable_back>
                     <enable_next>yes</enable_next>
                     <arguments>
                         <first_run>yes</first_run>
                     </arguments>
                     <retranslate config:type="boolean">true</retranslate>
-                </module>
-                <module>
-	            <label>Language</label>
-                    <name>checkmedia</name>
-                </module>
-                <module>
-	            <label>License Agreement</label>
-                    <name>license</name>
                 </module>
 		<module>
 	            <label>Disk Activation</label>
@@ -264,6 +376,10 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
                 <module>
 	            <label>System Analysis</label>
                     <name>system_analysis</name>
+                </module>
+                <module>
+	            <label>System Analysis</label>
+                    <name>mode</name>
                 </module>
 		<!-- Here, user selects whether to perform New Installation or Upgrade -->
 		<module>
@@ -284,16 +400,30 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
                     </arguments>
 		    <enable_back>yes</enable_back>
                 </module>
-                <module>
-	            <label>Desktop Selection</label>
-                    <name>desktop</name>
+		<module>
+		    <label>Desktop Selection</label>
+		    <name>new_desktop</name>
+                </module>
+	        <module>
+		    <label>Disk</label>
+		    <name>disk_proposal</name>
+		    <enable_back>yes</enable_back>
+		    <enable_next>yes</enable_next>
+		</module>
+		<module>
+		    <label>User Settings</label>
+		    <name>user_first</name>
+                </module>
+		<module>
+		    <label>User Settings</label>
+		    <name>root_first</name>
                 </module>
 		<module>
 		    <heading>yes</heading>
 		    <label>Installation</label>
 		</module>
                 <module>
-	            <label>Installation Settings</label>
+	            <label>Installation Overview</label>
                     <name>proposal</name>
                     <proposal>initial</proposal>
                 </module>
@@ -307,6 +437,14 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
 	            <label>Perform Installation</label>
                     <name>prepdisk</name>
                 </module>
+		<!-- Installation from images -->
+                <module>
+	            <label>Perform Installation</label>
+                    <name>deploy_image</name>
+                </module>
+		<!-- Installation from image -->
+		<!-- kickoff moved here in order not to replace files it writes
+		     with files from the image -->
                 <module>
 	            <label>Perform Installation</label>
                     <name>kickoff</name>
@@ -325,6 +463,108 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
             </modules>
         </workflow>
 
+	<!-- Stage: Initial, Mode: Live Installation -->
+        <workflow>
+            <defaults>
+                <archs>all</archs>
+                <enable_back>yes</enable_back>
+                <enable_next>yes</enable_next>
+            </defaults>
+            <label>Installation</label>
+            <mode>live_installation</mode>
+            <stage>initial</stage>
+            <modules config:type="list">
+                <module>
+		    <label>Welcome</label>
+                    <name>complex_welcome</name>
+                    <enable_back>no</enable_back>
+                    <enable_next>yes</enable_next>
+                    <arguments>
+                        <first_run>yes</first_run>
+                    </arguments>
+                    <retranslate config:type="boolean">true</retranslate>
+                </module>
+<!--
+                <module>
+                    <label>Welcome</label>
+                    <name>inst_live_welcome</name>
+                </module>
+                 <module>
+                    <label>License Agreement</label>
+                    <name>inst_license</name>
+                </module>
+-->
+                <module>
+                    <label>Time Zone</label>
+                    <name>timezone</name>
+                    <arguments>
+                        <first_run>yes</first_run>
+                    </arguments>
+                    <enable_back>yes</enable_back>
+                </module>
+                <module>
+                    <label>Disk</label>
+                    <name>disk_proposal</name>
+                    <enable_back>yes</enable_back>
+                    <enable_next>yes</enable_next>
+                </module>
+                <module>
+                    <label>User Settings</label>
+                    <name>user_first</name>
+                </module>
+                <module>
+                    <label>User Settings</label>
+                    <name>root_first</name>
+                </module>
+<!--
+                <module>
+                    <label>Installation Settings</label>
+                    <name>inst_live_simple_proposal</name>
+                    <proposal>initial</proposal>
+                </module>
+                <module>
+                    <label>Installation Settings</label>
+                    <name>inst_live_full_proposal</name>
+                    <proposal>initial</proposal>
+                </module>
+-->
+                <module>
+                    <label>Installation Settings</label>
+                    <name>inst_live_pre-proposal</name>
+                </module>
+                <module>
+                    <label>Installation Settings</label>
+                    <name>inst_proposal</name>
+                    <proposal>initial</proposal>
+                </module>
+                <module>
+                    <label>Perform Installation</label>
+                    <name>inst_do_resize</name>
+                    <update config:type="boolean">false</update>
+                    <archs>i386,x86_64,ia64</archs>
+                </module>
+                <module>
+                    <label>Perform Installation</label>
+                    <name>inst_prepdisk</name>
+                </module>
+                <module>
+                    <label>Perform Installation</label>
+                    <name>inst_kickoff</name>
+                </module>
+                <module>
+                    <label>Perform Installation</label>
+                    <name>inst_live_doit</name>
+                    <enable_next>no</enable_next>
+                    <enable_back>no</enable_back>
+                </module>
+                <module>
+                    <label>Perform Installation</label>
+                    <name>inst_finish</name>
+                    <enable_back>no</enable_back>
+                </module>
+            </modules>
+        </workflow>
+
 	<!-- Stage: Initial, Mode: Update -->
         <workflow>
             <defaults>
@@ -337,21 +577,13 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
             <stage>initial</stage>
             <modules  config:type="list">
                 <module>
-                    <name>language</name>
-	            <label>Language</label>
+                    <name>complex_welcome</name>
+	            <label>Welcome</label>
                     <enable_back>no</enable_back>
                     <arguments>
                         <first_run>yes</first_run>
                     </arguments>
                     <retranslate config:type="boolean">true</retranslate>
-                </module>
-                <module>
-	            <label>Language</label>
-                    <name>checkmedia</name>
-                </module>
-                <module>
-	            <label>License Agreement</label>
-                    <name>license</name>
                 </module>
 		<module>
 	            <label>Disk Activation</label>
@@ -360,6 +592,10 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
                 <module>
 	            <label>System Analysis</label>
                     <name>system_analysis</name>
+                </module>
+                <module>
+	            <label>System Analysis</label>
+                    <name>mode</name>
                 </module>
                 <module>
 	            <label>System for Update</label>
@@ -447,8 +683,8 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
                 <module>
                     <enable_back>no</enable_back>
                     <enable_next>yes</enable_next>
- 	            <label>Language</label>
-                    <name>language</name>
+ 	            <label>Welcome</label>
+                    <name>complex_welcome</name>
                     <retranslate config:type="boolean">true</retranslate>
                 </module>
                 <module>
@@ -492,8 +728,8 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
             <modules  config:type="list">
                 <module>
                     <enable_back>no</enable_back>
-	            <label>Language</label>
-                    <name>language</name>
+	            <label>Welcome</label>
+                    <name>complex_welcome</name>
                     <retranslate config:type="boolean">true</retranslate>
                 </module>
                 <module>
@@ -525,6 +761,8 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
         </workflow>
 
 	<!-- Stage: Continue, Mode: Update -->
+	<!--
+	Second stage for update has been disabled by FATE #303396
         <workflow>
             <stage>continue</stage>
             <mode>update</mode>
@@ -536,7 +774,7 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
             <modules config:type="list">
                 <module>
 	            <label>Perform Update</label>
-                    <name>rpmcopy</name>
+                    <name>rpmcopy_secondstage</name>
 		    <enable_back>no</enable_back>
 		    <enable_next>no</enable_next>
                 </module>
@@ -587,6 +825,7 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
                 </module>
             </modules>
         </workflow>
+	-->
 
 	<!-- Stage: Continue, Mode: Installation -->
         <workflow>
@@ -601,6 +840,17 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
 		<module>
 		    <heading>yes</heading>
 		    <label>Configuration</label>
+		</module>
+		<!--
+		    Automatic configuration: disabled in manual configuration,
+		    FATE #303396
+		    Non-interactive second stage
+		-->
+		<module>
+		    <label>Automatic Configuration</label>
+		    <name>automatic_configuration</name>
+		    <enable_back>no</enable_back>
+		    <enable_next>no</enable_next>
 		</module>
                 <module>
 	            <label>root Password</label>
@@ -621,7 +871,7 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
                 </module>
                 <module>
 	            <label>Check Installation</label>
-                    <name>rpmcopy</name>
+                    <name>rpmcopy_secondstage</name>
                     <enable_back>no</enable_back>
                     <enable_next>no</enable_next>
                 </module>
@@ -698,6 +948,43 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
             </modules>
         </workflow>
 
+	<!-- Stage: Continue, Mode: Live Installation -->
+        <workflow>
+            <stage>continue</stage>
+            <mode>live_installation</mode>
+            <defaults>
+                <enable_back>yes</enable_back>
+                <enable_next>yes</enable_next>
+                <archs>all</archs>
+            </defaults>
+            <modules  config:type="list">
+		<module>
+		    <heading>yes</heading>
+		    <label>Configuration</label>
+		</module>
+		<module>
+		    <label>Automatic Configuration</label>
+		    <name>automatic_configuration</name>
+		    <enable_back>no</enable_back>
+		    <enable_next>no</enable_next>
+		</module>
+                <module>
+	            <label>Users</label>
+                    <name>auth</name>
+                </module>
+                <module>
+	            <label>Users</label>
+                    <name>user</name>
+                </module>
+                <module>
+		    <label>Users</label>
+                    <name>live_cleanup</name>
+                    <enable_back>no</enable_back>
+                </module>
+
+	    </modules>
+	</workflow>
+
 	<!-- Stage: Initial, Mode: AutoInstallation -->
         <workflow>
             <stage>initial</stage>
@@ -769,7 +1056,7 @@ After clicking &lt;b&gt;Finish&lt;/b&gt;, you can log in to the system.&lt;/p&gt
                 </module>
                 <module>
 	            <label>Perform Installation</label>
-                    <name>rpmcopy</name>
+                    <name>rpmcopy_secondstage</name>
                 </module>
 		<module>
 		    <heading>yes</heading>

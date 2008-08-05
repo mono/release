@@ -1,0 +1,32 @@
+# the idea is described in bug 340723
+--- usr/share/hal/fdi/policy/10osvendor/99-storage-policy-fixed-drives.fdi	2008-04-03 02:23:51.000000000 +0200
++++ usr/share/hal/fdi/policy/10osvendor/99-storage-policy-fixed-drives.fdi	2008-04-08 16:57:18.000000000 +0200
+@@ -2,7 +2,7 @@
+ 
+ <deviceinfo version="0.2">
+ <device>
+-  <match key="@block.storage_device:storage.hotpluggable" bool="false">
++  <match key="@block.storage_device:storage.hotpluggable-and-broken" bool="false">
+     <match key="@block.storage_device:storage.removable" bool="false">
+       <merge key="volume.ignore" type="bool">true</merge>
+     </match>
+--- usr/share/PolicyKit/policy/org.freedesktop.hal.storage.policy	2008-04-03 02:23:52.000000000 +0200
++++ usr/share/PolicyKit/policy/org.freedesktop.hal.storage.policy	2008-04-08 16:56:52.000000000 +0200
+@@ -21,7 +21,7 @@
+     <message>System policy prevents mounting internal media</message>
+     <defaults>
+       <allow_inactive>no</allow_inactive>
+-      <allow_active>auth_admin_keep_always</allow_active>
++      <allow_active>yes</allow_active>
+     </defaults>
+   </action>
+   
+@@ -39,7 +39,7 @@
+     <message>System policy prevents unmounting media mounted by other users</message>
+     <defaults>
+       <allow_inactive>no</allow_inactive>
+-      <allow_active>auth_admin_keep_always</allow_active>
++      <allow_active>yes</allow_active>
+     </defaults>
+   </action>
+   

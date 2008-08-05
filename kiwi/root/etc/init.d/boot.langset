@@ -1,0 +1,53 @@
+#! /bin/sh
+# Copyright (c) 1995-2003 SuSE Linux AG, Nuernberg, Germany.
+# All rights reserved.
+#
+### BEGIN INIT INFO
+# Provides:       boot.langset
+# Required-Start: $local_fs
+# Required-Stop:  
+# Default-Start:  B
+# Default-Stop:   
+# Description:    read cmdline
+### END INIT INFO
+
+# First reset status of this service
+. /etc/rc.status
+rc_reset
+
+case "$1" in
+    start)
+        test -f /etc/langset.xkb || /usr/bin/perl /etc/langset.pl
+	rc_status -v
+	;;
+    stop)
+	;;
+    try-restart)
+        rc_status
+	;;
+    restart)
+	rc_status
+        ;;
+    try-restart-iburst)
+	rc_status
+        ;;
+    force-reload)
+	# Does not support signalling to reload
+        $0 try-restart
+	rc_status
+	;;
+    reload)
+	rc_status -v
+	;;
+    status)
+	rc_status -v
+	;;
+    probe)
+	rc_failed 3
+	;;
+    *)
+	echo "Usage: $0 {start|stop|status|try-restart|restart|try-restart-iburst|force-reload|reload|probe|ntptimeset}"
+	exit 1
+	;;
+esac
+rc_exit

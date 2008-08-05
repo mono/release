@@ -1,0 +1,3 @@
+KEYTABLE=hu.map.gz
+RC_LANG=hu_HU.UTF-8
+XKBLAYOUT=hungarian

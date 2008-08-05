@@ -1,0 +1,3 @@
+KEYTABLE=sk-qwerty.map.gz
+RC_LANG=sk_SK.UTF-8
+XKBLAYOUT=slovak

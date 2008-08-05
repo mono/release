@@ -1,3 +1,3 @@
+KEYTABLE=us.map.gz
 RC_LANG=zh_CN.UTF-8
-KEYTABLE=us
-OOo_Country=
+XKBLAYOUT=english-us

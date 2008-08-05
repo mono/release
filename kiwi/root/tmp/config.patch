@@ -61,19 +61,6 @@
  # Required-Stop:
  # Default-Start:     5
  # Default-Stop:
---- /etc/init.d/boot.local	2007-09-29 10:42:39.000000000 +0200
-+++ /etc/init.d/boot.local	2007-10-06 17:22:18.000000000 +0200
-@@ -15 +15,2 @@
- 
-+perl -pi /etc/langset.pl /etc/sysconfig/{language,keyboard}
---- usr/share/dist/desktop-files/live-installer.desktop.orig	2007-10-10 21:15:56.000000000 +0200
-+++ usr/share/dist/desktop-files/live-installer.desktop	2007-10-10 21:16:04.000000000 +0200
-@@ -7,3 +7,5 @@
- Name=Install
- GenericName=Install running system to your hard drive
- 
-+X-KDE-SubstituteUID=true
-+X-KDE-RootOnly=true
 --- etc/hosts.orig	2007-11-12 15:24:30.000000000 +0100
 +++ etc/hosts	2007-11-12 15:24:51.000000000 +0100
 @@ -21,3 +21,4 @@
@@ -81,16 +68,25 @@
  ff02::3         ipv6-allhosts
  
 +127.0.0.2       linux.site linux
---- sbin/yast2.orig	2007-10-10 19:49:43.000000000 +0200
-+++ sbin/yast2	2007-10-10 19:51:48.000000000 +0200
-@@ -133,6 +133,10 @@
- # Select which toolkit we want to use (F#301083)
- select_gui_frontend()
- {
-+    if test "$module" = live-installer; then
-+       WANTED_GUI=qt
-+    fi
-+
-     if [ "$WANTED_GUI" = "auto" ]; then
- 	probe_desktop_gui
- 	WANTED_GUI=$DESKTOP_GUI
+--- /etc/sysconfig/windowmanager	2007-08-10 19:49:32.000000000 +0200
++++ /etc/sysconfig/windowmanager	2007-08-02 16:52:26.000000000 +0200
+@@ -15,7 +15,7 @@
+ #
+ # Here you can set the default window manager (kde, fvwm, ...)
+ # changes here require at least a re-login
+-DEFAULT_WM="kde"
++DEFAULT_WM="gnome"
+ 
+ ## Type:	yesno
+ ## Default:	yes
+--- /etc/sysconfig/displaymanager.orig	2007-08-11 10:04:13.000000000 +0200
++++ /etc/sysconfig/displaymanager	2007-08-11 12:26:53.000000000 +0200
+@@ -39,7 +39,7 @@
+ # Here you can set the default Display manager (kdm/xdm/gdm/wdm/console).
+ # all changes in this file require a restart of the displaymanager
+ #
+-DISPLAYMANAGER=""
++DISPLAYMANAGER="gdm"
+ 
+ ## Type:	yesno
+ ## Default:	no

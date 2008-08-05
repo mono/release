@@ -1,0 +1,3 @@
+KEYTABLE=ru.map.gz
+RC_LANG=ru_RU.UTF-8
+XKBLAYOUT=russian
