@@ -4,31 +4,32 @@ installerdir=$1
 addmonoenv=$2
 
 # Add setup.sh to their environment profile if the user selected it
-if [ $addmonoenv -eq 1 ] ; then
-	added=0
-	for i in $HOME/.profile $HOME/.bash_profile ; do
-		if [ -e $i ] ; then
-			echo "" >> $i
-			echo ". $installerdir/bin/setup.sh" >> $i
-			echo "Successfully added environment (setup.sh) to $i"
-			echo ""
-			added=1
-		fi
-	done
-
-	if [ $added -eq 0 ] ; then
-		echo "An attempt was made to add setup.sh"
-		echo " to both .profile and .bash_profile,"
-		echo " but they both do not exist."
-		echo ""
-		echo "You will need to load"
-		echo "$installerdir/bin/setup.sh"
-		echo "manually."
-		echo ""
-		echo ""
-	fi
-
-fi
+# Causes breakage like bnc#415149
+#if [ $addmonoenv -eq 1 ] ; then
+#	added=0
+#	for i in $HOME/.profile $HOME/.bash_profile ; do
+#		if [ -e $i ] ; then
+#			echo "" >> $i
+#			echo ". $installerdir/bin/setup.sh" >> $i
+#			echo "Successfully added environment (setup.sh) to $i"
+#			echo ""
+#			added=1
+#		fi
+#	done
+#
+#	if [ $added -eq 0 ] ; then
+#		echo "An attempt was made to add setup.sh"
+#		echo " to both .profile and .bash_profile,"
+#		echo " but they both do not exist."
+#		echo ""
+#		echo "You will need to load"
+#		echo "$installerdir/bin/setup.sh"
+#		echo "manually."
+#		echo ""
+#		echo ""
+#	fi
+#
+#fi
 
 # Check libs to see if md can be run (make sure to set LD_LIBRARY_PATH first)
 

@@ -141,10 +141,12 @@
       <title>Install Location: ${installdir}</title>
       <description>Running the install as a user will install Mono to the user's home directory.  Installing as root will install to /opt.</description>
     </labelParameter>
+    <!-- This results in various breakage including bnc#415149 -->
+    <!--
     <booleanParameter>
       <ask>1</ask>
       <cliOptionName></cliOptionName>
-      <default>1</default>
+      <default>0</default>
       <description>Add Mono Environment Settings?</description>
       <explanation>Environment settings are needed in order to run Mono.  If you select yes, the install will attempt to add ${installdir}/bin/setup.sh to ~/.profile or ~/.bash_profile.  You will need to restart your shell for these changes to take effect.  Alternatively you can choose 'No' below, and then you will need to load setup.sh manually as needed.</explanation>
       <name>AddMonoEnv</name>
@@ -153,6 +155,7 @@
       <value>1</value>
       <ruleList/>
     </booleanParameter>
+    -->
   </parameterList>
       <preInstallationActionList>
         <setInstallerVariable>
