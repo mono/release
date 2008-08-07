@@ -133,11 +133,15 @@ for plat in config.sd_latest_build_distros:
 			pack_obj = packaging.package(plat_obj, pack, bundle_obj=bundle_obj2)
 
 			# Ignore versioning from external sources (which we don't build svn versions of)
+			old_version_map_exists = pack_obj.bundle_obj.version_map_exists
 			if pack_obj.get_info_var("EXTERNAL_SOURCE"):
 				pack_obj.bundle_obj.ignore_version_map()
 
 			if pack_obj.valid_use_platform(plat_obj.info['distro']):
 				rpms += pack_obj.get_files(fail_on_missing=fail_on_missing)
+
+			# Restore version_map_exists
+			pack_obj.bundle_obj.version_map_exists = old_version_map_exists
 
 # Gather sources
 for pack in build.get_packages():
