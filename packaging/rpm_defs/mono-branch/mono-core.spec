@@ -860,7 +860,9 @@ Authors:
 
 %post -n mono-devel
 /sbin/ldconfig
+if [ ! -d /opt/gnome ]; then
 sed -i 's:/opt/gnome:/usr:g' %_libdir/libmono.la
+fi
 
 %postun -n mono-devel -p /sbin/ldconfig
 
