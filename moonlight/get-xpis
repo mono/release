@@ -4,6 +4,7 @@ TYPE="HEAD"
 TYPE="RELEASE"
 NAME="novell-moonlight"
 
+
 if [ -z "$1" ]; then
 	echo "Please supply a revision"
 	exit 1
@@ -11,13 +12,30 @@ else
 	REVISION="$1"
 fi
 
+if [ "$REVISION" == "clean" ]; then
+	rm -rf novell-moonlight*
+	exit
+fi
+
 for version in "1.0" "2.0"; do
 	for arch in "i586" "x86_64"; do
-		DISTRO="suse-103-$arch"
-		echo "Fetching $NAME-$version-$arch.xpi"
-		curl -o "$NAME-$version-$arch.xpi" "$BASEURL/$TYPE/$DISTRO/moon/$REVISION/files/steps/plugin-$version/novell-moonlight.xpi"
-		mkdir "$NAME-$version-$arch"
-		unzip -d "$NAME-$version-$arch" "$NAME-$version-$arch.xpi"
-		rm "$NAME-$version-$arch.xpi"
+		for media in "" "-ffmpeg"; do
+
+			DISTRO="suse-103-$arch"
+			echo "Fetching $NAME$media-$version-$arch.xpi"
+			echo "curl -o $NAME$media-$version-$arch.xpi $BASEURL/$TYPE/$DISTRO/moon/$REVISION/files/steps/plugin-$version$media/novell-moonlight.xpi"
+			curl -o "$NAME$media-$version-$arch.xpi" "$BASEURL/$TYPE/$DISTRO/moon/$REVISION/files/steps/plugin-$version$media/novell-moonlight.xpi"
+
+			# Prep non-ffmpeg xpis for signing
+			if [ "$media" == "" ]; then  
+				echo "Prepping $NAME-$version-$arch"
+				mkdir "$NAME-$version-$arch"
+				unzip -d "$NAME-$version-$arch" "$NAME-$version-$arch.xpi"
+				rm "$NAME-$version-$arch.xpi"
+			else
+				echo "Not prepping $NAME$media-$version-$arch"
+			fi
+			
+		done
 	done
 done
