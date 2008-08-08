@@ -10,6 +10,9 @@ MONO_DEPS=(
 	mono
 )
 
+RPM_DEPS=(
+        http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
+)
 
 get_destroot () {
 	DEST_ROOT=noarch
