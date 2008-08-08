@@ -31,7 +31,7 @@
 #	monodevelop monodevelop-boo monodevelop-database monodevelop-java
 
 	<h3>Other</h3>
-#	maemo-sharp webkit-sharp uiaatkbridge uiautomationwinforms
+#	gnome-keyring-sharp maemo-sharp webkit-sharp uiaatkbridge uiautomationwinforms
 
 </body>
 </html>
