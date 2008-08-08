@@ -1,0 +1,24 @@
+BUILD_HOSTS=(
+	sles-10-i586
+)
+
+USE_HOSTS=(
+	ALL
+)
+
+MONO_DEPS=(
+	mono
+)
+
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH=(
+	trunk/gnome-keyring-sharp
+)
+RELEASE_PATH=(
+	tags/gnome-keyring-sharp-[[versiondot]]
+)
+
