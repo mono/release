@@ -10,7 +10,7 @@ MONO_DEPS=(
 	mono
 )
 
-RPM_DEPS=(
+noarch_RPM_DEPS=(
         http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
 )
 
