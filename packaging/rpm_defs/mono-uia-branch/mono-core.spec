@@ -10,9 +10,10 @@ Version:	2.0
 Release:	0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
-Patch0:		combobox.patch
-Patch1:		listbox.patch
-Patch2:		scrollbar.patch
+Patch0:		combobox-bug416663.patch
+Patch1:		listbox-bug416640.patch
+Patch2:		scrollbar-bug416759.patch
+Patch3:		tooltip-errorprovider.patch
 
 ExclusiveArch: %ix86 x86_64
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -1051,6 +1052,7 @@ pushd "mcs"
 %patch0
 %patch1
 %patch2
+%patch3
 popd
 
 %build
