@@ -175,13 +175,22 @@
 
 <h2>Gendarme</h2>
 
-	<p>We are now shipping the <a href="http://www.mono-project.com/Gendarme">Gendarme tool</a>.  Gendarme is an
-	extensible rule-based tool to find problems in .NET
+	<p><a href="http://www.mono-project.com/Gendarme">Gendarme</a> 
+	is an extensible rule-based tool to find problems in .NET
 	applications and libraries. Gendarme inspects programs and
 	libraries that contain code in ECMA CIL format (Mono and .NET)
 	and looks for common problems with the code, problems that
 	compiler do not typically check or have not historically
 	checked.
+
+	<p>This release introduce a new wizard-based GUI runner.
+	It also add support for .MDB and .PDB debugging symbols,
+	allowing source lines numbers inside reports.
+
+	<p>This release contains 151 rules (56 new and many updated)
+	divided into 14 categories (2 new) and yet is faster than the 
+	version	shipped with Mono 1.9. 
+	<a href="http://anonsvn.mono-project.com/source/branches/mono-2-0/mono-tools/gendarme/NEWS">More...</a>
 
 <h2>C# Compiler</h2>
 
