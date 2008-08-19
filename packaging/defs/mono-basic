@@ -1,8 +1,6 @@
 web_index=8
 web_ignore_noarch=1
  
-version_selection_reg="1\.\d+"
- 
 # Note: this noarch package builds on two platforms
 #  BE SURE to build on windows first before building the rpm, otherwise the
 #  1.0 vb runtime won't be included
