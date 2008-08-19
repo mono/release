@@ -172,6 +172,8 @@ class Jail:
 		if not os.path.exists(self.config.jail_dir):
 			distutils.dir_util.mkpath(self.config.jail_dir)
 
+		self.arch = distro_name.split('-').pop()
+
 		self.cache = rpm_query_cache(self.config.name_ver)
 
 		# These are base names of rpms
@@ -377,9 +379,17 @@ class Jail:
 
 		# Add chroot path to environment for redhat based systems
 		os.environ['PATH'] = os.environ['PATH'] + ":/usr/sbin"
+
+		# Find out whether to use biarch switch or not
+		(status, host_arch) = utils.launch_process("uname -m")
+
+		if jail_config.bi_arch_switch.has_key(host_arch) and jail_config.bi_arch_switch[host_arch].has_key(self.arch):
+			switch_cmd = jail_config.bi_arch_switch[host_arch][self.arch]
+		else:
+		 	switch_cmd = ""
 	
 		# Reinitialize the rpm database with the jail's version of rpm	
-		command = "chroot %s env %s rpm --initdb" % (self.config.jail_dir, self.config.environment)
+		command = "%s chroot %s env %s rpm --initdb" % (switch_cmd, self.config.jail_dir, self.config.environment)
 		print command
 		(status, output) = utils.launch_process(command)
 		print "Status: %d" % status
@@ -392,7 +402,7 @@ class Jail:
 		#command = "chroot %s env %s rpm --force -U %s" % (self.config.jail_dir, self.environment, "jailbuilder" + os.sep + "manifest")
 
 		# But, this method may be a problem because of the length of the arguments
-		command = "chroot %s env %s rpm --force -U %s" % (self.config.jail_dir, self.config.environment, rpm_list)
+		command = "%s chroot %s env %s rpm --force -U %s" % (switch_cmd, self.config.jail_dir, self.config.environment, rpm_list)
 		print command
 		(status, output) = utils.launch_process(command)
 		print "Status: %d" % status

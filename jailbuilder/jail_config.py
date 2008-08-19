@@ -13,6 +13,20 @@ valid_arch = {
 	'x86_64':	'x86_64 i686 i586 i386 noarch',
 }
 
+# top level keys represent host machine, sub level keys are jail targets
+#  bottom value is the command to emulate the jail target
+bi_arch_switch = {
+	'x86_64':
+		{
+			'i386': 'linux32',
+			'i586': 'linux32',
+		},
+	's390x':
+		{
+			's390': 's390',
+		},
+}
+
 required_rpms = {
 	#ftp://ftp.novell.com/pub/ximian/redcarpet2/sles-9-ia64/
 	'sles-9': """
@@ -536,6 +550,32 @@ required_rpms = {
 		tcl
 		vim-enhanced
 		vte-devel
+		which
+		yum
+		zlib-devel
+	""",
+
+	'rhel-4': """
+		autoconf
+		automake
+		bison
+		bzip2
+		coreutils
+		file
+		flex
+		gcc
+		gcc-c++
+		gettext
+		make
+		ncurses-devel
+		openssh-clients
+		patch
+		pkgconfig
+		screen
+		subversion
+		sudo
+		texinfo
+		vim-enhanced
 		which
 		yum
 		zlib-devel
