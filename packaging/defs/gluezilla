@@ -57,12 +57,12 @@ ZIP_BUILD () {
 }
 
 win_4_i386_ZIP_DEPS=(
-	http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.9.0.0/sdk/xulrunner-1.9.en-US.win32.sdk.zip
+	http://ftp-mozilla.netscape.com/pub/mozilla.org/xulrunner/releases/1.8.1.3/contrib/sdk/xulrunner-1.8.1.3.en-US.win32.sdk.zip
 	http://ftp.mozilla.org/pub/mozilla.org/mozilla/source/wintools.zip
 )
 
 win_4_i386_ZIP_RUNTIME_DEPS=(
-	http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.9.0.0/runtimes/xulrunner-1.9.en-US.win32.zip
+	http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.8.1.3/contrib/win32/xulrunner-1.8.1.3.en-US.win32.zip
 )
 
 win_4_i386_ZIP_BUILD () {
@@ -75,7 +75,7 @@ win_4_i386_ZIP_BUILD () {
 	done
 	chmod 755 xpidl.exe *.dll
 	chmod 755 make.cmd
-	make.cmd c:\\cygwin\\tmp\\build_deps\\xulrunner-sdk
+	make.cmd c:\\cygwin\\tmp\\build_deps\\gecko-sdk
 	cd ..
 
 	cd src
