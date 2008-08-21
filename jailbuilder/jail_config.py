@@ -561,6 +561,7 @@ required_rpms = {
 		bison
 		bzip2
 		coreutils
+		diffutils
 		file
 		flex
 		gcc
