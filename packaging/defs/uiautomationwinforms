@@ -35,9 +35,9 @@ update_version_file () {
         sed -i "s/\(AC_INIT(\[.*\], *\[\).*\(\])\)/\1$VERSION\2/" configure.ac
 }
 
-POSTBUILD_TEST_NAME1="test-runtime"
+POSTBUILD_TEST_NAME1="test-uiautomationwinforms"
 POSTBUILD_TEST1 () {
-        cd mono/tests
+        cd UIAutomationWinformsTests
         $make_path -k check
 }
 
