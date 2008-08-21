@@ -39,7 +39,7 @@ PACKS_TO_REMOVE=(
 	libgdiplus0
 	libgdiplus
 	mono-core
-	mono-debug
+	mono-core-debug
 )
 
 get_destroot () {
