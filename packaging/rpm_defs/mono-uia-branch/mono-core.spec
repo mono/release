@@ -637,6 +637,7 @@ Authors:
 %_prefix/lib/mono/2.0/System.ServiceModel.dll
 %_prefix/lib/mono/gac/System.ServiceModel.Web
 %_prefix/lib/mono/2.0/System.ServiceModel.Web.dll
+%_libdir/pkgconfig/wcf.pc
 %package -n mono-web
 Summary:        Mono implementation of ASP.NET, Remoting and Web Services
 Group:          Development/Languages/Mono
