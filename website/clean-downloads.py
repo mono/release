@@ -119,7 +119,6 @@ for d in platforms:
 # These are the respective output dirs for the installers.  If archive_basepath isn't specified, installers
 #  will be removed from these dirs (release to 'release/')
 installer_dirs = {
-	'linux-installer':	'linux-installer/output',
 	'macos-*':		'macosx/output',
 	'windows-installer':	'windows-installer/Output',
 	'sunos-*':		'sunos/output',

@@ -158,7 +158,7 @@ archive_version = utils.get_dict_var('archive_version', bundle_obj.info)
 os.chdir('..')
 
 installer_dirs = []
-for dir in	['linux-installer/output/[[version]]/linux-installer',
+for dir in	[
 		'windows-installer/Output/[[version]]/windows-installer',
 		'macosx/output/[[version]]/macos-10-universal',
 		'sunos/output/[[version]]/sunos-8-sparc',

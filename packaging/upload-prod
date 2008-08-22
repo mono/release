@@ -97,10 +97,6 @@ current_dir = os.getcwd()
 
 # Push the installers
 # If these need to be cleaned up, you need to clean from source and stage (ugh)
-os.chdir("../linux-installer/output")
-do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
-os.chdir(current_dir)
-
 os.chdir("../windows-installer/Output")
 do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
 os.chdir(current_dir)
