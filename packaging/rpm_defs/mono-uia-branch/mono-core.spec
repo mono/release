@@ -602,6 +602,41 @@ Authors:
 %_prefix/lib/mono/gac/Mono.Data.SybaseClient
 %_prefix/lib/mono/1.0/Mono.Data.SybaseClient.dll
 %_prefix/lib/mono/2.0/Mono.Data.SybaseClient.dll
+%package -n mono-wcf
+Summary:        Mono implementation of WCF, Windows Communication Foundation
+Group:          Development/Languages/Mono
+Requires:       mono-core == %version-%release
+
+%description -n mono-wcf
+The Mono Project is an open development initiative that is working to
+develop an open source, Unix version of the .NET development platform.
+Its objective is to enable Unix developers to build and deploy
+cross-platform .NET applications. The project will implement various
+technologies that have been submitted to the ECMA for standardization.
+
+Mono implementation of WCF, Windows Communication Foundation
+
+
+
+Authors:
+--------
+    Miguel de Icaza <miguel@ximian.com>
+    Paolo Molaro <lupus@ximian.com>
+    Dietmar Maurer <dietmar@ximian.com>
+
+
+%files -n mono-wcf
+%defattr(-, root, root)
+%_prefix/lib/mono/gac/System.IdentityModel
+%_prefix/lib/mono/3.0/System.IdentityModel.dll
+%_prefix/lib/mono/gac/System.IdentityModel.Selectors
+%_prefix/lib/mono/3.0/System.IdentityModel.Selectors.dll
+%_prefix/lib/mono/gac/System.Runtime.Serialization
+%_prefix/lib/mono/3.0/System.Runtime.Serialization.dll
+%_prefix/lib/mono/gac/System.ServiceModel
+%_prefix/lib/mono/3.0/System.ServiceModel.dll
+%_prefix/lib/mono/gac/System.ServiceModel.Web
+%_prefix/lib/mono/3.5/System.ServiceModel.Web.dll
 %package -n mono-web
 Summary:        Mono implementation of ASP.NET, Remoting and Web Services
 Group:          Development/Languages/Mono
@@ -1036,6 +1071,7 @@ Requires:	mono-extras = %version-%release
 Requires:	mono-jscript = %version-%release
 Requires:	mono-locale-extras = %version-%release
 Requires:	mono-nunit = %version-%release
+Requires:	mono-wcf = %version-%release
 Requires:	mono-web = %version-%release
 Requires:	mono-winforms = %version-%release
 
