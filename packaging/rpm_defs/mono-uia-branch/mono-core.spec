@@ -628,15 +628,15 @@ Authors:
 %files -n mono-wcf
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/System.IdentityModel
-%_prefix/lib/mono/3.0/System.IdentityModel.dll
+%_prefix/lib/mono/2.0/System.IdentityModel.dll
 %_prefix/lib/mono/gac/System.IdentityModel.Selectors
-%_prefix/lib/mono/3.0/System.IdentityModel.Selectors.dll
+%_prefix/lib/mono/2.0/System.IdentityModel.Selectors.dll
 %_prefix/lib/mono/gac/System.Runtime.Serialization
-%_prefix/lib/mono/3.0/System.Runtime.Serialization.dll
+%_prefix/lib/mono/2.0/System.Runtime.Serialization.dll
 %_prefix/lib/mono/gac/System.ServiceModel
-%_prefix/lib/mono/3.0/System.ServiceModel.dll
+%_prefix/lib/mono/2.0/System.ServiceModel.dll
 %_prefix/lib/mono/gac/System.ServiceModel.Web
-%_prefix/lib/mono/3.5/System.ServiceModel.Web.dll
+%_prefix/lib/mono/2.0/System.ServiceModel.Web.dll
 %package -n mono-web
 Summary:        Mono implementation of ASP.NET, Remoting and Web Services
 Group:          Development/Languages/Mono
