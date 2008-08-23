@@ -59,11 +59,15 @@
 	<p>The new engine already outperforms the old engine in many
 	computationally intensive tasks.
 
+	<p>Generic sharing is now turned on for all classes in corlib, and can be turned
+	on for user code by setting the MONO_GENERIC_SHARING=all env. variable.
+
+	<p>Generic sharing is now supported on ARM.
+
 <h2>Runtime: AOT</h2>
 
 	<p>Support for <a href="http://www.mono-project.com/AOT">Full
-	AOT</a>, and support for platforms that lack dlsym (iPhone) is
-	now available.
+	AOT</a>, generic sharing, and static linking is now available.
 
 <h2>Runtime: Monitoring</h2>
 
