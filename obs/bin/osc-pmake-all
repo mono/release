@@ -1,0 +1,170 @@
+#!/bin/bash
+# keep a number of slots filled with jobs as long as there are jobs to process.
+#
+#set -x
+
+# Include some pretty colors and functions that use them
+. $(dirname $0)/include/colors
+
+# Some vars
+JOB_SLOTS=$(cat /proc/cpuinfo | grep processor | wc -l)
+export JOB_SLOTS
+declare -a JOBS
+
+# This is for osc
+BUILD_ROOT=$([ -f $HOME/.oscrc ] && cat $HOME/.oscrc  | grep "^build-root" | sed -e 's/.*=[[:space:]]*\(.*\)\/build-.*$/\1/g')
+if [ -z "$BUILD_ROOT" ];
+then
+   BUILD_ROOT=/var/tmp
+fi
+export BUILD_ROOT
+
+echo
+echo_in_box "Starting multi-build engine with $JOB_SLOTS slots"
+echo 
+
+# Make our temp dir
+TMP_DIR=/tmp/$(basename $0)
+if [ ! -d $TMP_DIR ]; then
+   mkdir -p $TMP_DIR
+   if [ $? -ne 0 ]; then
+      echo "Failed to create $TMP_DIR"
+      exit $E_CANNOT_CREATE_TMP_DIR
+   fi
+fi
+export TMP_DIR
+LOCK_FILE_PREFIX="${TMP_DIR}/BUILD_SLOT_"
+export LOC_FILE_PREFIX
+
+# Error codes
+E_LOCKFILE_EXISTS=1
+E_CANNOT_CREATE_TMP_DIR=2
+export E_FILE_EXISTS E_CANNOT_CREATE_TMP_DIR
+
+
+# Get the name of out spec file.
+# This script expects to work with one spec file that has
+# the name of the project (should be the current direcory's
+# name followed by '.spec').
+SPEC_FILE=$(ls *\.spec | tail -1) # Hopefully, there's only one spec file.
+if [ ! -f ${SPEC_FILE} ]; then
+   echo
+   echo "A proper spec file could not be found. You must exicute this script from"
+   echo "within the package's directory.  Exiting"
+   echo
+   exit 1
+fi 
+export SPEC_FILE
+
+# make a new timestamp file so we know which RPMs were made
+# during this run of the script.
+TM_STAMP=$TMP_DIR/make_all_tmstmp
+[ -f $TM_STAMP ] && rm $TM_STAMP
+touch $TM_STAMP
+
+# Create a new failed log
+FAILED_LOG=$TMP_DIR/make_all_failed
+export FAILED_LOG
+[ -f $FAILED_LOG ] && rm $FAILED_LOG 
+touch $FAILED_LOG
+
+# Get the OSes and arches to build on.
+# Put the strings into an array
+MY_FIFO=$TMP_DIR/myfifo # Make fifo
+[ ! -p $MY_FIFO ] && mkfifo $MY_FIFO
+exec 42<> $MY_FIFO      # Open fifo for read/write in this shell on file descriptor #42
+osc build 2>&1 | grep  "i586\|x86_64" > $MY_FIFO
+COUNT=0
+while read -u42 -t1 I   # Read from fd 42
+do 
+   JOBS[$COUNT]="$I"
+   let COUNT++
+done
+42<&-; 42>&- # Close fd 42
+
+build_package ()
+{  # takes two args:
+   #  Arg 1: lock file name
+   #  Arg 2: job string consisting of distro and arch for a
+   #  package to be built on (also used for log file name)
+
+   # Setup/check lock file
+   LOCK_FILE="$1"
+   if [ -f $LOCK_FILE ]; then 
+      echo "ERROR: $LOCK_FILE already exists, exiting"
+      exit $E_FILE_EXISTS
+   fi
+   touch "${LOCK_FILE}"
+   echo "$(date)" >> "${LOCK_FILE}"
+   echo "$2" >> "${LOCK_FILE}"
+   
+   SLOT=$(echo $(basename $1) | sed -e 's/[^[:digit:]]//g')
+   MYDIST=$(echo $2 | sed -e 's@[[:space:]][[:space:]]*@ @g')
+   MYDISTUND=$(echo $2 | sed -e 's@[[:space:]][[:space:]]*@_@g')
+   BUILD_LOG="$TMP_DIR/${MYDISTUND}-build.log"
+   [ -f "$BUILD_LOG" ] && rm -rf "$BUILD_LOG"
+
+   # Start job
+   echo_in_blue "Starting job: $MYDIST on slot $SLOT"
+   echo "Executing the following command:"  | tee -a "$BUILD_LOG"
+   echo "osc build --no-verify ${MYDIST} ${SPEC_FILE}" | tee -a "$BUILD_LOG" 
+   echo "Log file: ${BUILD_LOG}"
+#   base=10
+#   range=10
+#   num=$RANDOM
+#   let "num %= $range"
+#   let "num += $base"
+#   echo "Sleeping $num..." >> "$TMP_DIR/$BUILD_LOG" 
+#   echo "Using ${LOCK_FILE}" >> "$TMP_DIR/$BUILD_LOG"
+#   sleep $num
+   osc build --no-verify ${MYDIST} ${SPEC_FILE} > ${BUILD_LOG} 2>&1
+   if ! (tail -50 ${BUILD_LOG} | grep -E "$BUILD_ROOT/build-root.*/usr/src/(redhat|packages)/.*rpm")
+   then
+      echo "${MYDIST} build failed, check ${BUILD_LOG}" >> ${FAILED_LOG}
+      echo_in_red "Finishing job: $MYDIST on slot $SLOT: FAILED" 
+   else
+      echo_in_green "Finishing job: $MYDIST on slot $SLOT"
+   fi
+
+   # Clean up and exit
+   rm -f "${LOCK_FILE}"
+   exit 0
+}
+
+# Main loop
+# Start each job
+for JOBS_INDEX in $(seq 0 $((${#JOBS[@]} - 1)))
+do
+   while true
+   do # loop till we get a slot. If they're all filled,
+      # wait 1 second and try again.
+      for I in $(seq -w 0 $(( $JOB_SLOTS - 1 ))); do
+         # If slot is open, start job and leave the inner
+         # while loop otherwise, check the next slot
+         if [ ! -f "${LOCK_FILE_PREFIX}${I}" ]; then
+            build_package "${LOCK_FILE_PREFIX}${I}" "${JOBS[$JOBS_INDEX]}" &
+            sleep 1
+            break 2
+         fi
+      done
+      sleep 1
+   done
+done
+
+# Wait for all all backgrounded jobs to finish
+while jobs | grep 'Stopped\|Running'>/dev/null 2>&1; do
+  sleep 1
+done
+
+# Find the RPMs that were built
+echo 
+echo The following RPMs were built:
+echo
+find $BUILD_ROOT/build-root-*/usr/src/packages -cnewer $TM_STAMP -iname "*rpm"
+rm $TM_STAMP
+echo
+echo_in_red "The following builds failed:"
+echo 
+cat $FAILED_LOG
+echo
+
