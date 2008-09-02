@@ -17,6 +17,7 @@
 
 # norootforbuild
 
+%{!?ext_man: %define ext_man .gz}
 Name:           mono-core
 License:        LGPL v2.1 or later
 Group:          Development/Languages/Mono
