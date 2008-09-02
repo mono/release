@@ -8,6 +8,12 @@
 # Include some pretty colors and functions that use them
 . $(dirname $0)/include/colors
 
+BUILD_ROOT=$([ -f $HOME/.oscrc ] && cat $HOME/.oscrc  | grep "^build-root" | sed -e 's/.*=[[:space:]]*\(.*\)\/build-.*$/\1/g')
+if [ -z "$BUILD_ROOT" ];
+then
+   BUILD_ROOT=/var/tmp
+fi
+
 # Get the name of out spec file.
 # This script expects to work with one spec file that has
 # the name of the project (should be the current direcory's
@@ -34,7 +40,7 @@ if [ ! -f ${SPEC_FILE} ]; then
 fi 
 
 # Build on each platform
-osc build 2> /dev/null | sed -e '/^[[:space:]]*$/,/^[[:space:]]*$/d' |
+osc build 2>&1 | grep  "i586\|x86_64" |
 while read I;
 do 
    MYDIST=$(echo ${I} | sed -e 's@[[:space:]][[:space:]]*@ @g')
@@ -46,7 +52,7 @@ do
    echo "osc build --no-verify ${MYDIST} ${SPEC_FILE}"
    echo "Log file: ${BUILD_LOG}"
    osc build --no-verify ${I} ${SPEC_FILE} > ${BUILD_LOG} 2>&1
-   if ! (tail -50 ${BUILD_LOG} | grep -E "/var/tmp/build-root.*/usr/src/(redhat|packages)/.*rpm"); then
+   if ! (tail -50 ${BUILD_LOG} | grep -E "$BUILD_ROOT/build-root.*/usr/src/(redhat|packages)/.*rpm"); then
       echo "${MYDIST} build failed, check ${BUILD_LOG}" >> ${FAILED_LOG}
       echo_in_red "${MYDIST} build failed"
    else
@@ -58,7 +64,7 @@ done
 echo 
 echo The following RPMs were built:
 echo
-find /var/tmp/build-root-*/usr/src/packages -cnewer $TM_STAMP -iname "*rpm"
+find $BUILD_ROOT/build-root-*/usr/src/packages -cnewer $TM_STAMP -iname "*rpm"
 rm $TM_STAMP
 echo
 echo_in_red "The following builds failed:"
