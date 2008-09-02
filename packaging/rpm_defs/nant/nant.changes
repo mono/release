@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Aug 12 15:25:33 MDT 2008 - ajorgensen@novell.com
+
+- Patch to allow us to bootstrap nant on mono-2.0
+
+-------------------------------------------------------------------
 Mon Dec 10 13:13:30 MST 2007 - wberrier@suse.de
 
 - Update to 0.86_beta1

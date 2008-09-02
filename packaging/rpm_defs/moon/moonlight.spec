@@ -179,6 +179,8 @@ make DESTDIR="$RPM_BUILD_ROOT" install
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/browser-plugins
 ln -s %{_libdir}/moon/plugin/libmoonloader.so $RPM_BUILD_ROOT%{_libdir}/browser-plugins/libmoonloader.so
 %endif
+rm -rf $RPM_BUILD_ROOT%{_libdir}/libshocker*
+rm -rf $RPM_BUILD_ROOT%{_bindir}/agviewer
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 26 08:59:55 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0 (preview 2)
+  * Fixes bnc#374272, bnc#392235,
+
+-------------------------------------------------------------------
 Tue Apr 29 15:16:28 MST 2008 - wberrier@suse.de
 
 - Fix .conf and apxs file location for redhat/fedora

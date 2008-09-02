@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Sep  2 14:58:23 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0 RC1
+
+-------------------------------------------------------------------
+Tue Aug 26 10:06:26 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0
+  * Gendarme
+    * New wizard-based GUI runner. It also add support for .MDB and .PDB debugging symbols, allowing source lines numbers inside reports.
+    * 151 rules (56 new and many updated) divided into 14 categories (2 new) and yet is faster than the version shipped with Mono 1.9
+  * Various updates and fixes to other tools
+
+-------------------------------------------------------------------
 Thu Apr 10 11:12:25 MST 2008 - wberrier@novell.com
 
 - Update BuildRequires on suse 10.3/11 and fedora8 to use 

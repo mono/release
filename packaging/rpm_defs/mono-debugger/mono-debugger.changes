@@ -1,4 +1,28 @@
 -------------------------------------------------------------------
+Tue Sep  2 10:26:11 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0-RC1
+
+-------------------------------------------------------------------
+Mon Sep  1 11:51:18 CEST 2008 - ro@suse.de
+
+- respect CFLAGS setting (for RPM_OPT_FLAGS)
+  (patch present but disabled, too many errors)
+- make term.c include ncurses/termcap.h to fix build
+
+-------------------------------------------------------------------
+Tue Aug 26 10:03:10 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0
+  * Will be released with Mono going forward to ensure compatibility
+  * Many bugfixes
+
+-------------------------------------------------------------------
+Tue May  6 10:14:58 CEST 2008 - aj@suse.de
+
+- Use <sys/users.h> to fix build.
+
+-------------------------------------------------------------------
 Mon Jan 14 16:54:53 MST 2008 - wberrier@novell.com
 
 - Update to 0.60

@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Fri Aug 22 12:37:01 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.12.2
+  * Extensive Atk# API cleanup (Andres Aragoneses, Brad Taylor, and MK)
+  * Signal EmissionHook and Emit implementations (Andres and MK)
+  * GObject Property Registration (Christian Hoff)
+  * Interface and VirtualMethod improvements (Christian Hoff)
+  * Bugfixing (Andres Aragoneses, Stephane Delcroix, Lluis Sanchez Gual, Christian Hoff & MK)
+
+-------------------------------------------------------------------
+Thu May  8 06:55:33 CEST 2008 - aj@suse.de
+
+- Fix warnings about missing return.
+
+-------------------------------------------------------------------
 Thu Apr 24 15:49:10 MST 2008 - wberrier@suse.de
 
 - Update to 2.12.1

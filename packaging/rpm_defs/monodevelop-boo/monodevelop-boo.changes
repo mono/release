@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Aug 22 15:44:06 MDT 2008 - ajorgensen@novell.com
+
+- Patch to fix build against gtk-sharp-2.12.2
+
+-------------------------------------------------------------------
+Tue Aug 12 15:39:23 MDT 2008 - ajorgensen@novell.com
+
+- BuildRequire boo-devel
+
+-------------------------------------------------------------------
 Wed Mar 26 09:36:07 MST 2008 - wberrier@novell.com
 
 - Update to 1.0:

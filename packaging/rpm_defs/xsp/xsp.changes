@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Aug 26 10:03:10 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0
+  * Fixes bnc#350779, bnc#359783, bnc#363404, bnc#372220,
+    bnc#324204, bnc#408723
+  * Sync with mod_mono changes
+
+-------------------------------------------------------------------
 Tue Apr 22 15:08:49 MST 2008 - wberrier@suse.de
 
 - update to 1.9.1 (bugfix release)

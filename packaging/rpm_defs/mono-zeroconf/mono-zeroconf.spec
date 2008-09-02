@@ -1,5 +1,15 @@
+#
+# spec file for package mono-zeroconf (Version 0.7.6)
+#
+# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# This file and all modifications and additions to the pristine
+# package are under the same license as the package itself.
+#
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
 
 # norootforbuild
+
 
 Name:           mono-zeroconf
 AutoReqProv:    on
@@ -206,7 +216,6 @@ mv $RPM_BUILD_ROOT/usr/lib/pkgconfig/* $RPM_BUILD_ROOT/usr/share/pkgconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-
 %if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
@@ -215,3 +224,24 @@ rm -rf $RPM_BUILD_ROOT
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
+* Fri Mar 21 2008 abockover@suse.de
+- Updated to version 0.7.6
+- Adds NetworkInterface API to IService objects
+- Supports IPv6 host address resolutions
+* Fri Jan 25 2008 abockover@suse.de
+- Updated to version 0.7.5
+- Adds GAC version policy assemblies so package upgrades don't break apps
+* Wed Jan 23 2008 abockover@suse.de
+- Updated to version 0.7.4
+- Fixes IP address resolution bug in Bonjour provider that
+  only manifested under .NET on Windows XP SP2
+- Minor bug fix in MZClient
+- libdir patch removed from package; fixed in upstream release
+* Fri Dec 28 2007 abockover@suse.de
+- Patch to fix libdir issue in mono-zeroconf.pc on x86_64
+* Sun Dec 23 2007 abockover@suse.de
+- Initial import of Mono.Zeroconf for STABLE from the build serivce
+- Version 0.7.3 release
+- Provides a cross platform (Linux, Mac, Windows) Mono/.NET API
+  for Zero Configuration networking supporting either Bonjour
+  or Avahi mDNS providers

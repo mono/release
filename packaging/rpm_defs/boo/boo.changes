@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Aug 12 13:29:30 MDT 2008 - ajorgensen@novell.com
+
+- Split into boo and boo-devel so as to not require nant
+
+-------------------------------------------------------------------
 Tue Jun 17 14:18:43 MST 2008 - wberrier@suse.de
 
 - Update to 0.8.2.2960

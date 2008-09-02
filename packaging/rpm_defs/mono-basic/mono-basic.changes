@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Aug 26 09:33:09 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0
+  * Better handling of error conditions
+  * Fixes for bnc#325331, bnc#324807, bnc#361412
+
+-------------------------------------------------------------------
 Tue Mar 25 15:37:32 MST 2008 - wberrier@suse.de
 
 - Automatically pick the correct file for the prebuilt vb runtime

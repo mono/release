@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Tue Aug 12 15:01:59 MDT 2008 - ajorgensen@novell.com
+
+- Changed version to IKVM 0.36.0.11
+- Fix for reflection bug on .NET generic nested types.
+- Fix for bug #1865922.
+- java.awt.image.Raster fix.
+- Fix bug in DynamicMethod based serialization for fields typed as ghost interfaces.
+- Fixed ikvmc to support referencing assemblies that contain .NET type named java.lang.Object.
+- Improved error handling for ikvmc -reference option.
+- Optimized codegen for lcmp, fcmp<x>, dcmp<x> and shift opcodes.
+- Added support to Class.forName() for loading Java types with assembly qualified type names.
+- Implemented field/method/parameter annotation support for .NET types.
+- Added workaround for .NET 1.1 bug in Directory.CreateDirectory(). (bug #1902154)
+- Added -removeassertions optimization option to ikvmc.
+- Added -removeassertions to IKVM.OpenJDK.ClassLibrary.dll build.
+- Fixed JVM_CreateJavaVM to initialize the class library.
+- Fixed ikvmc to include zero length resource files.
+- Implemented SocketOptions.IP_MULTICAST_IF and SocketOptions.IP_MULTICAST_IF2.
+- Fixed assembly class loader to ignore codebase for dynamic assemblies (previously it would throw an exception).
+- Fixed exception stack trace code to return the .NET name of a type when a method in a primitive type is on the stack.
+- Fixed JNI reflection to filter out HideFromReflection members.
+- Fixed java.net.NetworkInterface to work on pre-Win2K3 systems.
+- Fixed java.lang.Thread to set context class loader for threads started from .NET.
+
+-------------------------------------------------------------------
 Wed Mar 26 00:08:50 CET 2008 - ajorgensen@novell.com
  
 - Update to 0.36.0.5

@@ -14,7 +14,7 @@ Fri Jan 25 20:40:09 CET 2008 - abockover@suse.de
 -------------------------------------------------------------------
 Wed Jan 23 19:37:13 CET 2008 - abockover@suse.de
 
-- Updated to version 0.7.4
+- Updated to version 0.7.4 
 - Fixes IP address resolution bug in Bonjour provider that
   only manifested under .NET on Windows XP SP2
 - Minor bug fix in MZClient
@@ -30,6 +30,7 @@ Sun Dec 23 02:29:27 CET 2007 - abockover@suse.de
 
 - Initial import of Mono.Zeroconf for STABLE from the build serivce
 - Version 0.7.3 release
-- Provides a cross platform (Linux, Mac, Windows) Mono/.NET API
+- Provides a cross platform (Linux, Mac, Windows) Mono/.NET API 
   for Zero Configuration networking supporting either Bonjour
   or Avahi mDNS providers
+

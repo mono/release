@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Tue Sep  2 14:58:23 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0 RC1
+
+-------------------------------------------------------------------
+Fri Aug 22 15:59:17 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0
+  * Context menu event support
+  * Progress event support
+  * Some bugfixes
+
+-------------------------------------------------------------------
+Mon Apr 21 18:58:18 MST 2008 - wberrier@suse.de
+
+- Update to 1.9.1:
+ -Fix bug where two browser widgets couldn't be in the same app
+
+-------------------------------------------------------------------
 Tue Mar 25 13:58:18 MST 2008 - wberrier@suse.de
 
 - Update to 1.9:
