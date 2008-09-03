@@ -1,5 +1,14 @@
 #!/bin/bash
-# keep a number of slots filled with jobs as long as there are jobs to process.
+#
+# Marc Christensen <mchristensen@novell.com>
+# 
+# Builds a package on all supported its distributions
+# Keeps a number of build-slots filled with jobs as long
+# as there are jobs to process.
+#
+# Copyright (C) 2008, Novell Inc.
+#
+# License: GPL v2
 #
 #set -x
 
@@ -10,6 +19,9 @@
 JOB_SLOTS=$(cat /proc/cpuinfo | grep processor | wc -l)
 export JOB_SLOTS
 declare -a JOBS
+echo
+echo_in_box "Starting multi-build engine with $JOB_SLOTS slots"
+echo 
 
 # This is for osc
 BUILD_ROOT=$([ -f $HOME/.oscrc ] && cat $HOME/.oscrc  | grep "^build-root" | sed -e 's/.*=[[:space:]]*\(.*\)\/build-.*$/\1/g')
@@ -19,27 +31,27 @@ then
 fi
 export BUILD_ROOT
 
-echo
-echo_in_box "Starting multi-build engine with $JOB_SLOTS slots"
-echo 
-
 # Make our temp dir
 TMP_DIR=/tmp/$(basename $0)
-if [ ! -d $TMP_DIR ]; then
+if [ ! -d $TMP_DIR ]
+then
    mkdir -p $TMP_DIR
-   if [ $? -ne 0 ]; then
+   if [ $? -ne 0 ]
+   then
       echo "Failed to create $TMP_DIR"
       exit $E_CANNOT_CREATE_TMP_DIR
    fi
 fi
 export TMP_DIR
+
 LOCK_FILE_PREFIX="${TMP_DIR}/BUILD_SLOT_"
-export LOC_FILE_PREFIX
+export LOCK_FILE_PREFIX
 
 # Error codes
 E_LOCKFILE_EXISTS=1
 E_CANNOT_CREATE_TMP_DIR=2
-export E_FILE_EXISTS E_CANNOT_CREATE_TMP_DIR
+E_MISSING_SPEC=3
+export E_FILE_EXISTS E_CANNOT_CREATE_TMP_DIR E_MISSING_SPEC
 
 
 # Get the name of out spec file.
@@ -47,14 +59,15 @@ export E_FILE_EXISTS E_CANNOT_CREATE_TMP_DIR
 # the name of the project (should be the current direcory's
 # name followed by '.spec').
 SPEC_FILE=$(ls *\.spec | tail -1) # Hopefully, there's only one spec file.
-if [ ! -f ${SPEC_FILE} ]; then
+export SPEC_FILE
+if [ ! -f ${SPEC_FILE} ]
+then
    echo
    echo "A proper spec file could not be found. You must exicute this script from"
    echo "within the package's directory.  Exiting"
    echo
-   exit 1
+   exit $E_MISSING_SPEC
 fi 
-export SPEC_FILE
 
 # make a new timestamp file so we know which RPMs were made
 # during this run of the script.
@@ -90,12 +103,12 @@ build_package ()
 
    # Setup/check lock file
    LOCK_FILE="$1"
-   if [ -f $LOCK_FILE ]; then 
+   if [ -f $LOCK_FILE ]
+   then 
       echo "ERROR: $LOCK_FILE already exists, exiting"
       exit $E_FILE_EXISTS
    fi
-   touch "${LOCK_FILE}"
-   echo "$(date)" >> "${LOCK_FILE}"
+   echo "$(date)" > "${LOCK_FILE}"
    echo "$2" >> "${LOCK_FILE}"
    
    SLOT=$(echo $(basename $1) | sed -e 's/[^[:digit:]]//g')
@@ -109,14 +122,6 @@ build_package ()
    echo "Executing the following command:"  | tee -a "$BUILD_LOG"
    echo "osc build --no-verify ${MYDIST} ${SPEC_FILE}" | tee -a "$BUILD_LOG" 
    echo "Log file: ${BUILD_LOG}"
-#   base=10
-#   range=10
-#   num=$RANDOM
-#   let "num %= $range"
-#   let "num += $base"
-#   echo "Sleeping $num..." >> "$TMP_DIR/$BUILD_LOG" 
-#   echo "Using ${LOCK_FILE}" >> "$TMP_DIR/$BUILD_LOG"
-#   sleep $num
    osc build --no-verify ${MYDIST} ${SPEC_FILE} > ${BUILD_LOG} 2>&1
    if ! (tail -50 ${BUILD_LOG} | grep -E "$BUILD_ROOT/build-root.*/usr/src/(redhat|packages)/.*rpm")
    then
@@ -133,15 +138,17 @@ build_package ()
 
 # Main loop
 # Start each job
-for JOBS_INDEX in $(seq 0 $((${#JOBS[@]} - 1)))
+for JOBS_INDEX in $(seq 0 $(( ${#JOBS[@]} - 1 )))
 do
    while true
    do # loop till we get a slot. If they're all filled,
       # wait 1 second and try again.
-      for I in $(seq -w 0 $(( $JOB_SLOTS - 1 ))); do
+      for I in $(seq -w 0 $(( $JOB_SLOTS - 1 )))
+      do
          # If slot is open, start job and leave the inner
          # while loop otherwise, check the next slot
-         if [ ! -f "${LOCK_FILE_PREFIX}${I}" ]; then
+         if [ ! -f "${LOCK_FILE_PREFIX}${I}" ]
+         then
             build_package "${LOCK_FILE_PREFIX}${I}" "${JOBS[$JOBS_INDEX]}" &
             sleep 1
             break 2
@@ -152,7 +159,8 @@ do
 done
 
 # Wait for all all backgrounded jobs to finish
-while jobs | grep 'Stopped\|Running'>/dev/null 2>&1; do
+while jobs | grep 'Stopped\|Running' > /dev/null 2>&1
+do
   sleep 1
 done
 
