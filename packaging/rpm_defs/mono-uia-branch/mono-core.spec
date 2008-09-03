@@ -1,19 +1,33 @@
+#
+# spec file for package mono-core (Version 2.0)
+#
+# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
 
 # norootforbuild
 
+%{!?ext_man: %define ext_man .gz}
 Name:           mono-core
-License:        GNU Library General Public License v. 2.0 and 2.1 (LGPL)
+License:        LGPL v2.1 or later
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
-URL:            http://go-mono.org/
-Version:	2.0
-Release:	0
+Url:            http://go-mono.org/
+Version:        2.0
+Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
-Patch0:		combobox-bug416663.patch
-Patch1:		listbox-bug416640.patch
-Patch2:		scrollbar-bug416759.patch
-Patch3:		tooltip-errorprovider.patch
+Patch0:		tooltip-errorprovider.patch
 
 ExclusiveArch: %ix86 x86_64
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -26,119 +40,91 @@ Obsoletes:      mono-xml-relaxng
 Obsoletes:      mono-posix
 Obsoletes:      mono-ziplib
 Obsoletes:      mono-ikvm
-Provides:	mono-drawing
-Provides:	mono-cairo
-Provides:	mono-xml-relaxng
-Provides:	mono-posix
-Provides:	mono-ziplib
-
+Provides:       mono-drawing
+Provides:       mono-cairo
+Provides:       mono-xml-relaxng
+Provides:       mono-posix
+Provides:       mono-ziplib
 # This version of mono has issues with the following versions of apps:
 #  (not because of regressions, but because bugfixes in mono uncover bugs in the apps)
-Conflicts:	helix-banshee <= 0.13.1
-Conflicts:	banshee <= 0.13.1
-Conflicts:	f-spot <= 0.3.5
-Conflicts:     mono-addins <= 0.3
-
+Conflicts:      helix-banshee <= 0.13.1
+Conflicts:      banshee <= 0.13.1
+Conflicts:      f-spot <= 0.3.5
+Conflicts:      mono-addins <= 0.3
 # 1.9 branch conflicts:
 #  Can't do this because this rpm could be used on a distro with gtk# 2.8...
 #Conflicts:	gtk-sharp2 < 2.10.3
-
 # Require when in the buildserivce
 %if 0%{?opensuse_bs}
-Requires:	libgdiplus0
-# Not all distros build this... can't require it
-#Requires:	libgluezilla0
+Requires:       libgdiplus0
 %endif
-
 %if 0%{?monobuild}
-# We can require libgdiplus since it's on all distros
-#  but not for gluezilla since we share rpms
-Requires:	libgdiplus0
+Requires:       libgdiplus0
 %endif
-
 # for autobuild
 %if 0%{?monobuild} == 0
 %if 0%{?opensuse_bs} == 0
 # suse would rather have recommends so that all sorts of graphic libs aren't 
 #  pulled in when libgdiplus is installed
-Recommends:	libgdiplus0
-Recommends:	libgluezilla0
+Recommends:     libgdiplus0
+Recommends:     libgluezilla0
 %endif
 %endif
-
-BuildRequires:	glib2-devel
-
+BuildRequires:  glib2-devel zlib-devel
 #######  distro specific changes  ########
 #####
-
 #### suse options ####
 %if 0%{?suse_version}
-
 # For some reason these weren't required in 10.2 and before... ?
 %if %{suse_version} >= 1030
-BuildRequires: bison
+BuildRequires:  bison
 # Add valgrind support for 10.3 and above on archs that have it
 %ifarch %ix86 x86_64 ppc ppc64
 BuildRequires:  valgrind-devel
 %endif
 %endif
-
 %if %{suse_version} >= 1020
-BuildRequires: xorg-x11-libX11
+BuildRequires:  xorg-x11-libX11
 %endif
-
 %if %{sles_version} == 10
-BuildRequires: xorg-x11-devel
+BuildRequires:  xorg-x11-devel
 %endif
-
 %if %{suse_version} == 1010
-BuildRequires: xorg-x11-devel
+BuildRequires:  xorg-x11-devel
 %endif
-
 %if %{sles_version} == 9
 %define configure_options export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/gnome/%_lib/pkgconfig
-BuildRequires: pkgconfig XFree86-libs XFree86-devel
+BuildRequires:  XFree86-devel XFree86-libs pkgconfig
 %endif
-
 %endif
-
 # Fedora x11
 %if 0%{?fedora_version}
-BuildRequires:	libX11
+BuildRequires:  libX11
 %endif
-
 # rhel x11
 %if 0%{?rhel_version}
-BuildRequires:	libX11
+BuildRequires:  libX11
 %endif
-
 #####
 #######  End of distro specific changes  ########
-
 # Why was this needed?
 %ifarch s390 s390x
 PreReq:         grep
 %endif
-
 # This lib only needed for ia64
 %ifarch ia64
-BuildRequires: libunwind-devel
+BuildRequires:  libunwind-devel
 %endif
-
 # TODO:
 # This won't work until the rpm package passes .config files to mono-find-requires
 #%define __find_provides env MONO_PREFIX=%{buildroot}/usr /usr/lib/rpm/find-provides
 #%define __find_requires env MONO_PREFIX=%{buildroot}/usr /usr/lib/rpm/find-requires
-
-
 %if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif
-%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}/usr %{buildroot}/usr/bin/mono-find-provides ; } | sort | uniq'
-%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}/usr %{buildroot}/usr/bin/mono-find-requires ; } | sort | uniq'
-
-
+%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}/usr %{buildroot}%{_bindir}/mono-find-provides ; } | sort | uniq'
+%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}/usr %{buildroot}%{_bindir}/mono-find-requires ; } | sort | uniq'
 
 %description
 The Mono Project is an open development initiative that is working to
@@ -155,26 +141,26 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files
 %defattr(-, root, root)
 %doc AUTHORS COPYING.LIB ChangeLog NEWS README
 %_bindir/mono
 %_libdir/libmono.so*
-%_mandir/man1/mono.1.gz
+%_mandir/man1/mono.1%ext_man
 # manpages
-%_mandir/man5/mono-config.5.gz
-%_mandir/man1/mcs.1.gz
-%_mandir/man1/certmgr.1.gz
-%_mandir/man1/chktrust.1.gz
-%_mandir/man1/setreg.1.gz
-%_mandir/man1/gacutil.1.gz
-%_mandir/man1/sn.1.gz
-%_mandir/man1/mozroots.1.gz
+%_mandir/man5/mono-config.5%ext_man
+%_mandir/man1/mcs.1%ext_man
+%_mandir/man1/certmgr.1%ext_man
+%_mandir/man1/chktrust.1%ext_man
+%_mandir/man1/setreg.1%ext_man
+%_mandir/man1/gacutil.1%ext_man
+%_mandir/man1/sn.1%ext_man
+%_mandir/man1/mozroots.1%ext_man
 # wrappers
 %_bindir/certmgr
 %_bindir/chktrust
 %_bindir/gacutil
+%_bindir/gacutil2
 %_bindir/gmcs
 %_bindir/mono-test-install
 %_bindir/mcs
@@ -187,6 +173,7 @@ Authors:
 %_prefix/lib/mono/1.0/certmgr.exe*
 %_prefix/lib/mono/1.0/chktrust.exe*
 %_prefix/lib/mono/1.0/gacutil.exe*
+%_prefix/lib/mono/2.0/gacutil.exe*
 %_prefix/lib/mono/2.0/gmcs.exe*
 %_prefix/lib/mono/1.0/mcs.exe*
 %_prefix/lib/mono/1.0/mozroots.exe*
@@ -293,6 +280,7 @@ fi
 %postun -p /sbin/ldconfig
 
 %package -n mono-jscript
+License:        LGPL v2.1 or later
 Summary:        JScript .NET support for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -310,7 +298,6 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n mono-jscript
 %defattr(-, root, root)
 %_bindir/mjs
@@ -318,7 +305,9 @@ Authors:
 %_prefix/lib/mono/gac/Microsoft.JScript
 %_prefix/lib/mono/1.0/Microsoft.JScript.dll
 %_prefix/lib/mono/2.0/Microsoft.JScript.dll
+
 %package -n mono-locale-extras
+License:        LGPL v2.1 or later
 Summary:        Extra locale information
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -340,7 +329,6 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n mono-locale-extras
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/I18N.MidEast
@@ -355,16 +343,18 @@ Authors:
 %_prefix/lib/mono/gac/I18N.Other
 %_prefix/lib/mono/1.0/I18N.Other.dll
 %_prefix/lib/mono/2.0/I18N.Other.dll
+
 %package -n mono-data
+License:        LGPL v2.1 or later
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Obsoletes:      mono-ms-enterprise
 Obsoletes:      mono-novell-directory
 Obsoletes:      mono-directory
-Provides:	mono-ms-enterprise
-Provides:	mono-novell-directory
-Provides:	mono-directory
+Provides:       mono-ms-enterprise
+Provides:       mono-novell-directory
+Provides:       mono-directory
 
 %description -n mono-data
 The Mono Project is an open development initiative that is working to
@@ -383,12 +373,11 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n mono-data
 %defattr(-, root, root)
-%_prefix/lib/mono/1.0/sqlsharp.exe*
+%_prefix/lib/mono/2.0/sqlsharp.exe*
 %_bindir/sqlsharp
-%_mandir/man1/sqlsharp.1.gz
+%_mandir/man1/sqlsharp.1%ext_man
 %_prefix/lib/mono/gac/System.Data
 %_prefix/lib/mono/1.0/System.Data.dll
 %_prefix/lib/mono/2.0/System.Data.dll
@@ -418,6 +407,7 @@ Authors:
 %_prefix/lib/mono/2.0/System.Data.DataSetExtensions.dll
 
 %package -n mono-winforms
+License:        LGPL v2.1 or later
 Summary:        Mono's Windows Forms implementation
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -441,7 +431,6 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n mono-winforms
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/System.Windows.Forms
@@ -462,6 +451,7 @@ Authors:
 %_prefix/lib/mono/gac/Mono.WebBrowser
 
 %package -n ibm-data-db2
+License:        LGPL v2.1 or later
 Summary:        Database connectivity for DB2
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -483,18 +473,19 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n ibm-data-db2
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/IBM.Data.DB2
 %_prefix/lib/mono/1.0/IBM.Data.DB2.dll
 %_prefix/lib/mono/2.0/IBM.Data.DB2.dll
+
 %package -n mono-extras
+License:        LGPL v2.1 or later
 Summary:        Extra packages
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Obsoletes:      mono-ms-extras
-Provides:	mono-ms-extras
+Provides:       mono-ms-extras
 
 %description -n mono-extras
 The Mono Project is an open development initiative that is working to
@@ -513,10 +504,9 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n mono-extras
 %defattr(-, root, root)
-%_mandir/man1/mono-service.1.gz
+%_mandir/man1/mono-service.1%ext_man
 %_bindir/mono-service
 %_bindir/mono-service2
 # These are errors because they should be symlinks, but they are copies, so rpmlint detects duplicate files
@@ -538,7 +528,9 @@ Authors:
 %_prefix/lib/mono/gac/Microsoft.Vsa
 %_prefix/lib/mono/1.0/Microsoft.Vsa.dll
 %_prefix/lib/mono/2.0/Microsoft.Vsa.dll
+
 %package -n mono-data-sqlite
+License:        LGPL v2.1 or later
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -563,17 +555,17 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n mono-data-sqlite
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/Mono.Data.SqliteClient
 %_prefix/lib/mono/1.0/Mono.Data.SqliteClient.dll
 %_prefix/lib/mono/2.0/Mono.Data.SqliteClient.dll
-
 %_prefix/lib/mono/gac/Mono.Data.Sqlite
 %_prefix/lib/mono/1.0/Mono.Data.Sqlite.dll
 %_prefix/lib/mono/2.0/Mono.Data.Sqlite.dll
+
 %package -n mono-data-sybase
+License:        LGPL v2.1 or later
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -596,12 +588,12 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n mono-data-sybase
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/Mono.Data.SybaseClient
 %_prefix/lib/mono/1.0/Mono.Data.SybaseClient.dll
 %_prefix/lib/mono/2.0/Mono.Data.SybaseClient.dll
+
 %package -n mono-wcf
 Summary:        Mono implementation of WCF, Windows Communication Foundation
 Group:          Development/Languages/Mono
@@ -638,16 +630,18 @@ Authors:
 %_prefix/lib/mono/gac/System.ServiceModel.Web
 %_prefix/lib/mono/2.0/System.ServiceModel.Web.dll
 %_libdir/pkgconfig/wcf.pc
+
 %package -n mono-web
+License:        LGPL v2.1 or later
 Summary:        Mono implementation of ASP.NET, Remoting and Web Services
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Obsoletes:      mono-web-forms
 Obsoletes:      mono-web-services
 Obsoletes:      mono-remoting
-Provides:	mono-web-forms
-Provides:	mono-web-services
-Provides:	mono-remoting
+Provides:       mono-web-forms
+Provides:       mono-web-services
+Provides:       mono-remoting
 
 %description -n mono-web
 The Mono Project is an open development initiative that is working to
@@ -665,7 +659,6 @@ Authors:
     Miguel de Icaza <miguel@ximian.com>
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
-
 
 %files -n mono-web
 %defattr(-, root, root)
@@ -710,11 +703,11 @@ Authors:
 %_bindir/xsd
 %_bindir/xsd2
 # man pages
-%_mandir/man1/disco.1.gz
-%_mandir/man1/soapsuds.1.gz
-%_mandir/man1/wsdl.1.gz
-%_mandir/man1/xsd.1.gz
-%_mandir/man1/mconfig.1.gz
+%_mandir/man1/disco.1%ext_man
+%_mandir/man1/soapsuds.1%ext_man
+%_mandir/man1/wsdl.1%ext_man
+%_mandir/man1/xsd.1%ext_man
+%_mandir/man1/mconfig.1%ext_man
 %config %_sysconfdir/mono/browscap.ini
 %dir %_sysconfdir/mono/mconfig
 %config %_sysconfdir/mono/mconfig/config.xml
@@ -722,7 +715,9 @@ Authors:
 %config %_sysconfdir/mono/2.0/DefaultWsdlHelpGenerator.aspx
 %config %_sysconfdir/mono/2.0/web.config
 %config %_sysconfdir/mono/2.0/Browsers
+
 %package -n mono-data-oracle
+License:        LGPL v2.1 or later
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -745,13 +740,14 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n mono-data-oracle
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/System.Data.OracleClient
 %_prefix/lib/mono/1.0/System.Data.OracleClient.dll
 %_prefix/lib/mono/2.0/System.Data.OracleClient.dll
+
 %package -n mono-data-postgresql
+License:        LGPL v2.1 or later
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -774,13 +770,14 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n mono-data-postgresql
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/Npgsql
 %_prefix/lib/mono/1.0/Npgsql.dll
 %_prefix/lib/mono/2.0/Npgsql.dll
+
 %package -n bytefx-data-mysql
+License:        LGPL v2.1 or later
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -803,19 +800,20 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n bytefx-data-mysql
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/ByteFX.Data
 %_prefix/lib/mono/1.0/ByteFX.Data.dll
 %_prefix/lib/mono/2.0/ByteFX.Data.dll
+
 %package -n mono-nunit
+License:        LGPL v2.1 or later
 Summary:        NUnit Testing Framework
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
-# No idea why this Requires is here... removing (bnc #210224)
-#Requires:       glib2-devel
+
 %package -n mono-data-firebird
+License:        LGPL v2.1 or later
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -829,7 +827,6 @@ cross-platform .NET applications. The project will implement various
 technologies that have been submitted to the ECMA for standardization.
 
 Database connectivity for Mono.
-
 
 
 
@@ -855,7 +852,6 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-
 %files -n mono-nunit
 %defattr(-, root, root)
 %_prefix/bin/nunit-console
@@ -875,7 +871,9 @@ Authors:
 %_prefix/lib/mono/1.0/nunit.mocks.dll
 %_prefix/lib/mono/2.0/nunit.mocks.dll
 %_libdir/pkgconfig/mono-nunit.pc
+
 %package -n mono-devel
+License:        LGPL v2.1 or later
 Summary:        Mono development tools
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -944,7 +942,6 @@ fi
 %_prefix/lib/mono/1.0/mono-shlib-cop.exe*
 %_prefix/lib/mono/1.0/dtd2rng.exe*
 %_prefix/lib/mono/1.0/mono-xmltool.exe*
-
 # xbuild related files
 %_prefix/lib/mono/2.0/xbuild.exe*
 %_prefix/lib/mono/2.0/Microsoft.Build.xsd
@@ -954,28 +951,27 @@ fi
 %_prefix/lib/mono/2.0/Microsoft.VisualBasic.targets
 %_prefix/lib/mono/2.0/MSBuild
 %_prefix/lib/mono/2.0/xbuild.rsp
-
 # man pages
-%_mandir/man1/cert2spc.1.gz
-%_mandir/man1/dtd2xsd.1.gz
-%_mandir/man1/genxs.1.gz
-%_mandir/man1/httpcfg.1.gz
-%_mandir/man1/ilasm.1.gz
-%_mandir/man1/macpack.1.gz
-%_mandir/man1/makecert.1.gz
-%_mandir/man1/mkbundle.1.gz
-%_mandir/man1/monodis.1.gz
-%_mandir/man1/monop.1.gz
-%_mandir/man1/mono-shlib-cop.1.gz
-%_mandir/man1/permview.1.gz
-%_mandir/man1/prj2make.1.gz
-%_mandir/man1/secutil.1.gz
-%_mandir/man1/sgen.1.gz
-%_mandir/man1/signcode.1.gz
-%_mandir/man1/al.1.gz
-%_mandir/man1/mono-xmltool.1.gz
-%_mandir/man1/vbnc.1.gz
-%_mandir/man1/resgen.1.gz
+%_mandir/man1/cert2spc.1%ext_man
+%_mandir/man1/dtd2xsd.1%ext_man
+%_mandir/man1/genxs.1%ext_man
+%_mandir/man1/httpcfg.1%ext_man
+%_mandir/man1/ilasm.1%ext_man
+%_mandir/man1/macpack.1%ext_man
+%_mandir/man1/makecert.1%ext_man
+%_mandir/man1/mkbundle.1%ext_man
+%_mandir/man1/monodis.1%ext_man
+%_mandir/man1/monop.1%ext_man
+%_mandir/man1/mono-shlib-cop.1%ext_man
+%_mandir/man1/permview.1%ext_man
+%_mandir/man1/prj2make.1%ext_man
+%_mandir/man1/secutil.1%ext_man
+%_mandir/man1/sgen.1%ext_man
+%_mandir/man1/signcode.1%ext_man
+%_mandir/man1/al.1%ext_man
+%_mandir/man1/mono-xmltool.1%ext_man
+%_mandir/man1/vbnc.1%ext_man
+%_mandir/man1/resgen.1%ext_man
 # Shell wrappers
 %_bindir/al
 %_bindir/al1
@@ -1020,7 +1016,7 @@ fi
 %_bindir/sgen
 %_bindir/signcode
 %_bindir/xbuild
-%_mandir/man1/monolinker.1.gz
+%_mandir/man1/monolinker.1%ext_man
 %_prefix/lib/mono/gac/PEAPI
 %_prefix/lib/mono/1.0/PEAPI.dll
 %_prefix/lib/mono/1.0/monolinker.*
@@ -1051,33 +1047,45 @@ fi
 %dir %_prefix/share/mono-1.0
 %dir %_prefix/share/mono-1.0/mono
 %dir %_prefix/share/mono-1.0/mono/cil
-
 # Reminder: when removing man pages in this list, they are not 
 #  yet gzipped
 
 %package -n mono-complete
-Summary:	This package contains all runtime Mono packages
-Group:		Development/Tools
-Requires:	bytefx-data-mysql = %version-%release
-Requires:	ibm-data-db2 = %version-%release
-Requires:	mono-core = %version-%release
-Requires:	mono-data = %version-%release
-Requires:	mono-data-firebird = %version-%release
-Requires:	mono-data-oracle = %version-%release
-Requires:	mono-data-postgresql = %version-%release
-Requires:	mono-data-sqlite = %version-%release
-Requires:	mono-data-sybase = %version-%release
-Requires:	mono-devel = %version-%release
-Requires:	mono-extras = %version-%release
-Requires:	mono-jscript = %version-%release
-Requires:	mono-locale-extras = %version-%release
-Requires:	mono-nunit = %version-%release
-Requires:	mono-wcf = %version-%release
-Requires:	mono-web = %version-%release
-Requires:	mono-winforms = %version-%release
+License:        LGPL v2.1 or later
+Summary:        A .NET Runtime Environment
+Group:          Development/Languages/Mono
+Requires:       bytefx-data-mysql = %version-%release
+Requires:       ibm-data-db2 = %version-%release
+Requires:       mono-core = %version-%release
+Requires:       mono-data = %version-%release
+Requires:       mono-data-firebird = %version-%release
+Requires:       mono-data-oracle = %version-%release
+Requires:       mono-data-postgresql = %version-%release
+Requires:       mono-data-sqlite = %version-%release
+Requires:       mono-data-sybase = %version-%release
+Requires:       mono-devel = %version-%release
+Requires:       mono-extras = %version-%release
+Requires:       mono-jscript = %version-%release
+Requires:       mono-locale-extras = %version-%release
+Requires:       mono-nunit = %version-%release
+Requires:       mono-web = %version-%release
+Requires:       mono-wcf = %version-%release
+Requires:       mono-winforms = %version-%release
 
 %description -n mono-complete
-This package contains all runtime Mono packages
+The Mono Project is an open development initiative that is working to
+develop an open source, Unix version of the .NET development platform.
+Its objective is to enable Unix developers to build and deploy
+cross-platform .NET applications. The project will implement various
+technologies that have been submitted to the ECMA for standardization.
+
+
+
+Authors:
+--------
+    Miguel de Icaza <miguel@ximian.com>
+    Paolo Molaro <lupus@ximian.com>
+    Dietmar Maurer <dietmar@ximian.com>
 
 %files -n mono-complete
 %defattr(-, root, root)
@@ -1091,9 +1099,6 @@ This package contains all runtime Mono packages
 %setup -q -n mono-%{version}
 pushd "mcs"
 %patch0
-%patch1
-%patch2
-%patch3
 popd
 
 %build
@@ -1101,9 +1106,7 @@ popd
 #rm -f libgc/libtool.m4
 #autoreconf --force --install
 #autoreconf --force --install libgc
-
 export CFLAGS=" $RPM_OPT_FLAGS -DKDE_ASSEMBLIES='\"/opt/kde3/%{_lib}\"' -fno-strict-aliasing"
-
 # distro specific configure options
 %{?configure_options}
 %configure \
@@ -1117,72 +1120,75 @@ make
 make DESTDIR="$RPM_BUILD_ROOT" install
 
 # Remove unused files
-rm $RPM_BUILD_ROOT/usr/%_lib/libMonoPosixHelper.a
-rm $RPM_BUILD_ROOT/usr/%_lib/libMonoPosixHelper.la
-rm -f $RPM_BUILD_ROOT/usr/%_lib/libikvm-native.a
-rm -f $RPM_BUILD_ROOT/usr/%_lib/libikvm-native.la
-rm -fr $RPM_BUILD_ROOT/usr/lib/mono/gac/Mono.Security.Win32/[12]*
-rm $RPM_BUILD_ROOT/usr/lib/mono/1.0/Mono.Security.Win32.dll
-rm $RPM_BUILD_ROOT/usr/lib/mono/2.0/Mono.Security.Win32.dll
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.DGUX386
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.Mac
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.MacOSX
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.OS2
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.amiga
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.arm.cross
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.autoconf
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.changes
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.contributors
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.cords
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.darwin
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.dj
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.environment
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.ews4800
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.hp
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.linux
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.macros
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.rs6000
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.sgi
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.solaris2
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.uts
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/README.win32
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/barrett_diagram
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/debugging.html
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/gc.man
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/gcdescr.html
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/gcinterface.html
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/leak.html
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/scale.html
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/simple_example.html
-rm $RPM_BUILD_ROOT/usr/share/libgc-mono/tree.html
-rm $RPM_BUILD_ROOT/usr/share/man/man1/cilc.1
-rm $RPM_BUILD_ROOT/usr/share/man/man1/monostyle.1
-rm $RPM_BUILD_ROOT/usr/share/man/man1/oldmono.1
-rm $RPM_BUILD_ROOT/usr/share/man/man1/mint.1
+rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.a
+rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.la
+rm -f $RPM_BUILD_ROOT%_libdir/libikvm-native.a
+rm -f $RPM_BUILD_ROOT%_libdir/libikvm-native.la
+rm -fr $RPM_BUILD_ROOT%_prefix/lib/mono/gac/Mono.Security.Win32/[12]*
+rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/Mono.Security.Win32.dll
+rm $RPM_BUILD_ROOT%_prefix/lib/mono/2.0/Mono.Security.Win32.dll
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.DGUX386
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.Mac
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.MacOSX
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.OS2
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.amiga
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.arm.cross
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.autoconf
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.changes
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.contributors
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.cords
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.darwin
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.dj
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.environment
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.ews4800
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.hp
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.linux
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.macros
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.rs6000
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.sgi
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.solaris2
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.uts
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/README.win32
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/barrett_diagram
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/debugging.html
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/gc.man
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/gcdescr.html
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/gcinterface.html
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/leak.html
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/scale.html
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/simple_example.html
+rm $RPM_BUILD_ROOT%_datadir/libgc-mono/tree.html
+rm $RPM_BUILD_ROOT%_mandir/man1/cilc.1
+rm $RPM_BUILD_ROOT%_mandir/man1/monostyle.1
+rm $RPM_BUILD_ROOT%_mandir/man1/oldmono.1
+rm $RPM_BUILD_ROOT%_mandir/man1/mint.1
 # Things we don't ship.
 # cilc
-rm $RPM_BUILD_ROOT/%_bindir/cilc
-rm $RPM_BUILD_ROOT/usr/lib/mono/1.0/cilc*
+rm $RPM_BUILD_ROOT%_bindir/cilc
+rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/cilc*
 # jay
-rm $RPM_BUILD_ROOT/%_bindir/jay
-rm -R $RPM_BUILD_ROOT/usr/share/jay
-rm $RPM_BUILD_ROOT/usr/share/man/man1/jay.1
-rm $RPM_BUILD_ROOT/usr/lib/mono/1.0/CorCompare.exe
-rm $RPM_BUILD_ROOT/usr/lib/mono/1.0/browsercaps-updater.exe*
+rm $RPM_BUILD_ROOT%_bindir/jay
+rm -R $RPM_BUILD_ROOT%_datadir/jay
+rm $RPM_BUILD_ROOT%_mandir/man1/jay.1
+rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/CorCompare.exe
+rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/browsercaps-updater.exe*
 # New files to delete in 1.1.9.2
-rm -f $RPM_BUILD_ROOT/usr/%_lib/libMonoSupportW.a
-rm -f $RPM_BUILD_ROOT/usr/%_lib/libMonoSupportW.la
-rm -f $RPM_BUILD_ROOT/usr/%_lib/libMonoSupportW.so
+rm -f $RPM_BUILD_ROOT%_libdir/libMonoSupportW.a
+rm -f $RPM_BUILD_ROOT%_libdir/libMonoSupportW.la
+rm -f $RPM_BUILD_ROOT%_libdir/libMonoSupportW.so
 # 1.1.17 updates:
 # This file moved to mono-basic
-rm -f $RPM_BUILD_ROOT/usr/bin/mbas
-
+rm -f $RPM_BUILD_ROOT%_bindir/mbas
 # 1.2.4 changes
-rm -f $RPM_BUILD_ROOT/usr/lib/mono/1.0/culevel.exe*
-
+rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/culevel.exe*
 # Post 1.2.5
-rm -f $RPM_BUILD_ROOT/usr/lib/mono/1.0/transform.exe
+rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/transform.exe
+# brp-compress doesn't search _mandir
+# so we cheat it
+ln -s . %buildroot%_prefix/usr
+RPM_BUILD_ROOT=%buildroot%_prefix /usr/lib/rpm/brp-compress
+rm %buildroot%_prefix/usr
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}

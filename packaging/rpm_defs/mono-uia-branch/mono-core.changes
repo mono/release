@@ -1,9 +1,65 @@
 -------------------------------------------------------------------
+Tue Sep  2 10:26:11 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0 RC1
+  * Bugfixes
+  * Adds a 2.0 gacutil
+
+-------------------------------------------------------------------
+Tue Aug 26 09:33:09 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0 (preview 2)
+  * Runtime: Performance
+    * The performance of operations on decimals has significally improved.
+    * The performance of locking (Monitor.Enter/Monitor.Exit) is significally improved.
+    * The memory usage of the runtime is reduced, especially when using generics.
+    * Many race conditions and threading problems were fixed, improving reliability.
+    * Math.Min/Math.Max and some forms of Interlocked.CompareExhange (CAS) are now implemented using fast inline code on x86/amd64.
+    * There is now a MONO_DEBUG=dont-free-domains option that improves the performance of ASP.NET-based applications.
+  * Runtime: Features
+    * Some progress has been made on the Winx64 port [Bill Holmes, Jonathan Chambers]
+    * The runtime is now built using the dolt libtool replacement (http://dolt.freedesktop.org/) this speeds up runtime compilations by about 30%.
+    * The runtime build process is now less verbose on some platforms, similar to the way the linux kernel is built. To turn it off, use the --enable-quiet-build=no argument to configure, or pass the V=1 argument to make.
+    * There is now a --debug=casts command line option to the runtime which turns on the reporting of better InvalidCastException message details.
+    * The mono_method_get_unmanaged_thunk () function has been implemented for developers embedding Mono which simplifies calling managed methods from unmanaged code.
+  * C# Compiler
+    * The compiler now support expression trees (turning expressions into an AST at compile time when the type of a parameter is a System.Query.Expression). This completes the C# 3.0 support.
+    * Over 60 reported bugs in the compiler were fixed and many of the internals have been cleaned up. Extensive refactoring and hardening of the C# 2.0 and 3.0 support are now better integrated.
+    * A major rewrite of the anonymous method/lambda support in the internals of the compiler now optimizes the resulting code, and fixes several bugs in this area.
+    * The compiler is now dual licensed under the MIT X11 and the GNU GPL version 2 (only).
+    * The compiler now supports #pragma checksum for use with ASP.NET debugging and #line hidden, as well as flagging more compiler-generated code properly (to avoid the debugger single-stepping into those bits).
+  * LINQ
+    * LINQ and LINQ to XML are now complete, support for expression trees is now available as well as the backend to support expression tree compilation.
+    * LINQ to Dataset has also been implemented.
+  * Performance Counters Implementation
+    * Mono now has a performance counters implementation that can be used to monitor various statistics of Mono processes. To access this API you use the System.Diagnostics.PerformanceCounter classes.
+  * Big Arrays
+    * Mono now supports 64-bit indexed arrays on 64-bit systems. Although this is permitted by the ECMA standard, this today is a unique feature of Mono as .NET on Windows does not support 64-bit array indexes. This code was developed by Luis Ortiz at Interactive Supercomputing and integrated by Rodrigo Kumpera.
+    * This feature is useful for developers that needs to manipulate very large data sets with C# arrays.
+    * To use this feature, you must configure Mono with --enable-big-arrays. 
+
+-------------------------------------------------------------------
+Mon May 26 22:12:33 CEST 2008 - crrodriguez@suse.de
+
+- add missing zlib-devel BuildRequires this made mono to
+  use a bundled copy a zlib. 
+
+-------------------------------------------------------------------
+Mon May 12 10:13:19 CEST 2008 - aj@suse.de
+
+- Do not return random data in function.
+
+-------------------------------------------------------------------
+Tue May  6 13:34:26 CEST 2008 - schwab@suse.de
+
+- Don't use libtool before it is created.
+
+-------------------------------------------------------------------
 Fri Apr 25 10:23:23 MST 2008 - wberrier@suse.de
 
 - Make sure x11 headers/libs are installed so that 
   /etc/mono/config has correct link to libX11.so.6.
-  Fixes (bnc#368436)
+  Fixes (bnc#339712)
 
 -------------------------------------------------------------------
 Tue Apr 22 10:23:23 MST 2008 - wberrier@suse.de
