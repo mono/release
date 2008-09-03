@@ -374,7 +374,7 @@ Authors:
 
 %files -n mono-data
 %defattr(-, root, root)
-%_prefix/lib/mono/1.0/sqlsharp.exe*
+%_prefix/lib/mono/2.0/sqlsharp.exe*
 %_bindir/sqlsharp
 %_mandir/man1/sqlsharp.1%ext_man
 %_prefix/lib/mono/gac/System.Data
