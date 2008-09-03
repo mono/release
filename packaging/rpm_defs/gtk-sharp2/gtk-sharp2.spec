@@ -31,7 +31,7 @@ Patch6:         gtk-warn-fix.patch
 %define old_version 2.4.3
 %define new_version 2.8.5
 %define new_split_version 2.10.4
-%define two_twelve_version 2.12.1
+%define two_twelve_version 2.12.2
 #####  suse  ####
 %if 0%{?suse_version}
 ## which gtk version ###

@@ -79,21 +79,25 @@ Authors:
 %defattr(-, root, root)
 %_bindir/*
 %_prefix/lib/monodoc
-%_prefix/share/applications/monodoc.desktop
-%_prefix/share/pixmaps/monodoc.png
+%_datadir/applications/monodoc.desktop
+%_datadir/pixmaps/monodoc.png
 %_prefix/lib/mono/1.0
 %_prefix/lib/mono/2.0
 %_prefix/lib/create-native-map
-%_prefix/share/create-native-map
-%_prefix/share/pkgconfig/create-native-map.pc
+%_datadir/create-native-map
+%_datadir/pkgconfig/create-native-map.pc
 %_mandir/man1/create-native-map*
 %_prefix/lib/gendarme
-%_prefix/share/pkgconfig/gendarme-framework.pc
+%_datadir/pkgconfig/gendarme-framework.pc
 %_mandir/man1/gendarme*
-%_prefix/share/applications/ilcontrast.desktop
+%_datadir/applications/ilcontrast.desktop
 %_prefix/lib/ilcontrast
 %_prefix/lib/gui-compare
-%_prefix/share/pixmaps/ilcontrast.png
+%_datadir/pixmaps/ilcontrast.png
+%_prefix/lib/mono-tools
+%_datadir/applications/mprof-heap-viewer.desktop
+%_mandir/man1/mprof-decoder*
+%_mandir/man1/mprof-heap-viewer*
 
 %prep
 %setup  -q -n %{name}-%{version}

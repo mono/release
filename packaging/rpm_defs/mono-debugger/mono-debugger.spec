@@ -87,6 +87,10 @@ Authors:
 %build
 %{?env_options}
 %{?configure_options}
+CFLAGS="$RPM_OPT_FLAGS"
+%if %{suse_version} >= 1100
+CFLAGS="$RPM_OPT_FLAGS `ncurses5-config --cflags`"
+%endif
 %configure
 make
 
