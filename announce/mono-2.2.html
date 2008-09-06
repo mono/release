@@ -85,6 +85,14 @@
 	Linux and MinGW.   Details are available on
 	the <a href="http://www.mono-project.com/Compiling_Mono#Cross-compiling_on_Linux_using_MinGW">Compiling
 	Mono</a> page.
+<h2>Regular expressions performance</h2>
+    <p>The regex interpreter used by the System.Text.RegularExpressions package has
+    been rewritten to be more efficient. Additionally, a regex-to-CIL compiler
+    has been implemented which provides dramatically better performance at the
+    cost of increased setup time, this compiler is activated when 
+    RegexOptions.Compiled is passed to the Regex class constructors. The old
+    interpreter is still available, and can be used by defining the MONO_OLD_RX
+    env variable.
 	
 <a name="install">
 <h1>Installing Mono 2.2</h1>
