@@ -69,16 +69,33 @@
 	<p>Support for <a href="http://www.mono-project.com/AOT">Full
 	AOT</a>, generic sharing, and static linking is now available.
 
+	<p>Full AOT at this point is currently limited to the 1.0
+	profile, no support for Full AOT including generics is
+	supported. p
+
 <h2>Runtime: Monitoring</h2>
 
 	<p>Support for monitoring the runtime internals is now
 	available through a new  PerformanceCounters implementation.
 
+<h3>New: C# Shell</h3>
+
+	<p>A new interactive shell for C# is available, the command is
+	called "csharp", more details are available on the csharp
+	manual page and on
+	the <a href="http://mono-project.com/CsharpRepl">CsharpRepl</a>
+	page.
+
+	<p>The C# shell currently requires Mono for any C# 2.0 and 3.0
+	support.   Version 1.0 will also run on the .NET Framework.
+	
 <h3>C# Compiler</h3>
 
 	<p>Our compiler will now replace any references to the empty
 	string with a reference to the String.Empty field (more
-	efficient). 
+	efficient).
+
+
 <h2>Build</h2>
 
 	<p>It is now possible to cross-compile Mono for Windows using
@@ -93,6 +110,14 @@
     RegexOptions.Compiled is passed to the Regex class constructors. The old
     interpreter is still available, and can be used by defining the MONO_OLD_RX
     env variable.
+	
+<h2>Performance Counters Implementation</h2>
+
+	<p>Mono now has a full performance counters implementation
+	that can be used to monitor various statistics of Mono
+	processes.  To access this API you use the
+	System.Diagnostics.PerformanceCounter classes.
+
 	
 <a name="install">
 <h1>Installing Mono 2.2</h1>
