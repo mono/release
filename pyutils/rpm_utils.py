@@ -33,35 +33,35 @@ def get_dependent_rpms(command_output):
 	return rpms
 
 def remove_rpms(rpms, test=False):
-
-	installed_rpms = []
-
-	for rpm in rpms:
-		if rpm_is_installed(rpm):
-			installed_rpms.append(rpm)
-	status = 1
-
 	if test:
 		rpm_flags = "--test"
 	else:
 		rpm_flags = ""
 
-	while status and installed_rpms:
-		command = "rpm %s -e %s" % (rpm_flags, ' '.join(installed_rpms) )
+	if rpms.__class__ == str:
+		rpms = [rpms]
+
+	status = 1
+	while status and rpms:
+		for rpm in rpms:
+			if not rpm_is_installed(rpm):
+				rpms.remove(rpm)
+
+		command = "rpm %s -e %s" % (rpm_flags, ' '.join(rpms) )
 		(status, output) = commands.getstatusoutput(command)
 
 		if not status:
-			installed_rpms.sort()
+			rpms.sort()
 			break
 		else:
 			new_rpms = get_dependent_rpms(output)
 
 			# Only add duplicates
 			for rpm in new_rpms:
-				if not installed_rpms.count(rpm):
-					installed_rpms.append(rpm)
+				if not rpms.count(rpm):
+					rpms.append(rpm)
 
-	return installed_rpms
+	return rpms
 
 def rpm_query(query_format, file, installed=False):
         """Args: query_format, file.
