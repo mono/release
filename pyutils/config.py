@@ -95,7 +95,6 @@ td_packages = """
 	olive
 	uiaatkbridge
 	uiautomationwinforms
-	mono-uia-branch
 	xsp
 """.split()
 
