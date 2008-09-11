@@ -27,7 +27,6 @@ Version:        2.0
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
-Patch1:         mono-libtool.diff
 ExclusiveArch:  %ix86 x86_64 ppc hppa armv4l sparc s390 ia64 s390x
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Provides:       mono = %{version}-%{release}
@@ -1095,7 +1094,6 @@ Authors:
 
 %prep
 %setup -q -n mono-%{version}
-%patch1 -p1
 
 %build
 # These are only needed if there are patches to the runtime
