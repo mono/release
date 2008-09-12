@@ -25,7 +25,7 @@ MAEMOSHARP_VERSION = 0.23
 SBOX_PREFIX ?= /scratchbox/devkits/mono
 
 # Remote addresses.
-MASTER_SITES += http://go-mono.com/sources/$(GARNAME)/
+MASTER_SITES += http://ftp.novell.com/pub/mono/sources/$(GARNAME)/
 
 # Prepend the local file listing
 FILE_SITES = file://$(FILEDIR)/ file://$(GARMONO_CACHE)/
