@@ -53,7 +53,7 @@ HEAD_PATH=(
         trunk/moon
 )
 RELEASE_PATH=(
-        tags/moon/[[versiondot]]
+	tags/moon/[[versiondot]]
 )
 
 update_version_file () {
@@ -87,6 +87,7 @@ POSTBUILD_TEST1 () {
 
 	# Get the revision for Moonlight
 	export SVN_REVISION=`cat configure.ac | grep AC_INIT | sed -e 's/.*\[\(.*\)\])/\1/'`  # Gets the revision
+	export MS_TESTS_SUITE=     #DbReport uses this env var
 
 	# Run the tests
 	Xvfb -wr -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
@@ -124,6 +125,7 @@ POSTBUILD_TEST2 () {
 
 	# Get the revision for Moonlight
 	export SVN_REVISION=`cat configure.ac | grep AC_INIT | sed -e 's/.*\[\(.*\)\])/\1/'`  # Gets the revision
+	export MS_TESTS_SUITE=TRUE  #DbReport uses this env var 
 
 	Xvfb -wr -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
 	eval $(dbus-launch --auto-syntax)
