@@ -30,8 +30,8 @@ Various .NET 3.0 bits.
 %_prefix/lib/mono/3.0/client-proxy-gen.exe*
 %_prefix/bin/sts
 %_prefix/lib/mono/3.0/sts.exe*
-%_prefix/bin/xamlc
-%_prefix/lib/mono/3.0/xamlc.exe*
+#%_prefix/bin/xamlc
+#%_prefix/lib/mono/3.0/xamlc.exe*
 %_prefix/lib/mono/gac/PresentationFramework
 %_prefix/lib/mono/3.0/PresentationFramework.dll*
 %_prefix/lib/mono/gac/UIAutomationProvider
