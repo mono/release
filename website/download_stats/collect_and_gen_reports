@@ -30,7 +30,7 @@ fi
 
 ###############################################
 ##  Process FTP
-rsync -avz wberrier@ftp.novell.com:/var/log/proftpd/xferlog* ftp/
+rsync -avz ftp.novell.com:/var/log/proftpd/xferlog* ftp/
 
 rm -f xferlog.total
 echo "Concatenating and filtering ftp logs"
@@ -45,7 +45,7 @@ webalizer -c webalizer.conf -N $dns_threads -F ftp -o www_ftp xferlog.total
 
 ###############################################
 ##  Process HTTP
-rsync -avz wberrier@ftp.novell.com:/var/log/apache2/access_log* http/
+rsync -avz ftp.novell.com:/var/log/apache2/access_log* http/
 
 echo "Concatenating and filtering http logs"
 rm -f access_log.total
