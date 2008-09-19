@@ -77,7 +77,20 @@
 
 	<p>Support for monitoring the runtime internals is now
 	available through a new  PerformanceCounters implementation.
+	A new GUI tool `mperfmon' is available to allow developers and
+	administrators to monitor the system performance.
 
+<h3>New: C# Eval Library</h3>
+
+	<p>A new <tt>Mono.CSharp.Evaluator</tt> class and library is
+	available to allow developers to embed the C# compiler into
+	their own applications.
+
+	<p>This can be used to load scripts written in C# dynamically,
+	but executing at the same speed as C# compiled pages or to add
+	dynamic features to your application or even adding a console
+	to debug your application on a live deployment.
+	
 <h3>New: C# Shell</h3>
 
 	<p>A new interactive shell for C# is available, the command is
@@ -102,22 +115,23 @@
 	Linux and MinGW.   Details are available on
 	the <a href="http://www.mono-project.com/Compiling_Mono#Cross-compiling_on_Linux_using_MinGW">Compiling
 	Mono</a> page.
+
 <h2>Regular expressions performance</h2>
-    <p>The regex interpreter used by the System.Text.RegularExpressions package has
-    been rewritten to be more efficient. Additionally, a regex-to-CIL compiler
-    has been implemented which provides dramatically better performance at the
-    cost of increased setup time, this compiler is activated when 
-    RegexOptions.Compiled is passed to the Regex class constructors. The old
-    interpreter is still available, and can be used by defining the MONO_OLD_RX
-    env variable.
+
+	<p>The regex interpreter used by the
+        System.Text.RegularExpressions package has been rewritten to
+        be more efficient. Additionally, a regex-to-CIL compiler has
+        been implemented which provides dramatically better
+        performance at the cost of increased setup time, this compiler
+        is activated when RegexOptions.Compiled is passed to the Regex
+        class constructors. The old interpreter is still available,
+        and can be used by defining the MONO_OLD_RX env variable.
 	
-<h2>Performance Counters Implementation</h2>
 
-	<p>Mono now has a full performance counters implementation
-	that can be used to monitor various statistics of Mono
-	processes.  To access this API you use the
-	System.Diagnostics.PerformanceCounter classes.
+<h2>Updated Console implementation</h2>
 
+	<p>Various upgrades to the Console implementation, it will now
+	respond appropriately to changes on terminal sizes. 
 	
 <a name="install">
 <h1>Installing Mono 2.2</h1>
