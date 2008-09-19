@@ -15,7 +15,8 @@ prefix = "/Library/Frameworks/Mono.framework/Versions/Current"
 packages = [
 	{
 		'name': 'pkg-config', 
-		'source': 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.22.tar.gz',
+		#'source': 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.22.tar.gz',
+		'source': 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.23.tar.gz',
 		'post':"""
 			# Configure shell wrapper for pkg-config so it will look for .pc files when installed (#79671)
 			cd /tmp/install/bin
@@ -29,7 +30,8 @@ EOF
 	},
 	{
 		'name': 'gettext', 
-		'source': 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.16.1.tar.gz',
+		#'source': 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.16.1.tar.gz',
+		'source': 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.17.tar.gz',
 		'post':"""
 			# Save msgfmt, as this is needed for building glib
 			#  we also need msgmerge for intltool... (monodevelop)
@@ -49,7 +51,8 @@ EOF
 	},
 	{
 		'name': 'glib', 
-		'source': 'ftp://ftp.gtk.org/pub/glib/2.14/glib-2.14.1.tar.bz2',
+		#'source': 'ftp://ftp.gtk.org/pub/glib/2.14/glib-2.14.1.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/gnome/sources/glib/2.18/glib-2.18.1.tar.bz2',
 		'pre':"""
 			sed -e "s/\/usr\/local\/share\/:\/usr\/share\//\/usr\/local\/share\/:\/usr\/share\/:\/Library\/Frameworks\/Mono.framework\/Versions\/Current\/share\//g" glib/gutils.c > new
 			mv new glib/gutils.c
@@ -92,7 +95,8 @@ EOF
 	},
 	{
 		'name': 'libpng',
-		'source': 'http://superb-east.dl.sourceforge.net/sourceforge/libpng/libpng-1.2.20.tar.bz2',
+		#'source': 'http://superb-east.dl.sourceforge.net/sourceforge/libpng/libpng-1.2.20.tar.bz2',
+		'source': 'ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.2.32.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
@@ -125,7 +129,8 @@ EOF
 	},
 	{
 		'name': 'pixman', 
-		'source': 'http://cairographics.org/releases/pixman-0.10.0.tar.gz',
+		#'source': 'http://cairographics.org/releases/pixman-0.10.0.tar.gz',
+		'source': 'http://cairographics.org/releases/pixman-0.11.10.tar.gz',
 	},
 	{
 		'name': 'cairo', 
@@ -143,7 +148,8 @@ EOF
 	#  Hrm... the flag is getting set... which binary is failing?
 	{
 		'name': 'pango', 
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.20/pango-1.20.2.tar.bz2',
+		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.20/pango-1.20.2.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.20/pango-1.20.5.tar.bz2',
 		'build': """
 
 			# Hrm... LDFLAGS not getting set for atsui basic... for it (TODO: file bug)
@@ -165,7 +171,8 @@ EOF
 	},
 	{
 		'name': 'atk', 
-		'source': 'http://ftp.gnome.org/pub/gnome/sources/atk/1.20/atk-1.20.0.tar.bz2',
+		#'source': 'http://ftp.gnome.org/pub/gnome/sources/atk/1.20/atk-1.20.0.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/atk/1.23/atk-1.23.5.tar.bz2',
 	},
 #	## Tarball generated on linux (opensuse 10.3) using:
 #	# Applied patch: http://people.imendio.com/richard/patches/gtk-configure.patch
@@ -177,8 +184,9 @@ EOF
 	{
 		# Requires 10.4 or above
 		'name': 'gtk+', 
-		'version': '2.15.0', 
-		'source': 'http://primates.ximian.com/~wberrier/macos/sources/gtk+-2.15.0.tar.bz2',
+		'version': '2.14.2', 
+		#'source': 'http://primates.ximian.com/~wberrier/macos/sources/gtk+-2.15.0.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.14/gtk+-2.14.2.tar.bz2',
 		'build': """
 			./configure --prefix=%s --with-gdktarget=quartz --disable-gtk-doc --disable-docs
 			make
