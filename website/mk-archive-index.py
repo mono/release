@@ -4,7 +4,6 @@ import sys
 import os
 import distutils.dir_util
 import re
-import string
 import glob
 import getopt
 
@@ -91,24 +90,11 @@ for installer_map in installer_info:
 #### Packages ####
 packages = "<ul>"
 
-obs_repos = set([])
-
 # Links to distros
 for distro_conf in distros:
 	conf = packaging.buildconf(os.path.basename(distro_conf), exclusive=False)
 	# Skip the distros that use zip packaging system
-	if conf.get_info_var('USE_ZIP_PKG'):
-		continue
-	# OBS repos are treated specially
-	if conf.get_info_var('OBS_REPO'):
-		# Don't duplicate entries for OBS repos (which are multi-arch)
-		repo_url = string.split(conf.get_info_var('OBS_REPO_URL'), "/")[-2]
-		if repo_url in obs_repos:
-			continue
-		alias_text = "[ " + string.join(string.split(conf.name, "-")[0:-1], "-") + " ]"
-		packages += "<li><a href='%s'>%s</a> %s</li>\n" % (repo_url, repo_url, alias_text)
-		obs_repos.add(repo_url)
-	else:
+	if not conf.get_info_var('USE_ZIP_PKG'):
 		if conf.get_info_var('distro_aliases'):
 			alias_text = "[ " + " | ".join(conf.get_info_var('distro_aliases')) + " ]"
 		else: alias_text = ""
