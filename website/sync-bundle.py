@@ -194,7 +194,7 @@ obs_repos = utils.get_dict_var('obs_repos', bundle_obj.info)
 if not skip_obs_repos:
 	for obs_repo in obs_repos:
 		repo_name = string.split(obs_repo, "/")[-2]
-		print "Syncing %s" % (dest_path)
+		print "Syncing %s" % (repo_name)
 		dest_path = os.path.join(dest, url_prefix, repo_name)
 		distutils.dir_util.mkpath(dest_path)
 		if os.system("rsync --archive --delete %s %s" % (obs_repo, dest_path)):
