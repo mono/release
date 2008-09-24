@@ -15,16 +15,19 @@ import build
 import utils
 import config
 import datastore
+import string
+import distutils
 
 include_packages = False
 include_zip = False
 fail_on_missing=True
 skip_installers = False
+skip_obs_repos = False
 validated = False
 config.sd_latest_build_distros = build.get_platforms()
 try:
 
-	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "include_zip", "skip_missing", "skip_installers", "platforms=", "validated" ])
+	opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "include_packages", "include_zip", "skip_missing", "skip_installers", "skip_obs_repos", "platforms=", "validated" ])
 	for option, value in opts:
 		if option == "--include_packages":
 			 include_packages = True
@@ -34,6 +37,8 @@ try:
 			 fail_on_missing = False
 		if option == "--skip_installers":
 			 skip_installers = True
+		if option == "--skip_obs_repos":
+			 skip_obs_repos = True
 		if option == "--platforms":
 			config.sd_latest_build_distros = value.split(",")
 		if option == "--validated":
@@ -45,6 +50,7 @@ except:
 	print " --include_packages includes built packages"
 	print " --include_zip includes zip based distros"
 	print " --skip_installers will not copy installers"
+	print " --skip_obs_repos will not download obs repos"
 	print " --skip_missing will allow missing packages for a various platform"
 	print " --platforms: comma separated list of platforms (distros) to sync"
 	print " Ex: ./sync-bundle.py RELEASE wblinux.provo.novell.com:wa/msvn/release/packaging"
@@ -182,7 +188,17 @@ for dir in	[
 		print "Problem syncing: " + dir
 		print "Skipping..."
 
-
+# mirror OBS repos
+url_prefix = 'download-' + bundle_obj.info['bundle_urlname']
+obs_repos = utils.get_dict_var('obs_repos', bundle_obj.info)
+if not skip_obs_repos:
+	for obs_repo in obs_repos:
+		repo_name = string.split(obs_repo, "/")[-2]
+		print "Syncing %s" % (dest_path)
+		dest_path = os.path.join(dest, url_prefix, repo_name)
+		distutils.dir_util.mkpath(dest_path)
+		if os.system("rsync --archive --delete %s %s" % (obs_repo, dest_path)):
+			print "Error. (Is rsync installed?)"
 
 #print files
 
