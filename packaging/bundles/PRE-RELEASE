@@ -4,8 +4,13 @@ archive_version="2.0"
 
 bundle_urlname="preview"
 
-bundle_short_desc="Release Candidate 1"
+bundle_short_desc="Release Candidate 3"
 bundle_desc="Preview packages before an official release"
+
+obs_repos=(
+	rsync://rsync.opensuse.org/buildservice-repos-main/Mono:/Preview/openSUSE_11.0/
+	rsync://rsync.opensuse.org/buildservice-repos-main/Mono:/Preview/SLE_10/
+)
 
 versions=(
 	mono=""
