@@ -197,7 +197,7 @@ if not skip_obs_repos:
 		print "Downloading %s..." % (repo_name)
 		dest_path = os.path.join(dest, url_prefix, repo_name)
 		distutils.dir_util.mkpath(dest_path)
-		if os.system("rsync --archive --delete --exclude '*.repo' %s %s" % (obs_repo, dest_path)):
+		if os.system("rsync --archive --delete --verbose --exclude '*.repo' %s %s" % (obs_repo, dest_path)):
 			print "Error. (Is rsync installed?)"
 
 #print files
