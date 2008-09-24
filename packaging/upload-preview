@@ -27,14 +27,12 @@ cp packaging.css $STAGE_DIR
 ./clean-downloads.py --source_basepath=$STAGE_DIR/sources --package_basepath=$STAGE_DIR/packages --archive_basepath=$STAGE_DIR/archive RELEASE 1
 
 ./mk-sources-index.py           $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/sources
-./mk-distro-index.py --skip_zip $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/packages $TARGET_HOST
 ./mk-archive-index.py           $BUNDLE $STAGE_DIR $TARGET_URL
-./mk-repos.py                   $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/packages $TARGET_HOST
 
 # Publish stage
-ssh $TARGET_USER@$TARGET_HOST "mkdir -p $TARGET_DIR"
-cd $STAGE_DIR
-rsync -avzH --delete . $TARGET_USER@$TARGET_HOST:$TARGET_DIR
+#ssh $TARGET_USER@$TARGET_HOST "mkdir -p $TARGET_DIR"
+#cd $STAGE_DIR
+#rsync -avzH --delete . $TARGET_USER@$TARGET_HOST:$TARGET_DIR
 
 # TODO: notify x-m-l by mail
 
