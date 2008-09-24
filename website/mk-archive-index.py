@@ -44,6 +44,7 @@ bundle_conf = packaging.bundle(bundle_name=bundle)
 out_file = os.path.join(output_dir, "archive", bundle_conf.info['archive_version'], 'download', 'index.html')
 distro_out_file = os.path.join(output_dir, 'download-' + bundle_conf.info['bundle_urlname'], 'index.html')
 distutils.dir_util.mkpath(os.path.dirname(out_file))
+distutils.dir_util.mkpath(os.path.dirname(distro_out_file))
 
 version = bundle_conf.info['archive_version']
 
