@@ -32,7 +32,7 @@ Libraries to bridge UIA to ATK
 %setup -q
 
 %build
-./autogen.sh --prefix=%_prefix --disable-tests
+./configure --prefix=%_prefix --disable-tests
 make
 
 %install
