@@ -151,7 +151,7 @@ if include_packages:
 
 # Gather sources
 for pack in build.get_packages():
-	pack_obj = packaging.package("", pack, bundle_obj=bundle_obj)
+	pack_obj = packaging.package("", pack, bundle_obj=bundle_obj, create_dirs=False)
 	source_file = pack_obj.get_source_file()
 	# Make sure there is a valid source before adding (it will be missing if it's not in the bundle)
 	if source_file:
