@@ -27,7 +27,6 @@ Version:        2.0
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
-Patch0:		tooltip-errorprovider.patch
 
 ExclusiveArch: %ix86 x86_64
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -1097,9 +1096,6 @@ Authors:
 %debug_package
 %prep
 %setup -q -n mono-%{version}
-pushd "mcs"
-%patch0
-popd
 
 %build
 # These are only needed if there are patches to the runtime
