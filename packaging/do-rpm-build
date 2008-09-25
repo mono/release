@@ -74,7 +74,7 @@ for p in "redhat-release fedora-release centos-release".split():
 if os.environ['HEAD_or_RELEASE'] == 'RELEASE':
 	unpack_term_build = 1
 else:
-	unpack_term_build = 0
+	unpack_term_build = 1 # We want this to always fail
 
 # need to set some rpmrc macros to be able to build in this directory
 # can't use $build_arch in rpmfilename, need to find out why some distros build as i686
