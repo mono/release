@@ -150,6 +150,7 @@ Authors:
 %_mandir/man1/mcs.1%ext_man
 %_mandir/man1/certmgr.1%ext_man
 %_mandir/man1/chktrust.1%ext_man
+%_mandir/man1/csharp.1%ext_man
 %_mandir/man1/setreg.1%ext_man
 %_mandir/man1/gacutil.1%ext_man
 %_mandir/man1/sn.1%ext_man
@@ -157,6 +158,7 @@ Authors:
 # wrappers
 %_bindir/certmgr
 %_bindir/chktrust
+%_bindir/csharp
 %_bindir/gacutil
 %_bindir/gacutil2
 %_bindir/gmcs
@@ -172,6 +174,7 @@ Authors:
 %_prefix/lib/mono/1.0/chktrust.exe*
 %_prefix/lib/mono/1.0/gacutil.exe*
 %_prefix/lib/mono/2.0/gacutil.exe*
+%_prefix/lib/mono/2.0/csharp.exe*
 %_prefix/lib/mono/2.0/gmcs.exe*
 %_prefix/lib/mono/1.0/mcs.exe*
 %_prefix/lib/mono/1.0/mozroots.exe*
@@ -192,6 +195,7 @@ Authors:
 %_prefix/lib/mono/gac/Mono.GetOptions
 %_prefix/lib/mono/1.0/Mono.GetOptions.dll
 %_prefix/lib/mono/2.0/Mono.GetOptions.dll
+%_prefix/lib/mono/gac/Mono.Management
 %_prefix/lib/mono/gac/Mono.Security
 %_prefix/lib/mono/1.0/Mono.Security.dll
 %_prefix/lib/mono/2.0/Mono.Security.dll
@@ -263,6 +267,8 @@ Authors:
 %_prefix/lib/mono/2.1/System.Core.dll
 %_prefix/lib/mono/gac/System.Net
 %_prefix/lib/mono/2.1/System.Net.dll
+# localizations?
+%_datadir/locale/*/LC_MESSAGES/mcs.mo
 # Not sure if autobuild allows this...
 %_libdir/pkgconfig/smcs.pc
 
