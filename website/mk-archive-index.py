@@ -18,16 +18,19 @@ import utils
 import build
 
 skip_installers = False
+skip_packages = False
 distros = build.get_platforms()
 # Command line options
 try:
-        opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_installers", "platforms=" ])
+        opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_installers", "skip_packages", "platforms=" ])
 
 	(bundle, output_dir) = remaining_args
 
         for option, value in opts:
                 if option == "--skip_installers":
                          skip_installers = True
+                if option == "--skip_packages":
+                         skip_packages = True
                 if option == "--platforms":
                         distros = value.split(",")
 
@@ -93,13 +96,15 @@ packages = "<ul>"
 
 # Links to distros
 for distro_conf in distros:
+	if skip_packages: continue
 	conf = packaging.buildconf(os.path.basename(distro_conf), exclusive=False)
 	# Skip the distros that use zip packaging system
 	if not conf.get_info_var('USE_ZIP_PKG'):
-		if conf.get_info_var('distro_aliases'):
-			alias_text = "[ " + " | ".join(conf.get_info_var('distro_aliases')) + " ]"
-		else: alias_text = ""
-		packages += "<li><a href='%s'>%s</a> %s</li>\n" % (conf.name, conf.name, alias_text)
+		if os.path.exists(os.path.join(output_dir, 'download-' + bundle_conf.info['bundle_urlname'], conf.name)):
+			if conf.get_info_var('distro_aliases'):
+				alias_text = "[ " + " | ".join(conf.get_info_var('distro_aliases')) + " ]"
+			else: alias_text = ""
+			packages += "<li><a href='%s'>%s</a> %s</li>\n" % (conf.name, conf.name, alias_text)
 
 packages += "</ul>"
 
@@ -108,7 +113,7 @@ repositories = "<ul>"
 obs_repos = utils.get_dict_var('obs_repos', bundle_conf.info)
 for obs_repo in obs_repos:
 	repo_name = string.split(obs_repo, "/")[-2]
-	repositories += "<li><a href=\"%s\">%s</li>\n" % ("../" + repo_name, repo_name)
+	repositories += "<li><a href=\"%s\">%s</a></li>\n" % (repo_name, repo_name)
 repositories += "</ul>"
 
 fd = open(os.path.join(config.release_repo_root, 'website', 'archive-index'))
