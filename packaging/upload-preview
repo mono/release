@@ -27,7 +27,7 @@ cp packaging.css $STAGE_DIR
 ./clean-downloads.py --source_basepath=$STAGE_DIR/sources --package_basepath=$STAGE_DIR/packages --archive_basepath=$STAGE_DIR/archive RELEASE 1
 
 ./mk-sources-index.py           $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/sources
-./mk-archive-index.py           $BUNDLE $STAGE_DIR $TARGET_URL
+./mk-archive-index.py           $BUNDLE $STAGE_DIR
 
 # Publish stage
 #ssh $TARGET_USER@$TARGET_HOST "mkdir -p $TARGET_DIR"

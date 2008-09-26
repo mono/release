@@ -117,7 +117,7 @@ if generate:
 
 	do("./mk-sources-index.py	%s %s %s %s/sources" % 		(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR))
 	do("./mk-distro-index.py	%s %s %s %s/download %s" % 	(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR, TARGET_HOST))
-	do("./mk-archive-index.py	%s %s %s" % 			(BUNDLE, STAGE_DIR, TARGET_URL))
+	do("./mk-archive-index.py	%s %s" % 			(BUNDLE, STAGE_DIR))
 	do("./mk-repos.py		%s %s %s %s/download %s" % 	(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR, TARGET_HOST))
 
 # Publish stage
