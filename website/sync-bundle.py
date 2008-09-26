@@ -199,6 +199,10 @@ if not skip_obs_repos:
 		distutils.dir_util.mkpath(dest_path)
 		if os.system("rsync --archive --delete --verbose --exclude '*.repo' %s %s" % (obs_repo, dest_path)):
 			print "Error. (Is rsync installed?)"
+		archive_path = os.path.join(dest, "archive", archive_version, "download")
+		distutils.dir_util.mkpath(archive_path)
+		# Hardlink copy into archive
+		os.system("cp -al %s %s/" % (dest_path, archive_path))
 
 #print files
 
