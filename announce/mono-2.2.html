@@ -101,6 +101,10 @@
 
 	<p>The C# shell currently requires Mono for any C# 2.0 and 3.0
 	support.   Version 1.0 will also run on the .NET Framework.
+
+	<p>The shell has support for attaching to existing processes,
+	so it is possible to use the csharp shell to debug live
+	applications. 
 	
 <h3>C# Compiler</h3>
 
@@ -132,6 +136,13 @@
 
 	<p>Various upgrades to the Console implementation, it will now
 	respond appropriately to changes on terminal sizes. 
+
+<h2>VM: Attach Functionality</h2>
+
+	<p>It is now possible to load code externally into a Mono
+	process to debug or augment code live.
+
+	<p>A new assembly: Mono.Management wraps this functionality.
 	
 <a name="install">
 <h1>Installing Mono 2.2</h1>
