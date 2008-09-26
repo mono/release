@@ -4,6 +4,7 @@ import sys
 import os
 import distutils.dir_util
 import re
+import string
 import glob
 import getopt
 
@@ -22,7 +23,7 @@ distros = build.get_platforms()
 try:
         opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "skip_installers", "platforms=" ])
 
-	(bundle, output_dir, webroot_path) = remaining_args
+	(bundle, output_dir) = remaining_args
 
         for option, value in opts:
                 if option == "--skip_installers":
@@ -31,7 +32,7 @@ try:
                         distros = value.split(",")
 
 except:
-        print "Usage: ./mk-archive-index.py [ --skip_installers | --platforms=distros ] <bundle name> <output webdir> <webroot_path>"
+        print "Usage: ./mk-archive-index.py [ --skip_installers | --platforms=distros ] <bundle name> <output webdir>"
         print " --platforms: comma separated list of platforms (distros) to include"
         print " --skip_installers: don't include installers in listing"
         sys.exit(1)
@@ -102,24 +103,34 @@ for distro_conf in distros:
 
 packages += "</ul>"
 
+#### Repositories ####
+repositories = "<ul>"
+obs_repos = utils.get_dict_var('obs_repos', bundle_conf.info)
+for obs_repo in obs_repos:
+	repo_name = string.split(obs_repo, "/")[-2]
+	repositories += "<li><a href=\"%s\">%s</li>\n" % ("../" + repo_name, repo_name)
+repositories += "</ul>"
+
 fd = open(os.path.join(config.release_repo_root, 'website', 'archive-index'))
 out_text = fd.read()
 fd.close()
 
 distro_out_text = out_text
 
-out_text = out_text.replace('[[webroot_path]]',    webroot_path)
+out_text = out_text.replace('[[webroot_path]]',    '../../..')
 out_text = out_text.replace('[[version]]',    version)
 out_text = out_text.replace('[[sources]]',    sources)
 out_text = out_text.replace('[[installers]]', installers)
 out_text = out_text.replace('[[packages]]',   packages)
+out_text = out_text.replace('[[repositories]]', repositories)
 out_text = out_text.replace('([[bundle_short_desc]])',   '')
 
-distro_out_text = distro_out_text.replace('[[webroot_path]]',    webroot_path)
+distro_out_text = distro_out_text.replace('[[webroot_path]]',    '..')
 distro_out_text = distro_out_text.replace('[[version]]',    version)
 distro_out_text = distro_out_text.replace('[[sources]]',    distro_sources)
 distro_out_text = distro_out_text.replace('[[installers]]', distro_installers)
 distro_out_text = distro_out_text.replace('[[packages]]',   packages)
+distro_out_text = distro_out_text.replace('[[repositories]]', repositories)
 distro_out_text = distro_out_text.replace('[[bundle_short_desc]]',  bundle_short_desc)
 
 out = open(out_file, 'w')

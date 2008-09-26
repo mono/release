@@ -10,10 +10,13 @@
 [[sources]]
 
 <h3>Repositories</h3>
-[[packages]]
+[[repositories]]
 
 <h3>Installers</h3>
 [[installers]]
+
+<h3>RPM Packages</h3>
+[[packages]]
 
 </body>
 </html>
