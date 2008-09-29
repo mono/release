@@ -76,7 +76,6 @@ libmoon development files
 %{_prefix}/lib/pkgconfig/silver.pc
 %{_prefix}/lib/pkgconfig/silverdesktop.pc
 %endif
-%{_prefix}/include/libmoon/*.h
 
 %package tools
 Summary:        Moonlight tools
