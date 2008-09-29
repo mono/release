@@ -338,7 +338,7 @@ EOF
 	},
 	{
 		'name': 'ige-mac-integration',
-		'source': 'http://ftp.imendio.com/pub/imendio/ige-mac-integration/ige-mac-integration-0.6.tar.gz',
+		'source': 'http://ftp.imendio.com/pub/imendio/ige-mac-integration/ige-mac-integration-0.8.2.tar.gz',
 		'build':"""
 			./configure --prefix=/tmp/install
 			make
