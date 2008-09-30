@@ -98,6 +98,8 @@ Authors:
 %_datadir/applications/mprof-heap-viewer.desktop
 %_mandir/man1/mprof-decoder*
 %_mandir/man1/mprof-heap-viewer*
+%_prefix/lib/mperfmon
+%_mandir/man1/mperfmon*
 
 %prep
 %setup  -q -n %{name}-%{version}
