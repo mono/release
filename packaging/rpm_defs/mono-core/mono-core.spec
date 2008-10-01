@@ -139,7 +139,7 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-%files
+%files -f mcs.lang
 %defattr(-, root, root)
 %doc AUTHORS COPYING.LIB ChangeLog NEWS README
 %_bindir/mono
@@ -268,7 +268,7 @@ Authors:
 %_prefix/lib/mono/gac/System.Net
 %_prefix/lib/mono/2.1/System.Net.dll
 # localizations?
-%_datadir/locale/*/LC_MESSAGES/mcs.mo
+#%_datadir/locale/*/LC_MESSAGES/mcs.mo
 # Not sure if autobuild allows this...
 %_libdir/pkgconfig/smcs.pc
 
@@ -1116,7 +1116,7 @@ export CFLAGS=" $RPM_OPT_FLAGS -DKDE_ASSEMBLIES='\"/opt/kde3/%{_lib}\"' -fno-str
 make
 
 %install
-%makeinstall
+make DESTDIR=$RPM_BUILD_ROOT install
 # Remove unused files
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.a
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.la
@@ -1187,6 +1187,7 @@ rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/transform.exe
 ln -s . %buildroot%_prefix/usr
 RPM_BUILD_ROOT=%buildroot%_prefix /usr/lib/rpm/brp-compress
 rm %buildroot%_prefix/usr
+%find_lang mcs
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
