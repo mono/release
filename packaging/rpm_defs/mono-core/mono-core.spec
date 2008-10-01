@@ -921,6 +921,7 @@ fi
 %_prefix/lib/mono/2.0/al.exe*
 %_prefix/lib/mono/1.0/caspol.exe*
 %_prefix/lib/mono/1.0/cert2spc.exe*
+%_prefix/lib/mono/1.0/mono-cil-strip.exe*
 %_prefix/lib/mono/1.0/dtd2xsd.exe*
 %_prefix/lib/mono/1.0/genxs.exe*
 %_prefix/lib/mono/2.0/httpcfg.exe*
@@ -956,6 +957,7 @@ fi
 %_prefix/lib/mono/2.0/xbuild.rsp
 # man pages
 %_mandir/man1/cert2spc.1%ext_man
+%_mandir/man1/mono-cil-strip.1%ext_man
 %_mandir/man1/dtd2xsd.1%ext_man
 %_mandir/man1/genxs.1%ext_man
 %_mandir/man1/httpcfg.1%ext_man
@@ -1005,6 +1007,7 @@ fi
 %_bindir/mono-api-info
 %_bindir/mono-api-info1
 %_bindir/mono-api-info2
+%_bindir/mono-cil-strip
 %_bindir/mono-find-provides
 %_bindir/mono-find-requires
 %_bindir/mono-shlib-cop
