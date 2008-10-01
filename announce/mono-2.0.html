@@ -27,9 +27,15 @@
 	systems.
 	
 	<ul>
+		<li><a href="#highlights">Highlights of Mono 2.0</a>
+		<ul>
+		  <li><a href="wcontrol">New Windows.Forms controls</a>
+		  <li><a href="wcontrol">Windows.Forms in action</a>
+		</ul>
+		<li><a href="#highlights">Highlights of Mono 2.0</a>
 		<li><a href="#changes">Changes since version 1.9</a>
-		<li><a href="#install">Download and installation.</a>
-		<li><a href="#contributors">Contributors to this release.</a>
+		<li><a href="#install">Download and installation</a>
+		<li><a href="#contributors">Contributors to this release</a>
 	</ul>
 
 <h2>Major Highlights</h2>
@@ -106,7 +112,132 @@
 		toolchain required to create libraries and
 		applications. 
 	</ul>
+
+	<li><b>Tools</b>
+
+	<ul>Mono includes profiling tools, the standard development kit tools that are
+	part of the .NET framework
+
+		<li><a href="http://www.mono-project.com/Debugger">Mono
+		Debugger<a>: this is the first release when we support
+		a debugger for managed code.
+		
+		<li><a href="http://www.mono-project.com/Gendarme">Gendarme:</a>
+		is an extensible rule-based tool to find problems in
+		.NET applications and libraries. Gendarme inspects
+		programs and libraries that contain code in ECMA CIL
+		format (Mono and .NET) and looks for common problems
+		with the code, problems that compiler do not typically
+		check or have not historically checked.
+		
+		<li><a href="http://www.mono-project.com/Linker">Mono Linker</a>: a linker that allows developers to
+		reduce the size of their executables and libraries by
+		removing features from libraries using an XML
+		definition of the desired public API.
+
+		<li>Mono Tuner: a tool to apply arbitrary user-defined
+		transformations to assemblies.   Mono uses this
+		library to produce the Silverlight core libraries from
+		the main system libraries.
+
+		<li>Mono Documentation Tools: the Mono Documentation
+		framework has been upgraded to support documenting
+		generics and extension methods.  The tools can be used
+		to produce online and offline documentation for any
+		any APIs, and are used by the project to document our
+		own APIs.
+	</ul>
+
+<a name="wcontrols">
+<h2>Windows.Forms: New Controls</h2>
+
+	<p>Mono 2.0 contains an API complete implementation of .Net's
+	System.Windows.Forms (winforms) namespace, allowing winforms
+	applications to run on Linux, MacOX and other Unix systems.
+
+	<p>Thank you to everyone on the winforms team (past and present),
+	everyone who has contributed code to winforms, and everyone who has
+	submitted bug reports, helping to make winforms (and Mono!) what it is
+	today!</p>
+
+
+<h3>ToolStrip and MenuStrip</h3>
+
+	<p>Mono 2.0 contains complete implementations of .Net 2.0's
+	ToolStrip/MenuStrip/StatusStrip/ContextMenuStrip controls,
+	which look better and provide many more features than the
+	orginial controls that they replace.  (Don't worry, the old
+	controls are still there!)</p>
+
+	<p><img src="notepad.png" width="600" /></p>
+
+<h3>DataGridView</h3>
+
+	<p>Mono 2.0 contains a much better implementation of
+	DataGridView.  There are still some missing features, such as
+	VirtualMode, which will be addressed in future Mono versions.
+	However, this new version has considerably more features than
+	previously.</p>
 	
+	<p><ul>
+	<li>Much better rendering</li>
+	<li>Table/Cell styles</li>
+	<li>Column sorting</li>
+	<li>Full row/column selection</li>
+	<li>Row/column hide supported</li>
+	
+	</ul></p>
+
+	<p><img src="datagridview.png" /></p>
+
+<h3>WebBrowser</h3>
+
+	<p>Mono 2.0 contains an implementation of WebBrowser that is based on Mozilla's Gecko HTML rendering engine.</p>
+
+	<p><img src="ieclone.png" width="600" /></p>
+
+<h3>TableLayoutPanel</h3>
+
+	<p>Mono 2.0 contains a complete implementation of TableLayoutPanel, allowing controls to be positioned using a simple column/row layout.</p>
+
+	<p><img src="tablelayoutpanel.png" /></p>
+
+<h3>FlowLayoutPanel</h3>
+
+	<p>Mono 2.0 contains a complete implementation of FlowLayoutPanel, allowing controls to be positioned by flowing to fill available space.</p>
+
+	<p><img src="flow1.jpg" /></p>
+
+	<p><img src="flow2.jpg" /></p>
+
+
+<h3>SplitContainer</h3>
+
+	<p>Mono 2.0 contains an implementation of SplitContainer, which provides an easier way to make adjustable layouts than using Splitters.</p>
+
+	<p><img src="splitcontainer.png" width="600" /></p>
+
+<a name="wapps">
+<h2>Windows.Forms: Putting it all together</h2>
+
+
+	<p>Some examples of public 2.0 applications running on Mono 2.0.
+
+
+	<h3>Paint.Net</h3>
+
+
+	<p>Paint.Net hasn't been fully ported to Mono yet (due to p/invokes), but we can still see it using the new 2.0 controls.</p>
+
+	<p><img src="monopaint.png" width="600" /></p>
+
+<h3>NClass</h3>
+
+	<p>NClass is a UML modeling application written in C#.</p>
+
+	<p><img src="nclass.png" width="600" /></p>
+
+
 <a name="changes">
 
 <h2>Changes Since Release 1.9</h2>
@@ -126,7 +257,6 @@
 	<a href="http://www.go-mono.com/archive/1.9">1.9</a> and
 	<a href="http://www.go-mono.com/archive/1.9.1">1.9.1</a>.
 
-<h2>
 <h2>Runtime: Performance</h2>
 
 	<p>The performance of operations on decimals has significally
@@ -174,14 +304,6 @@
 	<p><a href="https://bugzilla.novell.com/buglist.cgi?query_format=advanced&short_desc_type=allwordssubstr&short_desc=&long_desc_type=fulltext&long_desc=&classification=Mono&product=Mono%3A+Runtime&bug_file_loc_type=allwordssubstr&bug_file_loc=&status_whiteboard_type=allwordssubstr&status_whiteboard=&keywords_type=allwords&keywords=&bug_status=NEEDINFO&bug_status=RESOLVED&bug_status=VERIFIED&bug_status=CLOSED&resolution=FIXED&resolution=INVALID&resolution=WONTFIX&resolution=DUPLICATE&resolution=WORKSFORME&emailassigned_to1=1&emailtype1=substring&email1=&emailassigned_to2=1&emailreporter2=1&emailqa_contact2=1&emailcc2=1&emailtype2=substring&email2=&bugidtype=include&bug_id=&votes=&chfieldfrom=2008-01-29&chfieldto=2008-07-15&chfieldvalue=&cmdtype=doit&order=Reuse+same+sort+as+last+time&field0-0-0=noop&type0-0-0=noop&value0-0-0=">Runtime bugs fixed/closed in this release</a>
 
 <h2>Gendarme</h2>
-
-	<p><a href="http://www.mono-project.com/Gendarme">Gendarme</a> 
-	is an extensible rule-based tool to find problems in .NET
-	applications and libraries. Gendarme inspects programs and
-	libraries that contain code in ECMA CIL format (Mono and .NET)
-	and looks for common problems with the code, problems that
-	compiler do not typically check or have not historically
-	checked.
 
 	<p>This release introduce a new wizard-based GUI runner.
 	It also add support for .MDB and .PDB debugging symbols,
