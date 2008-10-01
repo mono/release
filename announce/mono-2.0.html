@@ -426,11 +426,6 @@
 <a name="install">
 <h1>Installing Mono 2.0</h1>
 	
-	<pre class="shell">
-	
-	$ ./configure --prefix=/devel
-	</pre>
-
 	<p><b>Binary Packages and Source Code Downloads:</b>
 	<blockquote>
 	<p>Source code and pre-compiled packages for Linux, Solaris,
@@ -444,21 +439,9 @@
         
 	 <blockquote>
 	 <p>If we have no packages for your platform, installing from
-	 source code is very simple.
+	 source code is very simple.   
 	
-	 <p>mono:</p>
-	
-	<pre class="shell">
-	
-    $ tar xzf mono-2.0.tar.gz
-    $ cd mono-2.0
-    $ ./configure
-    $ make
-    $ make install
-
-</pre>
-
-	<p>Then compile libgdiplus:
+	<p>Compile libgdiplus to support System.Drawing:
 	
 	<pre class="shell">
 	
@@ -471,6 +454,18 @@
 </pre>
 	</blockquote>
 		
+	 <p>Then compile Mono itself:</p>
+	
+	<pre class="shell">
+	
+    $ tar xzf mono-2.0.tar.gz
+    $ cd mono-2.0
+    $ ./configure
+    $ make
+    $ make install
+
+</pre>
+
 </blockquote>
 
 <a name="contributors">
