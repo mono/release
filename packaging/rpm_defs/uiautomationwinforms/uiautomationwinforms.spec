@@ -46,7 +46,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %doc 
 %_prefix/lib/uiautomationwinforms/UIAutomationWinforms.dll*
-%ghost %_prefix/lib/uiautomationwinforms/UIAutomationWinformsTests.dll*
+#%ghost %_prefix/lib/uiautomationwinforms/UIAutomationWinformsTests.dll*
 %_prefix/lib/mono/gac/UIAutomationWinforms
 
 
