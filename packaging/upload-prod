@@ -121,16 +121,13 @@ if generate:
 	do("cp -fp zip-icon.png  " + STAGE_DIR)
 
 	do("./mk-sources-index.py	%s %s %s %s/sources" % 		(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR))
-	do("./mk-archive-index.py	%s %s" % 			(BUNDLE, STAGE_DIR))
+	do("./mk-archive-index.py --skip_packages %s %s" % 		(BUNDLE, STAGE_DIR))
 
 # Publish stage
 if publish:
 	do('ssh %s@%s "mkdir -p %s"' % (TARGET_USER, TARGET_HOST, TARGET_DIR))
-
-os.chdir(STAGE_DIR)
-do('chmod -R ug+rwX .')
-# Can't use --delete here either... because we don't want to remove release notes or generated html from previous releases
-do('rsync %s%s -H . %s@%s:%s' % (rsync_opts, final_rsync_opts, TARGET_USER, TARGET_HOST, TARGET_DIR))
-
-if publish:
+	os.chdir(STAGE_DIR)
+	do('chmod -R ug+rwX .')
+	# Can't use --delete here either... because we don't want to remove release notes or generated html from previous releases
+	do('rsync %s%s -H . %s@%s:%s' % (rsync_opts, final_rsync_opts, TARGET_USER, TARGET_HOST, TARGET_DIR))
 	do('ssh %s@%s "chgrp -R mono %s"' % (TARGET_USER, TARGET_HOST, TARGET_DIR))
