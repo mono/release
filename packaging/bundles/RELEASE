@@ -7,8 +7,11 @@ bundle_urlname="stable"
 bundle_desc="Packages from the latest release"
 
 obs_repos=(
-	rsync://rsync.opensuse.org/buildservice-repos-main/Mono:/Preview/openSUSE_11.0/
-	rsync://rsync.opensuse.org/buildservice-repos-main/Mono:/Preview/SLE_10/
+	rsync://ftp5.gwdg.de/pub/opensuse/repositories/Mono:/Preview/openSUSE_11.0/
+	rsync://ftp5.gwdg.de/pub/opensuse/repositories/Mono:/Preview/SLE_10/
+## These don't have debuginfo packages for some reason!
+#	rsync://rsync.opensuse.org/buildservice-repos-main/Mono:/Preview/openSUSE_11.0/
+#	rsync://rsync.opensuse.org/buildservice-repos-main/Mono:/Preview/SLE_10/
 )
 
 # Actually, for now we have to use the stable version of monodevelop
