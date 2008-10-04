@@ -1,5 +1,6 @@
 var i586 = "x86 32bit (i586)";
 var x86_64 = "x86 64bit (x86_64)";
+var i586_x86_64 = "x86 32 and 64-bit (i586, x86_64)";
 var ppc = "PowerPC 32bit (ppc32)";
 var ia64 = "Itanium (ia64)";
 var s390 = "IBM s390 32bit";
@@ -7,7 +8,7 @@ var s390x = "IBM s390x 64bit";
 
 var data =
 {
-	"release" : "1.9.1",
+	"release" : "2.0",
 	"platforms" : [
 	{
 		"name" : "VMware",
@@ -15,12 +16,12 @@ var data =
 		"dlicon" : "vmware_icon.jpg",
 		"version" : [
 		{
-			"name" : "openSUSE 10.3",
+			"name" : "openSUSE 11.0",
 			"arch" : [
 			{
-				"name" : "Mono 1.9.1",
+				"name" : "Mono 2.0",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 10.3 VMWare image which includes Mono 1.9.1 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-1.9.1_openSUSE-10.3.i686-4.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-1.9.1_openSUSE-10.3.i686-4.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
+				"downloadText" : "Download the openSUSE 11.0 VMWare image which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono_openSUSE-11.0.i686-2.0.0-4.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono_openSUSE-11.0.i686-2.0.0-4.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
 			}
 			]
 		}
@@ -107,6 +108,16 @@ var data =
 				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-103-ppc'>http://ftp.novell.com/pub/mono/download-stable/suse-103-ppc" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-103-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
+		},
+		{
+			"name" : "openSUSE 11.0",
+			"arch" : [
+			{
+				"name" : i586_x86_64,
+				"desc" : "",
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.0'>http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.0" + "</a></ul> For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+			}
+			]
 		}
 		]
 	},
@@ -155,14 +166,9 @@ var data =
 			"name" : "Suse Linux Enterprise Server 10",
 			"arch" : [
 			{
-				"name" : i586,
+				"name" : i586_x86_64,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-i586'>http://ftp.novell.com/pub/mono/download-stable/suse-101-i586" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : x86_64,
-				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/SLE_10'>http://ftp.novell.com/pub/mono/download-stable/SLE_10" + "</a></ul>For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : ppc,
@@ -185,14 +191,9 @@ var data =
 			"name" : "Suse Linux Enterprise Desktop 10",
 			"arch" : [
 			{
-				"name" : i586,
+				"name" : i586_x86_64,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-i586'>http://ftp.novell.com/pub/mono/download-stable/suse-101-i586" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : x86_64,
-				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/SLE_10'>http://ftp.novell.com/pub/mono/download-stable/SLE_10" + "</a></ul>For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
 		}
@@ -210,7 +211,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on all versions of Windows 2000, XP, 2003 and Vista.",
-				"downloadText" : "Mono for Windows, Gtk#, and XSP <ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9.1/windows-installer/2/mono-1.9.1-gtksharp-2.10.4-win32-2.exe'>Mono 1.9.1_2 Setup</a></ul>Only Gtk# for .NET: <ul><li><a href='http://sourceforge.net/project/showfiles.php?group_id=74626&package_id=223067'>SDK and Runtime</a></ul>Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>"
+				"downloadText" : "Mono for Windows, Gtk#, and XSP <ul><li><a href='http://ftp.novell.com/pub/mono/archive/2.0/windows-installer/5/mono-2.0-gtksharp-2.10.4-win32-5.exe'>Mono 2.0 Setup</a></ul>Only Gtk# for .NET: <ul><li><a href='http://sourceforge.net/project/showfiles.php?group_id=74626&package_id=223067'>SDK and Runtime</a></ul>Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>"
 			}
 			]
 		}
