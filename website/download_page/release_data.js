@@ -21,7 +21,7 @@ var data =
 			{
 				"name" : "Mono 2.0",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 11.0 VMWare image which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono_openSUSE-11.0.i686-2.0.0-4.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono_openSUSE-11.0.i686-2.0.0-4.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
+				"downloadText" : "Download the openSUSE 11.0 VMWare image which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0_openSUSE-11.0.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0_openSUSE-11.0.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
 			}
 			]
 		}
