@@ -81,33 +81,38 @@ if not publish:
 
 distutils.dir_util.mkpath(STAGE_DIR)
 
+
 # We can call delete on so that stuff that gets deleted in the source will be deleted from the stage
-os.chdir('packages')
+#os.chdir('packages')
 # Exclude moon packages because they are built against ffmpeg
-do("rsync %s --delete --exclude '*/moon/' . %s/download" % (rsync_opts, STAGE_DIR))
+#do("rsync %s --delete --exclude '*/moon/' . %s/download" % (rsync_opts, STAGE_DIR))
 
-os.chdir("../external_packages")
-do("rsync %s --delete . %s/external_packages" % (rsync_opts, STAGE_DIR))
+#os.chdir("../external_packages")
+#do("rsync %s --delete . %s/external_packages" % (rsync_opts, STAGE_DIR))
 
-os.chdir("../sources")
-do("rsync %s --delete . %s/sources" % (rsync_opts, STAGE_DIR))
-os.chdir("..")
+#os.chdir("../sources")
+#do("rsync %s --delete . %s/sources" % (rsync_opts, STAGE_DIR))
+#os.chdir("..")
 
 current_dir = os.getcwd()
 
+os.chdir("../website")
+do("./sync-bundle.py --skip_missing %s %s" % (BUNDLE, STAGE_DIR))
+os.chdir(current_dir)
+
 # Push the installers
 # If these need to be cleaned up, you need to clean from source and stage (ugh)
-os.chdir("../windows-installer/Output")
-do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
-os.chdir(current_dir)
+#os.chdir("../windows-installer/Output")
+#do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
+#os.chdir(current_dir)
 
-os.chdir("../sunos/output")
-do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
-os.chdir(current_dir)
+#os.chdir("../sunos/output")
+#do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
+#os.chdir(current_dir)
 
-os.chdir("../macosx/output")
-do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
-os.chdir(current_dir)
+#os.chdir("../macosx/output")
+#do("rsync %s . %s/archive" % (rsync_opts, STAGE_DIR))
+#os.chdir(current_dir)
 
 os.chdir("../website")
 
@@ -116,9 +121,7 @@ if generate:
 	do("cp -fp zip-icon.png  " + STAGE_DIR)
 
 	do("./mk-sources-index.py	%s %s %s %s/sources" % 		(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR))
-	do("./mk-distro-index.py	%s %s %s %s/download %s" % 	(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR, TARGET_HOST))
 	do("./mk-archive-index.py	%s %s" % 			(BUNDLE, STAGE_DIR))
-	do("./mk-repos.py		%s %s %s %s/download %s" % 	(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR, TARGET_HOST))
 
 # Publish stage
 if publish:
