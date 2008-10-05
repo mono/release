@@ -1,59 +1,69 @@
 #!/usr/bin/perl
 
 if ($#ARGV < 2){
-   die "Usage: generate-static output_file TARGET_CAPTION content [toc]";
+   die "Usage: generate-static output_file TARGET_CAPTION content [tocfile [headfile]]";
 }
 open OUTPUT, ">$ARGV[0]";
 $caption = $ARGV [1];
 open CONTENT, $ARGV [2] || die "Can not open content file";
 
 if ($#ARGV >= 3){
-    $toc = 1;
-    open TOC, $ARGV[3] || die "Can not open $ARGV[3]\n";
+    if ($ARGV [3] ne "NONE"){
+	$toc = 1;
+	open TOC, $ARGV[3] || die "Can not open $ARGV[3]\n";
+    }
+}
+
+if ($#ARGV >= 4){
+    $head = 1;
+    open HEAD, $ARGV[4] || die "Can not open head file $ARGV[4]\n";
 }
 
 open TEMPLATE, "TemplateExport.html" || die "Can not open TemplateExport.html";
 $scanning_for_header = 1;
 while (<TEMPLATE>){
-      if ($scanning_for_header && /<DIV id="header">/){
-	  $in_header = 1;
-      } 
-      
-      if ($in_header){
-	  if (/<\/UL>/){
-	      $in_header = 0;
-	      $scanning_for_header = 0;
-	  }
+    if ($head && /<\/head>/){
+	print OUTPUT <HEAD>;
+    }
 
-	  $_ =~ s/ class="current_page_item"//;
-
-	  if (/<LI id/ && />$caption</){
-	      $_ =~ s/LI id=/LI class="current_page_item" id=/;
-	  }
-      } 
-
-      # if we got a toc, we need to remove the `wide' class which hides the TOC
-      if (defined (@toc) && /div.*class="wide">/){
-	  $_ =~ s/class="wide"//;
-      }
-
-      if (/<!-- BEGIN MAIN CONTENT -->/){
-	  print OUTPUT <CONTENT>;
-	  do {
-	      $_ = <TEMPLATE>;
-	  } while (!/<!-- END MAIN CONTENT -->/);
-	  next;
-      }
-      if ($toc && /<!-- BEGIN SIDE CONTENT -->/){
-	  print OUTPUT "Printing the TOC\n";
-	  print OUTPUT <TOC>;
-	  do {
-	      $_ = <TEMPLATE>;
-	  } while (!/<!-- END SIDE CONTENT -->/);
-	  next;
-      }
-
-      print OUTPUT;
+    if ($scanning_for_header && /<div id="header">/){
+	$in_header = 1;
+    } 
+    
+    if ($in_header){
+	if (/<\/UL>/){
+	    $in_header = 0;
+	    $scanning_for_header = 0;
+	}
+	
+	$_ =~ s/ class="current_page_item"//;
+	
+	if (/<li.*>$caption</){
+	    $_ =~ s/id="/class="current_page_item" id="/;
+	}
+    } 
+    
+    # if we got a toc, we need to remove the `wide' class which hides the TOC
+    if (defined ($toc) && /div.*class="wide">/){
+	$_ =~ s/class="wide"//;
+    }
+    
+    if (/<!-- BEGIN MAIN CONTENT -->/){
+	print OUTPUT <CONTENT>;
+	do {
+	    $_ = <TEMPLATE>;
+	} while (!/<!-- END MAIN CONTENT -->/);
+	next;
+    }
+    if ($toc && /<!-- BEGIN SIDE CONTENT -->/){
+	print OUTPUT <TOC>;
+	do {
+	    $_ = <TEMPLATE>;
+	} while (!/<!-- END SIDE CONTENT -->/);
+	next;
+    }
+    
+    print OUTPUT;
 }
 
 close OUTPUT;
