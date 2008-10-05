@@ -21,6 +21,16 @@
         urchinTracker();
     </script>
 
+<script type="text/javascript">
+function resizeIframe() {
+    var height = document.documentElement.clientHeight;
+    height -= document.getElementById('irc').offsetTop;
+    height -= 200;
+    document.getElementById('irc').style.height = height +"px";
+};
+window.onload = resizeIframe;
+window.onresize = resizeIframe;
+</script>
   </head>
   <body id="page-TemplateExport" class="ns-0 short">
 
