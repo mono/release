@@ -1,5 +1,7 @@
-all: 
+default: 
 	cat help
+
+all: update-pages push
 
 push:
 	rsync -a ../forums_page/* mono-web@www.go-mono.com:go-mono/forums
