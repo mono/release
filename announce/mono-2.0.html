@@ -286,7 +286,7 @@
 	improving reliability.
 	
 	<p>Math.Min/Math.Max and some forms of
-	Interlocked.CompareExhange (CAS) are now implemented using
+	Interlocked.CompareExchange (CAS) are now implemented using
 	fast inline code on x86/amd64.
 
 	<p>There is now a MONO_DEBUG=dont-free-domains option that
@@ -332,9 +332,9 @@
 
 	<p>The compiler now support expression trees (turning
 	expressions into an AST at compile time when the type of a
-	parameter is a System.Query.Expression).   This completes the
-	C# 3.0 support.
-	
+	parameter is a System.Linq.Expressions.Expression).
+	This completes the C# 3.0 support.
+
 	<p>Over 60 reported bugs in the compiler were fixed and
 	many of the internals have been cleaned up.   Extensive
 	refactoring and hardening of the C# 2.0 and 3.0 support are
