@@ -1,176 +1,73 @@
-<html>
-<head>
-<title>Mono Downloads</title>
-    <link type="text/css" rel="stylesheet" href="style.css">
-    <link type="text/css" rel="stylesheet" href="http://mono-project.com/skins/monoproject/main.css">
-    <link type="text/css" rel="stylesheet" href="http://mono-project.com/skins/monoproject/niftycorners.css">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="KEYWORDS" content="TemplateExport" />
+<meta name="robots" content="index,follow" />
+<meta name="verify-v1" content="CdUrKULfeirXCs/Mpc2sobgsPFNoqmiRL/5n0n08dAY=" /><link rel="shortcut icon" href="/favicon.ico" />
+<link title="Creative Commons" type="application/rdf+xml" href="/index.php?title=TemplateExport&amp;action=creativecommons" rel="meta" />
+<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html" />
+    <title>TemplateExport - Mono</title>
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://mono-project.com/news/index.rss2"/>
 
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"> </script>
+    <link rel="stylesheet" type="text/css" media="print" href="http://mono-project.com/skins/common/commonPrint.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="http://mono-project.com/skins/Mono2/screen.css" />
+    <script type="text/javascript" src="http://mono-project.com/skins/Mono2/prototype.js"></script>
+    <script type="text/javascript" src="http://mono-project.com/skins/Mono2/wikihacks.js"></script>
+    <script type="text/javascript" src="http://mono-project.com/skins/common/wikibits.js"></script>
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript"> </script>
+    <script type="text/javascript">
+        _uacct = "UA-76510-1";
+        urchinTracker();
+    </script>
+
+  <script type="text/javascript" src="release_data.js"></script>
+  <script type="text/javascript" src="download.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css" media="screen">
+  </head>
+  <body id="page-TemplateExport" class="ns-0 short">
+
+<div id="page">
+  <div id="header">
+    <h1>Mono</h1>
+    <a href="http://mono-project.com/"><img src="http://mono-project.com/skins/Mono2/images/header-logo.png" alt="Mono" /></a>
+    <ul>
+          <li  id="menu-n-home"><a href="http://mono-project.com/Main_Page">Home</a></li>
+
+      <li  class="current_page_item" id="menu-n-download"><a href="http://www.go-mono.com/mono-downloads/download.html">Download</a></li>
+      <li id="menu-n-start"><a href="http://mono-project.com/Start">Start</a></li>
+      <li  id="menu-n-news"><a href="http://www.mono-project.com/news/">News</a></li>
+      <li  id="menu-n-contribute"><a href="http://mono-project.com/Contributing">Contribute</a></li>
+      <li  id="menu-n-contact"><a href="http://mono-project.com/Contact">Contact</a></li>
+      <li  id="menu-n-forums"><a href="http://www.go-mono.com/forums">Forums</a></li>
+
+      <li  id="menu-n-blogs"><a href="http://www.go-mono.com/monologue">Blogs</a></li>
+    </ul>
+    <div id="search">
+      <form method="get" action="http://mono-project.com/Special:Search">
+        <div>
+          <input type="text" name="search" id="searchInput" 
+            value="Search Mono" 
+            onblur="if (this.value == '') this.value='Search Mono';" 
+            onfocus="if (this.value == 'Search Mono') this.value='';" />
+        </div>
+      </form>
+
+    </div>
+  </div>
+    <div id="content-header" class="short">&nbsp;</div>
+    <div id="wrapper" class="wide">
+    <div id="content" class="wide">
+<div class="page">
 <script type="text/javascript">
-	_uacct = "UA-76510-1";
-	urchinTracker();
+	var html = "<p class='latest-version'>Latest Version: " + data.release + " (<a href='http://www.go-mono.com/archive/" + data.release + "'>Release Notes</a>)</p>";
+	document.write(html);
+
 </script>
 
-<script type="text/javascript" src="release_data.js"></script>
-<script type="text/javascript">
-
-function loadpage()
-{
-   //window.status = "Page is loaded";
-	/* Unselect other items */
-	for (i = 0; i < data.platforms.length; i++)
-	{
-		document.getElementById("td"+i).style.background = "none";
-		document.getElementById("td"+i).style.border = "1px solid #ffffff";
-	}
-
-	// Clean out the html for steps after 1
-	document.getElementById("step2").innerHTML = "";
-	document.getElementById("step3").innerHTML = "";
-	document.getElementById("step4").innerHTML = "";
-}
-
-function mouseOver(n)
-{
-	/* Draw a temporary border on any mouseover box that isn't already selected */
-	if (document.getElementById("rb"+n)) // && !document.getElementById("rb"+n).checked)
-	{
-		document.getElementById("td"+n).style.border = "1px solid #aaa";
-	}
-}
-
-function mouseOut(n)
-{
-	/* After the mouseover, remove a temporary border on any box that isn't already selected */
-	if (document.getElementById("rb"+n) && !document.getElementById("rb"+n).checked)
-	//if (document.getElementById("rb"+n))
-	{
-		document.getElementById("td"+n).style.border = "1px solid #ffffff";
-	}
-}
-
-function selected(os_num)
-{
-	/* Highlight and select the chosen item */
-	document.getElementById("td"+os_num).style.border = "1px solid #aaa";
-	document.getElementById("td"+os_num).style.background = "#eee";
-
-	/* Unselect other items */
-	for (i = 0; i < data.platforms.length; i++)
-		if (i != os_num)
-		{
-			document.getElementById("td"+i).style.background = "none";
-			document.getElementById("td"+i).style.border = "1px solid #ffffff";
-		}
-
-	// Clean out the html for steps after 1
-	document.getElementById("step2").innerHTML = "";
-	document.getElementById("step3").innerHTML = "";
-	document.getElementById("step4").innerHTML = "";
-
-	if ((data.platforms[os_num].version.length == 1) &&
-	    (data.platforms[os_num].version[0].arch.length == 1))
-	{
-		download_step("2", os_num, 0, 0);
-	}
-	else
-	{
-		version_step(os_num);
-	}
-}
-
-function version_step(os_num)
-{
-	document.getElementById("step3").innerHTML = "";
-
-	var html = "<h2>2. " + data.platforms[os_num].name  + " Version</h2>";
-	html += "<br><select size='4' onchange=\"arch_step(" + os_num + ", this.options[this.options.selectedIndex].value)\">";
-
-	for (i=0; i <  data.platforms[os_num].version.length; i++)
-	{
-		html += "<option value='" + i + "' style='cursor: pointer;'>" + data.platforms[os_num].version[i].name  + "</option>";
-	}
-
-	html += "</select><br><br>";
-	document.getElementById("step2").innerHTML = html;
-}
-
-function arch_step(os_num, os_version)
-{
-	document.getElementById("step4").innerHTML = "";
-
-	var html = "<h2>3. Processor Architecture</h2>";
-	html += "<br><select size='4' onchange='download_step(\"4\", \"" + os_num + "\",\"" + os_version + "\", this.options[this.options.selectedIndex].value)'>";
-
-	for (i=0; i <  data.platforms[os_num].version[os_version].arch.length; i++)
-	{
-		html += "<option value='" + i + "' style='cursor: pointer;'>" + data.platforms[os_num].version[os_version].arch[i].name + "</option>";
-	}
-
-	html += "</select>";
-	document.getElementById("step3").innerHTML = html;
-}
-
-function download_step(step_number, os_num, ver_num, arch_num)
-{
-	if (data.platforms[os_num].name == "LiveCD")
-		html = "<h2>" + step_number + ". Download Mono "+ data.platforms[os_num].name + "</h2>";
-	else
-		html = "<h2>" + step_number + ". Download Mono for "+ data.platforms[os_num].name + "</h2>";
-
-	html += "<br><table>";
-	if (data.platforms[os_num].version[ver_num].arch[arch_num].desc != "")
-	{
-		html += "<tr><td colspan='2'>" + data.platforms[os_num].version[ver_num].arch[arch_num].desc + "</tr>";
-	}
-	html += "<tr><td class='osicon'><img class='osicon' src='" + data.platforms[os_num].dlicon + "'></td><td>";
-	html +=  data.platforms[os_num].version[ver_num].arch[arch_num].downloadText;
-	//html += "<td>Mono for Windows, Gtk#, and XSP";
-	//html += "<ul><li><a href='ftp://www.go-mono.com/archive/1.2.6/windows-installer/4/mono-1.2.6-gtksharp-2.10.2-win32-4.exe'>Mono 1.2.6_4 Setup</a></ul>";
-	//html += "Only Gtk# for .NET: <ul><li><a href=' http://forge.novell.com/modules/xfmod/project/?gtks-inst4win'>SDK and Runtime</a></ul>";
-	//html += "Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>";
-	html += "</td></tr></table>";
-
-	document.getElementById("step" + step_number).innerHTML = html;
-}
-</script>
-
-</head>
-<body onload="loadpage()">
-<div id="globalWrapper">
-        <div id="bigWrapper">
-            <div class="portlet" id="p-logo">
-                <a href="http://www.mono-project.com/Main_Page" title="Main Page"></a>
-            </div>
-            <div class="portlet" id="p-nav">
-                <h5>Navigation</h5>
-                <div class="pBody">
-                    <ul>
-                        <li><a href="http://www.mono-project.com/Start">Start</a></li>
-                        <li><a href="http://www.mono-project.com/Contributing">Contribute</a></li>
-                        <li><a href="http://www.go-mono.com/forums">Forums</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div id="column-content">
-                <div id="content">
-				<!--  BEGIN CONTENT -->
-
-<div id="download_box" style="display:none">
-<center>
-<table cellpadding="0" cellspacing="0">
-<tr height="11">
-<td width="9" class="dl-tableborder"><img src='top_left.jpg'></td>
-<td class="dl-tableborder" style="background-image:url('top_middle.jpg');"></td>
-<td width="9" class="dl-tableborder"><img src='top_right.jpg'></td>
-</tr>
-
-<tr>
-<td class="dl-tableborder" style="background-image:url('left_middle.jpg'); "></td>
-<td>
-<!-- contents go here -->
 <table class="dl-content" width="100%"><tr><td width="70%">
-<h1>Download Mono</h1>
+<a href='http://mono.ximian.com/monobuild/snapshot/download-trunk/'>SVN Builds</a><br/>
+<a href='http://mono-project.com/OldReleases'>Older Releases</a>
 </td><td align="right"><table><tr><td style="padding: 0px;"><img src="source_code.jpg" width="35"></td><td style="padding: 7px;">
 
 <script type="text/javascript">
@@ -181,13 +78,6 @@ function download_step(step_number, os_num, ver_num, arch_num)
 </tr><tr>
 
 <td>
-<script type="text/javascript">
-	var html = "<h4>Latest Version: " + data.release + " (<a href='http://www.go-mono.com/archive/" + data.release + "'>Release Notes</a>)</h4>";
-	html += "<a href='http://mono.ximian.com/monobuild/snapshot/download-trunk/'>SVN Builds</a><br>";
-	html += "<a href='http://mono-project.com/OldReleases'>Older Releases</a>";
-	document.write(html);
-
-</script>
 </td></tr></table>
 
 
@@ -224,110 +114,49 @@ function download_step(step_number, os_num, ver_num, arch_num)
 <div id='step4' class="dl-content"></div>
 
 
-<!-- End contents -->
-</td>
-<td class="dl-tableborder" style="background-image:url('right_middle.jpg')"></td>
-</tr>
-<tr>
-<td class="dl-tableborder"><img src="bottom_left.jpg"></td>
-<td class="dl-tableborder" style="background-image:url('bottom_middle.jpg')"></td>
-<td class="dl-tableborder"><img src="bottom_right.jpg"></td>
-</tr>
-</table>
-</center>
+Can not find the specific download you want?   We have
+some <a href="http://www.mono-project.com/Other_Downloads">unsupported
+downloads</a> you might be interested in.
 
-
-<p>
-<center>
-Can't find the specific download you want? We have some <a href="http://www.mono-project.com/Other_Downloads">unsupported downloads</a> you might be interested in.<br>
-We also have packages for some of the more <a href="http://mono-project.com/OpenSUSE_Build_Service">popular software</a> that runs on Mono.
-</center>
-</p>
-
-</div>
-
-<div id="needs_javascript"><br><br><h1>Error: This page needs JavaScript</h1></div>
-<script type="text/javascript">
-// <!--
-	document.getElementById("needs_javascript").style.display = "none";
-	document.getElementById("download_box").style.display = "";
-// -->
-</script>
-
-				<!--  END CONTENT -->
-                </div>
-            </div>
-        </div>
+<p>We also have packages for some of the
+more <a href="http://mono-project.com/OpenSUSE_Build_Service">popular
+software</a> that runs on Mono.
+</div> <!-- closes page --!>
+    </div><!--#content-->
+    
+    <div id="sidebar">
+    <div id="toc-parent"></div>
+    <!-- BEGIN SIDE CONTENT -->
+    
+    
+    <!-- END SIDE CONTENT -->
     </div>
 
-<div id="quicklinks">
-        <h3>Quick Links</h3>
-        <ul>
-            <li id="q-screenshots"><a href="http://www.mono-project.com/Screenshots">Screenshots</a></li>
-            <li id="q-downloads"><a href="http://www.mono-project.com/Downloads">Downloads</a></li>
-            <li id="q-docs"><a href="http://www.go-mono.com/docs/">Manuals &amp; Docs</a></li>
-            <li id="q-blogs"><a href="http://www.go-mono.com/monologue/">Blogs</a></li>
-        </ul>
+    
+    <div id="footer">
+      <table>
+      <tr>
+        <td class="novell">
+          <a href="http://www.novell.com/linux"><img src="http://mono-project.com/skins/Mono2/images/novell-logo.png" alt="Novell" title="The Mono Project - Sponsored by Novell"/></a>
+        </td>
+        <td class="text">
+          <p>All text and image content on mono-project.com, unless otherwise specified, is licensed under 
+          a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">Creative Commons 
+          Attribution-Share Alike 3.0 United States License</a>. This does not include the Mono name,
+          logo, or icon, which are registered trademarks of <a href="http://www.novell.com/linux">Novell</a>. 
+          This does not include Mono source code.</p>          
+        </td>
+
+        <td class="creative-commons"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png"/></a></td>
+      </tr>
+      </table>
     </div>
-
-<div id="footer">
-
-    <div id="p-search" class="portlet">
-        <div class="pBody">
-            <div class="split-half">
-            <!-- SiteSearch Google -->
-            <FORM method=GET action="http://www.google.com/search">
-                <input type=hidden name=ie value=UTF-8>
-                <input type=hidden name=oe value=UTF-8>
-                <TABLE bgcolor="#FFFFFF"><tr><td>
-                    <A HREF="http://www.google.com/"><IMG SRC="http://www.google.com/logos/Logo_40wht.gif"
-                    border="0" ALT="Google"></A>
-                    </td>
-                    <td>
-                    <INPUT TYPE=text name=q size=31 maxlength=255 value="">
-                    <INPUT type=submit name=btnG VALUE="Google Search">
-                    <font size=-1>
-                    <input type=hidden name=domains value="www.mono-project.com"><br><input type=radio name=sitesearch value=""> WWW <input
- type=radio name=sitesearch value="www.mono-project.com" checked> www.mono-project.com <br>
-                    </font>
-                    </td></tr></TABLE>
-            </FORM>
-
-        <!-- SiteSearch Google -->
-            </div>
-            <div class="split-half">
-                <form name="searchform" action="http://www.mono-project.com/Special:Search" id="searchform">
-            <!--<label for="searchInput">Search</label>-->
-                <input id="searchInput" name="search" type="text"
-                    accesskey="f" value="" />
-
-                <input type='submit' name="go" class="searchButton" id="searchGoButton" value="Search" />
-                      <!--
-                    <input type='submit' name="fulltext"
-              class="searchButton"
-              value="Search" />
-                    -->
-                </form>
-            </div>
-        </div>
-        <br style="clear:both;" />
-    </div> <!-- div p-search -->
-
-<div id="f-copyrightico">
-        <a href="http://www.gnu.org/copyleft/fdl.html"><img src="http://www.mono-project.com/skins/common/images/gnu-fdl.png" alt='GNU Free Documentation License 1.2 (only text)' /></a>
-    </div>
-    <div id="f-list">
-        <div id="f-copyright">Content is available under
-            <a href="http://www.gnu.org/copyleft/fdl.html" class='external'
-                title="http://www.gnu.org/copyleft/fdl.html"
-                rel="nofollow">GNU Free Documentation License 1.2 (only text)</a>.
-        </div>
-        <div id="f-disclaimer">
-            <a href="http://www.mono-project.com/Mono:General_disclaimer" title="Mono:General disclaimer">Disclaimers</a>
-        </div>
-        <div id="f-about"><a href="http://www.mono-project.com/Mono:About" title="Mono:About">About Mono</a>
-        </div>
-    </div>
+    
+  </div><!--#wrapper-->
+</div><!--#page-->
 
 </body>
 </html>
+
+
+
