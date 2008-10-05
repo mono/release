@@ -8,6 +8,7 @@ $caption = $ARGV [1];
 open CONTENT, $ARGV [2] || die "Can not open content file";
 
 if ($#ARGV >= 3){
+    $toc = 1;
     open TOC, $ARGV[3] || die "Can not open $ARGV[3]\n";
 }
 
@@ -43,7 +44,8 @@ while (<TEMPLATE>){
 	  } while (!/<!-- END MAIN CONTENT -->/);
 	  next;
       }
-      if (/<!-- BEGIN SIDE CONTENT -->/){
+      if ($toc && /<!-- BEGIN SIDE CONTENT -->/){
+	  print OUTPUT "Printing the TOC\n";
 	  print OUTPUT <TOC>;
 	  do {
 	      $_ = <TEMPLATE>;
