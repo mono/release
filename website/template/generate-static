@@ -1,11 +1,15 @@
 #!/usr/bin/perl
 
-if ($#ARGV != 2){
-   die "Usage: generate-static content output_file TARGET_CAPTION";
+if ($#ARGV < 2){
+   die "Usage: generate-static output_file TARGET_CAPTION content [toc]";
 }
-open CONTENT, $ARGV [0] || die "Can not open content file";
-open OUTPUT, ">$ARGV[1]";
-$caption = $ARGV [2];
+open OUTPUT, ">$ARGV[0]";
+$caption = $ARGV [1];
+open CONTENT, $ARGV [2] || die "Can not open content file";
+
+if ($#ARGV >= 3){
+    open TOC, $ARGV[3] || die "Can not open $ARGV[3]\n";
+}
 
 open TEMPLATE, "TemplateExport.html" || die "Can not open TemplateExport.html";
 $scanning_for_header = 1;
@@ -26,14 +30,27 @@ while (<TEMPLATE>){
 	      $_ =~ s/LI id=/LI class="current_page_item" id=/;
 	  }
       } 
-      if (/<!-- BEGIN CONTENT -->/){
-	  while ($c = <CONTENT>){
-	      print OUTPUT $c;
-	  }
+
+      # if we got a toc, we need to remove the `wide' class which hides the TOC
+      if (defined (@toc) && /div.*class="wide">/){
+	  $_ =~ s/class="wide"//;
+      }
+
+      if (/<!-- BEGIN MAIN CONTENT -->/){
+	  print OUTPUT <CONTENT>;
 	  do {
 	      $_ = <TEMPLATE>;
-	  } while (!/<!-- END CONTENT -->/);
+	  } while (!/<!-- END MAIN CONTENT -->/);
+	  next;
       }
+      if (/<!-- BEGIN SIDE CONTENT -->/){
+	  print OUTPUT <TOC>;
+	  do {
+	      $_ = <TEMPLATE>;
+	  } while (!/<!-- END SIDE CONTENT -->/);
+	  next;
+      }
+
       print OUTPUT;
 }
 
