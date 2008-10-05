@@ -1,0 +1,10 @@
+Usage:
+
+To update the template from the Main Wiki site:
+	make update-template
+
+To regenerate all the peer web pages from the template:
+        make update-pages
+
+To push the updated pages to all the servers:
+        make push
