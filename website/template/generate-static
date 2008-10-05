@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+
+if ($#ARGV != 2){
+   die "Usage: generate-static content output_file TARGET_CAPTION";
+}
+open CONTENT, $ARGV [0] || die "Can not open content file";
+open OUTPUT, ">$ARGV[1]";
+$caption = $ARGV [2];
+
+open TEMPLATE, "TemplateExport.html" || die "Can not open TemplateExport.html";
+$scanning_for_header = 1;
+while (<TEMPLATE>){
+      if ($scanning_for_header && /<DIV id="header">/){
+	  $in_header = 1;
+      } 
+      
+      if ($in_header){
+	  if (/<\/UL>/){
+	      $in_header = 0;
+	      $scanning_for_header = 0;
+	  }
+
+	  $_ =~ s/ class="current_page_item"//;
+
+	  if (/<LI id/ && />$caption</){
+	      $_ =~ s/LI id=/LI class="current_page_item" id=/;
+	  }
+      } 
+      if (/<!-- BEGIN CONTENT -->/){
+	  while ($c = <CONTENT>){
+	      print OUTPUT $c;
+	  }
+	  do {
+	      $_ = <TEMPLATE>;
+	  } while (!/<!-- END CONTENT -->/);
+      }
+      print OUTPUT;
+}
+
+close OUTPUT;
