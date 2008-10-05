@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 if ($#ARGV < 2){
-   die "Usage: generate-static output_file TARGET_CAPTION content [tocfile [headfile]]";
+   die "Usage: generate-static output_file TARGET_CAPTION content [tocfile [headfile [prologuefile]]]";
 }
 open OUTPUT, ">$ARGV[0]";
 $caption = $ARGV [1];
@@ -15,13 +15,27 @@ if ($#ARGV >= 3){
 }
 
 if ($#ARGV >= 4){
-    $head = 1;
-    open HEAD, $ARGV[4] || die "Can not open head file $ARGV[4]\n";
+    if ($ARGV [4] ne "NONE"){
+	$head = 1;
+	print "Using HEAD from $ARGV[4]\n";
+	open HEAD, $ARGV[4] || die "Can not open head file $ARGV[4]\n";
+    }
 }
 
+if ($#ARGV >= 5){
+    open PROLOGUE, $ARGV[5] || die "No prologue found $ARGV[5]\n";
+    print OUTPUT <PROLOGUE>;
+    
+}
+ 
 open TEMPLATE, "TemplateExport.html" || die "Can not open TemplateExport.html";
 $scanning_for_header = 1;
 while (<TEMPLATE>){
+    if (/<title>TemplateExport - Mono<\/title>/){
+	print OUTPUT "<title>$caption - Mono</title>\n";
+	next;
+    }
+
     if ($head && /<\/head>/){
 	print OUTPUT <HEAD>;
     }
