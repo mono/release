@@ -35,6 +35,9 @@ while (<TEMPLATE>){
 	print OUTPUT "<title>$caption - Mono</title>\n";
 	next;
     }
+    if (/<!--BEGIN PAGE TITLE--><!--END PAGE TITLE-->/){
+	$_ =~ s/<!--BEGIN PAGE TITLE--><!--END PAGE TITLE-->/$caption/;
+    }
 
     if ($head && /<\/head>/){
 	print OUTPUT <HEAD>;
