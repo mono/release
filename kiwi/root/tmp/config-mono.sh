@@ -2,16 +2,19 @@
 
 ########################
 # zypper repositories
-zypper addrepo "http://download.opensuse.org/update/11.0" 11.0-update
 zypper addrepo "http://download.opensuse.org/distribution/11.0/repo/debug" 11.0-debug
-zypper addrepo "http://www.go-mono.com/download-stable/suse-103-i586" mono
-zypper addrepo "http://mono.ximian.com/monobuild/preview/download-preview/suse-103-i586" mono-preview
+zypper addrepo "http://www.go-mono.com/download-stable/openSUSE_11.0" mono
+zypper addrepo "http://download.opensuse.org/repositories/Mono:/Preview/openSUSE_11.0" mono-preview
 zypper addrepo "http://download.opensuse.org/repositories/Mono:/Community/openSUSE_11.0" mono-community
 
 zypper modifyrepo --disable mono-preview
 
-for repo in "11.0-oss" "11.0-non-oss" "11.0-update" "11.0-debug" "mono" "mono-preview" "mono-community"; do
+for repo in "11.0-oss" "11.0-non-oss" "11.0-updates" "11.0-debug" "mono" "mono-preview" "mono-community"; do
 	zypper modifyrepo --disable-autorefresh $repo
+done
+
+for repo in "11.0-oss" "11.0-updates" "11.0-debug" "mono" "mono-community"; do
+	zypper modifyrepo --enable $repo
 done
 
 # Turn required services on
@@ -24,6 +27,10 @@ chkconfig ssh on
 # Turn samba on
 chkconfig nmb on
 chkconfig smb on
+# Turn apache and dbs on
+chkconfig apache2 on
+chkconfig postgresql on
+chkconfig mysql on
 
 ########################
 # Kiwi hacks
@@ -43,17 +50,17 @@ pushd Desktop
 mkdir 'Gtk# Applications'
 pushd 'Gtk# Applications'
 for app in 'beagle-search' 'f-spot' 'gbrainy' 'tomboy' 'banshee-1'; do 
-	ln -s /usr/share/applications/$app.desktop
+	cp /usr/share/applications/$app.desktop .
 done
 popd
 for app in 'monodevelop' 'monodoc' 'moma'; do 
-	ln -s /usr/share/applications/$app.desktop
+	cp /usr/share/applications/$app.desktop .
 done
 
 mkdir 'Mono Winforms Applications'
 pushd 'Mono Winforms Applications'
 for app in $(rpm -ql wf-apps | grep .desktop); do
-	ln -s $app
+	cp $app .
 done
 # These apps are broken
 rm AlbumSurfer.desktop
@@ -83,6 +90,9 @@ tar xjf /tmp/f-spot.tbz
 
 # Setup slab
 tar xjf /tmp/slab.tbz
+
+# Setup gnome-do
+#tar xjf /tmp/gnome-do.tbz
 
 # Setup mime association for exe
 tar xjf /tmp/mime-exe.tbz

@@ -1,4 +1,0 @@
-#!/bin/sh
-cd /var/lib
-tar -xzf /tmp/pgsql.tar.gz
-rm -f /tmp/pgsql.tar.gz

@@ -1,0 +1,6 @@
+#!/bin/bash
+rsync --archive --progress --verbose rsync://rsync.opensuse.org/buildservice-repos/Mono:/Community/openSUSE_11.0/ /repos/mono-community
+rsync --archive --progress --verbose rsync://rsync.opensuse.org/buildservice-repos/Mono:/Preview/openSUSE_11.0/ /repos/mono-preview
+rsync --archive --progress --verbose rsync://rsync.opensuse.org/opensuse-full/opensuse/distribution/11.0/repo/oss/ /repos/oss
+rsync --archive --progress --verbose rsync://rsync.opensuse.org/opensuse-full/opensuse/update/11.0/ /repos/update 
+rsync --archive --progress --verbose rsync://rsync.opensuse.org/buildservice-repos/Virtualization:/VMware/openSUSE_11.0/ /repos/vmware

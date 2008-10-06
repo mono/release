@@ -21,33 +21,26 @@
     <user name="root" pwd="$2a$05$DlJal4RD7tKd3trZ6Qjb5ufS7cJ4R7O56g8yNn8SYcLPvpelTl7lq" home="/root"/>
   </users>
   <!--
-  <repository type="rpm-md">
-    <source path="http://www.go-mono.com/download-stable/openSUSE_11.0/"/>
-  </repository>
-  <repository type="rpm-md">
-    <source path="http://mono.ximian.com/monobuild/preview/download-preview/openSUSE_11.0/"/>
-  </repository>
-  <repository type="yast2">
-    <source path="http://kirk.provo.novell.com/install/11.0/i386/"/>
-  </repository>
+  <users group="users">
+    <user name="linux" id="999" realname="Rupert Monkey" pwd="$2a$05$DlJal4RD7tKd3trZ6Qjb5ufS7cJ4R7O56g8yNn8SYcLPvpelTl7lq" home="/home/linux"/>
+  </users>
   -->
   <repository type="yast2">
-    <source path="http://download.opensuse.org/distribution/11.0/repo/oss/"/>
+    <source path="/repos/oss"/>
   </repository>
-  <repository type="yast2">
-    <source path="http://download.opensuse.org/distribution/11.0/repo/non-oss/"/>
-  </repository>
+  <!--
   <repository type="yast2">
     <source path="http://download.opensuse.org/distribution/11.0/repo/debug/"/>
   </repository>
+  -->
   <repository type="rpm-md">
-    <source path="http://download.opensuse.org/update/11.0/"/>
+    <source path="/repos/update"/>
   </repository>
   <repository type="rpm-md">
-    <source path="http://download.opensuse.org/repositories/Mono:/Preview/openSUSE_11.0/"/>
+    <source path="/repos/mono-preview"/>
   </repository>
   <repository type="rpm-md">
-    <source path="http://download.opensuse.org/repositories/Mono:/Community/openSUSE_11.0+Mono/"/>
+    <source path="/repos/mono-community"/>
   </repository>
   <!--repository type="rpm-md">
     <source path=""/>
@@ -61,14 +54,111 @@
     <package name="aaa_base"/>
     <package name="tar"/>
     <package name="patch"/>
-    <package name="kernel-source"/>
     <package name="zypper"/>
 
     <opensusePattern name="gnome_basis"/>
     <opensusePattern name="devel_basis"/>
-    <opensusePattern name="mono_everything"/>
-    <opensusePattern name="mono_apps"/>
-    <opensusePattern name="mono_aspnet_apps"/>
+    <opensusePattern name="yast2_basis"/>
+
+    <package name="xorg-x11-server"/>
+    <package name="xorg-x11-server-extra"/>
+    <package name="gnome-terminal"/>
+    <package name="vim"/>
+    <package name="sax2"/>
+    <package name="sax2-gui"/>
+    <package name="beagle-gui"/>
+    <package name="gvfs-backends"/>
+    <package name="yast2-gtk"/>
+    <package name="yast2-qt"/>
+    <package name="gnome-control-center"/>
+    <package name="gnome-menus"/>
+    <package name="sudo"/>
+
+    <!--opensusePattern name="mono_everything"/-->
+    <package name="apache2-mod_mono" />
+    <package name="art-sharp2" />
+    <package name="bytefx-data-mysql" />
+    <package name="gconf-sharp2" />
+    <package name="glade-sharp2" />
+    <package name="glib-sharp2" />
+    <package name="gnome-desktop-sharp2" />
+    <package name="gnome-sharp2" />
+    <package name="gnome-sharp2-complete" />
+    <package name="gnome-vfs-sharp2" />
+    <package name="gtk-sharp2" />
+    <package name="gtk-sharp2-complete" />
+    <package name="gtk-sharp2-doc" />
+    <package name="gtk-sharp2-gapi" />
+    <package name="gtkhtml314-sharp" />
+    <package name="gtksourceview2-sharp" />
+    <package name="heap-buddy" />
+    <package name="ibm-data-db2" />
+    <package name="libgdiplus0" />
+    <package name="libgluezilla0" />
+    <package name="mono-complete" />
+    <package name="mono-core" />
+    <package name="mono-data" />
+    <package name="mono-data-firebird" />
+    <package name="mono-data-oracle" />
+    <package name="mono-data-postgresql" />
+    <package name="mono-data-sqlite" />
+    <package name="mono-data-sybase" />
+    <package name="mono-devel" />
+    <package name="mono-extras" />
+    <package name="mono-jscript" />
+    <package name="mono-locale-extras" />
+    <package name="mono-nunit" />
+    <package name="mono-web" />
+    <package name="mono-winforms" />
+    <package name="nautilusburn-sharp" />
+    <package name="rsvg2-sharp" />
+    <package name="vte016-sharp" />
+    <package name="wnck-sharp" />
+    <package name="IPCE" />
+    <package name="boo" />
+    <package name="gecko-sharp2" />
+    <package name="gtksourceview-sharp2" />
+    <package name="ikvm" />
+    <package name="mono-addins" />
+    <package name="mono-basic" />
+    <package name="mono-tools" />
+    <package name="mono-tools" />
+    <package name="mono-tools" />
+    <package name="mono-zeroconf" />
+    <package name="mono-zeroconf-doc" />
+    <package name="mono-zeroconf-provider-avahi" />
+    <package name="monodevelop" />
+    <package name="monodevelop-boo" />
+    <package name="monodevelop-database" />
+    <package name="monodevelop-java" />
+    <package name="monodoc-core" />
+    <package name="nant" />
+    <package name="xsp" />
+
+    <!--opensusePattern name="mono_apps"/-->
+    <package name="banshee-1" />
+    <package name="banshee-1-extensions-default" />
+    <package name="banshee-1-backend-platform-gnome" />
+    <package name="f-spot" />
+    <package name="gbrainy" />
+    <package name="gnome-do" />
+    <package name="last-exit" />
+    <package name="moma" />
+    <package name="monsoon" />
+    <package name="tasque" />
+    <package name="tomboy" />
+
+    <!--opensusePattern name="mono_aspnet_apps"/-->
+    <package name="mojoportal" />
+    <package name="Mono_ASP.NET_BlogStarterKit" />
+    <package name="Mono_ASP.NET_ClassifiedsStarterKit" />
+    <package name="Mono_ASP.NET_ClubWebSite" />
+    <package name="Mono_ASP.NET_IBuySpyPortal" />
+    <package name="Mono_ASP.NET_MonoBlog" />
+    <package name="Mono_ASP.NET_MonoForums" />
+
+    <package name="pgsql-testdb"/>
+    <package name="wf-apps"/>
 
     <package name="mysql"/>
     <package name="mysql-client"/>

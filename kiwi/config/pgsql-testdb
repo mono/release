@@ -1,0 +1,2 @@
+#!/bin/sh
+yes | mono-pg-setup

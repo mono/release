@@ -75,7 +75,7 @@ rm -rf /var/cache/zypp/raw/*
 sed -i -e "s/ALL ALL=(ALL) ALL/ALL ALL=(ALL) NOPASSWD: ALL/" /etc/sudoers 
 chmod 0440 /etc/sudoers
 
-/usr/sbin/useradd -m -u 999 linux -c "Rupert Monkey" -p "$2a$05$DlJal4RD7tKd3trZ6Qjb5ufS7cJ4R7O56g8yNn8SYcLPvpelTl7lq"
+/usr/sbin/useradd -m -u 999 linux -c "Rupert Monkey" -p '$2a$05$DlJal4RD7tKd3trZ6Qjb5ufS7cJ4R7O56g8yNn8SYcLPvpelTl7lq'
 
 # delete passwords
 #passwd -d root
