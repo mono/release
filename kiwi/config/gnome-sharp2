@@ -1,0 +1,12 @@
+#!/bin/bash
+cd /usr/lib/mono/gac/gnome-sharp/*
+patch -p0 << EOF
+--- gnome-sharp.dll.config	2008-10-06 16:54:29.000000000 -0600
++++ gnome-sharp.dll.config	2008-10-06 16:54:17.000000000 -0600
+@@ -8,4 +8,5 @@
+   <dllmap dll="gnomeprint-2-2" target="libgnomeprint-2-2.so.0"/>
+   <dllmap dll="gnomeprintui-2-2" target="libgnomeprintui-2-2.so.0"/>
+   <dllmap dll="gnomeui-2" target="libgnomeui-2.so.0"/>
++  <dllmap dll="panel-applet-2" target="libpanel-applet-2.so.0"/>
+ </configuration>
+EOF

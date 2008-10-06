@@ -73,6 +73,8 @@
     <package name="gnome-control-center"/>
     <package name="gnome-menus"/>
     <package name="sudo"/>
+    <package name="acpid"/>
+    <package name="preload"/>
 
     <!--opensusePattern name="mono_everything"/-->
     <package name="apache2-mod_mono" />

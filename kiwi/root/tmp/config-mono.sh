@@ -91,9 +91,6 @@ tar xjf /tmp/f-spot.tbz
 # Setup slab
 tar xjf /tmp/slab.tbz
 
-# Setup gnome-do
-#tar xjf /tmp/gnome-do.tbz
-
 # Setup mime association for exe
 tar xjf /tmp/mime-exe.tbz
 
