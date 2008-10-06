@@ -72,6 +72,7 @@ file_map = [
 
 	# Extra maps... more?
 	[ 'lib/mono/gac/gtk-sharp/*/gtk-sharp.dll.config',	'glibsharpglue-2',	'libglibsharpglue-2.so'		],
+	[ 'lib/mono/gac/gdk-sharp/*/gdk-sharp.dll.config',	'glibsharpglue-2',	'libglibsharpglue-2.so'		],
 ]
 
 for a in file_map:

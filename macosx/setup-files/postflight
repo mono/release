@@ -1,41 +1,34 @@
 #!/bin/sh -x
+
 if [ -d /Library/Frameworks/Mono.framework/Commands ]; then
-cd /Library/Frameworks/Mono.framework/Commands
-for i in `ls -al | grep -v .exe | awk '{print $9}'`; do
-    if test x$i = x. || test x$i = x.. ; then
-        continue
-    fi
-    echo "${i}"
-    ln -sf $PWD/${i} /usr/bin/${i}
-done;
+    cd /Library/Frameworks/Mono.framework/Commands
+    for i in `ls -al | grep -v .exe | awk '{print $9}'`; do
+        if test x$i = x. || test x$i = x.. ; then
+            continue
+        fi
+        echo "${i}"
+        ln -sf $PWD/${i} /usr/bin/${i}
+    done;
 else
     echo "/Library/Frameworks/Mono.framework/Commands does not exist"
     echo "Can not create links to /usr/bin."
 fi
 
 if [ -d /Library/Frameworks/Mono.framework/Versions/Current ]; then
-cd /Library/Frameworks/Mono.framework/Versions/Current/share/man
-for i in man*; do
-   (cd ${i};
-   for j in *; do
-     ln -sf $PWD/${j} /usr/share/man/${i}/${j}
-   done)
-done
+    cd /Library/Frameworks/Mono.framework/Versions/Current/share/man
+    for i in man*; do
+       (cd ${i};
+       for j in *; do
+         ln -sf $PWD/${j} /usr/share/man/${i}/${j}
+       done)
+    done
 
-# Only run if the X11 package is installed
-if [ -e /usr/X11R6/lib/libX11.dylib ]; then
-
-# Make sure we run the files we lay down, and not other stuff installed
-#  on the system
-export PATH=/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH
-
-# gtk+ setup
-cd /Library/Frameworks/Mono.framework/Versions/Current/etc
-gdk-pixbuf-query-loaders > gtk-2.0/gdk-pixbuf.loaders
-
-# pango setup
-mkdir -p pango
-pango-querymodules >  pango/pango.modules
-fi
-
+    cd /Library/Frameworks/Mono.framework/Versions/Current/etc
+    # Make sure we run the files we lay down, and not other stuff installed on the system
+    export PATH=/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH
+    # gtk+ setup
+    gdk-pixbuf-query-loaders > gtk-2.0/gdk-pixbuf.loaders
+    # pango setup
+    mkdir -p pango
+    pango-querymodules >  pango/pango.modules
 fi
