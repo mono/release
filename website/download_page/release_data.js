@@ -38,7 +38,7 @@ var data =
 			{
 				"name" : "Mono 1.9.1",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 10.3 Live CD which includes Mono 1.9.1 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-1.9.1_openSUSE-10.3.i686-3.1.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-1.9.1_openSUSE-10.3.i686-3.1.iso'>via http</a> </ul><a href='http://mono-project.com/LiveCD'>Instructions for using the Live CD</a>."
+				"downloadText" : "<em>The Mono 2.0 LiveCD is not available yet, but should be soon.</em><br/>Download the openSUSE 10.3 Live CD which includes Mono 1.9.1 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-1.9.1_openSUSE-10.3.i686-3.1.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-1.9.1_openSUSE-10.3.i686-3.1.iso'>via http</a> </ul><a href='http://mono-project.com/LiveCD'>Instructions for using the Live CD</a>."
 			}
 			]
 		}
@@ -229,7 +229,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk#, MonoDevelop installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9.1/macos-10-universal/3/MonoFramework-1.9.1_3.macos10.novell.universal.dmg'>Mono 1.9.1_3 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk#, MonoDevelop, and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
+				"downloadText" : "<em>The Mono 2.0 Mac Installer is not available yet, but should be soon.</em><br/>Includes Mono, Cocoa#, Gtk#, MonoDevelop installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/1.9.1/macos-10-universal/3/MonoFramework-1.9.1_3.macos10.novell.universal.dmg'>Mono 1.9.1_3 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk#, MonoDevelop, and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
