@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config
 Author="Mono Project (mono@novell.com)"
-BlogDirectory="/cvs/website/newsitems"
+BlogDirectory="/cvs/release/website/news/newsitems"
 BlogFileName="index.html"
 BlogWebDirectory="http://www.mono-project.com/news/"
 BlogImageBasedir="http://www.mono-project.com/news/"
