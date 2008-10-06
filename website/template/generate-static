@@ -36,7 +36,12 @@ while (<TEMPLATE>){
 	next;
     }
     if (/<!--BEGIN PAGE TITLE--><!--END PAGE TITLE-->/){
-	$_ =~ s/<!--BEGIN PAGE TITLE--><!--END PAGE TITLE-->/$caption/;
+	if ($caption eq "Contact"){
+	    $t = "Contact Mono at Novell";
+	} else {
+	    $t = $caption;
+	}
+	$_ =~ s/<!--BEGIN PAGE TITLE--><!--END PAGE TITLE-->/$t/;
     }
 
     if ($head && /<\/head>/){

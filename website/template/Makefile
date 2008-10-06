@@ -19,6 +19,7 @@ update-pages:
 	./generate-static ../forums_page/index.html Forums ../forums_page/content.part.html
 	./generate-static ../download_page/download.html Download ../download_page/download.part.html NONE ../download_page/download.head.html 
 	./generate-static ../irc_page/index.html Chat ../irc_page/index.part.html NONE ../irc_page/index.head.html
+	./generate-static ../contact/thankyou.aspx Contact ../contact/thankyou.part.html 
 	./generate-static contact.aspx Contact ../contact/index.part.html NONE ../contact/index.head.html ../contact/index.prologue.html
 	./generate-static /cvs/website/template News ../news/body.part.html ../news/toc.part.html 
 	set `cat keys`; sed -e "s/@PUBLICKEY@/$$2/" -e "s/@PRIVATEKEY@/$$4/" < contact.aspx > ../contact/index.aspx
