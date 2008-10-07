@@ -195,6 +195,7 @@ Authors:
 %_prefix/lib/mono/gac/Mono.GetOptions
 %_prefix/lib/mono/1.0/Mono.GetOptions.dll
 %_prefix/lib/mono/2.0/Mono.GetOptions.dll
+%_prefix/lib/mono/gac/Mono.Simd
 %_prefix/lib/mono/2.0/Mono.Simd.dll
 %_prefix/lib/mono/gac/Mono.Management
 %_prefix/lib/mono/gac/Mono.Security
