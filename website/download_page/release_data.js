@@ -33,12 +33,12 @@ var data =
 		"dlicon" : "livecd.jpg",
 		"version" : [
 		{
-			"name" : "openSUSE 10.3 Live CD",
+			"name" : "openSUSE 11.0 Live CD",
 			"arch" : [
 			{
-				"name" : "Mono 1.9.1",
+				"name" : "Mono 2.0",
 				"desc" : "",
-				"downloadText" : "<em>The Mono 2.0 LiveCD is not available yet, but should be soon.</em><br/>Download the openSUSE 10.3 Live CD which includes Mono 1.9.1 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-1.9.1_openSUSE-10.3.i686-3.1.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-1.9.1_openSUSE-10.3.i686-3.1.iso'>via http</a> </ul><a href='http://mono-project.com/LiveCD'>Instructions for using the Live CD</a>."
+				"downloadText" : "Download the openSUSE 11.0 Live CD which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0_openSUSE-11.0.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0_openSUSE-11.0.iso'>via http</a> </ul>"
 			}
 			]
 		}
