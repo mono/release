@@ -38,7 +38,7 @@ var data =
 			{
 				"name" : "Mono 2.0",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 11.0 Live CD which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0_openSUSE-11.0.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0_openSUSE-11.0.iso'>via http</a> </ul>"
+				"downloadText" : "Download the openSUSE 11.0 Live CD which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0-1_openSUSE-11.0.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0-1_openSUSE-11.0.iso'>via http</a> </ul>"
 			}
 			]
 		}
