@@ -269,6 +269,7 @@ Authors:
 %_prefix/lib/mono/2.1/System.Core.dll
 %_prefix/lib/mono/gac/System.Net
 %_prefix/lib/mono/2.1/System.Net.dll
+%_prefix/lib/mono/gac/Mono.CSharp
 # localizations?
 #%_datadir/locale/*/LC_MESSAGES/mcs.mo
 # Not sure if autobuild allows this...
