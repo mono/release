@@ -686,6 +686,10 @@ Authors:
 %_prefix/lib/mono/gac/System.Web.Services
 %_prefix/lib/mono/1.0/System.Web.Services.dll
 %_prefix/lib/mono/2.0/System.Web.Services.dll
+%_prefix/lib/mono/gac/System.Web.Abstractions
+%_prefix/lib/mono/2.0/System.Web.Abstractions.dll
+%_prefix/lib/mono/gac/System.Web.Routing
+%_prefix/lib/mono/2.0/System.Web.Routing.dll
 %_prefix/lib/mono/gac/System.Web.Extensions
 %_prefix/lib/mono/2.0/System.Web.Extensions.dll
 %_prefix/lib/mono/gac/System.Web.Extensions.Design
