@@ -5,7 +5,7 @@ var ppc = "PowerPC 32bit (ppc32)";
 var ia64 = "Itanium (ia64)";
 var s390 = "IBM s390 32bit";
 var s390x = "IBM s390x 64bit";
-var discontinued = "<div style=\"color: darkred; font-weight: bold\">Binaries for this platform have been discontinued.  Builds may be available from <a href=\"http://www.mono-project.com/Other_Downloads\">unsupported downloads</a>.</div>";
+var discontinued = "<div style=\"color: darkred; font-weight: bold\">Binaries for this platform have been discontinued.  Builds may be available from <a href=\"http://www.mono-project.com/Other_Downloads\">unsupported downloads</a> or we may be looking for a volunteer to maintain packages.</div>";
 
 var data =
 {
@@ -54,14 +54,9 @@ var data =
 			"name" : "openSUSE 10.2",
 			"arch" : [
 			{
-				"name" : i586,
+				"name" : i586_x86_64,
 				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-102-i586'>http://ftp.novell.com/pub/mono/download-stable/suse-102-i586" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-102-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : x86_64,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-102-x86_64'>http://ftp.novell.com/pub/mono/download-stable/suse-102-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-102-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href=\"http://download.opensuse.org/repositories/Mono/openSUSE_10.2/\">http://download.opensuse.org/repositories/Mono/openSUSE_10.2/</a></ul>For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : ppc,
@@ -74,14 +69,9 @@ var data =
 			"name" : "openSUSE 10.3",
 			"arch" : [
 			{
-				"name" : i586,
+				"name" : i586_x86_64,
 				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-103-i586'>http://ftp.novell.com/pub/mono/download-stable/suse-103-i586" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-103-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : x86_64,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-103-x86_64'>http://ftp.novell.com/pub/mono/download-stable/suse-103-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-103-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href=\"http://download.opensuse.org/repositories/Mono/openSUSE_10.3/\">http://download.opensuse.org/repositories/Mono/openSUSE_10.3/</a></ul>For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			},
 			{
 				"name" : ppc,
