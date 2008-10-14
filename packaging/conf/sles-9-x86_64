@@ -1,5 +1,5 @@
 username=builder
-hostname=x64-linux-1.mono.lab.novell.com
+hostname=x64-linux-2.mono.lab.novell.com
 root_dir=/jails/sles-9-x86_64-root-0/jail
 
 chroot_path=/usr/bin/chroot
