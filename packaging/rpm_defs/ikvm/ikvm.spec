@@ -96,7 +96,7 @@ libdir=\${prefix}/lib
 %prot_name: IKVM.NET
 Description: An implementation of Java for Mono and the Microsoft .NET Framework.
 %prot_version: %{version}
-Libs: -r:\${libdir}/ikvm/IKVM.Runtime.dll -r:\${libdir}/ikvm/IKVM.GNU.Classpath.dll
+Libs: -r:\${libdir}/mono/ikvm/IKVM.Runtime.dll -r:\${libdir}/mono/ikvm/IKVM.OpenJDK.ClassLibrary.dll
 EOF
 
 %clean
