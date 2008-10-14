@@ -270,6 +270,7 @@ Authors:
 %_prefix/lib/mono/gac/System.Net
 %_prefix/lib/mono/2.1/System.Net.dll
 %_prefix/lib/mono/gac/Mono.CSharp
+%_prefix/lib/mono-options
 # localizations?
 #%_datadir/locale/*/LC_MESSAGES/mcs.mo
 # Not sure if autobuild allows this...
@@ -456,7 +457,6 @@ Authors:
 %_prefix/lib/mono/1.0/Mono.WebBrowser.dll
 %_prefix/lib/mono/2.0/Mono.WebBrowser.dll
 %_prefix/lib/mono/gac/Mono.WebBrowser
-%_prefix/lib/mono/gac/Mono.Options
 
 %package -n ibm-data-db2
 License:        LGPL v2.1 or later
