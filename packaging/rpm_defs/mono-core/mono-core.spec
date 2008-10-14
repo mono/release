@@ -456,6 +456,7 @@ Authors:
 %_prefix/lib/mono/1.0/Mono.WebBrowser.dll
 %_prefix/lib/mono/2.0/Mono.WebBrowser.dll
 %_prefix/lib/mono/gac/Mono.WebBrowser
+%_prefix/lib/mono/gac/Mono.Options
 
 %package -n ibm-data-db2
 License:        LGPL v2.1 or later
@@ -1053,6 +1054,7 @@ fi
 %_libdir/pkgconfig/dotnet.pc
 %_libdir/pkgconfig/dotnet35.pc
 %_libdir/pkgconfig/mono-cairo.pc
+%_libdir/pkgconfig/mono-options.pc
 %_libdir/pkgconfig/cecil.pc
 %_mandir/man1/monoburg.*
 %_prefix/share/mono-1.0/mono/cil/cil-opcodes.xml
