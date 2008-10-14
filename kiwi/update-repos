@@ -1,6 +1,10 @@
 #!/bin/bash
-rsync --archive --progress --verbose rsync://rsync.opensuse.org/buildservice-repos/Mono:/Community/openSUSE_11.0/ /repos/mono-community
-rsync --archive --progress --verbose rsync://rsync.opensuse.org/buildservice-repos/Mono:/Preview/openSUSE_11.0/ /repos/mono-preview
-rsync --archive --progress --verbose rsync://rsync.opensuse.org/opensuse-full/opensuse/distribution/11.0/repo/oss/ /repos/oss
-rsync --archive --progress --verbose rsync://rsync.opensuse.org/opensuse-full/opensuse/update/11.0/ /repos/update 
-rsync --archive --progress --verbose rsync://rsync.opensuse.org/buildservice-repos/Virtualization:/VMware/openSUSE_11.0/ /repos/vmware
+OPTIONS="--archive --progress --verbose --delete-excluded --exclude=x86_64/ --exclude=ia64/ --exclude=ppc/"
+ROOT="rsync://rsync.opensuse.org"
+DEST="/repos"
+VERSION="11.0"
+rsync $OPTIONS $ROOT/buildservice-repos/Mono:/Community/openSUSE_$VERSION/ $DEST/mono-community
+rsync $OPTIONS $ROOT/buildservice-repos/Mono:/Preview/openSUSE_$VERSION/ $DEST/mono-preview
+rsync $OPTIONS $ROOT/opensuse-full/opensuse/distribution/$VERSION/repo/oss/ $DEST/oss
+rsync $OPTIONS $ROOT/opensuse-full/opensuse/update/$VERSION/ $DEST/update
+rsync $OPTIONS $ROOT/buildservice-repos/Virtualization:/VMware/openSUSE_$VERSION/ $DEST/vmware
