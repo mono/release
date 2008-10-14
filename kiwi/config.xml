@@ -58,7 +58,6 @@
 
     <opensusePattern name="gnome_basis"/>
     <opensusePattern name="devel_basis"/>
-    <opensusePattern name="yast2_basis"/>
 
     <package name="xorg-x11-server"/>
     <package name="xorg-x11-server-extra"/>
@@ -69,12 +68,20 @@
     <package name="beagle-gui"/>
     <package name="gvfs-backends"/>
     <package name="yast2-gtk"/>
-    <package name="yast2-qt"/>
     <package name="gnome-control-center"/>
     <package name="gnome-menus"/>
     <package name="sudo"/>
     <package name="acpid"/>
     <package name="preload"/>
+    <package name="alsa"/>
+    <package name="alsa-oss"/>
+    <package name="hal-resmgr"/>
+    <package name="yast2-control-center-gnome"/>
+    <package name="gtk2-branding-openSUSE"/>
+    <package name="dejavu"/>
+    <package name="liberation-fonts"/>
+    <package name="xorg-x11-fonts"/>
+    <package name="kernel-source"/>
 
     <!--opensusePattern name="mono_everything"/-->
     <package name="apache2-mod_mono" />
@@ -105,6 +112,7 @@
     <package name="mono-data-postgresql" />
     <package name="mono-data-sqlite" />
     <package name="mono-data-sybase" />
+    <package name="mono-debugger" />
     <package name="mono-devel" />
     <package name="mono-extras" />
     <package name="mono-jscript" />
