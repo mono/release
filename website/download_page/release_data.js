@@ -22,7 +22,7 @@ var data =
 			{
 				"name" : "Mono 2.0",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 11.0 VMWare image which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0-2_openSUSE-11.0.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0-2_openSUSE-11.0.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
+				"downloadText" : "Download the openSUSE 11.0 VMWare image which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0-3_openSUSE-11.0.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0-3_openSUSE-11.0.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
 			}
 			]
 		}
@@ -39,7 +39,7 @@ var data =
 			{
 				"name" : "Mono 2.0",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 11.0 Live CD which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0-2_openSUSE-11.0.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0-2_openSUSE-11.0.iso'>via http</a> </ul>"
+				"downloadText" : "Download the openSUSE 11.0 Live CD which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0-3_openSUSE-11.0.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0-3_openSUSE-11.0.iso'>via http</a> </ul>"
 			}
 			]
 		}
