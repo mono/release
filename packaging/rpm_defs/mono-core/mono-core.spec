@@ -1065,6 +1065,47 @@ fi
 # Reminder: when removing man pages in this list, they are not 
 #  yet gzipped
 
+%package -n monodoc-core
+License:        GNU General Public License (GPL)
+Summary:        Monodoc-Documentation tools for C# code
+Group:          Development/Tools/Other
+URL:            http://go-mono.org/
+Provides:       monodoc
+Obsoletes:      monodoc
+BuildArch:      noarch
+
+%description
+Monodoc-core contains documentation tools for C#.
+
+%files -n monodoc-core
+%defattr(-, root, root)
+%{_prefix}/lib/mono/gac/monodoc
+%{_prefix}/lib/mono/monodoc
+%{_bindir}/mdassembler
+%{_bindir}/mdoc
+%{_bindir}/mdoc-assemble
+%{_bindir}/mdoc-export-html
+%{_bindir}/mdoc-export-msxdoc
+%{_bindir}/mdoc-update
+%{_bindir}/mdoc-validate
+%{_bindir}/mdvalidator
+%{_bindir}/mod
+%{_bindir}/monodocer
+%{_bindir}/monodocs2html
+%{_bindir}/monodocs2slashdoc
+%{_prefix}/lib/monodoc
+%{_prefix}/share/pkgconfig/monodoc.pc
+%{_mandir}/man1/mdassembler.1
+%{_mandir}/man1/mdoc-assemble.1
+%{_mandir}/man1/mdoc-export-html.1
+%{_mandir}/man1/mdoc-export-msxdoc.1
+%{_mandir}/man1/mdoc-update.1
+%{_mandir}/man1/mdoc-validate.1
+%{_mandir}/man1/mdoc.1
+%{_mandir}/man1/mdvalidator.1
+%{_mandir}/man1/monodocer.1
+%{_mandir}/man1/monodocs2html.1
+
 %package -n mono-complete
 License:        LGPL v2.1 or later
 Summary:        A .NET Runtime Environment
