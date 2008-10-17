@@ -105,7 +105,10 @@
 
 	<p>The shell has support for attaching to existing processes,
 	so it is possible to use the csharp shell to debug live
-	applications. 
+	applications.
+
+	<p>A GUI version of the shell, <tt>gsharp</tt> is also
+	included in the mono-tools package.
 	
 <h3>C# Compiler</h3>
 
@@ -144,6 +147,32 @@
 	process to debug or augment code live.
 
 	<p>A new assembly: Mono.Management wraps this functionality.
+
+<h2>Documentation</h2>
+
+	<p>The monodoc module is no longer distributed, instead the
+	documentationhas been merged directly into Mono [Jonathan]
+
+<h2>New: Source Code Snippets</h2>
+
+	<p>Some libraries are too small to qualify for an assembly and
+	are more conveniently used in source code form.   With Mono
+	2.2 we debut code snippets, these are used by copying the code
+	into your application.  For example, to use Mono.Options
+	parsing library, you would do:
+
+	<pre class="shell">
+	cp `pkg-config --variable=Sources mono-options` .
+	</pre>
+
+	<p>Mono.Options and Mono.DataConvert are not available in this
+	form.
+	
+<h2>Mono.Options</h2>
+
+	<p>Jonathan Pryor's fantastic Mono.Options library for command
+	line argument parsing is now part of this release as a Source
+	Code Snippet.
 	
 <a name="install">
 <h1>Installing Mono 2.2</h1>
