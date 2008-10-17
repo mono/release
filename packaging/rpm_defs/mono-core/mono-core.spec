@@ -951,7 +951,7 @@ fi
 %_prefix/lib/mono/1.0/signcode.exe*
 %_prefix/lib/mono/1.0/prj2make.exe*
 %_prefix/lib/mono/1.0/macpack.exe*
-%_prefix/lib/mono/1.0/mono-shlib-cop.exe*
+%_prefix/lib/mono/2.0/mono-shlib-cop.exe*
 %_prefix/lib/mono/1.0/dtd2rng.exe*
 %_prefix/lib/mono/1.0/mono-xmltool.exe*
 # xbuild related files
