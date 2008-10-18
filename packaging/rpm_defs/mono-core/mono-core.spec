@@ -1079,7 +1079,7 @@ Monodoc-core contains documentation tools for C#.
 %files -n monodoc-core
 %defattr(-, root, root)
 %{_prefix}/lib/mono/2.0/mdoc.exe*
-%{_prefix}/lib/mono/2.0/mod.exe*
+%{_prefix}/lib/mono/1.0/mod.exe*
 %{_prefix}/lib/mono/gac/monodoc
 %{_prefix}/lib/mono/monodoc
 %{_bindir}/mdassembler
@@ -1089,7 +1089,7 @@ Monodoc-core contains documentation tools for C#.
 %{_bindir}/mdoc-export-msxdoc
 %{_bindir}/mdoc-update
 %{_bindir}/mdoc-validate
-%{_bindir}/mdvalidator
+%{_bindir}/mdvalidater
 %{_bindir}/mod
 %{_bindir}/monodocer
 %{_bindir}/monodocs2html
@@ -1106,6 +1106,7 @@ Monodoc-core contains documentation tools for C#.
 %{_mandir}/man1/mdvalidator.1
 %{_mandir}/man1/monodocer.1
 %{_mandir}/man1/monodocs2html.1
+%{_mandir}/man5/mdoc.5
 
 %package -n mono-complete
 License:        LGPL v2.1 or later
