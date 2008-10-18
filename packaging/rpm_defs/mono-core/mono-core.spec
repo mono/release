@@ -1078,6 +1078,8 @@ Monodoc-core contains documentation tools for C#.
 
 %files -n monodoc-core
 %defattr(-, root, root)
+%{_prefix}/lib/mono/2.0/mdoc.exe*
+%{_prefix}/lib/mono/2.0/mod.exe*
 %{_prefix}/lib/mono/gac/monodoc
 %{_prefix}/lib/mono/monodoc
 %{_bindir}/mdassembler
