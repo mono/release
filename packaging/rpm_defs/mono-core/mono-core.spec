@@ -1103,7 +1103,7 @@ Monodoc-core contains documentation tools for C#.
 %{_mandir}/man1/mdoc-update.1%ext_man
 %{_mandir}/man1/mdoc-validate.1%ext_man
 %{_mandir}/man1/mdoc.1%ext_man
-%{_mandir}/man1/mdvalidator.1%ext_man
+%{_mandir}/man1/mdvalidater.1%ext_man
 %{_mandir}/man1/monodocer.1%ext_man
 %{_mandir}/man1/monodocs2html.1%ext_man
 %{_mandir}/man5/mdoc.5%ext_man
