@@ -1096,17 +1096,17 @@ Monodoc-core contains documentation tools for C#.
 %{_bindir}/monodocs2slashdoc
 %{_prefix}/lib/monodoc
 %{_prefix}/share/pkgconfig/monodoc.pc
-%{_mandir}/man1/mdassembler.1
-%{_mandir}/man1/mdoc-assemble.1
-%{_mandir}/man1/mdoc-export-html.1
-%{_mandir}/man1/mdoc-export-msxdoc.1
-%{_mandir}/man1/mdoc-update.1
-%{_mandir}/man1/mdoc-validate.1
-%{_mandir}/man1/mdoc.1
-%{_mandir}/man1/mdvalidator.1
-%{_mandir}/man1/monodocer.1
-%{_mandir}/man1/monodocs2html.1
-%{_mandir}/man5/mdoc.5
+%{_mandir}/man1/mdassembler.1%ext_man
+%{_mandir}/man1/mdoc-assemble.1%ext_man
+%{_mandir}/man1/mdoc-export-html.1%ext_man
+%{_mandir}/man1/mdoc-export-msxdoc.1%ext_man
+%{_mandir}/man1/mdoc-update.1%ext_man
+%{_mandir}/man1/mdoc-validate.1%ext_man
+%{_mandir}/man1/mdoc.1%ext_man
+%{_mandir}/man1/mdvalidator.1%ext_man
+%{_mandir}/man1/monodocer.1%ext_man
+%{_mandir}/man1/monodocs2html.1%ext_man
+%{_mandir}/man5/mdoc.5%ext_man
 
 %package -n mono-complete
 License:        LGPL v2.1 or later
