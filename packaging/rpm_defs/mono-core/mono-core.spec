@@ -1095,7 +1095,7 @@ Monodoc-core contains documentation tools for C#.
 %{_bindir}/monodocs2html
 %{_bindir}/monodocs2slashdoc
 %{_prefix}/lib/monodoc
-%{_prefix}/share/pkgconfig/monodoc.pc
+%_libdir/pkgconfig/monodoc.pc
 %{_mandir}/man1/mdassembler.1%ext_man
 %{_mandir}/man1/mdoc-assemble.1%ext_man
 %{_mandir}/man1/mdoc-export-html.1%ext_man
