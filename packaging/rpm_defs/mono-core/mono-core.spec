@@ -1074,7 +1074,7 @@ Provides:       monodoc
 Obsoletes:      monodoc
 BuildArch:      noarch
 
-%description
+%description -n monodoc-core
 Monodoc-core contains documentation tools for C#.
 
 %files -n monodoc-core
