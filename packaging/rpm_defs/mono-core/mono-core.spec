@@ -1072,7 +1072,6 @@ Group:          Development/Tools/Other
 URL:            http://go-mono.org/
 Provides:       monodoc
 Obsoletes:      monodoc
-BuildArch:      noarch
 
 %description -n monodoc-core
 Monodoc-core contains documentation tools for C#.
