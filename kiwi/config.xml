@@ -9,7 +9,7 @@
     <type boot="isoboot/suse-11.0" flags="unified">iso</type>
     <type primary="true" boot="vmxboot/suse-11.0" filesystem="ext3" format="vmdk">vmx</type>
     <type boot="xenboot/suse-11.0" filesystem="ext3">xen</type>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <size unit="M">60000</size>
     <packagemanager>zypper</packagemanager>
     <rpm-check-signatures>False</rpm-check-signatures>
@@ -81,6 +81,11 @@
     <package name="dejavu"/>
     <package name="liberation-fonts"/>
     <package name="xorg-x11-fonts"/>
+    <package name="vim-data"/>
+    <package name="yast2-firewall"/>
+    <package name="gnome-system-monitor"/>
+    <package name="PolicyKit-gnome"/>
+    <package name="gedit"/>
     <package name="kernel-source"/>
 
     <!--opensusePattern name="mono_everything"/-->
