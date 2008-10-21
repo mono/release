@@ -698,6 +698,8 @@ Authors:
 %_prefix/lib/mono/3.5/System.Web.Extensions.Design.dll
 %_prefix/lib/mono/gac/System.Web.DynamicData
 %_prefix/lib/mono/2.0/System.Web.DynamicData.dll
+%_prefix/lib/mono/gac/System.ComponentModel.DataAnnotations
+%_prefix/lib/mono/2.0/System.ComponentModel.DataAnnotations.dll
 # exes
 %_prefix/lib/mono/1.0/disco.exe*
 %_prefix/lib/mono/1.0/soapsuds.exe*
