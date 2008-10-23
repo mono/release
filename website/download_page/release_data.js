@@ -9,7 +9,7 @@ var discontinued = "<div style=\"color: darkred; font-weight: bold\">Binaries fo
 
 var data =
 {
-	"release" : "2.0",
+	"release" : "2.0.1",
 	"platforms" : [
 	{
 		"name" : "VMware",
@@ -20,9 +20,9 @@ var data =
 			"name" : "openSUSE 11.0",
 			"arch" : [
 			{
-				"name" : "Mono 2.0",
+				"name" : "Mono 2.0.1",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 11.0 VMWare image which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0-3_openSUSE-11.0.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0-3_openSUSE-11.0.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
+				"downloadText" : "Download the openSUSE 11.0 VMWare image which includes Mono 2.0.1 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0.1_openSUSE-11.0.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0.1_openSUSE-11.0.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
 			}
 			]
 		}
@@ -37,9 +37,9 @@ var data =
 			"name" : "openSUSE 11.0 Live CD",
 			"arch" : [
 			{
-				"name" : "Mono 2.0",
+				"name" : "Mono 2.0.1",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 11.0 Live CD which includes Mono 2.0 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0-3_openSUSE-11.0.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0-3_openSUSE-11.0.iso'>via http</a> </ul>"
+				"downloadText" : "Download the openSUSE 11.0 Live CD which includes Mono 2.0.1 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0.1_openSUSE-11.0.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0.1_openSUSE-11.0.iso'>via http</a> </ul>"
 			}
 			]
 		}
@@ -172,7 +172,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on all versions of Windows 2000, XP, 2003 and Vista.",
-				"downloadText" : "Mono for Windows, Gtk#, and XSP <ul><li><a href='ftp://ftp.novell.com/pub/mono/archive/2.0/windows-installer/5/mono-2.0-gtksharp-2.10.4-win32-5.exe'>Mono 2.0 Setup</a></ul>Only Gtk# for .NET: <ul><li><a href='http://sourceforge.net/project/showfiles.php?group_id=74626&package_id=223067'>SDK and Runtime</a></ul>Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>"
+				"downloadText" : "Mono for Windows, Gtk#, and XSP <ul><li><a href='ftp://ftp.novell.com/pub/mono/archive/2.0.1/windows-installer/1/mono-2.0.1-gtksharp-2.10.4-win32-1.exe'>Mono 2.0.1 Setup</a></ul>Only Gtk# for .NET: <ul><li><a href='http://sourceforge.net/project/showfiles.php?group_id=74626&package_id=223067'>SDK and Runtime</a></ul>Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>"
 			}
 			]
 		}
@@ -190,7 +190,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/2.0/macos-10-universal/4/MonoFramework-2.0_4.macos10.novell.universal.dmg'>Mono 2.0_4 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
+				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/2.0.1/macos-10-universal/1/MonoFramework-2.0.1_1.macos10.novell.universal.dmg'>Mono 2.0.1_1 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
