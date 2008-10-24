@@ -190,7 +190,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/2.0.1/macos-10-universal/1/MonoFramework-2.0.1_1.macos10.novell.universal.dmg'>Mono 2.0.1_1 Framework - Universal</a><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
+				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/2.0.1/macos-10-universal/1/MonoFramework-2.0.1_1.macos10.novell.universal.dmg'>Mono 2.0.1_1 Framework - Universal</a></li><li><a href='http://ftp.novell.com/pub/mono/archive/2.0.1/macos-10-universal/1/MonoDevelop-1.9.dmg'>MonoDevelop 1.9</a></li></li><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
