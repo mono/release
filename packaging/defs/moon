@@ -33,7 +33,6 @@ suse_103_noarch_RPM_DEPS=(
 
 MONO_DEPS=(
 	mono
-	monodoc
 	xsp
 )
 
