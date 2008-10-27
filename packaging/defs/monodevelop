@@ -26,7 +26,6 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono
-	monodoc
 	mono-addins
 	mono-basic
 	xsp

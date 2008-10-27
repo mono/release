@@ -18,7 +18,6 @@ MONO_RECOMMEND_DEPS=(
 
 MONO_DEPS=(
 	mono
-	monodoc
 )
 
 MKTARBALL_HOST="sles-10-i586"

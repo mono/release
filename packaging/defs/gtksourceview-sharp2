@@ -27,7 +27,6 @@ get_destroot () {
 
 MONO_DEPS=(
 	mono
-	monodoc
 )
 
 MONO_RECOMMEND_DEPS=(

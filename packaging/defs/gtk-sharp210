@@ -17,7 +17,6 @@ MONO_RECOMMEND_DEPS=(
 
 MONO_DEPS=(
 	mono
-	monodoc
 )
 
 MKTARBALL_HOST="suse-102-x86_64"

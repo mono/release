@@ -25,7 +25,6 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono
-	monodoc
 	gecko-sharp2
 )
 

@@ -7,7 +7,6 @@ USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
 	mono
-	monodoc
 )
 
 MONO_RECOMMEND_DEPS=(

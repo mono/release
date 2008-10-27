@@ -90,7 +90,6 @@ td_packages = """
 	monodevelop-boo
 	monodevelop-database
 	monodevelop-java
-	monodoc
 	moon
 	olive
 	uiaatkbridge

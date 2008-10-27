@@ -17,7 +17,6 @@ USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
 	mono
-	monodoc
 	gtk-sharp210
 )
 

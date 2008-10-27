@@ -23,7 +23,6 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono
-	monodoc
 	gtksourceview-sharp2
 	mono-addins
 	mono-basic

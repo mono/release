@@ -8,7 +8,6 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono
-	monodoc
 )
 
 RPM_DEPS=(
