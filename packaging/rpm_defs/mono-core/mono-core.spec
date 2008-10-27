@@ -160,6 +160,7 @@ Authors:
 %_bindir/chktrust
 %_bindir/csharp
 %_bindir/gacutil
+%_bindir/gacutil1
 %_bindir/gacutil2
 %_bindir/gmcs
 %_bindir/mono-test-install
