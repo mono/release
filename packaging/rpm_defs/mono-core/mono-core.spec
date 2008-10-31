@@ -28,7 +28,6 @@ Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
 ExclusiveArch:  %ix86 x86_64 ppc hppa armv4l sparc s390 ia64 s390x
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Provides:       mono = %{version}-%{release}
 Provides:       mono-ikvm = %{version}-%{release}
 Obsoletes:      mono
@@ -193,12 +192,14 @@ Authors:
 %_prefix/lib/mono/gac/Mono.CompilerServices.SymbolWriter
 %_prefix/lib/mono/1.0/Mono.CompilerServices.SymbolWriter.dll
 %_prefix/lib/mono/2.0/Mono.CompilerServices.SymbolWriter.dll
+%_prefix/lib/mono/2.1/Mono.CompilerServices.SymbolWriter.dll
 %_prefix/lib/mono/gac/Mono.GetOptions
 %_prefix/lib/mono/1.0/Mono.GetOptions.dll
 %_prefix/lib/mono/2.0/Mono.GetOptions.dll
 %_prefix/lib/mono/gac/Mono.Simd
 %_prefix/lib/mono/2.0/Mono.Simd.dll
 %_prefix/lib/mono/gac/Mono.Management
+%_prefix/lib/mono/2.0/Mono.Management.dll
 %_prefix/lib/mono/gac/Mono.Security
 %_prefix/lib/mono/1.0/Mono.Security.dll
 %_prefix/lib/mono/2.0/Mono.Security.dll
@@ -271,6 +272,7 @@ Authors:
 %_prefix/lib/mono/gac/System.Net
 %_prefix/lib/mono/2.1/System.Net.dll
 %_prefix/lib/mono/gac/Mono.CSharp
+%_prefix/lib/mono/2.0/Mono.CSharp.dll
 %_prefix/lib/mono-options
 # localizations?
 #%_datadir/locale/*/LC_MESSAGES/mcs.mo
@@ -634,10 +636,13 @@ Authors:
 %_prefix/lib/mono/2.0/System.IdentityModel.Selectors.dll
 %_prefix/lib/mono/gac/System.Runtime.Serialization
 %_prefix/lib/mono/2.0/System.Runtime.Serialization.dll
+%_prefix/lib/mono/2.1/System.Runtime.Serialization.dll
 %_prefix/lib/mono/gac/System.ServiceModel
 %_prefix/lib/mono/2.0/System.ServiceModel.dll
+%_prefix/lib/mono/2.1/System.ServiceModel.dll
 %_prefix/lib/mono/gac/System.ServiceModel.Web
 %_prefix/lib/mono/2.0/System.ServiceModel.Web.dll
+%_prefix/lib/mono/2.1/System.ServiceModel.Web.dll
 %_libdir/pkgconfig/wcf.pc
 
 %package -n mono-web
@@ -694,9 +699,11 @@ Authors:
 %_prefix/lib/mono/2.0/System.Web.Routing.dll
 %_prefix/lib/mono/gac/System.Web.Extensions
 %_prefix/lib/mono/2.0/System.Web.Extensions.dll
+%_prefix/lib/mono/compat-2.0/System.Web.Extensions.dll
 %_prefix/lib/mono/gac/System.Web.Extensions.Design
 %_prefix/lib/mono/2.0/System.Web.Extensions.Design.dll
 %_prefix/lib/mono/3.5/System.Web.Extensions.Design.dll
+%_prefix/lib/mono/compat-2.0/System.Web.Extensions.Design.dll
 %_prefix/lib/mono/gac/System.Web.DynamicData
 %_prefix/lib/mono/2.0/System.Web.DynamicData.dll
 %_prefix/lib/mono/gac/System.ComponentModel.DataAnnotations
