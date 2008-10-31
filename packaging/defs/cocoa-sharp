@@ -1,3 +1,5 @@
+MKTARBALL_HEAD_DEPS=1
+
 BUILD_HOSTS=(
 	macos-10-ppc
 	macos-10-x86

@@ -1,3 +1,5 @@
+MKTARBALL_HEAD_DEPS=1
+
 BUILD_HOSTS=(
 	sles-10-i586
 )

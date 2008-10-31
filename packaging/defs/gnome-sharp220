@@ -9,6 +9,8 @@ BUILD_HOSTS=(
 
 web_index=7
 
+MKTARBALL_HEAD_DEPS=1
+
 version_selection_reg="2\.20\.\d+"
 
 USE_PATCHES=1

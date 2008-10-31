@@ -1,5 +1,7 @@
 web_index=5
 
+MKTARBALL_HEAD_DEPS=1
+
 version_selection_reg="2\.4\.\d+"
 
 BUILD_HOSTS=(

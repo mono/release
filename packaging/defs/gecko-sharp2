@@ -4,6 +4,8 @@ BUILD_HOSTS=(
 
 web_index=6
 
+MKTARBALL_HEAD_DEPS=1
+
 USE_HOSTS=(
 	rhel-4-i386
 	sles-10-ia64
