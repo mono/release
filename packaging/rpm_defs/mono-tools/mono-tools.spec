@@ -78,28 +78,30 @@ Authors:
 %files -f %{name}.lang
 %defattr(-, root, root)
 %_bindir/*
-%_prefix/lib/monodoc
-%_datadir/applications/monodoc.desktop
-%_datadir/pixmaps/monodoc.png
-%_prefix/lib/mono/1.0
-%_prefix/lib/mono/2.0
-%_prefix/lib/create-native-map
-%_datadir/create-native-map
-%_datadir/pkgconfig/create-native-map.pc
-%_mandir/man1/create-native-map*
-%_prefix/lib/gendarme
-%_datadir/pkgconfig/gendarme-framework.pc
-%_mandir/man1/gendarme*
+%_datadir/applications/gsharp.desktop
 %_datadir/applications/ilcontrast.desktop
-%_prefix/lib/ilcontrast
-%_prefix/lib/gui-compare
-%_datadir/pixmaps/ilcontrast.png
-%_prefix/lib/mono-tools
+%_datadir/applications/monodoc.desktop
 %_datadir/applications/mprof-heap-viewer.desktop
+%_datadir/create-native-map
+%_datadir/pixmaps/ilcontrast.png
+%_datadir/pixmaps/monodoc.png
+%_datadir/pkgconfig/create-native-map.pc
+%_datadir/pkgconfig/gendarme-framework.pc
+%_mandir/man1/create-native-map*
+%_mandir/man1/gendarme*
+%_mandir/man1/mperfmon*
 %_mandir/man1/mprof-decoder*
 %_mandir/man1/mprof-heap-viewer*
+%_prefix/lib/create-native-map
+%_prefix/lib/gendarme
+%_prefix/lib/gsharp
+%_prefix/lib/gui-compare
+%_prefix/lib/ilcontrast
+%_prefix/lib/mono-tools
+%_prefix/lib/mono/1.0
+%_prefix/lib/mono/2.0
+%_prefix/lib/monodoc
 %_prefix/lib/mperfmon
-%_mandir/man1/mperfmon*
 
 %prep
 %setup  -q -n %{name}-%{version}
