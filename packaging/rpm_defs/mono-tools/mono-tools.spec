@@ -78,11 +78,13 @@ Authors:
 %files -f %{name}.lang
 %defattr(-, root, root)
 %_bindir/*
+%_datadir/applications/gendarme-wizard.desktop
 %_datadir/applications/gsharp.desktop
 %_datadir/applications/ilcontrast.desktop
 %_datadir/applications/monodoc.desktop
 %_datadir/applications/mprof-heap-viewer.desktop
 %_datadir/create-native-map
+%_datadir/pixmaps/gendarme.svg
 %_datadir/pixmaps/ilcontrast.png
 %_datadir/pixmaps/monodoc.png
 %_datadir/pkgconfig/create-native-map.pc
