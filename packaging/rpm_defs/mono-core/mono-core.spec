@@ -1067,7 +1067,7 @@ fi
 %_libdir/pkgconfig/dotnet35.pc
 %_libdir/pkgconfig/mono-cairo.pc
 %_libdir/pkgconfig/mono-options.pc
-%_libdir/pkgconfig/mono-getline.pc
+%_libdir/pkgconfig/mono-lineeditor.pc
 %_libdir/pkgconfig/cecil.pc
 %_mandir/man1/monoburg.*
 %_prefix/share/mono-1.0/mono/cil/cil-opcodes.xml
