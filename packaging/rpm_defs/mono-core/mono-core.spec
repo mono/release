@@ -273,7 +273,6 @@ Authors:
 %_prefix/lib/mono/2.1/System.Net.dll
 %_prefix/lib/mono/gac/Mono.CSharp
 %_prefix/lib/mono/2.0/Mono.CSharp.dll
-%_prefix/lib/mono-options
 # localizations?
 #%_datadir/locale/*/LC_MESSAGES/mcs.mo
 # Not sure if autobuild allows this...
@@ -1057,6 +1056,7 @@ fi
 %_prefix/lib/mono/2.0/Microsoft.Build.Engine.dll
 %_prefix/lib/mono/gac/Mono.Cecil
 %_prefix/lib/mono/gac/Mono.Cecil.Mdb
+%_prefix/lib/mono-source-libs
 %_bindir/monograph
 %_prefix/include/mono-1.0
 %_libdir/libmono-profiler-cov.*
@@ -1067,6 +1067,7 @@ fi
 %_libdir/pkgconfig/dotnet35.pc
 %_libdir/pkgconfig/mono-cairo.pc
 %_libdir/pkgconfig/mono-options.pc
+%_libdir/pkgconfig/mono-getline.pc
 %_libdir/pkgconfig/cecil.pc
 %_mandir/man1/monoburg.*
 %_prefix/share/mono-1.0/mono/cil/cil-opcodes.xml
