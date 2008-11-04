@@ -42,8 +42,6 @@ Various .NET 3.0 bits.
 %_prefix/lib/mono/accessibility/UIAutomationBridge.dll
 %_prefix/lib/mono/gac/UIAutomationClient
 %_prefix/lib/mono/accessibility/UIAutomationClient.dll
-%_prefix/lib/mono/gac/WindowsBase
-%_prefix/lib/mono/3.0/WindowsBase.dll*
 %_prefix/lib/mono/gac/System.Workflow.Runtime
 %_prefix/lib/mono/3.0/System.Workflow.Runtime.dll*
 %_prefix/lib/mono/gac/System.Workflow.Activities
