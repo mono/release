@@ -1,8 +1,5 @@
 username=builder
 hostname=ppc-linux-1.mono.lab.novell.com
-# This machine has osx 10.4 and suse 10.3
-# The 10.4 partition is a backup
-#hostname=ppc-macos-1.mono.lab.novell.com
 root_dir=/jails/sles-9-ppc
 chroot_path=/usr/bin/chroot
 target_command_prefix=". /etc/profile;"
