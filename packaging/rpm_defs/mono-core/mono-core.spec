@@ -670,7 +670,7 @@ Authors:
 %files -n mono-winfxcore
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/WindowsBase
-%_prefix/lib/mono/3.0/WindowsBase.dll*
+%_prefix/lib/mono/2.0/WindowsBase.dll*
 
 %package -n mono-web
 License:        LGPL v2.1 or later
