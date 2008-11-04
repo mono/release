@@ -2,6 +2,7 @@ username=builder
 hostname=ppc-linux-1.mono.lab.novell.com
 root_dir=/jails/sles-9-ppc
 chroot_path=/usr/bin/chroot
+arch_change_path=/usr/bin/powerpc32
 target_command_prefix=". /etc/profile;"
 # sles9 doesn't include /usr/share/pkgconfig
 #  Force it (monodebugger needs it because xsp has .pc files there)
