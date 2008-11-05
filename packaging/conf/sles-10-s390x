@@ -5,5 +5,7 @@ root_dir=/mono/jails/sles-10-s390x
 
 chroot_path=/usr/bin/chroot
 
+web_index=4
+
 YAST_REPO=1
 YAST_INSTALL=1

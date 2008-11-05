@@ -12,5 +12,7 @@ distro_aliases=(
         sled-10-x86_64
 )
 
+web_index=1
+
 YAST_INSTALL=1
 RPM_MD_REPO=1
