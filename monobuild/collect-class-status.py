@@ -24,8 +24,8 @@ output_dir = "/var/www/mono-website/go-mono/class-status"
 # Note: when modules start building on other distros, these need to be updated
 # The wiki page pointing to these will also need to be updated
 status_config = [
-	['1.1',		'sles-9-i586',		'mono'],
-	['2.0',		'sles-9-x86_64',	'mono'],
+	['1.1',		'sles-10-i586',		'mono'],
+	['2.0',		'sles-10-x86_64',	'mono'],
 	['mono-basic',	'sles-10-i586',	'mono-basic'],
 	['olive',	'sles-10-i586',	'olive'],
 ]

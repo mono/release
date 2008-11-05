@@ -125,12 +125,6 @@ sd_latest_build_distros = """
 	sles-10-i586
 	sles-10-ppc
 	sles-10-x86_64
-	sles-9-i586
-	sles-9-ia64
-	sles-9-ppc
-	sles-9-s390
-	sles-9-s390x
-	sles-9-x86_64
 	sunos-10-sparc
 	sunos-10-x86
 	suse-103-i586
