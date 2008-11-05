@@ -5,8 +5,6 @@ web_index=9
 MKTARBALL_HEAD_DEPS=1
 
 BUILD_HOSTS=(
-	sles-9-i586
-	sles-9-x86_64
 	sles-10-i586
 	sles-10-x86_64
 	suse-102-i586
@@ -18,8 +16,6 @@ BUILD_HOSTS=(
 )
 
 USE_HOSTS=(
-	sles-9-i586
-	sles-9-x86_64
 	sles-10-i586
 	sles-10-x86_64
 	suse-102-i586
