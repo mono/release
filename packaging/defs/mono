@@ -311,6 +311,10 @@ POSTBUILD_TEST_NAME1="test-runtime"
 POSTBUILD_TEST1 () {
 	cd mono/tests
 	$make_path -k check
+	echo "Test stdout starts here:"
+	for i in *.stdout; do echo "$i:"; cat $i; done
+	echo "Test stderr starts here:"
+	for i in *.stderr; do echo "$i:"; cat $i; done
 }
 
 POSTBUILD_TEST_NAME2="test-mini"
