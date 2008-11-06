@@ -91,6 +91,7 @@ td_packages = """
 	monodevelop-database
 	monodevelop-java
 	moon
+	moon-branch
 	olive
 	uiaatkbridge
 	uiautomationwinforms
