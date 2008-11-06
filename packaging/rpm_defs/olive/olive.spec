@@ -34,14 +34,6 @@ Various .NET 3.0 bits.
 #%_prefix/lib/mono/3.0/xamlc.exe*
 %_prefix/lib/mono/gac/PresentationFramework
 %_prefix/lib/mono/3.0/PresentationFramework.dll*
-%_prefix/lib/mono/gac/UIAutomationProvider
-%_prefix/lib/mono/accessibility/UIAutomationProvider.dll
-%_prefix/lib/mono/gac/UIAutomationTypes
-%_prefix/lib/mono/accessibility/UIAutomationTypes.dll
-%_prefix/lib/mono/gac/UIAutomationBridge
-%_prefix/lib/mono/accessibility/UIAutomationBridge.dll
-%_prefix/lib/mono/gac/UIAutomationClient
-%_prefix/lib/mono/accessibility/UIAutomationClient.dll
 %_prefix/lib/mono/gac/System.Workflow.Runtime
 %_prefix/lib/mono/3.0/System.Workflow.Runtime.dll*
 %_prefix/lib/mono/gac/System.Workflow.Activities
