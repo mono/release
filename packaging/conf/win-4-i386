@@ -5,7 +5,7 @@ USE_ZIP_PKG=1
 # ... let's do it explicitly through sshutils
 target_command_prefix='source /etc/profile;'
 
-web_index=10
+web_index=5
 
 # updated winnt.h from a new cygwin install (from Jonathan Chambers)
 
