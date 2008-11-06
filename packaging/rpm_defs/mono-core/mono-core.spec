@@ -795,6 +795,7 @@ Authors:
 %files -n mono-data-postgresql
 %defattr(-, root, root)
 %_prefix/lib/mono/gac/Npgsql
+%_prefix/lib/mono/1.0/Npgsql.dll
 %_prefix/lib/mono/2.0/Npgsql.dll
 
 %package -n bytefx-data-mysql
