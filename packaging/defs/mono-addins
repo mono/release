@@ -14,6 +14,7 @@ MONO_RECOMMEND_DEPS=(
         gtk-sharp2
         gtk-sharp28
         gtk-sharp210
+        gtk-sharp212
 )
 
 get_destroot () {
@@ -34,8 +35,5 @@ update_version_file () {
 make_dist () {
         . /etc/profile
         ./autogen.sh
-
-        # Use dist-zip instead, otherwise long filenames get chopped
-        #make dist
-        make dist-zip
+        make dist-bzip2
 }
