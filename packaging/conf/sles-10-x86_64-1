@@ -1,0 +1,18 @@
+username=builder
+hostname=x64-linux-3.mono.lab.novell.com
+root_dir=/jails/sles-10-x86_64
+chroot_path=/usr/bin/chroot
+
+target_command_prefix=". /etc/profile;"
+
+# suse 10.1 doesn't include /usr/lib/pkgconfig on x86_64, force it.
+env="PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig"
+
+distro_aliases=(
+        sled-10-x86_64
+)
+
+web_index=1
+
+YAST_INSTALL=1
+RPM_MD_REPO=1
