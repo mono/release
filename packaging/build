@@ -32,7 +32,7 @@ import config
 
 import pdb
 
-timeout=1200
+timeout=300
 # Set max output to 10 MB, so the remote process dies if it exceed this. 
 #  (prevents us with ending up with 1GB log files.  10 MB should be sufficient)
 max_output_size = 10 * 1024 * 1024
