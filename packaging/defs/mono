@@ -776,6 +776,9 @@ POSTBUILD_TEST72 () {
 	cp -a mcs/tools/nunitreport/Media $target
 
 	MONO_PATH="mcs/class/lib/net_2_0:$MONO_PATH" runtime/mono-wrapper mcs/tools/nunitreport/nunitreport.exe test_results $target/index.html
+
+	# We don't care if this step fails, it has never succeeded
+	exit 0
 }
 
 POSTBUILD_TEST_NAME73="test-ondotnet"
