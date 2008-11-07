@@ -1,5 +1,5 @@
 username=builder
-hostname=cygwin-mono.boston.ximian.com
+hostname=c499.mono.lab.novell.com
 USE_ZIP_PKG=1
 # Cygwin's ssh server doesn't load this information
 # ... let's do it explicitly through sshutils
