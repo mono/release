@@ -12,8 +12,6 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono
-	gtk-sharp212
-	olive
 )
 
 MONO_RECOMMEND_DEPS=(
@@ -25,19 +23,12 @@ get_destroot () {
 }
 
 HEAD_PATH=(
-	trunk/uia2atk/src/UIAutomationWinforms
+	trunk/uia2atk/UIAutomation
 )
 RELEASE_PATH=(
-	tags/UIAutomationWinforms-[[version]]
+	tags/UIAutomation-[[version]]
 )
 
 update_version_file () {
         sed -i "s/\(AC_INIT(\[.*\], *\[\).*\(\])\)/\1$VERSION\2/" configure.ac
 }
-
-POSTBUILD_TEST_NAME1="test-uiautomationwinforms"
-POSTBUILD_TEST1 () {
-        cd UIAutomationWinformsTests
-        ./providertest.sh
-}
-
