@@ -1,3 +1,10 @@
+2008-11-09  Everaldo Canuto <ecanuto@novell.com>
+
+	* gar.conf.mk: Upgrade mono to 2.0.1
+	* maemo/tasks/devkit/Makefile: Enable maemo-sharp 0.23 in devkit.
+	* maemo/devkit/mono/checksums: Fix mono checksums.
+	* maemo/devkit/maemo-sharp/checksums: Fix maemo-sharp checksums.
+
 2008-09-12  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.conf.mk: Fix url for mono master site that is now on Novell's ftp.
