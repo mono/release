@@ -1,10 +1,11 @@
 2008-09-12  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.conf.mk: Fix url for mono master site that is now on Novell's ftp.
+
 2008-05-08  Everaldo Canuto <ecanuto@novell.com>
 
 	* Upgrade to Mono 1.9.1.
-	
+
 2008-05-08  Everaldo Canuto <ecanuto@novell.com>
 
 	* maemo/debs/maemo-sharp: maemo-sharp debian packages added.
@@ -13,7 +14,7 @@
 	
 	* maemo/tasks/debs/Makefile: Generate maemo-sharp package when creating deb
 	files.
-	
+
 2008-03-23  Everaldo Canuto <ecanuto@novell.com>
 
 	* Added libgdiplus.
