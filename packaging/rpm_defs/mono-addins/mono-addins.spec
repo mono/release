@@ -12,14 +12,14 @@
 
 
 Name:           mono-addins
-Version:        0.3.1
+Version:        0.4
 Release:        1
 License:        X11/MIT
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on
 BuildArch:      noarch
 Url:            http://www.mono-project.com
-Source0:        %{name}-%{version}.tar.bz2
+Source0:        http://ftp.novell.com/pub/mono/sources/%{name}/%{name}-%{version}.tar.bz2
 BuildRequires:  gtk-sharp2 mono-devel
 Summary:        Mono Addins Framework
 Group:          Development/Languages/Mono
@@ -44,18 +44,26 @@ Authors:
 %files
 %defattr(-, root, root)
 %dir %_prefix/lib/mono/mono-addins
+%_datadir/pkgconfig/*.pc
+%_mandir/man1/mautil.1.gz
 %_prefix/bin/mautil
-%_prefix/lib/mono/mono-addins/mautil.exe
 %_prefix/lib/mono/gac/Mono.Addins
-%_prefix/lib/mono/gac/policy.0.2.Mono.Addins
-%_prefix/lib/mono/mono-addins/Mono.Addins.dll
-%_prefix/lib/mono/gac/Mono.Addins.Setup
-%_prefix/lib/mono/gac/policy.0.2.Mono.Addins.Setup
-%_prefix/lib/mono/mono-addins/Mono.Addins.Setup.dll
+%_prefix/lib/mono/gac/Mono.Addins.CecilReflector
 %_prefix/lib/mono/gac/Mono.Addins.Gui
+%_prefix/lib/mono/gac/Mono.Addins.Setup
+%_prefix/lib/mono/gac/policy.0.2.Mono.Addins
+%_prefix/lib/mono/gac/policy.0.2.Mono.Addins.CecilReflector
 %_prefix/lib/mono/gac/policy.0.2.Mono.Addins.Gui
+%_prefix/lib/mono/gac/policy.0.2.Mono.Addins.Setup
+%_prefix/lib/mono/gac/policy.0.3.Mono.Addins
+%_prefix/lib/mono/gac/policy.0.3.Mono.Addins.CecilReflector
+%_prefix/lib/mono/gac/policy.0.3.Mono.Addins.Gui
+%_prefix/lib/mono/gac/policy.0.3.Mono.Addins.Setup
+%_prefix/lib/mono/mono-addins/Mono.Addins.CecilReflector.dll
 %_prefix/lib/mono/mono-addins/Mono.Addins.Gui.dll
-%_prefix/share/pkgconfig/*.pc
+%_prefix/lib/mono/mono-addins/Mono.Addins.Setup.dll
+%_prefix/lib/mono/mono-addins/Mono.Addins.dll
+%_prefix/lib/mono/mono-addins/mautil.exe
 
 %prep
 %setup -q

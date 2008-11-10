@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Thu Nov  6 14:54:04 MST 2008 - ajorgensen@novell.com
+
+- Update to 0.4
+  * Added support for specifying paths to exclude from the add-in
+    scan in .addins files and in add-in manifests.
+  * There are several new flags which can be applied to add-ins:
+    * Can't uninstall: the add-in can't be uninstalled.
+    * Can't disable: the add-in can't be disabled.
+    * Hidden: the add-in won't be visible in the setup tools. 
+  * Fixes in the add-in scanner.
+    * The new (and optional) Mono.Addins.CecilReflector assembly
+      provides a Cecil-based backend for the add-in scanner. This
+      scanner is more reliable than the reflection based scanner.
+    * When updating the registry, the add-in scanner will only
+      update add-ins belonging to the running application (ignoring
+      directories from other instances of the same or different
+      applications sharing the same registry). 
+  * Fixed issue with path length limitation in Windows.
+  * Other bug fixes and API improvements.
+
+-------------------------------------------------------------------
 Wed Mar 26 16:56:07 MST 2008 - wberrier@suse.de
 
 - Update to 0.3.1
