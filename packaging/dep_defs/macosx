@@ -103,7 +103,7 @@ EOF
 	},
 	{
 		'name': 'giflib', 
-		'source': 'http://easynews.dl.sourceforge.net/sourceforge/giflib/giflib-4.1.6.tar.bz2',
+                'source': 'http://internap.dl.sourceforge.net/sourceforge/giflib/giflib-4.1.6.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
@@ -121,7 +121,7 @@ EOF
 	# Include our own because 10.4 and 10.5 ppc have differing expat versions
 	{
 		'name': 'expat', 
-		'source': 'http://easynews.dl.sourceforge.net/sourceforge/expat/expat-2.0.1.tar.gz',
+		'source': 'http://internap.dl.sourceforge.net/sourceforge/expat/expat-2.0.1.tar.gz',
 		'post':"""
 			rm -Rf /tmp/install/bin
 			rm -Rf /tmp/install/man
@@ -130,7 +130,8 @@ EOF
 	{
 		'name': 'pixman', 
 		#'source': 'http://cairographics.org/releases/pixman-0.10.0.tar.gz',
-		'source': 'http://cairographics.org/releases/pixman-0.11.10.tar.gz',
+		#'source': 'http://cairographics.org/releases/pixman-0.11.10.tar.gz',
+		'source': 'http://cairographics.org/releases/pixman-0.12.0.tar.gz',
 	},
 	{
 		'name': 'cairo', 
@@ -184,11 +185,11 @@ EOF
 	{
 		# Requires 10.4 or above
 		'name': 'gtk+', 
-		'version': '2.14.2', 
+		'version': '2.14.3', 
 		#'source': 'http://primates.ximian.com/~wberrier/macos/sources/gtk+-2.15.0.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.14/gtk+-2.14.2.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.14/gtk+-2.14.3.tar.bz2',
 		'build': """
-			./configure --prefix=%s --with-gdktarget=quartz --disable-gtk-doc --disable-docs --without-libjasper
+                        LDFLAGS="-framework Foundation -framework Carbon -framework AppKit -Xlinker -headerpad_max_install_names" ./configure --prefix=%s --with-gdktarget=quartz --disable-gtk-doc --with-libjpeg --without-libjasper
 			make
 			cd gtk/xdgmime
 			make
@@ -340,7 +341,7 @@ EOF
 		'name': 'ige-mac-integration',
 		'source': 'http://ftp.imendio.com/pub/imendio/ige-mac-integration/ige-mac-integration-0.8.2.tar.gz',
 		'build':"""
-			./configure --prefix=/tmp/install
+			LDFLAGS="-framework AppKit -Xlinker -headerpad_max_install_names"  ./configure --prefix=/tmp/install
 			make
 			make install
 		""",
