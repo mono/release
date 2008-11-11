@@ -398,7 +398,7 @@ POSTBUILD_TEST12 () {
 POSTBUILD_TEST_NAME13="test-System-2.0"
 POSTBUILD_TEST13 () {
 	cd mcs/class/System
-	$make_path run-test PROFILE=net_2_0
+	$make_path run-test PROFILE=net_2_0 TEST_HARNESS_FLAGS=/labels
 }
 
 POSTBUILD_TEST_NAME14="test-System_XML-1.0"
