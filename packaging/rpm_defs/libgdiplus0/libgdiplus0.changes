@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Sep 10 11:21:53 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0 RC2
+  * Compute intermediate start/end points correctly on an open
+    curve.
+  * Add support to compress points (skip on of two identical
+    consecutive points) under some special cases.
+
+-------------------------------------------------------------------
 Fri Aug 22 17:56:36 MDT 2008 - ajorgensen@novell.com
 
 - Update to 2.0 (preview 2)

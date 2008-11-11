@@ -21,7 +21,7 @@
 
 Name:           libgdiplus0
 Version:        2.0
-Release:        1
+Release:        11
 License:        X11/MIT
 Url:            http://go-mono.org/
 Source0:        %{real_name}-%{version}.tar.bz2
@@ -115,6 +115,12 @@ rm -rf "$RPM_BUILD_ROOT"
 %postun -p /sbin/ldconfig
 
 %changelog
+* Wed Sep 10 2008 ajorgensen@novell.com
+- Update to 2.0 RC2
+  * Compute intermediate start/end points correctly on an open
+  curve.
+  * Add support to compress points (skip on of two identical
+  consecutive points) under some special cases.
 * Fri Aug 22 2008 ajorgensen@novell.com
 - Update to 2.0 (preview 2)
   * Fixes bnc#402613, lp#246376, bnc#409672, bnc#410124, bnc#413461,

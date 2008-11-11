@@ -1,5 +1,5 @@
 #
-# spec file for package mono-core (Version 2.0)
+# spec file for package mono-core (Version 2.0.1)
 #
 # Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
@@ -18,16 +18,18 @@
 # norootforbuild
 
 %{!?ext_man: %define ext_man .gz}
+
 Name:           mono-core
 License:        LGPL v2.1 or later
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 Url:            http://go-mono.org/
-Version:        2.0
+Version:        2.0.1
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
 ExclusiveArch:  %ix86 x86_64 ppc hppa armv4l sparc s390 ia64 s390x
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Provides:       mono = %{version}-%{release}
 Provides:       mono-ikvm = %{version}-%{release}
 Obsoletes:      mono
@@ -48,24 +50,11 @@ Conflicts:      helix-banshee <= 0.13.1
 Conflicts:      banshee <= 0.13.1
 Conflicts:      f-spot <= 0.3.5
 Conflicts:      mono-addins <= 0.3
-# 1.9 branch conflicts:
-#  Can't do this because this rpm could be used on a distro with gtk# 2.8...
-#Conflicts:	gtk-sharp2 < 2.10.3
-# Require when in the buildserivce
-%if 0%{?opensuse_bs}
-Requires:       libgdiplus0
-%endif
-%if 0%{?monobuild}
-Requires:       libgdiplus0
-%endif
-# for autobuild
-%if 0%{?monobuild} == 0
-%if 0%{?opensuse_bs} == 0
-# suse would rather have recommends so that all sorts of graphic libs aren't 
-#  pulled in when libgdiplus is installed
+# Only use recommends for 11.0 and up
+%if 0%{?suse_version} >= 1100
 Recommends:     libgdiplus0
-Recommends:     libgluezilla0
-%endif
+%else
+Requires:       libgdiplus0
 %endif
 BuildRequires:  glib2-devel zlib-devel
 #######  distro specific changes  ########
@@ -73,23 +62,23 @@ BuildRequires:  glib2-devel zlib-devel
 #### suse options ####
 %if 0%{?suse_version}
 # For some reason these weren't required in 10.2 and before... ?
-%if %{suse_version} >= 1030
+%if 0%{suse_version} >= 1030
 BuildRequires:  bison
 # Add valgrind support for 10.3 and above on archs that have it
 %ifarch %ix86 x86_64 ppc ppc64
 BuildRequires:  valgrind-devel
 %endif
 %endif
-%if %{suse_version} >= 1020
+%if 0%{suse_version} >= 1020
 BuildRequires:  xorg-x11-libX11
 %endif
-%if %{sles_version} == 10
+%if 0%{sles_version} == 10
 BuildRequires:  xorg-x11-devel
 %endif
-%if %{suse_version} == 1010
+%if 0%{suse_version} == 1010
 BuildRequires:  xorg-x11-devel
 %endif
-%if %{sles_version} == 9
+%if 0%{sles_version} == 9
 %define configure_options export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/gnome/%_lib/pkgconfig
 BuildRequires:  XFree86-devel XFree86-libs pkgconfig
 %endif
@@ -900,6 +889,11 @@ Summary:        Mono development tools
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Requires:       glib2-devel
+%if 0%{?monobuild}
+Requires:       libgdiplus0
+%else
+Requires:       libgdiplus0 = 2.0
+%endif
 
 %description -n mono-devel
 The Mono Project is an open development initiative that is working to
@@ -1183,7 +1177,7 @@ export CFLAGS=" $RPM_OPT_FLAGS -DKDE_ASSEMBLIES='\"/opt/kde3/%{_lib}\"' -fno-str
 make
 
 %install
-make DESTDIR=$RPM_BUILD_ROOT install
+make install DESTDIR=%buildroot
 # Remove unused files
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.a
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.la
@@ -1260,6 +1254,36 @@ rm %buildroot%_prefix/usr
 rm -rf ${RPM_BUILD_ROOT}
 
 %changelog
+* Mon Oct 20 2008 ajorgensen@novell.com
+- Update to 2.0.1
+  * Fixes for bnc#426309, bnc#431304, bnc#433908, bnc#431811,
+  bnc#434620, bnc#428406, bnc#434544, bnc#432673, bnc#426264,
+  bnc#430963, bnc#430040, bnc#435549, bnc#432466, bnc#433741,
+  bnc#416462, bnc#437691, and bnc#437289
+* Wed Oct 01 2008 ajorgensen@novell.com
+- Update to 2.0 RC4
+  * Fixes for bnc#430508, bnc#413636, bnc#378713, and bnc#428054
+* Thu Sep 25 2008 ajorgensen@novell.com
+- Update to 2.0 RC3 refresh
+  * Fixes for bnc#424851 and bnc#419888
+- Update to 2.0 RC3 refresh
+  * Fixes for bnc#424851 and bnc#419888
+* Mon Sep 22 2008 ajorgensen@novell.com
+- Update to 2.0 RC3
+  * Bugfixes including bnc#424851, bnc#427974, bnc#414146,
+  bnc#428309
+* Wed Sep 10 2008 ajorgensen@novell.com
+- Update to 2.0 RC2
+  * Bugfixes including bnc#422507, bnc#422853, bnc#397627,
+  bnc#359181, bnc#409028, bnc#417955, bnc#410743
+* Tue Sep 09 2008 ajorgensen@novell.com
+- Require libgdiplus for mono-devel (because resgen requires it)
+* Mon Sep 08 2008 ajorgensen@novell.com
+- Recommend a specific version of libgdiplus
+* Tue Sep 02 2008 ajorgensen@novell.com
+- Update to 2.0 RC1
+  * Bugfixes
+  * Adds a 2.0 gacutil
 * Tue Aug 26 2008 ajorgensen@novell.com
 - Update to 2.0 (preview 2)
   * Runtime: Performance

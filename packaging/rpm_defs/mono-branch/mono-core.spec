@@ -1,5 +1,5 @@
 #
-# spec file for package mono-core (Version 2.0)
+# spec file for package mono-core (Version 2.0.1)
 #
 # Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
@@ -18,16 +18,16 @@
 # norootforbuild
 
 %{!?ext_man: %define ext_man .gz}
+
 Name:           mono-core
 License:        LGPL v2.1 or later
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 Url:            http://go-mono.org/
-Version:        2.0
+Version:        2.0.1
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
-Patch1:         mono-libtool.diff
 ExclusiveArch:  %ix86 x86_64 ppc hppa armv4l sparc s390 ia64 s390x
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Provides:       mono = %{version}-%{release}
@@ -50,24 +50,11 @@ Conflicts:      helix-banshee <= 0.13.1
 Conflicts:      banshee <= 0.13.1
 Conflicts:      f-spot <= 0.3.5
 Conflicts:      mono-addins <= 0.3
-# 1.9 branch conflicts:
-#  Can't do this because this rpm could be used on a distro with gtk# 2.8...
-#Conflicts:	gtk-sharp2 < 2.10.3
-# Require when in the buildserivce
-%if 0%{?opensuse_bs}
-Requires:       libgdiplus0
-%endif
-%if 0%{?monobuild}
-Requires:       libgdiplus0
-%endif
-# for autobuild
-%if 0%{?monobuild} == 0
-%if 0%{?opensuse_bs} == 0
-# suse would rather have recommends so that all sorts of graphic libs aren't 
-#  pulled in when libgdiplus is installed
+# Only use recommends for 11.0 and up
+%if 0%{?suse_version} >= 1100
 Recommends:     libgdiplus0
-Recommends:     libgluezilla0
-%endif
+%else
+Requires:       libgdiplus0
 %endif
 BuildRequires:  glib2-devel zlib-devel
 #######  distro specific changes  ########
@@ -75,23 +62,23 @@ BuildRequires:  glib2-devel zlib-devel
 #### suse options ####
 %if 0%{?suse_version}
 # For some reason these weren't required in 10.2 and before... ?
-%if %{suse_version} >= 1030
+%if 0%{suse_version} >= 1030
 BuildRequires:  bison
 # Add valgrind support for 10.3 and above on archs that have it
 %ifarch %ix86 x86_64 ppc ppc64
 BuildRequires:  valgrind-devel
 %endif
 %endif
-%if %{suse_version} >= 1020
+%if 0%{suse_version} >= 1020
 BuildRequires:  xorg-x11-libX11
 %endif
-%if %{sles_version} == 10
+%if 0%{sles_version} == 10
 BuildRequires:  xorg-x11-devel
 %endif
-%if %{suse_version} == 1010
+%if 0%{suse_version} == 1010
 BuildRequires:  xorg-x11-devel
 %endif
-%if %{sles_version} == 9
+%if 0%{sles_version} == 9
 %define configure_options export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/gnome/%_lib/pkgconfig
 BuildRequires:  XFree86-devel XFree86-libs pkgconfig
 %endif
@@ -140,7 +127,7 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-%files
+%files -f mcs.lang
 %defattr(-, root, root)
 %doc AUTHORS COPYING.LIB ChangeLog NEWS README
 %_bindir/mono
@@ -151,6 +138,7 @@ Authors:
 %_mandir/man1/mcs.1%ext_man
 %_mandir/man1/certmgr.1%ext_man
 %_mandir/man1/chktrust.1%ext_man
+%_mandir/man1/csharp.1%ext_man
 %_mandir/man1/setreg.1%ext_man
 %_mandir/man1/gacutil.1%ext_man
 %_mandir/man1/sn.1%ext_man
@@ -158,6 +146,7 @@ Authors:
 # wrappers
 %_bindir/certmgr
 %_bindir/chktrust
+%_bindir/csharp
 %_bindir/gacutil
 %_bindir/gacutil1
 %_bindir/gacutil2
@@ -174,6 +163,7 @@ Authors:
 %_prefix/lib/mono/1.0/chktrust.exe*
 %_prefix/lib/mono/1.0/gacutil.exe*
 %_prefix/lib/mono/2.0/gacutil.exe*
+%_prefix/lib/mono/2.0/csharp.exe*
 %_prefix/lib/mono/2.0/gmcs.exe*
 %_prefix/lib/mono/1.0/mcs.exe*
 %_prefix/lib/mono/1.0/mozroots.exe*
@@ -191,9 +181,14 @@ Authors:
 %_prefix/lib/mono/gac/Mono.CompilerServices.SymbolWriter
 %_prefix/lib/mono/1.0/Mono.CompilerServices.SymbolWriter.dll
 %_prefix/lib/mono/2.0/Mono.CompilerServices.SymbolWriter.dll
+%_prefix/lib/mono/2.1/Mono.CompilerServices.SymbolWriter.dll
 %_prefix/lib/mono/gac/Mono.GetOptions
 %_prefix/lib/mono/1.0/Mono.GetOptions.dll
 %_prefix/lib/mono/2.0/Mono.GetOptions.dll
+%_prefix/lib/mono/gac/Mono.Simd
+%_prefix/lib/mono/2.0/Mono.Simd.dll
+%_prefix/lib/mono/gac/Mono.Management
+%_prefix/lib/mono/2.0/Mono.Management.dll
 %_prefix/lib/mono/gac/Mono.Security
 %_prefix/lib/mono/1.0/Mono.Security.dll
 %_prefix/lib/mono/2.0/Mono.Security.dll
@@ -265,6 +260,10 @@ Authors:
 %_prefix/lib/mono/2.1/System.Core.dll
 %_prefix/lib/mono/gac/System.Net
 %_prefix/lib/mono/2.1/System.Net.dll
+%_prefix/lib/mono/gac/Mono.CSharp
+%_prefix/lib/mono/2.0/Mono.CSharp.dll
+# localizations?
+#%_datadir/locale/*/LC_MESSAGES/mcs.mo
 # Not sure if autobuild allows this...
 %_libdir/pkgconfig/smcs.pc
 
@@ -375,7 +374,7 @@ Authors:
 
 %files -n mono-data
 %defattr(-, root, root)
-%_prefix/lib/mono/1.0/sqlsharp.exe*
+%_prefix/lib/mono/2.0/sqlsharp.exe*
 %_bindir/sqlsharp
 %_mandir/man1/sqlsharp.1%ext_man
 %_prefix/lib/mono/gac/System.Data
@@ -593,6 +592,47 @@ Authors:
 %_prefix/lib/mono/gac/Mono.Data.SybaseClient
 %_prefix/lib/mono/1.0/Mono.Data.SybaseClient.dll
 %_prefix/lib/mono/2.0/Mono.Data.SybaseClient.dll
+
+%package -n mono-wcf
+Summary:        Mono implementation of WCF, Windows Communication Foundation
+Group:          Development/Languages/Mono
+Requires:       mono-core == %version-%release
+
+%description -n mono-wcf
+The Mono Project is an open development initiative that is working to
+develop an open source, Unix version of the .NET development platform.
+Its objective is to enable Unix developers to build and deploy
+cross-platform .NET applications. The project will implement various
+technologies that have been submitted to the ECMA for standardization.
+
+Mono implementation of WCF, Windows Communication Foundation
+
+
+
+Authors:
+--------
+    Miguel de Icaza <miguel@ximian.com>
+    Paolo Molaro <lupus@ximian.com>
+    Dietmar Maurer <dietmar@ximian.com>
+
+
+%files -n mono-wcf
+%defattr(-, root, root)
+%_prefix/lib/mono/gac/System.IdentityModel
+%_prefix/lib/mono/2.0/System.IdentityModel.dll
+%_prefix/lib/mono/gac/System.IdentityModel.Selectors
+%_prefix/lib/mono/2.0/System.IdentityModel.Selectors.dll
+%_prefix/lib/mono/gac/System.Runtime.Serialization
+%_prefix/lib/mono/2.0/System.Runtime.Serialization.dll
+%_prefix/lib/mono/2.1/System.Runtime.Serialization.dll
+%_prefix/lib/mono/gac/System.ServiceModel
+%_prefix/lib/mono/2.0/System.ServiceModel.dll
+%_prefix/lib/mono/2.1/System.ServiceModel.dll
+%_prefix/lib/mono/gac/System.ServiceModel.Web
+%_prefix/lib/mono/2.0/System.ServiceModel.Web.dll
+%_prefix/lib/mono/2.1/System.ServiceModel.Web.dll
+%_libdir/pkgconfig/wcf.pc
+
 %package -n mono-web
 License:        LGPL v2.1 or later
 Summary:        Mono implementation of ASP.NET, Remoting and Web Services
@@ -641,12 +681,21 @@ Authors:
 %_prefix/lib/mono/gac/System.Web.Services
 %_prefix/lib/mono/1.0/System.Web.Services.dll
 %_prefix/lib/mono/2.0/System.Web.Services.dll
+%_prefix/lib/mono/gac/System.Web.Abstractions
+%_prefix/lib/mono/2.0/System.Web.Abstractions.dll
+%_prefix/lib/mono/gac/System.Web.Routing
+%_prefix/lib/mono/2.0/System.Web.Routing.dll
 %_prefix/lib/mono/gac/System.Web.Extensions
 %_prefix/lib/mono/2.0/System.Web.Extensions.dll
-%_prefix/lib/mono/3.5/System.Web.Extensions.dll
+%_prefix/lib/mono/compat-2.0/System.Web.Extensions.dll
 %_prefix/lib/mono/gac/System.Web.Extensions.Design
 %_prefix/lib/mono/2.0/System.Web.Extensions.Design.dll
 %_prefix/lib/mono/3.5/System.Web.Extensions.Design.dll
+%_prefix/lib/mono/compat-2.0/System.Web.Extensions.Design.dll
+%_prefix/lib/mono/gac/System.Web.DynamicData
+%_prefix/lib/mono/2.0/System.Web.DynamicData.dll
+%_prefix/lib/mono/gac/System.ComponentModel.DataAnnotations
+%_prefix/lib/mono/2.0/System.ComponentModel.DataAnnotations.dll
 # exes
 %_prefix/lib/mono/1.0/disco.exe*
 %_prefix/lib/mono/1.0/soapsuds.exe*
@@ -840,6 +889,11 @@ Summary:        Mono development tools
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 Requires:       glib2-devel
+%if 0%{?monobuild}
+Requires:       libgdiplus0
+%else
+Requires:       libgdiplus0 = 2.0
+%endif
 
 %description -n mono-devel
 The Mono Project is an open development initiative that is working to
@@ -880,6 +934,7 @@ fi
 %_prefix/lib/mono/2.0/al.exe*
 %_prefix/lib/mono/1.0/caspol.exe*
 %_prefix/lib/mono/1.0/cert2spc.exe*
+%_prefix/lib/mono/1.0/mono-cil-strip.exe*
 %_prefix/lib/mono/1.0/dtd2xsd.exe*
 %_prefix/lib/mono/1.0/genxs.exe*
 %_prefix/lib/mono/2.0/httpcfg.exe*
@@ -901,7 +956,7 @@ fi
 %_prefix/lib/mono/1.0/signcode.exe*
 %_prefix/lib/mono/1.0/prj2make.exe*
 %_prefix/lib/mono/1.0/macpack.exe*
-%_prefix/lib/mono/1.0/mono-shlib-cop.exe*
+%_prefix/lib/mono/2.0/mono-shlib-cop.exe*
 %_prefix/lib/mono/1.0/dtd2rng.exe*
 %_prefix/lib/mono/1.0/mono-xmltool.exe*
 # xbuild related files
@@ -915,6 +970,7 @@ fi
 %_prefix/lib/mono/2.0/xbuild.rsp
 # man pages
 %_mandir/man1/cert2spc.1%ext_man
+%_mandir/man1/mono-cil-strip.1%ext_man
 %_mandir/man1/dtd2xsd.1%ext_man
 %_mandir/man1/genxs.1%ext_man
 %_mandir/man1/httpcfg.1%ext_man
@@ -964,6 +1020,7 @@ fi
 %_bindir/mono-api-info
 %_bindir/mono-api-info1
 %_bindir/mono-api-info2
+%_bindir/mono-cil-strip
 %_bindir/mono-find-provides
 %_bindir/mono-find-requires
 %_bindir/mono-shlib-cop
@@ -993,6 +1050,7 @@ fi
 %_prefix/lib/mono/2.0/Microsoft.Build.Engine.dll
 %_prefix/lib/mono/gac/Mono.Cecil
 %_prefix/lib/mono/gac/Mono.Cecil.Mdb
+%_prefix/lib/mono-source-libs
 %_bindir/monograph
 %_prefix/include/mono-1.0
 %_libdir/libmono-profiler-cov.*
@@ -1002,6 +1060,8 @@ fi
 %_libdir/pkgconfig/dotnet.pc
 %_libdir/pkgconfig/dotnet35.pc
 %_libdir/pkgconfig/mono-cairo.pc
+%_libdir/pkgconfig/mono-options.pc
+%_libdir/pkgconfig/mono-lineeditor.pc
 %_libdir/pkgconfig/cecil.pc
 %_mandir/man1/monoburg.*
 %_prefix/share/mono-1.0/mono/cil/cil-opcodes.xml
@@ -1011,6 +1071,49 @@ fi
 %dir %_prefix/share/mono-1.0/mono/cil
 # Reminder: when removing man pages in this list, they are not 
 #  yet gzipped
+
+%package -n monodoc-core
+License:        GNU General Public License (GPL)
+Summary:        Monodoc-Documentation tools for C# code
+Group:          Development/Tools/Other
+URL:            http://go-mono.org/
+Provides:       monodoc
+Obsoletes:      monodoc
+
+%description -n monodoc-core
+Monodoc-core contains documentation tools for C#.
+
+%files -n monodoc-core
+%defattr(-, root, root)
+%{_prefix}/lib/mono/2.0/mdoc.exe*
+%{_prefix}/lib/mono/1.0/mod.exe*
+%{_prefix}/lib/mono/gac/monodoc
+%{_prefix}/lib/mono/monodoc
+%{_bindir}/mdassembler
+%{_bindir}/mdoc
+%{_bindir}/mdoc-assemble
+%{_bindir}/mdoc-export-html
+%{_bindir}/mdoc-export-msxdoc
+%{_bindir}/mdoc-update
+%{_bindir}/mdoc-validate
+%{_bindir}/mdvalidater
+%{_bindir}/mod
+%{_bindir}/monodocer
+%{_bindir}/monodocs2html
+%{_bindir}/monodocs2slashdoc
+%{_prefix}/lib/monodoc
+%_libdir/pkgconfig/monodoc.pc
+%{_mandir}/man1/mdassembler.1%ext_man
+%{_mandir}/man1/mdoc-assemble.1%ext_man
+%{_mandir}/man1/mdoc-export-html.1%ext_man
+%{_mandir}/man1/mdoc-export-msxdoc.1%ext_man
+%{_mandir}/man1/mdoc-update.1%ext_man
+%{_mandir}/man1/mdoc-validate.1%ext_man
+%{_mandir}/man1/mdoc.1%ext_man
+%{_mandir}/man1/mdvalidater.1%ext_man
+%{_mandir}/man1/monodocer.1%ext_man
+%{_mandir}/man1/monodocs2html.1%ext_man
+%{_mandir}/man5/mdoc.5%ext_man
 
 %package -n mono-complete
 License:        LGPL v2.1 or later
@@ -1031,6 +1134,7 @@ Requires:       mono-jscript = %version-%release
 Requires:       mono-locale-extras = %version-%release
 Requires:       mono-nunit = %version-%release
 Requires:       mono-web = %version-%release
+Requires:       mono-wcf = %version-%release
 Requires:       mono-winforms = %version-%release
 
 %description -n mono-complete
@@ -1057,7 +1161,6 @@ Authors:
 
 %prep
 %setup -q -n mono-%{version}
-%patch1 -p1
 
 %build
 # These are only needed if there are patches to the runtime
@@ -1074,7 +1177,7 @@ export CFLAGS=" $RPM_OPT_FLAGS -DKDE_ASSEMBLIES='\"/opt/kde3/%{_lib}\"' -fno-str
 make
 
 %install
-%makeinstall
+make install DESTDIR=%buildroot
 # Remove unused files
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.a
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.la
@@ -1145,11 +1248,42 @@ rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/transform.exe
 ln -s . %buildroot%_prefix/usr
 RPM_BUILD_ROOT=%buildroot%_prefix /usr/lib/rpm/brp-compress
 rm %buildroot%_prefix/usr
+%find_lang mcs
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
 
 %changelog
+* Mon Oct 20 2008 ajorgensen@novell.com
+- Update to 2.0.1
+  * Fixes for bnc#426309, bnc#431304, bnc#433908, bnc#431811,
+  bnc#434620, bnc#428406, bnc#434544, bnc#432673, bnc#426264,
+  bnc#430963, bnc#430040, bnc#435549, bnc#432466, bnc#433741,
+  bnc#416462, bnc#437691, and bnc#437289
+* Wed Oct 01 2008 ajorgensen@novell.com
+- Update to 2.0 RC4
+  * Fixes for bnc#430508, bnc#413636, bnc#378713, and bnc#428054
+* Thu Sep 25 2008 ajorgensen@novell.com
+- Update to 2.0 RC3 refresh
+  * Fixes for bnc#424851 and bnc#419888
+- Update to 2.0 RC3 refresh
+  * Fixes for bnc#424851 and bnc#419888
+* Mon Sep 22 2008 ajorgensen@novell.com
+- Update to 2.0 RC3
+  * Bugfixes including bnc#424851, bnc#427974, bnc#414146,
+  bnc#428309
+* Wed Sep 10 2008 ajorgensen@novell.com
+- Update to 2.0 RC2
+  * Bugfixes including bnc#422507, bnc#422853, bnc#397627,
+  bnc#359181, bnc#409028, bnc#417955, bnc#410743
+* Tue Sep 09 2008 ajorgensen@novell.com
+- Require libgdiplus for mono-devel (because resgen requires it)
+* Mon Sep 08 2008 ajorgensen@novell.com
+- Recommend a specific version of libgdiplus
+* Tue Sep 02 2008 ajorgensen@novell.com
+- Update to 2.0 RC1
+  * Bugfixes
+  * Adds a 2.0 gacutil
 * Tue Aug 26 2008 ajorgensen@novell.com
 - Update to 2.0 (preview 2)
   * Runtime: Performance

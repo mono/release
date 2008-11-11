@@ -1,4 +1,60 @@
 -------------------------------------------------------------------
+Fri Nov  7 16:01:56 MST 2008 - ajorgensen@novell.com
+
+- Spec file fixes
+
+-------------------------------------------------------------------
+Mon Oct 20 11:42:54 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0.1
+  * Fixes for bnc#426309, bnc#431304, bnc#433908, bnc#431811,
+    bnc#434620, bnc#428406, bnc#434544, bnc#432673, bnc#426264,
+    bnc#430963, bnc#430040, bnc#435549, bnc#432466, bnc#433741,
+    bnc#416462, bnc#437691, and bnc#437289
+
+-------------------------------------------------------------------
+Wed Oct  1 15:16:09 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0 RC4
+  * Fixes for bnc#430508, bnc#413636, bnc#378713, and bnc#428054
+
+-------------------------------------------------------------------
+Thu Sep 25 15:35:52 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0 RC3 refresh
+  * Fixes for bnc#424851 and bnc#419888
+
+-------------------------------------------------------------------
+Thu Sep 25 15:35:52 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0 RC3 refresh
+  * Fixes for bnc#424851 and bnc#419888
+
+-------------------------------------------------------------------
+Mon Sep 22 12:49:59 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0 RC3
+  * Bugfixes including bnc#424851, bnc#427974, bnc#414146,
+    bnc#428309
+
+-------------------------------------------------------------------
+Wed Sep 10 11:28:24 MDT 2008 - ajorgensen@novell.com
+
+- Update to 2.0 RC2
+  * Bugfixes including bnc#422507, bnc#422853, bnc#397627,
+    bnc#359181, bnc#409028, bnc#417955, bnc#410743
+
+-------------------------------------------------------------------
+Tue Sep  9 15:20:08 MDT 2008 - ajorgensen@novell.com
+
+- Require libgdiplus for mono-devel (because resgen requires it)
+
+-------------------------------------------------------------------
+Mon Sep  8 08:40:53 MDT 2008 - ajorgensen@novell.com
+
+- Recommend a specific version of libgdiplus
+
+-------------------------------------------------------------------
 Tue Sep  2 10:26:11 MDT 2008 - ajorgensen@novell.com
 
 - Update to 2.0 RC1

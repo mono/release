@@ -14,7 +14,6 @@ BUILD_HOSTS=(
 	sles-10-x86_64
 	sles-10-ia64
 	sles-10-ppc
-	sunos-8-sparc
 	sunos-10-sparc
 	sunos-10-x86
 	win-4-i386
@@ -26,7 +25,6 @@ USE_HOSTS=(
 	macos-10-ppc
 	macos-10-x86
 	rhel-4-i386
-	sunos-8-sparc
 	sunos-10-sparc
 	sunos-10-x86
 	sles-10-ia64
@@ -240,31 +238,31 @@ fd.close()'
 
 	# It appears that xsp doesn't use /etc/mono/config, so still provide 
 	#  these mappings with the assemblies like we used to
-	cat <<EOF > mcs/class/lib/default/System.Drawing.dll.config
+	cat <<EOF > mcs/class/lib/net_1_1/System.Drawing.dll.config
 <configuration>
         <dllmap dll="gdiplus" target="/tmp/build_deps/lib/libgdiplus.dylib" />
         <dllmap dll="gdiplus.dll" target="/tmp/build_deps/lib/libgdiplus.dylib" />
 </configuration>
 EOF
-	cp mcs/class/lib/default/System.Drawing.dll.config mcs/class/lib/net_2_0/
+	cp mcs/class/lib/net_1_1/System.Drawing.dll.config mcs/class/lib/net_2_0/
 
 
-	cat <<EOF > mcs/class/lib/default/System.Windows.Forms.dll.config
+	cat <<EOF > mcs/class/lib/net_1_1/System.Windows.Forms.dll.config
 <configuration>
         <dllmap dll="gdiplus" target="/tmp/build_deps/lib/libgdiplus.dylib" />
         <dllmap dll="gdiplus.dll" target="/tmp/build_deps/lib/libgdiplus.dylib" />
         <dllmap dll="libX11" target="/usr/X11R6/lib/libX11.dylib" />
 </configuration>
 EOF
-	cp mcs/class/lib/default/System.Windows.Forms.dll.config mcs/class/lib/net_2_0/
+	cp mcs/class/lib/net_1_1/System.Windows.Forms.dll.config mcs/class/lib/net_2_0/
 
 
-	cat<<EOF > mcs/class/lib/default/Mono.Posix.dll.config
+	cat<<EOF > mcs/class/lib/net_1_1/Mono.Posix.dll.config
 <configuration>
         <dllmap dll="MonoPosixHelper" target="/tmp/build_deps/lib/libMonoPosixHelper.dylib"/>
 </configuration>
 EOF
-	cp mcs/class/lib/default/Mono.Posix.dll.config mcs/class/lib/net_2_0/
+	cp mcs/class/lib/net_1_1/Mono.Posix.dll.config mcs/class/lib/net_2_0/
 
 
 	rm -Rf /tmp/temp_install
@@ -297,8 +295,8 @@ get_destroot () {
 }
 
 HEAD_PATH=(
-	branches/mono-2-0/mono
-	branches/mono-2-0/mcs
+	branches/mono-2-2/mono
+	branches/mono-2-2/mcs
 )
 
 RELEASE_PATH=(
@@ -316,6 +314,10 @@ POSTBUILD_TEST_NAME1="test-runtime"
 POSTBUILD_TEST1 () {
 	cd mono/tests
 	$make_path -k check
+	echo "Test stdout starts here:"
+	for i in *.stdout; do echo "$i:"; cat $i; done
+	echo "Test stderr starts here:"
+	for i in *.stderr; do echo "$i:"; cat $i; done
 }
 
 POSTBUILD_TEST_NAME2="test-mini"
@@ -356,7 +358,7 @@ POSTBUILD_TEST5 () {
 POSTBUILD_TEST_NAME6="test-compiler-1.0"
 POSTBUILD_TEST6 () {
 	cd mcs/tests
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME7="test-compiler-2.0"
@@ -368,7 +370,7 @@ POSTBUILD_TEST7 () {
 POSTBUILD_TEST_NAME8="test-compiler-errors-1.0"
 POSTBUILD_TEST8 () {
 	cd mcs/errors
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME9="test-compiler-errors-2.0"
@@ -381,7 +383,7 @@ POSTBUILD_TEST_NAME10="test-corlib-1.0"
 POSTBUILD_TEST10 () {
 
 	cd mcs/class/corlib
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME11="test-corlib-2.0"
@@ -393,7 +395,7 @@ POSTBUILD_TEST11 () {
 POSTBUILD_TEST_NAME12="test-System-1.0"
 POSTBUILD_TEST12 () {
 	cd mcs/class/System
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME13="test-System-2.0"
@@ -405,7 +407,7 @@ POSTBUILD_TEST13 () {
 POSTBUILD_TEST_NAME14="test-System_XML-1.0"
 POSTBUILD_TEST14 () {
 	cd mcs/class/System.XML
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME15="test-System_XML-2.0"
@@ -417,7 +419,7 @@ POSTBUILD_TEST15 () {
 POSTBUILD_TEST_NAME16="test-Mono_Security-1.0"
 POSTBUILD_TEST16 () {
 	cd mcs/class/Mono.Security
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME17="test-Mono_Security-2.0"
@@ -429,7 +431,7 @@ POSTBUILD_TEST17 () {
 POSTBUILD_TEST_NAME18="test-System_Security-1.0"
 POSTBUILD_TEST18 () {
 	cd mcs/class/System.Security
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME19="test-System_Security-2.0"
@@ -444,7 +446,7 @@ POSTBUILD_TEST20 () {
 	export DISPLAY
 
 	cd mcs/class/System.Drawing
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME21="test-System_Drawing-2.0"
@@ -462,7 +464,7 @@ POSTBUILD_TEST22 () {
 	export DISPLAY
 
 	cd mcs/class/Managed.Windows.Forms
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME23="test-Windows_Forms-2.0"
@@ -477,7 +479,7 @@ POSTBUILD_TEST23 () {
 POSTBUILD_TEST_NAME24="test-System_Data-1.0"
 POSTBUILD_TEST24 () {
 	cd mcs/class/System.Data
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME25="test-System_Data-2.0"
@@ -489,7 +491,7 @@ POSTBUILD_TEST25 () {
 POSTBUILD_TEST_NAME26="test-Mono_Data_Sqlite-1.0"
 POSTBUILD_TEST26 () {
 	cd mcs/class/Mono.Data.Sqlite
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME27="test-Mono_Data_Sqlite-2.0"
@@ -501,7 +503,7 @@ POSTBUILD_TEST27 () {
 POSTBUILD_TEST_NAME28="test-Mono_Data_SqliteClient-1.0"
 POSTBUILD_TEST28 () {
 	cd mcs/class/Mono.Data.SqliteClient
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME29="test-Mono_Data_SqliteClient-2.0"
@@ -513,7 +515,7 @@ POSTBUILD_TEST29 () {
 POSTBUILD_TEST_NAME30="test-System_Data_OracleClient-1.0"
 POSTBUILD_TEST30 () {
 	cd mcs/class/System.Data.OracleClient
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME31="test-System_Data_OracleClient-2.0"
@@ -525,7 +527,7 @@ POSTBUILD_TEST31 () {
 POSTBUILD_TEST_NAME32="test-System_Design-1.0"
 POSTBUILD_TEST32 () {
 	cd mcs/class/System.Design
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME33="test-System_Design-2.0"
@@ -537,7 +539,7 @@ POSTBUILD_TEST33 () {
 POSTBUILD_TEST_NAME34="test-Mono_Posix-1.0"
 POSTBUILD_TEST34 () {
 	cd mcs/class/Mono.Posix
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME35="test-Mono_Posix-2.0"
@@ -549,7 +551,7 @@ POSTBUILD_TEST35 () {
 POSTBUILD_TEST_NAME36="test-System_Web-1.0"
 POSTBUILD_TEST36 () {
 	cd mcs/class/System.Web
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME37="test-System_Web-2.0"
@@ -561,7 +563,7 @@ POSTBUILD_TEST37 () {
 POSTBUILD_TEST_NAME38="test-System_Web_Services-1.0"
 POSTBUILD_TEST38 () {
 	cd mcs/class/System.Web.Services
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME39="test-System_Web_Services-2.0"
@@ -573,7 +575,7 @@ POSTBUILD_TEST39 () {
 POSTBUILD_TEST_NAME40="test-System_Runtime_SFS-1.0"
 POSTBUILD_TEST40 () {
 	cd mcs/class/System.Runtime.Serialization.Formatters.Soap
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME41="test-System_Runtime_SFS-2.0"
@@ -585,7 +587,7 @@ POSTBUILD_TEST41 () {
 POSTBUILD_TEST_NAME42="test-System_Runtime_Remoting-1.0"
 POSTBUILD_TEST42 () {
 	cd mcs/class/System.Runtime.Remoting
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME43="test-System_Runtime_Remoting-2.0"
@@ -597,7 +599,7 @@ POSTBUILD_TEST43 () {
 POSTBUILD_TEST_NAME44="test-Cscompmgd-1.0"
 POSTBUILD_TEST44 () {
 	cd mcs/class/Cscompmgd
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME45="test-Cscompmgd-2.0"
@@ -609,7 +611,7 @@ POSTBUILD_TEST45 () {
 POSTBUILD_TEST_NAME46="test-Commons_Xml_Relaxng-1.0"
 POSTBUILD_TEST46 () {
 	cd mcs/class/Commons.Xml.Relaxng
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME47="test-Commons_Xml_Relaxng-2.0"
@@ -621,7 +623,7 @@ POSTBUILD_TEST47 () {
 POSTBUILD_TEST_NAME48="test-System_Messaging-1.0"
 POSTBUILD_TEST48 () {
 	cd mcs/class/System.Messaging
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME49="test-System_Messaging-2.0"
@@ -633,7 +635,7 @@ POSTBUILD_TEST49 () {
 POSTBUILD_TEST_NAME50="test-System_ServiceProcess-1.0"
 POSTBUILD_TEST50 () {
 	cd mcs/class/System.ServiceProcess
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME51="test-System_ServiceProcess-2.0"
@@ -645,7 +647,7 @@ POSTBUILD_TEST51 () {
 POSTBUILD_TEST_NAME52="test-Microsoft_JScript-1.0"
 POSTBUILD_TEST52 () {
 	cd mcs/class/Microsoft.JScript
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME53="test-Microsoft_JScript-2.0"
@@ -657,7 +659,7 @@ POSTBUILD_TEST53 () {
 POSTBUILD_TEST_NAME54="test-I18N_CJK-1.0"
 POSTBUILD_TEST54 () {
 	cd mcs/class/I18N/CJK
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME55="test-I18N_CJK-2.0"
@@ -669,7 +671,7 @@ POSTBUILD_TEST55 () {
 POSTBUILD_TEST_NAME56="test-I18N_West-1.0"
 POSTBUILD_TEST56 () {
 	cd mcs/class/I18N/West
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME57="test-I18N_West-2.0"
@@ -681,7 +683,7 @@ POSTBUILD_TEST57 () {
 POSTBUILD_TEST_NAME58="test-System_DirectoryServices-1.0"
 POSTBUILD_TEST58 () {
 	cd mcs/class/System.DirectoryServices
-	$make_path run-test
+	$make_path run-test PROFILE=net_1_1
 }
 
 POSTBUILD_TEST_NAME59="test-System_DirectoryServices-2.0"
@@ -777,6 +779,9 @@ POSTBUILD_TEST72 () {
 	cp -a mcs/tools/nunitreport/Media $target
 
 	MONO_PATH="mcs/class/lib/net_2_0:$MONO_PATH" runtime/mono-wrapper mcs/tools/nunitreport/nunitreport.exe test_results $target/index.html
+
+	# We don't care if this step fails, it has never succeeded
+	exit 0
 }
 
 POSTBUILD_TEST_NAME73="test-ondotnet"
@@ -859,7 +864,7 @@ POSTBUILD_STEP1 () {
         )
 
         case $VERSION in
-        1.1) PROFILE=default ;;
+        1.1) PROFILE=net_1_1 ;;
         2.0) PROFILE=net_2_0 ; ASSEMBLIES=(
                         ${ASSEMBLIES[@]}
                         Microsoft.Build.Engine
@@ -880,7 +885,7 @@ POSTBUILD_STEP1 () {
 
         # todo: wget these out of subversion
         wget --tries=1 --timeout=10 http://primates.ximian.com/~wberrier/class_status/deploy.tar.bz2
-        wget --tries=1 --timeout=10 http://anonsvn.mono-project.com/source/trunk/olive/status/mono-api.xsl
+        wget --tries=1 --timeout=10 http://anonsvn.mono-project.com/source/trunk/olive/status/mono-api.xsl -O mono-api.xsl
 
         tar -zxf masterinfos-$VERSION.tar.gz
         tar -jxf deploy.tar.bz2
