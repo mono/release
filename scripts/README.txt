@@ -12,3 +12,4 @@ scripts used
 7.  putfilesonserver.sh (ssh all png, html to go-mono)
 8.  displayTestResults.php (display results )
 9.  displayDetails.php (details of test results)
+10. search_logs (not used by automation. Maually search logs for errors)

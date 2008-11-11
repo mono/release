@@ -1,0 +1,81 @@
+#!/bin/bash
+# Seach logs for an error string.  Send output to file to be searched
+# for the first tiem it occured.
+# set -x
+#
+# Author: Marc Christensen <mchristensen@novell.com>
+# 
+
+
+# Command line arguments:
+#  JAIL:      The jail name, i.e. sles-10-i586
+#  MODULE:    The module to look for i.e. mono or libgdiplus, etc
+#  LOG_FILE_BASENAME:
+#             i.e. test-compiler-errors-1.0, test-System_Security-2.0,
+#             etc.
+#  SEARCH_STRING:
+#             A unique search string from the error to be searched for.
+#             This string should be unique to the error and taken from
+#             the log file (buildbot web page for that build step)
+#
+
+usage ()
+{
+   echo 
+   echo "Usage:"
+   echo
+   echo "     $(basename $0) -j <jail> -m <module_name> -t <build_step_name> -s \"<Quoted Error string to look for>\""
+   echo
+   echo "Example:"
+   echo
+   echo "     $(basename $0) -j sles-10-i586 -m mono -t test-Windows_Forms-2.0 -s \"ListViewItemTest.Constructor_Serializabl\""
+   echo
+   echo "Default value for jail = 'sles-10-i586' and module = 'mono'."
+   echo
+   exit 1
+}
+
+NO_ARGS=0
+if [ $# -eq 0 ] || [ $# -gt 8 ]  
+then
+  usage
+fi
+
+while getopts "j:m:t:s:h" OPT
+do
+   case $OPT in
+      j )  JAIL=$OPTARG ;;
+      m )  MODULE=$OPTARG ;;
+      t )  LOG_FILE_BASENAME=$OPTARG ;;
+      s )  SEARCH_STRING="$OPTARG" ;;
+      h | \? ) usage ;;
+   esac
+done
+shift $(($OPTIND - 1))
+
+#echo
+#echo "JAIL              = $JAIL"
+#echo "MODULE            = $MODULE"
+#echo "LOG_FILE_BASENAME = $LOG_FILE_BASENAME"
+#echo "SEARCH_STRING     = $SEARCH_STRING"
+#echo
+
+## Some varialbles ##
+# The maximum number of days in the past to search logs.
+MAX_DAYS=40
+LOG_DIR=/home/builder/wa/msvn/release/monobuild/www/builds/HEAD/${JAIL}/${MODULE}
+OUTPUT_FILENAME=/tmp/search.out
+
+cd $LOG_DIR
+find . -mtime -${MAX_DAYS} -name "${LOG_FILE_BASENAME}*" | sort -n | uniq > /tmp/$LOG_FILE_BASENAME
+cat /tmp/$LOG_FILE_BASENAME | \
+while read I; do
+   echo -n "$I: "
+   if zgrep "${SEARCH_STRING}" $I; then
+     echo
+   else
+     echo ------  NO INSTANCE  ------
+   fi
+done > $OUTPUT_FILENAME
+echo "Results in: $OUTPUT_FILENAME"
+less "$OUTPUT_FILENAME"
