@@ -1,30 +1,17 @@
-#
-# spec file for package mono-zeroconf (Version 0.7.6)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
-#
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
-
 Name:           mono-zeroconf
 AutoReqProv:    on
 License:        X11/MIT
 Group:          Development/Languages/Mono
 Summary:        A cross platform Zero Configuration Networking library for Mono
 Url:            http://mono-project.com/Mono.Zeroconf
-Version:        0.7.6
+Version:        0.8.0
 Release:        1
 Source0:        %{name}-%{version}.tar.bz2
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  mono-devel
 Requires:       mono-zeroconf-provider
-%define assembly_version 2.0.0.76
+%define assembly_version 3.0.0.80
 ## --- Build Configuration --- ##
 %define build_avahi 1
 %define build_mdnsr 1
@@ -34,13 +21,12 @@ Requires:       mono-zeroconf-provider
 %if %{suse_version} >= 1030
 %define build_avahi 1
 %define build_mdnsr 0
-BuildRequires:  avahi-mono
+#BuildRequires:  avahi-mono
 %endif
 %if %{suse_version} >= 1020 && %{suse_version} < 1030
 %define build_avahi 1
 %define build_mdnsr 1
-%define override_avahi_libs 1
-BuildRequires:  avahi-mono
+#BuildRequires:  avahi-mono
 BuildRequires:  mDNSResponder-devel
 %endif
 %if %{suse_version} < 1020
@@ -93,17 +79,21 @@ Authors:
 %dir %_prefix/lib/mono/gac/policy.1.0.Mono.Zeroconf/0.0.0.0__e60c4f4a95e1099e
 %dir %_prefix/lib/mono/gac/policy.2.0.Mono.Zeroconf
 %dir %_prefix/lib/mono/gac/policy.2.0.Mono.Zeroconf/0.0.0.0__e60c4f4a95e1099e
+%dir %_prefix/lib/mono/gac/policy.3.0.Mono.Zeroconf
+%dir %_prefix/lib/mono/gac/policy.3.0.Mono.Zeroconf/0.0.0.0__e60c4f4a95e1099e
 %_bindir/mzclient
 %_prefix/share/pkgconfig/mono-zeroconf.pc
 %_prefix/lib/mono/gac/Mono.Zeroconf/*/*.dll*
 %_prefix/lib/mono/gac/policy.1.0.Mono.Zeroconf/*/*
 %_prefix/lib/mono/gac/policy.2.0.Mono.Zeroconf/*/*
+%_prefix/lib/mono/gac/policy.3.0.Mono.Zeroconf/*/*
 %_prefix/lib/mono/mono-zeroconf/Mono.Zeroconf.dll*
 %_prefix/lib/mono-zeroconf/MZClient.exe*
 ## --- mDNSResponder Provider --- ##
 %if %{build_mdnsr} == 1
 
 %package provider-mDNSResponder
+License:        X11/MIT
 Summary:        A cross platform Zero Configuration Networking library for Mono
 Group:          Development/Languages/Mono
 BuildRequires:  mDNSResponder-devel
@@ -132,9 +122,10 @@ Authors:
 %if %{build_avahi} == 1
 
 %package provider-avahi
+License:        X11/MIT
 Summary:        A cross platform Zero Configuration Networking library for Mono
 Group:          Development/Languages/Mono
-Requires:       mono-zeroconf
+Requires:       mono-zeroconf avahi
 Provides:       mono-zeroconf-provider
 
 %description provider-avahi
@@ -153,12 +144,13 @@ Authors:
 %files provider-avahi
 %defattr(-, root, root)
 %dir %_prefix/lib/mono-zeroconf
-%_prefix/lib/mono-zeroconf/Mono.Zeroconf.Providers.Avahi.dll*
+%_prefix/lib/mono-zeroconf/Mono.Zeroconf.Providers.AvahiDBus.dll*
 %endif
 ## --- Monodoc Developer API Documentation --- ##
 %if %{build_docs} == 1
 
 %package doc
+License:        X11/MIT
 Summary:        A cross platform Zero Configuration Networking library for Mono
 Group:          Development/Languages/Mono
 
@@ -187,9 +179,6 @@ Authors:
 
 %build
 %{?env_options}
-%if 0%{?override_avahi_libs}
-export AVAHI_LIBS="-r:/usr/lib/mono/avahi-sharp/avahi-sharp.dll"
-%endif
 ./configure --prefix=/usr \
 %if %{build_docs} == 0
 	--disable-docs \
@@ -216,32 +205,5 @@ mv $RPM_BUILD_ROOT/usr/lib/pkgconfig/* $RPM_BUILD_ROOT/usr/share/pkgconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-%if 0%{?fedora_version} || 0%{?rhel_version}
-# Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
-%define _use_internal_dependency_generator 0
-%endif
-%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
-%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Fri Mar 21 2008 abockover@suse.de
-- Updated to version 0.7.6
-- Adds NetworkInterface API to IService objects
-- Supports IPv6 host address resolutions
-* Fri Jan 25 2008 abockover@suse.de
-- Updated to version 0.7.5
-- Adds GAC version policy assemblies so package upgrades don't break apps
-* Wed Jan 23 2008 abockover@suse.de
-- Updated to version 0.7.4
-- Fixes IP address resolution bug in Bonjour provider that
-  only manifested under .NET on Windows XP SP2
-- Minor bug fix in MZClient
-- libdir patch removed from package; fixed in upstream release
-* Fri Dec 28 2007 abockover@suse.de
-- Patch to fix libdir issue in mono-zeroconf.pc on x86_64
-* Sun Dec 23 2007 abockover@suse.de
-- Initial import of Mono.Zeroconf for STABLE from the build serivce
-- Version 0.7.3 release
-- Provides a cross platform (Linux, Mac, Windows) Mono/.NET API
-  for Zero Configuration networking supporting either Bonjour
-  or Avahi mDNS providers

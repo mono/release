@@ -1,23 +1,11 @@
-#
-# spec file for package heap-buddy (Version 0.2)
-#
-# Copyright (c) 2007 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
-#
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
 Name:           heap-buddy
-License:        GNU General Public License (GPL)
+License:        GPL v2 or later
 Group:          Development/Tools/Other
-Autoreqprov:    on
+AutoReqProv:    on
 Version:        0.2
-Release:        41
+Release:        153
 Summary:        Heap-buddy is a heap profiler for mono
-URL:            http://www.mono-project.com/
+Url:            http://www.mono-project.com/
 Source:         %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  mono-devel
@@ -78,7 +66,6 @@ rm -rf $RPM_BUILD_ROOT
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
-
 %if 0%{?fedora_version} || 0%{?rhel_version}
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
@@ -87,19 +74,3 @@ rm -rf $RPM_BUILD_ROOT
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Fri Apr 13 2007 - wberrier@novell.com
-- adapt for build service
-* Wed Apr 11 2007 - wberrier@novell.com
-- Add mono dep/req for older distros
-* Tue Dec 05 2006 - joeshaw@suse.de
-- Update heap-buddy to 0.2
-* Wed Jan 25 2006 - mls@suse.de
-- converted neededforbuild to BuildRequires
-* Mon Dec 19 2005 - ro@suse.de
-- added missing symlink to filelist
-* Fri Dec 16 2005 - wberrier@suse.de
-- Clean up deps (most mono packages don't need the full gnome-devel dep)
-* Fri Dec 02 2005 - gekker@suse.de
-- Fix directory ownership
-* Thu Dec 01 2005 - gekker@suse.de
-- Initial import into autobuild, version 0.1

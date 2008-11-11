@@ -1,27 +1,7 @@
-#
-# spec file for package mono-tools (Version 2.0)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-#
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
-
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
-
 Name:           mono-tools
-BuildRequires:  gconf-sharp2 gecko-sharp2 mono-data-oracle mono-devel mono-jscript mono-nunit monodoc-core
+BuildRequires:  gconf-sharp2 mono-data-oracle mono-devel mono-jscript mono-nunit monodoc-core
 Version:        2.0
-Release:        1
+Release:        6
 License:        GPL v2 or later
 BuildArch:      noarch
 Url:            http://go-mono.org/
@@ -31,6 +11,11 @@ Group:          Development/Tools/Other
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?suse_version}
 BuildRequires:  update-desktop-files
+%if %suse_version > 1100
+BuildRequires:  webkit-sharp
+%else
+BuildRequires:  gecko-sharp2
+%endif
 %if %suse_version >= 1030
 BuildRequires:  gtkhtml314-sharp
 %else
@@ -106,7 +91,7 @@ Authors:
 %_prefix/lib/mperfmon
 
 %prep
-%setup  -q -n %{name}-%{version}
+%setup -q
 
 %build
 %{?env_options}
@@ -136,76 +121,3 @@ monodoc --make-index
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Tue Aug 26 2008 ajorgensen@novell.com
-- Update to 2.0
-  * Gendarme
-  * New wizard-based GUI runner. It also add support for .MDB and .PDB debugging symbols, allowing source lines numbers inside reports.
-  * 151 rules (56 new and many updated) divided into 14 categories (2 new) and yet is faster than the version shipped with Mono 1.9
-  * Various updates and fixes to other tools
-* Thu Apr 10 2008 wberrier@novell.com
-- Update BuildRequires on suse 10.3/11 and fedora8 to use
-  the new gtkhtml314-sharp
-* Wed Mar 26 2008 wberrier@novell.com
-- Update to 1.9:
- -Includes new tools: gui-compare and Gendarme
- -Fix to check for new version of gtkhtml# (3.14)
- -Fixed docbrowser to work with gecko# again
-  [Regression] Monodoc crashes in gtk_moz_embed_append_data
-  (bnc#341815)
-* Tue Feb 26 2008 wberrier@novell.com
-- Add patch: mono-tools-fix_build_gnome_sharp.patch
-  to fix build with new gtk#/gnome#
-* Mon Jan 14 2008 wberrier@novell.com
-- Update to 1.2.6
- -Always uses gtkhtml instead of xulrunner, which crashes
- -Various bug fixes
-- Patch desktop files: mono-tools-desktop_standards.patch
-- use find_lang for translation files
-* Wed Jun 06 2007 wberrier@novell.com
-- add post script to index documentation
-- Update to 1.2.4
- -ilcontast: new util
- -create-native-map updates
- -docbrowser updates
-* Wed Apr 11 2007 wberrier@novell.com
-- Add mono dep/req for older distros
-* Thu Apr 05 2007 wberrier@suse.de
-- Adapt for buildservice
-- Clean up BuildRequires
-* Thu Mar 01 2007 wberrier@suse.de
-- Update to 1.2.3
- -Adds --remote-mode used in conjuction with MonoDevelop
- -More lenient create-native-map
-* Sat Dec 02 2006 wberrier@suse.de
-- Update to 1.2.1 (Fate #301111)
- -New create-native-map tools
- -fix for monodoc to work with xulrunner in some cases
-* Thu Oct 19 2006 ro@suse.de
-- added mono-devel to buildrequires
-* Wed Oct 04 2006 wberrier@suse.de
-- Update to 1.1.17
-  - Uses gtk-sharp2 instead of gtk-sharp.  Update BuildRequires
-  accordingly
-* Fri Feb 17 2006 gekker@suse.de
-- Update .desktop file for UI team
-* Wed Feb 01 2006 aj@suse.de
-- Fix BuildRequires to build on x86-64 again.
-* Wed Jan 25 2006 mls@suse.de
-- converted neededforbuild to BuildRequires
-* Mon Jan 23 2006 gekker@suse.de
-- fixup nfb for changes in gtk-sharp packaging
-* Thu Dec 15 2005 wberrier@suse.de
-- Update to 1.1.11
-* Thu Nov 10 2005 wberrier@suse.de
-- Update to 1.1.10, add gecko-sharp dep
-* Sun Oct 23 2005 ro@suse.de
-- do not obsolete monodoc (already provided and obsoleted
-  by monodoc-core)
-* Tue Oct 11 2005 wberrier@suse.de
-- Update to 1.1.9 and enable 2.0
-* Fri Aug 26 2005 aj@suse.de
-- Fix filelist.
-* Fri Aug 26 2005 ro@suse.de
-- nfb: monodoc -> monodoc-core
-* Tue Aug 23 2005 wberrier@suse.de
-- Initial package (Needed for monodoc gtk browser)

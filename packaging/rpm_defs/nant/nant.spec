@@ -1,23 +1,3 @@
-#
-# spec file for package nant (Version 0.86_beta1)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-#
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
-
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
-
 Name:           nant
 # We have to append a .0 to make sure the rpm upgrade versioning works.
 #  nant's progression: 0.85-rc4, 0.85
@@ -94,39 +74,3 @@ rm -rf "$RPM_BUILD_ROOT"
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Tue Aug 12 2008 ajorgensen@novell.com
-- Patch to allow us to bootstrap nant on mono-2.0
-* Mon Dec 10 2007 wberrier@suse.de
-- Update to 0.86_beta1
- -modify filelist munging to work for this release
- -remove patches: nant-1733671_threading_fix.patch
-  nant-remove_overridden_obsolete.patch
- -new patch: nant-useruntime_fix.patch
--Ignore some bundled assemblies
-* Mon Aug 06 2007 wberrier@suse.de
-- Use upstream threading fix instead of workaround
-  (remove nant-remove_pkgconfig_garbage.patch and replace with
-  nant-1733671_threading_fix.patch)  This will fix other issues
-  with nant as well.
-* Wed Apr 11 2007 wberrier@novell.com
-- Add mono dep/req for older distros
-* Fri Mar 30 2007 wberrier@suse.de
-- Truely make noarch (don't use prefix var from runtime,
-  because it could be '/usr/lib/pkgconfig/../..', and if this
-  doesn't exists on x86_64, the nant script will fail.
-- Use 'exec' in nant wrapper
-* Tue Mar 06 2007 wberrier@suse.de
-- nant-remove_overridden_obsolete.patch: mcs >= 1.2.3 doesn't allow
-  obsolete overrides for non-obsolete methods.  future versions of
-  csc will warn about this.
-* Mon Nov 20 2006 wberrier@suse.de
-- nant-remove_pkgconfig_garbage.patch: fix random builds failures
-  of nant and boo (mostly on 64bit archs).  Workaround for now...
-* Fri Oct 27 2006 dmueller@suse.de
-- don't build as root
-* Tue Oct 24 2006 wberrier@suse.de
-- Updated to 0.85, fixed some inconsistent build errors on
-  x86_64 and ia64 about invalid path chars on path::combine
- - had to append .0 to version to make sure rpm upgrades work
-* Tue Aug 01 2006 wberrier@suse.de
-- Initial package: 0.85-rc4

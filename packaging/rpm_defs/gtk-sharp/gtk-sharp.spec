@@ -1,6 +1,3 @@
-
-# norootforbuild
-
 Name:           gtk-sharp
 %ifarch ppc64
 BuildRequires:  mono-biarchcompat
@@ -324,6 +321,5 @@ on all gtk-sharp subpackages)
 %endif
 %define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
-
 
 %changelog

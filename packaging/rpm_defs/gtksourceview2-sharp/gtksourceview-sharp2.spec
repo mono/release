@@ -1,6 +1,3 @@
-
-# norootforbuild
-
 Name:           gtksourceview2-sharp
 BuildRequires:  gnome-sharp2 gtk-sharp2-gapi mono-devel monodoc-core
 BuildRequires:  gtksourceview-devel >= 2.0.0

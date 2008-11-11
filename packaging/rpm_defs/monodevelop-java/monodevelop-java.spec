@@ -1,16 +1,3 @@
-#
-# spec file for package monodevelop-java (Version 1.0)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
-#
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
-
 Name:           monodevelop-java
 Version:        1.0
 Release:        1
@@ -66,9 +53,3 @@ rm -rf "$RPM_BUILD_ROOT"
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Wed Mar 26 2008 wberrier@novell.com
-- Update to 1.0
- -Updated translations
- -Minor fixes to coincide with the MonoDevelop 1.0 release
-* Tue Jan 15 2008 wberrier@suse.de
-- Initial package (split out from monodevelop at the source level)

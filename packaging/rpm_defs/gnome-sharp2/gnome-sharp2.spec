@@ -1,16 +1,3 @@
-#
-# spec file for package gnome-sharp2 (Version 0)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
-#
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
-
 Name:           gnome-sharp2
 %define _name gnome-sharp
 %ifarch ppc64
@@ -25,6 +12,7 @@ BuildRequires:  glade-sharp2 gtk-sharp2 gtk-sharp2-gapi
 %define minimum_glib_sharp_version 2.10.3
 %define two_sixteen_version 2.16.1
 %define two_twenty_version 2.20.1
+%define two_twentyfour_version 2.24.0
 #####  suse  ####
 %if 0%{?suse_version}
 # Not needed with rpm .config dep search
@@ -35,6 +23,9 @@ BuildRequires:  glade-sharp2 gtk-sharp2 gtk-sharp2-gapi
 %endif
 %if %suse_version >= 1030
 %define _version %two_twenty_version
+%endif
+%if %suse_version >= 1110
+%define _version %two_twentyfour_version
 %endif
 %define new_suse_buildrequires libgnomedb-devel librsvg-devel mono-devel vte-devel gnome-panel-devel  monodoc-core update-desktop-files
 BuildRequires:  %{new_suse_buildrequires} gtkhtml2-devel
@@ -48,6 +39,9 @@ BuildRequires:  %{new_suse_buildrequires} gtkhtml2-devel
 %endif
 %if %fedora_version >= 8
 %define _version %two_twenty_version
+%endif
+%if %fedora_version >= 10
+%define _version %two_twentyfour_version
 %endif
 # All fedora distros (5 and 6) have the same names, requirements
 BuildRequires:  gnome-panel-devel gtkhtml3-devel libgnomedb-devel libgnomeprintui22-devel librsvg2-devel mono-devel monodoc-core vte-devel
@@ -67,12 +61,12 @@ BuildRequires:  gnome-panel-devel gtkhtml3-devel libgnomeprintui22-devel librsvg
 ### Options that relate to a version of gnome#, not necessarily a distro
 # Define true for 2.20
 #  (Must do this inside of shell... rpm can't handle this expression)
-%define two_twenty_split %(if test x%_version = x%two_twenty_version ; then  echo "1" ; else echo "0" ; fi)
+%define two_twenty_split %(if test x%_version = x%two_twenty_version || test x%_version = x%two_twentyfour_version; then  echo "1" ; else echo "0" ; fi)
 ###
 ##############
 # Need to put this stuff down here after Version: gets defined
 Version:        %_version
-Release:        1
+Release:        14
 Source:         %{_name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
@@ -160,7 +154,7 @@ make
 
 %install
 %{?env_options}
-%makeinstall
+make install DESTDIR=%buildroot
 rm $RPM_BUILD_ROOT%{_libdir}/*.*a
 
 %clean
@@ -281,21 +275,3 @@ This package contains Mono bindings for vte.
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Thu Apr 24 2008 wberrier@suse.de
-- Update to 2.12.1
-  * Bugfix in GLib ref management for Gnome.Program crash in
-  gnome-sharp
-* Thu Apr 03 2008 wberrier@novell.com
-- Can now build 2.16 and 2.20 from the same spec
-- Update to 2.20.0
- -Updated bindings to coincide with gtk# 2.12
- -Removed bindings: gtkhtml#, rsvg#, and vte#
-* Wed Mar 26 2008 wberrier@novell.com
-- Update to 2.16.1
- -Allow storage of empty lists in gconf
- -Bug fixes:
-  - [GConf] Impossible to set empty list values (bnc#325516)
-  - Comment #8 of bnc#327058 (incorrect p/invoke bindings)
-* Tue Jul 03 2007 wberrier@suse.de
-- Initial package of gnome-sharp2 2.16.0
- -(Split from gtk-sharp 2.8.3)

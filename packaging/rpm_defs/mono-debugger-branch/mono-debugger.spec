@@ -1,6 +1,3 @@
-
-# norootforbuild
-
 Name:           mono-debugger
 License:        GNU General Public License (GPL), X11/MIT
 Group:          Development/Languages/Other

@@ -1,16 +1,3 @@
-#
-# spec file for package mono-addins (Version 0.3.1)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
-#
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
-
 Name:           mono-addins
 Version:        0.4
 Release:        1
@@ -89,10 +76,3 @@ rm -rf "$RPM_BUILD_ROOT"
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Wed Mar 26 2008 wberrier@suse.de
-- Update to 0.3.1
- -Fix compatibility with new Mono
- -Delete subdirectory when uninstalling
- -Improve error reporting
-* Mon Jan 14 2008 wberrier@suse.de
-- Initial package (needed by MD and other mono apps)

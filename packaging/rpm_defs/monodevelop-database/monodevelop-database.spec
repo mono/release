@@ -1,15 +1,3 @@
-#
-# spec file for package monodevelop-database (Version 1.0)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
-#
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
 %define db_packages mono-data-postgresql mono-data-sqlite mono-data-sybase 
 
 Name:           monodevelop-database
@@ -68,10 +56,3 @@ rm -rf "$RPM_BUILD_ROOT"
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Wed Mar 26 2008 wberrier@novell.com
-- Update to 1.0:
- -Updated translations
- -Bug Fixes:
-  - Database browser: Tables do not render columsn (bnc#339726)
-* Tue Jan 15 2008 wberrier@suse.de
-- Initial package (split out from monodevelop at the source level)

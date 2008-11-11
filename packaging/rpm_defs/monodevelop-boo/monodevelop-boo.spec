@@ -1,27 +1,8 @@
-#
-# spec file for package monodevelop-boo (Version 1.0)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-#
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
-
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
 %define boo_version %(rpm -q boo-devel --queryformat '%{VERSION}')
 
 Name:           monodevelop-boo
 Version:        1.0
-Release:        73
+Release:        96
 License:        GPL v2 or later
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on
@@ -82,15 +63,3 @@ rm -rf "$RPM_BUILD_ROOT"
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Tue Aug 12 2008 ajorgensen@novell.com
-- BuildRequire boo-devel
-* Wed Mar 26 2008 wberrier@novell.com
-- Update to 1.0:
- -updated translations
- -Bug fixes:
-  - Boo templates syntactically incorrect (bnc#350626)
-  - Boo library template fails to compile (bnc#358368)
-  - Boo Code Completion appends instead of replaces what you've
-  typed (bnc#361267)
-* Tue Jan 15 2008 wberrier@suse.de
-- Initial package (split out from monodevelop at the source level)

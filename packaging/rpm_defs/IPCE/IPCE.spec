@@ -1,16 +1,3 @@
-#
-# spec file for package IPCE (Version r7)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
-#
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
-
 Name:           IPCE
 Version:        r7
 Release:        1
@@ -107,30 +94,3 @@ rm -rf "$RPM_BUILD_ROOT"
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Wed Feb 27 2008 wberrier@suse.de
-- Update to r7
- -fix some path issues
- -Include 2.x
- -init fixes from svn: IPCE-fix_fepy_init.patch
-* Fri Aug 03 2007 wberrier@suse.de
-- Update to r6 (Includes IronPython 1.1)
- -several new modules (array, SHA, MD5, and select),
-  support for XML Doc comments within the help system and
-  _doc_ tags, as well as support for loading cached pre-compiled
-  modules.
- -Other various Bug fixes
-* Wed Apr 11 2007 wberrier@novell.com
-- Add mono dep/req for older distros
-* Wed Jan 17 2007 wberrier@suse.de
-- Ship IPCE instead if IronPython and rename package to
-  reflect this
-* Tue Oct 24 2006 wberrier@suse.de
-- Add mono-devel to BuildRequires so mono rpm deps and requires
-  get generated correctly
-* Thu Sep 07 2006 wberrier@suse.de
-- Update to 1.0 final
-* Wed Aug 30 2006 wberrier@suse.de
-- Update to 1.0 rc2 with several bugfixes.
-* Tue Aug 01 2006 wberrier@suse.de
-- New package
-- Shell stuff in order to build with mono

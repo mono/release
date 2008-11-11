@@ -1,27 +1,8 @@
-#
-# spec file for package libgluezilla0 (Version 2.0)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-#
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
-
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
 %define real_name gluezilla
 
 Name:           libgluezilla0
 Version:        2.0
-Release:        1
+Release:        10
 License:        GPL v2 only
 Url:            http://www.mono-project.com
 Source0:        %{real_name}-%{version}.tar.bz2
@@ -31,16 +12,16 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  gcc-c++ gtk2-devel
 ####  suse  ####
 %if 0%{?suse_version}
-%if %suse_version >= 1030
+%if %suse_version >= 1100
+BuildRequires:  mozilla-xulrunner190-devel
+%endif
+%if %suse_version == 1030
 BuildRequires:  mozilla-nspr-devel mozilla-xulrunner181-devel
 %endif
 %if %suse_version == 1020
 BuildRequires:  mozilla-nspr-devel mozilla-xulrunner181-devel
 %endif
 %if %sles_version == 10
-BuildRequires:  gecko-sdk mozilla-nspr-devel mozilla-xulrunner
-%endif
-%if %suse_version == 1010
 BuildRequires:  gecko-sdk mozilla-nspr-devel mozilla-xulrunner
 %endif
 %if %sles_version == 9
@@ -114,21 +95,3 @@ rm -rf "$RPM_BUILD_ROOT"
 %postun -p /sbin/ldconfig
 
 %changelog
-* Fri Aug 22 2008 ajorgensen@novell.com
-- Update to 2.0
-  * Context menu event support
-  * Progress event support
-  * Some bugfixes
-* Mon Apr 21 2008 wberrier@suse.de
-- Update to 1.9.1:
- -Fix bug where two browser widgets couldn't be in the same app
-* Tue Mar 25 2008 wberrier@suse.de
-- Update to 1.9:
- -Fixed to support more versions of windows, not just the one
-  it was built for.
- -call ldconfig directly instead of invoking a shell
- -Several other bug fixes
-* Wed Jan 16 2008 wberrier@suse.de
-- rename gluezilla -> libgluezilla0
-* Fri Jan 11 2008 wberrier@suse.de
-- initial package

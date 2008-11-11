@@ -1,23 +1,10 @@
-#
-# spec file for package gecko-sharp2 (Version 0.13)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
-#
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
-
 Name:           gecko-sharp2
 BuildRequires:  gtk-sharp2 gtk-sharp2-gapi gtk2-devel mono-devel monodoc-core
 Version:        0.13
-Release:        1
+Release:        92
 License:        LGPL v2.1 or later; MOZILLA PUBLIC LICENSE (MPL/NPL)
 BuildArch:      noarch
-Url:            www.monodevelop.com
+Url:            http://www.mono-project.com/GeckoSharp
 Source0:        gecko-sharp-2.0-%{version}.tar.bz2
 Summary:        Gecko bindings for Mono
 Group:          Development/Libraries/Other
@@ -30,8 +17,12 @@ AutoReqProv:    on
 %if 0%{?monobuild} == 01
 %define requires_list grep -v gecko-sharp.dll.config
 %endif
-%define xulrunner_version 181
 %if 0%{?suse_version}
+%define xulrunner_version 181
+%if %suse_version > 1100
+%define xulrunner_version 190
+Requires:       mozilla-xulrunner%{xulrunner_version}
+%endif
 %if %suse_version >= 1020
 BuildRequires:  mozilla-xulrunner%{xulrunner_version}
 # not needed with the .config scanning
@@ -113,57 +104,3 @@ rm -rf "%{buildroot}"
 %define __find_requires env sh -c 'filelist=($(%requires_list)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Wed Mar 26 2008 ajorgensen@novell.com
-- Update to 0.13
-- Fixes bnc#341815 - [Regression] Monodoc crashes in gtk_moz_embed_append_data
-* Sat Jul 07 2007 wberrier@novell.com
-- Update to 0.12
- -Depend on monodoc-core instead of mono-tools to break cyclic dep
- -Resolve naming conflicts in automake files
- -Remove upstreamed patches:
-  gecko-sharp2-r69353_break_cyclic_dep.patch
-  gecko-sharp2-r69372_fix_autoconf_docdir.patch
-* Wed Apr 11 2007 wberrier@novell.com
-- Add mono dep/req for older distros
-* Thu Jan 04 2007 wberrier@suse.de
-- obsolete gecko-sharp2-docs for upgrade path
- -bnc #227363
-* Tue Dec 12 2006 wberrier@suse.de
-- Undo gecko-sharp2 doc package split.
- -gecko-sharp2-r69353_break_cyclic_dep.patch: Patch to depend on
-  monodoc-core instead of mono-tools to break cyclic dep
- -gecko-sharp2-r69372_fix_autoconf_docdir.patch: now that we use
-  autoreconf for the above patch, we must rename docdir to
-  monodocdir so docdir doesn't get overwritten
-* Thu Nov 30 2006 sbrabec@suse.cz
-- Fixed xulrunner dependencies for older products.
-* Tue Nov 14 2006 ro@suse.de
-- remove mono-tools from buildrequires and build docs in separate
-  specfile to break cycle between mono-tools and gecko-sharp2
-* Mon Nov 13 2006 sbrabec@suse.cz
-- Use exact xulrunner version 181 (#218792, #216100).
-* Fri Oct 20 2006 ro@suse.de
-- added mono-devel to buildrequires
-* Fri Jul 07 2006 lrupp@suse.de
-- Requires mozilla-xulrunner180 for %%suse_version > 1010
-* Wed Jan 25 2006 mls@suse.de
-- converted neededforbuild to BuildRequires
-* Fri Jan 13 2006 gekker@suse.de
-- Fixup nfb and Requires for new gtk-sharp2 packaging
-* Fri Dec 09 2005 wberrier@suse.de
-- Replace mozilla dep with mozilla-xulrunner, clean up deps, and
-  add documentation
-* Fri Oct 21 2005 ro@suse.de
-- rename package, provide and obsolete old name
-* Sat Oct 08 2005 wberrier@suse.de
-- Update to 0.11
-* Mon Aug 15 2005 ro@suse.de
-- added check-build.sh
-* Tue Aug 09 2005 lnussel@suse.de
-- use buildroot and build as user
-* Mon Aug 08 2005 ro@suse.de
-- fix location of pkgconfig file
-* Mon Aug 08 2005 ro@suse.de
-- rename package to gecko-sharp-2_0 (no "." allowed in name)
-* Thu Aug 04 2005 wberrier@suse.de
-- Initial package
