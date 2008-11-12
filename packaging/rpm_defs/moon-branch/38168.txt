@@ -1,0 +1,27 @@
+diff --git a/Makefile.am b/Makefile.am
+index 74aa30c..1fb4075 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,7 +1,11 @@
+ MONO_SUBDIRS=
++PERF_SUBDIR=
+ 
+ if INCLUDE_MANAGED_CODE
+ MONO_SUBDIRS += class
++if INCLUDE_PERFORMANCE
++PERF_SUBDIR = perf
++endif INCLUDE_PERFORMANCE
+ endif
+ 
+ if !PLUGIN_INSTALL
+@@ -14,10 +18,6 @@ if INCLUDE_TESTING
+ TEST_SUBDIR = test
+ endif INCLUDE_TESTING
+ 
+-if INCLUDE_PERFORMANCE
+-PERF_SUBDIR = perf
+-endif INCLUDE_PERFORMANCE
+-
+ TOOLS_SUBDIR = tools
+ endif !PLUGIN_INSTALL
+ 

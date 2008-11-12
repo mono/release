@@ -1,0 +1,46 @@
+-------------------------------------------------------------------
+Tue Nov 11 17:20:36 MST 2008 - rhowell@novell.com
+
+- update to 1.0b1 
+- Fixes libxcb issues on SLE10 (bnc438265)
+- Fixes media playback (bnc442895,438404,439225,435908,435912,434462,
+   434267,433621,425264)
+- Udpate to embedded cairo and pixman (bnc432725)
+- Performance fixes (bnc435431,432975,412302,402211)
+- Animation fixes (bnc435815,434899,434298,434261,434258,429396,434462)
+- Disabled managed features
+
+-------------------------------------------------------------------
+Thu Oct 16 18:47:38 CEST 2008 - cthiel@suse.de
+
+- fix requires on moonlight-plugin
+
+-------------------------------------------------------------------
+Mon Sep  8 20:43:18 MDT 2008 - ajorgensen@novell.com
+
+- Switches to allow us to build on older distros
+
+-------------------------------------------------------------------
+Thu Sep  4 21:49:42 CEST 2008 - ajorgensen@novell.com
+
+- -examples requires libmoon0 (not libmoon)
+
+-------------------------------------------------------------------
+Tue Sep  2 12:03:21 CEST 2008 - crrodriguez@suse.de
+
+- fix build, missing libexpat-devel
+- add missing -devel package dependencies
+- use system cairo & pixman , never a bundled copy (!!) 
+
+-------------------------------------------------------------------
+Fri Aug 22 14:45:03 MDT 2008 - ajorgensen@novell.com
+
+- Fix for -debug* packages needing unprovided moonlight
+- Allow building on older distros (xulrunner181)
+
+-------------------------------------------------------------------
+Mon Aug 18 22:37:18 CEST 2008 - ajorgensen@novell.com
+
+- Initial upload (0.8.1)
+  * Support for Silverlight 1.0 profile
+
