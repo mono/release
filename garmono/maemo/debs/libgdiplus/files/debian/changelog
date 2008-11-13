@@ -1,3 +1,9 @@
+libgdiplus (2.0-1) unstable; urgency=low
+
+  * Upgrade to 2.0.
+
+ -- Everaldo Canuto <ecanuto@novell.com>  Thu, 13 Nov 2008 17:33:50 -0300
+
 libgdiplus (1.9-1) unstable; urgency=low
 
   * Initial Release.
