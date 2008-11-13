@@ -59,6 +59,6 @@ update_version_file () {
 }
 
 make_dist () {
-        ./configure --prefix=/usr
-        make dist
+        ./autogen.sh --prefix=/usr
+        make dist-bzip2
 }
