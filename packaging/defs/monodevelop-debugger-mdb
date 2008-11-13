@@ -25,6 +25,7 @@ MONO_DEPS=(
 	mono
 	gtksourceview-sharp2
 	mono-addins
+	mono-basic
 	mono-debugger
 	monodevelop
 	xsp
