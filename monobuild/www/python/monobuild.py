@@ -56,33 +56,25 @@ def index(req, **vars):
 	
 	
 	# Display status of tarball daemon
-	tarball_daemon_status = ""
-	td_image = ""
-	if config.td_active:
-		tarball_daemon_status = "Active"
-		td_image = "running.png"
-	elif not config.td_active:
+	tarball_daemon_status = "Active"
+	td_color = "#008A10"
+	if not config.td_active:
 		tarball_daemon_status = "Stopped"
-		td_image = "stopped.png"
-	td_image = "<img src='%s'>" % td_image
+		td_color = "#999999"
 	
 	
 	# Display status of scheduler daemon
-	sched_daemon_status = ""
-	sd_image = ""
-	if config.sd_active:
-		sched_daemon_status = "Active"
-		sd_image = "running.png"
-	elif not config.sd_active:
+	sched_daemon_status = "Active"
+	sd_color = "#008A10"
+	if not config.sd_active:
 		sched_daemon_status = "Stopped"
-		sd_image = "stopped.png"
-	sd_image = "<img src='%s'>" % sd_image
+		sd_color = "#999999"
 
 	req.write("""
-	<h2>Tarball daemon: %s %s
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scheduler daemon: %s %s</h2>
+	<h2>Tarball daemon: <span style='color:%s'>%s</span>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scheduler daemon: <span style='color:%s'>%s</span></h2>
 		
-	""" % (tarball_daemon_status,td_image,sched_daemon_status,sd_image))
+	""" % (td_color,tarball_daemon_status,sd_color,sched_daemon_status))
 	
 
 	legend_html = """
@@ -197,12 +189,10 @@ def index(req, **vars):
 				isRunning = True
 				
 			color =  "black"
-			weight = "normal"
 			if not isRunning:
 				color = "#999999"
-				#weight = "bold"
 				
-			styled_text = "<span style='color:%s;font-weight:%s'>%s</span>" % (color, weight, platform_name)
+			styled_text = "<span style='color:%s'>%s</span>" % (color, platform_name)
 			#status_image = "<img src='%s'>" % status_image 
 			
 			#req.write("<tr><th>%s <br>%s</th>\n" % (platform_name,status_image))
