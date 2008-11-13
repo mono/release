@@ -37,7 +37,7 @@ def index(req, **vars):
 	plat_objs = build.get_platform_objs()
 	pack_objs, noarch_pack_objs = build.get_package_objs(honor_disable_webview=True)
 
-        req.content_type = "text/html"
+	req.content_type = "text/html"
 
 	req.write( """
 	%s
@@ -61,8 +61,7 @@ def index(req, **vars):
 	if not config.td_active:
 		tarball_daemon_status = "Stopped"
 		td_color = "#999999"
-	
-	
+			
 	# Display status of scheduler daemon
 	sched_daemon_status = "Active"
 	sd_color = "#008A10"
@@ -79,7 +78,7 @@ def index(req, **vars):
 
 	legend_html = """
 	
-	<h3>Legend</h3>
+	<h3>Build Matrix Legend</h3>
 	<div>
 	<table class="legend">
 
@@ -96,11 +95,12 @@ def index(req, **vars):
 	</table>
 	<p>
 	<table>
-	<tr><td>Inner color:</td><td>current build</td></tr>
-	<tr><td>Outer color:</td><td>previous build</td></tr>
+	<tr><td>Inner color:</td><td>current build</td><td>%s</td><td>Black label:</td><td>Active platform</td></tr>
+	<tr><td>Outer color:</td><td>previous build</td><td></td><td>Grey label:</td><td><span style='color:#999999'>Stopped platform</span></td></tr>
+	
 	</table>
 	</p>
-	</div>"""
+	</div>""" % ('&nbsp;' * 20)
 
 	req.write(legend_html)
 	 
