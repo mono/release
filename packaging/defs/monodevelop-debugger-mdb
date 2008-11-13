@@ -1,0 +1,68 @@
+
+BUILD_HOSTS=(
+	sles-10-i586
+)
+
+# Temporary?
+MKTARBALL_HEAD_DEPS=1
+
+USE_HOSTS=(
+	sles-10-i586
+	sles-10-ppc
+	sles-10-x86_64
+	suse-102-i586
+	suse-102-ppc
+	suse-102-x86_64
+	suse-103-i586
+	suse-103-ppc
+	suse-103-x86_64
+        suse-110-i586
+        suse-110-ppc
+        suse-110-x86_64
+)
+
+MONO_DEPS=(
+	mono
+	gtksourceview-sharp2
+	mono-addins
+	mono-basic
+	monodevelop
+	xsp
+	boo
+	nant
+)
+
+MONO_RECOMMEND_DEPS=(
+	libgdiplus
+	gtk-sharp2
+	gtk-sharp28
+	gtk-sharp210
+	gtk-sharp212
+	gnome-sharp2
+	gnome-sharp220
+)
+
+PACKS_TO_REMOVE=(
+        libgdiplus
+        gtk-sharp2-doc
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+HEAD_PATH=(
+	trunk/monodevelop/extras/MonoDevelop.Debugger.Mdb
+)
+RELEASE_PATH=(
+	tags/monodevelop/extras/MonoDevelop.Debugger.Mdb/[[versiondot]]
+)
+
+update_version_file () {
+	sed -i "s/^VERSION=\([\.0-9]*\)/VERSION=$VERSION/" configure
+}
+
+make_dist () {
+        ./configure --prefix=/usr
+        make dist
+}
