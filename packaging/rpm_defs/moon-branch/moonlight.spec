@@ -358,6 +358,8 @@ rm %{buildroot}%{_libdir}/libmoon.la
 rm %{buildroot}%{_libdir}/libmoon.so
 rm %{buildroot}%{_libdir}/moon/plugin/*.la
 rm -rf %{buildroot}%{_libdir}/pkgconfig
+rm -f %{buildroot}%{_libdir}/libshocker.*
+rm -f %{buildroot}%{_bindir}/agviewer
 %if 0%{?suse_version}
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/browser-plugins
 ln -s %{_libdir}/moon/plugin/libmoonloader.so $RPM_BUILD_ROOT%{_libdir}/browser-plugins/libmoonloader.so
