@@ -200,7 +200,7 @@ def index(req, **vars):
 			weight = "normal"
 			if not isRunning:
 				color = "#999999"
-				weight = "bold"
+				#weight = "bold"
 				
 			styled_text = "<span style='color:%s;font-weight:%s'>%s</span>" % (color, weight, platform_name)
 			#status_image = "<img src='%s'>" % status_image 
