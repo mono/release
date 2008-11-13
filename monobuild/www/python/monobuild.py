@@ -11,6 +11,7 @@ import datastore
 import utils
 import www_utils
 
+
 doc_type = """<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">"""
 
 def index(req, **vars):
@@ -52,6 +53,37 @@ def index(req, **vars):
 	<H1>Mono Build Status - %s</H1>
 
 	""" % (doc_type, HEAD_or_RELEASE, config.web_root_url, config.web_root_url, HEAD_or_RELEASE))
+	
+	
+	# Display status of tarball daemon
+	tarball_daemon_status = ""
+	td_image = ""
+	if config.td_active:
+		tarball_daemon_status = "Active"
+		td_image = "running.png"
+	elif not config.td_active:
+		tarball_daemon_status = "Stopped"
+		td_image = "stopped.png"
+	td_image = "<img src='%s'>" % td_image
+	
+	
+	# Display status of scheduler daemon
+	sched_daemon_status = ""
+	sd_image = ""
+	if config.sd_active:
+		sched_daemon_status = "Active"
+		sd_image = "running.png"
+	elif not config.sd_active:
+		sched_daemon_status = "Stopped"
+		sd_image = "stopped.png"
+	sd_image = "<img src='%s'>" % sd_image
+
+	req.write("""
+	<h2>Tarball daemon: %s %s
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scheduler daemon: %s %s</h2>
+		
+	""" % (tarball_daemon_status,td_image,sched_daemon_status,sd_image))
+	
 
 	legend_html = """
 	
@@ -159,7 +191,22 @@ def index(req, **vars):
 				platform_name = "noarch"
 			else: platform_name = platform.name
 
-			req.write("<tr><th>%s</th>\n" % platform_name)
+			# TODO: Find out if the platform is removed from the schedulers list
+			isRunning = platform_name in config.sd_latest_build_distros
+			if platform_name == "noarch":
+				isRunning = True
+				
+			color =  "black"
+			weight = "normal"
+			if not isRunning:
+				color = "#999999"
+				weight = "bold"
+				
+			styled_text = "<span style='color:%s;font-weight:%s'>%s</span>" % (color, weight, platform_name)
+			#status_image = "<img src='%s'>" % status_image 
+			
+			#req.write("<tr><th>%s <br>%s</th>\n" % (platform_name,status_image))
+			req.write("<tr><th>%s</th>\n" % styled_text)
 
 			for package in packs:
 				#req.write("<br>".join(package.info.keys()))
