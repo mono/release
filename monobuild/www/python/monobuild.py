@@ -86,7 +86,7 @@ def index(req, **vars):
 	<tr>
 	<th class="inprogress">In Progress</th>
 	<th class="success">Success</th>
-	<th class="failure">Failed</th>
+	<th class="failure">Build Failed</th>
 	<th class="testfailure">Tests Failed</th>
 	<th class="timeout">Timed Out</th>
 	<th class="new">New</th>
