@@ -319,6 +319,9 @@ class sync(threading.Thread):
 			# Add tarball_map
 			dirs += ['packaging/tarball_map']
 
+			# Add config
+			dirs += ['pyutils/config.py']
+
 			#sync_log.log(" *** Gathering dirs ***\n")
 
 			# Gather dirs to synchronize
