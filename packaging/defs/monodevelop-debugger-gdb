@@ -28,8 +28,6 @@ MONO_DEPS=(
 	mono-basic
 	monodevelop
 	xsp
-	boo
-	nant
 )
 
 MONO_RECOMMEND_DEPS=(
@@ -65,4 +63,5 @@ update_version_file () {
 make_dist () {
         ./configure --prefix=/usr
         make dist
+	bznew *.tar.gz
 }
