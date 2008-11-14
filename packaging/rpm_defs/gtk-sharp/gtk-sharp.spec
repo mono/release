@@ -94,7 +94,6 @@ by the GTK if you want to bind GObject-based libraries, or need to
 compile a project that uses it to bind such a library.
 
 
-%debug_package
 %prep
 %setup -q
 %patch2 -p1
@@ -321,5 +320,6 @@ on all gtk-sharp subpackages)
 %endif
 %define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
+
 
 %changelog

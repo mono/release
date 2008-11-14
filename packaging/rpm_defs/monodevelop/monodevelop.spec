@@ -4,7 +4,7 @@ Url:            http://www.go-mono.com/
 License:        GPL v2 or later
 Group:          Development/Languages/Mono
 AutoReqProv:    on
-Version:        1.0
+Version:        1.9.1
 Release:        96
 Summary:        A Full-Featured IDE for Mono and Gtk#
 Source:         %{name}-%{version}.tar.bz2

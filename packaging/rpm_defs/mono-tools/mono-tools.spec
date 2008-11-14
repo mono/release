@@ -1,6 +1,6 @@
 Name:           mono-tools
 BuildRequires:  gconf-sharp2 mono-data-oracle mono-devel mono-jscript mono-nunit monodoc-core
-Version:        2.0
+Version:        2.2
 Release:        6
 License:        GPL v2 or later
 BuildArch:      noarch
@@ -100,8 +100,11 @@ Authors:
 %install
 %{?env_options}
 make install DESTDIR=$RPM_BUILD_ROOT
-%suse_update_desktop_file -N "Mono Documentation" -G "Documentation Library" -C "Learn about using Mono" monodoc Development Documentation
-%suse_update_desktop_file -N "Mono IL Contrast" -G "Development Tools" -C "Contrast Assemblies" ilcontrast Development Documentation
+%suse_update_desktop_file monodoc
+%suse_update_desktop_file ilcontrast
+%suse_update_desktop_file mprof-heap-viewer
+%suse_update_desktop_file gendarme-wizard
+%suse_update_desktop_file gsharp
 # Move create-native-map stuff out of lib into share
 mkdir $RPM_BUILD_ROOT/%_prefix/share/create-native-map
 mv $RPM_BUILD_ROOT/%_prefix/lib/create-native-map/MapAttribute.cs $RPM_BUILD_ROOT/%_prefix/share/create-native-map
@@ -111,13 +114,8 @@ mv $RPM_BUILD_ROOT/%_prefix/lib/pkgconfig $RPM_BUILD_ROOT/%_prefix/share
 %clean
 rm -Rf "$RPM_BUILD_ROOT"
 
-%post
-monodoc --make-index
-%if 0%{?fedora_version} || 0%{?rhel_version}
-# Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
-%define _use_internal_dependency_generator 0
-%endif
-%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
-%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
+# Disabled because of bug in monodoc
+#%post
+#monodoc --make-index
 
 %changelog

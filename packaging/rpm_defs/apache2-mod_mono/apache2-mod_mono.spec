@@ -9,7 +9,7 @@ Url:            http://go-mono.com/
 License:        The Apache Software License
 Group:          Productivity/Networking/Web/Servers
 AutoReqProv:    on
-Version:        2.0
+Version:        2.2
 Release:        1
 Summary:        Run ASP.NET Pages on Unix with Apache and Mono
 Source:         %{modname}-%{version}.tar.bz2

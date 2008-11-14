@@ -5,7 +5,7 @@ License:        LGPL v2.1 or later
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 Url:            http://go-mono.org/
-Version:        2.0.1
+Version:        2.2
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
@@ -873,7 +873,7 @@ Requires:       glib2-devel
 %if 0%{?monobuild}
 Requires:       libgdiplus0
 %else
-Requires:       libgdiplus0 = 2.0
+Requires:       libgdiplus0 = 2.2
 %endif
 
 %description -n mono-devel

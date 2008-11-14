@@ -1,7 +1,7 @@
 %define db_packages mono-data-postgresql mono-data-sqlite mono-data-sybase 
 
 Name:           monodevelop-database
-Version:        1.0
+Version:        1.9.1
 Release:        1
 License:        GPL v2 or later
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -12,11 +12,11 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRequires:  %db_packages mono-devel monodevelop
 Requires:       %db_packages
 BuildRequires:  bytefx-data-mysql
+BuildRequires:  gtksourceview-sharp2 monodoc-core
 Summary:        Monodevelop Database Addin
 Group:          Development/Languages/Mono
 %if 0%{?fedora_version}
 %define env_options export MONO_SHARED_DIR=/tmp
-BuildRequires:  gtksourceview-sharp2 monodoc-core
 %endif
 
 %description
@@ -27,7 +27,7 @@ Addin for MonoDevelop for an integrated database explorer and editor.
 %files -f %{name}.lang
 %defattr(-, root, root)
 %_prefix/share/pkgconfig/monodevelop-database.pc
-%_prefix/lib/monodevelop/AddIns/MonoDevelop.Database/*.dll
+%_prefix/lib/monodevelop/AddIns/MonoDevelop.Database/*.dll*
 %dir %_prefix/lib/monodevelop/AddIns/MonoDevelop.Database
 %dir %_prefix/lib/monodevelop/AddIns/MonoDevelop.Database/locale
 

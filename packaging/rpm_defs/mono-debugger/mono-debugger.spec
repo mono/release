@@ -3,7 +3,7 @@ License:        GPL v2 or later; X11/MIT
 Group:          Development/Languages/Mono
 Summary:        Mono Debugger
 Url:            http://www.mono-project.com/Debugger
-Version:        2.0
+Version:        2.2
 Release:        12
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.bz2

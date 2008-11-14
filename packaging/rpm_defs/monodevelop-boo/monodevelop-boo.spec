@@ -1,23 +1,22 @@
 %define boo_version %(rpm -q boo-devel --queryformat '%{VERSION}')
 
 Name:           monodevelop-boo
-Version:        1.0
+Version:        1.9.1
 Release:        96
 License:        GPL v2 or later
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on
 BuildArch:      noarch
 Url:            http://www.monodevelop.com
-Source0:        %{name}-%{version}.tar.gz
-Patch0:         shell-properties.patch
+Source0:        %{name}-%{version}.tar.bz2
 BuildRequires:  boo-devel mono-devel monodevelop
 Summary:        Monodevelop Boo Addin
 Group:          Development/Languages/Mono
 # Boo's assemblies are always version at 1.0.0.0.  Force built against or newer.
 Requires:       boo-devel >= %boo_version
+BuildRequires:  gtksourceview-sharp2 monodoc-core
 %if 0%{?fedora_version}
 %define env_options export MONO_SHARED_DIR=/tmp
-BuildRequires:  gtksourceview-sharp2 monodoc-core
 %endif
 %if 0%{?rhel_version}
 %define env_options export MONO_SHARED_DIR=/tmp
@@ -39,7 +38,6 @@ highlighting and code completion.
 
 %prep
 %setup -q
-%patch0
 
 %build
 %{?env_options}

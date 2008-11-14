@@ -3,7 +3,7 @@ Url:            http://go-mono.com/
 License:        GPL v2 or later
 Group:          Productivity/Networking/Web/Servers
 AutoReqProv:    on
-Version:        2.0
+Version:        2.2
 Release:        13
 Summary:        Small Web Server Hosting ASP.NET
 Source:         %{name}-%{version}.tar.bz2

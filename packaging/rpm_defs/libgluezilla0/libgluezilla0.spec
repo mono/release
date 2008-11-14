@@ -1,7 +1,7 @@
 %define real_name gluezilla
 
 Name:           libgluezilla0
-Version:        2.0
+Version:        2.2
 Release:        10
 License:        GPL v2 only
 Url:            http://www.mono-project.com
