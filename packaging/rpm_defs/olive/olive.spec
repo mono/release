@@ -32,16 +32,18 @@ Various .NET 3.0 bits.
 %_prefix/lib/mono/3.0/sts.exe*
 %_prefix/bin/xamlc
 #%_prefix/lib/mono/3.0/xamlc.exe*
-%_prefix/lib/mono/gac/PresentationFramework
-%_prefix/lib/mono/3.0/PresentationFramework.dll*
-%_prefix/lib/mono/gac/System.Workflow.Runtime
-%_prefix/lib/mono/3.0/System.Workflow.Runtime.dll*
-%_prefix/lib/mono/gac/System.Workflow.Activities
-%_prefix/lib/mono/3.0/System.Workflow.Activities.dll*
-%_prefix/lib/mono/gac/System.Workflow.ComponentModel
-%_prefix/lib/mono/3.0/System.Workflow.ComponentModel.dll*
-%_prefix/lib/mono/gac/PresentationCore
 %_prefix/lib/mono/3.0/PresentationCore*
+%_prefix/lib/mono/gac/PresentationCore
+%_prefix/lib/mono/3.0/PresentationFramework.dll*
+%_prefix/lib/mono/gac/PresentationFramework
+%_prefix/lib/mono/3.0/System.Workflow.Activities.dll*
+%_prefix/lib/mono/gac/System.Workflow.Activities
+%_prefix/lib/mono/3.0/System.Workflow.ComponentModel.dll*
+%_prefix/lib/mono/gac/System.Workflow.ComponentModel
+%_prefix/lib/mono/3.0/System.Workflow.Runtime.dll*
+%_prefix/lib/mono/gac/System.Workflow.Runtime
+%_prefix/lib/mono/3.0/WindowsBase*
+%_prefix/lib/mono/gac/WindowsBase
 %_prefix/lib/pkgconfig/*.pc
 
 
