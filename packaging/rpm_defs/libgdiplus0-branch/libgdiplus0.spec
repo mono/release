@@ -1,7 +1,7 @@
 %define real_name libgdiplus
 
 Name:           libgdiplus0
-Version:        2.0
+Version:        2.2
 Release:        11
 License:        X11/MIT
 Url:            http://go-mono.org/
