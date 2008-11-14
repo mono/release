@@ -1,3 +1,8 @@
+2008-11-14  Everaldo Canuto <ecanuto@novell.com>
+
+	* maemo/debs/mono/files/debian/rules: Fix mono 2.0.1 compilation for
+	Maemo Diablo 4.0.1.
+
 2008-11-09  Everaldo Canuto <ecanuto@novell.com>
 
 	* gar.conf.mk: Upgrade mono to 2.0.1

@@ -27,6 +27,7 @@ CFLAGS = -Wall -g
 ifeq ($(DEB_BUILD_ARCH), armel)
 	CONF_FLAGS += --with-sigaltstack=no
 	CONF_FLAGS += --with-tls=pthread
+	CFLAGS += -DARM_FPU_NONE=1
 else
 	CONF_FLAGS += --with-sigaltstack=yes
 	CONF_FLAGS += --with-tls=__thread
@@ -37,7 +38,6 @@ CONFIGURE = CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$
 configure-arch: configure-arch-stamp
 configure-arch-stamp:
 	dh_testdir
-	#cp debian/mono-wrapper.in runtime/mono-wrapper.in
 	$(CONFIGURE) --disable-mcs-build
 	touch configure-arch-stamp
 
@@ -86,9 +86,7 @@ install-indep:
 	dh_testdir
 	dh_testroot
 	dh_installdirs -i
-	cd mcs && \
-	  $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp && \
-	  $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp PROFILE=net_2_0
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
 	dh_install -i
 	touch install-indep-stamp
 
