@@ -391,7 +391,7 @@ def packagestatus(req, **vars):
 			for step in build_info.get_steps_info(read_info=0):
 
 				# Remove .gz extensions since apache will handle it
-				log = os.path.join(config.build_info_url, build_info.rel_files_dir, 'logs', step['log']).replace(".gz", "")
+				log = os.path.join("..", "..", "builds", build_info.rel_files_dir, 'logs', step['log']).replace(".gz", "")
 
 				h_class = ""
 				if not ["success", "inprogress"].count(step['state']):
@@ -411,7 +411,7 @@ def packagestatus(req, **vars):
 
 				if temp_rel_path and os.path.exists(os.path.join(config.web_root_dir, 'builds', temp_rel_path)):
 
-					download_file = os.path.join(config.build_info_url, temp_rel_path)
+					download_file = os.path.join("..", "..", "builds", temp_rel_path)
 
 					req.write("""
 					<td><a href="%s">%s</a></td>
@@ -487,7 +487,7 @@ def download_latest(req, **vars):
 		# Make sure path or file exists
 		if os.path.exists(os.path.join(config.web_root_dir, 'builds', temp_rel_path)):
 
-			download_file = os.path.join(config.build_info_url, temp_rel_path)
+			download_file = os.path.join("..", "..", "builds", temp_rel_path)
 
 			download_link = '<a href="%s">Download %s</a>' % (download_file, version)
 			break
