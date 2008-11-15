@@ -44,15 +44,15 @@ def index(req, **vars):
 	<HTML>
 	<HEAD>
 	<TITLE>Mono Build Status - %s</TITLE>
-	<link rel="stylesheet" href="%s/build.css" type="text/css">
-	<script language="javascript" src="%s/build.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="build.css" type="text/css">
+	<script language="javascript" src="build.js" type="text/javascript"></script>
 	<meta http-equiv="refresh" content="60">
 	</HEAD>
 	<BODY>
 
 	<H1>Mono Build Status - %s</H1>
 
-	""" % (doc_type, HEAD_or_RELEASE, config.web_root_url, config.web_root_url, HEAD_or_RELEASE))
+	""" % (doc_type, HEAD_or_RELEASE, HEAD_or_RELEASE))
 	
 	
 	# Display status of tarball daemon
@@ -153,7 +153,7 @@ def index(req, **vars):
 				revision = info['revisions'][0]
 				state = info['state'][revision]
 
-				link = '<a href="%s/tarball_logs/%s/%s/%s.log">%s</a>' % (config.web_root_url, HEAD_or_RELEASE, package.name, revision, revision)
+				link = '<a href="../tarball_logs/%s/%s/%s.log">%s</a>' % (HEAD_or_RELEASE, package.name, revision, revision)
 
 				if len(info['revisions']) > 1:
 					revision2 = info['revisions'][1]
@@ -319,10 +319,10 @@ def packagestatus(req, **vars):
 	<head>
 	%s
 	<title>Mono Build Status</title>
-	<link rel="stylesheet" href="%s/build.css" type="text/css">
+	<link rel="stylesheet" href="../build.css" type="text/css">
 	</head>
 
-	<body>""" % (doc_type, refresh_html, config.web_root_url) )
+	<body>""" % (doc_type, refresh_html) )
 
 	if versions:
 		req.write("<h1>%s -- %s -- %s</h1>" % (package, platform, HEAD_or_RELEASE))
