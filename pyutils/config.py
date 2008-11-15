@@ -39,14 +39,9 @@ src_key_file = packaging_dir + os.sep + "distro_source_key"
 buildenv_key_file = packaging_dir + os.sep + "distro_source_key"
 
 # Url path from view of webserver
-web_root_url = ""
 web_root_dir = release_repo_root + "/monobuild/www"
 
-# 
-#build_info_dir = web_root_dir + "/builds/testing"
-#build_info_url = web_root_url + "/builds/testing"
 build_info_dir = web_root_dir + "/builds"
-build_info_url = web_root_url + "/builds"
 
 mktarball_logs = web_root_dir + "/tarball_logs"
 mktarball_logs_release_relpath = 'monobuild/www/tarball_logs'
