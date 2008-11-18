@@ -161,21 +161,40 @@ function flash()
 open source implementation of <a
 href="http://silverlight.net">Microsoft Silverlight</a> for Unix systems.</p>
 
-<!-- 
-<p>View the fixes and change log for 0.8 <a href="#changelog">here</a></p>
--->
 
-<p><strong>Warning:</strong> These are test installers and are not
-complete or bug free.  They are snapshots from our
-development tree and might not work.</p>
+<p>View the fixes and change log <a href="#changelog">here</a></p>
+
 
 <% if (IsPrivate) { %>
-<p><strong>THESE ARE PRIVATE BINARIES, NOT INTENTED FOR PUBLIC CONSUMPTION.   DO NOT DOWNLOAD.</strong>
+<p><strong>THESE ARE PRIVATE BINARIES, NOT INTENTED FOR PUBLIC CONSUMPTION.   DO NOT DOWNLOAD.</strong></p>
 <% } else { %>
 <p><strong>Note:</strong> These are currently built <em>without</em> multimedia support.  No video or mp3 playback is enabled on these binaries.</p>
 <% } %>
 <p>Please see the <a href="#instructions">installation instructions</a> below.</p>
 
+
+<table id="sysreq">
+<script>
+
+	var html = "<tr style='font-weight:bold;'><td class='sys'>Operating System&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+	for (i =0; i < data.browsers.length; i++) {
+		html += "<td class='browser'>" + data.browsers[i] + "</td>";
+	}
+	html += "</tr>";
+
+	for (i=0; i < data.platforms.length; i++) {
+		html += "<tr><td class='sys'>" + data.platforms[i].name + "</td>";
+		for (j=0; j < data.browsers.length; j++) {
+			html += "<td class='browser'>" + data.platforms[i].browser[j] + "</td>";
+		}
+		html += "</tr>";
+	}
+
+	document.write(html);
+
+</script>
+</table>
+<p>*Firefox 2 has limited features.</p>
 
 
 <form runat="server">
@@ -222,7 +241,7 @@ development tree and might not work.</p>
 </form>
  
 <br/>
-<h1><a name="instructions"></a>Instructions</h1>
+<h1><a name="instructions"></a>Installation instructions</h1>
 
 <p>When installing the Novell Moonlight plugin Firefox may prevent the installation and present you with an information bar.</p>
 
@@ -232,66 +251,34 @@ development tree and might not work.</p>
 
 <p><img src="images/allowed-sites.png" alt="Allowed Sites"/></p>
 
-<!--
 <h2><a name="changelog"></a>Release Notes</h2>
-<ul><li>Plugin
 <ul>
-<li>Webkit loads the plugin (kangaroo, lewing)</li>
-<li>The stream/downloader/request/response logic (used for
-downloading media) has been been almost entirely moved from the
-browser bridges into libmoon, with the browsers providing
-subclasses. (kangaroo, sde)</li>
-<li>Finally add argument checking to all wrapped plugin objects (fejj).</li>
-<li>Windowless mode fixes (lewing, toshok)</li>
-<li> Plugin event handling fixes (lewing)</li>
-</ul>
-</li>
-<li>Engine
-<ul>
-<li>Many clock/animation framework fixes.  We now pass both animation
-matrix tests, and many, *many* other bugs (and regressions) have
-been fixed. (mdk).</li>
-<li>Bug fixes in the Stroke{Collection}.HitTest and
-Stroke{Collection}.Bounds code (toshok, sde).</li>
-<li>Namescope merging fixes (sde, jackson)</li>
-<li>Parser fixes, and changes paving the way for 2.0 work (jackson)</li>
-<li>Fix mouse event bubbling behavior (toshok)</li>
-</ul>
-</li>
-<li>Media
-<ul>
-<li>Big, big strides in our media framework and the various (file,
-http, mms) downloaders, (fejj, rolf, kangaroo, fer)</li>
-<li>MMS stream selection (kangaroo)</li>
-</ul>
-</li>
-<li>Performance
-<ul>
-<li>Shape caching and bounds computation reduction (spouliot)</li>
-<li>Geometry bounds work (spouliot)</li>
-<li>Fast path for position updates (Canvas.Left/Canvas.Top) (toshok)</li>
-<li>Improved temporary cairo surface bounds (lewing)</li>
-<li>Glyph rendering speedups (fejj)</li>
-<li>Resort by ZIndex as a dirty pass (toshok)</li>
-</ul>
-</li>
-<li>Silverlight 2.0
-<ul>
-<li>work is progressing. A very simple 2.0 application successfully
-ran. (miguel, jackson, sde).</li>
-</ul>
-</li>
+<script type="text/javascript">
+	var notes = "";
+	for(i=0; i < data.releaseNotes.length; i++)
+	{
+		notes += "<li>" + data.releaseNotes[i] + "</li>";
+
+	}
+	document.write(notes);
+
+</script>
+<!-- -->
 </ul>
 
--->
-
+<h1>Bugs</h1>
+If you come across any bugs in Moonlight 1.0, please tell us about it. See our <a href="http://mono-project.com/Bugs">Bugzilla page</a> about logging bugs.
 <br/>
 <h1>Source</h1>
-You can download a tar ball of the source <a href="ftp://ftp.novell.com/pub/mono/sources/moon/moon-0.8.tar.bz2">here</a> or you can check it out from svn.
-<pre>
-svn co svn://anonsvn.mono-project.com/source/trunk/moon
-</pre>
+You can download a tar ball of the source 
+<script type="text/javascript">
+	
+	var html = "<a href='" + data.tarball + "'>here</a> ";
+	document.write(html);
 
+</script>
+or you can check it out from svn.
+	<pre> svn co svn://anonsvn.mono-project.com/source/trunk/moon </pre>
 
 
 </div> <!-- col2 -->

@@ -124,3 +124,28 @@ ul.machine li a img {
 	padding: 0;
 }
 
+table#sysreq{
+	border-width:  1px;
+	border-spacing: 2px;
+	border-style:outset;
+	background-color:#777777;
+	border-collapse:collapse;
+	border-color:#F59F1A;
+	color:#ddd;
+	position:relative;
+	left: 50px;
+}
+table#sysreq td {
+	border-width:1px;
+	padding:3px;
+	border-style:none;
+	border-style:inset;
+
+}
+td.sys {
+	text-align:left;
+}
+td.browser {
+	text-align:center;
+}
+
