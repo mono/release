@@ -1,5 +1,5 @@
 %define with_managed yes
-%define with_ffmpeg yes
+%define with_ffmpeg no
 %define with_cairo embedded
 
 Name:           moonlight
