@@ -1,0 +1,16 @@
+<Combine name="moonlight_download" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="moonlight_download" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="moonlight_download" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="moonlight_download" single="True">
+    <Execute type="None" entry="moonlight_download" />
+  </StartMode>
+  <Entries>
+    <Entry filename="moonlight_download/moonlight_download.mdp" />
+  </Entries>
+</Combine>
