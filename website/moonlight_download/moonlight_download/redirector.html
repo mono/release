@@ -1,0 +1,36 @@
+<html>
+<head>
+
+</head>
+<body>
+
+<script type="text/javascript">
+
+	var ua = navigator.userAgent;
+	var url = "http://go-mono.com/archive/moonlight-plugins/1.0/";
+	var xpi = ""
+
+	var re = /i.86/;
+	myArray = re.exec(ua);
+
+	if (myArray != null)
+	{
+		xpi = "novell-moonlight-1.0-i586.xpi";
+	}
+	else if (ua.indexOf("64") > -1)
+	{
+		xpi = "novell-moonlight-1.0-x86_64.xpi";
+	}
+	else
+	{
+		xpi = "unknown_platform.html";
+	}
+
+	//alert(url + xpi);
+
+	window.location = url + xpi;
+
+</script>
+
+</body>
+</html>
