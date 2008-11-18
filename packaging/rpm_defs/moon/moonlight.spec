@@ -103,45 +103,6 @@ Authors:
 
 %postun -n libmoon0 -p /sbin/ldconfig
 
-%package -n libmoon-devel
-License:        LGPL v2.0 only
-Summary:        Development files for Novell Moonlight
-Group:          Productivity/Multimedia/Other
-Requires:       libmoon0 == %{version} gtk2-devel
-
-%description -n libmoon-devel
-Development files for Novell Moonlight.
-
-Moonlight is an open source implementation of Microsoft Silverlight for
-Unix systems.
-
-
-
-Authors:
---------
-    Everaldo Canuto <ecanuto@novell.com>
-    Miguel de Icaza <miguel@novell.com>
-    Stephane Delcroix <sdelcroix@novell.com>
-    Atsushi Enomoto <atsushi@ximian.com>
-    Jb Evain <jbevain@novell.com>
-    Larry Ewing <lewing@novell.com>
-    Andreia Gaita <shana.ufie@gmail.com>
-    Jackson Harper <jackson@ximian.com>
-    Rodrigo Kumpera <rkumpera@novell.com>
-    Rolf Bjarne Kvinge <RKvinge@novell.com>
-    Sebastien Pouliot <sebastien@ximian.com>
-    Dick Porter <dick@ximian.com>
-    Jeffrey Stedfast <fejj@novell.com>
-    Chris Toshok <toshok@ximian.com>
-    Michael Dominic K. <mdk@mdk.am>
-
-%files -n libmoon-devel
-%defattr(-, root, root)
-%{_libdir}/pkgconfig/moon.pc
-%{_libdir}/libmoon.so
-%dir %{_prefix}/include/libmoon
-%{_prefix}/include/libmoon/*.h
-
 %package -n moonlight-tools
 License:        LGPL v2.0 only
 Summary:        Various tools for Novell Moonlight
@@ -365,7 +326,11 @@ Authors:
 %{?env_options}
 %makeinstall
 rm %{buildroot}%{_libdir}/libmoon.la
+rm %{buildroot}%{_libdir}/libmoon.so
 rm %{buildroot}%{_libdir}/moon/plugin/*.la
+rm -rf %{buildroot}%{_libdir}/pkgconfig
+rm -f %{buildroot}%{_libdir}/libshocker.*
+rm -f %{buildroot}%{_bindir}/agviewer
 %if 0%{?suse_version}
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/browser-plugins
 ln -s %{_libdir}/moon/plugin/libmoonloader.so $RPM_BUILD_ROOT%{_libdir}/browser-plugins/libmoonloader.so
