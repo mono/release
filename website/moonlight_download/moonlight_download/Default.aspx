@@ -278,6 +278,10 @@ You can download a tar ball of the source
 
 </script>
 or you can check it out from svn.
+	<pre> svn co svn://anonsvn.mono-project.com/source/tags/moon/1.0b1 </pre>
+
+As always, you can get the development soucre from trunk:
+
 	<pre> svn co svn://anonsvn.mono-project.com/source/trunk/moon </pre>
 
 
