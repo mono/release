@@ -1,22 +1,3 @@
-#
-# spec file for package moonlight (Version 0.8.1)
-#
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-#
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
-
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-# norootforbuild
-
 %define with_managed no
 %define with_ffmpeg no
 %define with_cairo embedded
@@ -29,10 +10,7 @@ Url:            http://go-mono.com/moonlight/
 Version:        1.0_beta1
 Release:        6
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-#Source:         moon-%{version}.tar.bz2
-Source:         moon-1.0b1.tar.bz2
-Patch0:         38166.txt
-Patch1:         38168.txt
+Source:         moon-%{version}.tar.bz2
 %if %{with_managed} != no
 BuildRequires:  gtk-sharp2 mono-devel monodoc-core rsvg2-sharp
 %endif
@@ -334,18 +312,11 @@ Authors:
 %endif
 
 %prep
-#%setup -q -n moon-%{version}
-%setup -q -n moon-1.0b1
-pushd class/System.Windows
-%patch0
-popd
-
-%patch1 -p1
+%setup -q -n moon-%{version}
 
 %build
 %{?env_options}
 %{?configure_options}
-autoreconf -f -i
 %configure --with-ffmpeg=%{with_ffmpeg} \
 			--with-managed=%{with_managed} \
 			 --with-cairo=%{with_cairo}
@@ -375,19 +346,3 @@ rm -rf ${RPM_BUILD_ROOT}
 %define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog
-* Thu Oct 16 2008 cthiel@suse.de
-- fix requires on moonlight-plugin
-* Tue Sep 09 2008 ajorgensen@novell.com
-- Switches to allow us to build on older distros
-* Thu Sep 04 2008 ajorgensen@novell.com
-- -examples requires libmoon0 (not libmoon)
-* Tue Sep 02 2008 crrodriguez@suse.de
-- fix build, missing libexpat-devel
-- add missing -devel package dependencies
-- use system cairo & pixman , never a bundled copy (!!)
-* Sat Aug 23 2008 ajorgensen@novell.com
-- Fix for -debug* packages needing unprovided moonlight
-- Allow building on older distros (xulrunner181)
-* Tue Aug 19 2008 ajorgensen@novell.com
-- Initial upload (0.8.1)
-  * Support for Silverlight 1.0 profile
