@@ -1044,7 +1044,6 @@ fi
 %_libdir/pkgconfig/mono-options.pc
 %_libdir/pkgconfig/mono-lineeditor.pc
 %_libdir/pkgconfig/cecil.pc
-%_mandir/man1/monoburg.*
 %_prefix/share/mono-1.0/mono/cil/cil-opcodes.xml
 # dirs
 %dir %_prefix/share/mono-1.0
