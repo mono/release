@@ -1,0 +1,5 @@
+username=builder
+hostname=x32-linux-3.mono.lab.novell.com
+root_dir=/jails/suse-103-i586
+target_command_prefix=". /etc/profile;"
+chroot_path=/usr/bin/chroot
