@@ -319,7 +319,7 @@ def packagestatus(req, **vars):
 	<head>
 	%s
 	<title>Mono Build Status</title>
-	<link rel="stylesheet" href="../build.css" type="text/css">
+	<link rel="stylesheet" href="../../build.css" type="text/css">
 	</head>
 
 	<body>""" % (doc_type, refresh_html) )
