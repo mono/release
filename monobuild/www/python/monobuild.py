@@ -44,8 +44,8 @@ def index(req, **vars):
 	<HTML>
 	<HEAD>
 	<TITLE>Mono Build Status - %s</TITLE>
-	<link rel="stylesheet" href="build.css" type="text/css">
-	<script language="javascript" src="build.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="../build.css" type="text/css">
+	<script language="javascript" src="../build.js" type="text/javascript"></script>
 	<meta http-equiv="refresh" content="60">
 	</HEAD>
 	<BODY>
