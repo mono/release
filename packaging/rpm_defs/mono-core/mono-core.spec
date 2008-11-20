@@ -1223,6 +1223,8 @@ rm -f $RPM_BUILD_ROOT%_bindir/mbas
 rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/culevel.exe*
 # Post 1.2.5
 rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/transform.exe
+# Post 2.2
+rm -f $RPM_BUILD_ROOT%_mandir/man1/monoburg.*
 # brp-compress doesn't search _mandir
 # so we cheat it
 ln -s . %buildroot%_prefix/usr
