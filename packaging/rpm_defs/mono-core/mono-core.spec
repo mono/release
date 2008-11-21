@@ -1220,7 +1220,7 @@ rm -f $RPM_BUILD_ROOT%_bindir/mbas
 # 1.2.4 changes
 rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/culevel.exe*
 # Post 1.2.5
-rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/transform.exe
+rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/2.0/transform.exe
 # Post 2.2
 rm -f $RPM_BUILD_ROOT%_mandir/man1/monoburg.*
 # brp-compress doesn't search _mandir
