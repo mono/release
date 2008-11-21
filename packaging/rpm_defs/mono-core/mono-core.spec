@@ -909,9 +909,8 @@ fi
 %verify(not size md5 mtime) %_libdir/libmono.la
 # exes
 %_prefix/lib/mono/1.0/makecert.exe*
-%_prefix/lib/mono/1.0/mono-api-info.exe*
 %_prefix/lib/mono/2.0/mono-api-info.exe*
-%_prefix/lib/mono/1.0/mono-api-diff.exe*
+%_prefix/lib/mono/2.0/mono-api-diff.exe*
 %_prefix/lib/mono/1.0/al.exe*
 %_prefix/lib/mono/2.0/al.exe*
 %_prefix/lib/mono/1.0/caspol.exe*
@@ -1000,8 +999,6 @@ fi
 %_bindir/monop2
 %_bindir/mono-api-diff
 %_bindir/mono-api-info
-%_bindir/mono-api-info1
-%_bindir/mono-api-info2
 %_bindir/mono-cil-strip
 %_bindir/mono-find-provides
 %_bindir/mono-find-requires
@@ -1211,7 +1208,7 @@ rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/cilc*
 rm $RPM_BUILD_ROOT%_bindir/jay
 rm -R $RPM_BUILD_ROOT%_datadir/jay
 rm $RPM_BUILD_ROOT%_mandir/man1/jay.1
-rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/CorCompare.exe
+rm $RPM_BUILD_ROOT%_prefix/lib/mono/2.0/CorCompare.exe
 rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/browsercaps-updater.exe*
 # New files to delete in 1.1.9.2
 rm -f $RPM_BUILD_ROOT%_libdir/libMonoSupportW.a
