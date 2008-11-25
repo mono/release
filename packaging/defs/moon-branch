@@ -1,0 +1,193 @@
+web_index=8
+
+#RELEASE_DEPS=1
+HEAD_DEPS=1
+
+MKTARBALL_HEAD_DEPS=1
+
+BUILD_HOSTS=(
+	suse-103-i586
+	suse-103-x86_64
+	suse-103-ppc
+	debian-4-arm
+	debian-4-sparc
+	#sunos-10-sparc
+	#sunos-10-x86
+)
+
+USE_HOSTS=(${BUILD_HOSTS[@]})
+
+ZIP_BUILD () {
+	./configure || exit 1
+	make || exit 1
+	make DESTDIR=/tmp/install install || exit 1
+}
+
+suse_103_noarch_RPM_DEPS=(
+	http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
+)
+
+MONO_DEPS=(
+	mono
+	xsp
+	gnome-desktop-sharp2
+)
+
+MONO_RECOMMEND_DEPS=(
+	gtk-sharp2
+	gtk-sharp28
+	gtk-sharp210
+	gtk-sharp212
+	libgdiplus
+)
+
+get_destroot () {
+	DEST_ROOT=$DISTRO
+}
+
+HEAD_PATH=(
+        #trunk/moon
+	branches/moon-1-0
+)
+RELEASE_PATH=(
+	tags/moon/[[versiondot]]
+	#branches/moon-1-0
+)
+
+update_version_file () {
+	sudo sed -i "s,/opt/gnome,/usr/lib,g" /usr/lib/libmono.la
+        sed -i "s/\(AC_INIT(\[.*\], *\[\).*\(\])\)/\1$VERSION\2/" configure.ac
+}
+
+# This jail has ffmpeg in it
+#MKTARBALL_HOST="suse-103-x86_64"
+
+POSTBUILD_TEST_NAME1="test"
+POSTBUILD_TEST1 () {
+	# Only run tests on suse-103-x86_64
+	if [[ ! "$DISTRO" =~ "suse-103-x86_64" ]]; then
+	  exit 0
+	fi
+
+	# Get and setup the MS fonts
+	curl -s "http://build.mono.lab.novell.com/~builder/ms-fonts.tar.gz" | tar xz
+	rm -rf ~/.fonts
+	mv ms-fonts ~/.fonts
+	fc-cache ~/.fonts
+
+	# Get the test-run-data for the last run
+	rm -rf test/test-run-data
+	curl -sL "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=test&filename=test-run-data.tar.gz" | tar xz
+
+	# Get the connection string for the mysql database.
+	#rm -rf test/.dbconnection
+	#curl "http://c100.cim.lab.novell.com/software/mono-project.org/mysql/.dbconnection.txt" > test/.dbconnection.txt
+
+	# Get the revision for Moonlight
+	#export SVN_REVISION=`cat configure.ac | grep AC_INIT | sed -e 's/.*\[\(.*\)\])/\1/'`  # Gets the revision
+	#export MS_TEST_SUITE=     #DbReport uses this env var
+
+	# Run the tests
+	Xvfb -wr -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
+	eval $(dbus-launch --auto-syntax)
+	DISPLAY=:3 make run-tests
+	kill -TERM $DBUS_SESSION_BUS_PID
+	kill %1
+
+	# Copy out the results
+	target=$build_location/steps/test
+	mkdir $build_location/steps
+	mv test/html_report $target
+	# Include historical data
+	mv test/comparison_report.html $target/
+	tar czf test-run-data.tar.gz test/test-run-data
+	#mv test/test-run-data $target/
+	mv test-run-data.tar.gz $target/
+}
+
+POSTBUILD_TEST_NAME2="ms-test"
+POSTBUILD_TEST2 () {
+	# Only run tests on suse-103-x86_64
+	if [[ ! "$DISTRO" =~ "suse-103-x86_64" ]]; then
+	  exit 0
+	fi
+
+	curl -s "http://build.mono.lab.novell.com/~builder/ms-tests.tar.gz" | tar xz
+
+	rm -rf test/test-run-data
+	curl -sL "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=ms-test&filename=test-run-data.tar.gz" | tar xz
+
+	# Get the connection string for the mysql database.
+	rm -rf test/.dbconnection
+	curl "http://c100.cim.lab.novell.com/software/mono-project.org/mysql/.dbconnection.txt" > test/.dbconnection.txt
+
+	# Get the revision for Moonlight
+	#export SVN_REVISION=`cat configure.ac | grep AC_INIT | sed -e 's/.*\[\(.*\)\])/\1/'`  # Gets the revision
+	#export MS_TEST_SUITE=TRUE  #DbReport uses this env var 
+
+	Xvfb -wr -fp /usr/share/fonts/misc -ac -screen 0 1280x1024x24 -nolisten tcp :3 2>/dev/null &
+	eval $(dbus-launch --auto-syntax)
+	xsetroot -solid white -display :3
+	DISPLAY=:3 make MS_DRTLIST=$(pwd)/ms-tests/drtlist.xml run-ms-tests
+	kill -TERM $DBUS_SESSION_BUS_PID
+	kill %1
+
+	target=$build_location/steps/ms-test
+	mkdir $build_location/steps
+	mv test/html_report $target
+	mv test/comparison_report.html $target/
+	tar czf test-run-data.tar.gz test/test-run-data
+	#mv test/test-run-data $target/
+	mv test-run-data.tar.gz $target/
+}
+
+POSTBUILD_STEP_NAME1="plugin-1.0-ffmpeg"
+POSTBUILD_STEP1 () {
+	curl -s http://build.mono.lab.novell.com/~builder/moon-ffmpeg.tar.bz2 | tar xj
+	pushd moon-ffmpeg
+	./configure --disable-static --enable-shared --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-zlib --disable-network --disable-vhook --disable-debug --disable-muxers --disable-encoders --disable-demuxers --disable-bsfs --disable-protocols
+	make
+	popd
+
+	make distclean
+
+	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
+	./configure --without-managed --enable-user-plugin --with-ffmpeg
+	make
+	target=$build_location/steps/plugin-1.0-ffmpeg
+	mkdir -p $target
+	cp plugin/install/novell-moonlight*.xpi $target/
+}
+
+POSTBUILD_STEP_NAME2="plugin-2.0-ffmpeg"
+POSTBUILD_STEP2 () {
+	make distclean
+	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
+	./configure --with-managed=browser --enable-user-plugin --with-ffmpeg
+	make
+	target=$build_location/steps/plugin-2.0-ffmpeg
+	mkdir -p $target
+	cp plugin/install/novell-moonlight*.xpi $target/
+}
+
+POSTBUILD_STEP_NAME3="plugin-1.0"
+POSTBUILD_STEP3 () {
+	make distclean
+	./configure --without-managed --enable-user-plugin --without-ffmpeg
+	make
+	target=$build_location/steps/plugin-1.0
+	mkdir -p $target
+	cp plugin/install/novell-moonlight*.xpi $target/
+}
+
+POSTBUILD_STEP_NAME4="plugin-2.0"
+POSTBUILD_STEP4 () {
+	make distclean
+	./configure --with-managed=browser --enable-user-plugin --without-ffmpeg
+	make
+	target=$build_location/steps/plugin-2.0
+	mkdir -p $target
+	cp plugin/install/novell-moonlight*.xpi $target/
+}
+
+
