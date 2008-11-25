@@ -1,4 +1,4 @@
 mkdir /kiwi
-/usr/sbin/kiwi --prepare $(pwd) --root /kiwi/mono-system --force-new-root
-/usr/sbin/kiwi --type vmx --create /kiwi/mono-system --destdir /kiwi/images
-/usr/sbin/kiwi --type iso --create /kiwi/mono-system --destdir /kiwi/images
+linux32 kiwi --prepare $(pwd) --root /kiwi/mono-system --force-new-root
+linux32 kiwi --type vmx --create /kiwi/mono-system --destdir /kiwi/images
+linux32 kiwi --type iso --create /kiwi/mono-system --destdir /kiwi/images
