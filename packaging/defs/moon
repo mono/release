@@ -23,10 +23,6 @@ ZIP_BUILD () {
 	make DESTDIR=/tmp/install install || exit 1
 }
 
-sles_10_noarch_RPM_DEPS=(
-	http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
-)
-
 suse_103_noarch_RPM_DEPS=(
 	http://build.mono.lab.novell.com/~builder/ndesk-dbus.rpm
 )
@@ -34,13 +30,14 @@ suse_103_noarch_RPM_DEPS=(
 MONO_DEPS=(
 	mono
 	xsp
+	gnome-desktop-sharp2
 )
 
 MONO_RECOMMEND_DEPS=(
 	gtk-sharp2
 	gtk-sharp28
 	gtk-sharp210
-	gnome-sharp2
+	gtk-sharp212
 	libgdiplus
 )
 
@@ -61,7 +58,7 @@ update_version_file () {
 }
 
 # This jail has ffmpeg in it
-MKTARBALL_HOST="sles-10-i586"
+#MKTARBALL_HOST="sles-10-i586"
 
 POSTBUILD_TEST_NAME1="test"
 POSTBUILD_TEST1 () {
