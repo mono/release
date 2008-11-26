@@ -40,7 +40,7 @@ if [ ! -f ${SPEC_FILE} ]; then
 fi 
 
 # Build on each platform
-osc build 2>&1 | grep  "i586\|x86_64" |
+osc repos 2>&1 | grep  "i586\|x86_64" |
 while read I;
 do 
    MYDIST=$(echo ${I} | sed -e 's@[[:space:]][[:space:]]*@ @g')

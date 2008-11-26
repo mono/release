@@ -86,7 +86,7 @@ touch $FAILED_LOG
 MY_FIFO=$TMP_DIR/myfifo # Make fifo
 [ ! -p $MY_FIFO ] && mkfifo $MY_FIFO
 exec 42<> $MY_FIFO      # Open fifo for read/write in this shell on file descriptor #42
-osc build 2>&1 | grep  "i586\|x86_64" > $MY_FIFO
+osc repos 2>&1 | grep  "i586\|x86_64" > $MY_FIFO
 COUNT=0
 while read -u42 -t1 I   # Read from fd 42
 do 
