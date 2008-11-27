@@ -857,12 +857,25 @@ Authors:
 %_prefix/lib/mono/gac/nunit.core
 %_prefix/lib/mono/1.0/nunit.core.dll
 %_prefix/lib/mono/2.0/nunit.core.dll
+%_prefix/lib/mono/gac/nunit.core.extensions
+%_prefix/lib/mono/1.0/nunit.core.extensions.dll
+%_prefix/lib/mono/2.0/nunit.core.extensions.dll
+%_prefix/lib/mono/gac/nunit.core.interfaces
+%_prefix/lib/mono/1.0/nunit.core.interfaces.dll
+%_prefix/lib/mono/2.0/nunit.core.interfaces.dll
 %_prefix/lib/mono/gac/nunit.framework
 %_prefix/lib/mono/1.0/nunit.framework.dll
 %_prefix/lib/mono/2.0/nunit.framework.dll
+%_prefix/lib/mono/gac/nunit.framework.extensions
+%_prefix/lib/mono/1.0/nunit.framework.extensions.dll
+%_prefix/lib/mono/2.0/nunit.framework.extensions.dll
 %_prefix/lib/mono/gac/nunit.mocks
 %_prefix/lib/mono/1.0/nunit.mocks.dll
 %_prefix/lib/mono/2.0/nunit.mocks.dll
+%_prefix/lib/mono/gac/nunit-console-runner
+%_prefix/lib/mono/1.0/nunit-console-runner.dll
+%_prefix/lib/mono/2.0/nunit-console-runner.dll
+
 %_libdir/pkgconfig/mono-nunit.pc
 
 %package -n mono-devel
