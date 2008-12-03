@@ -9,7 +9,7 @@ Version:        2.2
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
-ExclusiveArch:  %ix86 x86_64 ppc hppa armv4l sparc s390 ia64 s390x
+ExclusiveArch:  %ix86 x86_64 ppc ppc64 hppa armv4l sparc s390 ia64 s390x
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Provides:       mono = %{version}-%{release}
 Provides:       mono-ikvm = %{version}-%{release}
