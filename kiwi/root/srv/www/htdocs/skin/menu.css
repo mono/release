@@ -1,0 +1,79 @@
+#header ul {
+	margin: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+	padding: 10px 10px 0;
+	list-style: none;
+	
+	/* Text */
+	letter-spacing: -.05em;
+	text-transform: lowercase;
+	font-weight: bold;
+}
+
+#header li {
+	float: left;
+	background: url("images/menu-left.png") no-repeat left top;
+    margin: 0 1px 0 0;
+	padding: 0 0 0 13px;
+}
+
+#header li a {
+	float: left;
+	display: block;
+	width: .1em;
+	background: url("images/menu-right.png") no-repeat right top;
+	padding: 5px 13px 4px 0px;
+	text-decoration: none;
+	color: #a1bfe2;
+}
+
+#header > ul a { width: auto; }
+/* IE5 Mac hide \*/
+#header a { float: none; }
+/* End */
+
+#header .current_page_item {
+	background-position: 0 -220px !important;
+	border-width: 0 !important;
+}
+
+#header .current_page_item a {
+	background-position: 100% -220px !important;
+	padding-bottom: 9px !important;
+    color: #fff !important;
+}
+
+#header li:hover, #header li:hover a {
+	background-position: 0% -110px;
+	color: #fff;
+}
+
+#header li:hover a {
+	background-position: 100% -110px;
+}
+
+/* SIDE MENU */
+
+#sidebar .menu ul {
+    list-style: none;
+    font-size: .85em;
+    line-height: 1.2em;
+}
+
+#sidebar .menu ul li {
+    border-bottom: 1px solid #eee;
+    padding: 5px 0;
+}
+
+#sidebar .menu ul li a {
+    display: block;
+}
+
+#sidebar .menu ul li.current_page_item a {
+    color: #333;
+}
+
+
+

@@ -1,0 +1,186 @@
+/* Table of Contents */
+
+#toc {
+    display: none;
+}
+
+#toc div.tocindent {
+    padding-left: 10px;
+}
+
+#toc a {
+    font-weight: normal;
+    color: #234974;
+}
+
+#toc a:hover {
+    color: #000;
+}
+
+#toc .number {
+    background: #b6cee9;
+    color: #5d91cd;
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;	
+    -webkit-border-radius: 3px;
+    padding: 1px 3px;
+}
+
+#toc a:hover .number {
+    color: #b6cee9;
+    background: #5d91cd;
+}
+
+/* Utility Bar for Logged in Users */
+
+#utility-bar {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10000;
+}
+
+#utility-bar-contents {
+    background: #ffe url("wiki-images/edit.png") no-repeat center 10px;
+    padding: 85px 1em 0.75em 1em;
+    border-width: 0 0 2px 2px;
+    border-color: #dd9;
+    border-style: solid;
+    line-height: 1.3em;
+    display: none;
+}
+
+#utility-bar-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 4px 6px 0 0;
+}
+
+#utility-bar-toggle a {
+    font-weight: bold;
+    padding: 0 2px;
+}
+
+#utility-bar-toggle a:hover {
+    text-decoration: none !important;
+}
+
+#utility-bar h4 {
+    margin: 0.7em 0 0 0;
+}
+
+#utility-bar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#utility-bar li {
+    margin: 0;
+    padding: 0;
+}
+
+#utility-bar a {
+    text-decoration: none;
+}
+
+#utility-bar a:hover {
+    text-decoration: underline;
+}
+
+/* Random MediaWiki Crap */
+
+.urlexpansion {
+    display: none;
+}
+
+.split-half {
+    float: left;
+    width: 42%;
+    margin: 0 4% 0 0;
+}
+
+.split-half + .split-half {
+    margin: 0 0 0 4%;
+}
+
+.content-half {
+	display: table;
+	margin-left: 5px;
+}
+
+/* MeidaWiki images */
+
+
+/* images */
+div.floatright, table.floatright {
+    clear: right;
+    float: right;
+    position: relative;
+    margin: 0 0 0.5em 0.5em;
+    border: 0
+/*
+    border: 0.5em solid White;
+    border-width: 0.5em 0 0.8em 1.4em;
+*/
+}
+div.floatright p { font-style: italic; }
+div.floatleft, table.floatleft {
+    float: left;
+    position: relative;
+    margin: 0 0.5em 0.5em 0;
+    border: 0
+/*
+    margin: 0.3em 0.5em 0.5em 0;
+    border: 0.5em solid White;
+    border-width: 0.5em 1.4em 0.8em 0;
+*/
+}
+div.floatleft p { font-style: italic; }
+/* thumbnails */
+div.thumb {
+    margin-bottom: 0.5em;
+    border-style: solid; border-color: White;
+    width: auto;
+}
+div.thumb div {
+    border:1px solid #cccccc;
+    padding: 3px !important;
+    background-color:#f9f9f9;
+    font-size: 94%;
+    text-align: center;
+    overflow: hidden;
+}
+div.thumb div a img {
+    border:1px solid #cccccc;
+}
+div.thumb div div.thumbcaption {
+    border: none;
+    text-align: left;
+    line-height: 1.4em;
+    padding: 0.3em 0 0.1em 0;
+}
+div.magnify {
+    float: right;
+    border: none !important;
+    background: none !important;
+}
+div.magnify a, div.magnify img {
+    display: block;
+    border: none !important;
+    background: none !important;
+}
+div.tright {
+    clear: right;
+    float: right;
+    border-width: 0.5em 0 0.8em 1.4em;
+}
+div.tleft {
+    float: left;
+    margin-right:0.5em;
+    border-width: 0.5em 1.4em 0.8em 0;
+}
+
+
