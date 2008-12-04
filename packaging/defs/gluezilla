@@ -61,7 +61,7 @@ win_4_i386_ZIP_BUILD () {
 	done
 	chmod 755 xpidl.exe *.dll
 	chmod 755 make.cmd
-	make.cmd c:\\cygwin\\tmp\\build_deps\\gecko-sdk
+	./make.cmd c:\\cygwin\\tmp\\build_deps\\gecko-sdk
 	cd ..
 
 	cd src

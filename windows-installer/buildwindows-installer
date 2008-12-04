@@ -155,7 +155,7 @@ if gtk_sharp_version.count('-'):
 
 # Had to remove mono-tools, since the latest requires gtkhtml-sharp2 (which we don't ship on windows), 
 #  and 1.1.11 is crashing with the lib update (probably libglade?)
-selections += [ Selection('monodoc', packages = "monodoc mono-tools".split() ) ]
+selections += [ Selection('monodoc', packages = "mono-tools".split() ) ]
 
 # TODO: Why am I distributing gecko-sharp without the GRE?
 # TODO: Also, why am I distributing gnome?.... ? adds some to gtk-sharp 1.0.10
@@ -539,41 +539,6 @@ utils.add_dll_map('mono/etc/mono/config', '<dllmap dll="gtkhtml-3.0" target="lib
 #
 ##############################################
 
-##############################################
-# monodoc .bat wrapper hacks
-
-parameter_map = {}
-parameter_map[re.compile(r"\\assembler")] = r"\\lib\\monodoc\\assembler"
-utils.substitute_parameters_in_file("monodoc/bin/mdassembler.bat", parameter_map)
-
-parameter_map = {}
-parameter_map[re.compile(r"\\cs2ecma")] = r"\\lib\\monodoc\\cs2ecma"
-utils.substitute_parameters_in_file("monodoc/bin/mdcs2ecma.bat", parameter_map)
-
-parameter_map = {}
-parameter_map[re.compile(r"\\normalize")] = r"\\lib\\monodoc\\normalize"
-utils.substitute_parameters_in_file("monodoc/bin/mdnormalizer.bat", parameter_map)
-
-parameter_map = {}
-parameter_map[re.compile(r"\\validate")] = r"\\lib\\monodoc\\validate"
-utils.substitute_parameters_in_file("monodoc/bin/mdvalidater.bat", parameter_map)
-
-parameter_map = {}
-parameter_map[re.compile(r"\\mod")] = r"\\lib\\monodoc\\mod"
-utils.substitute_parameters_in_file("monodoc/bin/mod.bat", parameter_map)
-
-parameter_map = {}
-parameter_map[re.compile(r"\\monodocer")] = r"\\lib\\monodoc\\monodocer"
-utils.substitute_parameters_in_file("monodoc/bin/monodocer.bat", parameter_map)
-
-parameter_map = {}
-parameter_map[re.compile(r"\\monodocs2html")] = r"\\lib\\monodoc\\monodocs2html"
-utils.substitute_parameters_in_file("monodoc/bin/monodocs2html.bat", parameter_map)
-
-parameter_map = {}
-parameter_map[re.compile(r"\\monodocs2slashdoc")] = r"\\lib\\monodoc\\monodocs2slashdoc"
-utils.substitute_parameters_in_file("monodoc/bin/monodocs2slashdoc.bat", parameter_map)
-
 
 ## From mono-tools
 #parameter_map = {}
@@ -591,7 +556,7 @@ utils.substitute_parameters_in_file("monodoc/bin/monodocs2slashdoc.bat", paramet
 # Substitute the config file to point to the docs
 parameter_map = {}
 parameter_map[re.compile(r"/usr")] = r"@@WIN_MONO_INST_DIR@@"
-utils.substitute_parameters_in_file("monodoc/lib/mono/gac/monodoc/1.0.0.0__0738eb9f132ed756/monodoc.dll.config", parameter_map)
+utils.substitute_parameters_in_file("mono/lib/mono/gac/monodoc/1.0.0.0__0738eb9f132ed756/monodoc.dll.config", parameter_map)
 
 #
 ##############################################

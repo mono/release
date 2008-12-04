@@ -383,6 +383,7 @@ class sync(threading.Thread):
 #  This will let the threads finish when CTRL-C is pushed
 def keyboard_interrupt(signum, frame):
 	print "*** Signaling all threads to finish ***"
+	sync_log.log("*** Signaling all threads to finish ***\n")
 	sigint_event.set()
 
 # Set up event object

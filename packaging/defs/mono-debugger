@@ -27,12 +27,12 @@ USE_HOSTS=(
 )
 
 MONO_DEPS=(
-	mono-branch
+	mono
 	xsp
 )
 
 MONO_RECOMMEND_DEPS=(
-	libgdiplus-branch
+	libgdiplus
 )
 
 get_destroot () {

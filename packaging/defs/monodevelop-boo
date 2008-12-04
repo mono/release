@@ -3,9 +3,6 @@ BUILD_HOSTS=(
 	sles-10-i586
 )
 
-# Temporary?
-MKTARBALL_HEAD_DEPS=1
-
 USE_HOSTS=(
 	sles-10-i586
 	sles-10-ppc

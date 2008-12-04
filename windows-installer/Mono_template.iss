@@ -45,7 +45,6 @@ Name: gtk\gtkSharp\monodoc; Description: Monodoc; Types: full custom
 Name: gtk\gtkSharp\geckosharp; Description: Gecko# Files; Types: full custom
 Name: gtk\gtkSharp\samples; Description: Samples; Types: full custom
 Name: xsp; Description: XSP files; Types: full custom
-Name: xsp\xsp_shell; Description: XSP Shell Integration; Types: full custom
 Name: xsp\xsp2_shell; Description: XSP 2.0 Shell Integration; Types: full custom
 
 [Tasks]
@@ -85,13 +84,11 @@ Name: {group}\Applications\Samples Directory; Filename: {app}\samples; Component
 Name: {group}\Applications\Glade 3; Filename: {app}\bin\glade-3.exe; Components: gtk; Comment: Glade 3 Gui Builder
 Name: {group}\Applications\Gtk Theme Selector; Filename: {app}\bin\gtkthemeselector.exe; Components: gtk; Comment: GTK Theme Selector
 ;Name: {group}\Applications\Monodoc Browser; IconFilename: {app}\mono.ico; Filename: {app}\bin\monodoc.bat; Components: gtk\gtkSharp\monodoc; Comment: Mono Documentation Browser
-Name: {group}\XSP\XSP Test Web Server; Filename: {app}\bin\startXSP.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\XSP\XSP 2.0 Test Web Server; Filename: {app}\bin\startXSP2.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\{cm:ProgramOnTheWeb,Mono}; IconFilename: {app}\mono.ico; Filename: {app}\Mono.url
 Name: {group}\{cm:UninstallProgram,Mono-@@MONO_VERSION@@ Win32}; Filename: {uninstallexe}
 Name: {group}\{cm:ProgramOnTheWeb,Gtk+}; Components: gtk; Filename: {app}\GtkPlus.url
 Name: {group}\{cm:ProgramOnTheWeb,Gtk#}; Components: gtk\gtkSharp; Filename: {app}\GtkSharp.url
-Name: {group}\XSP\XSP Index Page; Components: xsp; Filename: {app}\Xsplocal.url
 Name: {group}\XSP\XSP 2.0 Index Page; Components: xsp; Filename: {app}\Xsplocal2.url
 
 [Registry]
@@ -107,8 +104,6 @@ Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: gtk; Valu
 Root: HKLM; Subkey: SOFTWARE\Novell\Mono DefaultCLR; Flags: uninsdeletekeyifempty
 Root: HKLM; Subkey: Software\Novell\Mono DefaultCLR; ValueType: string; ValueName: Installer Language; ValueData: 1033; Flags: uninsdeletevalue
 ; XSP Shell Integration (Thanks to Joseph Hill)
-Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP WebServer @@MONO_VERSION@@; Components: xsp\xsp_shell; ValueType: string; ValueData: XSP Web Server Here @@MONO_VERSION@@; Flags: uninsdeletekey
-Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP WebServer @@MONO_VERSION@@\command; Components: xsp\xsp_shell; ValueType: string; ValueData: "{app}\bin\xsp.bat --root ""%1"" --port {code:GetPort} --applications /:."; Flags: uninsdeletekey
 Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@; Components: xsp\xsp2_shell; ValueType: string; ValueData: XSP 2.0 Web Server Here @@MONO_VERSION@@; Flags: uninsdeletekey
 Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@\command; Components: xsp\xsp2_shell; ValueType: string; ValueData: "{app}\bin\xsp2.bat --root ""%1"" --port {code:GetPort} --applications /:."; Flags: uninsdeletekey
 
@@ -248,7 +243,6 @@ begin
 	end;  // For
 
 	// Set the Port for XSP
-	substituteInFile(cstrBasePath + '\bin\startXSP.bat', '8089', PortForXSP.Values[0]);
 	substituteInFile(cstrBasePath + '\bin\startXSP2.bat', '8089', PortForXSP.Values[0]);
 	
 end;

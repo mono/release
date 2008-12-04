@@ -1,10 +1,5 @@
 web_index=2
 
-MKTARBALL_HEAD_DEPS=1
-
-# Not needed anymore... ?
-#fresh_checkout=1
-
 BUILD_HOSTS=(
 	sles-10-i586
 	macos-10-x86

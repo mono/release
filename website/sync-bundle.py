@@ -202,6 +202,7 @@ if not skip_obs_repos:
 		archive_path = os.path.join(dest, "archive", archive_version, "download")
 		distutils.dir_util.mkpath(archive_path)
 		# Hardlink copy into archive
+		os.system("rm -rf %s/%s" % (archive_path, repo_name))
 		os.system("cp -al %s %s/" % (dest_path, archive_path))
 
 #print files

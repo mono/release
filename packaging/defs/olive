@@ -1,7 +1,7 @@
 web_index=5
 
 BUILD_HOSTS=(
-	sles-10-i586
+	suse-110-i586
 )
 
 USE_HOSTS=(

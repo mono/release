@@ -255,9 +255,9 @@ This package contains Mono bindings for gconf and gconf peditors.
 
 %prep
 %setup -q -n %{_name}-%{version}
-if [ %version \< 2.10.3 ] ; then
-%patch0 -p1
-fi
+#if [ %version \< 2.10.3 ] ; then
+#%patch0 -p1
+#fi
 %if %platform_desktop_split == 0
 %patch1 -p1
 # 2.8.4 and later on 2.8.x branch doesn't need this patch

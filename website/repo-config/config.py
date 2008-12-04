@@ -27,6 +27,7 @@ monodoc
 mono-debugger
 mono-tools
 nant
+olive
 uiaatkbridge
 uiautomationwinforms
 xsp

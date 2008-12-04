@@ -1,5 +1,5 @@
 username=builder
-hostname=x64-linux-2.mono.lab.novell.com
+hostname=x64-linux-1.mono.lab.novell.com
 root_dir=/jails/scratchbox-0.9.8-arm
 
 arch_change_path=/usr/bin/linux32
