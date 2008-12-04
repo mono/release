@@ -1,0 +1,10 @@
+username=builder
+hostname=ppc-linux-1.mono.lab.novell.com
+root_dir=/jails/sle-11-ppc64
+chroot_path=/usr/bin/chroot
+target_command_prefix=". /etc/profile;"
+
+web_index=2
+
+YAST_INSTALL=1
+RPM_MD_REPO=1
