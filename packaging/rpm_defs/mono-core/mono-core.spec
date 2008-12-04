@@ -1221,7 +1221,6 @@ rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/cilc*
 rm $RPM_BUILD_ROOT%_bindir/jay
 rm -R $RPM_BUILD_ROOT%_datadir/jay
 rm $RPM_BUILD_ROOT%_mandir/man1/jay.1
-rm $RPM_BUILD_ROOT%_prefix/lib/mono/2.0/CorCompare.exe
 rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/browsercaps-updater.exe*
 # New files to delete in 1.1.9.2
 rm -f $RPM_BUILD_ROOT%_libdir/libMonoSupportW.a
