@@ -86,7 +86,6 @@ Authors:
 %_prefix/lib/ilcontrast
 %_prefix/lib/mono-tools
 %_prefix/lib/mono/1.0
-%_prefix/lib/mono/2.0
 %_prefix/lib/monodoc
 %_prefix/lib/mperfmon
 
