@@ -4,10 +4,10 @@
 <html>
 <head>
 <title>Moonlight 1.0 Test Sites</title>
-    <link type="text/css" rel="stylesheet" href="style.css">
-<link type="text/css" rel="stylesheet" href="http://mono-project.com/skins/monoproject/main.css">
-    <link type="text/css" rel="stylesheet" href="http://mono-project.com/skins/monoproject/niftycorners.css">
-    <link type="text/css" rel="stylesheet" href="css/tooltip.css">
+    <link type="text/css" rel="stylesheet" href="style.css" />
+<link type="text/css" rel="stylesheet" href="http://mono-project.com/skins/monoproject/main.css"/>
+    <link type="text/css" rel="stylesheet" href="http://mono-project.com/skins/monoproject/niftycorners.css"/>
+    <link type="text/css" rel="stylesheet" href="css/tooltip.css"/>
 
 <script type="text/javascript" src="js/tooltip.js">
 
@@ -41,7 +41,7 @@
 				
 				<p>The rating of each site is a somewhat arbitrary rank of 0-4 based on the functionality and appearance of the site.
 				</p>
-				<br>
+				<br/>
 				<table border="1" cellpadding ="0">
 				<tr>
 					 <th width=\"50\">Rating</th><th width=\"100\">Icons</th><th>Description</th></tr>
@@ -63,8 +63,8 @@
 				   <tr><td>4</td><td><img src="http://www.mono-project.com/files/2/22/Accept.png"/></td>
 					<td>All feature of the site work reliably and has proper appearance</td></tr>
 				</table>
-				<br>
-				<br>
+				<br/>
+				<br/>
                 <form id="form1" runat="server">
 
                         <div id="MoonContent" runat="server">
@@ -100,15 +100,16 @@
                 <input type=hidden name=ie value=UTF-8>
                 <input type=hidden name=oe value=UTF-8>
                 <TABLE bgcolor="#FFFFFF"><tr><td>
-                    <A HREF="http://www.google.com/"><IMG SRC="http://www.google.com/logos/Logo_40wht.gif"
-                    border="0" ALT="Google"></A>
+                    <A HREF="http://www.google.com/" ><IMG SRC="http://www.google.com/logos/Logo_40wht.gif"
+                    border="0" ALT="Google" /></A>
                     </td>
                     <td>
                     <INPUT TYPE=text name=q size=31 maxlength=255 value="">
                     <INPUT type=submit name=btnG VALUE="Google Search">
                     <font size=-1>
-                    <input type=hidden name=domains value="www.mono-project.com"><br><input type=radio name=sitesearch value=""> WWW <input
- type=radio name=sitesearch value="www.mono-project.com" checked> www.mono-project.com <br>
+                    <input type=hidden name=domains value="www.mono-project.com">
+                    <br/><input type=radio name=sitesearch value=""> WWW <input
+ type=radio name=sitesearch value="www.mono-project.com" checked> www.mono-project.com <br/>
                     </font>
                     </td></tr></TABLE>
             </FORM>

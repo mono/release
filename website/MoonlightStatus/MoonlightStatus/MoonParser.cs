@@ -116,17 +116,24 @@ namespace MoonlightStatus
 
 
                         //Console.WriteLine(line);
-                        int rating = Convert.ToInt32(line.Trim());
+                        try {
+							int rating = Convert.ToInt32(line.Trim());
+						
 
                         //Console.WriteLine("creating new MoonSite");
 
-                        MoonSite newsite = new MoonSite(name,url,rating);
-                        while(PeekLine().Trim().StartsWith("*"))
-                        {
-                                newsite.Issues.Add(ParseIssue());
-                        }
+				MoonSite newsite = new MoonSite(name,url,rating);
+			
+	                        while(PeekLine().Trim().StartsWith("*"))
+	                        {
+	                                newsite.Issues.Add(ParseIssue());
+	                        }
+				return newsite;
+			            }
+						catch(Exception ex) {
+							return null;
+						}
 
-                        return newsite;
                 }
 
                 private static MoonIssue ParseIssue()
