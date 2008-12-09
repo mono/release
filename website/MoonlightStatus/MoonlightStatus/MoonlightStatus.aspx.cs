@@ -22,6 +22,7 @@ namespace MoonlightStatus
 		static string timeStampFile = "MoonlightStatus_timestamp";
 		static string cacheFile = "MoonlightStatus_cache";
 		static string url = "http://anonsvn.mono-project.com/source/trunk/moon/demo-status.txt";
+		//static string url = "http://rhowell.provo.novell.com/demo-status.txt";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -75,7 +76,8 @@ namespace MoonlightStatus
 			}
 			return lastupdate;
 		}
-		
+
+		//This method reads serialized data (an ArrayList) from file. Data is not cached as text!
 		private ArrayList GetDataFromFile()
 		{
 			ArrayList list = null;
@@ -98,6 +100,8 @@ namespace MoonlightStatus
 			return list;
 			
 		}
+		
+		//This method serializes the ArrayList to file. Data is not cached as text!
 		private void WriteDataToFile(ArrayList list)
 		{
 			try
