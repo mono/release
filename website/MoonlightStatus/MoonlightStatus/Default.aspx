@@ -399,7 +399,7 @@ pageTracker._trackPageview();
 
 <% if (Request["unknown"] == "1") { %>
 <script type="text/javascript">
-	alert("Moonlight 1.0 does not support operating system and/or browser configuration. Please check the list of supported platforms for more details");
+	alert("Moonlight 1.0 does not support your operating system and/or browser configuration. Please check the list of supported platforms for more details");
 </script>
 <% } %>
 

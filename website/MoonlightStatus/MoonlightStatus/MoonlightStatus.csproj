@@ -67,5 +67,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <None Include="MoonlightStatus.aspx" />
+    <None Include="xpi_redirector.html" />
   </ItemGroup>
 </Project>
