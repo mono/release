@@ -172,7 +172,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on all versions of Windows 2000, XP, 2003 and Vista.",
-				"downloadText" : "Mono for Windows, Gtk#, and XSP <ul><li><a href='ftp://ftp.novell.com/pub/mono/archive/2.0.1/windows-installer/1/mono-2.0.1-gtksharp-2.10.4-win32-1.exe'>Mono 2.0.1 Setup</a></ul>Only Gtk# for .NET: <ul><li><a href=\"http://ftp.novell.com/pub/mono/gtk-sharp/\">SDK and Runtime</a></ul>Mono Migration Analyzer: <ul><li><a href='http://mono-project.com/MoMA'>See the Mono Migration Analyzer page</a></ul>"
+				"downloadText" : "<ul><li><a href='ftp://ftp.novell.com/pub/mono/archive/2.0.1/windows-installer/1/mono-2.0.1-gtksharp-2.10.4-win32-1.exe'>Mono for Windows, Gtk#, and XSP</a></li><li><a href=\"http://ftp.novell.com/pub/mono/gtk-sharp/\">Gtk# for .NET</a></li><li><a href='http://mono-project.com/MoMA'>Mono Migration Analyzer</a></li></ul>"
 			}
 			]
 		}
