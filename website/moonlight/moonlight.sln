@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonlightStatus", "MoonlightStatus\MoonlightStatus.csproj", "{4622F90F-636D-478F-8E35-C2E0D3087777}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "moonlight", "moonlight\moonlight.csproj", "{4622F90F-636D-478F-8E35-C2E0D3087777}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,7 +15,8 @@ Global
 		{4622F90F-636D-478F-8E35-C2E0D3087777}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		name = MoonlightStatus
-		StartupItem = MoonlightStatus\MoonlightStatus.csproj
+		name = moonlight
+		version = 0.1
+		StartupItem = moonlight\moonlight.csproj
 	EndGlobalSection
 EndGlobal
