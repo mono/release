@@ -1,1 +1,0 @@
-<%@ Application Inherits="moonlight_download.Global" %>
