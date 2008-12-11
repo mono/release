@@ -178,7 +178,7 @@ begin
         );
 
     PortForXSP.Add('Port:', False);
-    PortForXSP.Values[0] := '8088';
+    PortForXSP.Values[0] := '8080';
 end;
 
 // Search and replace in a file
