@@ -22,7 +22,6 @@ namespace MoonlightStatus
                 static string help ="<img src=\"http://www.mono-project.com/files/a/aa/Help.png\"/>";
                 static string delete = "<img src=\"http://www.mono-project.com/files/8/8c/Delete.png\"/>";
 
-
                 public MoonSite(string name, string url, int rating)
                 {
                         Name = name;

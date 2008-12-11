@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "moonlight", "moonlight\moonlight.csproj", "{4622F90F-636D-478F-8E35-C2E0D3087777}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "moonlight", "moonlight.csproj", "{4622F90F-636D-478F-8E35-C2E0D3087777}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +17,6 @@ Global
 	GlobalSection(MonoDevelopProperties) = preSolution
 		name = moonlight
 		version = 0.1
-		StartupItem = moonlight\moonlight.csproj
+		StartupItem = moonlight.csproj
 	EndGlobalSection
 EndGlobal
