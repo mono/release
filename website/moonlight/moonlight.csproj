@@ -6,7 +6,6 @@
     <ProductVersion>8.0.50727</ProductVersion>
     <ProjectGuid>{4622F90F-636D-478F-8E35-C2E0D3087777}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>MoonlightStatus</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -16,6 +15,7 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AssemblyName>moonlight</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -23,6 +23,7 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AssemblyName>MoonlightStatus</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
