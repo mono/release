@@ -64,7 +64,7 @@ Source: build\monodoc\*; DestDir: {app}; Components: gtk\gtkSharp\monodoc; Flags
 Filename: {app}\Mono.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://www.mono-project.com
 Filename: {app}\MonoReleaseNotes.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://go-mono.com/archive/@@MONO_VERSION@@/
 Filename: {app}\GtkPlus.url; Section: InternetShortcut; Components: gtk; Key: URL; String: http://www.gtk.org
-Filename: {app}\GtkSharp.url; Section: InternetShortcut; Components: gtk\gtkSharp; Key: URL; String: http://gtk-sharp.sourceforge.net/index.html
+Filename: {app}\GtkSharp.url; Section: InternetShortcut; Components: gtk\gtkSharp; Key: URL; String: http://www.mono-project.com/GtkSharp
 Filename: {app}\Xsplocal.url; Section: InternetShortcut; Components: xsp; Key: URL; String: {code:GetURLAndPort}/index.aspx
 Filename: {app}\Xsplocal2.url; Section: InternetShortcut; Components: xsp; Key: URL; String: {code:GetURLAndPort}/index2.aspx
 ; TODO: I'm not sure what was supposed to be at this link, so it's disabled for now
