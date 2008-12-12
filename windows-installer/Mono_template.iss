@@ -75,8 +75,8 @@ Filename: {app}\MonoDocWeb.url; Section: InternetShortcut; Components: mono; Key
 [Icons]
 Name: {group}\Mono-@@MONO_VERSION@@ Command Prompt; IconFilename: {app}\mono.ico; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono @@MONO_VERSION@@ Command Prompt
 Name: {group}\Readme; Filename: {app}\ReleaseNotes.txt; Comment: Combined Installer Release Notes
-Name: {group}\{cm:ProgramOnTheWeb,Mono-@@MONO_VERSION@@ Release Notes}; Filename: {app}\MonoReleaseNotes.url
-Name: {group}\MonoDoc Web; Components: mono; Filename: {app}\MonoDocWeb.url
+Name: {group}\{cm:ProgramOnTheWeb,Mono-@@MONO_VERSION@@ Release Notes}; IconFilename: {app}\mono.ico; Filename: {app}\MonoReleaseNotes.url
+Name: {group}\MonoDoc Web; IconFilename: {app}\mono.ico; Components: mono; Filename: {app}\MonoDocWeb.url
 Name: {group}\Applications\Gtk# Demo; Filename: {app}\bin\GtkDemo.bat; Components: gtk\gtkSharp\samples; Comment: Gtk# Demo
 Name: {group}\Applications\Sql# GTK; Filename: {app}\bin\sqlsharpgtk.bat; Components: gtk\gtkSharp\samples; Comment: SQL# GUI version
 Name: {group}\Applications\Prj2Make# GTK; Filename: {app}\bin\prj2make-sharp-gtk.bat; Components: gtk\gtkSharp\samples; Comment: Makefile generator tool.
@@ -87,9 +87,9 @@ Name: {group}\Applications\Gtk Theme Selector; Filename: {app}\bin\gtkthemeselec
 Name: {group}\XSP\XSP 2.0 Test Web Server; Filename: {app}\bin\startXSP2.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
 Name: {group}\{cm:ProgramOnTheWeb,Mono}; IconFilename: {app}\mono.ico; Filename: {app}\Mono.url
 Name: {group}\{cm:UninstallProgram,Mono-@@MONO_VERSION@@ Win32}; Filename: {uninstallexe}
-Name: {group}\{cm:ProgramOnTheWeb,Gtk+}; Components: gtk; Filename: {app}\GtkPlus.url
-Name: {group}\{cm:ProgramOnTheWeb,Gtk#}; Components: gtk\gtkSharp; Filename: {app}\GtkSharp.url
-Name: {group}\XSP\XSP 2.0 Index Page; Components: xsp; Filename: {app}\Xsplocal2.url
+Name: {group}\{cm:ProgramOnTheWeb,Gtk+}; IconFilename: {app}\mono.ico; Components: gtk; Filename: {app}\GtkPlus.url
+Name: {group}\{cm:ProgramOnTheWeb,Gtk#}; IconFilename: {app}\mono.ico; Components: gtk\gtkSharp; Filename: {app}\GtkSharp.url
+Name: {group}\XSP\XSP 2.0 Index Page; IconFilename: {app}\mono.ico; Components: xsp; Filename: {app}\Xsplocal2.url
 
 [Registry]
 Root: HKLM; Subkey: SOFTWARE\Novell\Mono; Flags: uninsdeletekeyifempty
