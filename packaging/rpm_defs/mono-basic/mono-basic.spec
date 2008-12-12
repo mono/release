@@ -37,6 +37,7 @@ Authors:
 
 %files
 %defattr(-, root, root)
+%_mandir/man1/vbnc.1%
 %_prefix/bin/vbnc
 %_prefix/lib/mono/2.0/vbnc*
 %_prefix/lib/mono/gac/Microsoft.VisualBasic
