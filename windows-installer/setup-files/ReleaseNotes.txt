@@ -1,5 +1,5 @@
 Release Notes for Mono, Gtk# and XSP Combined Windows Installer. 
-By Wade Berrier <wberrier@novell.com> @@DATE@@
+By The Mono Team <mono@novell.com> @@DATE@@
 Based on the work of Francisco G. Martinez  (Paco)
 ------------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ Mike Kestner, Lluis Sanchez, Gonzalo Paniagua Javier, Erik Dasque, Atsushi
 Enomoto, Urs Muff, Ivan Wong, John Luke, Joseph Hill, Todd Berman, 
 Jackson Harper, and Kornél Pál.
 
-Wade Berrier now maintains the installer and is VERY grateful for the
+The Mono Team now maintains the installer and is VERY grateful for the
 work Francisco (Paco) did to put the installer together.
 
 For Support and Questions you can visit the locations or email the 
