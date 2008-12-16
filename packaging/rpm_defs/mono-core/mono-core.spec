@@ -689,6 +689,7 @@ Authors:
 %_prefix/lib/mono/2.0/System.ComponentModel.DataAnnotations.dll
 # pkg-config files
 %_prefix/lib/pkgconfig/system.web.extensions_1.0.pc
+%_prefix/lib/pkgconfig/system.web.extensions.design_1.0.pc
 # exes
 %_prefix/lib/mono/1.0/disco.exe*
 %_prefix/lib/mono/1.0/soapsuds.exe*
