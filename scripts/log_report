@@ -1,0 +1,78 @@
+#!/bin/sh
+# Creates a report of commits to an SVN repo given a valid SVN diff range
+# set -x
+#
+# Author: Marc Christensen <mchristensen@novell.com>
+# 
+
+usage ()
+{
+   echo 
+   echo "Usage:"
+   echo
+   echo "     $(basename $0) -rREV:REV"
+   echo
+   echo "Example:"
+   echo
+   echo "     $(basename $0) -r121780:121785"
+   echo
+   exit 1
+}
+
+if [ ! -d .svn ]; then
+   echo "This script must be run from within a valid SVN directory structure"
+   exit 1
+fi
+
+if ! echo "$@" | grep -- "\-r" > /dev/null 2>&1; then
+   usage
+fi
+
+while getopts "r:h" OPT
+do
+   case $OPT in
+      r )  REV1=$(echo $OPTARG | cut -d: -f 1)
+	   REV2=$(echo $OPTARG | cut -d: -f 2);;
+      h | \? ) usage ;;
+   esac
+done
+shift $(($OPTIND - 1))
+TMP_FILE="/tmp/log.out.tmp"
+OUTPUT_FILENAME="/tmp/log_report-$REV1:$REV2.out"
+cat /dev/null > $TMP_FILE
+cat /dev/null > $OUTPUT_FILENAME
+
+svn log -r${REV1}:${REV2} > $TMP_FILE
+cp  $TMP_FILE $OUTPUT_FILENAME
+echo  >> $OUTPUT_FILENAME
+echo "================================" >> $OUTPUT_FILENAME
+echo "       Individual Commits"        >> $OUTPUT_FILENAME
+echo "================================" >> $OUTPUT_FILENAME
+echo  >> $OUTPUT_FILENAME
+cat $TMP_FILE | grep "^r[[:digit:]][[:digit:]]*.*$" | cut -d \| -f 1,2 >> $OUTPUT_FILENAME
+echo  >> $OUTPUT_FILENAME
+echo "================================" >> $OUTPUT_FILENAME
+echo "     Individual Committers"        >> $OUTPUT_FILENAME
+echo "================================" >> $OUTPUT_FILENAME
+echo  >> $OUTPUT_FILENAME
+cat $TMP_FILE | grep "^r[[:digit:]][[:digit:]]*.*$" | cut -d \| -f 2 | sort | uniq | sed -e 's/[[:space:]]//' >> $OUTPUT_FILENAME
+
+echo  >> $OUTPUT_FILENAME
+echo "================================" >> $OUTPUT_FILENAME
+echo "         Files Modified"        >> $OUTPUT_FILENAME
+echo "================================" >> $OUTPUT_FILENAME
+echo  >> $OUTPUT_FILENAME
+
+for DATA in $(cat $TMP_FILE | grep "^r[[:digit:]][[:digit:]]*.*$" | cut -d \| -f 1,2 | sed -e 's/|/:/g' -e 's/[[:space:]]*//g')
+do
+   echo ---------------------- >> $OUTPUT_FILENAME
+   REV=$(echo $DATA | cut -d: -f 1)
+   AUTHOR=$(echo $DATA | cut -d: -f 2)
+   echo $REV: $AUTHOR >> $OUTPUT_FILENAME
+   svn diff -c $REV | grep -e "+++" | sed -e 's/+++ //' -e 's/(revision.*$//' >> $OUTPUT_FILENAME
+   echo  >> $OUTPUT_FILENAME
+done
+
+less $OUTPUT_FILENAME
+rm $TMP_FILE
+echo Output located in $OUTPUT_FILENAME
