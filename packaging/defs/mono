@@ -1012,106 +1012,29 @@ POSTBUILD_TEST73 () {
 	fi
 }
 
-POSTBUILD_STEP_NAME1="api-diff"
+POSTBUILD_STEP_NAME1="upload-assemblies"
 POSTBUILD_STEP1 () {
-
-	if test x$DISTRO = xsles-10-i586 ; then
-		VERSION=1.1
-	elif test x$DISTRO = xsles-10-x86_64 ; then
-		VERSION=2.0
-	else
-		echo "Class status pages not generated on this platform"
+	if test x$HEAD_OR_RELEASE = xRELEASE; then
+		echo "We don't upload assemblies from release builds"
+		exit 0
+	fi
+	if test x$DISTRO != xsles-10-i586; then
+		echo "Assemblies not uploaded from this platform"
 		exit 0
 	fi
 
-        ASSEMBLIES=(
-                System
-                System.Configuration.Install
-                System.Data
-                System.Data.OracleClient
-                System.Design
-                System.DirectoryServices
-                System.Drawing
-                System.Drawing.Design
-                System.EnterpriseServices
-                System.Management
-                System.Messaging
-                System.Runtime.Remoting
-                System.Runtime.Serialization.Formatters.Soap
-                System.Security
-                System.ServiceProcess
-                System.Web
-                System.Web.Services
-                System.Windows.Forms
-                System.Xml
-                cscompmgd
-                mscorlib
-        )
-
-        case $VERSION in
-        1.1) PROFILE=net_1_1 ;;
-        2.0) PROFILE=net_2_0 ; ASSEMBLIES=(
-                        ${ASSEMBLIES[@]}
-                        Microsoft.Build.Engine
-                        Microsoft.Build.Framework
-                        Microsoft.Build.Tasks
-                        Microsoft.Build.Utilities
-                        System.Configuration
-                        System.ServiceProcess
-                        System.Transactions
-                ) ;;
-        esac
-
-
-        mkdir status
-        cd status
-
-        wget --tries=1 --timeout=10 http://mono.ximian.com/masterinfos/masterinfos-$VERSION.tar.gz
-
-        # todo: wget these out of subversion
-        wget --tries=1 --timeout=10 http://primates.ximian.com/~wberrier/class_status/deploy.tar.bz2
-        wget --tries=1 --timeout=10 http://anonsvn.mono-project.com/source/trunk/olive/status/mono-api.xsl -O mono-api.xsl
-
-        tar -zxf masterinfos-$VERSION.tar.gz
-        tar -jxf deploy.tar.bz2
-
-        # update content that frequently changes from subversion
-        wget --tries=1 --timeout=10 http://anonsvn.mono-project.com/source/trunk/mono/web/web/deploy/cm/cormissing.css -O deploy/cm/cormissing.css
-        wget --tries=1 --timeout=10 http://anonsvn.mono-project.com/source/trunk/mono/web/web/deploy/cm/cormissing.js -O deploy/cm/cormissing.js
-
-        mkdir infos
-        mkdir src
-
-        echo "<p>Date: `date`</p>" >> deploy/index.html
-        echo "<p>Revision: $version</p>" >> deploy/index.html
-        echo "<ul>" >> deploy/index.html
-
-        export MONO_PATH=../mcs/class/lib/$PROFILE
-        RUNTIME=../runtime/mono-wrapper
-
-        # Output to step-output dir, which will get recursively copied back to the build info
-        # Are these per file, or can multiple namespaces be in a file... ??
-        # (ie: is it ok for this list to be generated dynamically?)
-        for i in  ${ASSEMBLIES[@]} ; do
-                i="../mcs/class/lib/$PROFILE/$i"
-                f=`basename $i .dll`
-
-                # Only generate for the files we have master infos for
-                if [ -e masterinfos/$f.xml ] ; then
-                        echo "building class status page for: $i"
-                        $RUNTIME ../mcs/class/lib/$PROFILE/mono-api-info.exe $i > infos/$f.xml
-                        $RUNTIME ../mcs/tools/corcompare/mono-api-diff.exe masterinfos/$f.xml infos/$f.xml > src/$f.src
-                        $RUNTIME ../mcs/tools/corcompare/transform.exe src/$f.src mono-api.xsl source-name=$f.src > deploy/$f.html
-                        echo "<li><a href=\"$f.html\">$f</a></li>" >> deploy/index.html
-                fi
-        done
-        echo "</ul>" >> deploy/index.html
-
-        target=$build_location/steps/api-diff
-        mkdir -p $target
-        cp -Rf deploy/*  $target
-
-
+	KEY="/tmp/monobuild/source_dist_creator/distro_source_key"
+	HOST="mono-web@www.go-mono.com:/var/www/mono-website/go-mono/status/binary/"
+	if test -f "$KEY"; then
+		for profile in net_1_1:1.0 net_2_0:2.0 net_2_1:2.1 net_3_5:3.5; do
+			SRC="$(echo $profile | cut -d : -f 1)"
+			DEST="$(echo $profile | cut -d : -f 2)"
+			scp -i $KEY -q -C -o StrictHostKeyChecking=no mcs/class/lib/$SRC/* $HOST/$DEST/
+		done
+	else
+		echo "Didn't find ssh key"
+		exit 1
+	fi
 }
 
 # This step gets executed after all tests, or after a build failure
