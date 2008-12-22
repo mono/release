@@ -383,60 +383,80 @@ POSTBUILD_TEST10 () {
 
 	cd mcs/class/corlib
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME11="test-corlib-2.0"
 POSTBUILD_TEST11 () {
 	cd mcs/class/corlib
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME12="test-System-1.0"
 POSTBUILD_TEST12 () {
 	cd mcs/class/System
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME13="test-System-2.0"
 POSTBUILD_TEST13 () {
 	cd mcs/class/System
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME14="test-System_XML-1.0"
 POSTBUILD_TEST14 () {
 	cd mcs/class/System.XML
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME15="test-System_XML-2.0"
 POSTBUILD_TEST15 () {
 	cd mcs/class/System.XML
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME16="test-Mono_Security-1.0"
 POSTBUILD_TEST16 () {
 	cd mcs/class/Mono.Security
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME17="test-Mono_Security-2.0"
 POSTBUILD_TEST17 () {
 	cd mcs/class/Mono.Security
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME18="test-System_Security-1.0"
 POSTBUILD_TEST18 () {
 	cd mcs/class/System.Security
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME19="test-System_Security-2.0"
 POSTBUILD_TEST19 () {
 	cd mcs/class/System.Security
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME20="test-System_Drawing-1.0"
@@ -446,6 +466,8 @@ POSTBUILD_TEST20 () {
 
 	cd mcs/class/System.Drawing
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME21="test-System_Drawing-2.0"
@@ -455,6 +477,8 @@ POSTBUILD_TEST21 () {
 
 	cd mcs/class/System.Drawing
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME22="test-Windows_Forms-1.0"
@@ -464,6 +488,8 @@ POSTBUILD_TEST22 () {
 
 	cd mcs/class/Managed.Windows.Forms
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME23="test-Windows_Forms-2.0"
@@ -473,294 +499,392 @@ POSTBUILD_TEST23 () {
 
 	cd mcs/class/Managed.Windows.Forms
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME24="test-System_Data-1.0"
 POSTBUILD_TEST24 () {
 	cd mcs/class/System.Data
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME25="test-System_Data-2.0"
 POSTBUILD_TEST25 () {
 	cd mcs/class/System.Data
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME26="test-Mono_Data_Sqlite-1.0"
 POSTBUILD_TEST26 () {
 	cd mcs/class/Mono.Data.Sqlite
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME27="test-Mono_Data_Sqlite-2.0"
 POSTBUILD_TEST27 () {
 	cd mcs/class/Mono.Data.Sqlite
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME28="test-Mono_Data_SqliteClient-1.0"
 POSTBUILD_TEST28 () {
 	cd mcs/class/Mono.Data.SqliteClient
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME29="test-Mono_Data_SqliteClient-2.0"
 POSTBUILD_TEST29 () {
 	cd mcs/class/Mono.Data.SqliteClient
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME30="test-System_Data_OracleClient-1.0"
 POSTBUILD_TEST30 () {
 	cd mcs/class/System.Data.OracleClient
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME31="test-System_Data_OracleClient-2.0"
 POSTBUILD_TEST31 () {
 	cd mcs/class/System.Data.OracleClient
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME32="test-System_Design-1.0"
 POSTBUILD_TEST32 () {
 	cd mcs/class/System.Design
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME33="test-System_Design-2.0"
 POSTBUILD_TEST33 () {
 	cd mcs/class/System.Design
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME34="test-Mono_Posix-1.0"
 POSTBUILD_TEST34 () {
 	cd mcs/class/Mono.Posix
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME35="test-Mono_Posix-2.0"
 POSTBUILD_TEST35 () {
 	cd mcs/class/Mono.Posix
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME36="test-System_Web-1.0"
 POSTBUILD_TEST36 () {
 	cd mcs/class/System.Web
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME37="test-System_Web-2.0"
 POSTBUILD_TEST37 () {
 	cd mcs/class/System.Web
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME38="test-System_Web_Services-1.0"
 POSTBUILD_TEST38 () {
 	cd mcs/class/System.Web.Services
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME39="test-System_Web_Services-2.0"
 POSTBUILD_TEST39 () {
 	cd mcs/class/System.Web.Services
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME40="test-System_Runtime_SFS-1.0"
 POSTBUILD_TEST40 () {
 	cd mcs/class/System.Runtime.Serialization.Formatters.Soap
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME41="test-System_Runtime_SFS-2.0"
 POSTBUILD_TEST41 () {
 	cd mcs/class/System.Runtime.Serialization.Formatters.Soap
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME42="test-System_Runtime_Remoting-1.0"
 POSTBUILD_TEST42 () {
 	cd mcs/class/System.Runtime.Remoting
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME43="test-System_Runtime_Remoting-2.0"
 POSTBUILD_TEST43 () {
 	cd mcs/class/System.Runtime.Remoting
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME44="test-Cscompmgd-1.0"
 POSTBUILD_TEST44 () {
 	cd mcs/class/Cscompmgd
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME45="test-Cscompmgd-2.0"
 POSTBUILD_TEST45 () {
 	cd mcs/class/Cscompmgd
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME46="test-Commons_Xml_Relaxng-1.0"
 POSTBUILD_TEST46 () {
 	cd mcs/class/Commons.Xml.Relaxng
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME47="test-Commons_Xml_Relaxng-2.0"
 POSTBUILD_TEST47 () {
 	cd mcs/class/Commons.Xml.Relaxng
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME48="test-System_Messaging-1.0"
 POSTBUILD_TEST48 () {
 	cd mcs/class/System.Messaging
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME49="test-System_Messaging-2.0"
 POSTBUILD_TEST49 () {
 	cd mcs/class/System.Messaging
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME50="test-System_ServiceProcess-1.0"
 POSTBUILD_TEST50 () {
 	cd mcs/class/System.ServiceProcess
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME51="test-System_ServiceProcess-2.0"
 POSTBUILD_TEST51 () {
 	cd mcs/class/System.ServiceProcess
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME52="test-Microsoft_JScript-1.0"
 POSTBUILD_TEST52 () {
 	cd mcs/class/Microsoft.JScript
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME53="test-Microsoft_JScript-2.0"
 POSTBUILD_TEST53 () {
 	cd mcs/class/Microsoft.JScript
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME54="test-I18N_CJK-1.0"
 POSTBUILD_TEST54 () {
 	cd mcs/class/I18N/CJK
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME55="test-I18N_CJK-2.0"
 POSTBUILD_TEST55 () {
 	cd mcs/class/I18N/CJK
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME56="test-I18N_West-1.0"
 POSTBUILD_TEST56 () {
 	cd mcs/class/I18N/West
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME57="test-I18N_West-2.0"
 POSTBUILD_TEST57 () {
 	cd mcs/class/I18N/West
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME58="test-System_DirectoryServices-1.0"
 POSTBUILD_TEST58 () {
 	cd mcs/class/System.DirectoryServices
 	$make_path run-test PROFILE=net_1_1
+	echo "TestResult-net_1_1.log:"
+	cat "TestResult-net_1_1.log"
 }
 
 POSTBUILD_TEST_NAME59="test-System_DirectoryServices-2.0"
 POSTBUILD_TEST59 () {
 	cd mcs/class/System.DirectoryServices
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME60="test-Microsoft_Build_Engine-2.0"
 POSTBUILD_TEST60 () {
 	cd mcs/class/Microsoft.Build.Engine
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME61="test-Microsoft_Build_Framework-2.0"
 POSTBUILD_TEST61 () {
 	cd mcs/class/Microsoft.Build.Framework
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME62="test-Microsoft_Build_Tasks-2.0"
 POSTBUILD_TEST62 () {
 	cd mcs/class/Microsoft.Build.Tasks
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME63="test-Microsoft_Build_Utilities-2.0"
 POSTBUILD_TEST63 () {
 	cd mcs/class/Microsoft.Build.Utilities
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME64="test-Mono_C5-2.0"
 POSTBUILD_TEST64 () {
 	cd mcs/class/Mono.C5
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME65="test-System_Configuration-2.0"
 POSTBUILD_TEST65 () {
 	cd mcs/class/System.Configuration
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME66="test-System_Transactions-2.0"
 POSTBUILD_TEST66 () {
 	cd mcs/class/System.Transactions
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME67="test-System_Web_Extensions-2.0"
 POSTBUILD_TEST67 () {
 	cd mcs/class/System.Web.Extensions
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME68="test-System_Web_Extensions-3.5"
 POSTBUILD_TEST68 () {
 	cd mcs/class/System.Web.Extensions
 	$make_path run-test PROFILE=net_3_5
+	echo "TestResult-net_3_5.log:"
+	cat "TestResult-net_3_5.log"
 }
 
 POSTBUILD_TEST_NAME69="test-System_Core-3.5"
 POSTBUILD_TEST69 () {
 	cd mcs/class/System.Core
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME70="test-System_Xml_Linq-3.5"
 POSTBUILD_TEST70 () {
 	cd mcs/class/System.Xml.Linq
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME71="test-System_Data_DSE-3.5"
 POSTBUILD_TEST71 () {
 	cd mcs/class/System.Data.DataSetExtensions
 	$make_path run-test PROFILE=net_2_0
+	echo "TestResult-net_2_0.log:"
+	cat "TestResult-net_2_0.log"
 }
 
 POSTBUILD_TEST_NAME72="test-results"
