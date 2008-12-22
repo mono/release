@@ -1014,7 +1014,7 @@ POSTBUILD_TEST73 () {
 
 POSTBUILD_STEP_NAME1="upload-assemblies"
 POSTBUILD_STEP1 () {
-	if test x$HEAD_OR_RELEASE = xRELEASE; then
+	if test x$HEAD_or_RELEASE = xRELEASE; then
 		echo "We don't upload assemblies from release builds"
 		exit 0
 	fi
