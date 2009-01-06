@@ -7,7 +7,9 @@ bundle_urlname="stable"
 bundle_desc="Packages from the latest release"
 
 obs_repos=(
+	rsync://rsync.opensuse.org/buildservice-repos-full/Mono:/Preview/openSUSE_11.1/
 	rsync://rsync.opensuse.org/buildservice-repos-full/Mono:/Preview/openSUSE_11.0/
+	rsync://rsync.opensuse.org/buildservice-repos-full/Mono:/Preview/openSUSE_10.3/
 	rsync://rsync.opensuse.org/buildservice-repos-full/Mono:/Preview/SLE_10/
 )
 
