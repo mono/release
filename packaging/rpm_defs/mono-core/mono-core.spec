@@ -935,7 +935,6 @@ fi
 # exes
 %_prefix/lib/mono/1.0/makecert.exe*
 %_prefix/lib/mono/2.0/mono-api-info.exe*
-%_prefix/lib/mono/2.0/mono-api-diff.exe*
 %_prefix/lib/mono/1.0/al.exe*
 %_prefix/lib/mono/2.0/al.exe*
 %_prefix/lib/mono/1.0/caspol.exe*
@@ -1021,7 +1020,6 @@ fi
 %_bindir/monop
 %_bindir/monop1
 %_bindir/monop2
-%_bindir/mono-api-diff
 %_bindir/mono-api-info
 %_bindir/mono-cil-strip
 %_bindir/mono-find-provides
