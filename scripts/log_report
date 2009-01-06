@@ -38,7 +38,7 @@ do
 done
 shift $(($OPTIND - 1))
 TMP_FILE="/tmp/log.out.tmp"
-OUTPUT_FILENAME="/tmp/log_report-$REV1:$REV2.out"
+OUTPUT_FILENAME="/tmp/log_report-r${REV1}:${REV2}.out"
 cat /dev/null > $TMP_FILE
 cat /dev/null > $OUTPUT_FILENAME
 
@@ -70,6 +70,7 @@ do
    AUTHOR=$(echo $DATA | cut -d: -f 2)
    echo $REV: $AUTHOR >> $OUTPUT_FILENAME
    svn diff -c $REV | grep -e "+++" | sed -e 's/+++ //' -e 's/(revision.*$//' >> $OUTPUT_FILENAME
+   sleep 1
    echo  >> $OUTPUT_FILENAME
 done
 
