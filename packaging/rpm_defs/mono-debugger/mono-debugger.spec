@@ -57,9 +57,11 @@ Authors:
 %{_prefix}/lib/mono/2.0/mdb.exe
 %{_prefix}/lib/mono/2.0/mdb-symbolreader.exe
 %{_prefix}/lib/mono/gac/Mono.Debugger
+%{_prefix}/lib/mono/gac/Mono.Debugger.Frontend
 %{_prefix}/lib/mono/gac/Mono.Debugger.SymbolWriter
 %{_prefix}/lib/mono/mono-debugger
 %{_libdir}/pkgconfig/mono-debugger.pc
+%{_libdir}/pkgconfig/mono-debugger-frontend.pc
 
 %prep
 %setup  -q -n mono-debugger-%{version}
