@@ -345,6 +345,10 @@ POSTBUILD_TEST3 () {
 
 POSTBUILD_TEST_NAME4="test-cas"
 POSTBUILD_TEST4 () {
+        if test x$DISTRO = xwin-4-i386 ; then
+                # Don't test cas on Windows (bnc#443003 comment#4)
+                exit 0;
+        fi
 	cd mono/tests/cas
 	$make_path -k test
 }
