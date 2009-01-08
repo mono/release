@@ -214,7 +214,9 @@ for path_on_disk in native_filelist:
 	os.chmod(path_on_disk, stat.S_IMODE(os.stat(path_on_disk)[0]) | stat.S_IWUSR)
 
 	print 'Relocating %s' % path_on_disk
-	utils.launch_process('install_name_tool -id %s %s' % (new_filename, path_on_disk ) )
+	command = 'install_name_tool -id %s %s' % (new_filename, path_on_disk )
+	print command
+	utils.launch_process(command)
 
 	# Get update references (So we don't try to change reference to ourselves)
 	(code, otool_output) = utils.launch_process('otool -L %s' % path_on_disk, print_output=0 )
@@ -247,6 +249,7 @@ for path_on_disk in native_filelist:
 			#command = 'install_name_tool -change %s /bunch/of/junk%s/%s %s' % (full_path, reloc, prefix_on_path, path_on_disk) 
 			#print command1
 			if not relative_paths:
+				print command1
 				(code, output) = utils.launch_process(command1)
 				if code:
 					print "*** ERROR *** problems executing: %s" % command1
@@ -259,6 +262,7 @@ for path_on_disk in native_filelist:
 				# This string is shorter so it works with libmono-profiler-cov
 				# But doesn't seem to work when I install to /tmp/build_deps... (libgdiplus configure test for libtiff fails)
 				command2 = 'install_name_tool -change %s @executable_path/../%s %s' % (full_path, prefix_on_path, path_on_disk) 
+				print command2
 				(code, output) = utils.launch_process(command2)
 				if code:
 					print "*** ERROR *** problems executing: %s" % command2
