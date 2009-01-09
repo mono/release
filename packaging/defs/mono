@@ -499,6 +499,10 @@ POSTBUILD_TEST21 () {
 
 POSTBUILD_TEST_NAME22="test-Windows_Forms-1.0"
 POSTBUILD_TEST22 () {
+	if [ "x$DISTRO" = "xmacos-10-x86" -o "x$DISTRO" = "xmacos-10-ppc" ] ; then
+		echo "No winforms tests on Mac for now"
+		exit 0;
+	fi
 	DISPLAY=x32-linux-1.mono.lab.novell.com:1
 	export DISPLAY
 
@@ -511,6 +515,10 @@ POSTBUILD_TEST22 () {
 
 POSTBUILD_TEST_NAME23="test-Windows_Forms-2.0"
 POSTBUILD_TEST23 () {
+	if [ "x$DISTRO" = "xmacos-10-x86" -o "x$DISTRO" = "xmacos-10-ppc" ] ; then
+		echo "No winforms tests on Mac for now"
+		exit 0;
+	fi
 	DISPLAY=x32-linux-1.mono.lab.novell.com:1
 	export DISPLAY
 
