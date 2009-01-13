@@ -9,7 +9,7 @@ var discontinued = "<div style=\"color: darkred; font-weight: bold\">Binaries fo
 
 var data =
 {
-	"release" : "2.0.1",
+	"release" : "2.2",
 	"platforms" : [
 	{
 		"name" : "VMware",
@@ -20,9 +20,9 @@ var data =
 			"name" : "openSUSE 11.0",
 			"arch" : [
 			{
-				"name" : "Mono 2.0.1",
+				"name" : "Mono 2.2",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 11.0 VMWare image which includes Mono 2.0.1 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0.1_openSUSE-11.0.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.0.1_openSUSE-11.0.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
+				"downloadText" : "Download the openSUSE 11.0 VMWare image which includes Mono 2.2 <ul><li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.2_openSUSE-11.0.zip.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/vmware/Mono-2.2_openSUSE-11.0.zip'>via http</a> </ul><a href='http://mono-project.com/VMware_Image'>Instructions for using the VMware image</a>."
 			}
 			]
 		}
@@ -37,9 +37,9 @@ var data =
 			"name" : "openSUSE 11.0 Live CD",
 			"arch" : [
 			{
-				"name" : "Mono 2.0.1",
+				"name" : "Mono 2.2",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 11.0 Live CD which includes Mono 2.0.1 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0.1_openSUSE-11.0.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.0.1_openSUSE-11.0.iso'>via http</a> </ul>"
+				"downloadText" : "Download the openSUSE 11.0 Live CD which includes Mono 2.2 <ul><li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.2_openSUSE-11.0.iso.torrent'>via Torrent</a> <li><a href='http://ftp.novell.com/pub/mono/livecd/Mono-2.2_openSUSE-11.0.iso'>via http</a> </ul>"
 			}
 			]
 		}
@@ -51,32 +51,12 @@ var data =
 		"dlicon" : "opensuse.jpg",
 		"version" : [
 		{
-			"name" : "openSUSE 10.2",
-			"arch" : [
-			{
-				"name" : i586_x86_64,
-				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href=\"http://download.opensuse.org/repositories/Mono/openSUSE_10.2/\">http://download.opensuse.org/repositories/Mono/openSUSE_10.2/</a></ul>For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : ppc,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-102-ppc'>http://ftp.novell.com/pub/mono/download-stable/suse-102-ppc" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-102-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			}
-			]
-		},
-		{
 			"name" : "openSUSE 10.3",
 			"arch" : [
 			{
 				"name" : i586_x86_64,
 				"desc" : "",
-				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href=\"http://download.opensuse.org/repositories/Mono/openSUSE_10.3/\">http://download.opensuse.org/repositories/Mono/openSUSE_10.3/</a></ul>For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : ppc,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-103-ppc'>http://ftp.novell.com/pub/mono/download-stable/suse-103-ppc" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-103-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/openSUSE_10.3\">http://ftp.novell.com/pub/mono/download-stable/openSUSE_10.3</a></ul>For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
 		},
@@ -89,6 +69,16 @@ var data =
 				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.0'>http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.0" + "</a></ul> For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
+		},
+		{
+			"name" : "openSUSE 11.1",
+			"arch" : [
+			{
+				"name" : i586_x86_64,
+				"desc" : "",
+				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.1'>http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.1" + "</a></ul> For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+			}
+			]
 		}
 		]
 	},
@@ -99,62 +89,12 @@ var data =
 		"dlicon" : "sles.jpg",
 		"version" : [
 		{
-			"name" : "Suse Linux Enterprise Server 9",
-			"arch" : [
-			{
-				"name" : i586,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-i586'>http://ftp.novell.com/pub/mono/download-stable/sles-9-i586" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-i586'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : x86_64,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-x86_64'>http://ftp.novell.com/pub/mono/download-stable/sles-9-x86_64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-x86_64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : ppc,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-ppc'>http://ftp.novell.com/pub/mono/download-stable/sles-9-ppc" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : ia64,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-ia64'>http://ftp.novell.com/pub/mono/download-stable/sles-9-ia64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-ia64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : s390,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-s390'>http://ftp.novell.com/pub/mono/download-stable/sles-9-s390" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-s390'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : s390x,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-9-s390x'>http://ftp.novell.com/pub/mono/download-stable/sles-9-s390x" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-9-s390x'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			}
-			]
-		},
-		{
 			"name" : "Suse Linux Enterprise 10",
 			"arch" : [
 			{
 				"name" : i586_x86_64,
 				"desc" : "",
 				"downloadText" : "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/SLE_10'>http://ftp.novell.com/pub/mono/download-stable/SLE_10" + "</a></ul>For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : ppc,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/suse-101-ppc'>http://ftp.novell.com/pub/mono/download-stable/suse-101-ppc" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/suse-101-ppc'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : ia64,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-10-ia64'>http://ftp.novell.com/pub/mono/download-stable/sles-10-ia64" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-10-ia64'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
-			},
-			{
-				"name" : s390x,
-				"desc" : "",
-				"downloadText" : discontinued + "This distro supports installing packages via YaST. Add the following installation source to YaST:<ul><li><a href='" + "http://ftp.novell.com/pub/mono/download-stable/sles-10-s390x'>http://ftp.novell.com/pub/mono/download-stable/sles-10-s390x" + "</a></ul>For individual packages, <a href='http://ftp.novell.com/pub/mono/download-stable/sles-10-s390x'>go here</a>. For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
 			}
 			]
 		}
@@ -172,7 +112,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on all versions of Windows 2000, XP, 2003 and Vista.",
-				"downloadText" : "<ul><li><a href='ftp://ftp.novell.com/pub/mono/archive/2.0.1/windows-installer/1/mono-2.0.1-gtksharp-2.10.4-win32-1.exe'>Mono for Windows, Gtk#, and XSP</a></li><li><a href=\"http://ftp.novell.com/pub/mono/gtk-sharp/\">Gtk# for .NET</a></li><li><a href='http://mono-project.com/MoMA'>Mono Migration Analyzer</a></li></ul>"
+				"downloadText" : "<ul><li><a href='ftp://ftp.novell.com/pub/mono/archive/2.2/windows-installer/5/mono-2.2-gtksharp-2.12.7-win32-5.exe'>Mono for Windows, Gtk#, and XSP</a></li><li><a href=\"http://ftp.novell.com/pub/mono/gtk-sharp/\">Gtk# for .NET</a></li><li><a href='http://mono-project.com/MoMA'>Mono Migration Analyzer</a></li></ul>"
 			}
 			]
 		}
@@ -190,7 +130,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/2.0.1/macos-10-universal/1/MonoFramework-2.0.1_1.macos10.novell.universal.dmg'>Mono 2.0.1_1 Framework - Universal</a></li><li><a href='http://ftp.novell.com/pub/mono/archive/2.0.1/macos-10-universal/1/MonoDevelop-1.9-3.dmg'>MonoDevelop 1.9 (beta)</a></li></li><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
+				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/2.2/macos-10-universal/5/MonoFramework-2.2_5.macos10.novell.universal.dmg'>Mono 2.2_5 Framework - Universal</a></li><li><a href=\"http://ftp.novell.com/pub/mono/monodevelop/MonoDevelop-1.9.1-1.dmg\">MonoDevelop 2.0 Alpha 2</a></li></li><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
