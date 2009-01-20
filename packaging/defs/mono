@@ -7,10 +7,10 @@ BUILD_HOSTS=(
 	debian-4-sparc
 	macos-10-ppc
 	macos-10-x86
+	sle-11-ppc64
 	sles-10-i586
 	sles-10-ia64
 	sles-10-ppc
-	sle-11-ppc64
 	sles-10-x86_64
 	sunos-10-sparc
 	sunos-10-x86
@@ -23,10 +23,10 @@ USE_HOSTS=(
 	macos-10-ppc
 	macos-10-x86
 	rhel-4-i386
+	sle-11-ppc64
 	sles-10-i586
 	sles-10-ia64
 	sles-10-ppc
-	sle-11-ppc64
 	sles-10-x86_64
 	sunos-10-sparc
 	sunos-10-x86
@@ -345,9 +345,9 @@ POSTBUILD_TEST3 () {
 POSTBUILD_TEST_NAME4="test-cas"
 POSTBUILD_TEST4 () {
         if test x$DISTRO = xwin-4-i386 ; then
-		# Don't test cas on Windows (bnc#443003 comment#4)
-		exit 0;
-	fi
+                # Don't test cas on Windows (bnc#443003 comment#4)
+                exit 0;
+        fi
 	cd mono/tests/cas
 	$make_path -k test
 }
@@ -925,17 +925,8 @@ POSTBUILD_TEST67 () {
 	exit $RESULT
 }
 
-POSTBUILD_TEST_NAME68="test-System_Web_Extensions-3.5"
+POSTBUILD_TEST_NAME68="test-System_Core-3.5"
 POSTBUILD_TEST68 () {
-	cd mcs/class/System.Web.Extensions
-	$make_path run-test PROFILE=net_3_5
-	RESULT=$?
-	cat "TestResult-net_3_5.log"
-	exit $RESULT
-}
-
-POSTBUILD_TEST_NAME69="test-System_Core-3.5"
-POSTBUILD_TEST69 () {
 	cd mcs/class/System.Core
 	$make_path run-test PROFILE=net_2_0
 	RESULT=$?
@@ -943,8 +934,8 @@ POSTBUILD_TEST69 () {
 	exit $RESULT
 }
 
-POSTBUILD_TEST_NAME70="test-System_Xml_Linq-3.5"
-POSTBUILD_TEST70 () {
+POSTBUILD_TEST_NAME69="test-System_Xml_Linq-3.5"
+POSTBUILD_TEST69 () {
 	cd mcs/class/System.Xml.Linq
 	$make_path run-test PROFILE=net_2_0
 	RESULT=$?
@@ -952,8 +943,8 @@ POSTBUILD_TEST70 () {
 	exit $RESULT
 }
 
-POSTBUILD_TEST_NAME71="test-System_Data_DSE-3.5"
-POSTBUILD_TEST71 () {
+POSTBUILD_TEST_NAME70="test-System_Data_DSE-3.5"
+POSTBUILD_TEST70 () {
 	cd mcs/class/System.Data.DataSetExtensions
 	$make_path run-test PROFILE=net_2_0
 	RESULT=$?
@@ -961,8 +952,8 @@ POSTBUILD_TEST71 () {
 	exit $RESULT
 }
 
-POSTBUILD_TEST_NAME72="test-results"
-POSTBUILD_TEST72 () {
+POSTBUILD_TEST_NAME71="test-results"
+POSTBUILD_TEST71 () {
 
 	mkdir -p test_results
         target=$build_location/steps/test-results
@@ -981,8 +972,8 @@ POSTBUILD_TEST72 () {
 	exit 0
 }
 
-POSTBUILD_TEST_NAME73="test-ondotnet"
-POSTBUILD_TEST73 () {
+POSTBUILD_TEST_NAME72="test-ondotnet"
+POSTBUILD_TEST72 () {
 	if test x$DISTRO = xwin-4-i386 ; then
 
 		OLD_PATH=$PATH
@@ -1079,6 +1070,7 @@ CLEAN_UP () {
 	fi
 
 }
+
 
 
 
