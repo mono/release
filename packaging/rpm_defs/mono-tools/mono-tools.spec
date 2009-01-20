@@ -113,8 +113,7 @@ mv $RPM_BUILD_ROOT/%_prefix/lib/pkgconfig $RPM_BUILD_ROOT/%_prefix/share
 %clean
 rm -Rf "$RPM_BUILD_ROOT"
 
-# Disabled because of bug in monodoc
-#%post
-#monodoc --make-index
+%post
+monodoc --make-index
 
 %changelog
