@@ -27,10 +27,10 @@ Provides:       mono-posix
 Provides:       mono-ziplib
 # This version of mono has issues with the following versions of apps:
 #  (not because of regressions, but because bugfixes in mono uncover bugs in the apps)
-Conflicts:      helix-banshee <= 0.13.1
-Conflicts:      banshee <= 0.13.1
-Conflicts:      f-spot <= 0.3.5
-Conflicts:      mono-addins <= 0.3
+Conflicts:      helix-banshee < 1.0
+Conflicts:      banshee < 1.0
+Conflicts:      f-spot < 0.4
+Conflicts:      mono-addins < 0.3.1
 # Only use recommends for 11.0 and up
 %if 0%{?suse_version} >= 1100
 Recommends:     libgdiplus0

@@ -9,7 +9,7 @@ Version:        2.2
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
-ExclusiveArch:  %ix86 x86_64 ppc hppa armv4l sparc s390 ia64 s390x
+ExclusiveArch:  %ix86 x86_64 ppc ppc64 hppa armv4l sparc s390 ia64 s390x
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Provides:       mono = %{version}-%{release}
 Provides:       mono-ikvm = %{version}-%{release}
@@ -27,10 +27,10 @@ Provides:       mono-posix
 Provides:       mono-ziplib
 # This version of mono has issues with the following versions of apps:
 #  (not because of regressions, but because bugfixes in mono uncover bugs in the apps)
-Conflicts:      helix-banshee <= 0.13.1
-Conflicts:      banshee <= 0.13.1
-Conflicts:      f-spot <= 0.3.5
-Conflicts:      mono-addins <= 0.3
+Conflicts:      helix-banshee < 1.0
+Conflicts:      banshee < 1.0
+Conflicts:      f-spot < 0.4
+Conflicts:      mono-addins < 0.3.1
 # Only use recommends for 11.0 and up
 %if 0%{?suse_version} >= 1100
 Recommends:     libgdiplus0
@@ -182,6 +182,7 @@ Authors:
 %_prefix/lib/mono/2.1/System.Xml.dll
 %_prefix/lib/mono/gac/System.Xml.Linq
 %_prefix/lib/mono/2.0/System.Xml.Linq.dll
+%_prefix/lib/mono/2.1/System.Xml.Linq.dll
 %_prefix/lib/mono/gac/System
 %_prefix/lib/mono/1.0/System.dll
 %_prefix/lib/mono/2.0/System.dll
@@ -496,9 +497,18 @@ Authors:
 %_prefix/lib/mono/gac/System.Management
 %_prefix/lib/mono/1.0/System.Management.dll
 %_prefix/lib/mono/2.0/System.Management.dll
+%_prefix/lib/mono/gac/RabbitMQ.Client
+%_prefix/lib/mono/1.0/RabbitMQ.Client.dll
+%_prefix/lib/mono/2.0/RabbitMQ.Client.dll
 %_prefix/lib/mono/gac/System.Messaging
 %_prefix/lib/mono/1.0/System.Messaging.dll
 %_prefix/lib/mono/2.0/System.Messaging.dll
+%_prefix/lib/mono/gac/Mono.Messaging
+%_prefix/lib/mono/1.0/Mono.Messaging.dll
+%_prefix/lib/mono/2.0/Mono.Messaging.dll
+%_prefix/lib/mono/gac/Mono.Messaging.RabbitMQ
+%_prefix/lib/mono/1.0/Mono.Messaging.RabbitMQ.dll
+%_prefix/lib/mono/2.0/Mono.Messaging.RabbitMQ.dll
 %_prefix/lib/mono/gac/System.ServiceProcess
 %_prefix/lib/mono/1.0/System.ServiceProcess.dll
 %_prefix/lib/mono/2.0/System.ServiceProcess.dll
@@ -859,12 +869,25 @@ Authors:
 %_prefix/lib/mono/gac/nunit.core
 %_prefix/lib/mono/1.0/nunit.core.dll
 %_prefix/lib/mono/2.0/nunit.core.dll
+%_prefix/lib/mono/gac/nunit.core.extensions
+%_prefix/lib/mono/1.0/nunit.core.extensions.dll
+%_prefix/lib/mono/2.0/nunit.core.extensions.dll
+%_prefix/lib/mono/gac/nunit.core.interfaces
+%_prefix/lib/mono/1.0/nunit.core.interfaces.dll
+%_prefix/lib/mono/2.0/nunit.core.interfaces.dll
 %_prefix/lib/mono/gac/nunit.framework
 %_prefix/lib/mono/1.0/nunit.framework.dll
 %_prefix/lib/mono/2.0/nunit.framework.dll
+%_prefix/lib/mono/gac/nunit.framework.extensions
+%_prefix/lib/mono/1.0/nunit.framework.extensions.dll
+%_prefix/lib/mono/2.0/nunit.framework.extensions.dll
 %_prefix/lib/mono/gac/nunit.mocks
 %_prefix/lib/mono/1.0/nunit.mocks.dll
 %_prefix/lib/mono/2.0/nunit.mocks.dll
+%_prefix/lib/mono/gac/nunit-console-runner
+%_prefix/lib/mono/1.0/nunit-console-runner.dll
+%_prefix/lib/mono/2.0/nunit-console-runner.dll
+
 %_libdir/pkgconfig/mono-nunit.pc
 
 %package -n mono-devel
@@ -911,9 +934,7 @@ fi
 %verify(not size md5 mtime) %_libdir/libmono.la
 # exes
 %_prefix/lib/mono/1.0/makecert.exe*
-%_prefix/lib/mono/1.0/mono-api-info.exe*
 %_prefix/lib/mono/2.0/mono-api-info.exe*
-%_prefix/lib/mono/1.0/mono-api-diff.exe*
 %_prefix/lib/mono/1.0/al.exe*
 %_prefix/lib/mono/2.0/al.exe*
 %_prefix/lib/mono/1.0/caspol.exe*
@@ -999,10 +1020,7 @@ fi
 %_bindir/monop
 %_bindir/monop1
 %_bindir/monop2
-%_bindir/mono-api-diff
 %_bindir/mono-api-info
-%_bindir/mono-api-info1
-%_bindir/mono-api-info2
 %_bindir/mono-cil-strip
 %_bindir/mono-find-provides
 %_bindir/mono-find-requires
@@ -1046,7 +1064,6 @@ fi
 %_libdir/pkgconfig/mono-options.pc
 %_libdir/pkgconfig/mono-lineeditor.pc
 %_libdir/pkgconfig/cecil.pc
-%_mandir/man1/monoburg.*
 %_prefix/share/mono-1.0/mono/cil/cil-opcodes.xml
 # dirs
 %dir %_prefix/share/mono-1.0
@@ -1213,7 +1230,6 @@ rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/cilc*
 rm $RPM_BUILD_ROOT%_bindir/jay
 rm -R $RPM_BUILD_ROOT%_datadir/jay
 rm $RPM_BUILD_ROOT%_mandir/man1/jay.1
-rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/CorCompare.exe
 rm $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/browsercaps-updater.exe*
 # New files to delete in 1.1.9.2
 rm -f $RPM_BUILD_ROOT%_libdir/libMonoSupportW.a
@@ -1225,7 +1241,9 @@ rm -f $RPM_BUILD_ROOT%_bindir/mbas
 # 1.2.4 changes
 rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/culevel.exe*
 # Post 1.2.5
-rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/transform.exe
+rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/2.0/transform.exe
+# Post 2.2
+rm -f $RPM_BUILD_ROOT%_mandir/man1/monoburg.*
 # brp-compress doesn't search _mandir
 # so we cheat it
 ln -s . %buildroot%_prefix/usr
