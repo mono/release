@@ -40,19 +40,19 @@ namespace MoonlightStatus
 			Console.WriteLine("using url = " + url);
 			ArrayList sites = null;
 			DateTime now = DateTime.Now;
-			//if (GetLastUpdateTime().AddMinutes(30) > now) // If cache is newer than 30 mins, use it.
-			//{
-			//	Console.WriteLine("Reading data from cache");
-			//	sites = GetDataFromFile();
-			//}
-			//else
-			//{
+			if (GetLastUpdateTime(version).AddMinutes(30) > now) // If cache is newer than 30 mins, use it.
+			{
+				Console.WriteLine("Reading data from cache");
+				sites = GetDataFromFile(version);
+			}
+			else
+			{
 				Console.WriteLine("Reading data from url");
-				//UpdateTimeStamp(now);
+				UpdateTimeStamp(now,version);
 				sites = MoonParser.ParseURL(url);
-				//WriteDataToFile(sites);
+				WriteDataToFile(sites,version);
 				
-			//}
+			}
 			
 
             string html = getHeader();
@@ -68,14 +68,15 @@ namespace MoonlightStatus
 
         }
 
-		private DateTime GetLastUpdateTime()
+		private DateTime GetLastUpdateTime(string version)
 		{
 			DateTime lastupdate = DateTime.MinValue;
+			string f = timeStampFile + version;
 			
-			if (File.Exists(timeStampFile))
+			if (File.Exists(f))
 			{
 				Console.WriteLine("Found timestamp file");
-				StreamReader reader = new StreamReader(timeStampFile);
+				StreamReader reader = new StreamReader(f);
 				string line = reader.ReadLine();
 				reader.Close();
 				line = line.Trim();
@@ -90,10 +91,11 @@ namespace MoonlightStatus
 		}
 
 		//This method reads serialized data (an ArrayList) from file. Data is not cached as text!
-		private ArrayList GetDataFromFile()
+		private ArrayList GetDataFromFile(string version)
 		{
+			string f = cacheFile + version;
 			ArrayList list = null;
-			if (File.Exists(cacheFile))
+			if (File.Exists(f))
 			{
 			
 				FileStream reader = new FileStream(cacheFile,FileMode.Open,FileAccess.Read);
@@ -104,9 +106,9 @@ namespace MoonlightStatus
 			else
 			{
 				//get data from url
-				UpdateTimeStamp(DateTime.Now);
+				UpdateTimeStamp(DateTime.Now,version);
 				list = MoonParser.ParseURL(url);
-				WriteDataToFile(list);
+				WriteDataToFile(list,version);
 			}
 			
 			return list;
@@ -114,11 +116,12 @@ namespace MoonlightStatus
 		}
 		
 		//This method serializes the ArrayList to file. Data is not cached as text!
-		private void WriteDataToFile(ArrayList list)
+		private void WriteDataToFile(ArrayList list,string version)
 		{
+			string f = cacheFile + version;
 			try
 			{
-				FileStream writer = new FileStream(cacheFile,FileMode.Create,FileAccess.Write,FileShare.None);
+				FileStream writer = new FileStream(f,FileMode.Create,FileAccess.Write,FileShare.None);
 				IFormatter formatter = new BinaryFormatter();
 				formatter.Serialize(writer,list);
 				writer.Close();
@@ -129,12 +132,12 @@ namespace MoonlightStatus
 			}
 			
 		}
-		private void UpdateTimeStamp(DateTime time)
+		private void UpdateTimeStamp(DateTime time,string version)
 		{
 			try
 			{
-				
-				StreamWriter writer = new StreamWriter(timeStampFile);
+				string f = timeStampFile + version;
+				StreamWriter writer = new StreamWriter(f);
 				writer.WriteLine(time.Ticks);
 				writer.Close();
 			}
