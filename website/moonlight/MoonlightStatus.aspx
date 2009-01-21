@@ -3,7 +3,14 @@
 
 <html>
 <head>
-<title>Moonlight 1.0 Test Sites</title>
+<title>
+<% if (Request["v"] == "2") { %>
+	Moonlight 2.0 test sites
+<% } else { %>
+	Moonlight 1.0 test sites
+<% } %>
+</title>
+
     <link type="text/css" rel="stylesheet" href="style.css" />
 <link type="text/css" rel="stylesheet" href="http://mono-project.com/skins/monoproject/main.css"/>
     <link type="text/css" rel="stylesheet" href="http://mono-project.com/skins/monoproject/niftycorners.css"/>
@@ -32,7 +39,13 @@
             </div>
             <div id="column-content">
                 <div id="content">
-               <h1 class="firstHeading">Moonlight 1.0 TestSites</h1>	
+               <h1 class="firstHeading">
+               <% if (Request["v"] == "2") { %>
+					Moonlight 2.0 test sites
+				<% } else { %>
+					Moonlight 1.0 test sites
+				<% } %>
+				</h1>
                                         <div id="bodyContent">
                                 <!--  BEGIN CONTENT -->
 

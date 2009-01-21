@@ -21,26 +21,38 @@ namespace MoonlightStatus
 	{
 		static string timeStampFile = "MoonlightStatus_timestamp";
 		static string cacheFile = "MoonlightStatus_cache";
-		static string url = "http://anonsvn.mono-project.com/source/trunk/moon/demo-status.txt";
+		static string url1 = "http://anonsvn.mono-project.com/source/branches/moon-1-0/demo-status.txt";
+		static string url2 = "http://anonsvn.mono-project.com/source/trunk/moon/demo-status.txt";
+		string url = string.Empty;
 		//static string url = "http://rhowell.provo.novell.com/demo-status.txt";
+		string version = "1.0";
 
         protected void Page_Load(object sender, EventArgs e)
         {
+			url = url1;
+			
+			if (Request["v"] == "2") {
+				url = url2;
+				version = "2.0";
+				Console.WriteLine("Using 2.0");
+			}
+
+			Console.WriteLine("using url = " + url);
 			ArrayList sites = null;
 			DateTime now = DateTime.Now;
-			if (GetLastUpdateTime().AddMinutes(30) > now) // If cache is newer than 30 mins, use it.
-			{
-				Console.WriteLine("Reading data from cache");
-				sites = GetDataFromFile();
-			}
-			else
-			{
+			//if (GetLastUpdateTime().AddMinutes(30) > now) // If cache is newer than 30 mins, use it.
+			//{
+			//	Console.WriteLine("Reading data from cache");
+			//	sites = GetDataFromFile();
+			//}
+			//else
+			//{
 				Console.WriteLine("Reading data from url");
-				UpdateTimeStamp(now);
+				//UpdateTimeStamp(now);
 				sites = MoonParser.ParseURL(url);
-				WriteDataToFile(sites);
+				//WriteDataToFile(sites);
 				
-			}
+			//}
 			
 
             string html = getHeader();
