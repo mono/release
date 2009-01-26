@@ -164,24 +164,25 @@ archive_version = utils.get_dict_var('archive_version', bundle_obj.info)
 os.chdir('..')
 
 installer_dirs = []
-for dir in	[
-		'windows-installer/Output/[[version]]/windows-installer',
-		'macosx/output/[[version]]/macos-10-universal',
-		'sunos/output/[[version]]/sunos-8-sparc',
-		]:
+if not skip_installers:
+	for dir in	[
+			'windows-installer/Output/[[version]]/windows-installer',
+			'macosx/output/[[version]]/macos-10-universal',
+			'md-macosx/output/[[version]]/md-macos-10',
+			'sunos/output/[[version]]/sunos-8-sparc',
+			]:
 
-	if skip_installers: continue
-	try:
-		candidates = glob.glob(dir.replace('[[version]]', archive_version) + os.sep + "*")
-		latest = utils.version_sort(candidates).pop()
-		installer_dirs.append(latest)
-		cwd = os.getcwd()
+			try:
+			candidates = glob.glob(dir.replace('[[version]]', archive_version) + os.sep + "*")
+			latest = utils.version_sort(candidates).pop()
+			installer_dirs.append(latest)
+			cwd = os.getcwd()
+	
+			splitter = os.sep + archive_version + os.sep
+			(prefix, sync_dir) = latest.split(splitter)
+			os.chdir(prefix)
 
-		splitter = os.sep + archive_version + os.sep
-		(prefix, sync_dir) = latest.split(splitter)
-		os.chdir(prefix)
-
-		status, output = utils.launch_process('rsync -avzR -e ssh %s %s/archive' % (archive_version + os.sep + sync_dir, dest))
+			status, output = utils.launch_process('rsync -avzR -e ssh %s %s/archive' % (archive_version + os.sep + sync_dir, dest))
 
 		os.chdir(cwd)
 	except:
