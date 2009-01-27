@@ -32,3 +32,7 @@ if [ -d /Library/Frameworks/Mono.framework/Versions/Current ]; then
     mkdir -p pango
     pango-querymodules >  pango/pango.modules
 fi
+
+# Mono framework should be owned by root
+chown -R root:admin /Library/Frameworks/Mono.framework
+
