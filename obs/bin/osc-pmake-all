@@ -19,14 +19,19 @@
 JOB_SLOTS=$(cat /proc/cpuinfo | grep processor | wc -l)
 export JOB_SLOTS
 declare -a JOBS
+
+
 echo
 echo_in_box "Starting multi-build engine with $JOB_SLOTS slots"
 echo 
 
-# This is for osc
+# If build root is defined in .oscrc, grab it's base dir, otherwise, set it to /var/tmp
+# We just use this BUILD_ROOT variable to locate logs, but not to set build environments.
 BUILD_ROOT=$([ -f $HOME/.oscrc ] && cat $HOME/.oscrc  | grep "^build-root" | sed -e 's/.*=[[:space:]]*\(.*\)\/build-.*$/\1/g')
 if [ -z "$BUILD_ROOT" ];
 then
+   # This is the default location of the build root.  It it wasn't set in
+   # the users .oscrc file, then this is were the logs are located.
    BUILD_ROOT=/var/tmp
 fi
 export BUILD_ROOT
@@ -58,6 +63,8 @@ export E_FILE_EXISTS E_CANNOT_CREATE_TMP_DIR E_MISSING_SPEC
 # This script expects to work with one spec file that has
 # the name of the project (should be the current direcory's
 # name followed by '.spec').
+# FIXME: There should also be a command line option that should override
+# this section.
 SPEC_FILE=$(ls *\.spec | tail -1) # Hopefully, there's only one spec file.
 export SPEC_FILE
 if [ ! -f ${SPEC_FILE} ]
@@ -85,21 +92,24 @@ touch $FAILED_LOG
 # Put the strings into an array
 MY_FIFO=$TMP_DIR/myfifo # Make fifo
 [ ! -p $MY_FIFO ] && mkfifo $MY_FIFO
-exec 42<> $MY_FIFO      # Open fifo for read/write in this shell on file descriptor #42
+exec 42<> $MY_FIFO      # Open fifo for read/write in this shell on arbitrarily chosen file descriptor #42
 osc repos 2>&1 | grep  "i586\|x86_64" > $MY_FIFO
 COUNT=0
+# Insert jobs listed on fd 42 into an array called JOBS
 while read -u42 -t1 I   # Read from fd 42
 do 
    JOBS[$COUNT]="$I"
    let COUNT++
 done
+export COUNT
 42<&-; 42>&- # Close fd 42
 
 build_package ()
-{  # takes two args:
+{  # takes three args:
    #  Arg 1: lock file name
    #  Arg 2: job string consisting of distro and arch for a
-   #  package to be built on (also used for log file name)
+   #         package to be built on (also used for log file name)
+   #  Arg 3: The number of this job. i.e 5 would be the 5th job of $COUNT jobs.
 
    # Setup/check lock file
    LOCK_FILE="$1"
@@ -118,17 +128,17 @@ build_package ()
    [ -f "$BUILD_LOG" ] && rm -rf "$BUILD_LOG"
 
    # Start job
-   echo_in_blue "Starting job: $MYDIST on slot $SLOT"
+   echo_in_blue "Starting job $3/${COUNT}: $MYDIST on slot $SLOT"
    echo "Executing the following command:"  | tee -a "$BUILD_LOG"
-   echo "osc build --no-verify ${MYDIST} ${SPEC_FILE}" | tee -a "$BUILD_LOG" 
+   echo "osc build --nochecks --no-verify ${MYDIST} ${SPEC_FILE}" | tee -a "$BUILD_LOG" 
    echo "Log file: ${BUILD_LOG}"
-   osc build --no-verify ${MYDIST} ${SPEC_FILE} > ${BUILD_LOG} 2>&1
+   osc build --nochecks --no-verify ${MYDIST} ${SPEC_FILE} > ${BUILD_LOG} 2>&1
    if ! (tail -50 ${BUILD_LOG} | grep -E "$BUILD_ROOT/build-root.*/usr/src/(redhat|packages)/.*rpm")
    then
       echo "${MYDIST} build failed, check ${BUILD_LOG}" >> ${FAILED_LOG}
-      echo_in_red "Finishing job: $MYDIST on slot $SLOT: FAILED" 
+      echo_in_red "Finishing job $3/${COUNT}: $MYDIST on slot $SLOT: FAILED" 
    else
-      echo_in_green "Finishing job: $MYDIST on slot $SLOT"
+      echo_in_green "Finishing job $3/${COUNT}: $MYDIST on slot $SLOT"
    fi
 
    # Clean up and exit
@@ -149,7 +159,7 @@ do
          # while loop otherwise, check the next slot
          if [ ! -f "${LOCK_FILE_PREFIX}${I}" ]
          then
-            build_package "${LOCK_FILE_PREFIX}${I}" "${JOBS[$JOBS_INDEX]}" &
+            build_package "${LOCK_FILE_PREFIX}${I}" "${JOBS[$JOBS_INDEX]}" $(( $JOBS_INDEX + 1 )) &
             sleep 1
             break 2
          fi

@@ -49,9 +49,9 @@ do
    echo 
    echo "#############################################"
    echo "Executing the following command:"
-   echo "osc build --no-verify ${MYDIST} ${SPEC_FILE}"
+   echo "osc build --nochecks --no-verify ${MYDIST} ${SPEC_FILE}"
    echo "Log file: ${BUILD_LOG}"
-   osc build --no-verify ${I} ${SPEC_FILE} > ${BUILD_LOG} 2>&1
+   osc build --nochecks --no-verify ${I} ${SPEC_FILE} > ${BUILD_LOG} 2>&1
    if ! (tail -50 ${BUILD_LOG} | grep -E "$BUILD_ROOT/build-root.*/usr/src/(redhat|packages)/.*rpm"); then
       echo "${MYDIST} build failed, check ${BUILD_LOG}" >> ${FAILED_LOG}
       echo_in_red "${MYDIST} build failed"
