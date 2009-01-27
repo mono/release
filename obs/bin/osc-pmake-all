@@ -26,7 +26,7 @@ echo_in_box "Starting multi-build engine with $JOB_SLOTS slots"
 echo 
 
 # If build root is defined in .oscrc, grab it's base dir, otherwise, set it to /var/tmp
-# We just use this BUILD_ROOT variable to locate logs, but not to set build environments.
+# We just use this BUILD_ROOT variable to locate built RPMs, but not to set build environments.
 BUILD_ROOT=$([ -f $HOME/.oscrc ] && cat $HOME/.oscrc  | grep "^build-root" | sed -e 's/.*=[[:space:]]*\(.*\)\/build-.*$/\1/g')
 if [ -z "$BUILD_ROOT" ];
 then
