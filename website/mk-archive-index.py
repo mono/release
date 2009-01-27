@@ -62,33 +62,46 @@ distro_sources = "<p> <a href='../sources-%s'>Sources</a> </p>" % bundle_conf.in
 #### Installers ####
 
 installer_info = [
-	{ 'dir_name': 'windows-installer', 'name': 'Windows Installer',       'ext': 'exe'},
-	{ 'dir_name': 'macos-10-universal','name': 'Mac OSX Installer (universal)', 'ext': 'dmg'},
-	{ 'dir_name': 'sunos-8-sparc',     'name': 'Solaris 8 SPARC Package', 'ext': 'pkg.gz'}
+	{ 'dir_name': 'windows-installer', 'name': 'Windows Installer',                         'ext': 'exe'},
+	{ 'dir_name': 'macos-10-universal','name': 'Mac OSX Installer (universal)',             'ext': 'dmg'},
+	{ 'dir_name': 'md-macos-10',       'name': 'MonoDevelop for OSX Installer (universal)', 'ext': 'dmg'},
+	{ 'dir_name': 'sunos-8-sparc',     'name': 'Solaris 8 SPARC Package',                   'ext': 'pkg.gz'}
 ]
 
 installers = ""
 distro_installers = ""
-for installer_map in installer_info:
 
-	if skip_installers: continue
+if not skip_installers:
+	for installer_map in installer_info:
+		print "Writing %s to index page" % installer_map['dir_name']
 
-	my_dir = os.path.join(output_dir, 'archive', version, installer_map['dir_name'])
+	#if skip_installers: continue
+		my_dir = os.path.join(output_dir, 'archive', version, installer_map['dir_name'])
+
+		if installer_map['dir_name'] == "md-macos-10":
+			my_dir = os.path.join(output_dir,'monodevelop') 
 
 	# Skip if the installer doesn't exist for this release
-	if not os.path.exists(my_dir):
-		continue
+		if not os.path.exists(my_dir):
+			print "Directory '%s' doens't exist" % my_dir			
+			continue
 
-	revision = utils.get_latest_ver(my_dir)
-	installer_dir = my_dir + os.sep + revision
-	ref_dir = "../%s/%s" % (installer_map['dir_name'], revision)
-	ref_dir2 = "../archive/%s/%s/%s" % (version, installer_map['dir_name'], revision)
+		revision = utils.get_latest_ver(my_dir)
+		installer_dir = my_dir + os.sep + revision
+		ref_dir = "../%s/%s" % (installer_map['dir_name'], revision)
+		ref_dir2 = "../archive/%s/%s/%s" % (version, installer_map['dir_name'], revision)
 
-	filename = os.path.basename(glob.glob(installer_dir + os.sep + '*.%s' % installer_map['ext']).pop())
-	sum_filename = os.path.basename(glob.glob(installer_dir + os.sep + '*.md5').pop())
+		if installer_map['dir_name'] == 'md-macos-10':
+			installer_dir = my_dir
+			ref_dir = "../../preview/monodevelop"
+			ref_dir2= "../../preview/monodevelop"
+			revision = ''
 
-	installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>\n" % (installer_map['name'], ref_dir, filename, filename, ref_dir, sum_filename)
-	distro_installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>\n" % (installer_map['name'], ref_dir2, filename, filename, ref_dir2, sum_filename)
+		filename = os.path.basename(glob.glob(installer_dir + os.sep + '*.%s' % installer_map['ext']).pop())
+		sum_filename = os.path.basename(glob.glob(installer_dir + os.sep + '*.md5').pop())
+
+		installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>\n" % (installer_map['name'], ref_dir, filename, filename, ref_dir, sum_filename)
+		distro_installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>\n" % (installer_map['name'], ref_dir2, filename, filename, ref_dir2, sum_filename)
 
 
 #### Packages ####

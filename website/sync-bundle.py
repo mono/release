@@ -160,10 +160,11 @@ for pack in build.get_packages():
 
 # Collect installers (grab version defined in the bundle)
 archive_version = utils.get_dict_var('archive_version', bundle_obj.info)
+md_version = utils.get_dict_var('md_version', bundle_obj.info)
 
 os.chdir('..')
 
-installer_dirs = []
+#installer_dirs = []
 if not skip_installers:
 	for dir in	[
 			'windows-installer/Output/[[version]]/windows-installer',
@@ -172,22 +173,43 @@ if not skip_installers:
 			'sunos/output/[[version]]/sunos-8-sparc',
 			]:
 
-			try:
-			candidates = glob.glob(dir.replace('[[version]]', archive_version) + os.sep + "*")
+	#if skip_installers: continue
+		try:
+		
+			_version = archive_version
+			if dir.find('md') != -1:
+				_version = md_version
+
+			candidates = glob.glob(dir.replace('[[version]]', _version) + os.sep + "*")
 			latest = utils.version_sort(candidates).pop()
-			installer_dirs.append(latest)
+			#installer_dirs.append(latest)
 			cwd = os.getcwd()
-	
-			splitter = os.sep + archive_version + os.sep
+
+			splitter = os.sep + _version + os.sep
 			(prefix, sync_dir) = latest.split(splitter)
 			os.chdir(prefix)
 
-			status, output = utils.launch_process('rsync -avzR -e ssh %s %s/archive' % (archive_version + os.sep + sync_dir, dest))
+			
+			if dir.find('md') != -1:
+				cwd2 = os.getcwd()
+				os.chdir(os.path.join(md_version,sync_dir))
+				#print os.getcwd()
+				cmd = 'rsync -avzR -e ssh . %s/monodevelop' % (dest)
+				#print cmd
+				status, output = utils.launch_process(cmd)
+				os.chdir(cwd2)
+			else:
+				print "Syncing: %s" % (_version + os.sep + sync_dir)
+				cmd ='rsync -avzR -e ssh %s %s/archive' % (_version + os.sep + sync_dir, dest)
+				#print cmd
+				status, output = utils.launch_process(cmd)
 
-		os.chdir(cwd)
-	except:
-		print "Problem syncing: " + dir
-		print "Skipping..."
+			os.chdir(cwd)
+		except Exception, e:
+			print "Problem syncing: " + dir
+			print "\tarchive_version = %s" % _version
+			print "Exception = " +  str(e)
+			print "Skipping..."
 
 # mirror OBS repos
 url_prefix = 'download-' + bundle_obj.info['bundle_urlname']
