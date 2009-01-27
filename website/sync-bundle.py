@@ -162,6 +162,9 @@ for pack in build.get_packages():
 archive_version = utils.get_dict_var('archive_version', bundle_obj.info)
 md_version = utils.get_dict_var('md_version', bundle_obj.info)
 
+print "md_version = " + md_version
+if md_version == "":
+	sys.exit(1)
 os.chdir('..')
 
 #installer_dirs = []
@@ -177,10 +180,13 @@ if not skip_installers:
 		try:
 		
 			_version = archive_version
+			topdir = "archive"
 			if dir.find('md') != -1:
 				_version = md_version
+				topdir = "monodevelop"
 
-			candidates = glob.glob(dir.replace('[[version]]', _version) + os.sep + "*")
+			_dir = os.path.join(dir.replace('[[version]]', _version),'*')
+			candidates = glob.glob(_dir)
 			latest = utils.version_sort(candidates).pop()
 			#installer_dirs.append(latest)
 			cwd = os.getcwd()
@@ -188,28 +194,18 @@ if not skip_installers:
 			splitter = os.sep + _version + os.sep
 			(prefix, sync_dir) = latest.split(splitter)
 			os.chdir(prefix)
-
 			
-			if dir.find('md') != -1:
-				cwd2 = os.getcwd()
-				os.chdir(os.path.join(md_version,sync_dir))
-				#print os.getcwd()
-				cmd = 'rsync -avzR -e ssh . %s/monodevelop' % (dest)
-				#print cmd
-				status, output = utils.launch_process(cmd)
-				os.chdir(cwd2)
-			else:
-				print "Syncing: %s" % (_version + os.sep + sync_dir)
-				cmd ='rsync -avzR -e ssh %s %s/archive' % (_version + os.sep + sync_dir, dest)
-				#print cmd
-				status, output = utils.launch_process(cmd)
+			print "Syncing: %s" % os.path.join(_version,sync_dir)
+			cmd ='rsync -avzR -e ssh %s %s/%s' % (os.path.join(_version,sync_dir), dest, topdir)
+			#print cmd
+			status, output = utils.launch_process(cmd)
 
 			os.chdir(cwd)
 		except Exception, e:
-			print "Problem syncing: " + dir
+			print "******* ERROR syncing: " + dir
 			print "\tarchive_version = %s" % _version
-			print "Exception = " +  str(e)
-			print "Skipping..."
+			print "\tException = " +  str(e)
+			print "\tSkipping..."
 
 # mirror OBS repos
 url_prefix = 'download-' + bundle_obj.info['bundle_urlname']

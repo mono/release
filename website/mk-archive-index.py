@@ -50,6 +50,7 @@ distutils.dir_util.mkpath(os.path.dirname(out_file))
 distutils.dir_util.mkpath(os.path.dirname(distro_out_file))
 
 version = bundle_conf.info['archive_version']
+md_version = bundle_conf.info['md_version']
 
 bundle_short_desc = bundle_conf.info['bundle_urlname']
 if bundle_conf.info.has_key('bundle_short_desc'):
@@ -74,31 +75,37 @@ distro_installers = ""
 if not skip_installers:
 	for installer_map in installer_info:
 		print "Writing %s to index page" % installer_map['dir_name']
-
-	#if skip_installers: continue
-		my_dir = os.path.join(output_dir, 'archive', version, installer_map['dir_name'])
+		topdir = 'archive'
+		_version = version
 
 		if installer_map['dir_name'] == "md-macos-10":
-			my_dir = os.path.join(output_dir,'monodevelop') 
+			topdir = 'monodevelop'
+			_version = md_version
 
-	# Skip if the installer doesn't exist for this release
+		my_dir = os.path.join(output_dir, topdir, _version, installer_map['dir_name'])
+
+		# Skip if the installer doesn't exist for this release
 		if not os.path.exists(my_dir):
 			print "Directory '%s' doens't exist" % my_dir			
 			continue
 
 		revision = utils.get_latest_ver(my_dir)
 		installer_dir = my_dir + os.sep + revision
-		ref_dir = "../%s/%s" % (installer_map['dir_name'], revision)
-		ref_dir2 = "../archive/%s/%s/%s" % (version, installer_map['dir_name'], revision)
+		ref_dir = os.path.join("..",installer_map['dir_name'], revision)
+		ref_dir2 = os.path.join("..", topdir, _version, installer_map['dir_name'], revision)
 
-		if installer_map['dir_name'] == 'md-macos-10':
-			installer_dir = my_dir
-			ref_dir = "../../preview/monodevelop"
-			ref_dir2= "../../preview/monodevelop"
-			revision = ''
+
+		#tab = 20
+		#print "installer_dir = ".rjust(tab) + installer_dir
+		#print "revision = ".rjust(tab) + revision
+		#print "ref_dir = ".rjust(tab) + ref_dir
+		#print "ref_dir2 = ".rjust(tab) + ref_dir2
 
 		filename = os.path.basename(glob.glob(installer_dir + os.sep + '*.%s' % installer_map['ext']).pop())
 		sum_filename = os.path.basename(glob.glob(installer_dir + os.sep + '*.md5').pop())
+
+		#print "filename = ".rjust(tab) + filename
+		#print "sum_filename = ".rjust(tab) + sum_filename
 
 		installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>\n" % (installer_map['name'], ref_dir, filename, filename, ref_dir, sum_filename)
 		distro_installers += "<p>%s: <a href='%s/%s'>%s</a> [<a href='%s/%s'>MD5SUM</a>] </p>\n" % (installer_map['name'], ref_dir2, filename, filename, ref_dir2, sum_filename)
