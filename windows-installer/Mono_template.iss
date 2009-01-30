@@ -50,7 +50,7 @@ Name: xsp\xsp2_shell; Description: XSP 2.0 Shell Integration; Types: full custom
 [Tasks]
 
 [Files]
-Source: build\mono\*; DestDir: {app}; Components: mono; Flags: ignoreversion recursesubdirs
+Source: build\mono\*; Excludes: "lib\mono.lib"; DestDir: {app}; Components: mono; Flags: ignoreversion recursesubdirs
 Source: build\gdiplus.dll; DestDir: {app}\bin; Components: mono; OnlyBelowVersion: 0,5.01
 Source: build\xsp\*; DestDir: {app}; Components: xsp; Flags: ignoreversion recursesubdirs
 Source: build\gtk\*; DestDir: {app}; Components: gtk; Flags: ignoreversion recursesubdirs
