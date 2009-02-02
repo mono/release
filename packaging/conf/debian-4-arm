@@ -1,5 +1,7 @@
 username=builder
 hostname=arm-linux-1.mono.lab.novell.com
 
+env="DISTCC_HOSTS=151.155.155.168,CCACHE_PREFIX=distcc,CC=ccache arm-linux-gnu-gcc,with_mcs_docs=no"
+
 USE_ZIP_PKG=1
 
