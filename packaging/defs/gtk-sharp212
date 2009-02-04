@@ -10,9 +10,10 @@ BUILD_HOSTS=(
 	suse-103-i586
 	suse-103-ppc
 	suse-103-x86_64
-        suse-110-i586
-        suse-110-ppc
-        suse-110-x86_64
+	suse-110-i586
+	suse-110-ppc
+	suse-110-x86_64
+	win-4-i386
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -25,15 +26,12 @@ MONO_DEPS=(
 	mono
 )
 
-#MKTARBALL_HOST="suse-103-x86_64"
-MKTARBALL_HOST="suse-110-x86_64"
-
 get_destroot () {
 	DEST_ROOT=$DISTRO
 }
 
 HEAD_PATH=(
-	trunk/gtk-sharp
+	branches/gtk-sharp-2-12-branch
 )
 RELEASE_PATH=(
         tags/gtk-sharp/[[versiondot]]
@@ -133,3 +131,147 @@ macos_10_ZIP_BUILD () {
 
 }
 
+win_4_i386_ZIP_RUNTIME_DEPS=(
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/expat-2.0.0.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/fontconfig-2.4.2-tml-20071015.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/fontconfig-dev-2.4.2-tml-20071015.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/freetype-2.3.6.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/freetype-dev-2.3.6.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libjpeg-6b-4.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libpng-dev_1.2.32-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libpng_1.2.32-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libtiff-3.8.2.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libtiff-dev-3.8.2.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/openssl-0.9.7c.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/regex-spencer-3.8.zip
+
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gail/1.22/gail-1.22.0.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gail/1.22/gail-dev-1.22.0.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-icon-theme/2.24/gnome-icon-theme-dev_2.24.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-icon-theme/2.24/gnome-icon-theme_2.24.0-1_win32.zip
+)
+
+win_4_i386_ZIP_DEPS=(
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/cairo-dev_1.8.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/cairo_1.8.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libxml2-2.6.27.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libxml2-dev-2.6.27.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/popt-1.10.2-tml-20050828.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/popt-dev-1.10.2-tml-20050828.zip
+
+	http://ftp.gnome.org/pub/gnome/binaries/win32/GConf/2.22/GConf-2.22.0.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/GConf/2.22/GConf-dev-2.22.0.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/ORBit2/2.14/ORBit2-dev_2.14.16-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/ORBit2/2.14/ORBit2_2.14.16-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.24/atk-dev_1.24.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.24/atk_1.24.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-vfs/2.24/gnome-vfs-dev_2.24.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-vfs/2.24/gnome-vfs_2.24.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.14/gtk+-dev_2.14.5-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.14/gtk+_2.14.5-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libIDL/0.8/libIDL-dev_0.8.11-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libIDL/0.8/libIDL_0.8.11-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libart_lgpl/2.3/libart_lgpl-2.3.20.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libart_lgpl/2.3/libart_lgpl-dev-2.3.20.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libbonobo/2.24/libbonobo-dev_2.24.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libbonobo/2.24/libbonobo_2.24.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libbonoboui/2.24/libbonoboui-dev_2.24.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libbonoboui/2.24/libbonoboui_2.24.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libgsf/1.14/libgsf-1.14.8.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libgsf/1.14/libgsf-dev-1.14.8.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libgsf/1.14/libgsf-gnome-1.14.8.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/libgsf/1.14/libgsf-gnome-dev-1.14.8.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/librsvg/2.22/librsvg-dev_2.22.3-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/librsvg/2.22/librsvg_2.22.3-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/librsvg/2.22/svg-gdk-pixbuf-loader_2.22.3-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/librsvg/2.22/svg-gtk-engine_2.22.3-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.22/pango-dev_1.22.2-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.22/pango_1.22.2-1_win32.zip
+)
+
+win_4_i386_ZIP_BUILD () {
+        # Make sure it's not dependent on cygwin
+        # Fixed at least in 2.8.2
+        #export CC="gcc -mno-cygwin"
+
+        CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322`
+        CSC=`cygpath -a $CSC`
+
+        # Add MS SDK to path for ilasm and ildasm
+        SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin"`
+        SDK=`cygpath -a $SDK`
+        export PATH=$SDK:$CSC:$PATH
+
+        # Since we're using MS compiler, fake like mono's not installed
+        mkdir -p /tmp/backup
+        mv /tmp/build_deps/lib/pkgconfig/mono.pc /tmp/backup
+
+        # Build fails on gnome-vfs tests, don't build those
+        # Actually, do sed below for sample/Makefile
+        #mv /tmp/build_deps/lib/pkgconfig/gnome-vfs-* /tmp/backup/
+
+        # TODO: Paco used to alter configure.in to change the dep on libart to 2.3.14
+        # Something like this:
+        #  Paco said people were using rsvg-sharp compiled in this manner with no problems... should probably investigate this
+        # Don't need this anymore since we have something newer than 2.3.16
+        #sed -i "s/2.3.16/2.3.14/" configure
+
+        # Patch configure to check for gtkhtml, even if gnome# isn't enabled
+        #if test "x$enable_gnome" = "xyes"; then
+        #if test "xyes" = "xyes"; then
+        # Can't do this... gtkhtml depends on gnome
+
+        ./configure --prefix=/tmp/install
+
+        # let's just skip the gnomevfs sample instead of disabling gnome-vfs
+        # Unnecessary in 2.8.1... doh, still another problem: Mono.GetOptions isn't on mssdk
+        sed -i "s/gnomevfs valtest/valtest/" sample/Makefile
+
+        # Don't have cyg in dll files
+        # Not needed (in 2.8.2 at least)
+        #sed -i "s/\/cyg\//\/\//" libtool
+
+        # Clean up the MS gac of gtk-sharp
+        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp
+        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet
+
+        make || exit 1
+        make install || exit 1
+
+        # Install the samples
+        mkdir -p /tmp/install/samples/gtk-sharp-2.0
+        cp -Rf sample/* /tmp/install/samples/gtk-sharp-2.0
+
+        # Move files out of MS gac and install them into the /tmp/install's gac
+        #mkdir -p /tmp/install/lib/mono/gac
+        #mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/install/lib/mono/gac
+
+        # Move them to a temp dir...
+        rm -Rf /tmp/temp_install
+        mkdir -p /tmp/temp_install
+        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/temp_install
+        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet /tmp/temp_install
+
+        # TODO: Should I be using mono's gacutil instead to install these files?  yes!
+
+        # Do some path manipulation so that "." is removed from the path.  This allows execdir to work
+        OLD_PATH=$PATH
+        export PATH=/tmp/build_deps/bin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS
+        find /tmp/temp_install -name "*.dll" -execdir /tmp/build_deps/bin/gacutil /i {} /f /package gtk-sharp-2.0 /gacdir `cygpath -m /tmp/install/lib` \;
+        export PATH=$OLD_PATH
+
+        # Remove some uneeded files
+        #  exit on the first failure, usually means windows find was used instead of cygwin's find
+        find /tmp/install -name "*\.a" | xargs rm -f || exit 1
+        find /tmp/install -name "*\.la" | xargs rm -f
+        find /tmp/install -name "__*\.ini" | xargs rm -f
+
+        ## Don't have to worry about removing the .config files because this is built with ms sdk.  Once we build with mono we'll have to remove them
+        ## We need to make sure we keep the policy .config files (but not the normal .config files)
+        #  The 2.8.2 build doesn't install .config files for non-policy assemblies... this should never be needed
+        #find /tmp/install -name "*\.config" | xargs rm -f
+
+        # Windows convention to have .dll files in the bin dir instead of lib
+        mv /tmp/install/lib/*.dll /tmp/install/bin
+
+}
