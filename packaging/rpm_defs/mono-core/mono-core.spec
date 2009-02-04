@@ -1004,7 +1004,6 @@ fi
 %_bindir/dtd2rng
 %_bindir/genxs
 %_bindir/genxs1
-%_bindir/genxs2
 %_bindir/httpcfg
 %_bindir/ilasm
 %_bindir/ilasm1
