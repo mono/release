@@ -1,9 +1,9 @@
 Name:           boo
-Version:        0.8.2.2960
+Version:        0.9.0.3203
 Release:        1
 License:        X11/MIT
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Source0:        boo-%{version}-src.zip
+Source0:        boo-%{version}-2-src.zip
 Patch1:         boo-pkgconfig_path_fix.patch
 Group:          Development/Languages/Other
 Summary:        A CLI Scripting Language
@@ -131,6 +131,7 @@ rm -rf "$RPM_BUILD_ROOT"
 %{_prefix}/lib/mono/gac/Boo.Lang.Parser
 %{_prefix}/lib/mono/gac/Boo.Lang.Useful
 %{_prefix}/lib/mono/gac/Boo.Lang.Extensions
+%{_prefix}/lib/mono/gac/Boo.Lang.PatternMatching
 
 %files devel -f %name.files
 %defattr(-, root, root)
