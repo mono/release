@@ -1,5 +1,7 @@
 EXTERNAL_SOURCE=1
 
+SOURCE_FILENAME="boo-0.9.0.3203-2-src.zip"
+
 # Build on 10.2 instead of 10.0 so that the lang file doesn't get included, 
 # and the rpm can be used everywhere
 BUILD_HOSTS=(

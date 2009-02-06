@@ -139,8 +139,6 @@ snapshot_sources = []
 
 for ext in config.source_extensions:
 	sources += glob.glob("sources/%s/*-%s%s" % (package_name, version, ext))
-
-for ext in config.source_extensions:
 	snapshot_sources += glob.glob("snapshot_sources/%s/*-%s%s" % (package_name, version, ext))
 
 if sources:
@@ -150,8 +148,28 @@ elif snapshot_sources:
 	print "Using snapshot sources and packages"
 	HEAD_or_RELEASE = "HEAD"
 else:
-	print "Cannot find source file for " + package_name
-	sys.exit(4)
+
+	# Check for SOURCE_FILE (for filenames that don't conform to autofoo standards)
+	tmp_conf = packaging.buildconf(distro, exclusive=False) # don't lock the build client... we just need some info
+	tmp_package = packaging.package(tmp_conf, package_name)
+
+	# If the def file has SOURCE_FILENAME and it's an EXTERNAL_SOURCE (where we can't control the file naming standards)
+	if tmp_package.get_info_var('SOURCE_FILENAME') and tmp_package.get_info_var('EXTERNAL_SOURCE'):
+		source_file = "sources/%s/%s" % (package_name, tmp_package.get_info_var('SOURCE_FILENAME'))
+
+		# make sure the file exists
+		if not os.path.exists(source_file):
+			print "SOURCE_FILENAME specified, but it does not exist: " + source_file
+			sys.exit(4)
+
+		sources.append(source_file)
+		# default to RELEASE for EXTERNAL_SOURCEs
+		HEAD_or_RELEASE="RELEASE"
+
+	# still can't find a source...
+	if not sources:
+		print "Cannot find source file for " + package_name
+		sys.exit(4)
 
 sources += snapshot_sources
 source_file = sources[0]
