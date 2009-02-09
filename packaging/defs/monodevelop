@@ -76,12 +76,18 @@ macos_10_ZIP_BUILD () {
         export  MONO_CFG_DIR=/tmp/build_deps/etc
         export  MONO_PATH=/tmp/build_deps/lib
 
-	export PERL5LIB=/tmp/build_deps/lib/perl5/site_perl
+        export PERL5LIB=/tmp/build_deps/lib/perl5/site_perl
 
-        ./configure --prefix=/tmp/install --disable-versioncontrol --disable-update-mimedb --disable-update-desktopdb --disable-gnomeplatform --enable-macplatform || exit 1
+        ./configure --prefix=/tmp/install --disable-versioncontrol --disable-update-mimedb --disable-update-desktopdb --disable-gnomeplatform --enable-macplatform --enable-macbundle || exit 1
 
         make || exit 1
         make install || exit 1
+
+        target=$build_location/steps/test
+        pushd main/build/MacOSX
+        zip -r MonoDevelop.zip MonoDevelop.app
+        cp MonoDevelop.zip $target
+        popd
 }
 
 macos_10_x86_ZIP_DEPS=(
