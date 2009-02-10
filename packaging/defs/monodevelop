@@ -83,11 +83,6 @@ macos_10_ZIP_BUILD () {
         make || exit 1
         make install || exit 1
 
-        target=$build_location/steps/test
-        pushd main/build/MacOSX
-        zip -r MonoDevelop.zip MonoDevelop.app
-        cp MonoDevelop.zip $target
-        popd
 }
 
 macos_10_x86_ZIP_DEPS=(
@@ -116,5 +111,14 @@ macos_10_ppc_ZIP_RUNTIME_DEPS=(
 POSTBUILD_TEST_NAME1="test"
 POSTBUILD_TEST1 () {
         $make_path test
+}
+POSTBUILD_STEP_NAME1="app-dir"
+POSTBUILD_STEP1() {
+
+        target=$build_location/files/downloads
+        pushd main/build/MacOSX
+        cp MonoDevelop.dmg $target
+        popd
+	
 }
 
