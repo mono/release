@@ -2,12 +2,12 @@
 
 if [ -d /Library/Frameworks/Mono.framework/Commands ]; then
     cd /Library/Frameworks/Mono.framework/Commands
-    for i in `ls -al | grep -v .exe | awk '{print $9}'`; do
-        if test x$i = x. || test x$i = x.. ; then
-            continue
-        fi
-        echo "${i}"
-        ln -sf $PWD/${i} /usr/bin/${i}
+    for i in *; do
+	# Only create a symlink if there isn't a file there
+	if test ! -e "/usr/bin/${i}"; then
+        	echo "${i}"
+	        ln -sf "$PWD/${i}" "/usr/bin/${i}"
+	fi
     done;
 else
     echo "/Library/Frameworks/Mono.framework/Commands does not exist"
@@ -19,7 +19,9 @@ if [ -d /Library/Frameworks/Mono.framework/Versions/Current ]; then
     for i in man*; do
        (cd ${i};
        for j in *; do
-         ln -sf $PWD/${j} /usr/share/man/${i}/${j}
+         if test ! -e "/usr/share/man/${i}/${j}"; then
+           ln -sf "$PWD/${j}" "/usr/share/man/${i}/${j}"
+         fi
        done)
     done
 
@@ -35,4 +37,3 @@ fi
 
 # Mono framework should be owned by root
 chown -R root:admin /Library/Frameworks/Mono.framework
-
