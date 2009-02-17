@@ -244,6 +244,8 @@ Authors:
 %_prefix/lib/mono/2.1/System.Net.dll
 %_prefix/lib/mono/gac/Mono.CSharp
 %_prefix/lib/mono/2.0/Mono.CSharp.dll
+%_prefix/lib/mono/gac/Mono.Cecil
+%_prefix/lib/mono/gac/Mono.Cecil.Mdb
 # localizations?
 #%_datadir/locale/*/LC_MESSAGES/mcs.mo
 # Not sure if autobuild allows this...
@@ -1048,8 +1050,6 @@ fi
 %_prefix/lib/mono/2.0/Microsoft.Build.Utilities.dll
 %_prefix/lib/mono/gac/Microsoft.Build.Engine
 %_prefix/lib/mono/2.0/Microsoft.Build.Engine.dll
-%_prefix/lib/mono/gac/Mono.Cecil
-%_prefix/lib/mono/gac/Mono.Cecil.Mdb
 %_prefix/lib/mono-source-libs
 %_bindir/monograph
 %_prefix/include/mono-1.0
