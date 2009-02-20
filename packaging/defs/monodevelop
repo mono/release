@@ -112,11 +112,12 @@ POSTBUILD_TEST_NAME1="test"
 POSTBUILD_TEST1 () {
         $make_path test
 }
-POSTBUILD_STEP_NAME1="app-dir"
+POSTBUILD_STEP_NAME1="create-dmg"
 POSTBUILD_STEP1() {
 
         target=$build_location/files/downloads
         pushd main/build/MacOSX
+        ./make-dmg-bundle.sh
         cp MonoDevelop.dmg $target
         popd
 	
