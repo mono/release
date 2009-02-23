@@ -52,10 +52,15 @@ EOF
 	{
 		'name': 'glib', 
 		#'source': 'ftp://ftp.gtk.org/pub/glib/2.14/glib-2.14.1.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/gnome/sources/glib/2.18/glib-2.18.1.tar.bz2',
+		#'source': 'http://ftp.gnome.org/pub/gnome/sources/glib/2.18/glib-2.18.1.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/gnome/sources/glib/2.18/glib-2.18.4.tar.bz2',
+                # 2.18.4 fails to install for now.
 		'pre':"""
 			sed -e "s/\/usr\/local\/share\/:\/usr\/share\//\/usr\/local\/share\/:\/usr\/share\/:\/Library\/Frameworks\/Mono.framework\/Versions\/Current\/share\//g" glib/gutils.c > new
 			mv new glib/gutils.c
+			# The following is a hack for a gtk bug where 'which' does not act as expected on mac.
+			# see http://lists.macosforge.org/pipermail/macports-users/2007-December.txt and search for 'gtkdoc-rebase'
+			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
 			""",
 		'post':"""
 			# glib-mkenums is required for pango, maybe others
@@ -96,7 +101,8 @@ EOF
 	{
 		'name': 'libpng',
 		#'source': 'http://superb-east.dl.sourceforge.net/sourceforge/libpng/libpng-1.2.20.tar.bz2',
-		'source': 'ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.2.32.tar.bz2',
+		#'source': 'ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.2.32.tar.bz2',
+		'source': 'ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.2.35.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
@@ -129,13 +135,13 @@ EOF
 	},
 	{
 		'name': 'pixman', 
-		#'source': 'http://cairographics.org/releases/pixman-0.10.0.tar.gz',
-		#'source': 'http://cairographics.org/releases/pixman-0.11.10.tar.gz',
-		'source': 'http://cairographics.org/releases/pixman-0.12.0.tar.gz',
+		#'source': 'http://cairographics.org/releases/pixman-0.14.0.tar.gz',
+		'source': 'http://cairographics.org/releases/pixman-0.14.0.tar.gz',
 	},
 	{
 		'name': 'cairo', 
-		'source': 'http://cairographics.org/releases/cairo-1.6.4.tar.gz',
+		#'source': 'http://cairographics.org/releases/cairo-1.6.4.tar.gz',
+		'source': 'http://cairographics.org/releases/cairo-1.8.6.tar.gz',
 		'build': """
 			PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig FONTCONFIG_CFLAGS=" -I /usr/X11R6/include " FONTCONFIG_LDFLAGS=" -lfontconfig " ./configure --prefix=/tmp/install --enable-quartz --enable-atsui --enable-pdf --disable-xlib
 			make
@@ -150,7 +156,8 @@ EOF
 	{
 		'name': 'pango', 
 		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.20/pango-1.20.2.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.20/pango-1.20.5.tar.bz2',
+		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.20/pango-1.20.5.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.22/pango-1.22.4.tar.bz2',
 		'build': """
 
 			# Hrm... LDFLAGS not getting set for atsui basic... for it (TODO: file bug)
@@ -173,7 +180,8 @@ EOF
 	{
 		'name': 'atk', 
 		#'source': 'http://ftp.gnome.org/pub/gnome/sources/atk/1.20/atk-1.20.0.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/atk/1.23/atk-1.23.5.tar.bz2',
+		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/atk/1.23/atk-1.23.5.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/atk/1.24/atk-1.24.0.tar.bz2',
 	},
 #	## Tarball generated on linux (opensuse 10.3) using:
 #	# Applied patch: http://people.imendio.com/richard/patches/gtk-configure.patch
@@ -185,10 +193,14 @@ EOF
 	{
 		# Requires 10.4 or above
 		'name': 'gtk+', 
-		'version': '2.14.3', 
+		'version': '2.14.7', 
 		#'source': 'http://primates.ximian.com/~wberrier/macos/sources/gtk+-2.15.0.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.14/gtk+-2.14.3.tar.bz2',
+		#'source': 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.14/gtk+-2.14.3.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.14/gtk+-2.14.7.tar.bz2',
 		'build': """
+			# The following is a hack for a gtk bug where 'which' does not act as expected on mac.
+                        # see http://lists.macosforge.org/pipermail/macports-users/2007-December.txt and search for 'gtkdoc-rebase'
+			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
                         LDFLAGS="-framework Foundation -framework Carbon -framework AppKit -Xlinker -headerpad_max_install_names" ./configure --prefix=%s --with-gdktarget=quartz --disable-gtk-doc --with-libjpeg --without-libjasper
 			make
 			cd gtk/xdgmime
@@ -206,7 +218,8 @@ EOF
 	},
 	{
 		'name': 'libglade', 
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/libglade/2.6/libglade-2.6.2.tar.bz2',
+		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/libglade/2.6/libglade-2.6.2.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/libglade/2.6/libglade-2.6.3.tar.bz2',
 		'build':"""
 			export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig
 			./configure --prefix=/tmp/install
@@ -232,13 +245,35 @@ EOF
 			make install
 		"""
 	},
+        {
+		# Required by gtksourceview-2.4.2
+                'name': 'intltool',
+                'source': 'http://ftp.gnome.org/pub/gnome/sources/intltool/0.40/intltool-0.40.5.tar.bz2',
+		'build':"""
+                        ./configure --prefix=/tmp/install
+                        make
+                        make install
+                """
+
+        },
+# gtksourceview is not used on the mac anymore for mono stuff
 	{
 		'name': 'gtksourceview',
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gtksourceview/2.0/gtksourceview-2.0.2.tar.bz2',
+		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/gtksourceview/2.0/gtksourceview-2.0.2.tar.bz2',
+		'source': 'http://ftp.acc.umu.se/pub/GNOME/sources/gtksourceview/2.4/gtksourceview-2.4.2.tar.bz2',
+                'pre':"""
+                        # This is a total hack to fake out the check for xgettext.
+			# This can be removed once we get xgettext compiling on mac
+                        echo -e '#!/bin/sh\necho "(GNU gettext"' > /tmp/build_deps/bin/xgettext
+                        chmod 755 /tmp/build_deps/bin/xgettext
+                """,
 		'build':"""
+			# The following is a hack for a gtk bug where 'which' does not act as expected on mac.
+                        # see http://lists.macosforge.org/pipermail/macports-users/2007-December.txt and search for 'gtkdoc-rebase'
+			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
 			# We have a libxml-2.0.pc file... even though mac doesn't ship with pkg-config :)
 			export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig
-			./configure --prefix=/tmp/install
+			./configure --prefix=/tmp/install --disable-nls --disable-gtk-doc 
 			make
 			make install
 		"""
@@ -278,21 +313,41 @@ EOF
 	},
 	{
 		'name': 'icon-naming-utils',
-		'source': 'http://tango.freedesktop.org/releases/icon-naming-utils-0.8.6.tar.gz',
+		#'source': 'http://tango.freedesktop.org/releases/icon-naming-utils-0.8.6.tar.gz',
+		'source': 'http://tango.freedesktop.org/releases/icon-naming-utils-0.8.7.tar.gz',
 	},
 	{
 		'name': 'gnome-icon-theme',
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gnome-icon-theme/2.20/gnome-icon-theme-2.20.0.tar.bz2',
+		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/gnome-icon-theme/2.20/gnome-icon-theme-2.20.0.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gnome-icon-theme/2.24/gnome-icon-theme-2.24.0.tar.bz2',
+		'pre':"""
+			# This is a total hack to fake out the check for xgettext.
+                        # This can be removed once we get xgettext compiling on mac
+			echo -e '#!/bin/sh\necho "(GNU gettext"' > /tmp/build_deps/bin/xgettext
+			chmod 755 /tmp/build_deps/bin/xgettext
+		""",
 		'build':"""
 			export INU_DATA_DIR=/tmp/build_deps/share/icon-naming-utils
-			./configure --prefix=/tmp/install
+			./configure --disable-nls --prefix=/tmp/install --disable-gtk-doc 
 			make
 			make install
 		""",
 	},
 	{
 		'name': 'gtk-engines',
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gtk-engines/2.12/gtk-engines-2.12.2.tar.bz2',
+		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/gtk-engines/2.12/gtk-engines-2.12.2.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gtk-engines/2.16/gtk-engines-2.16.1.tar.bz2',
+		'pre':"""
+                        # This is a total hack to fake out the check for xgettext.
+                        # This can be removed once we get xgettext compiling on mac
+                        echo -e '#!/bin/sh\necho "(GNU gettext"' > /tmp/build_deps/bin/xgettext
+                        chmod 755 /tmp/build_deps/bin/xgettext
+                """,
+		'build':"""
+                        ./configure --disable-nls --prefix=/tmp/install  
+                        make
+                        make install
+                """,
 	},
 	#####
 	#  fontconfig and freetype disabled... enable them?
@@ -348,12 +403,17 @@ EOF
 	},
 	{
 		'name': 'sqlite',
-		'source': 'http://www.sqlite.org/sqlite-3.5.7.tar.gz',
+		#'source': 'http://www.sqlite.org/sqlite-3.5.7.tar.gz',
+		'source': 'http://www.sqlite.org/sqlite-3.6.10.tar.gz',
 		'build':"""
 			./configure --prefix=/tmp/install --disable-tcl
 			make
 			make install
 		""",
+		'post':"""
+			rm -Rf /tmp/install/bin
+			rm -Rf /tmp/install/man
+			"""
 	},
 
 
