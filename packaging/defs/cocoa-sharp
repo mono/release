@@ -41,7 +41,9 @@ macos_10_ZIP_BUILD () {
 }
 
 make_dist () {
-	LIBTOOLIZE=libtoolize ./autogen.sh
+	#LIBTOOLIZE=libtoolize ./autogen.sh
+	autoreconf -f -i
+	./configure
         make dist-bzip2
 }
 

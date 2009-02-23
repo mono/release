@@ -60,7 +60,7 @@ update_version_file () {
 }
 
 # This jail has ffmpeg in it
-#MKTARBALL_HOST="suse-103-x86_64"
+MKTARBALL_HOST="suse-103-x86_64"
 
 POSTBUILD_TEST_NAME1="test"
 POSTBUILD_TEST1 () {
@@ -141,51 +141,13 @@ POSTBUILD_TEST2 () {
 	mv test-run-data.tar.gz $target/
 }
 
-POSTBUILD_STEP_NAME1="plugin-1.0-ffmpeg"
+
+POSTBUILD_STEP_NAME1="plugin-1.0"
 POSTBUILD_STEP1 () {
-	curl -s http://build.mono.lab.novell.com/~builder/moon-ffmpeg.tar.bz2 | tar xj
-	pushd moon-ffmpeg
-	./configure --disable-static --enable-shared --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-zlib --disable-network --disable-vhook --disable-debug --disable-muxers --disable-encoders --disable-demuxers --disable-bsfs --disable-protocols
-	make
-	popd
-
-	make distclean
-
-	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
-	./configure --without-managed --enable-user-plugin --with-ffmpeg
-	make
-	target=$build_location/steps/plugin-1.0-ffmpeg
-	mkdir -p $target
-	cp plugin/install/novell-moonlight*.xpi $target/
-}
-
-POSTBUILD_STEP_NAME2="plugin-2.0-ffmpeg"
-POSTBUILD_STEP2 () {
-	make distclean
-	export PKG_CONFIG_PATH=$(pwd)/moon-ffmpeg:$PKG_CONFIG_PATH
-	./configure --with-managed=browser --enable-user-plugin --with-ffmpeg
-	make
-	target=$build_location/steps/plugin-2.0-ffmpeg
-	mkdir -p $target
-	cp plugin/install/novell-moonlight*.xpi $target/
-}
-
-POSTBUILD_STEP_NAME3="plugin-1.0"
-POSTBUILD_STEP3 () {
 	make distclean
 	./configure --without-managed --enable-user-plugin --without-ffmpeg
 	make
 	target=$build_location/steps/plugin-1.0
-	mkdir -p $target
-	cp plugin/install/novell-moonlight*.xpi $target/
-}
-
-POSTBUILD_STEP_NAME4="plugin-2.0"
-POSTBUILD_STEP4 () {
-	make distclean
-	./configure --with-managed=browser --enable-user-plugin --without-ffmpeg
-	make
-	target=$build_location/steps/plugin-2.0
 	mkdir -p $target
 	cp plugin/install/novell-moonlight*.xpi $target/
 }

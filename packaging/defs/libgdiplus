@@ -162,12 +162,12 @@ macos_10_ppc_ZIP_DEPS=(
 
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
 
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.18.1-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.18.4-0.macos10.novell.ppc.zip
         http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.23-0.macos10.novell.ppc.zip
         http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.17-0.macos10.novell.ppc.zip
 
         http://primates.ximian.com/~wberrier/macos/deps/ppc/jpeg-6b-0.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/libpng-1.2.32-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/libpng-1.2.35-0.macos10.novell.ppc.zip
         http://primates.ximian.com/~wberrier/macos/deps/ppc/giflib-4.1.6-0.macos10.novell.ppc.zip
         http://primates.ximian.com/~wberrier/macos/deps/ppc/tiff-3.8.2-0.macos10.novell.ppc.zip
 
@@ -183,12 +183,12 @@ macos_10_ppc_ZIP_DEPS=(
 macos_10_x86_ZIP_DEPS=(
 
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.18.1-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.18.4-0.macos10.novell.x86.zip
         http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-0.macos10.novell.x86.zip
         http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-0.macos10.novell.x86.zip
 
         http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-6b-0.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.32-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.35-0.macos10.novell.x86.zip
         http://primates.ximian.com/~wberrier/macos/deps/x86/giflib-4.1.6-0.macos10.novell.x86.zip
         http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.8.2-0.macos10.novell.x86.zip
 
