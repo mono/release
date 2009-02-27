@@ -162,7 +162,6 @@ Authors:
 %_prefix/lib/mono/gac/Mono.CompilerServices.SymbolWriter
 %_prefix/lib/mono/1.0/Mono.CompilerServices.SymbolWriter.dll
 %_prefix/lib/mono/2.0/Mono.CompilerServices.SymbolWriter.dll
-%_prefix/lib/mono/2.1/Mono.CompilerServices.SymbolWriter.dll
 %_prefix/lib/mono/gac/Mono.GetOptions
 %_prefix/lib/mono/1.0/Mono.GetOptions.dll
 %_prefix/lib/mono/2.0/Mono.GetOptions.dll
@@ -179,27 +178,21 @@ Authors:
 %_prefix/lib/mono/gac/System.Xml
 %_prefix/lib/mono/1.0/System.Xml.dll
 %_prefix/lib/mono/2.0/System.Xml.dll
-%_prefix/lib/mono/2.1/System.Xml.dll
 %_prefix/lib/mono/gac/System.Xml.Linq
 %_prefix/lib/mono/2.0/System.Xml.Linq.dll
-%_prefix/lib/mono/2.1/System.Xml.Linq.dll
 %_prefix/lib/mono/gac/System
 %_prefix/lib/mono/1.0/System.dll
 %_prefix/lib/mono/2.0/System.dll
-%_prefix/lib/mono/2.1/System.dll
 %_prefix/lib/mono/gac/System.Configuration
 %_prefix/lib/mono/2.0/System.Configuration.dll
 %_prefix/lib/mono/1.0/mscorlib.dll*
 %_prefix/lib/mono/2.0/mscorlib.dll*
-%_prefix/lib/mono/2.1/mscorlib.dll*
-%_prefix/lib/mono/2.1/smcs.exe*
 %dir %_sysconfdir/mono
 %dir %_sysconfdir/mono/1.0
 %dir %_sysconfdir/mono/2.0
 %dir %_prefix/lib/mono
 %dir %_prefix/lib/mono/1.0
 %dir %_prefix/lib/mono/2.0
-%dir %_prefix/lib/mono/2.1
 %dir %_prefix/lib/mono/3.5
 %dir %_prefix/lib/mono/gac
 %config %_sysconfdir/mono/config
@@ -239,9 +232,7 @@ Authors:
 %_prefix/lib/mono/2.0/OpenSystem.C.dll
 %_prefix/lib/mono/gac/System.Core
 %_prefix/lib/mono/2.0/System.Core.dll
-%_prefix/lib/mono/2.1/System.Core.dll
 %_prefix/lib/mono/gac/System.Net
-%_prefix/lib/mono/2.1/System.Net.dll
 %_prefix/lib/mono/gac/Mono.CSharp
 %_prefix/lib/mono/2.0/Mono.CSharp.dll
 %_prefix/lib/mono/gac/Mono.Cecil
@@ -617,13 +608,10 @@ Authors:
 %_prefix/lib/mono/2.0/System.IdentityModel.Selectors.dll
 %_prefix/lib/mono/gac/System.Runtime.Serialization
 %_prefix/lib/mono/2.0/System.Runtime.Serialization.dll
-%_prefix/lib/mono/2.1/System.Runtime.Serialization.dll
 %_prefix/lib/mono/gac/System.ServiceModel
 %_prefix/lib/mono/2.0/System.ServiceModel.dll
-%_prefix/lib/mono/2.1/System.ServiceModel.dll
 %_prefix/lib/mono/gac/System.ServiceModel.Web
 %_prefix/lib/mono/2.0/System.ServiceModel.Web.dll
-%_prefix/lib/mono/2.1/System.ServiceModel.Web.dll
 %_libdir/pkgconfig/wcf.pc
 
 %package -n mono-web
