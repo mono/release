@@ -232,7 +232,6 @@ Authors:
 %_prefix/lib/mono/2.0/OpenSystem.C.dll
 %_prefix/lib/mono/gac/System.Core
 %_prefix/lib/mono/2.0/System.Core.dll
-%_prefix/lib/mono/gac/System.Net
 %_prefix/lib/mono/gac/Mono.CSharp
 %_prefix/lib/mono/2.0/Mono.CSharp.dll
 %_prefix/lib/mono/gac/Mono.Cecil
