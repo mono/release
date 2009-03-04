@@ -10,7 +10,7 @@
     <em:updates>
 
           <RDF:Description>
-            <em:version>{VERSION}</em:version> <!-- This is the version number of the add-on -->
+            <em:version>{VERSION}</em:version> <!-- This is the version number of the currently installed add-on -->
 
             <!-- One targetApplication for each application the add-on is compatible with -->
             <em:targetApplication>

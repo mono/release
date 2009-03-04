@@ -26,7 +26,7 @@ rm -rf *.rdf
 
 for arch in i586 x86_64 sparc ppc
 do
-	for prof in 1.0 2.0
+	for prof in 1.0.1
 	do
 		xpi="novell-moonlight-$prof-$arch.xpi"
 		
