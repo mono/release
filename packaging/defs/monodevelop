@@ -78,7 +78,7 @@ macos_10_ZIP_BUILD () {
 
         export PERL5LIB=/tmp/build_deps/lib/perl5/site_perl
 
-        ./configure --prefix=/tmp/install --disable-versioncontrol --disable-update-mimedb --disable-update-desktopdb --disable-gnomeplatform --enable-macplatform --enable-macbundle || exit 1
+        ./configure --prefix=/tmp/install --disable-versioncontrol --disable-update-mimedb --disable-update-desktopdb --disable-gnomeplatform --enable-macplatform || exit 1
 
         make || exit 1
         make install || exit 1
@@ -87,14 +87,14 @@ macos_10_ZIP_BUILD () {
 
 macos_10_x86_ZIP_DEPS=(
 
-	http://primates.ximian.com/~wberrier/macos/deps/x86/XML-Parser-2.36-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/XML-Parser-2.36-1.macos10.novell.x86.zip
 )
 
 # Even though we only build on x86, we need this dep for a mach-o file included in XML-Parser
 #  otherwise, our universal_merge fails because of missing files
 macos_10_ppc_ZIP_DEPS=(
 
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/XML-Parser-2.36-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/XML-Parser-2.36-1.macos10.novell.ppc.zip
 )
 
 # Not sure if rpm and .tar.gz will work... we'll find out
@@ -113,9 +113,14 @@ POSTBUILD_TEST1 () {
         $make_path test
 }
 POSTBUILD_STEP_NAME1="create-dmg"
-POSTBUILD_STEP1() {
+POSTBUILD_STEP1 () {
 
-        target=$build_location/files/downloads
+	# Only run dmg step on macos-10-x86
+        if test "x$DISTRO" != "xmacos-10-x86"; then
+            exit 0
+        fi
+
+        target=$build_location/files/create-dmg
         pushd main/build/MacOSX
         ./make-dmg-bundle.sh
         cp MonoDevelop.dmg $target
