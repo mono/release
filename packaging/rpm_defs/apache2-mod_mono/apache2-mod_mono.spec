@@ -19,7 +19,7 @@ Provides:       mod_mono = %{version}-%{release}
 Requires:       xsp >= %{version}
 ############### Suse based options
 %if 0%{?suse_version}
-BuildRequires:  apache2-devel mono-devel
+BuildRequires:  apache2-devel mono-devel glib2-devel
 Requires:       apache2 %{apache_mmn} 
 %if %{suse_version} >= 1010
 BuildRequires:  libapr-util1-devel
