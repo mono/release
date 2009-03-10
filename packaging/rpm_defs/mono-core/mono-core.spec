@@ -601,6 +601,7 @@ Authors:
 
 %files -n mono-wcf
 %defattr(-, root, root)
+%_bindir/svcutil
 %_prefix/lib/mono/gac/System.IdentityModel
 %_prefix/lib/mono/2.0/System.IdentityModel.dll
 %_prefix/lib/mono/gac/System.IdentityModel.Selectors
@@ -611,6 +612,8 @@ Authors:
 %_prefix/lib/mono/2.0/System.ServiceModel.dll
 %_prefix/lib/mono/gac/System.ServiceModel.Web
 %_prefix/lib/mono/2.0/System.ServiceModel.Web.dll
+%_prefix/lib/mono/2.0/svcutil.exe
+%_prefix/lib/mono/2.0/svcutil.exe.mdb
 %_libdir/pkgconfig/wcf.pc
 
 %package -n mono-web
