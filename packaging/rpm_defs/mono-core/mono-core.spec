@@ -348,7 +348,9 @@ Authors:
 
 %files -n mono-data
 %defattr(-, root, root)
+%_prefix/lib/mono/2.0/sqlmetal.exe*
 %_prefix/lib/mono/2.0/sqlsharp.exe*
+%_bindir/sqlmetal
 %_bindir/sqlsharp
 %_mandir/man1/sqlsharp.1%ext_man
 %_prefix/lib/mono/gac/System.Data
