@@ -34,7 +34,7 @@ get_destroot () {
 }
 
 HEAD_PATH=(
-	trunk/gtk-sharp
+	branches/gtk-sharp-2-12-branch
 )
 RELEASE_PATH=(
         tags/gtk-sharp/[[versiondot]]
