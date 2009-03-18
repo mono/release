@@ -1,6 +1,6 @@
 username=builder
 #hostname=sparc-sunos-1.mono-project.com
-hostname=sparc-sunos-2.mono.lab.novell.com
+hostname=sparc-sunos-1.mono.lab.novell.com
 USE_ZIP_PKG=1
 
 # Use the gnu and opensource software
@@ -20,6 +20,6 @@ strip_path=/usr/ccs/bin/strip
 tar_path=/usr/sfw/bin/gtar
 make_path=/usr/sfw/bin/gmake
 
-build_location=/export/home/builder/tmp/monobuild
+#build_location=/export/home/builder/tmp/monobuild
 
 web_index=9

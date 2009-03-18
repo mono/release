@@ -1,6 +1,7 @@
 username=builder
-hostname=x64-linux-3.mono.lab.novell.com
-root_dir=/jails/suse-110-x86_64
+hostname=x64-linux-4.mono.lab.novell.com
+root_dir=/jails/build-root-openSUSE_11.0-x86_64
+
 target_command_prefix=". /etc/profile;"
 # suse 11.0 doesn't include /usr/lib/pkgconfig on x86_64, force it.
 #  (Note, this won't be needed once we stop sharing rpms)
@@ -10,5 +11,3 @@ chroot_path=/usr/bin/chroot
 
 # Repo conf
 YAST_INSTALL=1
-OBS_REPO=1
-OBS_REPO_URL=http://widehat.opensuse.org/repositories/Mono:/Preview/openSUSE_11.0/
