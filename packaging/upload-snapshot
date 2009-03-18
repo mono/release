@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash -ex
 
 if test x$1 == xvalidated ; then
 	sync_profile="validated"
@@ -29,7 +29,7 @@ mkdir -p $STAGE_DIR
 cd ../website
 cp packaging.css $STAGE_DIR
 
-./sync-bundle.py  --platforms=$distros --skip_installers $sync_args $BUNDLE $STAGE_DIR || exit 1
+./sync-bundle.py  --platforms=$distros --skip_installers --include_packages $sync_args $BUNDLE $STAGE_DIR || exit 1
 
 # run a script that cleans up all but one version... 
 ./clean-downloads.py --source_basepath=$STAGE_DIR/snapshot_sources --package_basepath=$STAGE_DIR/snapshot_packages --archive_basepath=$STAGE_DIR/archive --platforms=$distros HEAD 1
@@ -39,7 +39,7 @@ cp packaging.css $STAGE_DIR
 #  also clean up generated stuff
 cd $STAGE_DIR
 cp -a sources/* snapshot_sources
-cp -a packages/* snapshot_packages
+cp -a packages/* snapshot_packages; true
 rm -Rf download-trunk sources-trunk archive/trunk
 cd -
 
