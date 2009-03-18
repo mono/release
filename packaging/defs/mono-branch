@@ -147,18 +147,18 @@ sunos_8_sparc_ZIP_DEPS=(
 
 macos_10_ppc_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.18.4-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.23-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.17-1.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/sqlite-3.6.10-1.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.18.4-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.23-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.17-0.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/sqlite-3.6.10-0.macos10.novell.ppc.zip
 )
 
 macos_10_x86_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.18.4-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-1.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/sqlite-3.6.10-1.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.18.4-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-0.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/sqlite-3.6.10-0.macos10.novell.x86.zip
 )
 
 sunos_8_sparc_ZIP_BUILD () {
