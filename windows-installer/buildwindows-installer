@@ -144,12 +144,12 @@ selections = []
 
 selections += [ Selection('mono', packages = "mono boo ikvm nant IPCE mono-basic gluezilla".split(), deps='mono gluezilla'.split() ) ]
 
-selections += [ Selection('gtk', deps = "gtk-sharp210 gnome-sharp2".split() ) ]
+selections += [ Selection('gtk', deps = "gtk-sharp212 gnome-sharp2".split() ) ]
 
-selections += [ Selection('gtk-sharp', packages = "gtk-sharp210 gnome-sharp2".split() ) ]
+selections += [ Selection('gtk-sharp', packages = "gtk-sharp212 gnome-sharp2".split() ) ]
 
 # Grab the gtk# version, and if there's a revision, ditch it
-gtk_sharp_version = selections[len(selections) - 1].versions['gtk-sharp210']
+gtk_sharp_version = selections[len(selections) - 1].versions['gtk-sharp212']
 if gtk_sharp_version.count('-'):
 	(gtk_sharp_version, revision) = gtk_sharp_version.split('-')
 
