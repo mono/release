@@ -75,35 +75,20 @@ win_4_i386_ZIP_RUNTIME_DEPS=(
 ## format: <$DISTRO>_ZIP_DEPS
 # Note: $DISTRO must have the hyphens converted to underscores
 win_4_i386_ZIP_DEPS=(
-
-	#http://ftp.gtk.org/pub/glib/2.12/win32/glib-2.12.4.zip
-	#http://ftp.gtk.org/pub/glib/2.12/win32/glib-dev-2.12.4.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18/glib_2.18.3-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18/glib-dev_2.18.3-1_win32.zip
-	#http://ftp.gtk.org/pub/glib/2.12/win32/dependencies/gettext-0.14.5.zip
-	#http://ftp.gtk.org/pub/glib/2.12/win32/dependencies/gettext-dev-0.14.5.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18/glib_2.18.4-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18/glib-dev_2.18.4-1_win32.zip
 	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime-0.17-1.zip
 	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime-dev-0.17-1.zip
 	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-tools-0.17.zip
-	#http://ftp.gtk.org/pub/glib/2.12/win32/dependencies/libiconv-1.9.1.bin.woe32.zip
 	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libiconv-1.9.1.bin.woe32.zip
 
-	# This pkg-config expects win32 names... not cygwin names...
-	#ftp://ftp.gtk.org/pub/gtk/v2.8/win32/dependencies/pkg-config-0.20.zip
-	#http://www.gimp.org/~tml/gimp/win32/pkgconfig-0.15.zip
 	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config-0.23-2.zip
 
-	# zlib used to be in gtk-sharp deps, move to mono so libMonoPosixHelper
-	#  can use it (#79267)
-        # for libxml2 and other image deps
-        #http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-bin.zip
-        #http://internap.dl.sourceforge.net/sourceforge/gnuwin32/zlib-1.2.3-lib.zip
 	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/zlib-1.2.3.zip
 	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/zlib-dev-1.2.3.zip
 
 	# Used to generate .def files (not needed yet)
 	#http://primates.ximian.com/~wberrier/windows-installer/pexports/pexports-0.43-mono.zip
-
 )
 
 sunos_8_sparc_ZIP_DEPS=(
