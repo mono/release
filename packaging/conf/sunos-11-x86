@@ -1,0 +1,7 @@
+username=builder
+hostname=x32-sunos-1.mono.lab.novell.com
+USE_ZIP_PKG=1
+tar_path=/usr/gnu/bin/tar
+make_path=/usr/gnu/bin/make
+target_command_prefix="source /etc/profile;"
+web_index=9
