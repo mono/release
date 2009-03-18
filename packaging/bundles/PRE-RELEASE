@@ -1,11 +1,11 @@
 # Directory used when created go-mono.com/archive/<archive_version>
 #  This will need to be manually bumped each time on head... don't forget!!
 archive_version="2.4"
-md_version = "1.9.1"
+md_version="2.0"
 
 bundle_urlname="preview"
 
-bundle_short_desc="Preview 1"
+bundle_short_desc="RC3.1"
 bundle_desc="Preview packages before an official release"
 
 obs_repos=(
@@ -19,6 +19,7 @@ obs_repos=(
 versions=(
 	IPCE=""
 	boo=""
+	cocoa-sharp=""
 	gecko-sharp2=""
 	gluezilla=""
 	gnome-desktop-sharp2=""
