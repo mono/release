@@ -78,7 +78,7 @@ macos_10_ZIP_BUILD () {
 
         export PERL5LIB=/tmp/build_deps/lib/perl5/site_perl
 
-        ./configure --prefix=/tmp/install --disable-versioncontrol --disable-update-mimedb --disable-update-desktopdb --disable-gnomeplatform --enable-macplatform || exit 1
+        ./configure --prefix=/tmp/install --disable-versioncontrol --disable-update-mimedb --disable-update-desktopdb --disable-gnomeplatform --enable-macplatform --enable-macbundle || exit 1
 
         make || exit 1
         make install || exit 1
@@ -120,11 +120,16 @@ POSTBUILD_STEP1 () {
             exit 0
         fi
 
-        target=$build_location/files/create-dmg
-        pushd main/build/MacOSX
+        target=$build_location/steps/create-dmg
+        cd build/MacOSX
+
+        if test ! -d MonoDevelop.app; then
+            echo "MonoDevelop does not exist or is not a directory"
+            exit 1
+        fi
+
         ./make-dmg-bundle.sh
-        cp MonoDevelop.dmg $target
-        popd
-	
+        mkdir -p $target
+        cp MonoDevelop.dmg $target/
 }
 
