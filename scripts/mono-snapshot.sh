@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 SCRIPTS_DIR=$(dirname $(which $0))
 HOMEDIR=$(dirname $(which $0))/daily_build
@@ -90,7 +90,7 @@ cp $HOMEDIR/../monocharge/* $DAILY_BUILD_DIR/monocharge-$DATE
 # NET 1.0
 mkdir -p $DAILY_BUILD_DIR/monocharge-$DATE/1.0
 cp $PREFIX/lib/mono/1.0/*.exe $DAILY_BUILD_DIR/monocharge-$DATE/1.0
-cp $DAILY_BUILD_DIR/mcs/class/lib/default/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/1.0
+cp $DAILY_BUILD_DIR/mcs/class/lib/net_1_1/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/1.0
 
 # NET 2.0
 mkdir -p $DAILY_BUILD_DIR/monocharge-$DATE/2.0
