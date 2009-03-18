@@ -62,7 +62,7 @@ shift $(($OPTIND - 1))
 
 ## Some varialbles ##
 # The maximum number of days in the past to search logs.
-MAX_DAYS=40
+MAX_DAYS=200
 LOG_DIR=/home/builder/wa/msvn/release/monobuild/www/builds/HEAD/${JAIL}/${MODULE}
 OUTPUT_FILENAME=/tmp/search.out
 
