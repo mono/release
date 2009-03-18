@@ -30,9 +30,9 @@ snapshot_sources_dir = packaging_dir + "/snapshot_sources"
 smb_passfile = packaging_dir + "/.smbpass"
 
 # Mono repo svn location
-#MONO_ROOT = "svn://anonsvn.mono-project.com/source"
+MONO_ROOT = "svn://anonsvn.mono-project.com/source"
 #src_key_file = ""
-MONO_ROOT = "svn+ssh://distro@mono-cvs.ximian.com/source"
+#MONO_ROOT = "svn+ssh://distro@mono-cvs.ximian.com/source"
 src_key_file = packaging_dir + os.sep + "distro_source_key"
 
 #buildenv_key_file = ""
@@ -63,6 +63,8 @@ td_num_sequential = 10
 # static list of packages to create tarballs for
 	# More difficult to build head versions of these...
 	#gtk-sharp
+	#moon
+	#moon-branch
 td_packages = """
 	gecko-sharp2
 	gluezilla
@@ -85,8 +87,6 @@ td_packages = """
 	monodevelop-boo
 	monodevelop-database
 	monodevelop-java
-	moon
-	moon-branch
 	olive
 	uiaatkbridge
 	uiautomationwinforms
@@ -114,22 +114,22 @@ sd_sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
 # List of platforms/packages
 	#sunos-8-sparc
 sd_latest_build_distros = """
-	debian-4-arm
 	debian-4-sparc
-	macos-10-ppc
-	macos-10-x86
 	sles-10-i586
 	sles-10-ia64
 	sles-10-ppc
 	sle-11-ppc64
 	sles-10-x86_64
 	sunos-10-sparc
-	sunos-10-x86
+	sunos-11-x86
 	suse-103-i586
 	suse-103-ppc
 	suse-103-x86_64
 	suse-110-i586
 	suse-110-x86_64
+	debian-4-arm
+	macos-10-ppc
+	macos-10-x86
 	win-4-i386
 """.split()
 sd_latest_build_packages = td_packages
