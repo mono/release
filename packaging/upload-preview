@@ -7,13 +7,11 @@ STAGE_DIR="$(pwd)/stage/preview"
 TARGET_USER="mono-web"
 TARGET_HOST="mono.ximian.com"
 TARGET_DIR="~/release/monobuild/www/preview"
-TARGET_URL="/monobuild/preview"
 
 ## For publishing to a local lan in Provo
 TARGET_USER="root"
 TARGET_HOST="c100.mono.lab.novell.com"
-TARGET_DIR="/share/sw/mono-project.org/mono-previews/2.2-p1"
-TARGET_URL="/software/mono-project.org/mono-previews/2.2-p1"
+TARGET_DIR="/share/sw/mono-project.org/mono-previews/2.4-rc3.1"
 
 mkdir -p $STAGE_DIR
 
@@ -22,7 +20,7 @@ cd ../website
 cp packaging.css $STAGE_DIR
 
 ./sync-bundle.py --skip_missing $BUNDLE $STAGE_DIR
-./mk-sources-index.py           $BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/sources
+./mk-sources-index.py           $BUNDLE $STAGE_DIR $STAGE_DIR/sources
 ./mk-archive-index.py           $BUNDLE $STAGE_DIR
 
 # Publish stage

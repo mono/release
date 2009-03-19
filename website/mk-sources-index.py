@@ -15,9 +15,9 @@ import config
 
 # Command line options
 try:
-	(script_name, bundle, output_dir, webroot_path, sources_dir) = sys.argv
+	(script_name, bundle, output_dir, sources_dir) = sys.argv
 except:
-	print "Usage: ./mk-sources-index.py <bundle name> <output webdir> <webroot_path> <sources_dir>"
+	print "Usage: ./mk-sources-index.py <bundle name> <output webdir> <sources_dir>"
 	sys.exit(1)
 
 bundle_conf = packaging.bundle(bundle_name=bundle)
@@ -65,10 +65,11 @@ for line in template:
 
 	else:
 		line = line.replace("[[version]]", bundle_conf.info['archive_version'])
-		line = line.replace("[[webroot_path]]", webroot_path)
+		o_line = line.replace("[[webroot_path]]", "..")
+		arc_oline = line.replace("[[webroot_path]]", "../../..")
 
-		out.write(line)
-		arc_out.write(line)
+		out.write(o_line)
+		arc_out.write(arc_oline)
 
 
 out.close()

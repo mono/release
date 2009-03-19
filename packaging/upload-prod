@@ -120,7 +120,7 @@ if generate:
 	do("cp -fp packaging.css " + STAGE_DIR)
 	do("cp -fp zip-icon.png  " + STAGE_DIR)
 
-	do("./mk-sources-index.py	%s %s %s %s/sources" % 		(BUNDLE, STAGE_DIR, TARGET_URL, STAGE_DIR))
+	do("./mk-sources-index.py	%s %s %s/sources" % 		(BUNDLE, STAGE_DIR, STAGE_DIR))
 	do("./mk-archive-index.py --skip_packages %s %s" % 		(BUNDLE, STAGE_DIR))
 
 # Publish stage

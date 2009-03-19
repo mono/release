@@ -46,7 +46,7 @@ cd -
 # problem: it's possible a tarball will be built, but we won't have any packages... issue?
 #   possible long solution: generate bundles/trunk to have all the right info... ugh
 
-./mk-sources-index.py           				$BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/snapshot_sources			|| exit 1
+./mk-sources-index.py           				$BUNDLE $STAGE_DIR $STAGE_DIR/snapshot_sources			|| exit 1
 ./mk-distro-index.py	--platforms=$distros --skip_zip		$BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/snapshot_packages $TARGET_HOST	|| exit 1
 ./mk-archive-index.py	--platforms=$distros --skip_installers	$BUNDLE $STAGE_DIR || exit 1
 ./mk-repos.py		--platforms=$distros			$BUNDLE $STAGE_DIR $TARGET_URL $STAGE_DIR/snapshot_packages $TARGET_HOST	|| exit 1
