@@ -173,7 +173,6 @@ if not skip_installers:
 			'windows-installer/Output/[[version]]/windows-installer',
 			'macosx/output/[[version]]/macos-10-universal',
 			'md-macosx/output/[[version]]/md-macos-10',
-			'sunos/output/[[version]]/sunos-8-sparc',
 			]:
 
 	#if skip_installers: continue
