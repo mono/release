@@ -1,33 +1,36 @@
 #!/bin/sh -x
 
-if [ -d /Library/Frameworks/Mono.framework/Commands ]; then
-    cd /Library/Frameworks/Mono.framework/Commands
-    for i in *; do
+FW=/Library/Frameworks/Mono.framework
+FW_CURRENT=${FW}/Versions/Current
+
+WHITELIST=$(cat $(dirname $0)/whitelist.txt)
+
+if [ -d ${FW}/Commands ]; then
+    for i in ${WHITELIST}; do
 	# Only create a symlink if there isn't a file there
 	if test ! -e "/usr/bin/${i}"; then
         	echo "${i}"
-	        ln -sf "$PWD/${i}" "/usr/bin/${i}"
+	        ln -sf "${FW}/Commands/${i}" "/usr/bin/${i}"
 	fi
     done;
 else
-    echo "/Library/Frameworks/Mono.framework/Commands does not exist"
+    echo "${FW}/Commands does not exist"
     echo "Can not create links to /usr/bin."
 fi
 
-if [ -d /Library/Frameworks/Mono.framework/Versions/Current ]; then
-    cd /Library/Frameworks/Mono.framework/Versions/Current/share/man
+if [ -d ${FW_CURRENT} ]; then
+    cd ${FW_CURRENT}/share/man
     for i in man*; do
-       (cd ${i};
-       for j in *; do
+       (for j in *; do
          if test ! -e "/usr/share/man/${i}/${j}"; then
-           ln -sf "$PWD/${j}" "/usr/share/man/${i}/${j}"
+           ln -sf "${FW_CURRENT}/share/man/${i}/${j}" "/usr/share/man/${i}/${j}"
          fi
        done)
     done
 
-    cd /Library/Frameworks/Mono.framework/Versions/Current/etc
+    cd ${FW_CURRENT}/etc
     # Make sure we run the files we lay down, and not other stuff installed on the system
-    export PATH=/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH
+    export PATH=${FW_CURRENT}/bin:$PATH
     # gtk+ setup
     gdk-pixbuf-query-loaders > gtk-2.0/gdk-pixbuf.loaders
     # pango setup
@@ -36,4 +39,4 @@ if [ -d /Library/Frameworks/Mono.framework/Versions/Current ]; then
 fi
 
 # Mono framework should be owned by root
-chown -R root:admin /Library/Frameworks/Mono.framework
+chown -R root:admin ${FW}

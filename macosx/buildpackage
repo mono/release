@@ -245,7 +245,7 @@ for file in os.listdir(cwd + os.sep + 'setup-files'):
 os.chdir(temp_dir)
 
 # Copy files to resources_dir
-conf.buildenv.copy_to('version.plist License.rtf ReadMe.rtf Welcome.rtf uninstallMono.sh postflight'.split(), resources_dir)
+conf.buildenv.copy_to('version.plist License.rtf ReadMe.rtf Welcome.rtf uninstallMono.sh postflight whitelist.txt'.split(), resources_dir)
 
 framework_resources_dir = "%s%s/Versions/%s/Resources" % (remote_PKGROOT, framework_prefix, version)
 conf.buildenv.execute_command('mkdir -p %s' % framework_resources_dir )
