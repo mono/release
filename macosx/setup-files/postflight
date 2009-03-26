@@ -21,7 +21,8 @@ fi
 if [ -d ${FW_CURRENT} ]; then
     cd ${FW_CURRENT}/share/man
     for i in man*; do
-       (for j in *; do
+       (cd ${i};
+       for j in *; do
          if test ! -e "/usr/share/man/${i}/${j}"; then
            ln -sf "${FW_CURRENT}/share/man/${i}/${j}" "/usr/share/man/${i}/${j}"
          fi
