@@ -8,7 +8,7 @@ WHITELIST=$(cat $(dirname $0)/whitelist.txt)
 if [ -d ${FW}/Commands ]; then
     for i in ${WHITELIST}; do
 	# Only create a symlink if there isn't a file there
-	if test ! -e "/usr/bin/${i}"; then
+	if test -e "${FW}/Commands/${i}" && test ! -e "/usr/bin/${i}"; then
         	echo "${i}"
 	        ln -sf "${FW}/Commands/${i}" "/usr/bin/${i}"
 	fi
@@ -20,13 +20,12 @@ fi
 
 if [ -d ${FW_CURRENT} ]; then
     cd ${FW_CURRENT}/share/man
-    for i in man*; do
-       (cd ${i};
-       for j in *; do
-         if test ! -e "/usr/share/man/${i}/${j}"; then
-           ln -sf "${FW_CURRENT}/share/man/${i}/${j}" "/usr/share/man/${i}/${j}"
-         fi
-       done)
+    for i in ${WHITELIST}; do
+        for j in $(ls man*/${i}.*); do
+            if test ! -e "/usr/share/man/${j}"; then
+                ln -sf "${FW_CURRENT}/share/man/${j}" "/usr/share/man/${j}"
+            fi
+        done
     done
 
     cd ${FW_CURRENT}/etc
