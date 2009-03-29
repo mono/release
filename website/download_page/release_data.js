@@ -92,7 +92,7 @@ var data =
 			"name" : "Suse Linux Enterprise 10",
 			"arch" : [
 			{
-				"name" : "Enterprise support for i586, x86_64, and s390x",
+				"name" : "Novell Supported for i586, x86_64, and s390x",
 				"desc" : "",
 				"downloadText" : enterprise
 			},
@@ -107,7 +107,7 @@ var data =
 			"name" : "Suse Linux Enterprise 11",
 			"arch" : [
 			{
-				"name" : "Enterprise support for i586, x86_64, and s390x",
+				"name" : "Novell Supported for i586, x86_64, and s390x",
 				"desc" : "",
 				"downloadText" : enterprise
 			},
