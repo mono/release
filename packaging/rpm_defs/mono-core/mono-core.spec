@@ -135,7 +135,6 @@ Authors:
 %_bindir/mono-test-install
 %_bindir/mcs
 %_bindir/mcs1
-%_bindir/smcs
 %_bindir/mozroots
 %_bindir/setreg
 %_bindir/sn
@@ -239,7 +238,6 @@ Authors:
 # localizations?
 #%_datadir/locale/*/LC_MESSAGES/mcs.mo
 # Not sure if autobuild allows this...
-%_libdir/pkgconfig/smcs.pc
 
 %post
 /sbin/ldconfig
