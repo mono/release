@@ -1,5 +1,5 @@
 var yast = "This distribution supports installing packages via YaST. Add the following installation source to YaST:"
-var yast_help = "For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the Yast help page.</a>"
+var yast_help = "For assistance with using repositories and installing packages with YaST, <a href='http://en.opensuse.org/Add_Package_Repositories_to_YaST'>visit the YaST help page.</a>"
 var zypper = "This distribution supports installing packages via Zypper. Add the following repository to Zypper:"
 var zypper_help = "<p>To add the repository, execute the following commands (as root):<blockquote><code>zypper addrepo <em>&lt;URL&gt;</em> mono-stable<br/>zypper refresh --repo mono-stable<br/>zypper dist-upgrade --repo mono-stable</code></blockquote></p>"
 var discontinued = "<div style=\"color: darkred; font-weight: bold\">Binaries for this platform have been discontinued.  Builds may be available from <a href=\"http://www.mono-project.com/Other_Downloads\">unsupported downloads</a> or we may be looking for a volunteer to maintain packages.</div>";
@@ -89,7 +89,7 @@ var data =
 		"dlicon" : "sles.jpg",
 		"version" : [
 		{
-			"name" : "Suse Linux Enterprise 10",
+			"name" : "SUSE Linux Enterprise 10",
 			"arch" : [
 			{
 				"name" : "Novell Supported for i586, x86_64, and s390x",
@@ -104,7 +104,7 @@ var data =
 			]
 		},
 		{
-			"name" : "Suse Linux Enterprise 11",
+			"name" : "SUSE Linux Enterprise 11",
 			"arch" : [
 			{
 				"name" : "Novell Supported for i586, x86_64, and s390x",
@@ -150,7 +150,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/2.4/macos-10-universal/7/MonoFramework-2.4_7.macos10.novell.universal.dmg'>Mono 2.4_7 Framework - Universal</a></li><li><a href=\"http://ftp.novell.com/pub/mono/monodevelop/MonoDevelop-1.9.1-1.dmg\">MonoDevelop 2.0 Alpha 2</a></li></li><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
+				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<ul><li><a href='http://ftp.novell.com/pub/mono/archive/2.4/macos-10-universal/7/MonoFramework-2.4_7.macos10.novell.universal.dmg'>Mono 2.4_7 Framework - Universal</a></li><li><a href=\"http://ftp.novell.com/pub/mono/monodevelop/2.0/md-macos-10/3/MonoDevelop-2.0-3.dmg\">MonoDevelop 2.0</a> <span style=\"color: darkred; font-weight: bold\">(The MacOSX port of MonoDevelop is still incomplete, there may be serious bugs and / or missing features)</span></li></li><li><a href='http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2'>Cocoa# 0.9.4 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
