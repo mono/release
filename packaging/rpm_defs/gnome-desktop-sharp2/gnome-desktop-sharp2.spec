@@ -1,10 +1,7 @@
 Name:           gnome-desktop-sharp2
 %define _name gnome-desktop-sharp
-%ifarch ppc64
-BuildRequires:  mono-biarchcompat
-%endif
 Url:            http://mono-project.com
-License:        LGPL v2.1 only
+License:        GPL v2 only; LGPL v2.1 only
 Group:          System/GUI/GNOME
 Summary:        Mono bindings for libgnome-desktop
 BuildRequires:  gnome-sharp2 gtk-sharp2-gapi
@@ -36,7 +33,7 @@ BuildRequires:  gtkhtml3-devel gtksourceview-devel librsvg2-devel libwnck-devel 
 BuildRequires:  gnome-panel-devel
 %endif
 Version:        %_version
-Release:        2
+Release:        0
 Source:         %{_name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 

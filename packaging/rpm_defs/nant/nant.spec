@@ -3,7 +3,7 @@ Name:           nant
 #  nant's progression: 0.85-rc4, 0.85
 #  working rpm upgrade path requires: 0.85-rc4, 0.85.0
 Version:        0.86_beta1
-Release:        37
+Release:        0
 License:        GPL v2 or later; LGPL v2.1 or later
 BuildArch:      noarch
 Url:            http://nant.sourceforge.net

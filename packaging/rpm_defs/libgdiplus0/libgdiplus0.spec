@@ -1,9 +1,9 @@
 %define real_name libgdiplus
 
 Name:           libgdiplus0
-Version:        2.2
-Release:        11
-License:        X11/MIT
+Version:        2.4
+Release:        0
+License:        LGPL v2.1 only; MOZILLA PUBLIC LICENSE (MPL/NPL); X11/MIT
 Url:            http://go-mono.org/
 Source0:        %{real_name}-%{version}.tar.bz2
 Summary:        Open Source Implementation of the GDI+ API
@@ -80,10 +80,10 @@ export CFLAGS="$RPM_OPT_FLAGS"
 make
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=%{buildroot}
 # Unwanted files:
-rm -f $RPM_BUILD_ROOT/usr/%_lib/libgdiplus.a
-rm -f $RPM_BUILD_ROOT/usr/%_lib/libgdiplus.la
+rm -f %{buildroot}%{_libdir}/libgdiplus.a
+rm -f %{buildroot}%{_libdir}/libgdiplus.la
 # Remove generic non-usefull INSTALL file... (appeases
 #  suse rpmlint checks, saves 3kb)
 find . -name INSTALL | xargs rm -f

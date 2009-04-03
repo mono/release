@@ -1,10 +1,10 @@
 Name:           mono-debugger
-License:        GPL v2 or later; X11/MIT
+License:        GPL v2 or later; LGPL v2.0 or later; X11/MIT
 Group:          Development/Languages/Mono
 Summary:        Mono Debugger
 Url:            http://www.mono-project.com/Debugger
-Version:        2.2
-Release:        12
+Version:        2.4
+Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.bz2
 Provides:       mono-debugger = %{version}-%{release}
@@ -52,12 +52,16 @@ Authors:
 %files
 %defattr(-, root, root)
 %doc AUTHORS COPYING ChangeLog README NEWS
-/usr/bin/mdb
+%{_bindir}/mdb
 %{_libdir}/*.so*
-%{_prefix}/lib/mono/2.0/mdb*.exe
-%{_prefix}/lib/mono/gac/Mono.Debugger*
+%{_prefix}/lib/mono/2.0/mdb.exe
+%{_prefix}/lib/mono/2.0/mdb-symbolreader.exe
+%{_prefix}/lib/mono/gac/Mono.Debugger
+%{_prefix}/lib/mono/gac/Mono.Debugger.Frontend
+%{_prefix}/lib/mono/gac/Mono.Debugger.SymbolWriter
 %{_prefix}/lib/mono/mono-debugger
-%{_libdir}/pkgconfig/mono-debugger*.pc
+%{_libdir}/pkgconfig/mono-debugger.pc
+%{_libdir}/pkgconfig/mono-debugger-frontend.pc
 
 %prep
 %setup  -q -n mono-debugger-%{version}

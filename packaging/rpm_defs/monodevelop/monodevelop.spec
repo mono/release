@@ -1,11 +1,16 @@
 Name:           monodevelop
-BuildRequires:  gconf-sharp2 gtk-sharp2-gapi gtksourceview-sharp2 intltool mono-addins mono-basic mono-devel mono-nunit monodoc-core perl-XML-Parser shared-mime-info xsp
+BuildRequires:  gconf-sharp2
+BuildRequires:  glade-sharp2
+BuildRequires:  gnome-sharp2
+BuildRequires:  mono-addins
+BuildRequires:  mono-devel
+BuildRequires:  monodoc-core
 Url:            http://www.go-mono.com/
 License:        GPL v2 or later
 Group:          Development/Languages/Mono
 AutoReqProv:    on
-Version:        1.9.1
-Release:        96
+Version:        2.0
+Release:        0
 Summary:        A Full-Featured IDE for Mono and Gtk#
 Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

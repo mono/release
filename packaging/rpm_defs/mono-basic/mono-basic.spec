@@ -2,12 +2,12 @@
 
 Name:           mono-basic
 BuildRequires:  mono-devel unzip
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Group:          Development/Languages/Mono
 Summary:        Mono's VB Runtime
 Url:            http://go-mono.org/
-Version:        2.2
-Release:        6
+Version:        2.4
+Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.bz2
 Source1:        %{name}-%{version}-%{prebuilt_release}.win4.novell.x86.zip

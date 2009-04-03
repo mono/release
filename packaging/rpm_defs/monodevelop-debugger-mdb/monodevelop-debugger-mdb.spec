@@ -1,15 +1,16 @@
 Name:     	monodevelop-debugger-mdb
-Version:	1.9.1
+Version:	2.0
 Release:	0
 Vendor:		Novell, Inc.
 License:	MIT/X11
 Autoreqprov:    on
 BuildArch:      noarch
+ExclusiveArch:  %ix86 x86_64
 URL:		http://www.monodevelop.com
 Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:	monodevelop = %{version} mono-devel mono-debugger
-Requires:       mono-debugger
+Requires:       mono-debugger >= 2.0
 Summary:	MonoDevelop Debugger
 Group:		Development/Tools
 

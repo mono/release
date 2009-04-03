@@ -1,5 +1,5 @@
 Name:     	monodevelop-debugger-gdb
-Version:	1.9.1
+Version:	2.0
 Release:	0
 Vendor:		Novell, Inc.
 License:	MIT/X11
@@ -19,7 +19,6 @@ GDB Debugger Addin for MonoDevelop.
 %files
 %defattr(-, root, root)
 %{_prefix}/lib/monodevelop/AddIns/MonoDevelop.Debugger/MonoDevelop.Debugger.Gdb.dll*
-%{_datadir}/pkgconfig/monodevelop.debugger.gdb.pc
 
 %prep
 %setup -q
@@ -32,9 +31,6 @@ make
 %install
 %{?env_options}
 make install DESTDIR=%{buildroot}
-
-mkdir -p %{buildroot}%{_prefix}/share/pkgconfig
-mv %{buildroot}%{_prefix}/lib/pkgconfig/*.pc %{buildroot}%{_prefix}/share/pkgconfig/
 
 %clean
 rm -rf %{buildroot}

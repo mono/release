@@ -1,8 +1,8 @@
 %define boo_version %(rpm -q boo-devel --queryformat '%{VERSION}')
 
 Name:           monodevelop-boo
-Version:        1.9.1
-Release:        96
+Version:        2.0
+Release:        0
 License:        GPL v2 or later
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on

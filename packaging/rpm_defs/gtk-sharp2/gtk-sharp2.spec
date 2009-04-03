@@ -1,24 +1,27 @@
 Name:           gtk-sharp2
 %define _name gtk-sharp
-%ifarch ppc64
-BuildRequires:  mono-biarchcompat
-%endif
 Url:            http://gtk-sharp.sf.net
 License:        GPL v2 or later; LGPL v2.1 or later
 Group:          System/GUI/GNOME
 Summary:        .Net Language Bindings for GTK+
+# bug437293
+%ifarch ppc64
+Obsoletes:      gtk-sharp2-64bit
+%endif
+%ifarch  %ix86 ppc
+Obsoletes:      gtk-sharp2-32bit
+%endif
+#
 Patch0:         gtk-sharp-optflags.patch
 Patch1:         gtk-sharp-revert_unportable_relocatable.patch
 Patch2:         gtk-sharp-makefile.patch
 Patch3:         gtk-sharp-find_gtkhtml_ver.patch
 Patch4:         gtk-sharp-fix_vte_so_version.patch
 Patch5:         gnome-sharp-revert_unportable_relocatable.patch
-# PATCH-FIX-OPENSUSE Fix: Program returns random data in a function
-Patch6:         gtk-warn-fix.patch
 %define old_version 2.4.3
 %define new_version 2.8.5
 %define new_split_version 2.10.4
-%define two_twelve_version 2.12.6
+%define two_twelve_version 2.12.8
 #####  suse  ####
 %if 0%{?suse_version}
 ## which gtk version ###
@@ -86,7 +89,7 @@ BuildRequires:  gnome-panel-devel gtkhtml3-devel libgnomeprintui22-devel librsvg
 ##############
 # Need to put this stuff down here after Version: gets defined
 Version:        %_version
-Release:        16
+Release:        0
 Source:         %{_name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
@@ -255,9 +258,9 @@ This package contains Mono bindings for gconf and gconf peditors.
 
 %prep
 %setup -q -n %{_name}-%{version}
-#if [ %version \< 2.10.3 ] ; then
-#%patch0 -p1
-#fi
+if [ %version \< 2.10.3 ] ; then
+%patch0 -p1
+fi
 %if %platform_desktop_split == 0
 %patch1 -p1
 # 2.8.4 and later on 2.8.x branch doesn't need this patch
@@ -268,9 +271,6 @@ fi
 %patch4 -p1
 %patch5 -p1
 %endif
-if [ %version == %two_twelve_version ] ; then
-%patch6
-fi
 
 %build
 %{?env_options}

@@ -1,6 +1,6 @@
 Name:           mono-addins
 Version:        0.4
-Release:        1
+Release:        0
 License:        X11/MIT
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on

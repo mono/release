@@ -6,7 +6,7 @@ Group:          Development/Languages/Mono
 Summary:        WebKit bindings for Mono
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Version:        0.2
-Release:        2
+Release:        0
 BuildArch:      noarch
 Source:         %{name}-%{version}.tar.bz2
 Patch0:         %{name}-pkgconfigdir.patch

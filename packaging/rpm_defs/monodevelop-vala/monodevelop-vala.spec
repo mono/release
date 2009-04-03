@@ -1,5 +1,5 @@
 Name:     	monodevelop-vala
-Version:	1.9.1
+Version:	2.0
 Release:	0
 Vendor:		Novell, Inc.
 License:	MIT/X11

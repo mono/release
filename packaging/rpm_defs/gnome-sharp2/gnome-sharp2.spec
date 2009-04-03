@@ -66,7 +66,7 @@ BuildRequires:  gnome-panel-devel gtkhtml3-devel libgnomeprintui22-devel librsvg
 ##############
 # Need to put this stuff down here after Version: gets defined
 Version:        %_version
-Release:        14
+Release:        0
 Source:         %{_name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 

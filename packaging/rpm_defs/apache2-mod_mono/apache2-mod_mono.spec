@@ -9,8 +9,8 @@ Url:            http://go-mono.com/
 License:        The Apache Software License
 Group:          Productivity/Networking/Web/Servers
 AutoReqProv:    on
-Version:        2.2
-Release:        1
+Version:        2.4
+Release:        0
 Summary:        Run ASP.NET Pages on Unix with Apache and Mono
 Source:         %{modname}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -19,7 +19,7 @@ Provides:       mod_mono = %{version}-%{release}
 Requires:       xsp >= %{version}
 ############### Suse based options
 %if 0%{?suse_version}
-BuildRequires:  apache2-devel mono-devel glib2-devel
+BuildRequires:  apache2-devel mono-devel
 Requires:       apache2 %{apache_mmn} 
 %if %{suse_version} >= 1010
 BuildRequires:  libapr-util1-devel
@@ -45,7 +45,10 @@ into Apache, run the command "a2enmod mono" as root.
 %setup -n %{modname}-%{version} -q
 
 %build
-%configure
+%if 0%{?sles_version} == 10
+%define _with_remove_display --with-remove-display
+%endif
+%configure %_with_remove_display
 make
 
 %install

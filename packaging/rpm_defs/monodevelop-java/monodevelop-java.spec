@@ -1,6 +1,6 @@
 Name:           monodevelop-java
-Version:        1.9.1
-Release:        1
+Version:        2.0
+Release:        0
 License:        GPL v2 or later
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on

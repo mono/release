@@ -1,12 +1,12 @@
 %{!?ext_man: %define ext_man .gz}
 
 Name:           mono-core
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 Url:            http://go-mono.org/
-Version:        2.2
-Release:        1
+Version:        2.4
+Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
 ExclusiveArch:  %ix86 x86_64 ppc ppc64 hppa armv4l sparc s390 ia64 s390x
@@ -112,7 +112,7 @@ Authors:
 %defattr(-, root, root)
 %doc AUTHORS COPYING.LIB ChangeLog NEWS README
 %_bindir/mono
-%_libdir/libmono.so*
+%_libdir/libmono.so.*
 %_mandir/man1/mono.1%ext_man
 # manpages
 %_mandir/man5/mono-config.5%ext_man
@@ -251,7 +251,7 @@ fi
 %postun -p /sbin/ldconfig
 
 %package -n mono-jscript
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        JScript .NET support for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -278,7 +278,7 @@ Authors:
 %_prefix/lib/mono/2.0/Microsoft.JScript.dll
 
 %package -n mono-locale-extras
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Extra locale information
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -316,7 +316,7 @@ Authors:
 %_prefix/lib/mono/2.0/I18N.Other.dll
 
 %package -n mono-data
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -380,7 +380,7 @@ Authors:
 %_prefix/lib/mono/2.0/System.Data.DataSetExtensions.dll
 
 %package -n mono-winforms
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Mono's Windows Forms implementation
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -424,7 +424,7 @@ Authors:
 %_prefix/lib/mono/gac/Mono.WebBrowser
 
 %package -n ibm-data-db2
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Database connectivity for DB2
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -453,7 +453,7 @@ Authors:
 %_prefix/lib/mono/2.0/IBM.Data.DB2.dll
 
 %package -n mono-extras
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Extra packages
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -482,6 +482,8 @@ Authors:
 %_mandir/man1/mono-service.1%ext_man
 %_bindir/mono-service
 %_bindir/mono-service2
+%_prefix/lib/mono/1.0/installutil.exe*
+%_prefix/lib/mono/2.0/installutil.exe*
 # These are errors because they should be symlinks, but they are copies, so rpmlint detects duplicate files
 %_prefix/lib/mono/gac/mono-service
 %_prefix/lib/mono/1.0/mono-service.exe*
@@ -512,7 +514,7 @@ Authors:
 %_prefix/lib/mono/2.0/Microsoft.Vsa.dll
 
 %package -n mono-data-sqlite
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -547,7 +549,7 @@ Authors:
 %_prefix/lib/mono/2.0/Mono.Data.Sqlite.dll
 
 %package -n mono-data-sybase
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -617,7 +619,7 @@ Authors:
 %_libdir/pkgconfig/wcf.pc
 
 %package -n mono-web
-License:        LGPL v2.1 or later
+License:        X11/MIT; Ms-Pl
 Summary:        Mono implementation of ASP.NET, Remoting and Web Services
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -718,7 +720,7 @@ Authors:
 %config %_sysconfdir/mono/2.0/Browsers
 
 %package -n mono-data-oracle
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -748,7 +750,7 @@ Authors:
 %_prefix/lib/mono/2.0/System.Data.OracleClient.dll
 
 %package -n mono-data-postgresql
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -778,7 +780,7 @@ Authors:
 %_prefix/lib/mono/2.0/Npgsql.dll
 
 %package -n bytefx-data-mysql
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -808,13 +810,13 @@ Authors:
 %_prefix/lib/mono/2.0/ByteFX.Data.dll
 
 %package -n mono-nunit
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        NUnit Testing Framework
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
 
 %package -n mono-data-firebird
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Database connectivity for Mono
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -887,7 +889,7 @@ Authors:
 %_libdir/pkgconfig/mono-nunit.pc
 
 %package -n mono-devel
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Mono development tools
 Group:          Development/Languages/Mono
 Requires:       mono-core == %version-%release
@@ -895,7 +897,12 @@ Requires:       glib2-devel
 %if 0%{?monobuild}
 Requires:       libgdiplus0
 %else
-Requires:       libgdiplus0 = 2.2
+Requires:       libgdiplus0
+%endif
+# We build natively on ppc64 now
+%ifarch ppc64
+Provides:       mono-biarchcompat
+Obsoletes:      mono-biarchcompat
 %endif
 
 %description -n mono-devel
@@ -926,6 +933,7 @@ fi
 %files -n mono-devel
 %defattr(-, root, root)
 # libs
+%_libdir/libmono.so
 %_libdir/libmono.a
 %verify(not size md5 mtime) %_libdir/libmono.la
 # exes
@@ -943,8 +951,6 @@ fi
 %_prefix/lib/mono/1.0/ilasm.exe*
 %_prefix/lib/mono/2.0/ilasm.exe*
 %_prefix/lib/mono/1.0/installvst.exe*
-%_prefix/lib/mono/1.0/installutil.exe*
-%_prefix/lib/mono/2.0/installutil.exe*
 %_prefix/lib/mono/1.0/mkbundle.exe*
 %_prefix/lib/mono/2.0/mkbundle.exe*
 %_prefix/lib/mono/1.0/monop.exe*
@@ -1095,7 +1101,7 @@ Monodoc-core contains documentation tools for C#.
 %{_bindir}/monodocs2html
 %{_bindir}/monodocs2slashdoc
 %{_prefix}/lib/monodoc
-%_libdir/pkgconfig/monodoc.pc
+%{_libdir}/pkgconfig/monodoc.pc
 %{_mandir}/man1/mdassembler.1%ext_man
 %{_mandir}/man1/mdoc-assemble.1%ext_man
 %{_mandir}/man1/mdoc-export-html.1%ext_man
@@ -1109,7 +1115,7 @@ Monodoc-core contains documentation tools for C#.
 %{_mandir}/man5/mdoc.5%ext_man
 
 %package -n mono-complete
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        A .NET Runtime Environment
 Group:          Development/Languages/Mono
 Requires:       bytefx-data-mysql = %version-%release

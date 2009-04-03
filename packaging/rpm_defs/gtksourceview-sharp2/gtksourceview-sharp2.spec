@@ -2,7 +2,7 @@ Name:           gtksourceview-sharp2
 BuildRequires:  gnome-sharp2 gtk-sharp2-gapi gtksourceview-devel mono-devel monodoc-core
 Requires:       gnome-sharp2
 Version:        0.12
-Release:        92
+Release:        0
 License:        GPL v2 or later
 BuildArch:      noarch
 Url:            http://www.go-mono.org/
