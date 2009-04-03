@@ -679,8 +679,11 @@ Authors:
 %_prefix/lib/mono/2.0/System.Web.DynamicData.dll
 %_prefix/lib/mono/gac/System.ComponentModel.DataAnnotations
 %_prefix/lib/mono/2.0/System.ComponentModel.DataAnnotations.dll
+%_prefix/lib/mono/gac/System.Web.Mvc
+%_prefix/lib/mono/2.0/System.Web.Mvc.dll
 # pkg-config files
 %_libdir/pkgconfig/mono.web.pc
+%_libdir/pkgconfig/mono.web.mvc.pc
 %_libdir/pkgconfig/system.web.extensions_1.0.pc
 %_libdir/pkgconfig/system.web.extensions.design_1.0.pc
 # exes
