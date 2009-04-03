@@ -28,7 +28,7 @@
 #	gtk-sharp212 gnome-sharp220 gnome-desktop-sharp2
 
 	<h3>MonoDevelop</h3>
-#	monodevelop monodevelop-boo monodevelop-database monodevelop-java
+#	monodevelop monodevelop-boo monodevelop-database monodevelop-debugger-gdb monodevelop-debugger-mdb monodevelop-java monodevelop-vala
 
 	<h3>Other</h3>
 #	gnome-keyring-sharp maemo-sharp webkit-sharp uiaatkbridge uiautomationwinforms
