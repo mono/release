@@ -685,9 +685,9 @@ Authors:
 %_prefix/lib/mono/2.0/System.Web.Mvc.dll
 # pkg-config files
 %_libdir/pkgconfig/mono.web.pc
-%_libdir/pkgconfig/mono.web.mvc.pc
 %_libdir/pkgconfig/system.web.extensions_1.0.pc
 %_libdir/pkgconfig/system.web.extensions.design_1.0.pc
+%_libdir/pkgconfig/system.web.mvc.pc
 # exes
 %_prefix/lib/mono/1.0/disco.exe*
 %_prefix/lib/mono/1.0/soapsuds.exe*
