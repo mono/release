@@ -1041,7 +1041,7 @@ POSTBUILD_STEP1 () {
 		for profile in net_1_1:1.0 net_2_0:2.0 net_2_1:2.1 net_3_5:3.5; do
 			SRC="$(echo $profile | cut -d : -f 1)"
 			DEST="$(echo $profile | cut -d : -f 2)"
-			scp -i $KEY -q -C -o StrictHostKeyChecking=no mcs/class/lib/$SRC/* $HOST/$DEST/
+			scp -i $KEY -q -C -o StrictHostKeyChecking=no mcs/class/lib/$SRC/*.dll $HOST/$DEST/
 		done
 	else
 		echo "Didn't find ssh key"
