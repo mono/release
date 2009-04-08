@@ -5,7 +5,7 @@ chroot_path=/usr/bin/chroot
 arch_change_path=/usr/bin/powerpc32
 target_command_prefix=". /etc/profile;"
 
-web_index=2
+web_index=3
 
 YAST_INSTALL=1
 RPM_MD_REPO=1
