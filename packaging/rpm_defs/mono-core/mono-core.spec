@@ -168,6 +168,8 @@ Authors:
 %_prefix/lib/mono/2.0/Mono.Simd.dll
 %_prefix/lib/mono/gac/Mono.Management
 %_prefix/lib/mono/2.0/Mono.Management.dll
+%_prefix/lib/mono/gac/Mono.Tasklets
+%_prefix/lib/mono/2.0/Mono.Tasklets.dll
 %_prefix/lib/mono/gac/Mono.Security
 %_prefix/lib/mono/1.0/Mono.Security.dll
 %_prefix/lib/mono/2.0/Mono.Security.dll
