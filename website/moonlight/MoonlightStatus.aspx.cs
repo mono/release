@@ -19,8 +19,8 @@ namespace MoonlightStatus
 	
 	public partial class MoonlightStatus : System.Web.UI.Page
 	{
-		static string timeStampFile = "MoonlightStatus_timestamp";
-		static string cacheFile = "MoonlightStatus_cache";
+		static string timeStampFile = "ml_timestamp";
+		static string cacheFile = "ml_cache";
 		static string url1 = "http://anonsvn.mono-project.com/source/branches/moon-1-0/demo-status.txt";
 		static string url2 = "http://anonsvn.mono-project.com/source/trunk/moon/demo-status.txt";
 		string url = string.Empty;
@@ -98,7 +98,7 @@ namespace MoonlightStatus
 			if (File.Exists(f))
 			{
 			
-				FileStream reader = new FileStream(cacheFile,FileMode.Open,FileAccess.Read);
+				FileStream reader = new FileStream(f,FileMode.Open,FileAccess.Read);
 				IFormatter formatter = new BinaryFormatter();
 				list = (ArrayList)formatter.Deserialize(reader);
 				reader.Close();
