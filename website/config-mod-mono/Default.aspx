@@ -271,7 +271,7 @@
                 <td>
                     <label for="<%= this.chkIomap.ClientID %>" class="info">
                         Enable Mono's platform abstraction layer for file IO.  Makes file access case insensitive and treats backslashes (\) as slashes (/).<br />
-                        (<em>Warning: Leaving platform abstraction enabled will negatively imapact performance</em>.)</label>
+                        (<em>Warning: Leaving platform abstraction enabled will negatively impact performance</em>.)</label>
                 </td>
             </tr>
             <tr>
