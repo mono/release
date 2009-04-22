@@ -1036,7 +1036,7 @@ POSTBUILD_STEP1 () {
 	fi
 
 	KEY="/tmp/monobuild/source_dist_creator/distro_source_key"
-	HOST="mono-web@www.go-mono.com:/var/www/mono-website/go-mono/status/binary/"
+	HOST="mono-web@www.go-mono.com:/srv/www/htdocs/mono-website/go-mono/status/binary/"
 	if test -f "$KEY"; then
 		for profile in net_1_1:1.0 net_2_0:2.0 net_2_1:2.1 net_3_5:3.5; do
 			SRC="$(echo $profile | cut -d : -f 1)"
