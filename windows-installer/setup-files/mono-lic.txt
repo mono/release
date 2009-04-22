@@ -1,4 +1,4 @@
-The C# Compiler is released under the terms of the GNU General Public License (GPL). The runtime libraries are under the GNU Library GPL 2.0 (LGPL 2.0). And the class libraries are released under the terms of the MIT X11 license.
+The C# compiler is dual-licensed under the MIT/X11 license and the GNU General Public License (GPL).  The tools are released under the terms of the GNU General Public License (GPL).  The runtime libraries are under the GNU Library GPL 2.0 (LGPL 2.0).  The class libraries are released under the terms of the MIT X11 license.
 
 The Mono runtime and the Mono C# Compiler are also available under a proprietary license for those who can not use the LGPL and the GPL in their code.
 
