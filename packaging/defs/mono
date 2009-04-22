@@ -15,6 +15,7 @@ BUILD_HOSTS=(
 	sunos-10-sparc
 	sunos-11-x86
 	win-4-i386
+	gentoo-1-mips
 )
 
 USE_HOSTS=(
@@ -287,6 +288,14 @@ debian_ZIP_BUILD () {
 
 	make || exit 1
 	make install || exit 1
+}
+
+gentoo_1_mips_ZIP_BUILD () {
+	ssh head "cd $PWD && ./configure --prefix=/tmp/install --with-tls=pthread"
+	ssh head "cd $PWD && make" || exit 1
+	ssh head "cd $PWD && make install" || exit 1
+	ssh head "cd $PWD && mv /tmp/install ./install" || exit 1
+	mv ./install /tmp/install || exit 1
 }
 
 get_destroot () {

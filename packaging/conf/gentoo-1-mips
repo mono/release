@@ -1,0 +1,4 @@
+username=monoqa
+hostname=girtab.n-ix.com.ua
+build_location=/home/monoqa/monobuild
+USE_ZIP_PKG=1
