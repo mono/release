@@ -1030,6 +1030,7 @@ fi
 %_bindir/mono-find-requires
 %_bindir/mono-shlib-cop
 %_bindir/mono-xmltool
+%_bindir/pdb2mdb
 %_bindir/pedump
 %_bindir/permview
 %_bindir/prj2make
