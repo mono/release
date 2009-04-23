@@ -992,6 +992,7 @@ fi
 %_mandir/man1/monop.1%ext_man
 %_mandir/man1/mono-shlib-cop.1%ext_man
 %_mandir/man1/permview.1%ext_man
+%_mandir/man1/pdb2mdb.1%ext_man
 %_mandir/man1/prj2make.1%ext_man
 %_mandir/man1/secutil.1%ext_man
 %_mandir/man1/sgen.1%ext_man
