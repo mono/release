@@ -493,9 +493,6 @@ POSTBUILD_TEST19 () {
 
 POSTBUILD_TEST_NAME20="test-System_Drawing-1.0"
 POSTBUILD_TEST20 () {
-	DISPLAY=x32-linux-1.mono.lab.novell.com:1
-	export DISPLAY
-
 	cd mcs/class/System.Drawing
 	$make_path run-test PROFILE=net_1_1
 	RESULT=$?
@@ -505,9 +502,6 @@ POSTBUILD_TEST20 () {
 
 POSTBUILD_TEST_NAME21="test-System_Drawing-2.0"
 POSTBUILD_TEST21 () {
-	DISPLAY=x32-linux-1.mono.lab.novell.com:1
-	export DISPLAY
-
 	cd mcs/class/System.Drawing
 	$make_path run-test PROFILE=net_2_0
 	RESULT=$?
@@ -521,13 +515,16 @@ POSTBUILD_TEST22 () {
 		echo "No winforms tests on Mac for now"
 		exit 0;
 	fi
-	DISPLAY=x32-linux-1.mono.lab.novell.com:1
-	export DISPLAY
+
+	Xvfb -ac -screen 0 1280x1024x24 -nolisten tcp :31 2>/dev/null &
+	export DISPLAY=:31
+	sleep 3
 
 	cd mcs/class/Managed.Windows.Forms
 	$make_path run-test PROFILE=net_1_1
 	RESULT=$?
 	cat "TestResult-net_1_1.log"
+	kill %1
 	exit $RESULT
 }
 
@@ -537,13 +534,16 @@ POSTBUILD_TEST23 () {
 		echo "No winforms tests on Mac for now"
 		exit 0;
 	fi
-	DISPLAY=x32-linux-1.mono.lab.novell.com:1
-	export DISPLAY
+
+	Xvfb -ac -screen 0 1280x1024x24 -nolisten tcp :32 2>/dev/null &
+	export DISPLAY=:32
+	sleep 3
 
 	cd mcs/class/Managed.Windows.Forms
 	$make_path run-test PROFILE=net_2_0
 	RESULT=$?
 	cat "TestResult-net_2_0.log"
+	kill %1
 	exit $RESULT
 }
 
