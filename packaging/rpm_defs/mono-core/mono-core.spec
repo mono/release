@@ -968,6 +968,7 @@ fi
 %_prefix/lib/mono/2.0/mono-shlib-cop.exe*
 %_prefix/lib/mono/1.0/dtd2rng.exe*
 %_prefix/lib/mono/2.0/mono-xmltool.exe*
+%_prefix/lib/mono/2.0/pdb2mdb.exe*
 # xbuild related files
 %_prefix/lib/mono/2.0/xbuild.exe*
 %_prefix/lib/mono/2.0/Microsoft.Build.xsd
