@@ -52,7 +52,7 @@ Authors:
 %files
 %defattr(-, root, root)
 %doc AUTHORS COPYING ChangeLog README NEWS
-%{_bindir}/mdb
+%{_bindir}/mdb*
 %{_libdir}/*.so*
 %{_prefix}/lib/mono/2.0/mdb.exe
 %{_prefix}/lib/mono/2.0/mdb-symbolreader.exe
