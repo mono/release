@@ -19,7 +19,7 @@ import packaging
 # Which noarch packages to include in the various packages
 packages_to_include = {}
 
-packages_to_include['macos-10-ppc'] = ['libgdiplus', 'mono', 'cocoa-sharp', 'xsp', 'boo', 'ikvm', 'nant', 'IPCE', 'mono-basic', 'gtk-sharp212', 'mono-addins' ]
+packages_to_include['macos-10-ppc'] = ['libgdiplus', 'mono', 'cocoa-sharp', 'xsp', 'boo', 'nant', 'IPCE', 'mono-basic', 'gtk-sharp212', 'mono-addins' ]
 
 packages_to_include['macos-10-x86'] = packages_to_include['macos-10-ppc']
 
@@ -166,7 +166,7 @@ conf.buildenv.print_command=1
 
 # Don't strip these files
 unstripped_bins = "mono"
-unstripped_libs = "libgdiplus*dylib lib*ono*dylib libikvm*dylib"
+unstripped_libs = "libgdiplus*dylib lib*ono*dylib"
 conf.buildenv.execute_command("cd %s%s/bin; mv %s ..;  strip *; cd ..; mv %s bin " % (remote_PKGROOT, prefix, unstripped_bins, unstripped_bins ) )
 conf.buildenv.execute_command("cd %s%s/lib; mv %s ..;  strip -S *.dylib *.a; cd ..; mv %s lib" % (remote_PKGROOT, prefix, unstripped_libs, unstripped_libs ) )
 # Still caused problems linking... but this doesn't seem to matter
