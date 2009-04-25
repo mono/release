@@ -1049,12 +1049,14 @@ fi
 %_prefix/lib/mono/2.0/PEAPI.dll
 %_prefix/lib/mono/gac/Microsoft.Build.Tasks
 %_prefix/lib/mono/2.0/Microsoft.Build.Tasks.dll
+%_prefix/lib/mono/gac/Microsoft.Build.Tasks.v3.5
 %_prefix/lib/mono/3.5/Microsoft.Build.Tasks.v3.5.dll
 %_prefix/lib/mono/gac/Microsoft.Build.Framework
 %_prefix/lib/mono/2.0/Microsoft.Build.Framework.dll
 %_prefix/lib/mono/3.5/Microsoft.Build.Framework.dll
 %_prefix/lib/mono/gac/Microsoft.Build.Utilities
 %_prefix/lib/mono/2.0/Microsoft.Build.Utilities.dll
+%_prefix/lib/mono/gac/Microsoft.Build.Utilities.v3.5
 %_prefix/lib/mono/3.5/Microsoft.Build.Utilities.v3.5.dll
 %_prefix/lib/mono/gac/Microsoft.Build.Engine
 %_prefix/lib/mono/2.0/Microsoft.Build.Engine.dll
