@@ -99,7 +99,7 @@ var data =
 			{
 				"name" : i586_x86_64_ia64,
 				"desc" : "",
-				"downloadText" : yast + "<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/SLE_10\">http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.1</a></ul>" + yast_help
+				"downloadText" : yast + "<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/SLE_10\">http://ftp.novell.com/pub/mono/download-stable/SLE_10</a></ul>" + yast_help
 			}
 			]
 		},
@@ -114,7 +114,7 @@ var data =
 			{
 				"name" : i586_x86_64_ppc_ppc64_ia64,
 				"desc" : "",
-				"downloadText" : zypper + "<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/SLE_11\">http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.1</a></ul>" + zypper_help
+				"downloadText" : zypper + "<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/SLE_11\">http://ftp.novell.com/pub/mono/download-stable/SLE_11</a></ul>" + zypper_help
 			}
 			]
 		}
