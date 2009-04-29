@@ -9,7 +9,7 @@ body {
 	font-size: 1.0em;
 }
 
-.preview-notice {
+#preview-notice {
 	margin-left: auto;
 	padding: 5px;
 	margin-right: auto;
@@ -18,11 +18,11 @@ body {
 	border: 2px solid #E6E600;
 }
 
-.preview-notice a {
+#preview-notice a {
 	color:	#f60;
 }
 
-.preview-notice a:hover {
+#preview-notice a:hover {
 	color:	#f40;
 }
 
