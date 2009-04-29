@@ -284,7 +284,7 @@ href="http://silverlight.net">Microsoft Silverlight</a> for Unix systems.</p>
 Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">supported operating systems and architectures</a>
 </p>
 
-<div style="margin-left: auto; padding: 5px; margin-right: auto; background-color: orange; color: #000000; border: 2px solid #E6E600;">
+<div id="preview-notice">
 <p><b>Preview Release Notice</b> </p>
 
 <p>

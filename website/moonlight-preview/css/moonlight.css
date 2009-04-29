@@ -9,6 +9,23 @@ body {
 	font-size: 1.0em;
 }
 
+.preview-notice {
+	margin-left: auto;
+	padding: 5px;
+	margin-right: auto;
+	background-color: orange;
+	color: #000000;
+	border: 2px solid #E6E600;
+}
+
+.preview-notice a {
+	color:	#f60;
+}
+
+.preview-notice a:hover {
+	color:	#f40;
+}
+
 a {
 	color: #fc0;
 }
