@@ -380,7 +380,7 @@ Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">
 </ul>
 
 <h1>Bugs</h1>
-If you come across any bugs in Moonlight 1.0, please tell us about it. See our <a href="http://mono-project.com/Bugs">Bugzilla page</a> about logging bugs.
+If you come across any bugs using the preview, please tell us about it. See our <a href="http://mono-project.com/Bugs">Bugzilla page</a> about logging bugs.
 <br/>
 <h1>Source</h1>
 You can download a tarball of the source 
@@ -415,7 +415,7 @@ pageTracker._trackPageview();
 
 <% if (Request["unknown"] == "1") { %>
 <script type="text/javascript">
-	alert("Moonlight 1.0 does not support your operating system and/or browser configuration. Please check the list of supported platforms for more details");
+	alert("Moonlight 2.0 does not support your operating system and/or browser configuration. Please check the list of supported platforms for more details");
 </script>
 <% } %>
 
