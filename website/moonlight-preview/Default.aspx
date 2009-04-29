@@ -141,8 +141,8 @@ string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight-pre
 
 void Page_Init(object sender, EventArgs e)
 {
-        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/latest/";
-        dir = "downloads/latest";
+        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/latest-preview/";
+        dir = "downloads/latest-preview";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -284,12 +284,12 @@ href="http://silverlight.net">Microsoft Silverlight</a> for Unix systems.</p>
 Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">supported operating systems and architectures</a>
 </p>
 
-<div style="margin-left: auto; padding: 5px; margin-right: auto; background-color: #FFFF80; border: 1px solid #E6E600;">
+<p style="margin-left: auto; padding: 5px; margin-right: auto; background-color: #FFFF80; border: 1px solid #E6E600;">
 <b>Preview Release Notice</b>
 
 Keep in mind this preview release is not feature complete. Most importantly <b>not</b> all security features are present or fully enabled in this release. Even existing security features have, at this stage, received only minimal testing and no security audit of the source code (mono or moonlight) has yet been done.
 As such you should only use this preview plugin on trusted sites (e.g. internal or well-known web sites) on non-production computers. This situation will gradually evolve over the next preview and beta releases. An up to date overview of Moonlight security features status can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight Security Status</a> wiki page.
-</div>
+</p>
 
 <!--
 <table id="sysreq">
@@ -343,7 +343,7 @@ As such you should only use this preview plugin on trusted sites (e.g. internal 
 <ul class="machine"> 
 <li>
     <!-- <a href="<%=filepath%>" title="<%=xpi%>"> -->
-     <a href="/archive/moonlight-plugins/latest/<%=xpi%>" title="<%=xpi%>">
+     <a href="/archive/moonlight-plugins/latest-preview/<%=xpi%>" title="<%=xpi%>">
       <img src="images/down.png" alt="Download"/>
       <strong>Linux/<%=userfriendly%></strong>
       <span class="filesize"><%=filesize%></span>
