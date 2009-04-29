@@ -6,7 +6,7 @@
 <head>
 <title>Moonlight Downloads</title>
 <link rel="stylesheet" type="text/css" href="css/moonlight.css"/>
-<script type="text/javascript" src="staging_data.js"></script>
+<script type="text/javascript" src="release_data.js"></script>
 </head>
 
 <body>
@@ -26,7 +26,7 @@
 <script type="text/javascript" src="Silverlight.js" /></script>
 <script type="text/javascript">
 
-var released_version = "1.0b1";
+var released_version = "1.0.1";
 
 var plugin = navigator.plugins["Silverlight Plug-In"];
 if (plugin.filename.indexOf("libmoonloader") == 0) {
@@ -75,16 +75,26 @@ if (plugin.filename.indexOf("libmoonloader") == 0) {
     moonlight_banner.style.marginBottom = "10px";
 
     var moonlight_version = control.settings.version;
+    dump("current version = " + moonlight_version);
+    dump("released version = " + released_version);
+    //var x = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+    //            .getService(Components.interfaces.nsIVersionComparator)
+    //            .compare(moonlight_version,released_version);
+
+	
 
     //console.log ("control.settings.version = " + control.settings.version);    
 
     if (moonlight_version == released_version) {
       message.text = "Congratulations, you're running the current release of moonlight!";
     }
-    else if (moonlight_version < released_version) {
+    else if ((moonlight_version < released_version) || 
+		(moonlight_version == "1.0b1") ||
+		(moonlight_version == "1.0b2") || 
+		(moonlight_version == "1.0")) {
       message.text = "You're running an older release of moonlight.  time to upgrade.";
     }
-    else if (moonlight_version > released_version) {
+    else {
       message.text = "You're running an unstable build of moonlight.";
     }
   }
@@ -124,6 +134,7 @@ string filepath = string.Empty;
 string filesize = string.Empty;
 string fileupdate = string.Empty;
 string userfriendly = string.Empty;
+string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
 
 void Page_Init(object sender, EventArgs e)
 {
@@ -164,7 +175,7 @@ void Page_Load(object sender, EventArgs e)
 
 string LastModified (string path)
 {
-	string abspath = Path.Combine("/var/www/mono-website/go-mono/archive/moonlight",path);
+	string abspath = Path.Combine(htdocs_path,path);
 
 	if (File.Exists(abspath))
         	return new FileInfo (abspath).LastWriteTime.ToString ("MMM dd, yyyy");
@@ -176,7 +187,7 @@ string LastModified (string path)
 
 string FileSize (string path)
 {
-	string abspath = Path.Combine("/var/www/mono-website/go-mono/archive/moonlight",path);
+	string abspath = Path.Combine(htdocs_path,path);
 
 	if (File.Exists(abspath))
         	return (((decimal) new FileInfo (abspath).Length) / 1024 / 1024).ToString("F1") + " MB";
@@ -209,7 +220,7 @@ void RadioClicked(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-1.0";
+	xpi = basename + "-1.0.1";
 	
 	//if (prof1_0.Checked)
 	//	xpi += "-1.0";
@@ -369,17 +380,19 @@ Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">
 If you come across any bugs in Moonlight 1.0, please tell us about it. See our <a href="http://mono-project.com/Bugs">Bugzilla page</a> about logging bugs.
 <br/>
 <h1>Source</h1>
-You can download a tar ball of the source 
+You can download a tarball of the source 
 <script type="text/javascript">
-	
 	var html = "<a href='" + data.tarball + "'>here</a> ";
 	document.write(html);
-
 </script>
-or you can check it out from svn.
-	<pre> svn co svn://anonsvn.mono-project.com/source/tags/moon/1.0b1 </pre>
 
-As always, you can get the development soucre from trunk:
+or you can check it out from svn.
+<script type="text/javascript">
+	var html = "<pre> svn co " + data.tag + "</pre> ";
+	document.write(html);
+</script>
+
+As always, you can get the development source from trunk:
 
 	<pre> svn co svn://anonsvn.mono-project.com/source/trunk/moon </pre>
 
