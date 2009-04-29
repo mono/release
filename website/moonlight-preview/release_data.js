@@ -5,24 +5,21 @@ var x86_64 = "x86 64bit (x86_64)";
 
 var data =
 {
-	"title"   : "Moonlight 1.0.1",
-	"release" : "1.0.1",
+	"title"   : "Moonlight 2.0 preview 1",
+	"release" : "1.9.0",
 	"tarball" : "http://ftp.novell.com/pub/mono/sources/moon/moon-1.0.1.tar.bz2",
 	"tag"     : "http://anonsvn.mono-project.com/source/tags/moon/1.0.1",
 	"archs" : [
 		{
 			"name" : "32 bit",
-			"1.0" : "novell-moonlight-1.0.1-i586.xpi",
-			"2.0" : "novell-moonlight-2.0-i586.xpi"
+			"2.0" : "novell-moonlight-1.9.0-i586.xpi"
 		},
 		{
 			"name" : "64 bit",
-			"1.0" : "novell-moonlight-1.0.1-x86_64.xpi",
-			"2.0" : "novell-moonlight-2.0-x86_64.xpi"
+			"2.0" : "novell-moonlight-1.9.0-x86_64.xpi"
 		},
 		{
 			"name" : "PowerPC",
-			"1.0" : "",
 			"2.0" : ""
 		}
 	],
@@ -46,10 +43,7 @@ var data =
 		}
 	],
 	"releaseNotes" : [
-		"Fixed bug relating to decimal representation in different locales",
-		"Fixed issues with non-ascii locales",
-		"Added support for Moonshine media player",
-		"Fixed codec installation issues",
-		"Fixed some event handler issues"
+		"coming soon",
+		"no really"
 	]
 };
