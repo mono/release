@@ -26,7 +26,7 @@
 <script type="text/javascript" src="Silverlight.js" /></script>
 <script type="text/javascript">
 
-var released_version = "1.0.1";
+var released_version = "1.9.0";
 
 var plugin = navigator.plugins["Silverlight Plug-In"];
 if (plugin.filename.indexOf("libmoonloader") == 0) {
@@ -86,7 +86,10 @@ if (plugin.filename.indexOf("libmoonloader") == 0) {
     //console.log ("control.settings.version = " + control.settings.version);    
 
     if (moonlight_version == released_version) {
-      message.text = "Congratulations, you're running the current release of moonlight!";
+      message.text = "Congratulations, you're running the current preview release of moonlight!";
+    }
+    else if ((moonlight_version == "1.0.1")) {
+      message.text = "You're running the latest stable release of moonlight.";
     }
     else if ((moonlight_version < released_version) || 
 		(moonlight_version == "1.0b1") ||
@@ -134,7 +137,7 @@ string filepath = string.Empty;
 string filesize = string.Empty;
 string fileupdate = string.Empty;
 string userfriendly = string.Empty;
-string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
+string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight-preview";
 
 void Page_Init(object sender, EventArgs e)
 {
