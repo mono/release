@@ -369,9 +369,7 @@ As such you should only use this preview plugin on trusted sites (e.g. internal 
 
 <p><img src="images/information-bar.png" alt="Information Bar"/></p>
 
-<p>To continue the installation click <em>Edit Options...</em> on the information bar and add this site to <em>Allowed Sites</em>, then click on the appropriate installer again.</p>
-
-<p><img src="images/allowed-sites.png" alt="Allowed Sites"/></p>
+<p>To continue the installation click <em>Allow.</em>
 
 <h2><a name="changelog"></a>Release Notes</h2>
 Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Preview#Release_Notes">here</a>.
