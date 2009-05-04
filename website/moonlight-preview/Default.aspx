@@ -284,8 +284,29 @@ href="http://silverlight.net">Microsoft Silverlight</a> for Unix systems.</p>
 Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">supported operating systems and architectures</a>
 </p>
 
+<!-- begin codec flub notice -->
 <div id="preview-notice">
-<p><b>Preview Release Notice</b> </p>
+<p><b>Preview Release Codec Notice: May 4 3:52pm PDT</b> </p>
+
+<p> We discovered late in the game (after the bits had been pushed)
+that the codec build contains a dependency on a library that isn't
+downloaded with the xpi.  This will cause visiting a media site to
+redownload the codecs in an infinite loop as long as you continue to
+tell moonlight to download the additional codec content.
+</p>
+
+<p>We are preparing an update that will resolve this problem.  When
+the update is ready Firefox will notify you when you next time you
+start up your browser.  You can also use the "Find Updates" button in
+the Add-ons manager (go to Tools -&gt; Add-ons) to check manually.
+</p>
+
+</div>
+<p></p>
+<!-- end codec flub notice -->
+
+<div id="preview-notice">
+<p><b>Preview Release Security Notice</b> </p>
 
 <p>
 Keep in mind this preview release is not feature complete. Most importantly <b>not</b> all security features are present or fully enabled in this release. Even existing security features have, at this stage, received only minimal testing and no security audit of the source code (mono or moonlight) has yet been done.
