@@ -374,40 +374,10 @@ As such you should only use this preview plugin on trusted sites (e.g. internal 
 <p><img src="images/allowed-sites.png" alt="Allowed Sites"/></p>
 
 <h2><a name="changelog"></a>Release Notes</h2>
-<ul>
-<script type="text/javascript">
-	var notes = "";
-	for(i=0; i < data.releaseNotes.length; i++)
-	{
-		notes += "<li>" + data.releaseNotes[i] + "</li>";
-
-	}
-	document.write(notes);
-
-</script>
-<!-- -->
-</ul>
+Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Preview#Release_Notes">here</a>.
 
 <h1>Bugs</h1>
 If you come across any bugs using the preview, please tell us about it. See our <a href="http://mono-project.com/Bugs">Bugzilla page</a> about logging bugs.
-<br/>
-<h1>Source</h1>
-You can download a tarball of the source 
-<script type="text/javascript">
-	var html = "<a href='" + data.tarball + "'>here</a> ";
-	document.write(html);
-</script>
-
-or you can check it out from svn.
-<script type="text/javascript">
-	var html = "<pre> svn co " + data.tag + "</pre> ";
-	document.write(html);
-</script>
-
-As always, you can get the development source from trunk:
-
-	<pre> svn co svn://anonsvn.mono-project.com/source/trunk/moon </pre>
-
 
 </div> <!-- col2 -->
 </div> <!-- page -->
