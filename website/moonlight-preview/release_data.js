@@ -7,8 +7,8 @@ var data =
 {
 	"title"   : "Moonlight 2.0 preview 1",
 	"release" : "1.9.0",
-	"tarball" : "http://ftp.novell.com/pub/mono/sources/moon/moon-1.9.0.tar.bz2",
-	"tag"     : "http://anonsvn.mono-project.com/source/tags/moon/1.9p1",
+	"tarball" : "http://ftp.novell.com/pub/mono/sources/moon/moonlight-1.9.0.tar.bz2",
+	"tag"     : "http://anonsvn.mono-project.com/source/tags/moon/1.9.0",
 	"archs" : [
 		{
 			"name" : "32 bit",
