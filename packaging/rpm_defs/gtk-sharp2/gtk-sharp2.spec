@@ -12,12 +12,11 @@ Obsoletes:      gtk-sharp2-64bit
 Obsoletes:      gtk-sharp2-32bit
 %endif
 #
-Patch0:         gtk-sharp-optflags.patch
-Patch1:         gtk-sharp-revert_unportable_relocatable.patch
-Patch2:         gtk-sharp-makefile.patch
-Patch3:         gtk-sharp-find_gtkhtml_ver.patch
-Patch4:         gtk-sharp-fix_vte_so_version.patch
-Patch5:         gnome-sharp-revert_unportable_relocatable.patch
+Patch0:         gtk-sharp-revert_unportable_relocatable.patch
+Patch1:         gtk-sharp-makefile.patch
+Patch2:         gtk-sharp-find_gtkhtml_ver.patch
+Patch3:         gtk-sharp-fix_vte_so_version.patch
+Patch4:         gnome-sharp-revert_unportable_relocatable.patch
 %define old_version 2.4.3
 %define new_version 2.8.5
 %define new_split_version 2.10.4
@@ -258,18 +257,15 @@ This package contains Mono bindings for gconf and gconf peditors.
 
 %prep
 %setup -q -n %{_name}-%{version}
-if [ %version \< 2.10.3 ] ; then
-%patch0 -p1
-fi
 %if %platform_desktop_split == 0
-%patch1 -p1
+%patch0 -p1
 # 2.8.4 and later on 2.8.x branch doesn't need this patch
 if [ %version \< 2.8.4 ] ; then
-%patch2
+%patch1
 fi
+%patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
 %endif
 
 %build
