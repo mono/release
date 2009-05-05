@@ -6,17 +6,48 @@
 
 import xml.dom.minidom
 import xml.dom.ext
+import subprocess
+import sys
+import os
+import hashlib
 
 
 doc = None
+sha1sum = None
+
+#arch = 'i586'
+arch = 'x86_64'
+cur_version = '1.9.0.1'
+
+# versions that will upgrade to cur_version
+versions = ['1.9.0','1.9.*']
+
+xpifile = 'novell-moonlight-%s-%s.xpi' % (cur_version,arch)
+update_rdf = 'update-2.0-%s.rdf' % arch
+update_link = 'http://go-mono.com/archive/moonlight-plugins/latest-preview/%s' % xpifile
+
 rdf_ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 em_ns = "http://www.mozilla.org/2004/em-rdf#"
+max_firefox_version = "3.5.*"
+
+update_info_url = 'http://go-mono.com/archive/moonlight-plugins/latest/update.xhtml'
+
+
 
 def get_sha1sum():
-	pass
+	global sha1sum
+	sha = hashlib.sha1()
+	f = open(xpifile,'rb')
+	data = f.read()
+	sha.update(data)
+	sha1sum = sha.hexdigest()
 
-def prettyprint(doc):
-	xml.dom.ext.PrettyPrint(doc)
+	#cmd = 'sha1sum %s' % xpifile
+	#p = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
+	#stdout = p.stdout.readlines()
+	#sha1sum = stdout[0].split()[0]
+	#p.kill()
+	
 
 def create_text_node(name,text):
 
@@ -32,10 +63,10 @@ def create_target_application():
 
 	rdf_desc.appendChild(create_text_node("em:id","{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"))
 	rdf_desc.appendChild(create_text_node("em:minVersion","1.5"))
-	rdf_desc.appendChild(create_text_node("em:maxVersion","3.1.*"))
-	rdf_desc.appendChild(create_text_node("em:updateLink","http://go-mono.com/archive/moonlight-plugins/latest/novell-moonlight-1.0.1-i586.xpi"))
-	rdf_desc.appendChild(create_text_node("em:updateHash","sha1:85e01afad312a6af7028703049b6eb329ac82327"))
-	rdf_desc.appendChild(create_text_node("em:updateInfoURL","http://go-mono.com/archive/moonlight-plugins/latest/update.xhtml"))
+	rdf_desc.appendChild(create_text_node("em:maxVersion",max_firefox_version))
+	rdf_desc.appendChild(create_text_node("em:updateLink",update_link))
+	rdf_desc.appendChild(create_text_node("em:updateHash","sha1:%s" % sha1sum))
+	rdf_desc.appendChild(create_text_node("em:updateInfoURL",update_info_url))
 
 	return target
 
@@ -67,14 +98,20 @@ def main():
 	rdf_seq = doc.createElementNS(em_ns,"RDF:Seq")
 	em_updates.appendChild(rdf_seq)
 
-	for version in ["0.8","1.0b1","1.0"]:
+	for version in versions:
 		rdf_li = create_seq_li(version)
 		rdf_seq.appendChild(rdf_li)
 	
 
-
-
-	prettyprint(doc)
+	f = open(update_rdf,'w')
+	xml.dom.ext.PrettyPrint(doc,f)
+	f.close()
 
 if __name__ == '__main__':
+	if not os.path.isfile(xpifile):
+		print "Missing file %s" % xpifile
+		sys.exit(1)
+
+	print "Creating update.rdf for %s" % xpifile
+	get_sha1sum()
 	main()
