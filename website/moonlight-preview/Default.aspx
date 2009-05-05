@@ -26,7 +26,7 @@
 <script type="text/javascript" src="Silverlight.js" /></script>
 <script type="text/javascript">
 
-var released_version = "1.9.0";
+var released_version = "1.9.0.1";
 
 var plugin = navigator.plugins["Silverlight Plug-In"];
 if (plugin.filename.indexOf("libmoonloader") == 0) {
@@ -141,8 +141,8 @@ string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight-pre
 
 void Page_Init(object sender, EventArgs e)
 {
-        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/latest-preview/";
-        dir = "downloads/latest-preview";
+        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.9.0.1/";
+        dir = "downloads/1.9.0.1";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -223,7 +223,7 @@ void RadioClicked(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-1.9.0";
+	xpi = basename + "-1.9.0.1";
 	
 	//if (prof1_0.Checked)
 	//	xpi += "-1.0";
@@ -283,27 +283,6 @@ href="http://silverlight.net">Microsoft Silverlight</a> for Unix systems.</p>
 <p>
 Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">supported operating systems and architectures</a>
 </p>
-
-<!-- begin codec flub notice -->
-<div id="preview-notice">
-<p><b>Preview Release Codec Notice: May 4 3:52pm PDT</b> </p>
-
-<p> We discovered late in the game (after the bits had been pushed)
-that the codec build contains a dependency on a library that isn't
-downloaded with the xpi.  This will cause visiting a media site to
-redownload the codecs in an infinite loop as long as you continue to
-tell moonlight to download the additional codec content.
-</p>
-
-<p>We are preparing an update that will resolve this problem.  When
-the update is ready Firefox will notify you when you next time you
-start up your browser.  You can also use the "Find Updates" button in
-the Add-ons manager (go to Tools -&gt; Add-ons) to check manually.
-</p>
-
-</div>
-<p></p>
-<!-- end codec flub notice -->
 
 <div id="preview-notice">
 <p><b>Preview Release Security Notice</b> </p>
