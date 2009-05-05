@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ $# != 1 ]; then
+	echo "Usage: $0 <version>"
+	exit 1
+fi
+
+for i in *.in; do
+	
+	sed s/@@VERSION@@/$1/ $i > `basename $i .in`
+done
