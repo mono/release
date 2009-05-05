@@ -345,7 +345,7 @@ As such you should only use this preview plugin on trusted sites (e.g. internal 
 <ul class="machine"> 
 <li>
     <!-- <a href="<%=filepath%>" title="<%=xpi%>"> -->
-     <a href="/archive/moonlight-plugins/latest-preview/<%=xpi%>" title="<%=xpi%>">
+     <a href="/archive/moonlight-plugins/1.9.0.1/<%=xpi%>" title="<%=xpi%>">
       <img src="images/down.png" alt="Download"/>
       <strong>Linux/<%=userfriendly%></strong>
       <span class="filesize"><%=filesize%></span>
