@@ -14,20 +14,115 @@ import subprocess
 import sys
 import os
 import hashlib
+import getopt
 
-profile = '1.0'
-new_version = '1.0.1'
-old_versions = ['0.6','0.7','0.8','1.0b1','1.0b2','1.0']    # older versions that will upgrade to new_version
+# GLOBALS
+
+profile = '' 
+new_version = None
+old_versions = [] #['0.6','0.7','0.8','1.0b1','1.0b2','1.0']	# older versions that will upgrade to new_version
 archs = ['i586','x86_64']
-versions = old_versions + [new_version] # Note to self: this is intentional. Leave it alone :)
+versions = [] 
 
-update_link = 'http://go-mono.com/archive/moonlight-plugins'
+base_link = 'http://go-mono.com/archive/moonlight-plugins'
 rdf_ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 em_ns = "http://www.mozilla.org/2004/em-rdf#"
 max_firefox_version = "3.5.*"
 
-update_info_url = 'http://go-mono.com/archive/moonlight-plugins/latest/update.xhtml'
+############################################################################################
+#
+# Helper functions
+# 
 
+value_args = {'profile=':'Silverlight Profile of the plugin',
+		'new_version=':'New version of the plugin',
+		'old_versions=':'Comma separated list of older versions that will upgrade',
+		'archs=':'Comma separated list of computer archs for the plugin (Defaults to i586,x86_64',
+		'debug':'Prints the current values',
+		'help':'Prints this help message'}
+
+
+def get_args(cli_args):
+	global profile,archs
+	global new_version,old_versions,versions
+
+	debug = False
+	shortopts = "hp:n:a:o:d"
+	longopts = value_args.keys()
+	opts,args = getopt.getopt(cli_args,shortopts,longopts)
+	
+	for o,a in opts:
+		if o in ('-h','--help'):
+			usage()
+			sys.exit(1)
+		elif o in ('-p','--profile'):
+			profile = a
+		elif o in ('-n','--new_version'):
+			new_version = a
+		elif o in ('-a','--archs'):
+			archs = a.split(',')
+		elif o in ('-o','--old_versions'):
+			old_versions = a.split(',')
+		elif o in ('-d','--debug'):
+			debug = True
+		else:
+			print "ERROR: unhandled option %s" % o
+
+	if old_versions != None and new_version != None:
+		versions = old_versions + [new_version] # Note to self: this is intentional. Leave it alone :)
+	else:
+		versions = []
+
+	if debug:
+		print archs
+		print old_versions
+
+#-------------------------------------------------------------------------------------
+
+def usage():
+	print "\nUsage: %s [OPTIONS]\n" % sys.argv[0]
+
+	options = value_args.items()
+	options.sort()
+
+	for (k,v) in options:
+		print '     ',
+		print ('--'+ k).ljust(25),v.ljust(50)
+	print ''
+
+#-------------------------------------------------------------------------------------
+
+def checkValues():
+	isValid = True
+	if profile == None or profile == '':
+		print "Error: profile is not set"
+		isValid = False
+	if archs == None or archs == []:
+		print "Error: archs is not set"
+		isValid = False
+	if new_version == None or new_version == "":
+		print "Error: new_version is not set"
+		isValid = False
+	if old_versions == None or old_versions == []:
+		print "Error: old_versions is not set"
+		isValid = False
+
+	if not isValid:
+		sys.exit(1)
+		
+
+############################################################################################
+#
+# Functions to create the RDF file
+#
+
+def get_updateInfoUrl():
+	url = "%s/%s/%s" % (base_link,new_version,get_updateInfoFile())
+	return url
+
+def get_updateInfoFile():
+	name = "info-%s.xhtml" % new_version
+	return name
 
 def get_sha1sum(filename):
 	sha = hashlib.sha1()
@@ -36,12 +131,14 @@ def get_sha1sum(filename):
 	sha.update(data)
 	return sha.hexdigest()
 
+#-------------------------------------------------------------------------------------
 def create_text_node(doc,name,text):
 	node = doc.createElementNS(em_ns,name)
 	t_node = doc.createTextNode(text)
 	node.appendChild(t_node)
 	return node
 
+#-------------------------------------------------------------------------------------
 def create_target_application(doc,xpi):
 	sha1sum = get_sha1sum(xpi)
 	target = doc.createElementNS(em_ns,"em:targetApplication")
@@ -51,11 +148,12 @@ def create_target_application(doc,xpi):
 	rdf_desc.appendChild(create_text_node(doc,"em:id","{ec8030f7-c20a-464f-9b0e-13a3a9e97384}")) # Firefox application GUID
 	rdf_desc.appendChild(create_text_node(doc,"em:minVersion","1.5"))
 	rdf_desc.appendChild(create_text_node(doc,"em:maxVersion",max_firefox_version))
-	rdf_desc.appendChild(create_text_node(doc,"em:updateLink","%s/%s/%s" % (update_link,new_version,xpi)))
+	rdf_desc.appendChild(create_text_node(doc,"em:updateLink","%s/%s/%s" % (base_link,new_version,xpi)))
 	rdf_desc.appendChild(create_text_node(doc,"em:updateHash","sha1:%s" % sha1sum))
-	rdf_desc.appendChild(create_text_node(doc,"em:updateInfoURL",update_info_url))
+	rdf_desc.appendChild(create_text_node(doc,"em:updateInfoURL",get_updateInfoUrl()))
 	return target
 
+#-------------------------------------------------------------------------------------
 def create_resource(doc,version,xpi):
 	rdf_desc = doc.createElementNS(None,"RDF:Description")
 	rdf_desc.setAttributeNS(None,"about","urn:mozilla:extension:moonlight@novell.com:%s" % version)
@@ -66,18 +164,16 @@ def create_resource(doc,version,xpi):
 	rdf_desc.appendChild(create_target_application(doc,xpi))
 	return rdf_desc
 
+#-------------------------------------------------------------------------------------
 def create_seq_li(doc,version):
 	#rdf_li = doc.createElementNS(rdf_ns,"RDF:li")
 	rdf_li = doc.createElementNS(None,"RDF:li")
 	rdf_li.setAttributeNS(rdf_ns,"resource","urn:mozilla:extension:moonlight@novell.com:%s" % version)
 	return rdf_li
 
+#-------------------------------------------------------------------------------------
 def create_rdf_for_arch(arch):
 	xpi = 'novell-moonlight-%s-%s.xpi' % (new_version,arch)
-	if not os.path.isfile(xpi):
-		print "Missing new xpi file %s" % xpi
-		return
-
 	update_rdf = 'update-%s-%s.rdf' % (profile,arch)
 	print "Creating %s" % update_rdf
 
@@ -98,7 +194,7 @@ def create_rdf_for_arch(arch):
 	for version in versions:
 		rdf_li = create_seq_li(doc,version)
 		rdf_seq.appendChild(rdf_li)
-	
+
 	# Create the descriptions for each resource
 	for version in versions:
 		rdf_resource = create_resource(doc,version,xpi)
@@ -108,8 +204,57 @@ def create_rdf_for_arch(arch):
 	xml.dom.ext.PrettyPrint(doc,f)
 	f.close()
 
-if __name__ == '__main__':
+	return True
 
+
+#####################################################################################
+#
+# Functions to create info.xhmlt
+#
+
+def create_template_xhtml():
+	xhtml = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <title>Update Information for Moonlight</title>
+</head>
+<body>
+   <h1>Update Information for Moonlight %s</h1>
+
+   <ul>
+       <li>Item #1</li>
+   </ul>
+</body>
+</html>
+''' % (new_version)
+
+
+
+	updatefile = 'info-%s.xhtml' % new_version
+	print "Creating %s" % updatefile
+
+	f = open(updatefile,'w')
+	f.write(xhtml)
+	f.close()
+
+#####################################################################################
+#
+# MAIN
+#
+
+def main():
 	for arch in archs:
+		xpi = 'novell-moonlight-%s-%s.xpi' % (new_version,arch)
+		if not os.path.isfile(xpi):
+			print "Missing new xpi file %s" % xpi
+			continue
+
 		create_rdf_for_arch(arch)
+	create_template_xhtml()
+
+if __name__ == '__main__':
+	get_args(sys.argv[1:])
+	checkValues()
+	main()
+
 
