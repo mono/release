@@ -15,12 +15,13 @@ import sys
 import os
 import hashlib
 
-new_version = '1.9.0.1'
-old_versions = ['1.9.0']    # older versions that will upgrade to new_version
+profile = '1.0'
+new_version = '1.0.1'
+old_versions = ['0.6','0.7','0.8','1.0b1','1.0b2','1.0']    # older versions that will upgrade to new_version
 archs = ['i586','x86_64']
 versions = old_versions + [new_version] # Note to self: this is intentional. Leave it alone :)
 
-update_link = 'http://go-mono.com/archive/moonlight-plugins/'
+update_link = 'http://go-mono.com/archive/moonlight-plugins'
 rdf_ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 em_ns = "http://www.mozilla.org/2004/em-rdf#"
 max_firefox_version = "3.5.*"
@@ -44,7 +45,7 @@ def create_text_node(doc,name,text):
 def create_target_application(doc,xpi):
 	sha1sum = get_sha1sum(xpi)
 	target = doc.createElementNS(em_ns,"em:targetApplication")
-	rdf_desc = doc.createElementNS(rdf_ns,"RDF:Description")
+	rdf_desc = doc.createElementNS(None,"Description")
 	target.appendChild(rdf_desc)
 
 	rdf_desc.appendChild(create_text_node(doc,"em:id","{ec8030f7-c20a-464f-9b0e-13a3a9e97384}")) # Firefox application GUID
@@ -55,9 +56,9 @@ def create_target_application(doc,xpi):
 	rdf_desc.appendChild(create_text_node(doc,"em:updateInfoURL",update_info_url))
 	return target
 
-def create_resouce(doc,version,xpi):
-	rdf_desc = doc.createElementNS(rdf_ns,"RDF:Description")
-	rdf_desc.setAttributeNS(rdf_ns,"resource","urn:mozilla:extension:moonlight@novell.com:%s" % version)
+def create_resource(doc,version,xpi):
+	rdf_desc = doc.createElementNS(None,"RDF:Description")
+	rdf_desc.setAttributeNS(None,"about","urn:mozilla:extension:moonlight@novell.com:%s" % version)
 	em_version = doc.createElementNS(em_ns,"em:version")
 	em_version_txt = doc.createTextNode(version)
 	em_version.appendChild(em_version_txt)
@@ -66,7 +67,8 @@ def create_resouce(doc,version,xpi):
 	return rdf_desc
 
 def create_seq_li(doc,version):
-	rdf_li = doc.createElementNS(rdf_ns,"RDF:li")
+	#rdf_li = doc.createElementNS(rdf_ns,"RDF:li")
+	rdf_li = doc.createElementNS(None,"RDF:li")
 	rdf_li.setAttributeNS(rdf_ns,"resource","urn:mozilla:extension:moonlight@novell.com:%s" % version)
 	return rdf_li
 
@@ -76,20 +78,20 @@ def create_rdf_for_arch(arch):
 		print "Missing new xpi file %s" % xpi
 		return
 
-	update_rdf = 'update-2.0-%s.rdf' % arch
+	update_rdf = 'update-%s-%s.rdf' % (profile,arch)
 	print "Creating %s" % update_rdf
 
 	doc = xml.dom.minidom.Document()
 
 	rdf_rdf = doc.createElementNS(rdf_ns,"RDF:RDF")
 	doc.appendChild(rdf_rdf)
-	rdf_desc = doc.createElementNS(rdf_ns,"RDF:Description")
+	rdf_desc = doc.createElementNS(None,"RDF:Description")
 	rdf_desc.setAttributeNS(rdf_ns,"about","urn:mozilla:extension:moonlight@novell.com")
 	rdf_rdf.appendChild(rdf_desc)
 	em_updates = doc.createElementNS(em_ns,"em:updates")
 	rdf_desc.appendChild(em_updates)
 
-	rdf_seq = doc.createElementNS(em_ns,"RDF:Seq")
+	rdf_seq = doc.createElementNS(None,"RDF:Seq")
 	em_updates.appendChild(rdf_seq)
 
 	#Create the top RDF:Seq
@@ -99,7 +101,7 @@ def create_rdf_for_arch(arch):
 	
 	# Create the descriptions for each resource
 	for version in versions:
-		rdf_resource = create_resouce(doc,version,xpi)
+		rdf_resource = create_resource(doc,version,xpi)
 		rdf_rdf.appendChild(rdf_resource)
 
 	f = open(update_rdf,'w')
