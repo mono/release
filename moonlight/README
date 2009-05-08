@@ -1,0 +1,8 @@
+Reorder the xpi files first, due to a bug in firefox
+
+Create update.rdf files by running create_update_rdfs.py 
+
+Below is an example
+
+./create_update_rdfs.py --profile=2.0 --archs=i586,x86_64 --new_version=1.9.0.1 --old_versions=1.9.0
+
