@@ -261,7 +261,7 @@ function flash()
 
 <div id="col2">
 <h1>
-Moonlight @@VERSION@@
+Moonlight 2.0 Preview @@PREVIEW@@
 </h1>
 
 <p><a href="http://www.mono-project.com/Moonlight">Moonlight</a> is an
