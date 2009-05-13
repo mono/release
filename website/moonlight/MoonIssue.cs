@@ -29,32 +29,25 @@ namespace MoonlightStatus
         {
                 return string.Format("{0} Bug {1}\n",Desc,BugNum);
         }
-        private string GetBugHtml()
-        {
-
-            if (this.BugNum <= 0)
-            {
-                    return string.Empty;
-            }
-            string bug_url = bugzilla + this.BugNum;
-            string html = string.Format("<a href=\"{0}\" onmouseover=\"popUp(event,\'tip{1}\')\"",bug_url,this.BugNum);
-
-            html += string.Format("onmouseout=\"popUp(event,\'tip{0}\')\" onclick=return false\">Bug {0}</a>",this.BugNum);
-
-            html += string.Format("<div id=\"tip{0}\" class=\"tip\">{1}</div>",this.BugNum,this.Desc);
-
-            return html;
-        }
         public string ToHTML()
         {
-            string html = GetBugHtml();
-			if (this.Desc.Contains("GreaseMonkey"))
-			{
+			if (this.Desc.Contains("GreaseMonkey")) {
 				Desc = Desc.Replace("GreaseMonkey",String.Format("<a href='{0}'>GreaseMonkey</a>",greaseMonkeyUrl));
 			}
+
+            string bughtml = string.Empty;
+            if (this.BugNum > 0) {
+                    //string bug_url = bugzilla + this.BugNum;
+                    
+                    //Was trying to do a mouse-over-get-bug-title-from-bugzilla thingy
+                    //html = string.Format("<li><a href=\"{0}\" onmouseover=\"popUp(event,\'tip{1}\')\"",bug_url,this.BugNum);
+                    //html += string.Format("onmouseout=\"popUp(event,\'tip{0}\')\" onclick=return false\">Bug {0}</a>",this.BugNum);
+                    //html += string.Format("<div id=\"tip{0}\" class=\"tip\">{1}</div></li>",this.BugNum,this.Desc);
+                    
+                    bughtml = string.Format("<a href=\"{0}\">Bug {1}</a>",(bugzilla + this.BugNum),this.BugNum);
+            }
+            return string.Format("<li>{0} {1}</li>",this.Desc,bughtml);
 			
-            html = string.Format("<li>{0} {1}</li>",this.Desc,html);
-            return html;
         }
 
     }
