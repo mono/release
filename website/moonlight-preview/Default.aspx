@@ -7,6 +7,15 @@
 <title>Moonlight Downloads</title>
 <link rel="stylesheet" type="text/css" href="css/moonlight.css"/>
 <script type="text/javascript" src="release_data.js"></script>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-76510-5");
+pageTracker._trackPageview();
+} catch(err) {}</script>
 </head>
 
 <body>
