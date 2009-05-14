@@ -1,0 +1,10 @@
+moonlight.dll is commited to svn on purpose
+
+go-mono.com is running xsp1, and does not recompile assemblies when the code changes.
+
+Code in .aspx file gets regenerated.
+
+When updating any .cs files in the project, the .dll has to be built locally, and moved 
+from bin/Debug/moonlight.dll to bin/moonlight.dll and commited to svn.
+
+Then on go-mono, do 'svn up' to pull down the new assembly
