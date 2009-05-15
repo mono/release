@@ -1,10 +1,28 @@
 #!/bin/bash
 
-PREVIEW=1.9.1
-
 # Get these revision numbers from #moonlight
-MONOREV=133384
-MOONREV=133784
+MONOREV=134208
+MOONREV=134227
+
+#------------------------------------------------------------------
+
+VERSIONS=$(cat VERSIONS)  #read versions from file
+PREVIEW=$(echo $VERSIONS | awk '{print $NF}')
+
+echo -e "\nPREVIEW = $PREVIEW"
+echo -e "Mono Rev = $MONOREV"
+echo -e "Moonligh Rev = $MOONREV \n"
+
+echo -n "Continue branching for Preview $PREVIEW? (yes,NO): "
+read -e CHAR
+
+if [ x$CHAR != xyes ]
+then
+	echo "Aborting branch"
+	exit 1
+fi
+
+echo "Branching Moonlight $PREVIEW"
 
 HOST=svn+ssh://rhowell@mono-cvs.ximian.com/source
 MONO=$HOST/trunk/mono
