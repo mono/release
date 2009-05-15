@@ -18,11 +18,11 @@ import getopt
 
 # GLOBALS
 
-profile = '' 
+profile = None 
 new_version = None
-old_versions = [] #['0.6','0.7','0.8','1.0b1','1.0b2','1.0']	# older versions that will upgrade to new_version
+old_versions = None # older versions that will upgrade to new_version
 archs = ['i586','x86_64']
-versions = [] 
+versions = []
 
 base_link = 'http://go-mono.com/archive/moonlight-plugins'
 rdf_ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -37,7 +37,7 @@ max_firefox_version = "3.5.*"
 value_args = {'profile=':'Silverlight Profile of the plugin',
 		'new_version=':'New version of the plugin',
 		'old_versions=':'Comma separated list of older versions that will upgrade',
-		'archs=':'Comma separated list of computer archs for the plugin (Defaults to i586,x86_64',
+		'archs=':'Comma separated list of computer archs for the plugin (Defaults to i586,x86_64)',
 		'debug':'Prints the current values',
 		'help':'Prints this help message'}
 
@@ -74,8 +74,10 @@ def get_args(cli_args):
 		versions = []
 
 	if debug:
-		print archs
-		print old_versions
+		print "archs = %s" % str(archs)
+		print "profile = %s" % profile
+		print "new_version = %s" % new_version
+		print "old_versions = %s" % str(old_versions)
 
 #-------------------------------------------------------------------------------------
 

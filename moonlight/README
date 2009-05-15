@@ -1,8 +1,16 @@
-Reorder the xpi files first, due to a bug in firefox
+Update:
+	Add the newest version of Moonlight to VERSIONS
+	Run prepare_zip.sh and pass in the zip file received from the signing lab.
+	That script should to the following:
 
-Create update.rdf files by running create_update_rdfs.py 
+		* Reorder the xpi files first, due to a bug in firefox
+		* Read VERSIONS and determine values to pass to create_update_rdfs
+		* Create update.rdf files by running create_update_rdfs.py 
 
-Below is an example
+	You should only have to edit VERSIONS now. 
+	Do not edit prepare_zip.sh or create_update_rdfs.py
 
-./create_update_rdfs.py --profile=2.0 --archs=i586,x86_64 --new_version=1.9.0.1 --old_versions=1.9.0
+Below is an example of create_update_rdfs.py by hand
+
+./create_update_rdfs.py --profile=2.0 --archs=i586,x86_64 --new_version=1.9.1 --old_versions=1.9.0,1.9.0.1
 
