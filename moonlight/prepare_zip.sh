@@ -3,14 +3,9 @@
 # This script is to take the signed.zip file from the signing lab and perform 
 #  the necessary steps to prepare the update.rdf and fix the zip file
 
-
-VERSIONS=$(cat VERSIONS)
-
-#------------------------------------------------------------------------------
-if [ ! -e $1 ]
-then
-	echo "missing file $1"
-fi
+CURDIR=$(pwd)
+cd $(dirname $0)
+SCRIPTDIR=$(pwd)
 
 #------------------------------------------------------------------------------
 function fail
@@ -58,6 +53,23 @@ function check_zip
 }
 
 #------------------------------------------------------------------------------
+# Pass in the rdf file to be signed
+function sign_update_rdfs
+{
+	MCCOY=$HOME/Desktop/mccoy/mccoy
+	#./mccoy -command install -installRDF $1 -key moonlight -xpi novell-moonlight-1.9.1-i586.xpi
+
+	# Passing -xpi just generates and adds the sha1 hash to the file
+	# The hash is is already generated in create_update_rdfs.py
+	$MCCOY -command install -installRDF $SCRIPTDIR/$1 -key moonlight
+
+}
+
+#------------------------------------------------------------------------------
+# MAIN function
+
+test  $# -eq 1 || fail "Usage: $0 <moonlight_signed.zip>"
+test  -e $1 || fail "Cannot find file $1"
 
 # Delete any old generated files
 rm -f novell*xpi* update*.rdf info*.xhtml
@@ -71,9 +83,21 @@ do
 	reorder_xpi $xpi
 done
 
+VERSIONS=$(cat VERSIONS)  #read versions from file
 NEW_VERSION=$(echo $VERSIONS | awk '{print $NF}')  # set new version to the last version in the list
 OLD_VERSIONS=$(echo $VERSIONS | sed -e "s#$NEW_VERSION##") # remove the last version from the list
 OLD_VERSIONS=$(echo $OLD_VERSIONS | sed -e 's#\ #,#g') # change list to a comma separated list
 
 ./create_update_rdfs.py -p 2.0 -a i586,x86_64 -n $NEW_VERSION -o $OLD_VERSIONS
+
+for rdf in $(ls update*.rdf)
+do
+	sign_update_rdfs $rdf
+done
+#!/bin/bash
+
+
+# upload all necessary files to go-mono
+#scp novell-moonlight*xpi info*xhtml mono-web@go-mono.com:go-mono/archive/moonlight-plugins/$NEW_VERSION
+#scp update-2.0*rdf mono-web@go-mono.com:go-mono/archive/moonlight-plugins/updates
 
