@@ -3,9 +3,13 @@
 # This script applies a one-time patch for mccoy to run on the command line
 # Pulled from https://bugzilla.mozilla.org/show_bug.cgi?id=396525#c7
 
-MCCOYDIR=/home/rhowell/Desktop/mccoy
+if [ $# != 1 ]
+then
+	echo "Usage: $0 /path/to/mccoy"
+	exit 1
+fi
 
-pushd $MCCOYDIR
+pushd $1
 
 PATCH=mccoy.patch
 curl -o $PATCH http://www.xuluwarrior.com/development/mccoy_cmdline_xuluwarrior.patch

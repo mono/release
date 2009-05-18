@@ -61,7 +61,7 @@ function sign_update_rdfs
 
 	# Passing -xpi just generates and adds the sha1 hash to the file
 	# The hash is is already generated in create_update_rdfs.py
-	$MCCOY -command install -installRDF $SCRIPTDIR/$1 -key moonlight
+	$MCCOY -command update -updateRDF $SCRIPTDIR/$1 -key moonlight
 
 }
 
