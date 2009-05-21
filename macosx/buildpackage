@@ -123,6 +123,7 @@ for arch in targets:
 	files += [config.packaging_dir + '/../pyutils/rpm2cpio.py']
 	files += ['./universal_merge']
 	files += ['./dllmap_munge']
+	files += ['./cleanup']
 
 	for file in files:
 		print file
@@ -220,8 +221,38 @@ for f in packages:
 for f in dep_packages:
 	dep_packages_text += "\n\t" + f + "\\\\"
 
+# Testing options
+conf.buildenv.print_command=1
+#conf.buildenv.execute_command_command=0
+
+print "Creating symlinks..."
+conf.buildenv.execute_command('cd %s%s/Versions; ln -sf %s Current' % (remote_PKGROOT, framework_prefix, version) )
+
+symlinks = {}
+symlinks['Versions/Current/Resources'] 	= "Resources"
+symlinks['Versions/Current/lib'] 	= "Libraries"
+symlinks['Versions/Current/include'] 	= "Headers"
+symlinks['Versions/Current/bin'] 	= "Commands"
+symlinks['Versions/Current'] 		= "Home"
+symlinks['Libraries/libmono.dylib']	= "Mono"
+
+for k,v in symlinks.iteritems():
+	conf.buildenv.execute_command('cd %s%s; ln -sf %s %s' % (remote_PKGROOT, framework_prefix, k, v) )
+
+print "Done creating symlinks...."
+
+# assembly .config munge
+(code, output) = conf.buildenv.execute_command("%s/dllmap_munge %s %s" % (arch_remote_packages_loc, remote_PKGROOT + os.sep + prefix, prefix) )
+if code:
+	print "Error munging dllmaps for .config files"
+	sys.exit(1)
+
+# Split the installer in two
+conf.buildenv.execute_command("%s/cleanup %s%s %s%s" % (arch_remote_packages_loc, remote_PKGROOT, prefix, remote_PKGROOT + "_sdk", prefix) )
+
 # Start process of making the package
 package_filename = "MonoFramework-%s_%s.%s" % (version, revision, arch_name)
+sdk_package_filename = "MonoFramework-CSDK-%s_%s.%s" % (version, revision, arch_name)
 
 # Substitue versions in setup files
 parameter_map = {}
@@ -251,34 +282,9 @@ framework_resources_dir = "%s%s/Versions/%s/Resources" % (remote_PKGROOT, framew
 conf.buildenv.execute_command('mkdir -p %s' % framework_resources_dir )
 
 conf.buildenv.copy_to('Info.plist Description.plist version.plist'.split(), framework_resources_dir)
+conf.buildenv.copy_to('Info_sdk.plist Description_sdk.plist version.plist'.split(), arch_remote_packages_loc)
 
 os.chdir(cwd)
-
-# Testing options
-conf.buildenv.print_command=1
-#conf.buildenv.execute_command_command=0
-
-print "Creating symlinks..."
-conf.buildenv.execute_command('cd %s%s/Versions; ln -sf %s Current' % (remote_PKGROOT, framework_prefix, version) )
-
-symlinks = {}
-symlinks['Versions/Current/Resources'] 	= "Resources"
-symlinks['Versions/Current/lib'] 	= "Libraries"
-symlinks['Versions/Current/include'] 	= "Headers"
-symlinks['Versions/Current/bin'] 	= "Commands"
-symlinks['Versions/Current'] 		= "Home"
-symlinks['Libraries/libmono.dylib']	= "Mono"
-
-for k,v in symlinks.iteritems():
-	conf.buildenv.execute_command('cd %s%s; ln -sf %s %s' % (remote_PKGROOT, framework_prefix, k, v) )
-
-print "Done creating symlinks...."
-
-# assembly .config munge
-(code, output) = conf.buildenv.execute_command("%s/dllmap_munge %s %s" % (arch_remote_packages_loc, remote_PKGROOT + os.sep + prefix, prefix) )
-if code:
-	print "Error munging dllmaps for .config files"
-	sys.exit(1)
 
 
 # Note: DiskManagementTool hangs this has been fixed in 10.4 ( http://lists.apple.com/archives/installer-dev/2005/Jul/msg00005.html )
@@ -293,16 +299,21 @@ exit_reg = ""
 # We are setting 'Allows Back Rev.' flag.
 # TODO: Do we need to clean up 'receipt'?
 
+# Create disk image directories
+(code, output) = conf.buildenv.execute_command("cd %s && mkdir new new_sdk; " % (remote_temp) )
+
 # Move .app files out of the .pkg
-(code, output) = conf.buildenv.execute_command("cd %s; mkdir new; mv PKGROOT/Library/Frameworks/Mono.framework/Versions/Current/*.app new" % (remote_temp) )
+(code, output) = conf.buildenv.execute_command("cd %s && mv PKGROOT/Library/Frameworks/Mono.framework/Versions/Current/*.app new" % (remote_temp) )
 
 # Copy .dmg readme
 conf.buildenv.copy_to('setup-files/Notes.rtf', remote_temp + os.sep + 'new')
 
 packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
 conf.buildenv.execute_command('cd %s; %s -build -p %s/new/%s.pkg -f %s -r %s -i %s/Info.plist -d %s/Description.plist' % (remote_PKGROOT, packagemaker, remote_temp, package_filename, remote_PKGROOT, resources_dir, framework_resources_dir, framework_resources_dir), terminate_reg=exit_reg)
+conf.buildenv.execute_command('cd %s; %s -build -p %s/new_sdk/%s.pkg -f %s -i %s/Info_sdk.plist -d %s/Description_sdk.plist' % (remote_PKGROOT + "_sdk", packagemaker, remote_temp, sdk_package_filename, remote_PKGROOT + "_sdk", arch_remote_packages_loc, arch_remote_packages_loc), terminate_reg=exit_reg)
 
 conf.buildenv.execute_command('/usr/bin/hdiutil create -ov -srcfolder %s/new -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, version, remote_temp, package_filename) )
+conf.buildenv.execute_command('/usr/bin/hdiutil create -ov -srcfolder %s/new_sdk -volname MonoFramework-CSDK-%s %s/%s.dmg' % (remote_temp, version, remote_temp, sdk_package_filename) )
 
 distutils.dir_util.mkpath(output_dir)
 
@@ -310,10 +321,12 @@ print "Copy package back..."
 # Have to use scp mode here, because I don't want the remote_temp dir in the filename
 # Also, use no compression, since file is already compressed
 conf.buildenv.copy_from("%s/%s.dmg" % (remote_temp, package_filename), output_dir, compress=0)
+conf.buildenv.copy_from("%s/%s.dmg" % (remote_temp, sdk_package_filename), output_dir, compress=0)
 
 # Create md5
 print "Create md5..."
 utils.launch_process("cd %s; md5sum %s.dmg > %s.dmg.md5 " % (output_dir, package_filename, package_filename), print_output=debug)
+utils.launch_process("cd %s; md5sum %s.dmg > %s.dmg.md5 " % (output_dir, sdk_package_filename, sdk_package_filename), print_output=debug)
 
 print "Saving packages_used.txt..."
 shutil.copy(temp_dir + os.sep + 'packages_used.txt', output_dir)

@@ -1,3 +1,4 @@
+#!/bin/bash -x
 
 if test x$2 = x; then
    echo usage is cleanup MONODIR TARGETDIR
@@ -11,7 +12,7 @@ if test -d $TARGET; then
    exit 1
 fi
 
-mkdir $TARGET
+mkdir -p $TARGET
 TARGET=`(cd $TARGET; pwd)`
 cd $MONODIR
 rm -rf lib/libMonoPosixHelper.a
@@ -241,7 +242,6 @@ mv bin/gapi2-codegen $TARGET/bin/
 mv bin/gapi2-fixup $TARGET/bin/
 mv bin/gapi2-parser $TARGET/bin/
 mv bin/gdk-pixbuf-csource $TARGET/bin/
-mv bin/gdk-pixbuf-query-loaders $TARGET/bin/
 mv bin/glib-genmarshal $TARGET/bin/
 mv bin/glib-gettextize $TARGET/bin/
 mv bin/glib-mkenums $TARGET/bin/
@@ -392,7 +392,6 @@ mkdir -p $TARGET share/locale
 mkdir -p $TARGET/share/man/man1/
 mv share/man/man1/autopoint.1 $TARGET/share/man/man1/
 mv share/man/man1/gdk-pixbuf-csource.1 $TARGET/share/man/man1/
-mv share/man/man1/gdk-pixbuf-query-loaders.1 $TARGET/share/man/man1/
 mv share/man/man1/gettext.1 $TARGET/share/man/man1/
 mv share/man/man1/gettextize.1 $TARGET/share/man/man1/
 mv share/man/man1/glib-genmarshal.1 $TARGET/share/man/man1/
@@ -418,7 +417,6 @@ mv share/man/man1/msgmerge.1 $TARGET/share/man/man1/
 mv share/man/man1/msgunfmt.1 $TARGET/share/man/man1/
 mv share/man/man1/msguniq.1 $TARGET/share/man/man1/
 mv share/man/man1/ngettext.1 $TARGET/share/man/man1/
-mv share/man/man1/pango-querymodules.1 $TARGET/share/man/man1/
 mv share/man/man1/recode-sr-latin.1 $TARGET/share/man/man1/
 
 mkdir -p $TARGET/share/libgc-mono
