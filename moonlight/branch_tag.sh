@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # Get these revision numbers from #moonlight
-MONOREV=134208
-MOONREV=134227
+MONOREV=135039
+MOONREV=135062
 
 #------------------------------------------------------------------
 
 VERSIONS=$(cat VERSIONS)  #read versions from file
 PREVIEW=$(echo $VERSIONS | awk '{print $NF}')
 
-echo -e "\nPREVIEW = $PREVIEW"
-echo -e "Mono Rev = $MONOREV"
-echo -e "Moonligh Rev = $MOONREV \n"
+echo -e "\n      PREVIEW = $PREVIEW"
+echo -e "     Mono Rev = $MONOREV"
+echo -e "Moonlight Rev = $MOONREV \n"
 
 echo -n "Continue branching for Preview $PREVIEW? (yes,NO): "
 read -e CHAR

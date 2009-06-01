@@ -8,6 +8,21 @@ cd $(dirname $0)
 SCRIPTDIR=$(pwd)
 
 #------------------------------------------------------------------------------
+function clean
+{
+	# Delete any old generated files
+	rm -f novell*xpi* update*.rdf info*.xhtml sha1sums-*
+	echo "cleaned"
+}
+
+
+if [ "$1" == "clean" ] 
+then
+	clean
+	exit 0
+fi
+
+#------------------------------------------------------------------------------
 function fail
 {
 	echo "Failed: $1"
@@ -37,7 +52,7 @@ function reorder_xpi
 
 	cd ..
 
-	mv $1 $1.orig
+	rm $1 # Delete the original xpi
 	mv tmp/$1 .
 
 	rm -rf tmp
@@ -71,8 +86,7 @@ function sign_update_rdfs
 test  $# -eq 1 || fail "Usage: $0 <moonlight_signed.zip>"
 test  -e $1 || fail "Cannot find file $1"
 
-# Delete any old generated files
-rm -f novell*xpi* update*.rdf info*.xhtml
+clean
 
 check_zip $1
 unzip $1
@@ -94,8 +108,8 @@ for rdf in $(ls update*.rdf)
 do
 	sign_update_rdfs $rdf
 done
-#!/bin/bash
 
+sha1sum novell*xpi > sha1sums-$NEW_VERSION
 
 # upload all necessary files to go-mono
 #scp novell-moonlight*xpi info*xhtml mono-web@go-mono.com:go-mono/archive/moonlight-plugins/$NEW_VERSION
