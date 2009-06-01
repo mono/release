@@ -40,7 +40,7 @@
     <div class="surveydiv">
         Mono Tools for Visual Studio is currently in private preview.
         <br /><br />Sign up to be included in the next round of invitations!
-        <br /><br /><a href="Survey.aspx"><img src="Images/signup-button.png" /></a>
+        <br /><br /><a href="Signup.aspx"><img src="Images/signup-button.png" /></a>
     </div>
         <div class="colordiv">
             <span style="font-size: .85em;">Already got your invitation username/password?<br />
