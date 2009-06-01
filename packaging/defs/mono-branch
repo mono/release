@@ -17,6 +17,7 @@ BUILD_HOSTS=(
 	sunos-10-sparc
 	sunos-11-x86
 	win-4-i386
+	sle-11-ppc64
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
