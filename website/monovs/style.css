@@ -61,6 +61,24 @@ a
 	text-align: center;
 	color: Black;
 	font-size: 1.3em;
+	-moz-border-radius: 5px;
+}
+
+.surveydiv
+{
+	width: 315px;
+	height: 55px;
+	background-color: #e5ecf3;
+	border: solid 1px #666699;
+	padding: 10px 5px 10px 60px;
+	text-align: center;
+	color: Black;
+	font-size: 1.0em;
+	margin-bottom: 20px;
+	background-image: url(Images/construction.png);
+	background-repeat: no-repeat;
+	background-position: 12px center;
+	-moz-border-radius: 5px;
 }
 
 .content-bottom

@@ -37,12 +37,16 @@
         </p>
     </div>
     <div class="right-column">
+    <div class="surveydiv">
+        Mono Tools for Visual Studio is currently in private preview.  If you would like to be considered for future rounds of preview invites, please fill out <a href="Survey.aspx">this survey</a>.
+    </div>
         <div class="colordiv">
-            <b>Current Version: 0.1</b><br />
-            <span style="font-size: .85em;">Released: June 1st, 2009</span>
+            Already got your invite username/password?
             <br />
             <br />
             <a href="http://go-mono.com/monovs-download/0.1/"><img src="Images/download-button.png" alt="Download" /></a>
+            <br />
+            <span style="font-size: .85em;">Current version: 0.1.1866</span>
         </div>
         <br />
         <br />
