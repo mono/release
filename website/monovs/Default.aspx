@@ -38,15 +38,14 @@
     </div>
     <div class="right-column">
     <div class="surveydiv">
-        Mono Tools for Visual Studio is currently in private preview.  If you would like to be considered for future rounds of preview invites, please fill out <a href="Survey.aspx">this survey</a>.
+        Mono Tools for Visual Studio is currently in private preview.
+        <br /><br />Sign up to be included in the next round of invitations!
+        <br /><br /><a href="Survey.aspx"><img src="Images/signup-button.png" /></a>
     </div>
         <div class="colordiv">
-            Already got your invite username/password?
+            <span style="font-size: .85em;">Already got your invitation username/password?<br />
             <br />
-            <br />
-            <a href="http://go-mono.com/monovs-download/0.1/"><img src="Images/download-button.png" alt="Download" /></a>
-            <br />
-            <span style="font-size: .85em;">Current version: 0.1.1866</span>
+            <a href="http://go-mono.com/monovs-download/0.1/">Download current version: 0.1.1866</a></span>
         </div>
         <br />
         <br />
