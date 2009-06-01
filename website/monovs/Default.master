@@ -1,0 +1,34 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Default.master.cs" Inherits="_default" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>
+        <asp:ContentPlaceHolder ID="title" runat="server" />
+    </title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <asp:ContentPlaceHolder ID="head" runat="server" />
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <div id="container">
+            <div id="content-container">
+                <div id="content">
+                    <asp:ContentPlaceHolder ID="maincontent" runat="server" />
+                </div>
+                <div class="clearer">
+                </div>
+                <div id="footer">
+                    <hr />
+                    <a href="http://www.novell.com/linux">
+                        <img src="Images/logo_novell.png" alt="Novell logo" /></a></div>
+            </div>
+            <div class="content-bottom">
+            </div>
+        </div>
+    </div>
+    </form>
+</body>
+</html>
