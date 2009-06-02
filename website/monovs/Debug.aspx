@@ -9,14 +9,9 @@
     <div class="feature-content">
         <span class="feature-header">Debug on Mono on Linux</span><br />
         <br />
-        When porting your application to run on Mono on Linux, there are two types of issues
-        that can occur: differences between Mono and .Net and differences between Windows and Linux.
-        <br /><br />
-        One way to make this easier is to use two steps.  During the first step, use Mono
-        on Windows to work out any issues arising from differences between Mono and .Net.
-        <br /><br />
-        Once your application runs on Mono on Windows (or if you want to skip that step), you
-        can test it out on Mono on Linux.
+        Often, the best way to work through an issue will be to debug the application on the target 
+        environment.  Debug on Mono on Linux brings this functionality to Visual Studio developers 
+        by enabling remote debugging of Mono applications running on Linux.
         <br /><br /><br />
         <img class="shot" src="Images/moma1.png" alt="Debug in Linux - Step 1" />
             <b>Step 1:</b><br />

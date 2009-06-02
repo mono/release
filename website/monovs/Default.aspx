@@ -43,7 +43,7 @@
         <br /><br /><a href="Signup.aspx"><img src="Images/signup-button.png" /></a>
     </div>
         <div class="colordiv">
-            <span style="font-size: .85em;">Already got your invitation username/password?<br />
+            <span style="font-size: .85em;">Already received your invitation username/password?<br />
             <br />
             <a href="http://go-mono.com/monovs-download/0.1/">Download current version: 0.1.1866</a></span>
         </div>

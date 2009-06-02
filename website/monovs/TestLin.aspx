@@ -10,13 +10,11 @@
         <span class="feature-header">Run on Mono on Linux</span><br />
         <br />
         When porting your application to run on Mono on Linux, there are two types of issues
-        that can occur: differences between Mono and .Net and differences between Windows and Linux.
+        that can occur: differences between Mono and .NET and differences between Windows and Linux.
         <br /><br />
-        One way to make this easier is to use two steps.  During the first step, use Mono
-        on Windows to work out any issues arising from differences between Mono and .Net.
-        <br /><br />
-        Once your application runs on Mono on Windows (or if you want to skip that step), you
-        can test it out on Mono on Linux.
+        While running an application on Mono on Windows will help work through any issues arising from 
+        differences between Mono and .NET, running the application on Mono on Linux will simplify the 
+        process of working through issues that could be caused by differences in Windows and Linux.
         <br /><br /><br />
         <img class="shot" src="Images/moma1.png" alt="Testing in Linux - Step 1" />
             <b>Step 1:</b><br />

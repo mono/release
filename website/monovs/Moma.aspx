@@ -9,12 +9,12 @@
     <div class="feature-content">
         <span class="feature-header">Scan for Mono Compatibility</span><br />
         <br />
-        There are some common stumbling blocks that keep .Net applications from being able
-        to run on Mono.  These can be due to using parts of the .Net framework that Mono
+        There are some common stumbling blocks that keep .NET applications from being able
+        to run on Mono.  These can be due to using parts of the .NET framework that Mono
         does not implement or implements differently, or reliance on native platform 
         code like user32.
         <br /><br />
-        The Mono Migration Analyzer (MoMA) can scan your compiled assemblies for these types
+        The <a href="http://www.mono-project.com/MoMA">Mono Migration Analyzer (MoMA)</a> can scan your compiled assemblies for these types
         of issues and point them out, making it easy to find them and work around them.
         <br /><br /><br />
         <img class="shot" src="Images/moma1.png" alt="Scanning with MoMA - Step 1" />
