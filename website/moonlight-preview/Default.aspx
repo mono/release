@@ -35,7 +35,7 @@ pageTracker._trackPageview();
 <script type="text/javascript" src="Silverlight.js" /></script>
 <script type="text/javascript">
 
-var released_version = "1.9.2";
+var released_version = "1.9.3";
 
 var plugin = navigator.plugins["Silverlight Plug-In"];
 if (plugin.filename.indexOf("libmoonloader") == 0) {
@@ -150,8 +150,8 @@ string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight-pre
 
 void Page_Init(object sender, EventArgs e)
 {
-        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.9.2/";
-        dir = "downloads/1.9.2";
+        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.9.3/";
+        dir = "downloads/1.9.3";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -232,7 +232,7 @@ void RadioClicked(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-1.9.2";
+	xpi = basename + "-1.9.3";
 	
 	//if (prof1_0.Checked)
 	//	xpi += "-1.0";
@@ -270,7 +270,7 @@ function flash()
 
 <div id="col2">
 <h1>
-Moonlight 2.0 Preview 3
+Moonlight 2.0 Preview 4
 </h1>
 
 <p><a href="http://www.mono-project.com/Moonlight">Moonlight</a> is an
@@ -351,7 +351,7 @@ As such you should only use this preview plugin on trusted sites (e.g. internal 
 <ul class="machine"> 
 <li>
     <!-- <a href="<%=filepath%>" title="<%=xpi%>"> -->
-     <a href="/archive/moonlight-plugins/1.9.2/<%=xpi%>" title="<%=xpi%>">
+     <a href="/archive/moonlight-plugins/1.9.3/<%=xpi%>" title="<%=xpi%>">
       <img src="images/down.png" alt="Download"/>
       <strong>Linux/<%=userfriendly%></strong>
       <span class="filesize"><%=filesize%></span>
@@ -382,6 +382,20 @@ Release notes can be found on the Moonlight project wiki, <a href="http://www.mo
 
 <h1>Bugs</h1>
 If you come across any bugs using the preview, please tell us about it. See our <a href="http://mono-project.com/Bugs">Bugzilla page</a> about logging bugs.
+<br/>
+<h1>Source</h1>
+You can download a tarball of the source
+<script type="text/javascript">
+	var html = "<a href='" + data.tarball + "'>here</a> ";
+	document.write(html);
+</script>
+
+or you can check it out from svn.
+<script type="text/javascript">
+	var html = "<pre> svn co " + data.tag + "</pre> ";
+	document.write(html);
+</script>
+
 
 </div> <!-- col2 -->
 </div> <!-- page -->

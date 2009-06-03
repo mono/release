@@ -5,18 +5,18 @@ var x86_64 = "x86 64bit (x86_64)";
 
 var data =
 {
-	"title"   : "Moonlight 2.0 preview 1",
-	"release" : "1.9.1",
-	"tarball" : "http://ftp.novell.com/pub/mono/sources/moon/moonlight-1.9.1.tar.bz2",
-	"tag"     : "http://anonsvn.mono-project.com/source/tags/moon/1.9.1",
+	"title"   : "Moonlight 2.0 preview 4",
+	"release" : "1.9.3",
+	"tarball" : "http://ftp.novell.com/pub/mono/sources/moon/moonlight-1.9.3.tar.bz2",
+	"tag"     : "http://anonsvn.mono-project.com/source/tags/moon/1.9.3",
 	"archs" : [
 		{
 			"name" : "32 bit",
-			"2.0" : "novell-moonlight-1.9.1-586.xpi"
+			"2.0" : "novell-moonlight-1.9.3-586.xpi"
 		},
 		{
 			"name" : "64 bit",
-			"2.0" : "novell-moonlight-1.9.1-x86_64.xpi"
+			"2.0" : "novell-moonlight-1.9.3-x86_64.xpi"
 		},
 		{
 			"name" : "PowerPC",
@@ -45,5 +45,6 @@ var data =
 	"releaseNotes" : [
 		"coming soon",
 		"no really"
-	]
+	],
+	"mono_version" : "123456"
 };

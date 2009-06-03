@@ -382,6 +382,20 @@ Release notes can be found on the Moonlight project wiki, <a href="http://www.mo
 
 <h1>Bugs</h1>
 If you come across any bugs using the preview, please tell us about it. See our <a href="http://mono-project.com/Bugs">Bugzilla page</a> about logging bugs.
+<br/>
+<h1>Source</h1>
+You can download a tarball of the source
+<script type="text/javascript">
+	var html = "<a href='" + data.tarball + "'>here</a> ";
+	document.write(html);
+</script>
+
+or you can check it out from svn.
+<script type="text/javascript">
+	var html = "<pre> svn co " + data.tag + "</pre> ";
+	document.write(html);
+</script>
+
 
 </div> <!-- col2 -->
 </div> <!-- page -->
