@@ -86,8 +86,25 @@ Authors:
 %_prefix/lib/ilcontrast
 %_prefix/lib/mono-tools
 %_prefix/lib/mono/1.0
-%_prefix/lib/monodoc
+%_prefix/lib/monodoc/*.exe*
+%_prefix/lib/monodoc/*.dll*
+%_prefix/lib/monodoc/sources
 %_prefix/lib/mperfmon
+
+%package -n monodoc-http
+License:        X11/MIT
+Summary:        ASP.NET front-end for displaying Monodoc documentation.
+Group:          Development/Tools/Other
+URL:            http://go-mono.org/
+Provides:       monodoc-http
+Obsoletes:      monodoc-http
+
+%description -n monodoc-http
+Monodoc-http provides an ASP.NET front-end for displaying installed 
+Monodoc documentation.
+
+%files -n monodoc-http
+%_prefix/lib/monodoc/web
 
 %prep
 %setup -q
