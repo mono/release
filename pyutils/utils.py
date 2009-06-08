@@ -482,6 +482,8 @@ def launch_process(command, capture_stderr=1, print_output=1, print_command=0, t
 						pid = process.pid
 
 					sys.stdout.flush()
+					os.kill(pid, signal.SIGQUIT)
+					sleep(5);
 					os.kill(pid, signal.SIGKILL)
 				
 				except OSError:
