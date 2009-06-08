@@ -34,9 +34,15 @@ a
 	background-repeat: no-repeat;
 }
 
+#header 
+{
+	height: 192px;
+	width: 870px;
+}
+
 #content 
 {
-	margin-top: 197px;
+	margin-top: 5px;
 }
 
 #footer

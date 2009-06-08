@@ -20,6 +20,7 @@
     <div>
         <div id="container">
             <div id="content-container">
+                <a href="Default.aspx"><div id="header">&nbsp;</div></a>
                 <div id="content">
                     <asp:ContentPlaceHolder ID="maincontent" runat="server" />
                 </div>
@@ -27,8 +28,11 @@
                 </div>
                 <div id="footer">
                     <hr />
+                    <a href="http://www.mono-project.com">
+                        <img src="Images/logo_mono.png" alt="Mono logo" /></a>&nbsp;
                     <a href="http://www.novell.com/linux">
-                        <img src="Images/logo_novell.png" alt="Novell logo" /></a></div>
+                        <img src="Images/logo_novell.png" alt="Novell logo" /></a>
+                        </div>
             </div>
             <div class="content-bottom">
             </div>
