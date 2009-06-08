@@ -7,6 +7,6 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" runat="Server">
-    <iframe style="padding: 20px" src="http://spreadsheets.google.com/embeddedform?key=rbEAMJjF84u6T32DVmwgqdg"
-        width="500" height="1825" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+    <iframe style="padding: 20px;overflow:hidden" src="http://spreadsheets.google.com/embeddedform?key=rbEAMJjF84u6T32DVmwgqdg"
+        width="500" height="1850" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
 </asp:Content>
