@@ -9,7 +9,7 @@
   function resizeIframe() {
     var height = document.documentElement.clientHeight;
     height -= document.getElementById('survey').offsetTop;
-    height -= 200;
+    height -= 130;
     document.getElementById('survey').style.height = height +"px";
   };
   window.onload = resizeIframe;
