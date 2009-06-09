@@ -13,25 +13,26 @@
         <span class="features">Features:</span><br />
         <img src="Images/moma64.png" alt="Scan with MoMA" width="64" height="64" />
         <p>
-            <span class="title">Scan for Mono Compatibility</span><br />
+            <a href="Moma.aspx"><span class="title">Scan for Mono Compatibility</span></a><br />
             Scan your application with the Mono Migration Analyzer (MoMA) directly in Visual
             Studio.&nbsp;&nbsp;&nbsp;<a href="Moma.aspx" class="more">more...</a><br />
         </p>
         <img src="Images/monowin.png" alt="Test on Windows" width="64" height="64" />
         <p>
-            <span class="title">Test on Windows</span><br />
+            <a
+                href="TestWin.aspx"><span class="title">Test on Windows</span></a><br />
             Compile and launch your application running in Mono on Windows.&nbsp;&nbsp;&nbsp;<a
                 href="TestWin.aspx" class="more">more...</a><br />
         </p>
         <img src="Images/monolinux.png" alt="Test on Linux" width="64" height="64" />
         <p>
-            <span class="title">Test on Linux</span><br />
+           <a href="TestLin.aspx"><span class="title">Test on Linux</span></a><br />
             Automatically compile your application and launch it on your Linux PC or virtual
             image.&nbsp;&nbsp;&nbsp;<a href="TestLin.aspx" class="more">more...</a><br />
         </p>
         <img src="Images/start.png" alt="Debug on Linux" width="58" height="58" />
         <p>
-            <span class="title">Debug on Linux</span><br />
+            <a href="Debug.aspx"><span class="title">Debug Remotely on Linux</span></a><br />
             Debug your application running on Linux directly in Visual Studio, just like you
             normally do.&nbsp;&nbsp;&nbsp;<a href="Debug.aspx" class="more">more...</a><br />
         </p>
