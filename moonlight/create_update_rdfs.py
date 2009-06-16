@@ -23,6 +23,7 @@ new_version = None
 old_versions = None # older versions that will upgrade to new_version
 archs = ['i586','x86_64']
 versions = []
+debug = False
 
 base_link = 'http://go-mono.com/archive/moonlight-plugins'
 rdf_ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -45,6 +46,7 @@ value_args = {'profile=':'Silverlight Profile of the plugin',
 def get_args(cli_args):
 	global profile,archs
 	global new_version,old_versions,versions
+	global debug
 
 	debug = False
 	shortopts = "hp:n:a:o:d"
@@ -92,6 +94,9 @@ def usage():
 		print ('--'+ k).ljust(25),v.ljust(50)
 	print ''
 
+	print 'Example: ./create_update_rdfs.py --profile=2.0 --archs=i586,x86_64 --new_version=1.9.3 --old_versions=1.9.0,1.9.1,1.9.2'
+	print ''
+
 #-------------------------------------------------------------------------------------
 
 def checkValues():
@@ -128,10 +133,13 @@ def get_updateInfoFile():
 
 def get_sha1sum(filename):
 	sha = hashlib.sha1()
-	f = open(filename,'rb')
-	data = f.read()
-	sha.update(data)
-	return sha.hexdigest()
+	try:
+		f = open(filename,'rb')
+		data = f.read()
+		sha.update(data)
+		return sha.hexdigest()
+	except:
+		pass
 
 #-------------------------------------------------------------------------------------
 def create_text_node(doc,name,text):
@@ -249,7 +257,8 @@ def main():
 		xpi = 'novell-moonlight-%s-%s.xpi' % (new_version,arch)
 		if not os.path.isfile(xpi):
 			print "Missing new xpi file %s" % xpi
-			continue
+			if not debug:
+				continue
 
 		create_rdf_for_arch(arch)
 	create_template_xhtml()

@@ -1,19 +1,14 @@
-#!/bin/bash
+#!/bin/bash -ex
 
 # Get these revision numbers from #moonlight
-MONOREV=135039
-MOONREV=135062
 
-#------------------------------------------------------------------
-
-VERSIONS=$(cat VERSIONS)  #read versions from file
-PREVIEW=$(echo $VERSIONS | awk '{print $NF}')
+source versions.sh
 
 echo -e "\n      PREVIEW = $PREVIEW"
 echo -e "     Mono Rev = $MONOREV"
 echo -e "Moonlight Rev = $MOONREV \n"
 
-echo -n "Continue branching for Preview $PREVIEW? (yes,NO): "
+echo -n "Continue branching for Moonlight $PREVIEW? (yes,NO): "
 read -e CHAR
 
 if [ x$CHAR != xyes ]
@@ -38,5 +33,12 @@ svn mkdir -m " * Creating branch for Moonlight $PREVIEW" $BRANCH
 svn cp -m " * Branching mono r$MONOREV for Moonlight $PREVIEW" -r$MONOREV $MONO $BRANCH
 svn cp -m " * Branching mcs r$MONOREV for Moonlight $PREVIEW" -r$MONOREV $MCS $BRANCH
 svn cp -m " * Branching moon r$MOONREV for Moonlight $PREVIEW" -r$MOONREV $MOON $BRANCH
-svn cp -m " * Branching mono-basic for Moonlight $PREVIEW" -rHEAD $MONOBASIC $BRANCH
+svn cp -m " * Branching mono-basic r$MONOREV for Moonlight $PREVIEW" -r$MONOREV $MONOBASIC $BRANCH
+
+# update the version numbers in configure.ac on branch and trunk
+# update the version num in src/security.c MOON_DISABLE_SECURITY_PREVIEW_04
+
+svn co -N $BRANCH/moon moon-$PREVIEW
+echo -e "\nUpdate the version numbers in moon-$PREVIEW/configure.ac\n"
+
 

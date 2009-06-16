@@ -71,7 +71,7 @@ function check_zip
 # Pass in the rdf file to be signed
 function sign_update_rdfs
 {
-	MCCOY=$HOME/Desktop/mccoy/mccoy
+	MCCOY=$HOME/svn/moonlight-ms/moz_ext_update/mccoy/mccoy
 	#./mccoy -command install -installRDF $1 -key moonlight -xpi novell-moonlight-1.9.1-i586.xpi
 
 	# Passing -xpi just generates and adds the sha1 hash to the file
@@ -97,15 +97,14 @@ do
 	reorder_xpi $xpi
 done
 
-VERSIONS=$(cat VERSIONS)  #read versions from file
-NEW_VERSION=$(echo $VERSIONS | awk '{print $NF}')  # set new version to the last version in the list
-OLD_VERSIONS=$(echo $VERSIONS | sed -e "s#$NEW_VERSION##") # remove the last version from the list
-OLD_VERSIONS=$(echo $OLD_VERSIONS | sed -e 's#\ #,#g') # change list to a comma separated list
+source versions.sh
+NEW_VERSION=$PREVIEW
 
 ./create_update_rdfs.py -p 2.0 -a i586,x86_64 -n $NEW_VERSION -o $OLD_VERSIONS
 
 for rdf in $(ls update*.rdf)
 do
+	echo "Signing $rdf..."
 	sign_update_rdfs $rdf
 done
 

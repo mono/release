@@ -1,5 +1,8 @@
 Update:
-	Add the newest version of Moonlight to VERSIONS
+	Add the newest version of Moonlight (and svn revisions) to MoonlightReleases.py
+
+	Run branch_tag.sh to branch the mono/mcs/moon/mono-basic to branches/moon/$PREVIEW/
+
 	Run prepare_zip.sh and pass in the zip file received from the signing lab.
 	That script should to the following:
 
@@ -8,7 +11,7 @@ Update:
 		* Create update.rdf files by running create_update_rdfs.py 
 		* Sign the update rdf files with the moonlight key
 
-	You should only have to edit VERSIONS now. 
+	You should only have to edit MoonlightReleases.py now
 	Do not edit prepare_zip.sh or create_update_rdfs.py
 
 Below is an example of create_update_rdfs.py by hand
