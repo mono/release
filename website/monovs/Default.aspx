@@ -33,7 +33,7 @@
         <img src="Images/start.png" alt="Debug on Linux" width="58" height="58" />
         <p>
             <a href="Debug.aspx"><span class="title">Debug Remotely on Linux</span></a><br />
-            Debug your application running on Linux directly in Visual Studio, just like you
+            Debug your application running on Mono on Linux directly in Visual Studio, just like you
             normally do.&nbsp;&nbsp;&nbsp;<a href="Debug.aspx" class="more">more...</a><br />
         </p>
     </div>
