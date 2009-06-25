@@ -63,5 +63,8 @@
         - Virtual PC (vpc)    
         <br />
         <br />
+        <b><a href="http://www.mono-project.com/GettingStartedWithMonoVS" style="color: Black">Getting Started Guide</a></b>
+        <br />
+        <br />
 <span style="color: #FF0000;font-size: .85em;">Note: All instances of Visual Studio 2008 must be closed prior to installation.</span> </div>
 </asp:Content>
