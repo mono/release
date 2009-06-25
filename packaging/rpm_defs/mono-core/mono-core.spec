@@ -1220,7 +1220,7 @@ make install DESTDIR=%buildroot
 # Remove unused files
 NET_RAW=/usr/lib/mono/lib/moonlight/mcs/class/lib
 mkdir -p $RPM_BUILD_ROOT$NET_RAW
-cp mcs/class/lib/* $RPM_BUILD_ROOT$NET_RAW
+cp -a mcs/class/lib/* $RPM_BUILD_ROOT$NET_RAW
 rm -rf $RPM_BUILD_ROOT$NET_RAW/*bootstrap
 
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.a
