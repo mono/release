@@ -252,7 +252,7 @@ autoreconf -f -i
 			--with-mcspath=/usr/lib/mono/lib/moonlight/mcs \
 			--without-examples \
 			--without-testing \
-			--without-performance \
+			--without-performance
 %{__make} %{?jobs:-j%jobs}
 
 %install
