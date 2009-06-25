@@ -1148,7 +1148,11 @@ Authors:
 %dir %{_prefix}/lib/mono/lib/moonlight/mcs
 %dir %{_prefix}/lib/mono/lib/moonlight/mcs/class
 %dir %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib
+%{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_1_1
+%{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_2_0
+%{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_2_1
 %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_2_1_raw
+%{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_3_5
 
 %package -n mono-complete
 License:        LGPL v2.1 only
@@ -1214,9 +1218,10 @@ make
 %install
 make install DESTDIR=%buildroot
 # Remove unused files
-NET_2_1_RAW=/usr/lib/mono/lib/moonlight/mcs/class/lib/net_2_1_raw
-mkdir -p $RPM_BUILD_ROOT$NET_2_1_RAW
-cp mcs/class/lib/net_2_1_raw/* $RPM_BUILD_ROOT$NET_2_1_RAW
+NET_RAW=/usr/lib/mono/lib/moonlight/mcs/class/lib
+mkdir -p $RPM_BUILD_ROOT$NET_RAW
+cp mcs/class/lib/* $RPM_BUILD_ROOT$NET_RAW
+rm -rf $RPM_BUILD_ROOT$NET_RAW/*bootstrap
 
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.a
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.la
