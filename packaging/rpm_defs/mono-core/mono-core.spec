@@ -1125,6 +1125,31 @@ Monodoc-core contains documentation tools for C#.
 %{_mandir}/man1/monodocs2html.1%ext_man
 %{_mandir}/man5/mdoc.5%ext_man
 
+%package -n mono-core-moon
+License:        LGPL v2.1 only
+Summary:        Mono assemblies for Moonlight
+Group:          Development/Languages/Mono
+BuildRequires:  mono-core
+
+%description -n mono-core-moon
+Mono assemblies for Moonlight
+
+Authors:
+--------
+    Miguel de Icaza <miguel@ximian.com>
+    Paolo Molaro <lupus@ximian.com>
+    Dietmar Maurer <dietmar@ximian.com>
+
+%files -n mono-core-moon
+%defattr(-, root, root)
+# Directories
+%dir %{_prefix}/lib/mono/lib
+%dir %{_prefix}/lib/mono/lib/moonlight
+%dir %{_prefix}/lib/mono/lib/moonlight/mcs
+%dir %{_prefix}/lib/mono/lib/moonlight/mcs/class
+%dir %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib
+%{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_2_1_raw
+
 %package -n mono-complete
 License:        LGPL v2.1 only
 Summary:        A .NET Runtime Environment
@@ -1189,6 +1214,10 @@ make
 %install
 make install DESTDIR=%buildroot
 # Remove unused files
+NET_2_1_RAW=/usr/lib/mono/lib/moonlight/mcs/class/lib/net_2_1_raw
+mkdir -p $RPM_BUILD_ROOT$NET_2_1_RAW
+cp mcs/class/lib/net_2_1_raw/* $RPM_BUILD_ROOT$NET_2_1_RAW
+
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.a
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.la
 rm -f $RPM_BUILD_ROOT%_libdir/libikvm-native.a
