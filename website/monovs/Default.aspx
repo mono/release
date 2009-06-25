@@ -46,7 +46,7 @@
         <div class="colordiv">
             <span style="font-size: .85em;">Already received your invitation username/password?<br />
             <br />
-            <a href="http://go-mono.com/monovs-download/0.1/">Download current version: 0.1.1866</a></span>
+            <a href="http://go-mono.com/monovs-download/latest/">Download current version: 0.1.2410</a></span>
         </div>
         <br />
         <br />
@@ -58,9 +58,9 @@
         <br />
         
         Linux Image runs in:<br />
-        - VMWare (.vmx) or
+        - VMWare (vmx / ova) or
         <br />
-        - Virtual PC (.vpc)    
+        - Virtual PC (vpc)    
         <br />
         <br />
 <span style="color: #FF0000;font-size: .85em;">Note: All instances of Visual Studio 2008 must be closed prior to installation.</span> </div>
