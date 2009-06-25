@@ -11,7 +11,7 @@ License:        LGPL v2.0 only
 Group:          Productivity/Multimedia/Other
 Summary:        Novell Moonlight
 Url:            http://go-mono.com/moonlight/
-Version:        1.9.3
+Version:        1.9.3.99
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        moonlight-%{version}.tar.bz2
