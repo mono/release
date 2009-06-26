@@ -110,7 +110,11 @@ done
 
 sha1sum novell*xpi > sha1sums-$NEW_VERSION
 
-# upload all necessary files to go-mono
-#scp novell-moonlight*xpi info*xhtml mono-web@go-mono.com:go-mono/archive/moonlight-plugins/$NEW_VERSION
-#scp update-2.0*rdf mono-web@go-mono.com:go-mono/archive/moonlight-plugins/updates
+mkdir $NEW_VERSION
+mv update*.rdf novell-moonlight*.xpi sha1sums-* info*xhtml $NEW_VERSION
+
+echo "Next step:"
+echo "  - Review the contents of the $NEW_VERSION directory"
+echo "  - Run publish_preview.sh"
+
 

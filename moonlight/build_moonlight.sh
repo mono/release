@@ -1,8 +1,7 @@
 #!/bin/bash
 
+source versions.sh
 
-VERSIONS=$(cat VERSIONS)  #read versions from file
-PREVIEW=$(echo $VERSIONS | awk '{print $NF}')
 ARCH=$(uname -m | sed -e 's/i.86/i586/')
 
 SRCDIR=$HOME/src
