@@ -5,7 +5,7 @@ License:        LGPL v2.1 only
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 Url:            http://go-mono.org/
-Version:        2.4
+Version:        2.5
 Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
@@ -1129,7 +1129,6 @@ Monodoc-core contains documentation tools for C#.
 License:        LGPL v2.1 only
 Summary:        Mono assemblies for Moonlight
 Group:          Development/Languages/Mono
-BuildRequires:  mono-core
 
 %description -n mono-core-moon
 Mono assemblies for Moonlight
