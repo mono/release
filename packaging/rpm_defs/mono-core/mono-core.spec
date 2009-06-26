@@ -1141,7 +1141,7 @@ Authors:
     Dietmar Maurer <dietmar@ximian.com>
 
 %files -n mono-core-moon
-%defattr(-, root, root)
+%defattr(-, root, users)
 # Directories
 %dir %{_prefix}/lib/mono/lib
 %dir %{_prefix}/lib/mono/lib/moonlight
