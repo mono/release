@@ -1150,7 +1150,6 @@ Authors:
 %dir %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib
 %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_1_1
 %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_2_0
-%{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_2_1
 %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_2_1_raw
 %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_3_5
 
