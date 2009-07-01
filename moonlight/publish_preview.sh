@@ -8,7 +8,8 @@ SERVER=mono-web@go-mono.com
 DIR="go-mono/archive/moonlight-plugins/$NEW_VERSION"
 UPDIR="go-mono/archive/moonlight-plugins/updates"
 
-if [ -d $NEW_VERSION ]
+if [ ! -d $NEW_VERSION ]
+then
 	echo "Run prepare_zip.sh first"
 	exit 1
 fi
