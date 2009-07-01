@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash
 
 # Get these revision numbers from #moonlight
 
@@ -30,9 +30,16 @@ BRANCH=$HOST/branches/moon/$PREVIEW
 # Create the branch
 svn mkdir -m " * Creating branch for Moonlight $PREVIEW" $BRANCH
 
+echo      " * Branching mono r$MONOREV for Moonlight $PREVIEW"
 svn cp -m " * Branching mono r$MONOREV for Moonlight $PREVIEW" -r$MONOREV $MONO $BRANCH
+
+echo      " * Branching mcs r$MONOREV for Moonlight $PREVIEW"
 svn cp -m " * Branching mcs r$MONOREV for Moonlight $PREVIEW" -r$MONOREV $MCS $BRANCH
+
+echo      " * Branching moon r$MOONREV for Moonlight $PREVIEW"
 svn cp -m " * Branching moon r$MOONREV for Moonlight $PREVIEW" -r$MOONREV $MOON $BRANCH
+
+echo      " * Branching mono-basic r$MONOREV for Moonlight $PREVIEW"
 svn cp -m " * Branching mono-basic r$MONOREV for Moonlight $PREVIEW" -r$MONOREV $MONOBASIC $BRANCH
 
 # update the version numbers in configure.ac on branch and trunk
