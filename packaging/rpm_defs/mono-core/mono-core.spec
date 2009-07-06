@@ -1152,6 +1152,9 @@ Authors:
 %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_2_1_raw
 %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_3_5
 
+%post -n mono-core-moon
+chown -R root:users /usr/lib/mono/lib/moonlight/mcs
+
 %package -n mono-complete
 License:        LGPL v2.1 only
 Summary:        A .NET Runtime Environment
