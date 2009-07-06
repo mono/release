@@ -1045,7 +1045,7 @@ fi
 %_mandir/man1/monolinker.1%ext_man
 %_prefix/lib/mono/gac/PEAPI
 %_prefix/lib/mono/1.0/PEAPI.dll
-%_prefix/lib/mono/1.0/monolinker.*
+%_prefix/lib/mono/2.0/monolinker.*
 %_prefix/lib/mono/2.0/PEAPI.dll
 %_prefix/lib/mono/gac/Microsoft.Build.Tasks
 %_prefix/lib/mono/2.0/Microsoft.Build.Tasks.dll
