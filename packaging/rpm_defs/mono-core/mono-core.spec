@@ -1153,7 +1153,9 @@ Authors:
 %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_3_5
 
 %post -n mono-core-moon
+# mcs dir must be writeable by the user for building moonlight
 chown -R root:users /usr/lib/mono/lib/moonlight/mcs
+chmod -R g+w /usr/lib/mono/lib/moonlight/mcs/class/lib
 
 %package -n mono-complete
 License:        LGPL v2.1 only
