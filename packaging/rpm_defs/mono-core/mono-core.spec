@@ -494,7 +494,6 @@ Authors:
 %_prefix/lib/mono/1.0/System.Management.dll
 %_prefix/lib/mono/2.0/System.Management.dll
 %_prefix/lib/mono/gac/RabbitMQ.Client
-%_prefix/lib/mono/1.0/RabbitMQ.Client.dll
 %_prefix/lib/mono/2.0/RabbitMQ.Client.dll
 %_prefix/lib/mono/gac/System.Messaging
 %_prefix/lib/mono/1.0/System.Messaging.dll
