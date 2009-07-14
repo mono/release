@@ -34,7 +34,7 @@ pageTracker._trackPageview();
 <script type="text/javascript" src="Silverlight.js" /></script>
 <script type="text/javascript">
 
-var released_version = "1.9.5";
+var released_version = "1.9.6";
 
 var plugin = navigator.plugins["Silverlight Plug-In"];
 if (plugin.filename.indexOf("libmoonloader") == 0) {
@@ -151,8 +151,8 @@ string svn_location = "http://anonsvn.mono-project.com/source/tags/moon/1.9.5";
 
 void Page_Init(object sender, EventArgs e)
 {
-        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.9.5/";
-        dir = "downloads/1.9.5";
+        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.9.6/";
+        dir = "downloads/1.9.6";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -252,7 +252,7 @@ function flash()
 
 <div id="col2">
 <h1>
-Moonlight 2.0 Preview 6
+Moonlight 2.0 Preview 7
 </h1>
 
 <p><a href="http://www.mono-project.com/Moonlight">Moonlight</a> is an
@@ -296,7 +296,8 @@ As such you should only use this preview plugin on trusted sites (e.g. internal 
 <div id="dllink">
 <ul class="machine"> 
 <li>
-     <a href="/archive/moonlight-plugins/1.9.5/<%=xpi%>" title="<%=xpi%>">
+    <!-- <a href="<%=filepath%>" title="<%=xpi%>"> -->
+     <a href="/archive/moonlight-plugins/1.9.6/<%=xpi%>" title="<%=xpi%>">
       <img src="images/down.png" alt="Download"/>
       <strong>Linux/<%=userfriendly%></strong>
       <span class="filesize"><%=filesize%></span>
