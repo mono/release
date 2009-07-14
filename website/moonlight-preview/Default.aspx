@@ -146,8 +146,8 @@ string filesize = string.Empty;
 string fileupdate = string.Empty;
 string userfriendly = string.Empty;
 string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight-preview";
-string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/moonlight-1.9.5.tar.bz2";
-string svn_location = "http://anonsvn.mono-project.com/source/tags/moon/1.9.5";
+string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/moonlight-1.9.6.tar.bz2";
+string svn_location = "http://anonsvn.mono-project.com/source/tags/moon/1.9.6";
 
 void Page_Init(object sender, EventArgs e)
 {
@@ -227,7 +227,7 @@ void ArchSelected(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-1.9.5-" + architecture.SelectedValue + ".xpi";
+	xpi = basename + "-1.9.6-" + architecture.SelectedValue + ".xpi";
 	filepath = Path.Combine(dir,xpi);
 }
 
@@ -296,7 +296,6 @@ As such you should only use this preview plugin on trusted sites (e.g. internal 
 <div id="dllink">
 <ul class="machine"> 
 <li>
-    <!-- <a href="<%=filepath%>" title="<%=xpi%>"> -->
      <a href="/archive/moonlight-plugins/1.9.6/<%=xpi%>" title="<%=xpi%>">
       <img src="images/down.png" alt="Download"/>
       <strong>Linux/<%=userfriendly%></strong>
