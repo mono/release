@@ -9,7 +9,7 @@ var enterprise = "<p>The <a href=\"http://www.novell.com/products/mono/\">SUSE L
 
 var data =
 {
-	"release" : "2.4.2.1",
+	"release" : "2.4.2.2",
 	"platforms" : [
 	{
 		"name" : "Virtual PC",
@@ -149,7 +149,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on all versions of Windows 2000, XP, 2003 and Vista.",
-				"downloadText" : "<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.1/windows-installer/1/mono-2.4.2.1-gtksharp-2.12.9-win32-1.exe\">Mono for Windows, Gtk#, and XSP</a></li><li><a href=\"http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi\">Gtk# for .NET</a></li><li><a href=\"http://mono-project.com/MoMA\">Mono Migration Analyzer</a></li></ul>"
+				"downloadText" : "<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.2/windows-installer/0/mono-2.4.2.2-gtksharp-2.12.9-win32-0.exe\">Mono for Windows, Gtk#, and XSP</a></li><li><a href=\"http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi\">Gtk# for .NET</a></li><li><a href=\"http://mono-project.com/MoMA\">Mono Migration Analyzer</a></li></ul>"
 			}
 			]
 		}
@@ -167,7 +167,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<ul><li>Mono 2.4.2.1 Framework<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.1/macos-10-x86/1/MonoFramework-2.4.2.1_1.macos10.novell.x86.dmg\">Intel</a></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.1/macos-10-ppc/1/MonoFramework-2.4.2.1_1.macos10.novell.ppc.dmg\">PowerPC</a></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.1/macos-10-universal/1/MonoFramework-2.4.2.1_1.macos10.novell.universal.dmg\">Universal</a> (if you don't know what you need)</li></ul><li><a href=\"http://monodevelop.com/Download/Mac_Preview\">MonoDevelop Preview</a> <span style=\"color: darkred; font-weight: bold\">(The MacOSX port of MonoDevelop is still incomplete, there may be serious bugs and / or missing features)</span></li></li><li><a href=\"http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2\">Cocoa# 0.9.4 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
+				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<ul><li>Mono 2.4.2.2 Framework<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.2/macos-10-x86/0/MonoFramework-2.4.2.2_0.macos10.novell.x86.dmg\">Intel</a></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.2/macos-10-ppc/0/MonoFramework-2.4.2.2_0.macos10.novell.ppc.dmg\">PowerPC</a></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.2/macos-10-universal/0/MonoFramework-2.4.2.2_0.macos10.novell.universal.dmg\">Universal</a> (if you don't know what you need)</li></ul><li><a href=\"http://monodevelop.com/Download/Mac_Preview\">MonoDevelop Preview</a> <span style=\"color: darkred; font-weight: bold\">(The MacOSX port of MonoDevelop is still incomplete, there may be serious bugs and / or missing features)</span></li></li><li><a href=\"http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.4.tar.bz2\">Cocoa# 0.9.4 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
