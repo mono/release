@@ -90,8 +90,8 @@ BuildRequires:  libunwind-devel
 # Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
 %define _use_internal_dependency_generator 0
 %endif
-%define __find_provides env sh -c 'filelist=($(cat | grep -v moonlight/mcs)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}/usr %{buildroot}%{_bindir}/mono-find-provides ; } | sort | uniq'
-%define __find_requires env sh -c 'filelist=($(cat | grep -v moonlight/mcs)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}/usr %{buildroot}%{_bindir}/mono-find-requires ; } | sort | uniq'
+%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}/usr %{buildroot}%{_bindir}/mono-find-provides ; } | sort | uniq'
+%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}/usr %{buildroot}%{_bindir}/mono-find-requires ; } | sort | uniq'
 
 %description
 The Mono Project is an open development initiative that is working to
@@ -494,6 +494,7 @@ Authors:
 %_prefix/lib/mono/1.0/System.Management.dll
 %_prefix/lib/mono/2.0/System.Management.dll
 %_prefix/lib/mono/gac/RabbitMQ.Client
+%_prefix/lib/mono/1.0/RabbitMQ.Client.dll
 %_prefix/lib/mono/2.0/RabbitMQ.Client.dll
 %_prefix/lib/mono/gac/System.Messaging
 %_prefix/lib/mono/1.0/System.Messaging.dll
@@ -1123,38 +1124,6 @@ Monodoc-core contains documentation tools for C#.
 %{_mandir}/man1/monodocs2html.1%ext_man
 %{_mandir}/man5/mdoc.5%ext_man
 
-%package -n mono-core-moon
-License:        LGPL v2.1 only
-Summary:        Mono assemblies for Moonlight
-Group:          Development/Languages/Mono
-
-%description -n mono-core-moon
-Mono assemblies for Moonlight
-
-Authors:
---------
-    Miguel de Icaza <miguel@ximian.com>
-    Paolo Molaro <lupus@ximian.com>
-    Dietmar Maurer <dietmar@ximian.com>
-
-%files -n mono-core-moon
-%defattr(-, root, users)
-# Directories
-%dir %{_prefix}/lib/mono/lib
-%dir %{_prefix}/lib/mono/lib/moonlight
-%dir %{_prefix}/lib/mono/lib/moonlight/mcs
-%dir %{_prefix}/lib/mono/lib/moonlight/mcs/class
-%dir %{_prefix}/lib/mono/lib/moonlight/mcs/class/lib
-%{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_1_1
-%{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_2_0
-%{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_2_1_raw
-%{_prefix}/lib/mono/lib/moonlight/mcs/class/lib/net_3_5
-
-%post -n mono-core-moon
-# mcs dir must be writeable by the user for building moonlight
-chown -R root:users /usr/lib/mono/lib/moonlight/mcs
-chmod -R g+w /usr/lib/mono/lib/moonlight/mcs/class/lib
-
 %package -n mono-complete
 License:        LGPL v2.1 only
 Summary:        A .NET Runtime Environment
@@ -1219,11 +1188,6 @@ make
 %install
 make install DESTDIR=%buildroot
 # Remove unused files
-NET_RAW=/usr/lib/mono/lib/moonlight/mcs/class/lib
-mkdir -p $RPM_BUILD_ROOT$NET_RAW
-cp -a mcs/class/lib/net_* $RPM_BUILD_ROOT$NET_RAW
-rm -rf $RPM_BUILD_ROOT$NET_RAW/net_*bootstrap
-
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.a
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.la
 rm -f $RPM_BUILD_ROOT%_libdir/libikvm-native.a
