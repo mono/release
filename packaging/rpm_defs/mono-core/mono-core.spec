@@ -503,6 +503,7 @@ Authors:
 %_prefix/lib/mono/1.0/Mono.Messaging.dll
 %_prefix/lib/mono/2.0/Mono.Messaging.dll
 %_prefix/lib/mono/gac/Mono.Messaging.RabbitMQ
+%_prefix/lib/mono/1.0/Mono.Messaging.RabbitMQ.dll
 %_prefix/lib/mono/2.0/Mono.Messaging.RabbitMQ.dll
 %_prefix/lib/mono/gac/System.ServiceProcess
 %_prefix/lib/mono/1.0/System.ServiceProcess.dll
