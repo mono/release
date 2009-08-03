@@ -24,9 +24,9 @@
 <script type="text/javascript">
 function resizeIframe() {
     var height = document.documentElement.clientHeight;
-    height -= document.getElementById('irc').offsetTop;
-    height -= 200;
-    document.getElementById('irc').style.height = height +"px";
+    height -= document.getElementById('survey').offsetTop;
+    height -= 20;
+//    document.getElementById('survey').style.height = height +"px";
 };
 window.onload = resizeIframe;
 window.onresize = resizeIframe;
@@ -41,7 +41,7 @@ window.onresize = resizeIframe;
           <li  id="menu-n-home"><a href="http://mono-project.com/Main_Page">Home</a></li>
 
       <li  id="menu-n-download"><a href="http://www.go-mono.com/mono-downloads/download.html">Download</a></li>
-      <li id="menu-n-start"><a href="http://mono-project.com/Start">Start</a></li>
+      <li  id="menu-n-start"><a href="http://mono-project.com/Start">Start</a></li>
       <li  id="menu-n-news"><a href="http://www.mono-project.com/news/">News</a></li>
       <li  id="menu-n-contribute"><a href="http://mono-project.com/Contributing">Contribute</a></li>
       <li  id="menu-n-contact"><a href="http://mono-project.com/Contact">Contact</a></li>
@@ -62,16 +62,18 @@ window.onresize = resizeIframe;
       </form>
     </div>
   </div>
-    <div id="content-header"><h2>Chat</h2></div>
+    <div id="content-header"><h2>Preview MonoTouch</h2></div>
     <div id="wrapper" class="wide">
     <div id="content" class="wide">
-			<iframe 
-				id="irc"
-				width="100%"
-				scrolling=no 
-				border=0 
-				src="http://embed.mibbit.com/index.html?server=irc.gnome.org&channel=%23monodevelop,%23mono">
-			</iframe>
+	<iframe
+		id="survey"
+		src="http://spreadsheets.google.com/embeddedform?key=0Ath-ghEfcQqMdHRXeFI5b1NjUWdRRkpiSmxkanh6T1E"
+		width="500" 
+		height="2500" 
+		frameborder="0" 
+		marginheight="0" 
+		marginwidth="0">Loading...
+	</iframe>
     </div><!--#content-->
     
     <div id="sidebar">
