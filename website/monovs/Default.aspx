@@ -36,12 +36,22 @@
             Debug your application running on Mono on Linux directly in Visual Studio, just like you
             normally do.&nbsp;&nbsp;&nbsp;<a href="Debug.aspx" class="more">more...</a><br />
         </p>
+        <img src="Images/packaging.png" alt="Package for Linux" width="58" height="58" />
+        <p>
+            <a href="Package.aspx"><span class="title">Package for Linux</span></a><br />
+            Visually create a SUSE RPM installer package for your application.&nbsp;&nbsp;&nbsp;<a href="Package.aspx" class="more">more...</a><br />
+        </p>
+        <img src="Images/studio.png" alt="Create a SUSE Linux Appliance" width="58" height="58" />
+        <p>
+            <a href="Studio.aspx"><span class="title">Create a SUSE Linux Appliance</span></a><br />
+            Bundle your application into a SUSE Linux appliance for easy distribution to your users.&nbsp;&nbsp;&nbsp;<a href="Studio.aspx" class="more">more...</a><br />
+        </p>
     </div>
     <div class="right-column">
     <div class="surveydiv">
         Mono Tools for Visual Studio is currently in private preview.
         <br /><br />Sign up to be included in the next round of invitations!
-        <br /><br /><a href="Signup.aspx"><img src="Images/signup-button.png" /></a>
+        <br /><br /><a href="Signup.aspx"><img src="Images/signup-button.png" alt="Click to Signup" /></a>
     </div>
         <div class="colordiv">
             <span style="font-size: .85em;">Already received your invitation username/password?<br />
