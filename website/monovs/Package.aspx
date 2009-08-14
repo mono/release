@@ -62,7 +62,7 @@
         <img class="shot" src="Images/package6.png" alt="Package for Linux - Step 6" />
         <b>Step 6:</b><br />
         <br />
-        Click "Build Package" and your package will be built and ready for you (and your users) to install.
+        Once you click "Build Package", your package will be built and ready for you (and your users) to install on SUSE Linux.
         <div class="clearer">
         </div>
     </div>
