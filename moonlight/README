@@ -18,3 +18,5 @@ Below is an example of create_update_rdfs.py by hand
 
 ./create_update_rdfs.py --profile=2.0 --archs=i586,x86_64 --new_version=1.9.1 --old_versions=1.9.0,1.9.0.1
 
+Then run publish_preview.sh to push everything to go-mono.com
+

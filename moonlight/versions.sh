@@ -10,15 +10,8 @@ import MoonlightReleases
 
 print "%(release)s %(monorev)s %(moonrev)s" % (MoonlightReleases.latest)
 
-versions = ""
-tmp_releases = MoonlightReleases.releases.keys()
-tmp_releases.sort()
-
-for release in tmp_releases:
-	if release != MoonlightReleases.latest["release"]:
-		versions += release + ","
-
-print versions[0:-1] # dont print out the last comma
+versions = ",".join(MoonlightReleases.old_versions)
+print versions
 
 ')
 

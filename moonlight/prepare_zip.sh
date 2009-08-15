@@ -71,7 +71,7 @@ function check_zip
 # Pass in the rdf file to be signed
 function sign_update_rdfs
 {
-	MCCOY=$HOME/svn/moonlight-ms/moz_ext_update/mccoy/mccoy
+	MCCOY=$HOME/code/moonlight-ms/moz_ext_update/mccoy/mccoy
 	#./mccoy -command install -installRDF $1 -key moonlight -xpi novell-moonlight-1.9.1-i586.xpi
 
 	# Passing -xpi just generates and adds the sha1 hash to the file
@@ -110,6 +110,7 @@ done
 
 sha1sum novell*xpi > sha1sums-$NEW_VERSION
 
+rm -rf $NEW_VERSION
 mkdir $NEW_VERSION
 mv update*.rdf novell-moonlight*.xpi sha1sums-* info*xhtml $NEW_VERSION
 
