@@ -18,7 +18,7 @@ import getopt
 
 # GLOBALS
 
-profile = None 
+profile = '2.0'
 new_version = None
 old_versions = None # older versions that will upgrade to new_version
 archs = ['i586','x86_64']
@@ -252,6 +252,30 @@ def create_template_xhtml():
 # MAIN
 #
 
+def create_rdfs(m_new_version,m_old_versions,m_profile=None,m_archs=None):
+	global profile
+	global new_version
+	global old_versions
+	global archs
+	global versions
+
+	new_version = m_new_version
+	old_versions = m_old_versions
+
+	if m_profile != None:
+		profile = m_profile
+
+	if m_archs != None:
+		archs = m_archs
+
+	if old_versions != None and new_version != None:
+		versions = old_versions + [new_version] # Note to self: this is intentional. Leave it alone :)
+	else:
+		versions = []
+
+	checkValues()
+	main()
+
 def main():
 	for arch in archs:
 		xpi = 'novell-moonlight-%s-%s.xpi' % (new_version,arch)
@@ -269,3 +293,4 @@ if __name__ == '__main__':
 	main()
 
 
+# vim:ts=4:noexpandtab:
