@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ $# != 1 ]; then
+	echo "Usage: $0 <version>"
+	exit 1
+fi
+
+PREVIEW=`echo $1 | awk -F '.' '{print $3}'`
+PREVIEW=$(($PREVIEW+1))
+
+for i in *.in; do
+	
+	sed -e s/@@VERSION@@/$1/ -e s/@@PREVIEW@@/$PREVIEW/ $i > `basename $i .in`
+done
