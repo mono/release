@@ -320,7 +320,7 @@ As such you should only use this preview plugin on trusted sites (e.g. internal 
 <p>To continue the installation click <em>Allow.</em></p>
 
 <h1>Release Notes</h1>
-<p>Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Preview#Release_Notes">here</a>.</p>
+<p>Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Beta#Release_Notes">here</a>.</p>
 
 <h1>Bugs</h1>
 <p>If you come across any bugs using the preview, please tell us about it. See our <a href="http://mono-project.com/Bugs">Bugzilla page</a> about logging bugs.</p>
