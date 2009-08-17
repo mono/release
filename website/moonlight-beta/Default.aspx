@@ -6,7 +6,15 @@
 <head>
 <title>Moonlight Downloads</title>
 <link rel="stylesheet" type="text/css" href="css/moonlight.css"/>
-
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-76510-5");
+pageTracker._trackPageview();
+} catch(err) {}</script>
 </head>
 
 <body>
@@ -138,8 +146,8 @@ string filesize = string.Empty;
 string fileupdate = string.Empty;
 string userfriendly = string.Empty;
 string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight-preview";
-string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/1.99.1";
-string svn_location = "http://anonsvn.mono-project.com/source/branches/moon/1.99.1";
+string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/moonlight-1.99.1.tar.bz2";
+string svn_location = "http://anonsvn.mono-project.com/source/tags/moon/1.99.1";
 
 void Page_Init(object sender, EventArgs e)
 {
@@ -252,6 +260,9 @@ open source implementation of <a
 href="http://silverlight.net">Microsoft Silverlight</a> for Unix systems.</p>
 
 
+<% if (IsPrivate) { %>
+<p><strong>THESE ARE PRIVATE BINARIES, NOT INTENTED FOR PUBLIC CONSUMPTION.   DO NOT DOWNLOAD.</strong></p>
+<% } %>
 <p>Please see the <a href="#instructions">installation instructions</a> below.</p>
 
 <p>
@@ -318,9 +329,7 @@ As such we recommend that you should only use this plugin on trusted sites (e.g.
 <p>Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Beta#Release_Notes">here</a>.</p>
 
 <h1>Bugs</h1>
-<p>If you come across any bugs using the beta, please tell us about it. See our <a href="http://mono-project.com/Bugs">Bugzilla page</a> about logging bugs.</p>
-<p><a href="https://bugzilla.novell.com/enter_bug.cgi?alias=&assigned_to=&blocked=&bug_file_loc=http%3A%2F%2F&bug_severity=Normal&bug_status=NEW&cf_biz_priority=&cf_foundby=Community%20User&cf_nts_priority=&cf_nts_support_num=&cf_partnerid=&comment=Steps%20to%20reproduce%20the%20problem%3A%0D%0A%0D%0A%0D%0A%0D%0AExpected%20results%3A%0D%0A%0D%0A%0D%0AActual%20results%3A%0D%0A%0D%0A%0D%0AHow%20often%20does%20this%20happen%3F%20Always&component=&contenttypeentry=&contenttypemethod=autodetect&contenttypeselection=text%2Fplain&data=&deadline=&dependson=&description=&estimated_time=0.0&flag_type-2=X&flag_type-3=X&form_name=enter_bug&keywords=&maketemplate=Remember%20values%20as%20bookmarkable%20template&op_sys=Other&priority=P5%20-%20None&product=Moonlight&qa_contact=&rep_platform=Other&short_desc=&version=1.99.1">
-Use this template</a> to log a bug against the Moonlight Beta</p>
+<p>If you come across any bugs using the preview, please tell us about it. See our <a href="http://mono-project.com/Bugs">Bugzilla page</a> about logging bugs.</p>
 
 <h1>Source</h1>
 <p>You can download a tarball of the source <a href="<%=src_tarball_location%>">here</a>, or you can check it out from svn.
@@ -329,16 +338,14 @@ Use this template</a> to log a bug against the Moonlight Beta</p>
 </div> <!-- col2 -->
 </div> <!-- page -->
 
-
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 <script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-76510-5");
+var pageTracker = _gat._getTracker("UA-76510-1");
 pageTracker._trackPageview();
-} catch(err) {}</script>
+</script>
 
 
 <% if (Request["unknown"] == "1") { %>
