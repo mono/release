@@ -259,11 +259,14 @@ Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">
 </p>
 
 <div id="preview-notice">
-<p><b>Preview Release Security Notice</b> </p>
+<p><b>Beta Release Security Notice</b></p>
 
 <p>
-Keep in mind this preview release is not feature complete. Most importantly <b>not</b> all security features are present or fully enabled in this release. Even existing security features have, at this stage, received only minimal testing and no security audit of the source code (mono or moonlight) has yet been done.
-As such you should only use this preview plugin on trusted sites (e.g. internal or well-known web sites) on non-production computers. This situation will gradually evolve over the next preview and beta releases. An up to date overview of Moonlight security features status can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight Security Status</a> wiki page.
+
+This release is feature complete, but as a beta there are various known bugs (mostly minor) and most assuredly unknown ones as well. We still haven't completed the security audit of the source code (mono or moonlight), so you need to be aware that there may be issues.
+
+As such we recommend that you should only use this plugin on trusted sites (e.g. internal or well-known web sites) on non-production computers. This situation will gradually evolve over the beta releases. An up to date overview of Moonlight security features status can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight Security Status</a> wiki page.
+
 </p>
 </div>
 
