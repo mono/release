@@ -151,7 +151,7 @@ def main():
         print "Reordering %s" % xpi
         z.extract(xpi)
         reorder_xpi(xpi)
-        shafile.write("%s %s\n" % (get_sha1sum(xpi),xpi))
+        shafile.write("%s  %s\n" % (get_sha1sum(xpi),xpi)) # Two spaces are required between sum and filename
     shafile.close()
 
     #NEW_VERSION=$PREVIEW
