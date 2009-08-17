@@ -313,7 +313,6 @@ The Moonlight Beta page is down for maintainance. Stay tuned! We'll be back up a
 </table>
 </form>
 
--->
  
 <br/>
 <h1><a name="instructions"></a>Installation instructions</h1>
@@ -333,6 +332,9 @@ The Moonlight Beta page is down for maintainance. Stay tuned! We'll be back up a
 <h1>Source</h1>
 <p>You can download a tarball of the source <a href="<%=src_tarball_location%>">here</a>, or you can check it out from svn.
 <pre> svn co <%=svn_location%> </pre></p>
+
+
+-->
 
 </div> <!-- col2 -->
 </div> <!-- page -->
