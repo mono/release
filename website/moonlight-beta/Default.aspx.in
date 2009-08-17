@@ -6,15 +6,6 @@
 <head>
 <title>Moonlight Downloads</title>
 <link rel="stylesheet" type="text/css" href="css/moonlight.css"/>
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-76510-5");
-pageTracker._trackPageview();
-} catch(err) {}</script>
 </head>
 
 <body>
@@ -146,7 +137,7 @@ string filesize = string.Empty;
 string fileupdate = string.Empty;
 string userfriendly = string.Empty;
 string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight-preview";
-string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/moonlight-@@VERSION@@.tar.bz2";
+string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/@@VERSION@@";
 string svn_location = "http://anonsvn.mono-project.com/source/tags/moon/@@VERSION@@";
 
 void Page_Init(object sender, EventArgs e)
@@ -260,9 +251,6 @@ open source implementation of <a
 href="http://silverlight.net">Microsoft Silverlight</a> for Unix systems.</p>
 
 
-<% if (IsPrivate) { %>
-<p><strong>THESE ARE PRIVATE BINARIES, NOT INTENTED FOR PUBLIC CONSUMPTION.   DO NOT DOWNLOAD.</strong></p>
-<% } %>
 <p>Please see the <a href="#instructions">installation instructions</a> below.</p>
 
 <p>
@@ -339,12 +327,14 @@ As such we recommend that you should only use this plugin on trusted sites (e.g.
 </div> <!-- page -->
 
 <script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 <script type="text/javascript">
-var pageTracker = _gat._getTracker("UA-76510-1");
-pageTracker._trackPageview();
+    try {
+        var pageTracker = _gat._getTracker("UA-76510-5");
+        pageTracker._trackPageview();
+    } catch(err) {}
 </script>
 
 

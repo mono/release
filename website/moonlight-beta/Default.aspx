@@ -6,15 +6,6 @@
 <head>
 <title>Moonlight Downloads</title>
 <link rel="stylesheet" type="text/css" href="css/moonlight.css"/>
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-76510-5");
-pageTracker._trackPageview();
-} catch(err) {}</script>
 </head>
 
 <body>
@@ -146,12 +137,11 @@ string filesize = string.Empty;
 string fileupdate = string.Empty;
 string userfriendly = string.Empty;
 string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight-preview";
-string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/moonlight-1.99.1.tar.bz2";
+string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/1.99.1";
 string svn_location = "http://anonsvn.mono-project.com/source/tags/moon/1.99.1";
 
 void Page_Init(object sender, EventArgs e)
 {
-	/*
         dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.99.1/";
         dir = "downloads/1.99.1";
 
@@ -183,9 +173,8 @@ void Page_Init(object sender, EventArgs e)
         }
 
 	ArchSelected (null, null);
-	*/
 }
-/*
+
 string LastModified (string path)
 {
 	string abspath = Path.Combine(htdocs_path,path);
@@ -238,7 +227,7 @@ bool IsPrivate {
                 return Request.Url.LocalPath.StartsWith ("/mpriv/");
         }
 }
-*/
+
 
 </script>
 
@@ -269,15 +258,17 @@ Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">
 </p>
 
 <div id="preview-notice">
-<p><b>Moonlight Beta down for maintainance</b></p>
+<p><b>Beta Release Security Notice</b></p>
 
 <p>
-The Moonlight Beta page is down for maintainance. Stay tuned! We'll be back up asap!
+
+This release is feature complete, but as a beta there are various known bugs (mostly minor) and most assuredly unknown ones as well. We still haven't completed the security audit of the source code (mono or moonlight), so you need to be aware that there may be issues.
+
+As such we recommend that you should only use this plugin on trusted sites (e.g. internal or well-known web sites) on non-production computers. This situation will gradually evolve over the beta releases. An up to date overview of Moonlight security features status can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight Security Status</a> wiki page.
+
 </p>
 </div>
 
-
-<!--
 <form runat="server">
 <table>
 <tr><td><h2>1. Select the architecture:</h2></td></tr>
@@ -312,7 +303,6 @@ The Moonlight Beta page is down for maintainance. Stay tuned! We'll be back up a
 
 </table>
 </form>
-
  
 <br/>
 <h1><a name="instructions"></a>Installation instructions</h1>
@@ -333,19 +323,18 @@ The Moonlight Beta page is down for maintainance. Stay tuned! We'll be back up a
 <p>You can download a tarball of the source <a href="<%=src_tarball_location%>">here</a>, or you can check it out from svn.
 <pre> svn co <%=svn_location%> </pre></p>
 
-
--->
-
 </div> <!-- col2 -->
 </div> <!-- page -->
 
 <script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 <script type="text/javascript">
-var pageTracker = _gat._getTracker("UA-76510-1");
-pageTracker._trackPageview();
+    try {
+        var pageTracker = _gat._getTracker("UA-76510-5");
+        pageTracker._trackPageview();
+    } catch(err) {}
 </script>
 
 
