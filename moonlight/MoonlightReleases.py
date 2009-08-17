@@ -1,5 +1,7 @@
 
 releases = {
+	'1.0':     {'release':'1.0',  'moonrev':'','monorev':''},
+	'1.0.1':   {'release':'1.0',  'moonrev':'','monorev':''}, # Include 1.0 plugins
 	'1.9.0':   {'release':'1.9.0',  'moonrev':'','monorev':''},
 	'1.9.0.1': {'release':'1.9.0.1','moonrev':'','monorev':''},
 	'1.9.1':   {'release':'1.9.1','moonrev':'133784','monorev':'133384'},
@@ -8,7 +10,7 @@ releases = {
 	'1.9.4':   {'release':'1.9.4','moonrev':'136014','monorev':'135866'},
 	'1.9.5':   {'release':'1.9.5','moonrev':'136986','monorev':'136341'},
 	'1.9.6':   {'release':'1.9.6','moonrev':'137711','monorev':'137279'},
-	'1.99.1':   {'release':'1.99.1','moonrev':'139981','monorev':'139665'},
+	'1.99.1':  {'release':'1.99.1','moonrev':'139981','monorev':'139665'},
 }
 
 latest = releases['1.99.1']

@@ -69,11 +69,11 @@ def getfiles(dir):
 
 def reorder_xpi(xpiname):
     shutil.rmtree('tmp',ignore_errors=True)
-    xpi = zipfile.ZipFile(xpiname,mode='r',compression=zipfile.ZIP_DEFLATED)
+    xpi = zipfile.ZipFile(xpiname,mode='r')
     xpi.extractall('tmp')
     os.chdir('tmp')
 
-    newxpi = zipfile.ZipFile(xpiname,'w')
+    newxpi = zipfile.ZipFile(xpiname,'w',compression=zipfile.ZIP_DEFLATED)
 
     newxpi.write(os.path.join('META-INF','zigbert.rsa'))
     newxpi.write(os.path.join('META-INF','zigbert.sf'))
