@@ -85,7 +85,7 @@ if (plugin.filename.indexOf("libmoonloader") == 0) {
     //console.log ("control.settings.version = " + control.settings.version);    
 
     if (moonlight_version == released_version) {
-      message.text = "Congratulations, you're running the current preview release of moonlight!";
+      message.text = "Congratulations, you're running the current beta release of moonlight!";
     }
     else if ((moonlight_version == "1.0.1")) {
       message.text = "You're running the latest stable release of moonlight.";
