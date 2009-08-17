@@ -151,6 +151,7 @@ string svn_location = "http://anonsvn.mono-project.com/source/tags/moon/1.99.1";
 
 void Page_Init(object sender, EventArgs e)
 {
+	/*
         dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.99.1/";
         dir = "downloads/1.99.1";
 
@@ -182,8 +183,9 @@ void Page_Init(object sender, EventArgs e)
         }
 
 	ArchSelected (null, null);
+	*/
 }
-
+/*
 string LastModified (string path)
 {
 	string abspath = Path.Combine(htdocs_path,path);
@@ -236,7 +238,7 @@ bool IsPrivate {
                 return Request.Url.LocalPath.StartsWith ("/mpriv/");
         }
 }
-
+*/
 
 </script>
 
@@ -260,9 +262,6 @@ open source implementation of <a
 href="http://silverlight.net">Microsoft Silverlight</a> for Unix systems.</p>
 
 
-<% if (IsPrivate) { %>
-<p><strong>THESE ARE PRIVATE BINARIES, NOT INTENTED FOR PUBLIC CONSUMPTION.   DO NOT DOWNLOAD.</strong></p>
-<% } %>
 <p>Please see the <a href="#instructions">installation instructions</a> below.</p>
 
 <p>
@@ -270,17 +269,15 @@ Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">
 </p>
 
 <div id="preview-notice">
-<p><b>Beta Release Security Notice</b></p>
+<p><b>Moonlight Beta down for maintainance</b></p>
 
 <p>
-
-This release is feature complete, but as a beta there are various known bugs (mostly minor) and most assuredly unknown ones as well. We still haven't completed the security audit of the source code (mono or moonlight), so you need to be aware that there may be issues.
-
-As such we recommend that you should only use this plugin on trusted sites (e.g. internal or well-known web sites) on non-production computers. This situation will gradually evolve over the beta releases. An up to date overview of Moonlight security features status can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight Security Status</a> wiki page.
-
+The Moonlight Beta page is down for maintainance. Stay tuned! We'll be back up asap!
 </p>
 </div>
 
+
+<!--
 <form runat="server">
 <table>
 <tr><td><h2>1. Select the architecture:</h2></td></tr>
@@ -315,6 +312,8 @@ As such we recommend that you should only use this plugin on trusted sites (e.g.
 
 </table>
 </form>
+
+-->
  
 <br/>
 <h1><a name="instructions"></a>Installation instructions</h1>
