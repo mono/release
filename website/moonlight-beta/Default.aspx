@@ -6,15 +6,7 @@
 <head>
 <title>Moonlight Downloads</title>
 <link rel="stylesheet" type="text/css" href="css/moonlight.css"/>
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-76510-5");
-pageTracker._trackPageview();
-} catch(err) {}</script>
+
 </head>
 
 <body>
@@ -34,7 +26,7 @@ pageTracker._trackPageview();
 <script type="text/javascript" src="Silverlight.js" /></script>
 <script type="text/javascript">
 
-var released_version = "1.9.7";
+var released_version = "1.99.1";
 
 var plugin = navigator.plugins["Silverlight Plug-In"];
 if (plugin.filename.indexOf("libmoonloader") == 0) {
@@ -146,13 +138,13 @@ string filesize = string.Empty;
 string fileupdate = string.Empty;
 string userfriendly = string.Empty;
 string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight-preview";
-string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/1.9.7";
-string svn_location = "http://anonsvn.mono-project.com/source/branches/moon/1.9.7";
+string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/1.99.1";
+string svn_location = "http://anonsvn.mono-project.com/source/branches/moon/1.99.1";
 
 void Page_Init(object sender, EventArgs e)
 {
-        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.9.7/";
-        dir = "downloads/1.9.7";
+        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.99.1/";
+        dir = "downloads/1.99.1";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -227,7 +219,7 @@ void ArchSelected(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-1.9.7-" + architecture.SelectedValue + ".xpi";
+	xpi = basename + "-1.99.1-" + architecture.SelectedValue + ".xpi";
 	filepath = Path.Combine(dir,xpi);
 }
 
@@ -293,7 +285,7 @@ As such you should only use this preview plugin on trusted sites (e.g. internal 
 <div id="dllink">
 <ul class="machine"> 
 <li>
-     <a href="/archive/moonlight-plugins/1.9.7/<%=xpi%>" title="<%=xpi%>">
+     <a href="/archive/moonlight-plugins/1.99.1/<%=xpi%>" title="<%=xpi%>">
       <img src="images/down.png" alt="Download"/>
       <strong>Linux/<%=userfriendly%></strong>
       <span class="filesize"><%=filesize%></span>
@@ -332,14 +324,16 @@ As such you should only use this preview plugin on trusted sites (e.g. internal 
 </div> <!-- col2 -->
 </div> <!-- page -->
 
+
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 <script type="text/javascript">
-var pageTracker = _gat._getTracker("UA-76510-1");
+try {
+var pageTracker = _gat._getTracker("UA-76510-5");
 pageTracker._trackPageview();
-</script>
+} catch(err) {}</script>
 
 
 <% if (Request["unknown"] == "1") { %>
