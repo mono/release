@@ -25,7 +25,7 @@
 <script type="text/javascript" src="Silverlight.js" /></script>
 <script type="text/javascript">
 
-var released_version = "1.99.1";
+var released_version = "1.99.1.1";
 
 var plugin = navigator.plugins["Silverlight Plug-In"];
 if (plugin.filename.indexOf("libmoonloader") == 0) {
@@ -137,13 +137,13 @@ string filesize = string.Empty;
 string fileupdate = string.Empty;
 string userfriendly = string.Empty;
 string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight-preview";
-string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/1.99.1";
-string svn_location = "http://anonsvn.mono-project.com/source/tags/moon/1.99.1";
+string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/1.99.1.1";
+string svn_location = "http://anonsvn.mono-project.com/source/tags/moon/1.99.1.1";
 
 void Page_Init(object sender, EventArgs e)
 {
-        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.99.1/";
-        dir = "downloads/1.99.1";
+        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.99.1.1/";
+        dir = "downloads/1.99.1.1";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -218,7 +218,7 @@ void ArchSelected(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-1.99.1-" + architecture.SelectedValue + ".xpi";
+	xpi = basename + "-1.99.1.1-" + architecture.SelectedValue + ".xpi";
 	filepath = Path.Combine(dir,xpi);
 }
 
@@ -287,7 +287,7 @@ As such we recommend that you should only use this plugin on trusted sites (e.g.
 <div id="dllink">
 <ul class="machine"> 
 <li>
-     <a href="/archive/moonlight-plugins/1.99.1/<%=xpi%>" title="<%=xpi%>">
+     <a href="/archive/moonlight-plugins/1.99.1.1/<%=xpi%>" title="<%=xpi%>">
       <img src="images/down.png" alt="Download"/>
       <strong>Linux/<%=userfriendly%></strong>
       <span class="filesize"><%=filesize%></span>
