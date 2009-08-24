@@ -21,6 +21,9 @@ svn co svn://anonsvn.mono-project.com/source/branches/moon/$PREVIEW
 cd $SRCDIR/$PREVIEW/mono
 ./autogen.sh && make && sudo make install || fail
 
+# remove all .la files 
+find $MONO_PREFIX /opt/mono -name "*.la" | xargs sudo rm -rf
+
 cd $SRCDIR/$PREVIEW/moon
 ./autogen.sh --without-performance --without-testing && make && sudo make install || fail
 make user-plugin || fail

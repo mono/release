@@ -1,9 +1,9 @@
 Update:
 	Add the newest version of Moonlight (and svn revisions) to MoonlightReleases.py
 
-	Run branch_tag.sh to branch the mono/mcs/moon/mono-basic to branches/moon/$PREVIEW/
+	Run branch_moonlight.py to branch the mono/mcs/moon/mono-basic to branches/moon/$PREVIEW/
 
-	Run prepare_zip.sh and pass in the zip file received from the signing lab.
+	Run prepare_zip.py and pass in the zip file received from the signing lab.
 	That script should to the following:
 
 		* Reorder the xpi files first, due to a bug in firefox
@@ -12,7 +12,7 @@ Update:
 		* Sign the update rdf files with the moonlight key
 
 	You should only have to edit MoonlightReleases.py now
-	Do not edit prepare_zip.sh or create_update_rdfs.py
+	Do not edit prepare_zip.py or create_update_rdfs.py
 
 Below is an example of create_update_rdfs.py by hand
 
