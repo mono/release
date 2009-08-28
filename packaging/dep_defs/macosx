@@ -51,13 +51,10 @@ EOF
 	},
 	{
 		'name': 'glib', 
-		#'source': 'ftp://ftp.gtk.org/pub/glib/2.14/glib-2.14.1.tar.bz2',
-		#'source': 'http://ftp.gnome.org/pub/gnome/sources/glib/2.18/glib-2.18.1.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/gnome/sources/glib/2.18/glib-2.18.4.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/gnome/sources/glib/2.21/glib-2.21.5.tar.bz2',
                 # 2.18.4 fails to install for now.
 		'pre':"""
-			sed -e "s/\/usr\/local\/share\/:\/usr\/share\//\/usr\/local\/share\/:\/usr\/share\/:\/Library\/Frameworks\/Mono.framework\/Versions\/Current\/share\//g" glib/gutils.c > new
-			mv new glib/gutils.c
+			sed -i -e "s/\/usr\/local\/share\/:\/usr\/share\//\/usr\/local\/share\/:\/usr\/share\/:\/Library\/Frameworks\/Mono.framework\/Versions\/Current\/share\//g" glib/gutils.c
 			# The following is a hack for a gtk bug where 'which' does not act as expected on mac.
 			# see http://lists.macosforge.org/pipermail/macports-users/2007-December.txt and search for 'gtkdoc-rebase'
 			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
