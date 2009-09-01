@@ -1000,6 +1000,7 @@ fi
 %_mandir/man1/al.1%ext_man
 %_mandir/man1/mono-xmltool.1%ext_man
 %_mandir/man1/resgen.1%ext_man
+%_mandir/man1/xbuild.1%ext_man
 # Shell wrappers
 %_bindir/al
 %_bindir/al1
