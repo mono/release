@@ -56,7 +56,10 @@
         <div class="colordiv">
             <span style="font-size: .85em;">Already received your invitation username/password?<br />
             <br />
-            <a href="http://go-mono.com/monovs-download/latest/">Download current version: 0.1.2410</a></span>
+            <a href="http://go-mono.com/monovs-download/latest/">Download current version: 0.3.3771</a></span>
+            <br />
+            <br />
+            <table style="margin-left: 130px;"><tr><td><a href="http://mono-project.com/Bugs"><img src="Images/bug.png" alt="File a bug" /></a></td><td style="font-size: .85em;"><a href="http://mono-project.com/Bugs"> Report Bugs</a></td></tr></table>
         </div>
         <br />
         <br />
