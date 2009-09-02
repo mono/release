@@ -27,7 +27,8 @@ find $MONO_PREFIX /opt/mono -name "*.la" | xargs sudo rm -rf
 cd $SRCDIR/$PREVIEW/moon
 ./autogen.sh --without-performance --without-testing && make && sudo make install || fail
 make user-plugin || fail
-cp plugin/install/novell-moonlight.xpi ~/novell-moonlight-$PREVIEW-$ARCH.xpi
+rm -rf $HOME/*.xpi
+cp plugin/install/novell-moonlight.xpi $HOME/novell-moonlight-$PREVIEW-$ARCH.xpi
 
-cd ~
+cd $HOME
 
