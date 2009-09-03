@@ -56,10 +56,10 @@
         <div class="colordiv">
             <span style="font-size: .85em;">Already received your invitation username/password?<br />
             <br />
-            <a href="http://go-mono.com/monovs-download/latest/">Download current version: 0.3.3771</a></span>
+            <a href="http://go-mono.com/monovs-download/latest/">Download current version: Beta 1 (0.3.3771)</a></span>
             <br />
             <br />
-            <table style="margin-left: 130px;"><tr><td><a href="http://mono-project.com/Bugs"><img src="Images/bug.png" alt="File a bug" /></a></td><td style="font-size: .85em;"><a href="http://mono-project.com/Bugs"> Report Bugs</a></td></tr></table>
+            <table style="margin-left: 55px;"><tr><td><a href="http://www.mono-project.com/GettingStartedWithMonoVS"><img src="Images/report.png" alt="Installation Guide" /></a></td><td style="font-size: .85em;"><a href="http://www.mono-project.com/GettingStartedWithMonoVS"> Installation Guide</a></td><td style="font-size: .85em;"> | </td><td><a href="http://mono-project.com/Bugs"><img src="Images/bug.png" alt="File a bug" /></a></td><td style="font-size: .85em;"><a href="http://mono-project.com/Bugs"> Report Bugs</a></td></tr></table>
         </div>
         <br />
         <br />
@@ -74,9 +74,6 @@
         - VMWare (vmx / ova) or
         <br />
         - Virtual PC (vpc)    
-        <br />
-        <br />
-        <b><a href="http://www.mono-project.com/GettingStartedWithMonoVS" style="color: Black">Getting Started Guide</a></b>
         <br />
         <br />
 <span style="color: #FF0000;font-size: .85em;">Note: All instances of Visual Studio 2008 must be closed prior to installation.</span> </div>
