@@ -7,6 +7,14 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" runat="Server">
     <div class="feature-content">
+        <table style="margin-top: -15px">
+            <tr>
+                <td style="width: 625px"><a href="Default.aspx" style="color: #000000;">&lt;-- Home</a></td>
+                <td><a href="TestWin.aspx" style="color: #000000;">Run on Mono on Windows --&gt;</a></td>
+            </tr>
+        </table>
+        <br />
+        <br />
         <span class="feature-header">Scan for Mono Compatibility</span><br />
         <br />
         There are some common stumbling blocks that keep .NET applications from being able

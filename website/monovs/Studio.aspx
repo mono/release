@@ -7,7 +7,15 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" runat="Server">
     <div class="feature-content">
-        <span class="feature-header">Create SUSE Powered Appliance</span><br />
+         <table style="margin-top: -15px">
+            <tr>
+                <td style="width: 750px"><a href="Package.aspx" style="color: #000000;">&lt;-- Package for Linux</a></td>
+                <td><a href="Default.aspx" style="color: #000000;">Home --&gt;</a></td>
+            </tr>
+        </table>
+        <br />
+        <br />
+       <span class="feature-header">Create SUSE Powered Appliance</span><br />
         <br />
 With SUSE Studio, you can bundle your application and a customized version of SUSE Linux into a fully configured, ready to go appliance.
         <br />

@@ -7,6 +7,14 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" runat="Server">
     <div class="feature-content">
+        <table style="margin-top: -15px">
+            <tr>
+                <td style="width: 650px"><a href="TestLin.aspx" style="color: #000000;">&lt;-- Run on Mono on Linux</a></td>
+                <td><a href="Package.aspx" style="color: #000000;">Package for Linux --&gt;</a></td>
+            </tr>
+        </table>
+        <br />
+        <br />
         <span class="feature-header">Debug on Mono on Linux</span><br />
         <br />
         Often, the best way to work through an issue will be to debug the application on the target 

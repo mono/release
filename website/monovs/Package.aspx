@@ -7,6 +7,14 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" runat="Server">
     <div class="feature-content">
+        <table style="margin-top: -15px">
+            <tr>
+                <td style="width: 600px"><a href="Debug.aspx" style="color: #000000;">&lt;-- Debug Remotely on Linux</a></td>
+                <td><a href="Studio.aspx" style="color: #000000;">Create a SUSE Linux Appliance --&gt;</a></td>
+            </tr>
+        </table>
+        <br />
+        <br />
         <span class="feature-header">Package for Linux</span><br />
         <br />
         Once your application successfully runs on Mono on Linux, it's time to package it up

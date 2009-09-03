@@ -7,6 +7,14 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" runat="Server">
     <div class="feature-content">
+        <table style="margin-top: -15px">
+            <tr>
+                <td style="width: 625px"><a href="TestWin.aspx" style="color: #000000;">&lt;-- Run on Mono on Windows</a></td>
+                <td><a href="Debug.aspx" style="color: #000000;">Debug Remotely on Linux --&gt;</a></td>
+            </tr>
+        </table>
+        <br />
+        <br />
         <span class="feature-header">Run on Mono on Linux</span><br />
         <br />
         When porting your application to run on Mono on Linux, there are two types of issues

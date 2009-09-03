@@ -21,6 +21,11 @@ a
 	text-decoration: none;
 }
 
+a:hover
+{
+    text-decoration: underline;
+}
+
 .clearer
 {
 	clear: both;
@@ -135,7 +140,6 @@ a
 	height: 85px;
 	font-size: .7em;
 	color: #484848;
-	text-decoration: none;
 	text-align: left;
 }
 
@@ -144,7 +148,6 @@ a
 	font-size: 1.5em;
 	font-weight: bold;
 	color: #000000;
-	text-decoration: none;
 }
 
 .title, title a
@@ -152,7 +155,6 @@ a
 	font-size: 1.5em;
 	font-weight: bold;
 	color: #000000;
-	text-decoration: none;
 }
 
 .features
