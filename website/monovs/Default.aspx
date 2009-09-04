@@ -8,7 +8,8 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" runat="Server">
     <div id="banner">
-        <img src="Images/port2.png" alt="Port your applications to Mono and Linux without leaving Visual Studio!" /></div>
+        <img src="Images/port3.png" alt="Port your applications to Mono and Linux without leaving Visual Studio!" />
+        </div>
     <div class="left-column">
         <span class="features">Features:</span><br />
         <a href="Moma.aspx"><img src="Images/moma64.png" alt="Scan with MoMA" width="64" height="64" /></a>
