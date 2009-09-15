@@ -45,12 +45,14 @@ class HtUserManagement():
 
         accountInfo = self.__readInCsv()
 
-        self.__executeCmd("touch " + filename)
+        outFile = open(filename, "w")
 
         for curRow in accountInfo[1:]: #skip header line
             username = curRow[0]
-            password = curRow[1]
-            self.__executeCmd("htpasswd2 -b " + filename + " " + username + " " + password)
+            enc_password = curRow[2]
+            outFile.write(username + ":" + enc_password + "\n")
+        outFile.flush()
+        outFile.close()
 
     def __verifyUsername(self, username):
         # this verifies that the username is an e-mail address
@@ -94,12 +96,45 @@ class HtUserManagement():
         # we didn't find it above, so it's not in there
         return False
 
+    def __sendEmail(self, to, subject, message):
+        to = "tw-test_pymail@wiestfamily.org"
+        self.__executeCmd("echo \'" + message + "\' | mail -s \'" + subject + "\' -r mono@novell.com " + to)
+
+    def emailOutNotifications(self, invitation_filename):
+        if not os.path.isfile(invitation_filename):
+            raise Exception("Error: [" + invitation_filename + "] doesn't exist!")
+
+        inFile = open(invitation_filename,"r")
+        lines = inFile.readlines()
+        msg = ''.join(lines)
+
+        accountInfo = self.__readInCsv()
+        for curAccount in accountInfo[1:]:
+            username = curAccount[0]
+            password = curAccount[1]
+            fullName = curAccount[3]
+            notified = curAccount[4]
+            tmpMsg = msg.replace('{full_name}',fullName)
+            tmpMsg = tmpMsg.replace('{username}',username)
+            tmpMsg = tmpMsg.replace('{password}',password)
+
+            if notified.lower() != "yes":
+                print "emailing [" + username + "]"
+                self.__sendEmail(username, "Mono Tools for Visual Studio Beta Invitation", tmpMsg)
+                #only send 1 for now
+                break
+
     def addUser(self, username, password, full_name):
-        self.addUserWithNotified(username, password, full_name, "no")
+        self.addUserWithNotified(username, password, full_name, "")
 
     def addUserWithNotified(self, username, password, full_name, been_notified):
         enc_password = self.__GetHtEncPassword(password)
+
+        if been_notified == "":
+            been_notified = "no"
+
         been_notified = been_notified.lower()
+
         self.__verifyUsername(username)
 
         if self.doesUserExist(username):
