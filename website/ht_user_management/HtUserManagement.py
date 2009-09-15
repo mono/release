@@ -3,6 +3,7 @@ import csv
 import pdb
 import unittest
 import os
+import subprocess
 
 
 class HtUserManagement():
@@ -27,6 +28,10 @@ class HtUserManagement():
 
         return pw
 
+    def __GetHtEncPassword(self, password):
+        retVal = self.__executeCmd("htpasswd2 -bn user1 " + password)[0].split(':')[1]
+        return retVal
+
     def __writeOutCsv(self, accountInfo):
         ofile = open(self.db_file, "wb")
         writer = csv.writer(ofile, delimiter=',', quotechar='"')
@@ -34,7 +39,12 @@ class HtUserManagement():
             writer.writerow(row)
         ofile.close()
 
-    def __writeOutHtpasswd(self, filename, accountInfo):
+    def writeOutHtpasswd(self, filename):
+        if (os.path.isfile(filename)):
+            raise Exception("Error: [" + filename + "] already exists!")
+
+        accountInfo = self.__readInCsv()
+
         self.__executeCmd("touch " + filename)
 
         for curRow in accountInfo[1:]: #skip header line
@@ -88,16 +98,18 @@ class HtUserManagement():
         self.addUserWithNotified(username, password, full_name, "no")
 
     def addUserWithNotified(self, username, password, full_name, been_notified):
+        enc_password = self.__GetHtEncPassword(password)
+        been_notified = been_notified.lower()
         self.__verifyUsername(username)
 
         if self.doesUserExist(username):
             raise Exception("Error: [" + username + "] already exists!")
 
         if not self.__doesDbFileExist():
-            self.__writeOutCsv([["username","password","full_name","been_notified"]])
+            self.__writeOutCsv([["username","password","enc_password","full_name","been_notified"]])
 
         accountInfo = self.__readInCsv()
-        accountInfo.append([username, password, full_name, been_notified])
+        accountInfo.append([username, password, enc_password, full_name, been_notified])
         self.__writeOutCsv(accountInfo)
 
     def addUserWithRandomPassword(self, username, full_name):
@@ -137,12 +149,17 @@ class HtUserManagement():
         if not self.doesUserExist(username):
             raise Exception("Error: [" + username + "] doesn't exist!")
 
+        curUser = self.getUser(username)
+        enc_password = curUser[2]
+        if password != curUser[1]: #they are setting a new password
+            enc_password = self.__GetHtEncPassword(password)
+
         accountInfo = self.__readInCsv()
         newAccountInfo = []
 
         for curAccount in accountInfo:
             if (curAccount[0] == username):
-                newAccountInfo.append([username, password, full_name, been_notified])
+                newAccountInfo.append([username, password, enc_password, full_name, been_notified])
             else:
                 newAccountInfo.append(curAccount)
 
@@ -150,8 +167,11 @@ class HtUserManagement():
 
     def setNotified(self, username):
         userInfo = self.getUser(username)
-        userInfo[3] = "yes"
-        self.updateUser(userInfo[0], userInfo[1], userInfo[2], userInfo[3])
+        username = userInfo[0]
+        password = userInfo[1]
+        full_name = userInfo[3]
+        notified = "yes"
+        self.updateUser(username, password, full_name, notified)
 
 
 class TestModule(unittest.TestCase):
@@ -179,9 +199,11 @@ class TestModule(unittest.TestCase):
         # Check the file to make sure it's how it should be
         accountInfo = self.user._HtUserManagement__readInCsv()
         self.assertEqual(len(accountInfo), 3, "user_db is bigger than expected, expected 3, got " + str(len(accountInfo)))
-        self.assertEqual(accountInfo[0], ["username","password","full_name","been_notified"])
-        self.assertEqual(accountInfo[1], ["rupert@novell.com", "mono", "Rupert Monkey","yes"])
-        self.assertEqual(accountInfo[2], ["rupert_monkey@novell.com", "onom", "Rupert Monkey 2","no"])
+        self.assertEqual(accountInfo[0], ["username","password","enc_password","full_name","been_notified"])
+        self.assertEqual(accountInfo[1][0:2], ["rupert@novell.com", "mono"])
+        self.assertEqual(accountInfo[1][3:],  ["Rupert Monkey","yes"])
+        self.assertEqual(accountInfo[2][0:2], ["rupert_monkey@novell.com", "onom"])
+        self.assertEqual(accountInfo[2][3:],  ["Rupert Monkey 2","no"])
 
 
     def testUpdateUser(self):
@@ -201,9 +223,11 @@ class TestModule(unittest.TestCase):
         # Check the file to make sure it's how it should be
         accountInfo = self.user._HtUserManagement__readInCsv()
         self.assertEqual(len(accountInfo), 3, "user_db is bigger than expected, expected 3, got " + str(len(accountInfo)))
-        self.assertEqual(accountInfo[0], ["username","password","full_name","been_notified"])
-        self.assertEqual(accountInfo[1], ["rupert@novell.com", "mono2", "Rupert Monkey2","yes"])
-        self.assertEqual(accountInfo[2], ["rupert_monkey@novell.com", "onom", "Rupert Monkey 2","no"])
+        self.assertEqual(accountInfo[0], ["username","password","enc_password","full_name","been_notified"])
+        self.assertEqual(accountInfo[1][0:2], ["rupert@novell.com", "mono2"])
+        self.assertEqual(accountInfo[1][3:],  ["Rupert Monkey2","yes"])
+        self.assertEqual(accountInfo[2][0:2], ["rupert_monkey@novell.com", "onom"])
+        self.assertEqual(accountInfo[2][3:],  ["Rupert Monkey 2","no"])
 
 
     def testGetUser(self):
@@ -221,7 +245,7 @@ class TestModule(unittest.TestCase):
         userInfo = self.user.getUser("rupert@novell.com")
         self.assertEqual(userInfo[0], "rupert@novell.com")
         self.assertEqual(userInfo[1], "mono")
-        self.assertEqual(userInfo[2], "Rupert Monkey")
+        self.assertEqual(userInfo[3], "Rupert Monkey")
 
 
     def testRemoveUser(self):
@@ -247,8 +271,9 @@ class TestModule(unittest.TestCase):
         self.user.removeUser("rupert@novell.com")
         accountInfo = self.user._HtUserManagement__readInCsv()
         self.assertEqual(len(accountInfo), 2, "user_db is bigger than expected, expected 2, got " + str(len(accountInfo)))
-        self.assertEqual(accountInfo[0], ["username","password","full_name","been_notified"])
-        self.assertEqual(accountInfo[1], ["rupert_monkey@novell.com", "onom", "Rupert Monkey 2","no"])
+        self.assertEqual(accountInfo[0], ["username","password","enc_password","full_name","been_notified"])
+        self.assertEqual(accountInfo[1][0:2], ["rupert_monkey@novell.com", "onom"])
+        self.assertEqual(accountInfo[1][3:],  ["Rupert Monkey 2","no"])
 
 
     def testAddUserWithNotified(self):
@@ -256,8 +281,9 @@ class TestModule(unittest.TestCase):
         # Check the file to make sure it's how it should be
         accountInfo = self.user._HtUserManagement__readInCsv()
         self.assertEqual(len(accountInfo), 2, "user_db is bigger than expected, expected 2, got " + str(len(accountInfo)))
-        self.assertEqual(accountInfo[0], ["username","password","full_name","been_notified"])
-        self.assertEqual(accountInfo[1], ["rupert@novell.com", "mono", "Rupert Monkey","yes"])
+        self.assertEqual(accountInfo[0], ["username","password","enc_password","full_name","been_notified"])
+        self.assertEqual(accountInfo[1][0:2], ["rupert@novell.com", "mono"])
+        self.assertEqual(accountInfo[1][3:],  ["Rupert Monkey","yes"])
 
 
     def testAddUser(self):
@@ -281,9 +307,11 @@ class TestModule(unittest.TestCase):
         # Check the file to make sure it's how it should be
         accountInfo = self.user._HtUserManagement__readInCsv()
         self.assertEqual(len(accountInfo), 3, "user_db is bigger than expected, expected 3, got " + str(len(accountInfo)))
-        self.assertEqual(accountInfo[0], ["username","password","full_name","been_notified"])
-        self.assertEqual(accountInfo[1], ["rupert@novell.com", "mono", "Rupert Monkey","no"])
-        self.assertEqual(accountInfo[2], ["rupert_monkey@novell.com", "onom", "Rupert Monkey 2","no"])
+        self.assertEqual(accountInfo[0], ["username","password","enc_password","full_name","been_notified"])
+        self.assertEqual(accountInfo[1][0:2], ["rupert@novell.com", "mono"])
+        self.assertEqual(accountInfo[1][3:],  ["Rupert Monkey","no"])
+        self.assertEqual(accountInfo[2][0:2], ["rupert_monkey@novell.com", "onom"])
+        self.assertEqual(accountInfo[2][3:],  ["Rupert Monkey 2","no"])
 
 
     def testConstructor(self):
