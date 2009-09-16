@@ -122,8 +122,6 @@ class HtUserManagement():
                 print "emailing [" + username + "]"
                 self.__sendEmail(username, subject, tmpMsg)
                 self.setNotified(username)
-                #only send 1 for now
-                break
 
     def addUser(self, username, password, full_name):
         self.addUserWithNotified(username, password, full_name, "")
