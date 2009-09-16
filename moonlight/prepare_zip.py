@@ -116,8 +116,8 @@ def sign_update_rdfs(rdf):
     # The hash is is already generated in create_update_rdfs.py
     #cmd = "%s -command update -updateRDF $SCRIPTDIR/$1 -key moonlight" % mccoy_exe
     curdir = os.path.dirname(os.path.realpath(__file__))
-    rdf = os.path.join(curdir,rdf)
-    cmd = "%s -command update -updateRDF %s -key moonlight" % (mccoy_exe,rdf)
+    fullRdfPath = os.path.join(curdir,rdf)  # mccoy cli requires full path to rdf file
+    cmd = "%s -command update -key moonlight -updateRDF %s" % (mccoy_exe,fullRdfPath)
 
     executeCmd(cmd)
 
@@ -183,3 +183,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# vim:ts=4:expandtab:

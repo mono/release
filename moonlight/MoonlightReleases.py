@@ -14,9 +14,10 @@ releases = {
 	'1.99.1.1':{'release':'1.99.1.1','moonrev':'','monorev':''}, # svn revs only matter when branching using ./branch_moonlight.py
 	'1.99.2':  {'release':'1.99.2','moonrev':'140532','monorev':'140392'},
 	'1.99.3':  {'release':'1.99.3','moonrev':'141147','monorev':'140963'},
+	'1.99.4':  {'release':'1.99.4','moonrev':'142036','monorev':'141690'},
 }
 
-latest = releases['1.99.3']
+latest = releases['1.99.4']
 
 new_version = latest['release']
 
