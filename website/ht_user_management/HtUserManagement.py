@@ -90,7 +90,7 @@ class HtUserManagement():
         accountInfo = self.__readInCsv()
 
         for curAccount in accountInfo[1:]:
-            if (curAccount[0] == username):
+            if (curAccount[0].lower() == username.lower()):
                 return True
 
         # we didn't find it above, so it's not in there
@@ -100,7 +100,7 @@ class HtUserManagement():
         to = "tw-test_pymail@wiestfamily.org"
         self.__executeCmd("echo \'" + message + "\' | mail -s \'" + subject + "\' -r mono@novell.com " + to)
 
-    def emailOutNotifications(self, invitation_filename):
+    def emailOutNotifications(self, subject, invitation_filename):
         if not os.path.isfile(invitation_filename):
             raise Exception("Error: [" + invitation_filename + "] doesn't exist!")
 
@@ -120,7 +120,8 @@ class HtUserManagement():
 
             if notified.lower() != "yes":
                 print "emailing [" + username + "]"
-                self.__sendEmail(username, "Mono Tools for Visual Studio Beta Invitation", tmpMsg)
+                self.__sendEmail(username, subject, tmpMsg)
+                self.setNotified(username)
                 #only send 1 for now
                 break
 
@@ -161,7 +162,7 @@ class HtUserManagement():
         newAccountInfo = []
 
         for curAccount in accountInfo:
-            if (curAccount[0] != username):
+            if (curAccount[0].lower() != username.lower()):
                 newAccountInfo.append(curAccount)
 
         self.__writeOutCsv(newAccountInfo)
@@ -175,7 +176,7 @@ class HtUserManagement():
         accountInfo = self.__readInCsv()
 
         for curAccount in accountInfo:
-            if (curAccount[0] == username):
+            if (curAccount[0].lower() == username.lower()):
                 return curAccount
 
     def updateUser(self, username, password, full_name, been_notified):
@@ -185,6 +186,9 @@ class HtUserManagement():
             raise Exception("Error: [" + username + "] doesn't exist!")
 
         curUser = self.getUser(username)
+
+        username = curUser[0] # make sure the update doesn't update the username
+
         enc_password = curUser[2]
         if password != curUser[1]: #they are setting a new password
             enc_password = self.__GetHtEncPassword(password)
@@ -193,7 +197,7 @@ class HtUserManagement():
         newAccountInfo = []
 
         for curAccount in accountInfo:
-            if (curAccount[0] == username):
+            if (curAccount[0].lower() == username.lower()):
                 newAccountInfo.append([username, password, enc_password, full_name, been_notified])
             else:
                 newAccountInfo.append(curAccount)
