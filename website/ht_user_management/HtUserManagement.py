@@ -97,7 +97,6 @@ class HtUserManagement():
         return False
 
     def __sendEmail(self, to, subject, message):
-        to = "tw-test_pymail@wiestfamily.org"
         self.__executeCmd("echo \'" + message + "\' | mail -s \'" + subject + "\' -r mono@novell.com " + to)
 
     def emailOutNotifications(self, subject, invitation_filename):
