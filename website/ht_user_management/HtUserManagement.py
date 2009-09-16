@@ -118,7 +118,7 @@ class HtUserManagement():
             tmpMsg = tmpMsg.replace('{password}',password)
 
             if notified.lower() != "yes":
-                print "emailing [" + username + "]"
+                print "e-mailing [" + fullName + "<" + username + ">]"
                 self.__sendEmail(username, subject, tmpMsg)
                 self.setNotified(username)
 
