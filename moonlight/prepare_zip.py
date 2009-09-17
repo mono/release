@@ -145,14 +145,11 @@ def main():
     z = zipfile.ZipFile(zipfilename,'r')
     xpi_list = z.namelist()
 
-    shafile = open('sha1sums-%s' % new_version,'w')
 
     for xpi in xpi_list:
         print "Reordering %s" % xpi
         z.extract(xpi)
         reorder_xpi(xpi)
-        shafile.write("%s  %s\n" % (get_sha1sum(xpi),xpi)) # Two spaces are required between sum and filename
-    shafile.close()
 
     #NEW_VERSION=$PREVIEW
 
@@ -169,11 +166,14 @@ def main():
     #mv update*.rdf novell-moonlight*.xpi sha1sums-* info*xhtml $NEW_VERSION
     filelist = glob.glob('update*rdf')
     filelist.extend(glob.glob('novell-moonlight*xpi'))
-    filelist.extend(glob.glob('sha1sums-*'))
     filelist.extend(glob.glob('info*.xhtml'))
 
+    shafile = open(os.path.join(new_version,'sha1sums-%s' % new_version),'w')
     for f in filelist:
+        if (f[-4:] in ['.xpi','.rdf']): # Only add .xpi and .rdf to the checksum file
+            shafile.write("%s  %s\n" % (get_sha1sum(f),f)) # Two spaces are required between sum and filename
         os.rename(f,os.path.join(new_version,f))
+    shafile.close()
 
 
     print "Next step:"
