@@ -132,7 +132,7 @@ class HtUserManagement():
                 tmpMsg = tmpMsg.replace('{username}',username)
                 tmpMsg = tmpMsg.replace('{password}',password)
 
-                print "e-mailing [" + fullName + "<" + username + ">]"
+                print "e-mailing [" + fullName + " <" + username + ">]"
                 self.__sendEmail(username, subject, tmpMsg)
                 self.setNotified(username)
 
