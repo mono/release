@@ -4,6 +4,7 @@ import pdb
 import unittest
 import os
 import subprocess
+import random
 
 
 class HtUserManagement():
@@ -23,7 +24,7 @@ class HtUserManagement():
         """ Create a password of random length between 8 and 16
             characters long, made up of numbers and letters.
         """
-        pwlen = randint(8,16)
+        pwlen = random.randint(8,16)
         pw = self.__executeCmd("pwgen -1vBn " + str(pwlen))[0]
 
         return pw
@@ -80,8 +81,12 @@ class HtUserManagement():
     def listUsers(self):
         accountInfo = self.__readInCsv()
 
+        allUsers = []
+
         for curLine in accountInfo[1:]: # skip over the header column
-            print curLine[0]
+            allUsers.append(curLine[0])
+
+        return allUsers
 
     def doesUserExist(self, username):
         if not self.__doesDbFileExist():
