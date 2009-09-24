@@ -104,6 +104,15 @@ class HtUserManagement():
     def __sendEmail(self, to, subject, message):
         self.__executeCmd("echo \'" + message + "\' | mail -s \'" + subject + "\' -r mono@novell.com " + to)
 
+    def printAllUnnotifiedUsers(self):
+        accountInfo = self.__readInCsv()
+        for curAccount in accountInfo[1:]:
+            notified = curAccount[4]
+            if notified.lower() != "yes":
+                username = curAccount[0]
+                fullName = curAccount[3]
+                print fullName + " <" + username + ">"
+
     def emailOutNotifications(self, subject, invitation_filename):
         if not os.path.isfile(invitation_filename):
             raise Exception("Error: [" + invitation_filename + "] doesn't exist!")
@@ -114,15 +123,15 @@ class HtUserManagement():
 
         accountInfo = self.__readInCsv()
         for curAccount in accountInfo[1:]:
-            username = curAccount[0]
-            password = curAccount[1]
-            fullName = curAccount[3]
             notified = curAccount[4]
-            tmpMsg = msg.replace('{full_name}',fullName)
-            tmpMsg = tmpMsg.replace('{username}',username)
-            tmpMsg = tmpMsg.replace('{password}',password)
-
             if notified.lower() != "yes":
+                username = curAccount[0]
+                password = curAccount[1]
+                fullName = curAccount[3]
+                tmpMsg = msg.replace('{full_name}',fullName)
+                tmpMsg = tmpMsg.replace('{username}',username)
+                tmpMsg = tmpMsg.replace('{password}',password)
+
                 print "e-mailing [" + fullName + "<" + username + ">]"
                 self.__sendEmail(username, subject, tmpMsg)
                 self.setNotified(username)
