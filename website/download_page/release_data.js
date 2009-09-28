@@ -172,7 +172,7 @@ var data =
 			]
 		}
 		]
-	}
+	},
 
 /*	{
 		"name" : "RedHat",
@@ -190,6 +190,27 @@ var data =
 			]
 		}
 		]
-	}*/
+	},*/
+	{
+		"name" : "Other",
+		"icon" : "linux_icon.jpg",
+		"version" : [
+		{
+			"name" : "Debian",
+			"icon" : "debian_icon.jpg",
+			"url" : "http://mono-project.com/DistroPackages/Debian"
+		},
+		{
+			"name" : "Ubuntu",
+			"icon" : "ubuntu_icon.jpg",
+			"url" : "http://mono-project.com/DistroPackages/Ubuntu"
+		},
+		{
+			"name" : "Other",
+			"icon" : "linux_icon.jpg",
+			"url" : "http://www.mono-project.com/Other_Downloads"
+		}
+		]
+	}
 	]
 };

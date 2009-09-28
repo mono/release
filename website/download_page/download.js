@@ -53,15 +53,59 @@ function selected(os_num)
 	document.getElementById("step3").innerHTML = "";
 	document.getElementById("step4").innerHTML = "";
 
-	if ((data.platforms[os_num].version.length == 1) &&
-	    (data.platforms[os_num].version[0].arch.length == 1))
+	if (data.platforms[os_num].name != "Other")
 	{
-		download_step("2", os_num, 0, 0);
+		if ((data.platforms[os_num].version.length == 1) &&
+		    (data.platforms[os_num].version[0].arch.length == 1))
+		{
+			download_step("2", os_num, 0, 0);
+		}
+		else
+		{
+			version_step(os_num);
+		}
 	}
 	else
 	{
-		version_step(os_num);
+		unsupported_step(os_num);
 	}
+}
+
+function UnsupMouseOver(n)
+{
+	/* Draw a temporary border on any mouseover box that isn't already selected */
+	if (document.getElementById("unsuprb"+n)) // && !document.getElementById("unsuprb"+n).checked)
+	{
+		document.getElementById("unsuptd"+n).style.border = "1px solid #aaa";
+	}
+}
+
+function UnsupMouseOut(n)
+{
+	/* After the mouseover, remove a temporary border on any box that isn't already selected */
+	if (document.getElementById("unsuprb"+n) && !document.getElementById("unsuprb"+n).checked)
+	//if (document.getElementById("rb"+n))
+	{
+		document.getElementById("unsuptd"+n).style.border = "1px solid #ffffff";
+	}
+}
+
+function unsupported_step(os_num)
+{
+	var html = "<h2>2. Mono for Unsupported or Community-Supported Distribution</h2>";
+	html += "<p>Novell does not offer support for your distribution. A number of distributions are supported by their own communities instead. Please select your platform below:</p><table class=\"os\"><tr>";
+
+	for(i=0;i<data.platforms[os_num].version.length;i++)
+	{
+		html += "<td class='os' id='unsuptd"+i+"'>";
+		html += "<div class='os' onMouseOver='UnsupMouseOver("+i+")' onMouseOut='UnsupMouseOut("+i+")' onClick='location.href=\""+data.platforms[os_num].version[i].url+"\"'>";
+		html += "<div class='os-rd'><input type='radio' name='os' id='unsuprb"+i+"' onClick='location.href=\""+data.platforms[os_num].version[i].url+"\"'></div>";
+		html += "<div class='os-id'><img alt='"+data.platforms[os_num].version[i].name+"' src='"+data.platforms[os_num].version[i].icon+"'><br />"+data.platforms[os_num].version[i].name+"</div>";
+		html += "</div></td>";
+	}
+
+	html += "</tr></table>";
+	document.getElementById("step4").innerHTML = html;
 }
 
 function version_step(os_num)
