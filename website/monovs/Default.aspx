@@ -56,7 +56,9 @@
         <div class="colordiv">
             <span style="font-size: .85em;">Already received your invitation username/password?<br />
             <br />
-            <a href="http://go-mono.com/monovs-download/latest/">Download current version: Beta 1 (0.3.3771)</a></span>
+            <a href="http://go-mono.com/monovs-download/latest/">Download current version: Beta 2 (0.4.4034)</a>
+            <br />
+            <a href="http://mono-project.com/ReleaseNotes_MonoVS">Release Notes</a></span>
             <br />
             <br />
             <table style="margin-left: 32px;">
@@ -76,8 +78,8 @@
                     <td><a href="http://lists.ximian.com/mailman/listinfo/mono-vsbeta"><img src="Images/email.png" alt="Mailing List" /></a></td>
                     <td style="font-size: .85em;"><a href="http://lists.ximian.com/mailman/listinfo/mono-vsbeta"> Mailing List</a></td>
                     <td style="font-size: .85em;"> | </td>
-                    <td><a href="http://mono-project.com/IRC_MonoVS"><img src="Images/comments.png" alt="IRC Chat" /></a></td>
-                    <td style="font-size: .85em;"><a href="http://mono-project.com/IRC_MonoVS"> IRC Chat</a></td>
+                    <td><a href="Chat.aspx"><img src="Images/comments.png" alt="IRC Chat" /></a></td>
+                    <td style="font-size: .85em;"><a href="Chat.aspx"> IRC Chat</a></td>
                 </tr>
             </table>
         </div>

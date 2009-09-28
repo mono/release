@@ -230,3 +230,11 @@ hr
 	background-color: #FFFFCC;
 	border: 1px solid #D7CE28;
 }
+
+#irc
+{
+    width: 825px;
+    height: 450px;
+    border: solid 0px;
+    margin: 15px 10px 0px 0px;
+}
