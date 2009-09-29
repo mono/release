@@ -76,8 +76,8 @@ win_4_i386_ZIP_RUNTIME_DEPS=(
 ## format: <$DISTRO>_ZIP_DEPS
 # Note: $DISTRO must have the hyphens converted to underscores
 win_4_i386_ZIP_DEPS=(
-	http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18/glib_2.18.4-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18/glib-dev_2.18.4-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.22/glib_2.22.0-1_win32.zip
+	http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.22/glib-dev_2.22.0-1_win32.zip
 	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime-0.17-1.zip
 	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime-dev-0.17-1.zip
 	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-tools-0.17.zip
@@ -130,18 +130,18 @@ sunos_8_sparc_ZIP_DEPS=(
 
 macos_10_ppc_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.18.4-0.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.23-0.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.17-0.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/sqlite-3.6.10-0.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.21.5-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.23-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.17-2.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/sqlite-3.6.10-2.macos10.novell.ppc.zip
 )
 
 macos_10_x86_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.18.4-0.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-0.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-0.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/sqlite-3.6.10-0.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.21.5-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-2.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/sqlite-3.6.10-2.macos10.novell.x86.zip
 )
 
 sunos_8_sparc_ZIP_BUILD () {
@@ -155,7 +155,7 @@ sunos_8_sparc_ZIP_BUILD () {
 	#export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 	# Use /opt/mono for prefix.  Even though env vars can be used for relocation, this will help
-	./configure --prefix=/opt/mono --with-moonlight=yes --with-ikvm=yes || exit 1
+	./configure --prefix=/opt/mono --with-moonlight=no --with-ikvm=yes || exit 1
 	make || exit 1
 
 	rm -Rf /tmp/temp_install
@@ -181,7 +181,7 @@ sunos_10_ZIP_BUILD () {
 	# Change offsize from 64 to 32 in configure
 	# Removed -mt option from gthread .pc file
 	
-	./configure --prefix=/opt/mono --with-moonlight=yes --with-ikvm=yes
+	./configure --prefix=/opt/mono --with-moonlight=no --with-ikvm=yes
 	gmake || exit 1
 
 	rm -Rf $build_location/temp_install
@@ -209,7 +209,7 @@ sunos_11_ZIP_BUILD () {
 
 win_4_i386_ZIP_BUILD () {
 
-	./configure --prefix=/tmp/install --with-moonlight=yes
+	./configure --prefix=/tmp/install --with-moonlight=no
 
 	make || exit 1
 	make install || exit 1
@@ -239,7 +239,7 @@ fd.write(text)
 fd.close()'
 
 	# Need a version here...
-	./configure --prefix=$MONO_PREFIX --with-moonlight=yes --with-ikvm=yes || exit 1
+	CFLAGS=" -DMAC_OS_X_VERSION_10_5=1050 $CFLAGS " ./configure --prefix=$MONO_PREFIX --with-moonlight=no --with-ikvm=yes || exit 1
 
 	make || exit 1
 
@@ -284,7 +284,7 @@ EOF
 
 debian_ZIP_BUILD () {
 
-	./configure --prefix=/tmp/install --with-moonlight=yes --with-ikvm=yes
+	./configure --prefix=/tmp/install --with-moonlight=no --with-ikvm=yes
 
 	make || exit 1
 	make install || exit 1
@@ -518,7 +518,7 @@ POSTBUILD_TEST22 () {
 
 	Xvfb -ac -screen 0 1280x1024x24 -nolisten tcp :31 2>/dev/null &
 	export DISPLAY=:31
-	sleep 3
+	sleep 5
 
 	cd mcs/class/Managed.Windows.Forms
 	$make_path run-test PROFILE=net_1_1
@@ -537,7 +537,7 @@ POSTBUILD_TEST23 () {
 
 	Xvfb -ac -screen 0 1280x1024x24 -nolisten tcp :32 2>/dev/null &
 	export DISPLAY=:32
-	sleep 3
+	sleep 5
 
 	cd mcs/class/Managed.Windows.Forms
 	$make_path run-test PROFILE=net_2_0
