@@ -87,9 +87,9 @@
         <br />
         <b>Requirements:</b><br />
         -
-        Windows XP or Vista, 32 or 64 bits<br />
+        Windows XP, Vista, or 7, 32 or 64 bits<br />
         -
-        Visual Studio 2008 Standard or Professional<br />
+        Visual Studio 2008 SP1, Standard or Professional<br />
         <br />
         
         Linux Image runs in:<br />
