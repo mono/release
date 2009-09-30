@@ -7,6 +7,7 @@ version_selection_reg="2\.12\.\d+"
 BUILD_HOSTS=(
 	macos-10-ppc
 	macos-10-x86
+	sle-11-ia64
 	sle-11-i586
 	sle-11-ppc64
 	sle-11-x86_64
