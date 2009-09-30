@@ -1,0 +1,216 @@
+<html>
+<body>
+<h3>Debug Remotely in Mono</h3>
+<br>
+<h3>Setup</h3>
+<h5>This tutorial assumes you have the following:</h5>
+<ol>
+  <li>Visual Studio 2008 SP1 Installed</li>
+  <li>Mono Plugin for Visual Studio installed. Get it <a href='http://www.go-mono.com/monovs/'>here</a>.</li>
+  <li>BlogEngine.Net Source Code. Get it <a href='http://blogengine.codeplex.com/Release/ProjectReleases.aspx?ReleaseId=26080'>here</a>.</li>
+</ol>
+
+<table>
+
+<tr>
+<td>
+<a href="images/blog_engine_in_vs.png">
+<img src="images/blog_engine_in_vs-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 1:</strong>
+<br>
+<br>
+Open the BlogEngine solution in Visual Studio
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/blog_engine_default.aspx.cs.png">
+<img src="images/blog_engine_default.aspx.cs-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 2:</strong>
+<br>
+<br>
+Open default.aspx.cs.
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/blog_engine_default.aspx.cs_break_point_set.png">
+<img src="images/blog_engine_default.aspx.cs_break_point_set-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 3:</strong>
+<br>
+<br>
+Set a break point on the first line of the Page_Load method.
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/debug_remote_menu_item.png">
+<img src="images/debug_remote_menu_item-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 4:</strong>
+<br>
+<br>
+In the Mono Menu, click "Debug Remotely in Mono".
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/monovs_choose_remote_host_dialog.png">
+<img src="images/monovs_choose_remote_host_dialog-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 5:</strong>
+<br>
+<br>
+The MonoVS Choose Remote Host dialog will appear. Choose the host to remotely debug on and click "Ok".
+<br>
+<br>
+Depending on your setup, this process may take awhile to complete as BlogEngine is copied to the remote host in order to be able to be debugged.
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/blog_engine_default.aspx.cs_stopped_at_break_point_tray_icon_bubble.png">
+<img src="images/blog_engine_default.aspx.cs_stopped_at_break_point_tray_icon_bubble-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 6:</strong>
+<br>
+<br>
+A bubble will appear over the MonoVS tray application informing that a remote instance of BlogEngine is running.
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/blog_engine_default.aspx.cs_stopped_at_break_point.png">
+<img src="images/blog_engine_default.aspx.cs_stopped_at_break_point-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 7:</strong>
+<br>
+<br>
+Visual Studio will stop at the break point.
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/blog_engine_default.aspx.cs_stopped_at_break_point_inspect_local_variables.png">
+<img src="images/blog_engine_default.aspx.cs_stopped_at_break_point_inspect_local_variables-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 8:</strong>
+<br>
+<br>
+Notice that local variables can be inspected inside Visual Studio.
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/blog_engine_default.aspx.cs_stopped_at_break_point_inspect_call_stack.png">
+<img src="images/blog_engine_default.aspx.cs_stopped_at_break_point_inspect_call_stack-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 9:</strong>
+<br>
+<br>
+Notice that the call stack can be inspected inside Visual Studio.
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/blog_engine_default.aspx.cs_stopped_at_break_point_immediate_window.png">
+<img src="images/blog_engine_default.aspx.cs_stopped_at_break_point_immediate_window-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 10:</strong>
+<br>
+<br>
+In the immediate window, type "Page.IsCallback" and press enter. Notice that the immediate window says that Page.IsCallback is currently set to "false."
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/blog_engine_default.aspx.cs_stopped_at_break_point_step_over.png">
+<img src="images/blog_engine_default.aspx.cs_stopped_at_break_point_step_over-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 11:</strong>
+<br>
+<br>
+In the Debug menu, click "Step Over".
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/blog_engine_default.aspx.cs_stopped_at_break_point_press_continue.png">
+<img src="images/blog_engine_default.aspx.cs_stopped_at_break_point_press_continue-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 12:</strong>
+<br>
+<br>
+In Visual Studio, Press the "Play" button to continue running BlogEngine.
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/blog_engine_running_remotely_in_ff.png">
+<img src="images/blog_engine_running_remotely_in_ff-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 12:</strong>
+<br>
+<br>
+BlogEngine will be launched in your default browser.
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="images/monovs_remote_asp.net_tray_app.png">
+<img src="images/monovs_remote_asp.net_tray_app-small.png" />
+</a>
+</td>
+<td>
+<strong>Step 13:</strong>
+<br>
+<br>
+To stop this instance of BlogEngine, right click on the MonoVS tray icon and click "Stop".
+</td>
+</tr>
+
+</table>
+</body>
+</html>
