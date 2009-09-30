@@ -67,7 +67,6 @@ Authors:
 %_datadir/applications/gsharp.desktop
 %_datadir/applications/ilcontrast.desktop
 %_datadir/applications/monodoc.desktop
-%_datadir/applications/mprof-heap-viewer.desktop
 %_datadir/create-native-map
 %_datadir/pixmaps/gendarme.svg
 %_datadir/pixmaps/ilcontrast.png
@@ -79,11 +78,13 @@ Authors:
 %_mandir/man1/mperfmon*
 %_mandir/man1/mprof-decoder*
 %_mandir/man1/mprof-heap-viewer*
+%_mandir/man5/gendarme*
 %_prefix/lib/create-native-map
 %_prefix/lib/gendarme
 %_prefix/lib/gsharp
 %_prefix/lib/gui-compare
 %_prefix/lib/ilcontrast
+%_prefix/lib/minvoke
 %_prefix/lib/mono-tools
 %_prefix/lib/mono/1.0
 %_prefix/lib/monodoc/*.exe*
@@ -118,7 +119,6 @@ Monodoc documentation.
 make install DESTDIR=$RPM_BUILD_ROOT
 %suse_update_desktop_file monodoc
 %suse_update_desktop_file ilcontrast
-%suse_update_desktop_file mprof-heap-viewer
 %suse_update_desktop_file gendarme-wizard
 %suse_update_desktop_file gsharp
 # Move create-native-map stuff out of lib into share
