@@ -616,9 +616,36 @@ Authors:
 %_prefix/lib/mono/2.0/System.ServiceModel.dll
 %_prefix/lib/mono/gac/System.ServiceModel.Web
 %_prefix/lib/mono/2.0/System.ServiceModel.Web.dll
-%_prefix/lib/mono/2.0/svcutil.exe
-%_prefix/lib/mono/2.0/svcutil.exe.mdb
+%_prefix/lib/mono/2.0/svcutil.exe*
 %_libdir/pkgconfig/wcf.pc
+
+%package -n mono-winfxcore
+Summary: Mono implementation of core WinFX APIs
+Group: Development/Languages/Mono
+Requires: mono-core == %version-%release
+
+%description -n mono-winfxcore
+The Mono Project is an open development initiative that is working to
+develop an open source, Unix version of the .NET development platform.
+Its objective is to enable Unix developers to build and deploy
+cross-platform .NET applications. The project will implement various
+technologies that have been submitted to the ECMA for standardization.
+
+Mono implementation of core WinFX APIs
+
+
+
+Authors:
+--------
+Miguel de Icaza <miguel@ximian.com>
+Paolo Molaro <lupus@ximian.com>
+Dietmar Maurer <dietmar@ximian.com>
+
+
+%files -n mono-winfxcore
+%defattr(-, root, root)
+%_prefix/lib/mono/gac/WindowsBase
+%_prefix/lib/mono/2.0/WindowsBase.dll*
 
 %package -n mono-web
 License:        X11/MIT; Ms-Pl
@@ -976,6 +1003,7 @@ fi
 %_prefix/lib/mono/2.0/Microsoft.Common.targets
 %_prefix/lib/mono/2.0/Microsoft.CSharp.targets
 %_prefix/lib/mono/2.0/Microsoft.VisualBasic.targets
+%_prefix/lib/mono/xbuild
 %_prefix/lib/mono/2.0/MSBuild
 %_prefix/lib/mono/2.0/xbuild.rsp
 # man pages
@@ -1184,7 +1212,7 @@ export CFLAGS=" $RPM_OPT_FLAGS -DKDE_ASSEMBLIES='\"/opt/kde3/%{_lib}\"' -fno-str
 %configure \
   --with-jit=yes \
   --with-ikvm=yes \
-  --with-moonlight=yes
+  --with-moonlight=no
 make
 
 %install
