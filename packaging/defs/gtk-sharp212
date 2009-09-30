@@ -7,12 +7,9 @@ version_selection_reg="2\.12\.\d+"
 BUILD_HOSTS=(
 	macos-10-ppc
 	macos-10-x86
-	suse-103-i586
-	suse-103-ppc
-	suse-103-x86_64
-	suse-110-i586
-	suse-110-ppc
-	suse-110-x86_64
+	sle-11-i586
+	sle-11-ppc64
+	sle-11-x86_64
 	win-4-i386
 )
 
@@ -53,67 +50,57 @@ make_dist () {
 
 macos_10_x86_ZIP_DEPS=(
 
-        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.18.4-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-1.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.21.5-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-2.macos10.novell.x86.zip
 
-        http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-6b-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.35-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/giflib-4.1.6-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.8.2-1.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-6b-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.39-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/giflib-4.1.6-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.8.2-2.macos10.novell.x86.zip
 
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pixman-0.14.0-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/cairo-1.8.6-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pango-1.22.4-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/atk-1.24.0-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk+-2.14.7-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/libglade-2.6.3-1.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pixman-0.14.0-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/cairo-1.8.6-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pango-1.22.4-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/atk-1.24.0-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk+-2.17.9-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/libglade-2.6.3-2.macos10.novell.x86.zip
 )
 
 macos_10_x86_ZIP_RUNTIME_DEPS=(
 
-        http://primates.ximian.com/~wberrier/macos/deps/x86/hicolor-icon-theme-0.10-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/icon-naming-utils-0.8.7-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gnome-icon-theme-2.24.0-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk-engines-2.16.1-1.macos10.novell.x86.zip
-        #http://primates.ximian.com/~wberrier/macos/deps/x86/ImageMagick-6.3.8-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/tango-icon-theme-0.8.1-1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/tango-icon-theme-extras-0.1.0-1.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk-engines-2.16.1-2.macos10.novell.x86.zip
+        #http://primates.ximian.com/~wberrier/macos/deps/x86/tango-icon-theme-0.8.1-2.macos10.novell.x86.zip
 	http://primates.ximian.com/~wberrier/macos/deps/various/gtkrc_mac.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/ige-mac-integration-0.8.2-1.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/ige-mac-integration-0.8.2-2.macos10.novell.x86.zip
 )
 
 macos_10_ppc_ZIP_DEPS=(
 
-        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.18.4-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-1.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.21.5-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-2.macos10.novell.ppc.zip
 
-        http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-6b-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.35-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/giflib-4.1.6-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.8.2-1.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-6b-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.39-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/giflib-4.1.6-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.8.2-2.macos10.novell.ppc.zip
 
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pixman-0.14.0-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/cairo-1.8.6-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pango-1.22.4-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/atk-1.24.0-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk+-2.14.7-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/libglade-2.6.3-1.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pixman-0.14.0-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/cairo-1.8.6-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pango-1.22.4-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/atk-1.24.0-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk+-2.17.9-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/libglade-2.6.3-2.macos10.novell.ppc.zip
 
 )
 
 macos_10_ppc_ZIP_RUNTIME_DEPS=(
 
-        http://primates.ximian.com/~wberrier/macos/deps/x86/hicolor-icon-theme-0.10-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/icon-naming-utils-0.8.7-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gnome-icon-theme-2.24.0-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk-engines-2.16.1-1.macos10.novell.ppc.zip
-        #http://primates.ximian.com/~wberrier/macos/deps/x86/ImageMagick-6.3.8-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/tango-icon-theme-0.8.1-1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/tango-icon-theme-extras-0.1.0-1.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk-engines-2.16.1-2.macos10.novell.ppc.zip
+        #http://primates.ximian.com/~wberrier/macos/deps/x86/tango-icon-theme-0.8.1-2.macos10.novell.ppc.zip
         http://primates.ximian.com/~wberrier/macos/deps/various/gtkrc_mac.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/ige-mac-integration-0.8.2-1.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/ige-mac-integration-0.8.2-2.macos10.novell.ppc.zip
 
 )
 

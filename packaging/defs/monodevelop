@@ -1,24 +1,15 @@
 web_index=2
 
 BUILD_HOSTS=(
-	sles-10-i586
+	sle-11-i586
 	macos-10-x86
 )
 
 USE_HOSTS=(
 	macos-10-x86
-	sles-10-i586
-	sles-10-ppc
-	sles-10-x86_64
-	suse-102-i586
-	suse-102-ppc
-	suse-102-x86_64
-	suse-103-i586
-	suse-103-ppc
-	suse-103-x86_64
-        suse-110-i586
-        suse-110-ppc
-        suse-110-x86_64
+	sle-11-i586
+	sle-11-ppc64
+	sle-11-x86_64
 )
 
 MONO_DEPS=(

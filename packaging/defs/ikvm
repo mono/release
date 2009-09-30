@@ -1,7 +1,7 @@
 EXTERNAL_SOURCE=1
 
 BUILD_HOSTS=(
-	sles-10-i586
+	sle-11-i586
 )
 
 USE_HOSTS=(

@@ -1,11 +1,9 @@
 EXTERNAL_SOURCE=1
 
-SOURCE_FILENAME="boo-0.9.0.3203-2-src.zip"
-
 # Build on 10.2 instead of 10.0 so that the lang file doesn't get included, 
 # and the rpm can be used everywhere
 BUILD_HOSTS=(
-	suse-102-i586
+	sle-11-i586
 )
 
 USE_HOSTS=(
@@ -14,7 +12,6 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono
-	nant
 )
 
 MONO_RECOMMEND_DEPS=(
@@ -28,6 +25,7 @@ get_destroot () {
 BUILD_DIR="/tmp"
 
 make_dist () {
-	curl -O http://dist.codehaus.org/boo/distributions/boo-$VERSION-src.zip
+	curl -O http://dist.codehaus.org/boo/distributions/boo-$VERSION.tar.gz
+	bznew boo-$VERSION.tar.gz
 }
 
