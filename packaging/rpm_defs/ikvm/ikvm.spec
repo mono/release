@@ -1,6 +1,6 @@
 Name:           ikvm
 BuildRequires:  dos2unix mono-devel unzip
-Version:        0.38.0.4
+Version:        0.40.0.1
 Release:        0
 License:        BSD 3-Clause
 BuildArch:      noarch
@@ -48,12 +48,15 @@ true
 mkdir -p ${RPM_BUILD_ROOT}/usr/bin
 mkdir -p ${RPM_BUILD_ROOT}/usr/lib/ikvm
 mkdir -p ${RPM_BUILD_ROOT}/usr/share/pkgconfig
+# Don't install the PdbWriter
+rm -f bin/*PdbWriter*
 #Install binaries
 #  (do iname for JVM.DLL)
 find bin -iname "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 find bin -name "*\.exe" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 # Install some in gac (By request of Jeroen)
-for i in IKVM.AWT.WinForms.dll IKVM.OpenJDK.ClassLibrary.dll IKVM.Runtime.dll ; do
+OPENJDK=$(find bin -iname "IKVM.OpenJDK.*.dll" -exec basename '{}' ';')
+for i in IKVM.AWT.WinForms.dll $OPENJDK IKVM.Runtime.dll ; do
 	gacutil -i ${RPM_BUILD_ROOT}/usr/lib/ikvm/$i -package ikvm -root ${RPM_BUILD_ROOT}/usr/lib
 	rm -f ${RPM_BUILD_ROOT}/usr/lib/ikvm/$i
 done
