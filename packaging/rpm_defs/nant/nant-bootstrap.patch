@@ -1,0 +1,29 @@
+--- Makefile	2008-07-17 11:33:22.000000000 -0600
++++ Makefile	2008-07-17 11:34:42.000000000 -0600
+@@ -28,22 +28,22 @@
+ 
+ 
+ 
+-NANT=$(MONO) bootstrap/NAnt.exe
++NANT=$(MONO) bootstrap/NAnt.exe 
+ 
+ 
+ all: bootstrap build-nant
+ 
+ build-nant: 
+-	$(NANT) -f:NAnt.build build
++	$(NANT) -t:mono-2.0 -f:NAnt.build build
+ 
+ clean:
+ 	rm -fR build bootstrap
+ 
+ install: bootstrap
+-	$(NANT) -f:NAnt.build install -D:install.prefix="$(prefix)"
++	$(NANT) -t:mono-2.0 -f:NAnt.build install -D:install.prefix="$(prefix)"
+ 
+ run-test: bootstrap
+-	$(NANT) -f:NAnt.build test
++	$(NANT) -t:mono-2.0 -f:NAnt.build test
+ 	
+ bootstrap/NAnt.exe:
+ 	$(MCS) -target:exe -define:${DEFINE} -out:bootstrap${DIRSEP}NAnt.exe -r:bootstrap${DIRSEP}log4net.dll \
