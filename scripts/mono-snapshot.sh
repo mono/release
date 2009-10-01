@@ -73,11 +73,11 @@ echo "Building basic" >> $LOGFILE 2>&1
 # Copy the basic runtime to where the mcs class libs are so the class status will get properly generated
 cp $DAILY_BUILD_DIR/mono-basic/class/lib/vbnc/*.dll $DAILY_BUILD_DIR/mcs/class/lib/net_2_0
 
-LIBSDIR=$DAILY_BUILD_DIR/mcs/class/lib/net_1_1_bootstrap
+LIBSDIR=$DAILY_BUILD_DIR/mcs/class/lib/net_2_0
 cd $DAILY_BUILD_DIR
 # make monolite tarball
 mkdir -p $DAILY_BUILD_DIR/monolite-$DATE
-cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/Mono.Security.dll $LIBSDIR/System.Xml.dll $LIBSDIR/mcs.exe $DAILY_BUILD_DIR/monolite-$DATE
+cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/Mono.Security.dll $LIBSDIR/System.Xml.dll $LIBSDIR/gmcs.exe $DAILY_BUILD_DIR/monolite-$DATE
 
 tar zcvpf monolite-$DATE.tar.gz monolite-$DATE/ >> $LOGFILE 2>&1
 
@@ -88,9 +88,9 @@ mkdir -p $DAILY_BUILD_DIR/monocharge-$DATE
 cp $HOMEDIR/../monocharge/* $DAILY_BUILD_DIR/monocharge-$DATE
 
 # NET 1.0
-mkdir -p $DAILY_BUILD_DIR/monocharge-$DATE/1.0
-cp $PREFIX/lib/mono/1.0/*.exe $DAILY_BUILD_DIR/monocharge-$DATE/1.0
-cp $DAILY_BUILD_DIR/mcs/class/lib/net_1_1/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/1.0
+#mkdir -p $DAILY_BUILD_DIR/monocharge-$DATE/1.0
+#cp $PREFIX/lib/mono/1.0/*.exe $DAILY_BUILD_DIR/monocharge-$DATE/1.0
+#cp $DAILY_BUILD_DIR/mcs/class/lib/net_1_1/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/1.0
 
 # NET 2.0
 mkdir -p $DAILY_BUILD_DIR/monocharge-$DATE/2.0
