@@ -77,7 +77,7 @@ LIBSDIR=$DAILY_BUILD_DIR/mcs/class/lib/net_2_0
 cd $DAILY_BUILD_DIR
 # make monolite tarball
 mkdir -p $DAILY_BUILD_DIR/monolite-$DATE
-cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/Mono.Security.dll $LIBSDIR/System.Xml.dll $LIBSDIR/gmcs.exe $DAILY_BUILD_DIR/monolite-$DATE
+cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/Mono.Security.dll $LIBSDIR/System.Xml.dll $LIBSDIR/System.Core.dll $LIBSDIR/gmcs.exe $DAILY_BUILD_DIR/monolite-$DATE
 
 tar zcvpf monolite-$DATE.tar.gz monolite-$DATE/ >> $LOGFILE 2>&1
 
