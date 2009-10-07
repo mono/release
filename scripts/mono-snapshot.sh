@@ -73,7 +73,7 @@ echo "Building basic" >> $LOGFILE 2>&1
 # Copy the basic runtime to where the mcs class libs are so the class status will get properly generated
 cp $DAILY_BUILD_DIR/mono-basic/class/lib/vbnc/*.dll $DAILY_BUILD_DIR/mcs/class/lib/net_2_0
 
-LIBSDIR=$DAILY_BUILD_DIR/mcs/class/lib/net_2_0
+LIBSDIR=$DAILY_BUILD_DIR/mcs/class/lib/basic
 cd $DAILY_BUILD_DIR
 # make monolite tarball
 mkdir -p $DAILY_BUILD_DIR/monolite-$DATE
