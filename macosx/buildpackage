@@ -87,6 +87,17 @@ for i in range(1,4):
 	version_list[i] = version_list[i].zfill(2)
 version_int = "".join(version_list) + release.zfill(2)
 
+# Set the package GUID
+if arch_name == "universal":
+	package_guid = "960a0c10-580c-43fd-b173-78cddf93a7e8"
+	csdk_guid = "ea6f53e2-aa4e-428e-aa97-26d147e73485"
+elif arch_name == "x86":
+	package_guid = "432959f9-ce1b-47a7-94d3-eb99cb2e1aa8"
+	csdk_guid = "d7972cf5-4df5-471d-b971-d26907fa121d"
+elif arch_name == "ppc":
+	package_guid = "294befc2-2cb2-4191-8d6f-d81f5324eec3"
+	csdk_guid = "44d524bb-c7ce-41b8-a057-c17b433676d3"
+
 output_dir = os.path.join("output", version, target, release) 
 
 if HEAD_or_RELEASE == "HEAD":
@@ -265,6 +276,8 @@ parameter_map = {}
 parameter_map[re.compile("@@MONO_VERSION@@")] = version
 parameter_map[re.compile("@@MONO_RELEASE@@")] = release
 parameter_map[re.compile("@@MONO_VERSION_RELEASE@@")] = version + '_' + release
+parameter_map[re.compile("@@MONO_PACKAGE_GUID@@")] = package_guid
+parameter_map[re.compile("@@MONO_CSDK_GUID@@")] = csdk_guid
 parameter_map[re.compile("@@MONO_VERSION_RELEASE_INT@@")] = version_int
 
 parameter_map[re.compile("@@PACKAGES@@")] = packages_text
@@ -292,6 +305,7 @@ conf.buildenv.copy_to('Info.plist Description.plist version.plist'.split(), fram
 conf.buildenv.copy_to('Info_sdk.plist Description_sdk.plist version.plist'.split(), arch_remote_packages_loc)
 
 conf.buildenv.copy_to('updateinfo'.split(), "%s%s/Versions/%s" % (remote_PKGROOT, framework_prefix, version))
+conf.buildenv.copy_to('updateinfo.csdk'.split(), "%s%s/Versions/%s" % (remote_PKGROOT + "_sdk", framework_prefix, version))
 
 os.chdir(cwd)
 
