@@ -59,6 +59,38 @@ openSUSE Install Guide
        <div class="clearer" />
        <br />
        
+       <a href="images/gt_zypper_in_monovs.png">
+         <img class="shot" src="images/gt_zypper_in_monovs-small.png" />
+       </a>
+       <b>Step 6:</b><br />
+       <br />
+       Install MonoVS by typing:<br />
+       <strong>zypper in monovs-server-gui</strong><br /><br />
+       Then answer '<strong>Y</strong>' to start the  installation.
+       <div class="clearer" />
+       <br />
+       
+       <a href="images/gt_logout_as_root.png">
+         <img class="shot" src="images/gt_logout_as_root-small.png" />
+       </a>
+       <b>Step 7:</b><br />
+       <br />
+       Logout as root by typing:<br />
+       <strong>exit</strong>
+       <div class="clearer" />
+       <br />       
+       
+       <a href="images/gt_run_monovs.png">
+         <img class="shot" src="images/gt_run_monovs-small.png" />
+       </a>
+       <b>Step 8:</b><br />
+       <br />
+       Run monovs server by typing:<br />
+       <strong>monovs-gui-server</strong><br /><br />
+       A mono tray icon will appear. Use this to control the server.
+       <div class="clearer" />
+       <br />       
+       
               
    </div>
 </asp:Content>
