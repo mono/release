@@ -28,7 +28,15 @@ debug = False
 base_link = 'http://go-mono.com/archive/moonlight-plugins'
 rdf_ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 em_ns = "http://www.mozilla.org/2004/em-rdf#"
+
+min_firefox_version = "1.5"
 max_firefox_version = "3.5.*"
+firefox_guid = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}'
+
+min_seamonkey_version = "2.0b1"
+max_seamonkey_version = "2.0.*"
+seamonkey_guid = '{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}'
+
 
 ############################################################################################
 #
@@ -149,15 +157,23 @@ def create_text_node(doc,name,text):
 	return node
 
 #-------------------------------------------------------------------------------------
-def create_target_application(doc,xpi):
+def create_SeaMonkey_target_application(doc,xpi):
+	return __create_target_application(doc,xpi,seamonkey_guid,min_seamonkey_version,max_seamonkey_version);
+
+#-------------------------------------------------------------------------------------
+def create_Firefox_target_application(doc,xpi):
+	return __create_target_application(doc,xpi,firefox_guid,min_firefox_version,max_firefox_version);
+
+#-------------------------------------------------------------------------------------
+def __create_target_application(doc,xpi,guid,min,max):
 	sha1sum = get_sha1sum(xpi)
 	target = doc.createElementNS(em_ns,"em:targetApplication")
 	rdf_desc = doc.createElementNS(None,"Description")
 	target.appendChild(rdf_desc)
 
-	rdf_desc.appendChild(create_text_node(doc,"em:id","{ec8030f7-c20a-464f-9b0e-13a3a9e97384}")) # Firefox application GUID
-	rdf_desc.appendChild(create_text_node(doc,"em:minVersion","1.5"))
-	rdf_desc.appendChild(create_text_node(doc,"em:maxVersion",max_firefox_version))
+	rdf_desc.appendChild(create_text_node(doc,"em:id",guid))
+	rdf_desc.appendChild(create_text_node(doc,"em:minVersion",min))
+	rdf_desc.appendChild(create_text_node(doc,"em:maxVersion",max))
 	rdf_desc.appendChild(create_text_node(doc,"em:updateLink","%s/%s/%s" % (base_link,new_version,xpi)))
 	rdf_desc.appendChild(create_text_node(doc,"em:updateHash","sha1:%s" % sha1sum))
 	rdf_desc.appendChild(create_text_node(doc,"em:updateInfoURL",get_updateInfoUrl()))
@@ -171,7 +187,8 @@ def create_resource(doc,version,xpi):
 	em_version_txt = doc.createTextNode(version)
 	em_version.appendChild(em_version_txt)
 	rdf_desc.appendChild(em_version)
-	rdf_desc.appendChild(create_target_application(doc,xpi))
+	rdf_desc.appendChild(create_Firefox_target_application(doc,xpi))
+	rdf_desc.appendChild(create_SeaMonkey_target_application(doc,xpi))
 	return rdf_desc
 
 #-------------------------------------------------------------------------------------
