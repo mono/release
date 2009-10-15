@@ -16,9 +16,10 @@ releases = {
 	'1.99.3':  {'release':'1.99.3','moonrev':'141147','monorev':'140963'},
 	'1.99.4':  {'release':'1.99.4','moonrev':'142036','monorev':'141690'},
 	'1.99.5':  {'release':'1.99.5','moonrev':'142349','monorev':'142338'},
+	'1.99.6':  {'release':'1.99.6','moonrev':'144031','monorev':'143653'},
 }
 
-latest = releases['1.99.5']
+latest = releases['1.99.6']
 
 new_version = latest['release']
 

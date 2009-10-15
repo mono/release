@@ -18,10 +18,10 @@ def executeCmd(command, stderr=open(os.devnull)):
 def branch(preview,mono_rev,moonlight_rev):
 
     host='svn+ssh://rhowell@mono-cvs.ximian.com/source'
-    mono='%s/trunk/mono' % host
-    mcs='%s/trunk/mcs' % host
+    mono='%s/branches/mono-2.6/mono' % host
+    mcs='%s/branches/mono-2-6/mcs' % host
     moonlight='%s/trunk/moon' % host
-    mono_basic='%s/trunk/mono-basic' % host
+    mono_basic='%s/branches/mono-2-6/mono-basic' % host
     branch='%s/branches/moon/%s' % (host,preview)
 
     print host
@@ -74,4 +74,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# vim:ts=4:noexpandtab:
 
