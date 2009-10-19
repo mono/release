@@ -37,6 +37,7 @@ if __name__ == '__main__':
     user = HtUserManagement(sys.argv[2])
 
     accountInfo = readInCsv(sys.argv[1])
+    addedCount = 0
     for curAccount in accountInfo[1:]:
         if len(curAccount) == 0:
             continue  #line is a blank line
@@ -46,16 +47,18 @@ if __name__ == '__main__':
 
         try:
             user.addUserWithRandomPassword(username, fullName)
-            print ".",
+            print ".",
+            addedCount += 1
         except Exception,exc:
             if (str(exc) == "Error: [" + username + "] is not a valid e-mail address."):
-                print "I",
+                print "I",
             elif (str(exc) == "Error: [" + username + "] already exists!"):
-                print "E",
+                print "E",
             else:
                 print str(exc)
 
     user.writeOutHtpasswd(sys.argv[2] + ".htpasswd")
+    print "\nAdded: " + str(addedCount)
 
 
 # vim:ts=4:expandtab:
