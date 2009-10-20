@@ -20,7 +20,7 @@
     <div>
         <div id="container">
             <div id="content-container">
-                <a href="Default.aspx"><div id="header">&nbsp;</div></a>
+                <a href="<%= ResolveClientUrl ("~/Default.aspx") %>"><div id="header">&nbsp;</div></a>
                 <div id="content">
                     <asp:ContentPlaceHolder ID="maincontent" runat="server" />
                 </div>

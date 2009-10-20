@@ -56,7 +56,7 @@
         <div class="colordiv">
             <span style="font-size: .85em;">Already received your invitation username/password?<br />
             <br />
-            <a href="http://go-mono.com/monovs-download/latest/">Download current version: Beta 2 (0.4.4034)</a>
+            <a href="http://go-mono.com/monovs-download/latest/">Download current version: Beta 4 (0.6.4168)</a>
             <br />
             <a href="http://mono-project.com/ReleaseNotes_MonoVS">Release Notes</a></span>
             <br />
@@ -82,9 +82,10 @@
                     <td style="font-size: .85em;"><a href="Chat.aspx"> IRC Chat</a></td>
                 </tr>
             </table>
-        </div>
-        <br />
-        <br />
+        </div><br />
+    <div class="surveydiv" style="background-color: #FFF9C5; border: solid 1px #FDE736;">
+        <b><span style="font-size: 1.4em">Not sure where to start?</span></b><br /><br />Follow our <a href="guides/blog_engine_round_trip/Default.aspx"><b>tutorial</b></a> to see an open source ASP.NET application (BlogEngine.NET) converted from start to finish!
+    </div>
         <b>Requirements:</b><br />
         -
         Windows XP, Vista, or 7, 32 or 64 bits<br />
