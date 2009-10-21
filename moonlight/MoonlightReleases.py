@@ -17,7 +17,7 @@ releases = {
 	'1.99.4':  {'release':'1.99.4','moonrev':'142036','monorev':'141690'},
 	'1.99.5':  {'release':'1.99.5','moonrev':'142349','monorev':'142338'},
 	'1.99.6':  {'release':'1.99.6','moonrev':'144031','monorev':'143653'},
-	'1.99.7':  {'release':'1.99.7','moonrev':'144534','monorev':'142338'},
+	'1.99.7':  {'release':'1.99.7','moonrev':'144534','monorev':'144471'},
 }
 
 

@@ -10,11 +10,11 @@ import MoonlightReleases
 
 def executeCmd(command, stderr=open(os.devnull)):
     print command
-    return
     ret = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=stderr)
     output = ret.communicate()[0]
     lines = output.split('\n')
-    return lines
+    for line in lines:
+        print line
 
 def branch(preview,mono_rev,moonlight_rev):
 
