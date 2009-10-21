@@ -56,7 +56,7 @@
         <div class="colordiv">
             <span style="font-size: .85em;">Already received your invitation username/password?<br />
             <br />
-            <a href="http://go-mono.com/monovs-download/latest/">Download current version: Beta 4 (0.6.4168)</a>
+            <a href="http://go-mono.com/monovs-download/latest/">Download current version: Beta 5 (0.7.4221)</a>
             <br />
             <a href="http://mono-project.com/ReleaseNotes_MonoVS">Release Notes</a></span>
             <br />
