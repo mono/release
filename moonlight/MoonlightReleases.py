@@ -17,12 +17,18 @@ releases = {
 	'1.99.4':  {'release':'1.99.4','moonrev':'142036','monorev':'141690'},
 	'1.99.5':  {'release':'1.99.5','moonrev':'142349','monorev':'142338'},
 	'1.99.6':  {'release':'1.99.6','moonrev':'144031','monorev':'143653'},
+	'1.99.7':  {'release':'1.99.7','moonrev':'144534','monorev':'142338'},
 }
 
-latest = releases['1.99.6']
+
+latest = releases['1.99.7']
 
 new_version = latest['release']
 
 old_versions = releases.keys()
 old_versions.sort()
 old_versions.remove(latest['release'])
+
+
+old_1_0_versions = ['0.6','0.7','0.8','0.9','1.0','1.0.1']
+
