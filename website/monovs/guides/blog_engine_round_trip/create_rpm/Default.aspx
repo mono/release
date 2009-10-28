@@ -87,10 +87,28 @@ Browse to the BlogEngine.Web folder and click the "Ok" button.
        <div class="clearer" />
        <br />
 
+       <a href="images/be_make_dir_writeable_1.png">
+         <img class="shot" src="images/be_make_dir_writeable_1-small.png" />
+       </a>
+       <b>Step 8:</b><br />
+       <br />
+       Right click on the "App_Data" directory and click "Toggle Directory Writeable."
+       <div class="clearer" />
+       <br />
+       
+        <a href="images/be_make_dir_writeable_2.png">
+         <img class="shot" src="images/be_make_dir_writeable_2-small.png" />
+       </a>
+       <b>Step 9:</b><br />
+       <br />
+       Click the "Yes" button to apply the writeable attribute recursively.
+       <div class="clearer" />
+       <br />
+
        <a href="images/package_config-dependencies_tab-rescan_dependencies.png">
          <img class="shot" src="images/package_config-dependencies_tab-rescan_dependencies-small.png" />
        </a>
-       <b>Step 8:</b><br />
+       <b>Step 10:</b><br />
        <br />
 Click on the "Dependencies" tab, then click on the "Rescan Dependencies" button.
        <div class="clearer" />
@@ -99,7 +117,7 @@ Click on the "Dependencies" tab, then click on the "Rescan Dependencies" button.
        <a href="images/package_config-dependencies_tab-deps_filled_out.png">
          <img class="shot" src="images/package_config-dependencies_tab-deps_filled_out-small.png" />
        </a>
-       <b>Step 9:</b><br />
+       <b>Step 11:</b><br />
        <br />
 Notice that the necessary dependencies have been detected and added to the list.
        <div class="clearer" />
@@ -108,7 +126,7 @@ Notice that the necessary dependencies have been detected and added to the list.
        <a href="images/package_config-dependecies_tab-add_sys_management_manually.png">
          <img class="shot" src="images/package_config-dependecies_tab-add_sys_management_manually-small.png" />
        </a>
-       <b>Step 10:</b><br />
+       <b>Step 12:</b><br />
        <br />
 Select the "System.Management 2.0.0.0" assembly and click on the left arrow button to manually add it to the dependency list.
        <div class="clearer" />
@@ -117,7 +135,7 @@ Select the "System.Management 2.0.0.0" assembly and click on the left arrow butt
        <a href="images/package_config-advanced_tab.png">
          <img class="shot" src="images/package_config-advanced_tab-small.png" />
        </a>
-       <b>Step 11:</b><br />
+       <b>Step 13:</b><br />
        <br />
 Click on the "Advanced" tab. Everything in this tab should already be filled out correctly.
        <div class="clearer" />
@@ -126,7 +144,7 @@ Click on the "Advanced" tab. Everything in this tab should already be filled out
        <a href="images/package_config-create_package.png">
          <img class="shot" src="images/package_config-create_package-small.png" />
        </a>
-       <b>Step 12:</b><br />
+       <b>Step 14:</b><br />
        <br />
 Save the solution, then click the "Create Package" button.
        <div class="clearer" />
@@ -135,7 +153,7 @@ Save the solution, then click the "Create Package" button.
        <a href="images/monovs_choose_remote_host_dialog.png">
          <img class="shot" src="images/monovs_choose_remote_host_dialog-small.png" />
        </a>
-       <b>Step 13:</b><br />
+       <b>Step 15:</b><br />
        <br />
 The MonoVS Choose Remote Host dialog will appear. Choose the host to remotely build the Linux package on and click the "Ok" button.
        <div class="clearer" />
@@ -144,7 +162,7 @@ The MonoVS Choose Remote Host dialog will appear. Choose the host to remotely bu
        <a href="images/create_package-save_rpm_dialog.png">
          <img class="shot" src="images/create_package-save_rpm_dialog-small.png" />
        </a>
-       <b>Step 14:</b><br />
+       <b>Step 16:</b><br />
        <br />
 Select the folder to save the Linux package to once it's built. For this example, it's best to just save it to the Desktop.
        <div class="clearer" />
@@ -153,7 +171,7 @@ Select the folder to save the Linux package to once it's built. For this example
        <a href="images/create_package-building_rpm.png">
          <img class="shot" src="images/create_package-building_rpm-small.png" />
        </a>
-       <b>Step 15:</b><br />
+       <b>Step 17:</b><br />
        <br />
 While the Linux package is being built, the Visual Studio status bar will say "Building package.." Depending on the setup, this could take awhile.
 <br>
