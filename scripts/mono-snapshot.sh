@@ -57,7 +57,7 @@ echo "Bump mono version number" >> $LOGFILE 2>&1
 
 # Build mono
 echo "Building MONO" >> $LOGFILE 2>&1
-(cd $DAILY_BUILD_DIR/mono && ./autogen.sh --prefix=$PREFIX ) >> $LOGFILE 2>&1 || exit 1 
+(cd $DAILY_BUILD_DIR/mono && ./autogen.sh --prefix=$PREFIX --with-profile4=yes) >> $LOGFILE 2>&1 || exit 1 
 
 (cd $DAILY_BUILD_DIR/mono && make) >> $LOGFILE 2>&1 || exit 1 
 
@@ -121,7 +121,7 @@ ssh -i $SCRIPTS_DIR/key/cron_key mono-web@mono.ximian.com "release/scripts/make-
 # Upload assemblies to class status page
 echo "Updating class status pages..." >> $LOGFILE 2>&1
 HOST="mono-web@www.go-mono.com:/srv/www/htdocs/mono-website/go-mono/status/binary/"
-for profile in net_2_0:2.0 net_3_5:3.5; do
+for profile in net_2_0:2.0 net_3_5:3.5 net_4_0:4.0; do
 	SRC="$(echo $profile | cut -d : -f 1)"
 	DEST="$(echo $profile | cut -d : -f 2)"
 	scp -i $SCRIPTS_DIR/key/cron_key -q -C -o StrictHostKeyChecking=no $DAILY_BUILD_DIR/mcs/class/lib/$SRC/*.dll $HOST/$DEST/
