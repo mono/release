@@ -8,7 +8,7 @@
     </title>
     <link rel="stylesheet" type="text/css" href="style.css" />  
     <link rel="stylesheet" type="text/css" media="print" href="http://mono-project.com/skins/common/commonPrint.css" />  
-    <link rel="stylesheet" type="text/css" media="screen" href="http://mono-project.com/skins/MonoWave/screen.css" />
+    <link rel="stylesheet" type="text/css" href="http://mono-project.com/skins/MonoWave/screen.css" />
     <script type="text/javascript" src="http://mono-project.com/skins/Mono2/prototype.js"></script>
     <script type="text/javascript" src="http://mono-project.com/skins/Mono2/wikihacks.js"></script>
     <script type="text/javascript" src="http://mono-project.com/skins/common/wikibits.js"></script>

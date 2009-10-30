@@ -6,8 +6,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" Runat="Server">
-    <img src='<%= ResolveClientUrl("~/images/MonoVS_Menu_cropped.png") %>' style="float:right;padding:0px 20px 20px 20px;">
-<img src='<%= ResolveClientUrl("~/images/vs-partner_293.png") %>' style="float:right;width:293px;clear:both;padding:20px;">
+    <img src='<%= ResolveClientUrl("~/Images/MonoVS_Menu_cropped.png") %>' style="float:right;padding:0px 20px 20px 20px;">
+<img src='<%= ResolveClientUrl("~/Images/vs-partner_293.png") %>' style="float:right;width:293px;clear:both;padding:20px;">
     <p><b>Download a free, fully-functional 30-day trial of Mono Tools for Visual Studio.</b>  At any point you may <a href="http://mono-project.com/Store">purchase Mono Tools for Visual Studio from Novell</a> to receive an activation code which removes the time limitations from your installed add-in.</p>
       
   
@@ -76,7 +76,7 @@
                     <td colspan="3" align="center"><a class="external" href="http://www.novell.com/company/policies/privacy/">Novell's privacy policy</a></td></tr>
                 </table><div style="width:500px;text-align:center">
                     <br/>
-                    <asp:ImageButton CausesValidation="true" ID="btnDownload" runat="server" ImageUrl="~/images/mp-download-blue.png" />
+                    <asp:ImageButton CausesValidation="true" ID="btnDownload" runat="server" ImageUrl="~/Images/mp-download-blue.png" />
                     </div>
               </form>
             </div>
