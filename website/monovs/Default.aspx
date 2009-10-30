@@ -11,7 +11,7 @@
         <img src="Images/port3.png" alt="Port your applications to Mono and Linux without leaving Visual Studio!" />
         </div>
     <div class="left-column">
-        <span class="features">Features:</span><br />
+        <h2>Features:</h2>
         <a href="Moma.aspx"><img src="Images/moma64.png" alt="Scan with MoMA" width="64" height="64" /></a>
         <p>
             <a href="Moma.aspx" class="title">Scan for Mono Compatibility</a><br />
@@ -84,7 +84,7 @@
             </table>
         </div><br />
     <div class="surveydiv" style="background-color: #FFF9C5; border: solid 1px #FDE736;">
-        <b><span style="font-size: 1.4em">Not sure where to start?</span></b><br /><br />Follow our <a href="guides/blog_engine_round_trip/Default.aspx"><b>tutorial</b></a> to see an open source ASP.NET application (BlogEngine.NET) converted from start to finish!
+        <b><span style="font-size: 1.4em">Not sure where to start?</span></b><br /><br />Follow our <a href="guides/blog_engine_round_trip/Default.aspx"><b>tutorial</b></a> to see an open source ASP.NET application (<a href="http://www.dotnetblogengine.net/">BlogEngine.NET</a>) converted from start to finish!
     </div>
         <b>Requirements:</b><br />
         -

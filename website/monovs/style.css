@@ -1,9 +1,6 @@
 ﻿body 
 {
-	background: #313840 url(Images/body_grad.png) repeat-x;
-	font-family: Arial, Helvetica, Geneva, sans-serif;
-	margin: 20px 0;
-	padding-bottom: 10px;
+    line-height: 1.3em !important;
 }
 
 #container
@@ -13,7 +10,6 @@
 	margin: 0 auto;
 	position: relative;
 	text-align: left;
-	background: transparent url(Images/sideshadow.png) repeat-y left;
 }
 
 a
@@ -32,18 +28,6 @@ a:hover
 	margin-bottom: 20px;
 }
 
-#content-container {
-	padding-top: 10px;
-	margin: 0 7px;
-	background-image: url(Images/content_bg.jpg);
-	background-repeat: no-repeat;
-}
-
-#header 
-{
-	height: 192px;
-	width: 870px;
-}
 
 #content 
 {
@@ -59,7 +43,13 @@ a:hover
 #banner
 {
 	margin-left: 15px;
-	margin-bottom: 25px;
+	text-align:center;
+	width:100%;
+}
+
+#banner img
+{
+    padding:10px;
 }
 
 .colordiv
@@ -100,14 +90,8 @@ a:hover
 
 .left-column
 {
-	width: 385px;
-	position: relative;
-	padding-right: 30px;
-	padding-left: 20px;
+	width: 405px;
 	float: left;
-	margin-top: -10px;
-	font-size: 1.1em;
-	line-height: 1.15em;
 }
 
 .right-column
@@ -116,7 +100,6 @@ a:hover
 	position: relative;
 	float: right;
 	padding-right: 20px;
-	margin-top: -10px;
 	font-size: .8em;
 }
 
@@ -126,19 +109,34 @@ a:hover
 	margin-right: 15px;
 }
 
+.left-column h2
+{
+	margin-top: 0 !important;
+}
+
 .left-column p 
 {
 	margin: 4px 0 0 49px;
 	height: 85px;
-	font-size: .7em;
+	font-size: .8em;
 	color: #484848;
+}
+
+.feature-header 
+{
+    color: #19194b;
+    font-weight: normal;
+    font-size: 1.4em;
+    border-bottom: 1px solid #99b9e1;
+    margin-top: 1.5em;
+    line-height: 1.5em;
 }
 
 .feature, .feature a
 {
 	margin: 4px 0 0;
 	height: 85px;
-	font-size: .7em;
+	font-size: .8em;
 	color: #484848;
 	text-align: left;
 }
@@ -147,21 +145,18 @@ a:hover
 {
 	font-size: 1.5em;
 	font-weight: bold;
-	color: #000000;
 }
 
 .title, title a
 {
 	font-size: 1.5em;
 	font-weight: bold;
-	color: #000000;
 }
 
 .features
 {
 	font-size: 1.3em;
 	font-weight: bold;
-	color: #000000;
 	line-height: 2em;
 }
 
