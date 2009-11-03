@@ -12,11 +12,11 @@
       
   
             <div>
-              <form name="frmDownload" method="post" id="frmDownload" action="http://download.monotouch.net/DownloadTrial.aspx">
                 <table id="tblForm" style="width:500px" runat="server">
                   <tr>
                     <td colspan="3"><h3>Registration</h3>
-  <p>Please enter your registration information and click 'Download' to start your trial of Mono Tools for Visual Studio.</p>
+  <p>Please enter your registration information and click 'Download' to start 
+  your trial of Mono Tools for Visual Studio.  </p>
                         <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
   </td></tr>
                   <tr>
@@ -73,18 +73,17 @@
                     </td>
                   </tr>
                   <tr>
-                    <td colspan="3" align="center"><a class="external" href="http://www.novell.com/company/policies/privacy/">Novell's privacy policy</a></td></tr>
+                    <td colspan="3" align="right"><span style="color:red;">*</span>Fields are required.<br /><a class="external" href="http://www.novell.com/company/policies/privacy/">Novell's privacy policy</a></td></tr>
                 </table><div style="width:500px;text-align:center">
                     <br/>
                     <asp:ImageButton CausesValidation="true" ID="btnDownload" runat="server" ImageUrl="~/Images/mp-download-blue.png" />
                     </div>
-              </form>
             </div>
   
   <h3>Requirements</h3>
   <ul>
-  <li>Mono Tools for Visual Studio require Microsoft® Visual Studio® 2008 SP1 Standard,  Professional, or Team Edition.</li>
-  <li>To use the remote debugging features of the add-in, you will need a Linux target configured to host Mono's remote debugger.  For convenience, Novell provides a <a href="http://www.go-mono.com/monovs-download/latest/MonoVS-vm.exe">windows-installable, preconfigured virtual machine</a> for VMware or Virtual PC, and installable packages for openSUSE and SUSE Linux Enterprise.<br/><p style="margin-left: 1em; margin-top: 0pt;"><i>(Note: <a href="http://www.vmware.com/download/player/" class="external" title="http://www.vmware.com/download/player/" rel="nofollow">VMWare Player</a><span class="urlexpansion">&nbsp;(<i>http://www.vmware.com/download/player/</i>)</span> or <a href="http://www.microsoft.com/windows/virtual-pc/" class="external" title="http://www.microsoft.com/windows/virtual-pc/" rel="nofollow">Windows Virtual PC</a> are required to use the preconfigured virtual machines.)</i></p></li>
+  <li>Mono Tools for Visual Studio require Microsoft&trade; Visual Studio&trade; 2008 SP1 Standard,  Professional, or Team Edition.</li>
+  <li>To use the remote debugging features of the add-in, you will need a Linux target configured to host Mono's remote debugger.  For convenience, Novell provides a <a href="http://ftp.novell.com/pub/mono/.monovs/latest/MonoVS-vm.exe">windows-installable, preconfigured virtual machine</a> for VMware or Virtual PC, and installable packages for openSUSE and SUSE Linux Enterprise.<br/><p style="margin-left: 1em; margin-top: 0pt;"><i>(Note: <a href="http://www.vmware.com/download/player/" class="external" title="http://www.vmware.com/download/player/" rel="nofollow">VMWare Player</a><span class="urlexpansion">&nbsp;(<i>http://www.vmware.com/download/player/</i>)</span> or <a href="http://www.microsoft.com/windows/virtual-pc/" class="external" title="http://www.microsoft.com/windows/virtual-pc/" rel="nofollow">Windows Virtual PC</a> are required to use the preconfigured virtual machines.)</i></p></li>
   </ul>
   
   <h3>Detailed Installation Instructions</h3>
