@@ -9,7 +9,7 @@
 <name>MonoVS</name>
 <summary>The MonoVS Server Repository</summary>
 <description></description>
-<url>http://go-mono.com/monovs-download/latest/openSUSE_11.0</url>
+<url>http://ftp.novell.com/pub/mono/monovs/latest/openSUSE_11.0</url>
 </repository>
 <repository recommended="false">
 <name>Mono</name>
@@ -65,7 +65,7 @@
 <name>MonoVS</name>
 <summary>The MonoVS Server Repository</summary>
 <description></description>
-<url>http://go-mono.com/monovs-download/latest/openSUSE_11.1</url>
+<url>http://ftp.novell.com/pub/mono/monovs/latest/openSUSE_11.1</url>
 </repository>
 <repository recommended="false">
 <name>Mono</name>
@@ -121,7 +121,7 @@
 <name>MonoVS</name>
 <summary>The MonoVS Server Repository</summary>
 <description></description>
-<url>http://go-mono.com/monovs-download/latest/SLE_11</url>
+<url>http://ftp.novell.com/pub/mono/monovs/latest/SLE_11</url>
 </repository>
 <repository recommended="false">
 <name>Mono</name>
