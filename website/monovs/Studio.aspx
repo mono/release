@@ -48,13 +48,7 @@ With everything packaged in a single virtual machine, distribution and setup is 
         <img class="shot" src="Images/appliance3.png" alt="Create SUSE Studio Appliance - Step 3" />
         <b>Step 3:</b><br />
         <br />
-        You will be presented with a list of all your appliances available on SUSE Studio.  Choose one that you wish to modify, or click the "+" button in the lower left to create a new appliance.
-        <div class="clearer">
-        </div>
-        <img class="shot" src="Images/appliance4.png" alt="Create SUSE Studio Appliance - Step 4" />
-        <b>Step 4:</b><br />
-        <br />
-        When you create a new appliance, you can give it a name, choose the version of SUSE you want, and the architecture you want.
+        You will be presented with a list of all your appliances available on SUSE Studio.  Choose one that you wish to modify, or you can create a new one.
         <div class="clearer">
         </div>
         <img class="shot" src="Images/appliance5.png" alt="Create SUSE Studio Appliance - Step 5" />
