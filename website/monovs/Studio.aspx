@@ -52,7 +52,7 @@ With everything packaged in a single virtual machine, distribution and setup is 
         <div class="clearer">
         </div>
         <img class="shot" src="Images/appliance5.png" alt="Create SUSE Studio Appliance - Step 5" />
-        <b>Step 5:</b><br />
+        <b>Step 4:</b><br />
         <br />
         Once you've selected the appliance to use, choose your Linux RPM package that you want to upload to the appliance.
          <br />
@@ -64,7 +64,7 @@ With everything packaged in a single virtual machine, distribution and setup is 
        <div class="clearer">
         </div>
         <img class="shot" src="Images/appliance6.png" alt="Create SUSE Studio Appliance - Step 6" />
-        <b>Step 6:</b><br />
+        <b>Step 5:</b><br />
         <br />
         Your appliance will be created and your package will be uploaded to the it.  From here, you can go to the SUSE Studio website to further customize and build your appliance.
         <div class="clearer">
