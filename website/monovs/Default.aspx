@@ -10,6 +10,12 @@
     <div id="banner">
         <img src="Images/port3.png" alt="Port your applications to Mono and Linux without leaving Visual Studio!" />
         </div>
+        <div style="clear:both;margin:15px">
+        Mono Tools for Visual Studio is a commercial add-in for Microsoft&trade; Visual Studio&trade; that 
+        enables developers to write .NET applications for non-Windows platforms within their preferred 
+        development environment. It allows developers to build, debug and maintain .NET applications for 
+        Linux, UNIX and Mac OS X, while continuing to leverage the extensive ecosystem of code, libraries, 
+        and tools available for .NET. </div>
     <div class="left-column">
         <h2>Features:</h2>
         <a href="Moma.aspx"><img src="Images/moma64.png" alt="Scan with MoMA" width="64" height="64" /></a>
@@ -48,19 +54,10 @@
         </p>
     </div>
     <div class="right-column">
-    <div class="surveydiv">
-        Mono Tools for Visual Studio is currently in private preview.
-        <br /><br />Sign up to be included in the next round of invitations!
-        <br /><br /><a href="Signup.aspx"><img src="Images/signup-button.png" alt="Click to Signup" /></a>
-    </div>
         <div class="colordiv">
-            <span style="font-size: .85em;">Already received your invitation username/password?<br />
-            <br />
-            <a href="http://go-mono.com/monovs-download/latest/">Download current version: Beta 5 (0.7.4221)</a>
-            <br />
-            <a href="http://mono-project.com/ReleaseNotes_MonoVS">Release Notes</a></span>
-            <br />
-            <br />
+            Mono Tools for Visual Studio 1.0 has been released.  
+            <br /><br /><a href="download"><img src="Images/mp-download-blue.png" alt="Click to Download" /></a>
+            <br />Download the free 30-day trial!<br /><br />
             <table style="margin-left: 32px;">
                 <tr>
                     <td><a href="http://www.mono-project.com/GettingStartedWithMonoVS"><img src="Images/report.png" alt="Installation Guide" /></a></td>
