@@ -59,8 +59,7 @@
                     <td align="right"><label for="ddlAppType">What are you interested in building?</label></td>
                     <td>
                         <asp:DropDownList ID="ddlAppType" runat="server" style="width:255px;">
-                            <asp:ListItem Value="" Selected="True"></asp:ListItem>
-                            <asp:ListItem Value="Choose..."></asp:ListItem>
+                            <asp:ListItem Selected="True" Value="Choose..."></asp:ListItem>
                             <asp:ListItem Value="Corporate (internal) Website"></asp:ListItem>
                             <asp:ListItem Value="Corporate (internal) Desktop application"></asp:ListItem>
                             <asp:ListItem Value="Desktop application for resale"></asp:ListItem>
@@ -70,13 +69,16 @@
                             <asp:ListItem Value="Open Source Project"></asp:ListItem>
                             <asp:ListItem Value="Other"></asp:ListItem>
                         </asp:DropDownList>
+<input type="hidden" id="elqCustomerGUID" name="elqCustomerGUID" value="" runat="server" />
+<input type="hidden" id="elqCookieWrite" name="elqCookieWrite" value="0" runat="server" />
                     </td>
                   </tr>
                   <tr>
                     <td colspan="3" align="right"><span style="color:red;">*</span>Fields are required.<br /><a class="external" href="http://www.novell.com/company/policies/privacy/">Novell's privacy policy</a></td></tr>
                 </table><div style="width:500px;text-align:center">
                     <br/>
-                    <asp:ImageButton CausesValidation="true" ID="btnDownload" runat="server" ImageUrl="~/Images/mp-download-blue.png" />
+                    <asp:ImageButton CausesValidation="true" ID="btnDownload" runat="server" 
+                        ImageUrl="~/Images/mp-download-blue.png" onclick="btnDownload_Click" />
                     </div>
             </div>
   
@@ -88,6 +90,22 @@
   
   <h3>Detailed Installation Instructions</h3>
   <p>For a step-by-step guide through the installation process, as well as installation options for using Mono Tools for Visual Studio with Linux environments other than the virtual images provided above, please follow the detailed <a href="http://mono-project.com/GettingStartedWithMonoVS">installation instructions</a>.</p>
+<script type="text/javascript" src="http://www.novell.com/common/inc/elqNow/elqCfg.js"></script>
+<script type="text/javascript" src="http://www.novell.com/common/inc/elqNow/elqImg.js"></script>
 
+
+<SCRIPT TYPE='text/javascript' LANGUAGE='JavaScript'><!--//
+var elqPPS = '70';
+//--></SCRIPT>
+<SCRIPT TYPE='text/javascript' LANGUAGE='JavaScript' SRC='http://www.novell.com/common/inc/elqNow/elqScr.js'></SCRIPT>
+<SCRIPT TYPE='text/javascript' LANGUAGE='JavaScript'><!--//
+window.onload = initPage;
+function initPage(){
+    if (this.GetElqCustomerGUID) {
+        document.getElementById('ctl00_maincontent_elqCustomerGUID').value = GetElqCustomerGUID();
+        //document.forms["aspnetForm"].elements["elqCustomerGUID"].value = GetElqCustomerGUID();
+    }
+}
+//--></SCRIPT>
 </asp:Content>
 

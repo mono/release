@@ -30,14 +30,14 @@
     <h1>Mono</h1>
     <a href="http://mono-project.com/" title="Mono"><div id="mono-logo"></div></a>
     <ul>
-      <li class="current_page_item" id="menu-n-home"><a href="http://mono-project.com/Main_Page">Home</a></li>
+      <li id="menu-n-home"><a href="http://mono-project.com/Main_Page">Home</a></li>
       <li id="menu-n-download"><a href="http://www.mono-project.com/Download">Download</a></li>
-      <li id="menu-n-start"><a href="http://mono-project.com/Start">Start</a></li>
+      <li class="current_page_item" id="menu-n-start"><a href="http://mono-project.com/Start">Start</a></li>
       <li id="menu-n-news"><a href="http://www.mono-project.com/news/">News</a></li>
       <li id="menu-n-contribute"><a href="http://mono-project.com/Contributing">Contribute</a></li>
-      <li id="menu-n-contact"><a href="http://mono-project.com/Community">Community</a></li>
+      <li id="menu-n-community"><a href="http://mono-project.com/Community">Community</a></li>
       <li id="menu-n-support"><a href="http://www.mono-project.com/Support">Support</a></li>
-      <%--<li id="menu-n-store"><a href="http://www.mono-project.com/Store">Store</a></li>--%>
+      <li id="menu-n-store"><a href="http://www.mono-project.com/Store">Store</a></li>
     </ul>
     <div id="search">
       <form method="get" action="http://www.google.com/search?">
