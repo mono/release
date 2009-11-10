@@ -23,17 +23,16 @@ public partial class download_Default : System.Web.UI.Page
         Page.Validate();
         if (Page.IsValid)
         {
+           EnsureFileNamesAndConfig (Request);
+           StoreFormData ();
+
            try
            {
-                EnsureFileNamesAndConfig (Request);
-                StoreFormData ();
-
                 PostToEloqua();
             }
             catch (Exception ex)
             {
                 //should probably log something
-                throw;
             }
             finally
             {
