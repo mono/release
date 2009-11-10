@@ -23,27 +23,28 @@ public partial class download_Default : System.Web.UI.Page
         Page.Validate();
         if (Page.IsValid)
         {
-           EnsureFileNamesAndConfig (Request);
-           StoreFormData ();
+            if (tblForm.Visible)
+            {
+                EnsureFileNamesAndConfig(Request);
+                StoreFormData();
 
-           try
-           {
-                PostToEloqua();
+                try
+                {
+                    PostToEloqua();
+                }
+                catch (Exception ex)
+                {
+                    //should probably log something
+                }
             }
-            catch (Exception ex)
-            {
-                //should probably log something
-            }
-            finally
-            {
-                //but we'll try to let people download anyways.
-                HttpResponse response = Response;
-                response.ContentType = "application/octet-stream";
-                response.AppendHeader("Content-Disposition", 
-                    String.Format("attachment; filename={0}", dl_name));
-                response.TransmitFile (real_path);
-                response.End();
-            }
+
+            //but we'll try to let people download either way
+            HttpResponse response = Response;
+            response.ContentType = "application/octet-stream";
+            response.AppendHeader("Content-Disposition", 
+                String.Format("attachment; filename={0}", dl_name));
+            response.TransmitFile (real_path);
+            response.End();
         }
     }
 

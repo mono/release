@@ -13,8 +13,8 @@
         <div style="clear:both;margin:15px">
         Mono Tools for Visual Studio is a commercial add-in for Microsoft&trade; Visual Studio&trade; that 
         enables developers to write .NET applications for non-Windows platforms within their preferred 
-        development environment. It allows developers to build, debug and maintain .NET applications for 
-        Linux, UNIX and Mac OS X, while continuing to leverage the extensive ecosystem of code, libraries, 
+        development environment. It allows developers to build, debug and deploy .NET applications on
+        Linux, while continuing to leverage the extensive ecosystem of code, libraries, 
         and tools available for .NET. </div>
     <div class="left-column">
         <h2>Features:</h2>
