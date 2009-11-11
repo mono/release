@@ -1,0 +1,154 @@
+11:10 <rusty> so I'm confused at to why you're confused :) 	  				 	 	 	   	 	  	   		  	 
+11:10 <rusty> should moonlight not even build on 2.16.3? 	  				 	 	 	   	 	  	   		  	 
+11:10 <ajorg> it would build but it would use this bad symbol that they don't want to use
+11:10 <ajorg> and your build did not use that symbol
+11:10 <ajorg> it's possible they are just wrong
+11:11 <ajorg> or we do some magic somewhere to fix it
+11:12 <ajorg> i should just figure out how to run your build script and give it a try
+11:12 <rusty> I commented out the symbol stripping in the xpi, for debug purposes
+11:14 <rusty> that line should still be in the Makefile
+11:14 <ajorg> oh, that's not the issue though
+11:15 <rusty> k, but that should be uncommented anyway
+11:15 <ajorg> that's debug symbol stripping, this is a non-debug real symbol they're arguing about
+11:15 <ajorg> noted
+11:16 <rusty> so, I was working on getting a release lane in moonbuilding, but it's unfinished
+11:17 <rusty> so I was building each release on the bots by hand.
+11:17 <rusty> building mono, mcs and mono-basic
+11:17 <rusty> and then build moonlight
+11:18 <ajorg> from svn trees or from tarballs?
+11:18 <rusty> my release process went like this
+11:18 <rusty> in svn/release/moonlight
+11:19 <rusty> I would update MoonlightReleases.py and add the new version to the dict with the svn revs
+11:20 <rusty> ./branch_moonlight.py which will do the necessary svn cp -r trunk/mono branches/moon/<version>/mono
+11:20 <rusty> and svn cp -r mcs,  mono-basic, etc
+11:21 <rusty> so under branches/moon/<version>/mono,mcs,mono-basic,moon are all there.
+11:21 <rusty> actually, it should branch from mono-2.6, NOT trunk
+11:21 <ajorg> right
+11:22 <rusty> from there, on the bots, I would just do svn co
+11:22 <rusty> I would build manually,  don't forget $ source ~/mono-dev-env
+11:23 <rusty> on the bot, I would also make dist
+11:23 <rusty> sometimes I would use that tarball to build on the other build bot
+11:23 <rusty> instead of svn co
+11:24 <ajorg> ah, good idea
+11:24 <rusty> in moon, ./autogen.sh --without-testing --without-performance && make && make user-plugin
+11:26 <rusty> I used --without-testing et. al. just to expedite the build
+11:26 <ajorg> sure
+11:26 <rusty> once the xpi is built, then you need to get it signed.
+11:26 <rusty> I wrote a python script to submit to the signing lab
+11:26 <ajorg> cool
+11:27 <rusty> extras/moonlight-ms/moz_ext_update/novell_signing_lab.py, I think
+11:27 <rusty> It's pretty thorough, and can be used to submit anything to the lab, like the gtk# msi (which I've tested)
+11:27 <rusty> fyi
+11:28 <ajorg> oh, what about the update file thingy
+11:28 <rusty> that's next
+11:28 <rusty> :)
+11:28 <rusty> back in trunk/release/moonlight
+11:29 <rusty> wait... after the signing script is done, you should see moonlight_signed.zip there
+11:29 <rusty> cp that to trunk/release/moonlight
+11:30 <ajorg> k
+11:31 <rusty> I was in the process of changing prepare_zip.py to prepere_xpi.py because I wanted to be able to sign and create the update.rdfs on an single build bot
+11:31 <rusty> prepare_zip.py was for a zip with both i586 and x64 xpis in it
+11:31 <ajorg> ok
+11:32 <rusty> prepare_xpi.py should take the .xpi and reorder it. (Mozilla bug with signed plugins)
+11:32 <ajorg> like change the order of the files?
+11:33 <rusty> yeah... the signature file has to be the first file added to the zip
+11:33 <ajorg> wacky
+11:33 <rusty> yep
+11:33 <ajorg> actually that kinda makes sense
+11:33 <rusty> prepare_xpi will also create the update rdf containing all the versions in MoonlightReleases.py
+11:33 <ajorg> 'cause it could just download the signature chunks and verify... oh wait, you can't verify it without the rest of the file anyway
+11:34 <ajorg> ok
+11:34 <rusty> and sign it using Mozilla's McCoy tool
+11:34 <ajorg> mccoy can be used commandline?
+11:34 <rusty> oh.. yeah, you have to check out extras/moonlight-ms/extras/mccoy
+11:34 <rusty> with my patch :)
+11:34 <rusty> no.. jk. It's not /my/ patch, but one I found
+11:35 <ajorg> finders keepers :-)
+11:35 <rusty> K I lied.
+11:35 <rusty> just check out extras/moonlight-ms/moz_ext_update
+11:36 <rusty> in there, mccoy is the patched exe
+11:36 <rusty> ln -s mccoy_profile $HOME/.mozilla/mccoy
+11:36 <rusty> mccoy_profile contains the private keys for the mccoy signing
+11:37 <rusty> so your home dir has to symlink to mccoy_profile
+11:37 <ajorg> right
+11:37 <rusty> DO THIS BEFORE you run prepare_xpi.py btw
+11:38 <rusty> and you may have to change the MCCOY_PATH in prepare_xpi 
+11:38 <rusty> let me look
+11:38 <rusty> yeah.. you will, 
+11:38 <ajorg> we're planning to do this on c524, so maybe we'll be okay?
+11:39 <rusty> MCCOY_EXE, on line 19
+11:39 <ajorg> ok
+11:39 <rusty> this has to happen on bot bots
+11:39 <ajorg> ok
+11:39 <rusty> i586 and x86_64
+11:39 <rusty> hmmkm well maybe not
+11:39 <rusty> both xpis need signing but you can do them on the same machine
+11:44 <ajorg> anything else?
+11:45 <rusty> btw, novell_signing_lab.py is INTERNAL, Baja's orders :)
+11:46 <rusty> so running prepare_xpi should produce a dir named after the version (ie 1.99.7)
+11:46 <ajorg> haha
+11:46 <rusty> wait... it's Baha, right?
+11:46 <rusty> or Baja
+11:46 <rusty> Baha
+11:46 <rusty> I think
+11:46 <rusty> /that guy/
+11:47 <ajorg> yes
+11:47 <ajorg> don't see a branch / tag for 1.99.7... am I missing something?
+11:48 <ajorg> that was the last release, right?
+11:48 <rusty> so, in 1.99.7/ there should be the doubly signed xpi, with the signed update-2.0.rdf as well as a sha1sum file
+11:48 <rusty> where are you looking
+11:48 <ajorg> doubly signed?
+11:48 <ajorg> (i meant in svn)
+11:48 <rusty> Novell sig + mccoy sig
+11:48 <ajorg> oh, does the mccoy sig get embedded too?
+11:49 <ajorg> i thought that just went in the update.rdf
+11:49 <rusty> well for the update.rdf
+11:49 <ajorg> ok
+11:49 <rusty> so... you're right. the xpi isn't signed twice
+11:49 <ajorg> phew
+11:49 <ajorg> it's scary when i might be wrong
+11:49 <rusty> xpi signed by novell, .rdf signed by mccoy
+11:49 <rusty> :) yeah sorry
+11:49 <ajorg> so anyway, didn't see 1.99.7 in svn://anonsvn.mono-project.com/source/tags/moon
+11:50 <ajorg> that's where they go, right?
+11:50 <rusty> oh.. look in branches
+11:50 <ajorg> looking
+11:50 <rusty> wait...
+11:50 <ajorg> okay
+11:50 <ajorg> i get it
+11:50 <rusty> the dir produces by ./prepare_xpi.py is just local 
+11:51 <ajorg> right
+11:51 <rusty> I don't really check it in
+11:51 <ajorg> i was looking for the svn tag
+11:51 <rusty> I do scp that to go-mono
+11:51 <ajorg> 'cause there is on for other betas
+11:51 <rusty> so on go-mono, there are all the previous xpis
+11:51 <ajorg> s/on/one/
+11:51 <ajorg> right
+11:52 <rusty> oh.. I did tag sometimes, but these beta branches were more like tags anyway, so I stopped doing it
+11:53 <ajorg> okay
+11:53 <rusty> but I did put the sources out of ftp.novell.com
+11:53 <ajorg> do you publish src tarballs for mono / mono-basic there also?
+11:53 <rusty> yes
+11:53 <ajorg> okay
+11:54 <ajorg> allright, this is starting to make sense
+11:54 <rusty> once you scp the 1.99.7 dir to go-mono:go-mono/archive/moonlight-plugins
+11:55 <rusty> you need to cp moonlight-plugins/1.99.7/update*.rdf moonlight-plugins/updates
+11:55 <rusty> that will make the update go live
+11:55 <ajorg> ok
+11:56 <ajorg> what about the codecs, how it that mess handled?
+11:56 <rusty> talk to toshok about that
+11:56 <rusty> I don't handle that
+11:56 <ajorg> okay cool
+11:56 <ajorg> anything else?
+11:56 <rusty> so I was working on getting all the script necessary to finally automate this whole ugliness
+11:57 <rusty> with the signing script, prepare_xpi, etc.
+11:57 <rusty> so I think everthing might be in place to plug all the pieces together
+11:57 <ajorg> okay
+11:58 <rusty> Note that to do the signing, you have to be inside the firewall. So toshok's other bots and all that can't do it
+11:58 <ajorg> right
+11:58 <ajorg> if we get that far i'll probably have release-only bots like it seems you intended
+11:59 <rusty> if moonbuilder can handle priority, then you could probably put this lane on one of the normal build bots.
+12:00 <rusty> I just didn't want to have to wait forever for other builds to finish before getting the release build
+12:00 <ajorg> okay cool, so we're gonna take a lunch break.  can we sms you if we get stuck again?
+12:01 <rusty> sure thing
