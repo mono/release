@@ -34,7 +34,7 @@ pageTracker._trackPageview();
 <script type="text/javascript" src="Silverlight.js" /></script>
 <script type="text/javascript">
 
-var released_version = "1.9.6";
+var released_version = "1.99.8";
 
 var plugin = navigator.plugins["Silverlight Plug-In"];
 if (plugin.filename.indexOf("libmoonloader") == 0) {
@@ -146,13 +146,13 @@ string filesize = string.Empty;
 string fileupdate = string.Empty;
 string userfriendly = string.Empty;
 string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight-preview";
-string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/moonlight-1.9.6.tar.bz2";
-string svn_location = "http://anonsvn.mono-project.com/source/tags/moon/1.9.6";
+string src_tarball_location = "http://ftp.novell.com/pub/mono/sources/moon/moonlight-1.99.8.tar.bz2";
+string svn_location = "http://anonsvn.mono-project.com/source/tags/moon/1.99.8";
 
 void Page_Init(object sender, EventArgs e)
 {
-        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.9.6/";
-        dir = "downloads/1.9.6";
+        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/1.99.8/";
+        dir = "downloads/1.99.8";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -227,7 +227,7 @@ void ArchSelected(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-1.9.6-" + architecture.SelectedValue + ".xpi";
+	xpi = basename + "-1.99.8-" + architecture.SelectedValue + ".xpi";
 	filepath = Path.Combine(dir,xpi);
 }
 
@@ -252,7 +252,7 @@ function flash()
 
 <div id="col2">
 <h1>
-Moonlight 2.0 Preview 7
+Moonlight 2.0 Beta 8
 </h1>
 
 <p><a href="http://www.mono-project.com/Moonlight">Moonlight</a> is an
@@ -296,7 +296,7 @@ As such you should only use this preview plugin on trusted sites (e.g. internal 
 <div id="dllink">
 <ul class="machine"> 
 <li>
-     <a href="/archive/moonlight-plugins/1.9.6/<%=xpi%>" title="<%=xpi%>">
+     <a href="/archive/moonlight-plugins/1.99.8/<%=xpi%>" title="<%=xpi%>">
       <img src="images/down.png" alt="Download"/>
       <strong>Linux/<%=userfriendly%></strong>
       <span class="filesize"><%=filesize%></span>
