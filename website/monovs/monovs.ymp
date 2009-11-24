@@ -35,7 +35,7 @@
 <description></description>
 </item>
 <item>
-<name>mono-complete</name>
+<name>mono-core</name>
 <summary></summary>
 <description></description>
 </item>
@@ -91,7 +91,7 @@
 <description></description>
 </item>
 <item>
-<name>mono-complete</name>
+<name>mono-core</name>
 <summary></summary>
 <description></description>
 </item>
@@ -112,7 +112,50 @@
 </item>
 </software>
 </group>
-<group distversion="SLE 11">
+<group distversion="openSUSE 11.2">
+<name>MonoVS</name>
+<summary>MonoVS Server Component</summary>
+<description>Linux server component for Mono Tools for Visual Studio</description>
+<repositories>
+<repository recommended="true">
+<name>MonoVS</name>
+<summary>The MonoVS Server Repository</summary>
+<description></description>
+<url>http://ftp.novell.com/pub/mono/monovs/latest/openSUSE_11.2</url>
+</repository>
+<!--
+<repository recommended="false">
+<name>Mono</name>
+<summary>The Mono Repository</summary>
+<description></description>
+<url>http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.2</url>
+</repository>
+-->
+</repositories>
+<software>
+<item>
+<name>monovs-server-gui</name>
+<summary>MonoVS Server GUI</summary>
+<description></description>
+</item>
+<item>
+<name>monovs-server</name>
+<summary>MonoVS Server</summary>
+<description></description>
+</item>
+<item>
+<name>mono-debugger</name>
+<summary>Mono Debugger</summary>
+<description></description>
+</item>
+<item>
+<name>mono-core</name>
+<summary></summary>
+<description></description>
+</item>
+</software>
+</group>
+<group distversion="SUSE Linux Enterprise Server 11">
 <name>MonoVS</name>
 <summary>MonoVS Server Component</summary>
 <description>Linux server component for Mono Tools for Visual Studio</description>
@@ -147,7 +190,63 @@
 <description></description>
 </item>
 <item>
-<name>mono-complete</name>
+<name>mono-core</name>
+<summary></summary>
+<description></description>
+</item>
+<item>
+<name>libgdiplus0</name>
+<summary>GDI+</summary>
+<description></description>
+</item>
+<item>
+<name>libgluezilla0</name>
+<summary>Mozilla XUL Glue Library</summary>
+<description></description>
+</item>
+<item>
+<name>webkit-sharp</name>
+<summary>WebKit#</summary>
+<description></description>
+</item>
+</software>
+</group>
+<group distversion="SUSE Linux Enterprise Desktop 11">
+<name>MonoVS</name>
+<summary>MonoVS Server Component</summary>
+<description>Linux server component for Mono Tools for Visual Studio</description>
+<repositories>
+<repository recommended="true">
+<name>MonoVS</name>
+<summary>The MonoVS Server Repository</summary>
+<description></description>
+<url>http://ftp.novell.com/pub/mono/monovs/latest/SLE_11</url>
+</repository>
+<repository recommended="false">
+<name>Mono</name>
+<summary>The Mono Repository</summary>
+<description></description>
+<url>http://ftp.novell.com/pub/mono/download-stable/SLE_11</url>
+</repository>
+</repositories>
+<software>
+<item>
+<name>monovs-server-gui</name>
+<summary>MonoVS Server GUI</summary>
+<description></description>
+</item>
+<item>
+<name>monovs-server</name>
+<summary>MonoVS Server</summary>
+<description></description>
+</item>
+<item>
+<name>mono-debugger</name>
+<summary>Mono Debugger</summary>
+<description></description>
+</item>
+<item>
+<name>mono-core</name>
 <summary></summary>
 <description></description>
 </item>
