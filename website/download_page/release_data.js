@@ -96,6 +96,16 @@ var data =
 				"downloadText" : zypper + "<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.1\">http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.1</a></ul>" + zypper_help
 			}
 			]
+		},
+		{
+			"name" : "openSUSE 11.2",
+			"arch" : [
+			{
+				"name" : i586_x86_64_ia64,
+				"desc" : "",
+				"downloadText" : zypper + "<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.2\">http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.2</a></ul>" + zypper_help
+			}
+			]
 		}
 		]
 	},
