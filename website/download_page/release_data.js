@@ -9,7 +9,7 @@ var enterprise = "<p>The <a href=\"http://www.novell.com/products/mono/\">SUSE L
 
 var data =
 {
-	"release" : "2.4.2.3",
+	"release" : "2.4.3",
 	"platforms" : [
 	{
 		"name" : "Virtual PC",
@@ -149,7 +149,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on all versions of Windows 2000, XP, 2003 and Vista.",
-				"downloadText" : "<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.3/windows-installer/3/mono-2.4.2.3-gtksharp-2.12.9-win32-3.exe\">Mono for Windows, Gtk#, and XSP</a></li><li><a href=\"http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi\">Gtk# for .NET</a></li><li><a href=\"http://mono-project.com/MoMA\">Mono Migration Analyzer</a></li></ul>"
+				"downloadText" : "<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/windows-installer/1/mono-2.4.3-gtksharp-2.12.9-win32-1.exe\">Mono for Windows, Gtk#, and XSP</a></li><li><a href=\"http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi\">Gtk# for .NET</a></li><li><a href=\"http://mono-project.com/MoMA\">Mono Migration Analyzer</a></li></ul>"
 			}
 			]
 		}
@@ -167,7 +167,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<br/><em>The CSDK packages are for developers embedding mono into their applications.  If you don't know what that means you don't need it.</em><ul><li>Mono 2.4.2.3 Framework<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.3/macos-10-x86/6/MonoFramework-2.4.2.3_6.macos10.novell.x86.dmg\">Intel</a> <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.3/macos-10-x86/6/MonoFramework-CSDK-2.4.2.3_6.macos10.novell.x86.dmg\">CSDK</a>)</span></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.3/macos-10-ppc/6/MonoFramework-2.4.2.3_6.macos10.novell.ppc.dmg\">PowerPC</a> <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.3/macos-10-ppc/6/MonoFramework-CSDK-2.4.2.3_6.macos10.novell.ppc.dmg\">CSDK</a>)</span></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.3/macos-10-universal/6/MonoFramework-2.4.2.3_6.macos10.novell.universal.dmg\">Universal</a> (if you don't know what you need) <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.4.2.3/macos-10-universal/6/MonoFramework-CSDK-2.4.2.3_6.macos10.novell.universal.dmg\">CSDK</a>)</span></li></ul><li><a href=\"http://monodevelop.com/Download/Mac_Preview\">MonoDevelop Preview</a></li></li><li><a href=\"http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.5.tar.bz2\">Cocoa# 0.9.5 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
+				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<br/><em>The CSDK packages are for developers embedding mono into their applications.  If you don't know what that means you don't need it.</em><ul><li>Mono 2.4.3 Framework<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-x86/1/MonoFramework-2.4.3_1.macos10.novell.x86.dmg\">Intel</a> <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-x86/1/MonoFramework-CSDK-2.4.3_1.macos10.novell.x86.dmg\">CSDK</a>)</span></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-ppc/1/MonoFramework-2.4.3_1.macos10.novell.ppc.dmg\">PowerPC</a> <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-ppc/1/MonoFramework-CSDK-2.4.3_1.macos10.novell.ppc.dmg\">CSDK</a>)</span></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-universal/1/MonoFramework-2.4.3_1.macos10.novell.universal.dmg\">Universal</a> (if you don't know what you need) <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-universal/1/MonoFramework-CSDK-2.4.3_1.macos10.novell.universal.dmg\">CSDK</a>)</span></li></ul><li><a href=\"http://monodevelop.com/Download/Mac_Preview\">MonoDevelop Preview</a></li></li><li><a href=\"http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.5.tar.bz2\">Cocoa# 0.9.5 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
