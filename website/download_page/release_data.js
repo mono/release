@@ -1,8 +1,8 @@
 var yast = "This distribution supports installing packages via YaST. Add the following installation source to YaST:"
 var yast_help = "For assistance with using repositories and installing packages with YaST, <a href=\"http://en.opensuse.org/Add_Package_Repositories_to_YaST\">visit the YaST help page.</a>"
 var zypper = "This distribution supports installing packages via Zypper. Add the following repository to Zypper:"
-var zypper_help_1 = "<p>To add the repository, execute the following commands (as root):<blockquote><code>zypper addrepo <em>"
-var zypper_help_2 = "</em> mono-stable<br/>zypper refresh --repo mono-stable<br/>zypper dist-upgrade --repo mono-stable</code></blockquote></p>"
+var zypper_help_1 = "<pre>To add the repository, execute the following commands (as root):<blockquote><code>zypper addrepo <em>"
+var zypper_help_2 = "</em> mono-stable<br/>zypper refresh --repo mono-stable<br/>zypper dist-upgrade --repo mono-stable</code></blockquote></pre>"
 var zypper_help = zypper_help_1 + "&lt;URL&gt;" + zypper_help_2
 var discontinued = "<div style=\"color: darkred; font-weight: bold\">Binaries for this platform have been discontinued.  Builds may be available from <a href=\"http://www.mono-project.com/Other_Downloads\">unsupported downloads</a> or we may be looking for a volunteer to maintain packages.</div>";
 var i586_x86_64 = "i586, x86_64"
@@ -103,7 +103,7 @@ var data =
 			{
 				"name" : i586_x86_64,
 				"desc" : "",
-				"downloadText" : zypper + "<ul><li><a href=\"" + ops110_repo_url + "\">" + ops110_repo_url + "</a></ul>" + zypper_help
+				"downloadText" : zypper + "<ul><li><a href=\"" + ops110_repo_url + "\">" + ops110_repo_url + "</a></ul>" + zypper_help_1 + ops110_repo_url + zypper_help_2
 			}
 			]
 		},
