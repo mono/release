@@ -9,7 +9,7 @@ var enterprise = "<p>The <a href=\"http://www.novell.com/products/mono/\">SUSE L
 
 var data =
 {
-	"release" : "2.4.3",
+	"release" : "2.6",
 	"platforms" : [
 	{
 		"name" : "Virtual PC",
