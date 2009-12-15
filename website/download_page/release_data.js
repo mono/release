@@ -3,7 +3,7 @@ var yast_help = "For assistance with using repositories and installing packages 
 var zypper = "This distribution supports installing packages via Zypper. Add the following repository to Zypper:"
 var zypper_help = "<p>To add the repository, execute the following commands (as root):<blockquote><code>zypper addrepo <em>&lt;URL&gt;</em> mono-stable<br/>zypper refresh --repo mono-stable<br/>zypper dist-upgrade --repo mono-stable</code></blockquote></p>"
 var discontinued = "<div style=\"color: darkred; font-weight: bold\">Binaries for this platform have been discontinued.  Builds may be available from <a href=\"http://www.mono-project.com/Other_Downloads\">unsupported downloads</a> or we may be looking for a volunteer to maintain packages.</div>";
-var i586_x86_64_ia64 = "i586, x86_64, and  ia64"
+var i586_x86_64 = "i586, x86_64"
 var i586_x86_64_ppc_ppc64_ia64 = "i586, x86_64, ppc, ppc64, and ia64"
 var enterprise = "<p>The <a href=\"http://www.novell.com/products/mono/\">SUSE Linux Enterprise Mono Extension</a> is available for purchase from <a href=\"http://www.novell.com/\">Novell</a>.</p>"
 
@@ -68,20 +68,10 @@ var data =
 		"dlicon" : "opensuse.jpg",
 		"version" : [
 		{
-			"name" : "openSUSE 10.3",
-			"arch" : [
-			{
-				"name" : i586_x86_64_ia64,
-				"desc" : "",
-				"downloadText" : yast + "<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/openSUSE_10.3\">http://ftp.novell.com/pub/mono/download-stable/openSUSE_10.3</a></ul>" + yast_help
-			}
-			]
-		},
-		{
 			"name" : "openSUSE 11.0",
 			"arch" : [
 			{
-				"name" : i586_x86_64_ia64,
+				"name" : i586_x86_64,
 				"desc" : "",
 				"downloadText" : zypper + "<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.0\">http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.0</a></ul>" + zypper_help
 			}
@@ -91,7 +81,7 @@ var data =
 			"name" : "openSUSE 11.1",
 			"arch" : [
 			{
-				"name" : i586_x86_64_ia64,
+				"name" : i586_x86_64,
 				"desc" : "",
 				"downloadText" : zypper + "<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.1\">http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.1</a></ul>" + zypper_help
 			}
@@ -101,7 +91,7 @@ var data =
 			"name" : "openSUSE 11.2",
 			"arch" : [
 			{
-				"name" : i586_x86_64_ia64,
+				"name" : i586_x86_64,
 				"desc" : "",
 				"downloadText" : zypper + "<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.2\">http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.2</a></ul>" + zypper_help
 			}
@@ -115,21 +105,6 @@ var data =
 		"icon" : "sles.jpg",
 		"dlicon" : "sles.jpg",
 		"version" : [
-		{
-			"name" : "SUSE Linux Enterprise 10",
-			"arch" : [
-			{
-				"name" : "Novell Supported for i586, x86_64, and s390x",
-				"desc" : "",
-				"downloadText" : enterprise
-			},
-			{
-				"name" : i586_x86_64_ia64,
-				"desc" : "",
-				"downloadText" : yast + "<ul><li><a href=\"http://ftp.novell.com/pub/mono/download-stable/SLE_10\">http://ftp.novell.com/pub/mono/download-stable/SLE_10</a></ul>" + yast_help
-			}
-			]
-		},
 		{
 			"name" : "SUSE Linux Enterprise 11",
 			"arch" : [
@@ -159,7 +134,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on all versions of Windows 2000, XP, 2003 and Vista.",
-				"downloadText" : "<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/windows-installer/1/mono-2.4.3-gtksharp-2.12.9-win32-1.exe\">Mono for Windows, Gtk#, and XSP</a></li><li><a href=\"http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi\">Gtk# for .NET</a></li><li><a href=\"http://mono-project.com/MoMA\">Mono Migration Analyzer</a></li></ul>"
+				"downloadText" : "<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.6/windows-installer/4/mono-2.6-gtksharp-2.12.9-win32-4.exe\">Mono for Windows, Gtk#, and XSP</a></li><li><a href=\"http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi\">Gtk# for .NET</a></li><li><a href=\"http://mono-project.com/MoMA\">Mono Migration Analyzer</a></li></ul>"
 			}
 			]
 		}
@@ -172,12 +147,12 @@ var data =
 		"dlicon" : "http://www.mono-project.com/files/b/bf/Mono_icon_mac.gif",
 		"version" : [
 		{
-			"name" : "Mac OS X Tiger (10.4) and Leopard (10.5)",
+			"name" : "Mac OS X Tiger (10.4), Leopard (10.5), and Snow Leopard (10.6)",
 			"arch" : [
 			{
 				"name" : "All",
-				"desc" : "This download works on Mac OS X Tiger (10.4) and Leopard (10.5).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<br/><em>The CSDK packages are for developers embedding mono into their applications.  If you don't know what that means you don't need it.</em><ul><li>Mono 2.4.3 Framework<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-x86/1/MonoFramework-2.4.3_1.macos10.novell.x86.dmg\">Intel</a> <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-x86/1/MonoFramework-CSDK-2.4.3_1.macos10.novell.x86.dmg\">CSDK</a>)</span></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-ppc/1/MonoFramework-2.4.3_1.macos10.novell.ppc.dmg\">PowerPC</a> <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-ppc/1/MonoFramework-CSDK-2.4.3_1.macos10.novell.ppc.dmg\">CSDK</a>)</span></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-universal/1/MonoFramework-2.4.3_1.macos10.novell.universal.dmg\">Universal</a> (if you don't know what you need) <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.4.3/macos-10-universal/1/MonoFramework-CSDK-2.4.3_1.macos10.novell.universal.dmg\">CSDK</a>)</span></li></ul><li><a href=\"http://monodevelop.com/Download/Mac_Preview\">MonoDevelop Preview</a></li></li><li><a href=\"http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.5.tar.bz2\">Cocoa# 0.9.5 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
+				"desc" : "This download works on Mac OS X Tiger (10.4), Leopard (10.5), and Snow Leopard (10.6).",
+				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<br/><em>The CSDK packages are for developers embedding mono into their applications.  If you don't know what that means you don't need it.</em><ul><li>Mono 2.6 Framework<ul><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.6/macos-10-x86/4/MonoFramework-2.6_4.macos10.novell.x86.dmg\">Intel</a> <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.6/macos-10-x86/4/MonoFramework-CSDK-2.6_4.macos10.novell.x86.dmg\">CSDK</a>)</span></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.6/macos-10-ppc/4/MonoFramework-2.6_4.macos10.novell.ppc.dmg\">PowerPC</a> <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.6/macos-10-ppc/4/MonoFramework-CSDK-2.6_4.macos10.novell.ppc.dmg\">CSDK</a>)</span></li><li><a href=\"http://ftp.novell.com/pub/mono/archive/2.6/macos-10-universal/4/MonoFramework-2.6_4.macos10.novell.universal.dmg\">Universal</a> (if you don't know what you need) <span style=\"font-size: small\">(<a href=\"http://ftp.novell.com/pub/mono/archive/2.6/macos-10-universal/4/MonoFramework-CSDK-2.6_4.macos10.novell.universal.dmg\">CSDK</a>)</span></li></ul><li><a href=\"http://monodevelop.com/Download/Mac_Preview\">MonoDevelop Preview</a></li></li><li><a href=\"http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.5.tar.bz2\">Cocoa# 0.9.5 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
