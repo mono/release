@@ -32,19 +32,17 @@ void Page_Init(object sender, EventArgs e)
                         arch32.Checked = true;
                         
                 } else if (Regex.IsMatch(Request.UserAgent, "Linux x86_64")) {
-						arch64.Checked = true;
+			arch64.Checked = true;
                         arch = "x86_64";
                 } else {
-						arch32.Checked = true;
+			arch32.Checked = true;
                         arch = "unknown";
                 }
         } else {
                 arch = "unknown";
-				arch32.Checked = true;
+		arch32.Checked = true;
         }
-	//	prof1_0.Checked = true;
-		RadioClicked(null,null);
-      //  lbl.Text = "page loaded";
+	RadioClicked(null,null);
 }
 void Page_Load(object sender, EventArgs e)
 {
@@ -122,13 +120,72 @@ bool IsPrivate {
 }
 </script>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="title" Runat="server">Moonlight - Download</asp:Content>
+<asp:Content ContentPlaceHolderID="title" Runat="server">Moonlight - Download</asp:Content>
 
-<asp:Content ID="Content3" ContentPlaceHolderID="page_heading" Runat="server">
+<asp:Content ContentPlaceHolderID="page_heading" Runat="server">
 <h1>Download</h1>
 </asp:Content>
 
-<asp:Content ID="Content4" ContentPlaceHolderID="main_container" Runat="server">
+<asp:Content ContentPlaceHolderID="main_container" Runat="server">
+<style type="text/css">
+ul.machine {
+	list-style: none;
+	padding: 0;
+	margin-left: 0.5em;
+}
+
+ul.machine li {
+	margin: 0 0 1em 0;
+	width: 18em;
+	border-color: #aaa;
+	border-style: solid;
+	border-width: 2px 2px 2px 10px;
+	background: #555;
+	padding: 0.5em;
+	cursor: pointer;
+}
+
+ul li.disuaded {
+	/* display: none; */
+	opacity: 0.25;
+}
+
+ul.machine li:hover {
+	background-color: #777;
+}
+
+ul.machine a:hover {
+	color:	#fc0;
+}
+
+ul.machine li a {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+ul.machine li a img {
+	float: left;
+	border: none;
+	padding-right: 5px;
+}
+
+/* ul.machine > li:last-child {
+	margin-bottom: 0em;
+} */
+
+.updated {
+	font-size: 1em;
+	font-weight: normal;
+	color: #aaa;
+}
+
+.filesize {
+	/* justify: right; */
+	font-size: 0.75em;
+	font-weight: normal;
+	color: #aaa;
+}
+</style>
 
 <% if (IsPrivate) { %>
 <p><strong>THESE ARE PRIVATE BINARIES, NOT INTENTED FOR PUBLIC CONSUMPTION.   DO NOT DOWNLOAD.</strong></p>
@@ -156,7 +213,6 @@ Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">
 <div id="dllink">
 <ul class="machine"> 
 <li>
-    <!-- <a href="<%=filepath%>" title="<%=xpi%>"> -->
      <a href="/archive/moonlight-plugins/latest/<%=xpi%>" title="<%=xpi%>">
       <img src="images/down.png" alt="Download"/>
       <strong>Linux/<%=userfriendly%></strong>
