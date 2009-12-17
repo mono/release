@@ -17,7 +17,7 @@ $(document).ready (function () {
     var platform_id = "generic";
     var platform_name = platforms[platform_id];
 
-    Cufon.replace('h1,h2,h3,.navigation a>span');        
+    Cufon.replace('h1,h2,h3,h4,.navigation a>span');        
     for (i in platforms) {
         if (user_agent.match (i)) {
             platform_id = i;

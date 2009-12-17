@@ -68,6 +68,7 @@ h4:first-child {
  */
 
 .navigation { 
+    z-index: 3;
     position: absolute; 
     margin: 0; 
     width: 100%; 
@@ -124,9 +125,10 @@ h4:first-child {
 
 
 #splash { 
+    z-index: 1;
     position: relative;
     min-height: 550px;
-    padding-bottom: 100px;
+    padding-bottom: 20px;
     overflow: hidden; 
     background: #000 url(../images/splash-bg1.jpg) no-repeat center bottom;
 }
@@ -141,14 +143,12 @@ h4:first-child {
 }
 
 #logo { 
-    position: absolute; 
+    display: block;
     text-indent: -300em; 
     width: 312px; 
     height: 340px; 
-    top: 20px; 
-    left: 65px; 
-    margin-top: 0; 
     background: url('../images/logo.png') no-repeat top left;
+    margin: 0;
 }
 
 #clouds { 
@@ -172,24 +172,21 @@ h4:first-child {
     margin: 160px 0 0 75px; 
 }
 
-h3.tagline { 
+h3.tagline, h4.tagline { 
     color: #ddd; 
     text-align: left; 
     font-weight: bold; 
     width: 300px; 
-    padding: 20px 0 20px 55px;
-    margin: 335px 0 0;
+    margin: 0 0 0 60px;
 }
-h4.tagline {
-   text-align: left;
-    width: 300px; 
-    padding: 20px 0 20px 55px;
-    margin: 0;
-}
+   h4.tagline {
+      color: #3b3f4d;
+   }
     
 #install-buttons { 
     position: relative; 
-    width: 400px;
+    margin-top: 20px;
+    width: 330px;
 }
 
 #install-buttons > h2 { 
