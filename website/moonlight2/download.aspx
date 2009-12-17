@@ -96,7 +96,7 @@ void RadioClicked(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-1.0.1";
+	xpi = basename + "-2.0";
 	
 	//if (prof1_0.Checked)
 	//	xpi += "-1.0";
