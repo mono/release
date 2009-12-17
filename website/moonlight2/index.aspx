@@ -30,15 +30,14 @@
          Moonlight is an open source implementation of <a
          href="http://silverlight.net">Microsoft Silverlight</a> for
          Unix systems.  With Moonlight you can access videos,
-         applications and content created for Silverlight on Linux and
-        BSD systems.
+         applications and content created for Silverlight on Linux.
 
       </p>
 
       <h2 id="youcan">With Moonlight you can:</h2>
 
       <ul class="intro-list">
-        <li><p>View Silverlight content on Linux and BSD</p></li>
+        <li><p>View Silverlight content on Linux</p></li>
         <li><p>Watch videos delivered with Smoothstreaming</p></li>
         <li><p>Run Silverlight applications on Linux</p></li>
       </ul>

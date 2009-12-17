@@ -12,8 +12,7 @@ string filepath = string.Empty;
 string filesize = string.Empty;
 string fileupdate = string.Empty;
 string userfriendly = string.Empty;
-string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight2";
-//string htdocs_path = "/cvs/moonlight2";
+string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
 
 void Page_Init(object sender, EventArgs e)
 {
@@ -191,49 +190,46 @@ ul.machine li a img {
 <% if (IsPrivate) { %>
 <p><strong>THESE ARE PRIVATE BINARIES, NOT INTENTED FOR PUBLIC CONSUMPTION.   DO NOT DOWNLOAD.</strong></p>
 <% } %>
-<p>Please see the <a href="#instructions">installation instructions</a> below.</p>
-
 <p>
 Check the list of <a href="faq.aspx">supported operating systems and architectures</a>
 </p>
 
 <form runat="server">
-<table>
+  <table>
+  <tr><td><h2>1. Select the architecture:</h2></td></tr>
+  
+  <tr><td>
+    <div onclick="flash()">
+    <asp:RadioButton id="arch32" Text="32 bit" groupname="architecture" runat="server" OnCheckedChanged="RadioClicked" AutoPostBack="true" />
+    <asp:RadioButton id="arch64" Text="64 bit" groupname="architecture" runat="server" OnCheckedChanged="RadioClicked" AutoPostBack="true" />
+    </div>
+  </td></tr>
+  
+  <tr><td><h2>2. Download the plugin</h2></td></tr>
 
-<tr><td><h2>1. Select the architecture:</h2></td></tr>
-
-<tr><td>
-<div onclick="flash()">
-<asp:RadioButton id="arch32" Text="32 bit" groupname="architecture" runat="server" OnCheckedChanged="RadioClicked" AutoPostBack="true" />
-<asp:RadioButton id="arch64" Text="64 bit" groupname="architecture" runat="server" OnCheckedChanged="RadioClicked" AutoPostBack="true" />
-</div>
-</td></tr>
-
-<tr><td><h2>2. Download the plugin</h2></td></tr>
-<tr><td>
-<div id="dllink">
-<ul class="machine"> 
-<li>
-     <a href="downloads/latest/<%=xpi%>" title="<%=xpi%>">
-      <img src="images/down.png" alt="Download"/>
-      <strong>Linux/<%=userfriendly%></strong>
-      <span class="filesize"><%=filesize%></span>
-      <br/>
-      <span class="updated">Last Updated: 
-          <%=fileupdate%>
-      </span>
-    </a>
-  </li>
-</ul>
-</div>
-</td></tr>
-
-</table>
+  <tr><td>
+    <div id="dllink">
+    <ul class="machine"> 
+    <li>
+         <a href="downloads/latest/<%=xpi%>" title="<%=xpi%>">
+          <img src="images/down.png" alt="Download"/>
+          <strong>Linux/<%=userfriendly%></strong>
+          <span class="filesize"><%=filesize%></span>
+          <br/>
+          <span class="updated">Last Updated: 
+              <%=fileupdate%>
+          </span>
+        </a>
+      </li>
+    </ul>
+    </div>
+  </td></tr>
+  </table>
 </form>
  
-<h1><a name="instructions"></a>Installation instructions</h1>
+<h1><a name="instructions"></a>Installation</h1>
 
-<p>When installing the Novell Moonlight plugin Firefox may prevent the installation and present you with an information bar.</p>
+<p>When installing the Novell Moonlight plugin, Firefox may prevent the installation and present you with an information bar:</p>
 
 <p><img src="images/information-bar.png" alt="Information Bar"/></p>
 

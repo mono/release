@@ -30,7 +30,8 @@
       <a href='<%=ResolveUrl ("~/")%>' class="first"><span>Home</span></a>
 <% } %>
       <a href="faq.aspx"><span>FAQ</span></a>
-      <a href="samples.aspx"><span>Samples</span></a>
+      <a href="chat.aspx"><span>Chat</span></a>
+      <a href="community.aspx"><span>Community</span></a>
       <a href="download.aspx"><span>Download</span></a>
     </div>
   </div>
