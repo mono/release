@@ -53,10 +53,10 @@
       href="images/screenshot-install.png"><img alt="*" src="images/thumbnail-install.png" /></a></div>
     <div><a title="Windows Media Codecs get installed automatically and this only happens once." 
       href="images/screenshot-codecs.png"><img alt="*" src="images/thumbnail-codecs.png" /></a></div>
-    <div><a title="Embedded live video stream from CPAN."
-      href="images/screenshot-streaming.png"><img alt="*" src="images/thumbnail-streaming.png" /></a></div>    
-    <div><a title="You can also install Moonshine as a standalone application to use on the desktop."
-      href="images/screenshot-standalone.png"><img alt="*" src="images/thumbnail-standalone.png" /></a></div>
+    <div><a title="QuakeLight running in Moonlight."
+      href="images/screenshot-quakelight.png"><img alt="*" src="images/thumbnail-quakelight.png" /></a></div>    
+    <div><a title="Smooth Streaming in Moonlight."
+      href="images/screenshot-streaming.png"><img alt="*" src="images/thumbnail-streaming.png" /></a></div>
   </div>
 </div>
 </asp:Content>
