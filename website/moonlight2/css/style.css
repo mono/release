@@ -126,7 +126,7 @@ h4:first-child {
 .splashimage { }
 
 #splash { 
-    min-height: 710px; 
+    min-height: 600px; 
     overflow: hidden; 
     background: #000 url(../images/splash-bg1.jpg) no-repeat center bottom;
 }
@@ -139,10 +139,10 @@ h4:first-child {
 #logo { 
     position: absolute; 
     text-indent: -300em; 
-    width: 400px; 
+    width: 430px; 
     height: 240px; 
-    top: 165px; 
-    left: 20px; 
+    top: 100px; 
+    left: 45px; 
     margin-top: 0; 
     z-index: 2;
     background: url('../images/logo.png') no-repeat top left;
@@ -154,16 +154,16 @@ h4:first-child {
     background: url(../images/cone.png) no-repeat 0 0;
     width: 880px; 
     height: 172px; 
-    top: 255px; 
-    left: -80px; 
+    top: 205px; 
+    left: -30px; 
 }
 
 #easymultimedia { 
-    margin: 145px 0 0 32px; 
+    margin: 160px 0 0 75px; 
 }
 
 h3.tagline { 
-    margin-top: 400px; 
+    margin-top: 335px; 
     color: #ddd; 
     text-align: center; 
     font-weight: bold; 
