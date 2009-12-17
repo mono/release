@@ -15,7 +15,7 @@
     <script type="text/javascript" src="js/jquery.color.js"></script>
     <script type="text/javascript" src="js/fancybox/jquery.fancybox.js"></script>
     <script type="text/javascript" src="js/fancybox/jquery.pngFix.pack.js"></script>
-    <script type="text/javascript" src="js/moonshine.js"></script>
+    <script type="text/javascript" src="js/moonlight.js"></script>
     <script type="text/javascript" src="js/cufon-yui.js"></script>
     <script type="text/javascript" src="js/RaveIn_500-RaveIn_700.font.js"></script>
   </head>
