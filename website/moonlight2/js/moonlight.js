@@ -56,7 +56,7 @@ $(document).ready (function () {
     });
     
     $("#install-button").append ("<div class=\"button-" + platform_id + " distro\"></div>").click (function () {
-        window.location = "download.aspx";
+        window.location = "moonlight/download.aspx";
     }).mousedown (function () {
         $("#install-button .distro").css ("top", "25px");
     }).mouseup (function () {
