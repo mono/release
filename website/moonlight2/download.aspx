@@ -211,7 +211,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
     <div id="dllink">
     <ul class="machine"> 
     <li>
-         <a href="downloads/latest/<%=xpi%>" title="<%=xpi%>">
+         <a href="downloads/2.0/<%=xpi%>" title="<%=xpi%>">
           <img src="images/down.png" alt="Download"/>
           <strong>Linux/<%=userfriendly%></strong>
           <span class="filesize"><%=filesize%></span>
