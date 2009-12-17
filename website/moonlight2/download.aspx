@@ -230,7 +230,6 @@ Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">
 </table>
 </form>
  
-<br/>
 <h1><a name="instructions"></a>Installation instructions</h1>
 
 <p>When installing the Novell Moonlight plugin Firefox may prevent the installation and present you with an information bar.</p>

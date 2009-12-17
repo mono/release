@@ -8,7 +8,7 @@
 <div id="splash">
   <div class="widthcontainer">
     <div class="twocolumn splashimage">
-      <h3 class="tagline">Moonlight.</h3>
+      <h3 class="tagline">Silverlight for Linux: a free plug-in, bringing a new level of interactivity wherever the Web works.</h3>
 
       <div id="install-buttons">
         <div id="moonlight-banner">
