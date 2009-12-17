@@ -1,0 +1,113 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>
+    
+      FAQ in sIFR Documentation and FAQ
+    
+  </title>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="./style.css" media="screen" type="text/css"/>
+</head>
+<body>
+<div id="Container">
+  <div id="Content">
+  
+  <h1 id="pageName">
+    
+      <small>sIFR Documentation and FAQ</small><br />
+      FAQ
+    
+  </h1>
+
+  
+
+<p>Here you'll find answers to the following questions:</p>
+
+<ul>
+<li><a href="#scaling">Does sIFR really scale to match the users selected font size?</a></li>
+<li><a href="#proprietary">Doesn't forcing a proprietary technology such as Flash go against the principal of an 'open world wide web'?</a></li>
+<li><a href="#screenreaders">Isn't the use of Flash a problem for screenreaders?</a></li>
+<li><a href="#locking-fonts">What's to stop somebody stealing my paid-for commercial fonts?</a></li>
+<li><a href="#wmode-bugs">I've set <code>sWmode</code> and now Mozilla is acting weird</a></li>
+<li><a href="#replacing-links">I'm replacing a link and it doesn't work</a></li>
+<li><a href="#replacing-lis">How do I replace list items?</a></li>
+<li><a href="#printing-problems">I am having problems printing  - the sIFR text comes up fine on screen but nothing prints?</a></li>
+<li><a href="#going-berserk">Things are going, uhm, berserk</a></li>
+</ul>
+
+<h2 id="scaling">Does sIFR really scale to match the users selected font size?</h2>
+
+<p>sIFR uses what we call 'lazy scaling'. This means that when the page is loaded, the replaced text is generated with respect to the users default font size. To change that size, the Javascript has to be called again, and therefore a page refresh is required. Accessibility wise this is good news because users that require a certain font size, will most likely have it set as their default, and therefore sIFR will respect their choice.</p>
+
+<h2 id="proprietary">Doesn't forcing a proprietary technology such as Flash go against the principal of an 'open world wide web'?</h2>
+
+<p>sIFR doesn't force anything. If the site visitor doesn't already use the proprietary technology ie. Flash,  then normal X(HTML) headlines are seen and the markup is as pure as the day it was conceived. And if that isn't enough, sIFR itself is open source software!</p>
+
+<h2 id=" screenreaders">Isn't the use of Flash a problem for screenreaders?</h2>
+
+<p>That's exactly what sIFR is about. It's a behaviour layer, laid over the markup and styling. This way, screenreaders will see the normal heading, as it should. It's the same as with the above question.</p>
+
+<h2 id="locking-fonts">What's to stop somebody stealing my paid-for commercial fonts?</h2>
+
+<p>There are steps you can take to prevent people from either removing the font from your <code>.swf</code> file or using your bandwidth by linking to your file. See <a class="existingWikiWord" href="Protecting+Commercial+Fonts.html">Protecting Commercial Fonts</a> for instructions.</p>
+
+<h2 id="wmode-bugs">I've set <code>sWmode</code> and now Mozilla is acting weird</h2>
+
+<p>Unfortunately there are some bugs in Mozilla with Flash objects which have their <code>wmode</code>  property set. These bugs can occur in cases where the CSS <code>float</code>  and <code>overflow</code> properties are being used. If you encounter these bugs, the only solution is to refrain from using these CSS properties or from setting the <code>sWmode</code> argument.</p>
+
+<h2 id="replacing-links">I'm replacing a link and it doesn't work</h2>
+
+<p>sIFR replaces the text and links <em>inside</em> the element you are replacing. Therefore, if you replace <code>a</code> elements, you're actually replacing the content of that <code>a</code> element. So in this example:</p>
+
+<pre><code>&lt;a href="./foo"&gt;hello world&lt;/a&gt;
+</code></pre>
+
+<p>you are replacing <code>hello world</code>. If you want a link in your replaced text, you need to wrap the <code>a</code> in another element and replace that instead:</p>
+
+<pre><code>&lt;span&gt;&lt;a href="./foo"&gt;hello world&lt;/a&gt;&lt;/span&gt;
+</code></pre>
+
+<p>Now the sIFR element will contain a link to <code>./foo</code> with <code>hello world</code> as text.</p>
+
+<h2 id="replacing-lis">How do I replace list items?</h2>
+
+<p>Since sIFR replaces the content of the selector you use, you have to use <code>ul#my-menu&gt;li</code> as a selector, instead of <code>ul#my-menu&gt;li&gt;a</code>. If this gives trouble, you can wrap the anchor in a <code>span</code> and replace the <code>span</code>: <code>ul#my-menu&gt;li&gt;span</code>.</p>
+
+<p>Please note that sIFR is more intented for replacing headlines than
+it is for replacing list items. Usually an image will do fine for these
+elements.</p>
+
+<h2 id="print-problems">I am having problems printing  - the sIFR text comes up fine on screen but nothing prints?</h2>
+
+<p>This is a peculiar problem, because normally, in the print style
+sheet and the print version, the page should be printing up with the
+HTML (non-sIFR) text. If, however, <em>nothing</em> appears, then this is most likely due to the fact that you haven't specified your "screen" stylesheet as <code>media=screen</code>.</p>
+
+<p>You should therefore change your style sheet link on every page, for the screen style sheet, from:</p>
+
+<pre><code>&lt;link href="screen.css" rel="stylesheet" type="text/css" /&gt;
+</code></pre>
+
+<p>to:</p>
+
+<pre><code>&lt;link href="screen.css" rel="stylesheet" type="text/css" media="screen" /&gt;
+</code></pre>
+
+<p>Many people already include <code>media="screen"</code> when they're
+specifying screen style sheets, but in case you haven't, this may be
+the problem why your text isn't showing up in the print version.</p>
+
+<h2 id="going-berserk">Things are, uhm, going berserk</h2>
+
+<p>Usually, when the sIFR elements look out of place, flicker, or are
+way too big, this is caused by nearby floated elements. If the sIFR
+element is inside a floated element it may sometimes flicker (for
+example when a ticker is moving). Another problem which has been
+spotted is that the font size would be way too huge when it was right
+after a floated element. In this case you have to add <code>clear: none;</code> to the sIFR element (or, in case this doesn't work, add a new element between the two which gets cleared).</p>
+
+  </div>
+</div>
+</body>
+</html>

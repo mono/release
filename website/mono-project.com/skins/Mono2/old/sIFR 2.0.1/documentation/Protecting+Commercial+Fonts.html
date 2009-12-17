@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>
+    
+      Protecting Commercial Fonts in sIFR Documentation and FAQ
+    
+  </title>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="./style.css" media="screen" type="text/css"/>
+</head>
+<body>
+<div id="Container">
+  <div id="Content">
+  
+  <h1 id="pageName">
+    
+      <small>sIFR Documentation and FAQ</small><br />
+      Protecting Commercial Fonts
+    
+  </h1>
+
+  
+
+<p>Before releasing your sIFR text on to the web, you should protect the copyright of any commercial fonts that you use. If you don't then you may be breaking the licence terms for that font.</p>
+
+<h2>customize_me.as</h2>
+
+<p>You should edit the <code>customize_me.as</code> file before you export your <code>.swf</code> file. Using the settings in this file it is possible to prevent your sIFR <code>.swf</code> file from being used anywhere apart from on your web site.</p>
+
+<h3>Local Use</h3>
+
+<p>For local testing you should set <code>allowlocal</code> to <code>true</code>. Before you upload the <code>.swf</code> to the web, change this to <code>false</code> and re-export your <code>.swf</code> file.</p>
+
+<p>Changing the <code>allowlocal</code> setting will prevent somebody from downloading the <code>.swf</code> file and using it on their own PC and potentially taking the font file.</p>
+
+<h3>Restricting Domains</h3>
+
+<p>Next, you can set which domains are allowed to use the sIFR file.</p>
+
+<p><code>allowedDomains = new Array("domain.com","www.domain.com");</code></p>
+
+<p>Add the exact domains from which you wish to allow access to the file, inside quotation marks and separated by commas.</p>
+
+<p>Domains must be specified in exact form, wildcard substitution is not supported.</p>
+
+<p>Again, when you have changed this setting, re-export your <code>.swf</code> file before you upload it.</p>
+
+
+  </div>
+</div>
+</body>
+</html>

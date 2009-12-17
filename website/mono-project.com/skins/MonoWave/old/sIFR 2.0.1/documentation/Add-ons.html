@@ -1,0 +1,109 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>
+    
+      Add-ons in sIFR Documentation and FAQ
+    
+  </title>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="./style.css" media="screen" type="text/css"/>
+  
+</head>
+<body>
+<div id="Container">
+  <div id="Content">
+  
+  <h1 id="pageName">
+    
+      <small>sIFR Documentation and FAQ</small><br />
+      Add-ons
+    
+  </h1>
+
+  
+
+<p>Bundled with sIFR are three add-ons. You can find more information about them here under "Official Add-ons". Additionaly, if you have written an add-on yourself, please post it here under "Unofficial Add-ons". The reason for this is that official add-ons will be bundled with the releases and are verified to work with these releases. These guarantees cannot be given for unofficial add-ons.</p>
+
+<p>Anyway, let's get down to business.</p>
+
+<h2>Official Add-ons</h2>
+
+<p>These are the add-ons which are officially supported by the sIFR team. The latest version of these add-ons is 1.1. You can find them under <code>sifr-addons.js</code> in the download. Using them is simple: just load this file after you load the main sIFR code:</p>
+
+<pre><code>&lt;script src="sifr.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="sifr-addons.js" type="text/javascript"&gt;&lt;/script&gt;
+</code></pre>
+
+<h3>Preference Manager</h3>
+
+<p>The preference manager allows you to give your visitors the option of enabling or disabling sIFR. It's accessible via <code>sIFR.preferenceManager</code> (as always make sure that sIFR <a href="./Javascript+Implementation#function">is in fact a function</a>!). It has the following self-explanatory methods: <code>enable</code>, <code>disable</code> and <code>test</code>. It's important to note that <code>test</code> returns a boolean value, so you can use it in an <code>if</code> statement:</p>
+
+<pre><code>if(sIFR.preferenceManager.test() == false){
+    // do stuff
+}
+</code></pre>
+
+<p>This is in fact what is done in the add-on: if the visitor has set it's preference not to use sIFR the script takes care of adhering to this decision.</p>
+
+<p>If you want to reset the preference, you can use <code>sIFR.preferenceManager.storage.reset()</code>. Note that depending on the browser this may not take place immediately.</p>
+
+<h4>Live Response</h4>
+
+<p>Disabling sIFR will not remove the headlines. To do so, you'll have to use the rollback add-on (see below).</p>
+
+<h4>Storage</h4>
+
+<p>By default the preferences are stored in a cookie. If, instead, you want to use your own storage system, you can replace the default method by your own.</p>
+
+<p>The storage methods are accessible through <code>sIFR.preferenceManager.storage</code>. The default system has the following methods: <code>set</code>, <code>get</code> and <code>reset</code>. <code>set</code> takes a boolean as it's only argument, the other two methods take no arguments. As long as your own system uses these three methods it will intergrate with the Preference Manager perfectly.</p>
+
+<p>Aside from these three methods the default storage system also has a property named <code>sCookieId</code>. This is the ID of the cookie in which the preference is stored.</p>
+
+<h3>Rollback</h3>
+
+<p>Rollback removes the sIFR elements from the page. This can be useful if you want to provide a styleswitcher: first rollback the sIFR elements, and then replace them again based on the preference of the visitor. You can invoke Rollback via <code>sIFR.rollback()</code>.</p>
+
+You can optionally use selectors when rolling back:</p>
+
+<pre><code>sIFR.rollback("h1")
+</code></pre>
+
+<p>And:</p>
+
+<pre><code>sIFR.rollback(named({sSelector:"h1"}))
+</code></pre>
+
+<h4>"Rollforward"</h4>
+
+<p>To implement a rollforward option you have to wrap the replacement
+statements in a function. To do the replacement you call this function,
+this means you have to call it once, right after you have created it,
+and when you want to roll forward.</p>
+
+<p>For example:</p>
+
+<pre><code>function do_sIFR(){
+  // replacement statements go here
+};
+
+do_sIFR(); // execute immediately, so the headlines will get replaced
+</code></pre>
+
+<p>And a link to the rollforward option:</p>
+
+<pre><code>&lt;a href="javascript:do_sIFR();"&gt;Show sIFR headlines&lt;/a&gt;</code></pre>
+
+<h3>Remove Decoy Classes</h3>
+
+You can use this method to remove the <code>sIFR-hasFlash</code> class from the <code>html</code> and <code>body</code> element. Invoke it using <code>sIFR.removeDecoyClasses()</code>.</p>
+
+<h2>Unofficial Add-ons</h2>
+
+<p>None have been added yet.</p>
+
+
+  </div>
+</div>
+</body>
+</html>
