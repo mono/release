@@ -13,11 +13,11 @@
       <p>Moonlight should work on any modern 32bit and 64bit Linux distributions under Firefox 2.0, 3.0, and 3.5.</p>
 
       <p>We make sure that the plug-in available from this site works
-      on the following platforms: SUSE Linux Enterprise Desktop 10 and
-      11, openSUSE 11.x, Ubuntu 9.10, and Fedora 12.  </p> 
+      on the following platforms: SUSE Linux Enterprise Desktop 11,
+      openSUSE 11.x, Ubuntu 9.10, and Fedora 12.  </p> 
 
-      <p>Older distributions will run Moonlight, but require that you
-      build Moonlight from source code</p>
+      <p>Older distributions will run Moonlight, but may require that you
+      build Moonlight from source code.</p>
 
     </div>
 
