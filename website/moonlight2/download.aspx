@@ -12,12 +12,13 @@ string filepath = string.Empty;
 string filesize = string.Empty;
 string fileupdate = string.Empty;
 string userfriendly = string.Empty;
-string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
+string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight2";
+//string htdocs_path = "/cvs/moonlight2";
 
 void Page_Init(object sender, EventArgs e)
 {
         //dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/latest/";
-        dir = "downloads/2.0";
+        dir = "downloads/latest";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -213,7 +214,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
 <div id="dllink">
 <ul class="machine"> 
 <li>
-     <a href="/archive/moonlight-plugins/latest/<%=xpi%>" title="<%=xpi%>">
+     <a href="downloads/latest/<%=xpi%>" title="<%=xpi%>">
       <img src="images/down.png" alt="Download"/>
       <strong>Linux/<%=userfriendly%></strong>
       <span class="filesize"><%=filesize%></span>
