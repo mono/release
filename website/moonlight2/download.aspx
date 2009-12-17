@@ -16,8 +16,8 @@ string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
 
 void Page_Init(object sender, EventArgs e)
 {
-        dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/latest/";
-        dir = "downloads/latest";
+        //dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/latest/";
+        dir = "downloads/2.0";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
