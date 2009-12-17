@@ -10,11 +10,11 @@
   <div class="twocolumn">
     <h2>Samples</h2>
 
-    <p><a href="http://www.innoveware.com/quakelight.html">QuakeLight</a>: A Silverlight port of Quake</p>
-    <p><a href="http://dobbschallenge2.com/">Dr. Dobbs Challenge Deuce</a>: A silly 2D platformer</p>
-    <p><a href="http://mosaicwonder.com/gallery/DeepZoom.aspx?idx=4">Mosaic Wonder</a>: Create mosaics from your own photos</p>
-    <p><a href="http://nerdplusart.com/">Nerd+Art</a>: A cool intro page for a personal website</p>
-    <p><a href="http://www.aquosgames.com/spectrum/spectrumfull.html">A cool graphics demo</p>
+    <p><a href="http://www.innoveware.com/quakelight.html">QuakeLight</a></p>
+    <p><a href="http://dobbschallenge2.com/">Dr. Dobbs Challenge Deuce</a></p>
+    <p><a href="http://mosaicwonder.com/gallery/DeepZoom.aspx?idx=4">Mosaic Wonder</a></p>
+    <p><a href="http://nerdplusart.com/">Nerd+Art</a></p>
+    <p><a href="http://www.aquosgames.com/spectrum/spectrumfull.html">Spectrum Particles 3D Engine Demo</a></p>
 
   </div>
   
