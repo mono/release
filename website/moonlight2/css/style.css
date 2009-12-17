@@ -332,6 +332,7 @@ ul.intro-list {
    div.pageheading > div {
        width: 864px;
        margin: 0 auto;
+       padding: 0 30px; 
    }
    
    .pageheading #clouds {
