@@ -27,7 +27,8 @@
   <% } %>
     <div>
 <% if (!is_home) { %>
-      <a href='<%=ResolveUrl ("~/")%>' class="first"><span>Home</span></a>
+      <a href='<%=ResolveUrl ("~/")%>' class="first"><img alt="Home" title="return home" 
+      src="images/minilogo.png" width="117" height="32" /></a>
 <% } %>
       <a href="faq.aspx"><span>FAQ</span></a>
       <a href="chat.aspx"><span>Chat</span></a>
@@ -38,6 +39,7 @@
   
   <% if (!is_home) {%>
     <div class="pageheading">
+    <div id="stars"></div><div id="clouds"></div>
       <div>
   <% } %> 
       <asp:contentplaceholder id="page_heading" runat="server"></asp:contentplaceholder>

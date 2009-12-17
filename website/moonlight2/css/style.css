@@ -6,7 +6,7 @@ body {
     font-family: "Droid Sans", Verdana, sans-serif;
     font-size: 13px;
     color: white;
-    background: #32303c url(../images/texture.png) repeat 0 0;
+    background: #2c2e40 url(../images/texture.png) repeat 0 0;
     padding: 0; margin: 0;
     line-height: 160%;
 }
@@ -55,6 +55,9 @@ h1, h2, h3, h4, h5 {
     margin-top: 3em; 
     font-family: RaveIn, Myriad, sans-serif; 
 }
+   h1 {
+      color: #fff;
+   }
 
 h1:first-child, 
 h2:first-child,
@@ -76,32 +79,32 @@ h4:first-child {
     left: 0; 
 }
 
-.navigation span { 
-    color: #eeeeff; 
-    font-family: RaveIn, Myriad, sans-serif; 
-    font-size: 14pt; 
-    font-weight: bold; 
-    opacity: 0.8;
-}
+   .navigation span { 
+       color: #eeeeff; 
+       font-family: RaveIn, Myriad, sans-serif; 
+       font-size: 14pt; 
+       font-weight: bold; 
+       opacity: 0.8;
+   }
 
-.navigation span:hover { 
-    opacity: 1; 
-} 
+   .navigation span:hover { 
+       opacity: 1; 
+   } 
 
-.navigation > div { 
-    overflow: hidden; 
-}
+   .navigation > div { 
+       overflow: hidden; 
+   }
 
-.navigation > div a { 
-    float: right; 
-    margin-right: 12px; 
-    text-decoration: none; 
-    outline: none; 
-}
+   .navigation > div a { 
+       float: right; 
+       margin-right: 12px; 
+       text-decoration: none; 
+       outline: none; 
+   }
 
-.navigation > div a.first { 
-    float: left; 
-}
+   .navigation > div a.first { 
+       float: left; 
+   }
 
 /*
  * Layout/Columns
@@ -114,6 +117,9 @@ h4:first-child {
     padding: 0 30px; 
     margin: auto; 
 }
+    #main_container {
+       min-height: 500px;
+    }
 
 .columns               { overflow: hidden; }
 .twocolumn             { width: 43%; float: left; }
@@ -133,100 +139,100 @@ h4:first-child {
     background: #000 url(../images/splash-bg1.jpg) no-repeat center bottom;
 }
 
-#splash .widthcontainer { 
-    position: relative; 
-    min-width: 878px; 
-}
-
-#overlay {
-   position: absolute;
-}
-
-#logo { 
-    display: block;
-    text-indent: -300em; 
-    width: 312px; 
-    height: 340px; 
-    background: url('../images/logo.png') no-repeat top left;
-    margin: 0;
-}
-
-#clouds { 
-    position: absolute; 
-    background: url(../images/clouds.png) no-repeat 0 0;
-    width: 979px; 
-    height: 250px; 
-    top: 50px; 
-    left: -155px;
-}
-
-#stars { 
-    position: absolute; 
-    background: url(../images/stars.png) repeat-x 0 0;
-    width: 100%; 
-    height: 250px; 
-    top: 0; left: 0; 
-}
-
-#infocolumn { 
-    margin: 160px 0 0 75px; 
-}
-
-h3.tagline, h4.tagline { 
-    color: #ddd; 
-    text-align: left; 
-    font-weight: bold; 
-    width: 300px; 
-    margin: 0 0 0 60px;
-}
-   h4.tagline {
-      color: #3b3f4d;
+   #splash .widthcontainer { 
+       position: relative; 
+       min-width: 878px; 
    }
-    
-#install-buttons { 
-    position: relative; 
-    margin-top: 20px;
-    width: 330px;
-}
 
-#install-buttons > h2 { 
-    text-align: center; 
-}
+   #overlay {
+      position: absolute;
+   }
 
-#install-button {
-    width: 240px; 
-    height: 80px; 
-    cursor: pointer; 
-    margin: 0 auto; 
-    position: relative;
-    background: url(../images/install-button.png) no-repeat center top; 
-}
+   #logo { 
+       display: block;
+       text-indent: -300em; 
+       width: 312px; 
+       height: 340px; 
+       background: url('../images/logo.png') no-repeat top left;
+       margin: 0;
+   }
 
-#install-button:hover { 
-    background-position: center center; 
-}
+   #clouds { 
+       position: absolute; 
+       background: url(../images/clouds.png) no-repeat 0 0;
+       width: 979px; 
+       height: 250px; 
+       top: 50px; 
+       left: -155px;
+   }
 
-#install-button:active {
-    background-position: center bottom; 
-}
+   #stars { 
+       position: absolute; 
+       background: url(../images/stars.png) repeat-x 0 0;
+       width: 100%; 
+       height: 250px; 
+       top: 0; left: 0; 
+   }
 
-#install-button .distro { 
-    width: 22px; 
-    height: 22px; 
-    position: absolute; 
-    top: 23px; 
-    left: 56px;
-}
+   #infocolumn { 
+       margin: 160px 0 0 75px; 
+   }
 
-.button-opensuse  { background: url(../images/distro-logos/22x22/opensuse.png) no-repeat center center; }
-.button-osx       { background: url(../images/distro-logos/22x22/osx.png) no-repeat center center; }
-.button-ubuntu    { background: url(../images/distro-logos/22x22/ubuntu.png) no-repeat center center; }
-.button-mandriva  { background: url(../images/distro-logos/22x22/mandriva.png) no-repeat center center; }
-.button-generic   { background: url(../images/distro-logos/22x22/generic.png) no-repeat center center; }
-.button-foresight { background: url(../images/distro-logos/22x22/foresight.png) no-repeat center center; }
-.button-fedora    { background: url(../images/distro-logos/22x22/fedora.png) no-repeat center center; }
-.button-debian    { background: url(../images/distro-logos/22x22/debian.png) no-repeat center center; }
-.button-firefox   { background: url(../images/distro-logos/22x22/firefox.png) no-repeat center center; }
+   h3.tagline, h4.tagline { 
+       color: #ddd; 
+       text-align: left; 
+       font-weight: bold; 
+       width: 300px; 
+       margin: 0 0 0 60px;
+   }
+      h4.tagline {
+         color: #3b3f4d;
+      }
+       
+   #install-buttons { 
+       position: relative; 
+       margin-top: 20px;
+       width: 330px;
+   }
+
+   #install-buttons > h2 { 
+       text-align: center; 
+   }
+
+   #install-button {
+       width: 240px; 
+       height: 80px; 
+       cursor: pointer; 
+       margin: 0 auto; 
+       position: relative;
+       background: url(../images/install-button.png) no-repeat center top; 
+   }
+
+   #install-button:hover { 
+       background-position: center center; 
+   }
+
+   #install-button:active {
+       background-position: center bottom; 
+   }
+
+   #install-button .distro { 
+       width: 22px; 
+       height: 22px; 
+       position: absolute; 
+       top: 23px; 
+       left: 56px;
+   }
+
+   .button-opensuse  { background: url(../images/distro-logos/22x22/opensuse.png) no-repeat center center; }
+   .button-osx       { background: url(../images/distro-logos/22x22/osx.png) no-repeat center center; }
+   .button-ubuntu    { background: url(../images/distro-logos/22x22/ubuntu.png) no-repeat center center; }
+   .button-mandriva  { background: url(../images/distro-logos/22x22/mandriva.png) no-repeat center center; }
+   .button-generic   { background: url(../images/distro-logos/22x22/generic.png) no-repeat center center; }
+   .button-foresight { background: url(../images/distro-logos/22x22/foresight.png) no-repeat center center; }
+   .button-fedora    { background: url(../images/distro-logos/22x22/fedora.png) no-repeat center center; }
+   .button-debian    { background: url(../images/distro-logos/22x22/debian.png) no-repeat center center; }
+   .button-firefox   { background: url(../images/distro-logos/22x22/firefox.png) no-repeat center center; }
 
 #install-host { 
     background-color: red; 
@@ -268,31 +274,31 @@ ul.intro-list {
     background: url(../images/scr-bg.png) repeat-x 0 0;
 }
 
-.screenshots > div { 
-    width: 864px; 
-    padding: 30px 0; 
-    margin: 0 auto;
-    background: url(../images/stripe.png) no-repeat center top; 
-}
+   .screenshots > div { 
+       width: 864px; 
+       padding: 30px 0; 
+       margin: 0 auto;
+       background: url(../images/stripe.png) no-repeat center top; 
+   }
 
-.screenshots > div > div { 
-    float: left; 
-    padding: 15px; 
-    -moz-border-radius: 8px; 
-    border-radius: 8px; 
-    -webkit-border-radius: 8px;
-    background-color: rgba(0, 0, 0, .2);
-    margin-right: 8px;
-}
+   .screenshots > div > div { 
+       float: left; 
+       padding: 15px; 
+       -moz-border-radius: 8px; 
+       border-radius: 8px; 
+       -webkit-border-radius: 8px;
+       background-color: rgba(0, 0, 0, .2);
+       margin-right: 8px;
+   }
 
-.screenshots > div > div:hover {
-    background-color: rgba(100%, 100%, 100%, .2);
-}
+   .screenshots > div > div:hover {
+       background-color: rgba(100%, 100%, 100%, .2);
+   }
 
-.screenshots a { 
-    display: block; 
-    border: 1px solid #fff; 
-}
+   .screenshots a { 
+       display: block; 
+       border: 1px solid #fff; 
+   }
 
 /*
  * Misc Elements
@@ -316,14 +322,22 @@ ul.intro-list {
 
 .pageheading { 
     position: relative;
-    padding: 90px 0 30px 0;
+    padding: 90px 0 0;
     margin: 0 0 2em 0;
+    background: #000 url(../images/splash-bg1.jpg) no-repeat center bottom;
+    overflow: hidden;
+    border-bottom: 6px solid black;
 }
 
-div.pageheading > div {
-    width: 864px;
-    margin: 0 auto;
-}
+   div.pageheading > div {
+       width: 864px;
+       margin: 0 auto;
+   }
+   
+   .pageheading #clouds {
+       top: -32px;
+       left: 180px;
+   }
 
 /*
  * Footer
