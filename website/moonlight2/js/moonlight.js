@@ -65,7 +65,16 @@ $(document).ready (function () {
     });
     
     $("a").colorHover (500, "#f57900", "#ffffff");
-    $(".screenshots a").fancybox ();
+    $(".screenshots a").fancybox ({
+        'padding': 0,
+        'frameWidth': 640,
+        'frameHeight': 548,
+        'overlayShow': true,
+        'overlayOpacity': 0.8,
+        'zoomSpeedIn': 0,
+        'zoomSpeedOut': 0,
+        'hideOnContentClick': false,
+    });
     $(".navigation-animation").css ("top", "-40px").animate ({top: "12px"}, 2000);
 });
 

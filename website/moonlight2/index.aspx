@@ -50,13 +50,13 @@
 <div class="screenshots clear">
   <div>
     <h2>Screenshots</h2>
-    <div><a title="Installing Moonlight is a matter of clicking a button." 
+    <div><a title="Installing Moonlight is a matter of clicking a button." rel="scr"
       href="images/screenshot-install.png"><img alt="*" src="images/thumbnail-install.png" /></a></div>
-    <div><a title="Windows Media Codecs get installed automatically and this only happens once." 
+    <div><a title="Windows Media Codecs get installed automatically and this only happens once."  rel="scr"
       href="images/screenshot-codecs.png"><img alt="*" src="images/thumbnail-codecs.png" /></a></div>
-    <div><a title="QuakeLight running in Moonlight."
+    <div><a title="QuakeLight running in Moonlight." rel="scr"
       href="images/screenshot-quakelight.png"><img alt="*" src="images/thumbnail-quakelight.png" /></a></div>    
-    <div><a title="Smooth Streaming in Moonlight."
+    <div><a title="Smooth Streaming in Moonlight." rel="scr"
       href="images/screenshot-streaming.png"><img alt="*" src="images/thumbnail-streaming.png" /></a></div>
   </div>
 </div>
