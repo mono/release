@@ -37,6 +37,8 @@
       <p><a href="http://mosaicwonder.com/gallery/DeepZoom.aspx?idx=4">Mosaic Wonder</a> Uses DeepZoom</p>
       <p><a href="http://nerdplusart.com/">Nerd+Art</a></p>
       <p><a href="http://www.innoveware.com/quakelight.html">QuakeLight</a> - Slow download</p> 
+      <p><a href="http://www.iis.net/media/experiencesmoothstreaming">Experience Smooth Streaming</a></p>
+      <p><a href="http://www.smoothhd.com">SmoothHD</a> also shows off Smooth Streaming</p>
   
     </div>
   
