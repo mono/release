@@ -35,7 +35,8 @@
       <h2>Where can I discuss Moonlight?</h2>
 
       <p>You can join our mailing list: <a
-      href="http://lists.ximian.com/mailman/listinfo/moonlight-list">moonlight-list@lists.ximian.com</a>.
+      href="http://lists.ximian.com/mailman/listinfo/moonlight-list">moonlight-list@lists.ximian.com</a> or 
+	<a href="http://lists.ximian.com/pipermail/moonlight-list/">browse the archives</a>.
       </p>
       
       <p>If you prefer chat rooms, you can usually find the developers
