@@ -346,8 +346,6 @@ div.pageheading > div {
 
 .logos a { 
     display: block; 
-    width: 48px; 
-    height: 48px; 
     float: left; 
     margin-right: 4px; 
     background-position: 0 bottom; 
@@ -358,15 +356,30 @@ div.pageheading > div {
     background-position: 0 top; 
 }
 
-.poweredby { 
-    color:#aaa; 
-    font-weight: bold; 
-    letter-spacing: 1px; 
-    margin-bottom: 1em;
-}
+   .poweredby { 
+       color:#aaa; 
+       font-weight: bold; 
+       letter-spacing: 1px; 
+   }
+   .poweredby+div {
+      font-size: 90%;
+   }
 
-#mono-logo      { background-image: url(../images/mono-logo.png); background-repeat: no-repeat; outline: none; }
-#moonlight-logo { background-image: url(../images/moonlight-logo.png); background-repeat: no-repeat; outline: none; }
+   #mono-logo      { 
+      width: 130px; 
+      height: 40px; 
+      background-image: url(../images/mono-logo.png); 
+      background-repeat: no-repeat; 
+      outline: none;
+   }
+
+   #moonlight-logo { 
+      background-image: url(../images/moonlight-logo.png); 
+      background-repeat: no-repeat; 
+      outline: none; 
+      width: 48px; 
+      height: 48px; 
+   }
 
 /*
  * Downloads Page
