@@ -32,6 +32,7 @@
 11:24 <ajorg> ah, good idea
 11:24 <rusty> in moon, ./autogen.sh --without-testing --without-performance && make && make user-plugin
 11:26 <rusty> I used --without-testing et. al. just to expedite the build
+ >> Oh, by the way, we use: --without-testing --without-performance --without-examples --disable-desktop-support --disable-debug --disable-sanity --disable-sdk
 11:26 <ajorg> sure
 11:26 <rusty> once the xpi is built, then you need to get it signed.
 11:26 <rusty> I wrote a python script to submit to the signing lab
