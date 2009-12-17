@@ -12,13 +12,9 @@
 
       <div id="install-buttons">
         <div id="moonlight-banner">
-        Moonshine requires the <a href="http://go-mono.com/moonlight">Moonlight plugin</a>. 
-        Before installing Moonshine, please <a href="http://go-mono.com/moonlight/">install Moonlight</a>.
         </div>
 
         <div id="install-host">
-          <p>Moonshine requires Firefox 3.0 or newer and JavaScript to be enabled in your browser. If you are
-          seeing this message, it is likely that Moonshine will not run properly.</p>
         </div>
       </div><!--install-buttons-->
       
@@ -30,15 +26,21 @@
     <div class="twocolumn" id="easymultimedia">
       <h2>Rich Internet Applications</h2>
       <p>
-         Moonlight is an open source implementation of <a href="http://silverlight.net">Microsoft Silverlight</a> for Unix systems.
+
+         Moonlight is an open source implementation of <a
+         href="http://silverlight.net">Microsoft Silverlight</a> for
+         Unix systems.  With Moonlight you can access videos,
+         applications and content created for Silverlight on Linux and
+        BSD systems.
+
       </p>
 
       <h2 id="youcan">With Moonlight you can:</h2>
 
       <ul class="intro-list">
-        <li><p>View Silverlight content on Linux</p></li>
-        <li><p></p></li>
-        <li><p></p></li>
+        <li><p>View Silverlight content on Linux and BSD</p></li>
+        <li><p>Watch videos delivered with Smoothstreaming</p></li>
+        <li><p>Run Silverlight applications on Linux</p></li>
       </ul>
     </div>
   </div><!--widthcontainer-->
@@ -62,28 +64,43 @@
 <asp:Content ContentPlaceHolderID="main_container" Runat="server">
   <div class="columns">
     <div class="twocolumn">
-      <h2>Why?</h2>
+      <h2>What is Moonlight?</h2>
 
       <p>
-         A1
+
+	Moonlight was built by Novell in collaboration with Microsoft
+	which provided Novell with test suites, specifications, open
+	source code and Media Codecs to create an entirely open
+	sourced Silverlight-compatible implementation for Unix
+	systems.
+
       </p>
+
+      <p>
+
+	Access to licensed Media Codecs (MP3, WMV, VC-1) is provided
+	by Microsoft to Moonlight 1.0 and 2.0 users.  The first time
+	that you access a web site that requires these codecs,
+	Moonlight will prompt you to download the codecs from
+	Microsoft and install those on your system. 
+
+      </p>
+
     </div>
     
     <div class="twocolumn">
-      <h2>How?</h2>
+      <h2>Developing Moonlight/Silverlight Applications</h2>
 
       <p>
       <img class="icon" alt="" src="images/plugin.png" />
-      How1
+
+      You can develop Silverlight/Moonlight applications using both
+      the tools available on Windows or in Linux and MacOS you can use
+      the <a href="http://monodevelop.com">MonoDevelop</a> Integrated
+      Development Environment.
+
       </p>
 
-      <p>
-      How2
-      </p>
-
-      <p>
-        How3
-      </p>
     </div><!--twocolumn-->
   </div><!--columns-->
 

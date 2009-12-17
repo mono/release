@@ -18,14 +18,6 @@
     <script type="text/javascript" src="/js/moonshine.js"></script>
     <script type="text/javascript" src="/js/cufon-yui.js"></script>
     <script type="text/javascript" src="/js/RaveIn_500-RaveIn_700.font.js"></script>
-    <script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script>
-    <script type="text/javascript">
-        /*try {
-            var pageTracker = _gat._getTracker ("UA-2679312-3");
-            pageTracker._trackPageview ();
-        } catch (err) {
-        }*/
-    </script>
   </head>
   <body>
   <% if (is_home) {%>
@@ -68,8 +60,16 @@
       <div>&copy; 2009 Novell, Inc. Site design <a href="http://abock.org">Aaron Bockover</a> and <a href="http://jimmac.musichall.cz">Jakub Steiner</a>.</div></div>
   </div>
 
-  </body>
-</html>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
 
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-76510-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
   </body>
 </html>
