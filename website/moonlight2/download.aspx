@@ -193,7 +193,7 @@ ul.machine li a img {
 <p>Please see the <a href="#instructions">installation instructions</a> below.</p>
 
 <p>
-Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">supported operating systems and architectures</a>
+Check the list of <a href="faq.aspx">supported operating systems and architectures</a>
 </p>
 
 <form runat="server">
