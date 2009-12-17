@@ -16,7 +16,7 @@ string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
 
 void Page_Init(object sender, EventArgs e)
 {
-        //dir = "/var/www/mono-website/go-mono/archive/moonlight-plugins/2.0/";
+	// change this line to say "downloads/2.0" when we are ready
         dir = "downloads/2.0";
 
         if (IsPrivate) {
