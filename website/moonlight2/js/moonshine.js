@@ -56,7 +56,7 @@ $(document).ready (function () {
     });
     
     $("#install-button").append ("<div class=\"button-" + platform_id + " distro\"></div>").click (function () {
-        window.location = "/download.php";
+        window.location = "/download.aspx";
     }).mousedown (function () {
         $("#install-button .distro").css ("top", "25px");
     }).mouseup (function () {
