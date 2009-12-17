@@ -6,42 +6,44 @@
 
 <asp:Content ContentPlaceHolderID="splash" Runat="server">
 <div id="splash">
+  <div id="stars"></div>
   <div class="widthcontainer">
-    <div class="twocolumn splashimage">
-      <h3 class="tagline">Silverlight for Linux: a free plug-in, bringing a new level of interactivity wherever the Web works.</h3>
+    <div id="clouds"></div>
+    <div class="columns" id="overlay">  
+      <div class="twocolumn">
+        <h1 id="logo">Moonlight</h1>        
+        <h3 class="tagline">Silverlight for Linux: a free plug-in.</h3>
+        <h4 class="tagline">Bringing a new level of interactivity wherever the Web works.</h4>
 
-      <div id="install-buttons">
-        <div id="moonlight-banner">
-        </div>
+        <div id="install-buttons">
+          <div id="moonlight-banner">
+          </div>
 
-        <div id="install-host">
-        </div>
-      </div><!--install-buttons-->
-      
-    </div><!--splashimage-->
-    
-    <div id="lightcone"></div>
-    <h1 id="logo">Moonlight</h1>
+          <div id="install-host">
+          </div>
+        </div><!--install-buttons-->
+      </div>  
 
-    <div class="twocolumn" id="easymultimedia">
-      <h2>Rich Internet Applications</h2>
-      <p>
+      <div id="infocolumn" class="twocolumn">
+        <h2>Rich Internet Applications</h2>
+        <p>
 
-         Moonlight is an open source implementation of <a
-         href="http://silverlight.net">Microsoft Silverlight</a> for
-         Unix systems.  With Moonlight you can access videos,
-         applications and content created for Silverlight on Linux.
+           Moonlight is an open source implementation of <a
+           href="http://silverlight.net">Microsoft Silverlight</a> for
+           Unix systems.  With Moonlight you can access videos,
+           applications and content created for Silverlight on Linux.
 
-      </p>
+        </p>
 
-      <h2 id="youcan">With Moonlight you can:</h2>
+        <h2 id="youcan">With Moonlight you can:</h2>
 
-      <ul class="intro-list">
-        <li><p>View Silverlight content on Linux</p></li>
-        <li><p>Watch videos delivered with Smoothstreaming</p></li>
-        <li><p>Run Silverlight applications on Linux</p></li>
-      </ul>
-    </div>
+        <ul class="intro-list">
+          <li><p>View Silverlight content on Linux</p></li>
+          <li><p>Watch videos delivered with Smoothstreaming</p></li>
+          <li><p>Run Silverlight applications on Linux</p></li>
+        </ul>
+      </div><!--infocolumn-->
+    </div><!--columns-->
   </div><!--widthcontainer-->
 </div><!--splash-->
 

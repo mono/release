@@ -51,7 +51,7 @@ code {
 }
 
 h1, h2, h3, h4, h5 { 
-    color: #729fcf; 
+    color: #888a85; 
     margin-top: 3em; 
     font-family: RaveIn, Myriad, sans-serif; 
 }
@@ -73,7 +73,6 @@ h4:first-child {
     width: 100%; 
     top: 12px; 
     left: 0; 
-    z-index: 4; 
 }
 
 .navigation span { 
@@ -123,9 +122,9 @@ h4:first-child {
  * Home/Splash/Intro
  */
 
-.splashimage { }
 
 #splash { 
+    position: relative;
     min-height: 550px;
     padding-bottom: 100px;
     overflow: hidden; 
@@ -137,39 +136,55 @@ h4:first-child {
     min-width: 878px; 
 }
 
+#overlay {
+   position: absolute;
+}
+
 #logo { 
     position: absolute; 
     text-indent: -300em; 
-    width: 430px; 
-    height: 240px; 
-    top: 100px; 
-    left: 45px; 
+    width: 312px; 
+    height: 340px; 
+    top: 20px; 
+    left: 65px; 
     margin-top: 0; 
-    z-index: 2;
     background: url('../images/logo.png') no-repeat top left;
 }
 
-#lightcone { 
+#clouds { 
     position: absolute; 
-    z-index: 1; 
-    background: url(../images/cone.png) no-repeat 0 0;
-    width: 880px; 
-    height: 172px; 
-    top: 205px; 
-    left: -30px; 
+    background: url(../images/clouds.png) no-repeat 0 0;
+    width: 979px; 
+    height: 250px; 
+    top: 50px; 
+    left: -155px;
 }
 
-#easymultimedia { 
+#stars { 
+    position: absolute; 
+    background: url(../images/stars.png) repeat-x 0 0;
+    width: 100%; 
+    height: 250px; 
+    top: 0; left: 0; 
+}
+
+#infocolumn { 
     margin: 160px 0 0 75px; 
 }
 
 h3.tagline { 
-    margin-top: 335px; 
     color: #ddd; 
-    text-align: center; 
+    text-align: left; 
     font-weight: bold; 
     width: 300px; 
     padding: 20px 0 20px 55px;
+    margin: 335px 0 0;
+}
+h4.tagline {
+   text-align: left;
+    width: 300px; 
+    padding: 20px 0 20px 55px;
+    margin: 0;
 }
     
 #install-buttons { 
@@ -252,16 +267,15 @@ ul.intro-list {
 .screenshots {
     position: relative; 
     height: 335px; 
-    z-index: 3; 
-    margin-top: -40px; 
-    padding: 50px 30px 0; 
-    background: url(../images/filmstrip.png) repeat-x 0 0;
+    padding: 0 30px; 
+    background: url(../images/scr-bg.png) repeat-x 0 0;
 }
 
 .screenshots > div { 
     width: 864px; 
-    padding: 0 30px; 
-    margin: 0 auto; 
+    padding: 30px 0; 
+    margin: 0 auto;
+    background: url(../images/stripe.png) no-repeat center top; 
 }
 
 .screenshots > div > div { 
@@ -305,10 +319,8 @@ ul.intro-list {
 
 .pageheading { 
     position: relative;
-    z-index: 3; 
     padding: 90px 0 30px 0;
     margin: 0 0 2em 0;
-    background: url(../images/filmstrip.png) repeat-x 0 bottom; 
 }
 
 div.pageheading > div {
