@@ -5,7 +5,7 @@ var zypper_help_1 = "<p>To add the repository, execute the following commands (a
 var zypper_help_2 = "</em> mono-stable<br/>zypper refresh --repo mono-stable<br/>zypper dist-upgrade --repo mono-stable</code></blockquote></pre>"
 var discontinued = "<div style=\"color: darkred; font-weight: bold\">Binaries for this platform have been discontinued.  Builds may be available from <a href=\"http://www.mono-project.com/Other_Downloads\">unsupported downloads</a> or we may be looking for a volunteer to maintain packages.</div>";
 var i586_x86_64 = "i586, x86_64"
-var i586_x86_64_ppc_ppc64_ia64 = "i586, x86_64, ppc, ppc64, and ia64"
+var i586_x86_64_ppc64_ia64 = "i586, x86_64, ppc64, and ia64"
 var enterprise = "<p>The <a href=\"http://www.novell.com/products/mono/\">SUSE Linux Enterprise Mono Extension</a> is available for purchase from <a href=\"http://www.novell.com/\">Novell</a>.</p>"
 
 // URLS
@@ -24,21 +24,21 @@ var ops112_repo_url = "http://ftp.novell.com/pub/mono/download-stable/openSUSE_1
 
 var sle11_repo_url = "http://ftp.novell.com/pub/mono/download-stable/SLE_11"
 
-var win_exe_url = "http://ftp.novell.com/pub/mono/archive/2.6/windows-installer/4/mono-2.6-gtksharp-2.12.9-win32-4.exe"
+var win_exe_url = "http://ftp.novell.com/pub/mono/archive/2.6/windows-installer/1/mono-2.6.1-gtksharp-2.12.9-win32-1.exe"
 var win_gtk_url = "http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi"
 
-var osx_x86_url = "http://ftp.novell.com/pub/mono/archive/2.6/macos-10-x86/4/MonoFramework-2.6_4.macos10.novell.x86.dmg"
-var osx_x86_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6/macos-10-x86/4/MonoFramework-CSDK-2.6_4.macos10.novell.x86.dmg"
-var osx_ppc_url = "http://ftp.novell.com/pub/mono/archive/2.6/macos-10-ppc/4/MonoFramework-2.6_4.macos10.novell.ppc.dmg"
-var osx_ppc_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6/macos-10-ppc/4/MonoFramework-CSDK-2.6_4.macos10.novell.ppc.dmg"
-var osx_univ_url = "http://ftp.novell.com/pub/mono/archive/2.6/macos-10-universal/4/MonoFramework-2.6_4.macos10.novell.universal.dmg"
-var osx_univ_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6/macos-10-universal/4/MonoFramework-CSDK-2.6_4.macos10.novell.universal.dmg"
+var osx_x86_url = "http://ftp.novell.com/pub/mono/archive/2.6.1/macos-10-x86/1/MonoFramework-2.6.1_1.macos10.novell.x86.dmg"
+var osx_x86_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.1/macos-10-x86/1/MonoFramework-CSDK-2.6.1_1.macos10.novell.x86.dmg"
+var osx_ppc_url = "http://ftp.novell.com/pub/mono/archive/2.6.1/macos-10-ppc/1/MonoFramework-2.6.1_1.macos10.novell.ppc.dmg"
+var osx_ppc_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.1/macos-10-ppc/1/MonoFramework-CSDK-2.6.1_1.macos10.novell.ppc.dmg"
+var osx_univ_url = "http://ftp.novell.com/pub/mono/archive/2.6.1/macos-10-universal/1/MonoFramework-2.6.1_1.macos10.novell.universal.dmg"
+var osx_univ_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.1/macos-10-universal/1/MonoFramework-CSDK-2.6.1_1.macos10.novell.universal.dmg"
 var osx_cocoa_source_url = "http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.5.tar.bz2"
 
 
 var data =
 {
-	"release" : "2.6",
+	"release" : "2.6.1",
 	"platforms" : [
 	{
 		"name" : "Virtual PC",
@@ -143,7 +143,7 @@ var data =
 				"downloadText" : enterprise
 			},
 			{
-				"name" : i586_x86_64_ppc_ppc64_ia64,
+				"name" : i586_x86_64_ppc64_ia64,
 				"desc" : "",
 				"downloadText" : zypper + "<ul><li><a href=\"" + sle11_repo_url + "\">" + sle11_repo_url + "</a></ul>" + zypper_help_1 + sle11_repo_url + zypper_help_2
 			}
