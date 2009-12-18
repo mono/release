@@ -24,7 +24,7 @@ var ops112_repo_url = "http://ftp.novell.com/pub/mono/download-stable/openSUSE_1
 
 var sle11_repo_url = "http://ftp.novell.com/pub/mono/download-stable/SLE_11"
 
-var win_exe_url = "http://ftp.novell.com/pub/mono/archive/2.6/windows-installer/1/mono-2.6.1-gtksharp-2.12.9-win32-1.exe"
+var win_exe_url = "http://ftp.novell.com/pub/mono/archive/2.6.1/windows-installer/1/mono-2.6.1-gtksharp-2.12.9-win32-1.exe"
 var win_gtk_url = "http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi"
 
 var osx_x86_url = "http://ftp.novell.com/pub/mono/archive/2.6.1/macos-10-x86/1/MonoFramework-2.6.1_1.macos10.novell.x86.dmg"
