@@ -9,14 +9,14 @@ var i586_x86_64_ppc64_ia64 = "i586, x86_64, ppc64, and ia64"
 var enterprise = "<p>The <a href=\"http://www.novell.com/products/mono/\">SUSE Linux Enterprise Mono Extension</a> is available for purchase from <a href=\"http://www.novell.com/\">Novell</a>.</p>"
 
 // URLS
-var vpc_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.4.2.3/Mono-2.4.2.3-vpc.zip.torrent"
-var vpc_zip_url = "http://ftp.novell.com/pub/mono/appliance/2.4.2.3/Mono-2.4.2.3-vpc.zip"
+var vpc_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.1/Mono-2.6.1-vpc.zip.torrent"
+var vpc_zip_url = "http://ftp.novell.com/pub/mono/appliance/2.6.1/Mono-2.6.1-vpc.zip"
 
-var vmx_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.4.2.3/Mono-2.4.2.3-vmx.zip.torrent"
-var vmx_zip_url = "http://ftp.novell.com/pub/mono/appliance/2.4.2.3/Mono-2.4.2.3-vmx.zip"
+var vmx_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.1/Mono-2.6.1-vmx.zip.torrent"
+var vmx_zip_url = "http://ftp.novell.com/pub/mono/appliance/2.6.1/Mono-2.6.1-vmx.zip"
 
-var livecd_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.4.2.3/Mono-2.4.2.3.iso.torrent"
-var livecd_iso_url = "http://ftp.novell.com/pub/mono/appliance/2.4.2.3/Mono-2.4.2.3.iso"
+var livecd_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.1/Mono-2.6.1.iso.torrent"
+var livecd_iso_url = "http://ftp.novell.com/pub/mono/appliance/2.6.1/Mono-2.6.1.iso"
 
 var ops110_repo_url = "http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.0"
 var ops111_repo_url = "http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.1"
@@ -46,12 +46,12 @@ var data =
 		"dlicon" : "virtualpc_icon.jpg",
 		"version" : [
 		{
-			"name" : "openSUSE 11.1",
+			"name" : "openSUSE 11.2",
 			"arch" : [
 			{
-				"name" : "Mono 2.4.2.3",
+				"name" : "Mono 2.6.1",
 				"desc" : "",
-				"downloadText" : "Download an openSUSE 11.1 Virtual PC image which includes Mono 2.4.2.3<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + vpc_torrent_url + "\">via Torrent</a> <li><a href=\"" + vpc_zip_url + "\">via http</a> </ul><a href=\"http://mono-project.com/VirtualPC_Image\">Instructions for using the Virtual PC image</a>."
+				"downloadText" : "Download an openSUSE 11.2 Virtual PC image which includes Mono 2.6.1<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + vpc_torrent_url + "\">via Torrent</a> <li><a href=\"" + vpc_zip_url + "\">via http</a> </ul><a href=\"http://mono-project.com/VirtualPC_Image\">Instructions for using the Virtual PC image</a>."
 			}
 			]
 		}
@@ -63,12 +63,12 @@ var data =
 		"dlicon" : "vmware_icon.jpg",
 		"version" : [
 		{
-			"name" : "openSUSE 11.1",
+			"name" : "openSUSE 11.2",
 			"arch" : [
 			{
-				"name" : "Mono 2.4.2.3",
+				"name" : "Mono 2.6.1",
 				"desc" : "",
-				"downloadText" : "Download an openSUSE 11.1 VMWare image which includes Mono 2.4.2.3<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + vmx_torrent_url + "\">via Torrent</a> <li><a href=\"" + vmx_zip_url + "\">via http</a> </ul><a href=\"http://mono-project.com/VMware_Image\">Instructions for using the VMware image</a>."
+				"downloadText" : "Download an openSUSE 11.2 VMWare image which includes Mono 2.6.1<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + vmx_torrent_url + "\">via Torrent</a> <li><a href=\"" + vmx_zip_url + "\">via http</a> </ul><a href=\"http://mono-project.com/VMware_Image\">Instructions for using the VMware image</a>."
 			}
 			]
 		}
@@ -80,12 +80,12 @@ var data =
 		"dlicon" : "livecd.jpg",
 		"version" : [
 		{
-			"name" : "openSUSE 11.1 Live CD",
+			"name" : "openSUSE 11.2 Live CD",
 			"arch" : [
 			{
-				"name" : "Mono 2.4.2.3",
+				"name" : "Mono 2.6.1",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 11.1 Live CD which includes Mono 2.4.2.3<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + livecd_torrent_url + "\">via Torrent</a> <li><a href=\"" + livecd_iso_url + "\">via http</a> </ul>"
+				"downloadText" : "Download the openSUSE 11.2 Live CD which includes Mono 2.6.1<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + livecd_torrent_url + "\">via Torrent</a> <li><a href=\"" + livecd_iso_url + "\">via http</a> </ul>"
 			}
 			]
 		}
