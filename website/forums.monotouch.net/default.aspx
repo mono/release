@@ -53,19 +53,6 @@
 					  </li>
 
     </ul>
-    <div id="search">
-      <form method="get" action="http://www.google.com/search?">
-        <div>
-
-          <input type="hidden" value="www.mono-project.com" id="sitesearch" name="sitesearch" />
-          <input type="hidden" value="www.mono-project.com" id="domains" name="domains" />
-          <input class="text" name="q" id="q" type="text" value="Search Mono" 
-            onblur="if (this.value == '') this.value='Search Mono';" 
-            onfocus="if (this.value == 'Search Mono') this.value='';" />
-          <input class="button" type="submit" value="Go" />
-        </div>
-      </form>
-    </div>
   </div>
     <%--<div id="content-header"><h2><!--BEGIN PAGE TITLE-->Forums<!--END PAGE TITLE--></h2></div>--%>
 
