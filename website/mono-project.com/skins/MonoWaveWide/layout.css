@@ -1,0 +1,251 @@
+body {
+    margin:0;
+    background-color: #fff;
+}
+/*
+body.short {
+    background-image: url("images/header-bar-short.png") !important;
+}*/
+
+img {
+    border: none;
+}
+
+#page {
+    text-align: left;
+    margin: 10px auto 0;
+    padding: 0;
+    width: 940px;
+}
+
+#header {
+    padding: 0;
+    background: #fff url(images/header-shade.png) repeat-y top right;
+    border-bottom: 2px solid #bbb;
+}
+
+	#header .wrapper {
+		width: 940px;
+		margin: 0 auto;
+    position: relative;
+    height: 90px;
+	}
+
+	#header h1 {
+	    display: none;
+	}
+
+	#header a img {
+	    border: none;
+	    margin-top:12px;
+	    margin-left:8px;
+	}
+
+	#search {
+	    position: absolute;
+	    right: 0;
+	    top: 8px;
+	    margin-top: 1em;
+	}
+
+		#search input[type="text"],
+		#search input.text {
+		    font-size: .85em;
+		    padding: 4px 4px 4px 23px;
+		    -moz-border-radius: 4px;
+		    -khtml-border-radius: 4px;    
+		    -webkit-border-radius: 4px;
+		    border-radius: 4px;
+		    vertical-align: top;
+		    background: transparent url(images/mp-search-background.png) repeat-x scroll 0 -17px;
+		    border: 1px solid #aaa;
+		    width: 150px;
+		    color: #888;
+		}
+			#search input[type="text"]:focus {
+				color: black;
+			}
+
+		#search input.button {
+		    display:none;
+		}
+
+
+	#mono-logo {
+	  width: 167px;
+	  height: 41px;
+	  background: url("images/mp-mono-logo.png") no-repeat 0 0;
+	  position: absolute;
+	  top: 22px; left: 10px;
+	}
+
+#by-sa {
+  width: 88px;
+  height: 31px;
+  padding: 0 0 4px 0;
+  background: url("images/88x31_002.png") no-repeat scroll;
+}
+
+#by-nc-nd {
+  width: 88px;
+  height: 31px;
+  padding: 0 0 4px 0;
+  background: url("images/88x31.png") no-repeat scroll;
+}
+
+
+#footer {
+    background: #d7d7d7 url("images/mp-bg-footer.png") no-repeat center top;
+    clear:both;
+    font-size:11px;
+    overflow:hidden;
+    width:auto;
+    margin: 0;
+    padding: 30px 0;
+    min-height: 300px;
+}
+
+	#footer-hr {
+		width: 100%;
+		height: 20px;
+		margin: 0; padding: 0;
+		background: url(images/footer-hr.png) repeat-x bottom center;
+	}
+
+	#footer td {
+		  vertical-align: middle;
+	}
+
+	#footer td.text {
+		  padding: 0 15px;
+	}
+
+	#footer td.text p {
+		  margin: 0;
+		  padding: 0;
+	}
+
+		#footer-menu {
+			width: 920px;
+			margin: 10px auto 0;
+			overflow: hidden;
+			padding: 0 10px;
+		}
+
+		#footer-menu ul {
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+			left: auto;
+			margin-left: 15px;
+		}
+
+		#footer-menu li {
+			margin: 0 8px 0 0;
+			padding: 0;
+			list-style-type: none;
+			float: left;
+			display: inline;
+			font-weight: bold;
+			background: none;
+			position: relative;
+			width: 140px;
+		  color: #666;
+		}
+
+		#footer-menu li ul {
+			margin: 0.5em 0 2em 0;
+		}
+
+		#footer-menu ul li {
+			float: none;
+			font-size: 85%;
+			padding: 0 0 0.4em 0;
+			margin: 0;
+			font-weight: normal;
+			display: block;
+			width: auto;
+		}
+
+		#footer-menu li a {
+			font-weight: bold;
+		  color: #666;
+		}
+
+		#footer-menu li ul a {
+			font-weight: normal;
+		}
+
+		#footer-menu li a:hover {
+		    color: #666;
+		    text-decoration: underline;
+		}
+
+
+#novell-logo {
+  width: 51px;
+  height: 12px;
+  background: url("images/mp-novell-logo.png") no-repeat scroll 0 0;
+  margin-bottom: 25px;
+}
+
+#wrapper {/*
+    background: url("images/faux-column.png") repeat-y;
+    border-width: 1px 1px 0 0;
+    border-style: solid;
+    border-color: #112338;*/
+}
+
+#wrapper.wide {
+}
+
+#content-header {
+    height: 55px;
+    display: table;
+    vertical-align: middle;
+    position: absolute;
+}
+
+#content-header.short {
+    height: 15px !important;
+}
+
+#titlebar {
+    height:55px; 
+    background-image:url(images/mp-bg-blue-bar.png);width:100%;
+}
+
+#content {
+    padding: 2em 15px;
+    display: block;
+}
+
+#sidebar {
+    display: block;
+    padding: 0;
+    margin: 0;
+    float: right;
+    width: 200px;
+    padding: 8px;
+}
+
+#sidebar .box ul {
+    padding-bottom: 1em;
+}
+
+
+
+
+div.download-button {
+  background-image: url('http://www.go-mono.com/monovs/Images/mp-download-blue.png');
+  background-repeat: no-repeat;
+  width: 171px;
+  height: 47px;
+}
+
+div.download-button a {
+  color:transparent;
+  font-size:30px;
+  line-height:45px;
+}
+
