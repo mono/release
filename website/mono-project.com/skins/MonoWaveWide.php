@@ -144,11 +144,6 @@ class MonoWaveWideTemplate extends QuickTemplate {
           echo "<!--END USER UTILITY BAR-->\n";
       } 
     ?>
-<<<<<<< HEAD
-
-  <div id="header">
-		<div class="wrapper">
-=======
 
   <div id="header">
 		<div class="wrapper">
@@ -195,7 +190,6 @@ class MonoWaveWideTemplate extends QuickTemplate {
 <div id="page">
   <?php if (!$home_page) { ?>
   <div id="content-header"><h2><!--BEGIN PAGE TITLE--><?php if (!$template_page) { $this->html('title'); } ?><!--END PAGE TITLE--></h2></div>
-  <div style="height:50px; background-image:url(<?php echo $this->url_prefix?><?php $this->text('stylepath' )?>/<?php $this->text('stylename' )?>/images/mp-bg-blue-bar.png);width:100%;"></div>
   <?php } ?>
   <div id="wrapper"<?php echo $wide?>>
 <?php if ($home_page) { ?>
@@ -249,13 +243,14 @@ class MonoWaveWideTemplate extends QuickTemplate {
       </div>
     </div>
 <?php } ?>
+
     <div id="sidebar">
     <div id="toc-parent"></div>
     <!-- BEGIN SIDE CONTENT -->
     
     
     <!-- END SIDE CONTENT -->
-    </div>
+    </div><!--#sidebar-->
     <div id="content"<?php echo $wide?>>
     <!-- BEGIN MAIN CONTENT -->
 
