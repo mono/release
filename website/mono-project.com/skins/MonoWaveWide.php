@@ -1,6 +1,6 @@
 <?php
 /**
- * MonoWave
+ * MonoWaveWide
  *
  * @todo document
  * @package MediaWiki
@@ -24,17 +24,17 @@ if($this->data['viewcount' ] && $userLoggedIn) { ?><div id="f-viewcount"><?php  
  * @package MediaWiki
  * @subpackage Skins
  */
-class SkinMonoWave extends SkinTemplate {
+class SkinMonoWaveWide extends SkinTemplate {
 	/** Using monoproject. */
 	function initPage( &$out ) {
 		SkinTemplate::initPage( $out );
-		$this->skinname  = 'MonoWave';
-		$this->stylename = 'MonoWave';
-		$this->template  = 'MonoWaveTemplate';
+		$this->skinname  = 'MonoWaveWide';
+		$this->stylename = 'MonoWaveWide';
+		$this->template  = 'MonoWaveWideTemplate';
 	}
 }
 	
-class MonoWaveTemplate extends QuickTemplate {
+class MonoWaveWideTemplate extends QuickTemplate {
 
     var $url_prefix = "http://mono-project.com";
 
