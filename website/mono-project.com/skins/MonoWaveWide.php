@@ -347,3 +347,9 @@ class MonoWaveWideTemplate extends QuickTemplate {
 
 </body>
 </html>
+
+<?php
+	}
+}
+
+?>
