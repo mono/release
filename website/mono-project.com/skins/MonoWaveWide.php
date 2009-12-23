@@ -144,6 +144,11 @@ class MonoWaveWideTemplate extends QuickTemplate {
           echo "<!--END USER UTILITY BAR-->\n";
       } 
     ?>
+<<<<<<< HEAD
+
+  <div id="header">
+		<div class="wrapper">
+=======
 
   <div id="header">
 		<div class="wrapper">
@@ -344,10 +349,3 @@ class MonoWaveWideTemplate extends QuickTemplate {
 
 </body>
 </html>
-
-
-<?php
-	}
-}
-
-?>

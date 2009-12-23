@@ -1,0 +1,311 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>
+    
+      How to use in sIFR Documentation and FAQ
+    
+  </title>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="./style.css" media="screen" type="text/css"/>
+</head>
+<body>
+<div id="Container">
+  <div id="Content">
+  
+  <h1 id="pageName">
+    
+      <small>sIFR Documentation and FAQ</small><br />
+      How to use
+    
+  </h1>
+
+  
+<p>Here you'll find how to use sIFR on your website. If you are wondering about interacting with the JavaScript, please see <a class="existingWikiWord" href="../show/Javascript+Implementation">Javascript Implementation</a>.</p>
+
+<h2>Designing your site</h2>
+
+<p>Design your site as normal, and make sure your headlines are styled
+with CSS. Users who do not have the Flash player or have Javascript
+disabled will see these CSS-styled headlines, so it is important to get
+things looking the way you want before beginning to add sIFR.</p>
+
+<h3>What you should use sIFR for</h3>
+
+<p>sIFR is intended for headlines. While it is possible to use sIFR to
+replace other elements, such as paragraphs or list items, this is not
+recommended. Please also be careful with replacing links: browsers
+treat links in Flash movies differently than normal HTML links, so you
+may hurt usability if you use sIFR to replace links.</p>
+
+<h2>Exporting the Flash file</h2>
+
+<p>The second step is to export the Flash (.swf) file that will generate your new typeface.</p>
+
+<p>To begin with, ensure that both the <code>customize_me.as</code> (see <a class="existingWikiWord" href="../show/Protecting+Commercial+Fonts">Protecting Commercial Fonts</a>) and <code>dont_customize_me.as</code> files are in the same folder as the <code>sifr.fla</code>
+
+file. You do not need to upload any of these three files to your
+server, but they must all be in the same folder when you export your <code>.swf</code> file.</p>
+
+<p>To export your new typeface, open the <code>sifr.fla</code> file
+which is included with the download, and double-click the invisible
+textbox in the middle of the stage. If the "Properties" palette is not
+already visible, open it by selecting "Window &gt; Properties", and
+select which font you'd like to use from the drop down menu.
+If you select a TrueType font, you can also create bold and italic
+styles for your font by clicking on the "I" or "B" buttons.</p>
+
+<p>To export the new file, choose "File &gt; Export" and save as <code>fontname.swf</code></p>
+
+<p>The standard <code>sifr.fla</code> file contains most of the English
+characters you will generally need. If you need to embed additional
+characters or languages, click the "Character" button and select more
+characters from there and re-export.</p>
+
+<h2>Applying CSS print styles</h2>
+
+<p>Copy and paste (or even better: learn and apply) the CSS rules found in the <code>sIFR-print.css</code>
+file to your own print style sheet. These ensure that your original
+headline styling will be printed, rather than the Flash replacements.</p>
+
+<h2>Applying CSS screen styles</h2>
+
+<p>Apply the styles in the <code>sIFR-screen.css</code> file into your
+own screen style sheet. These are the styles which will be applied by
+the Javascript if Flash is found to be present on the user's browser.</p>
+
+<h2>Including the magic Javascript</h2>
+
+<p>You must call the <code>sifr.js</code> script on any page that will be replacing headlines. The following line in the <code>&lt;head&gt;</code> should do the trick:</p>
+
+<pre><code>&lt;script src="sifr.js" type="text/javascript"&gt;&lt;/script&gt;
+</code></pre>
+
+<h2>Configuring sIFR</h2>
+
+<p>There are some settings you can change which alter the behaviour of
+sIFR. These settings are all booleans, which means they can be <code>true</code> or <code>false</code>. Here they are:</p>
+
+<ul>
+<li><code>sIFR.bAutoInit</code>: Initialize sIFR on load.</li>
+<li><code>sIFR.bFixFragIdBug</code>: Determines whether the <a class="existingWikiWord" href="../show/Fragment+Identifier+Bug">Fragment Identifier Bug</a> will be fixed or not.</li>
+<li><p><code>sIFR.bIsDisabled</code>: Determines whether sIFR will work or not.</p></li>
+<li><p><code>sIFR.bHideBrowserText</code>: Determines whether sIFR will hide the text you want to replace or not.</p>
+
+<p>By default sIFR will hide the text you want to replace while the
+page is loading. If you want to, you can change this behavior so sIFR
+will hide the text when the elements are actually replaced. To do this
+open <code>sifr.js</code> and add <code>sIFR.bHideBrowserText = false;</code> before <code>sIFR.setup();</code>.</p>
+
+<p>(Actually sIFR sets the sIFR-hasFlash class, and CSS rules you
+specify, to control the hiding of the text. What this option really
+does is wait before
+setting the class.) </p></li>
+</ul>
+
+<p>An example of how you configure these settings:</p>
+
+<pre><code>if(typeof sIFR == "function"){
+    sIFR.bHideBrowserText = false;
+    sIFR.bFixFragIdBug = false; // not recommended!
+    sIFR.setup();
+};
+</code></pre>
+
+<p>If you want to enable/disable sIFR for a specific browser, you can
+use the UA object as described below and you'll have to edit the
+following code in <code>sifr.js</code>:</p>
+
+<pre><code>if(typeof sIFR == "function" &amp;&amp; !sIFR.UA.bIsIEMac){
+    sIFR.setup();
+};
+</code></pre>
+
+<p>In this example sIFR is disabled for IE/Mac. Remove the <code>&amp;&amp; !sIFR.UA.bIsIEMac</code> part to enable it again. You can also add other browsers here.</p>
+
+<h2>Adding replace statements</h2>
+
+<p>This step involves adding the (JavaScript) replace statements into
+the mix. These are the heart and soul of the script and are used to
+ensure the correct headlines are replaced, and in the way you want.
+They can be added in the <code>sifr.js</code> file, or at the end of your (X)HTML file.</p>
+
+<p>If you put the replace statements in the JavaScript file, they'll be executed on onload <strong>or</strong> when you call <code>sIFR()</code>. If you put the replace statements in the body, they'll be executed immediately.</p>
+
+<p>Effectively, this means that you could put the replacement code in the JavaScript and call <code>sIFR()</code> in the body. It won't make any difference.</p>
+
+<p>The reason there are two methods to replace elements in sIFR is that
+the onload event is only fired when the page has fully loaded -
+including all images and other external files. This can take much
+longer than the actual rendering of the page, so replacing inside the
+body will make the replacement begin earlier, and thus sIFR looks to
+render faster.</p>
+
+<p>To save bandwidth you can put the replace statements in the JavaScript file, and then call <code>sIFR()</code> in the body. The exact code you have to use in the body in this case is:</p>
+
+<pre><code>&lt;script type="text/javascript"&gt;
+
+if(typeof sIFR == "function"){
+    sIFR();
+};
+&lt;/script&gt;
+</code></pre>
+
+<p>You can find more info in <a href="http://novemberborn.net/sifr/where-to-replace">Where to Replace</a>.</p>
+
+<h2>Replacement Syntax</h2>
+
+<p>To replace the fonts you call <code>sIFR.replaceElement</code>. This method takes the following arguments, in this specific order:</p>
+
+<ul>
+<li><code>sSelector</code>: This is the CSS selector you use to select the elements you want to replace. The supported CSS selectors are <code>#</code>, <code>&gt;</code> and <code>.</code>. Whitespace is used to select descendants. Please use whitespace only for this, so instead of <code>#foo &gt; p</code> use <code>#foo&gt;p</code>. You can use multiple selectors by seperating them with a comma ("<code>,</code>").</li>
+
+<li><code>sFlashSrc</code>: location of the Flash movie. You might need to use a relative (<code>./movie.swf</code>) or absolute (<code>/movie.swf</code>) here.</li>
+<li><code>sColor</code>: Text color. All colors are in hex notation (<code>#000000</code>).</li>
+<li><code>sLinkColor</code>: Text color for links.</li>
+<li><code>sHoverColor</code>: Color for hovered links.</li>
+
+<li><code>sBgColor</code>: Background color.</li>
+<li><p><code>nPaddingTop</code>, <code>nPaddingRight</code>, <code>nPaddingBottom</code>, <code>nPaddingLeft</code>:
+if you use padding in the elements you want to replace, you have to set
+the amount of padding here (in pixels, but without the <code>px</code> part).</p></li>
+<li><p><code>sFlashVars</code>: extra variables you want to pass on to the Flash. These variables are seperated by <code>&amp;</code>. You can use:</p>
+
+<ul>
+<li><code>textalign=center</code>: Center text horizontally</li>
+<li><code>offsetLeft=5</code>: Pushes text 5px to the right. Of course you can use any number here.</li>
+<li><code>offsetTop=5</code>: Pushes text 5px down.</li>
+<li><code>underline=true</code>: Adds underline to links on hover</li>
+</ul></li>
+<li><p><code>sCase</code>: Use <code>upper</code> to transform the text to upper-case, use <code>lower</code>
+
+to transform the text to lower-case. Depending on the browser this
+might give problems when you want to change the casing of special
+characters.</p></li>
+<li><p><code>sWmode</code>: Set this argument to <code>transparent</code> if you want to use a transparent background. If you want to stack elements above the Flash movies, you need to set it to <code>opaque</code>. Mozilla browsers can have some difficulty rendering Flash movies with the <code>wmode</code> set. Therefore setting this is <strong>not recommended</strong>.</p>
+
+<p>Transparency is not supported in Opera 7.x, Safari &lt; 1.2 &amp;
+
+Flash 6, in Linux, and in very old (pre 1.0) Mozilla versions. In these
+browsers sIFR will fall back to the background color instead of using
+transparency.</p></li>
+</ul>
+
+<p>You are advised to use <a href="http://novemberborn.net/sifr/named-arguments">named arguments</a> instead of placing the arguments in the correct order. Here's an example:</p>
+
+<pre><code>if(typeof sIFR == "function"){
+    sIFR.replaceElement("h1", named({sFlashSrc: "./vandenkeere.swf", sColor: "#000", sCase: "upper"}));
+};
+</code></pre>
+
+<p>Read the <a href="http://novemberborn.net/sifr/named-arguments">named arguments article</a> for more information.</p>
+
+<h2>Tuning your fonts</h2>
+
+<p>The final step in implementing sIFR is to "tune" your fonts. As explained in "<a class="existingWikiWord" href="../show/What+is+sIFR">What is sIFR</a>"
+sIFR works by measuring the size of the element you are replacing, and
+then generating the Flash text at a size that matches it. This is a
+fairly straightforward process, however, when, for example, your sIFR
+font has a different character width or letter spacing than the font
+used on the website, the scaling can cause the sIFR text to look really
+awkward. This can be solved by changing the size of the elements just
+before they are replaced.</p>
+
+<p>When sIFR detects the right Flash version it sets a CSS class on the <code>html</code> element. Now, let's say you are only replacing <code>h1</code>'s. If you want to create a specific style for those elements to change their sizes, you have use the following CSS rule:</p>
+
+<pre><code>.sIFR-hasFlash h1 {
+    visibility: hidden;
+    /* other CSS properties go here */
+}
+</code></pre>
+
+<p>This is what we will call your <em>decoy style</em>. It will never be seen by users (because of <code>visibility: hidden</code>) but it will fine-tune the text a split-second before it is replaced.</p>
+
+<p>In order to fine-tune the text you need to play around with the <code>font-size</code>, <code>letter-spacing</code>, <code>line-height</code> and <code>height</code> CSS properties. </p>
+
+<p>You can use the <code>debug</code> method to prepare your page for fine-tuning. In the <code>sifr.js</code> file comment out the <code>sIFR.setup()</code> line and add <code>sIFR.debug()</code>:</p>
+
+<pre><code>if(typeof sIFR == "function"){
+    sIFR.setup();
+};
+</code></pre>
+
+<p>Becomes:</p>
+
+<pre><code>if(typeof sIFR == "function"){
+    // sIFR.setup();
+    sIFR.debug();
+};
+</code></pre>
+
+<p>With sIFR in debugging mode <em>and</em> the decoy styles working
+you can start tweaking the sizes. If you can't match it exactly, make
+the browser text a bit narrower than the sIFR text. You will want to
+also comment out the <code>visibility: hidden;</code> property.</p>
+
+<p>If you want to test your changes you can run the following code in the address bar:</p>
+
+<pre><code>javascript:sIFR.debug.replaceNow();
+</code></pre>
+
+<p>Here's a handy bookmarklet you can use: <a href="javascript:sIFR.debug.replaceNow();">sIFR: Replace now</a>. Add it to your favorites and run it to see the elements being replaced.</p>
+
+<p>When you're done restore the <code>sifr.js</code> file so <code>sIFR.setup()</code> is called again and enable <code>visibility: hidden;</code> again.</p>
+
+<h3>Helpful tips to keep in mind while tuning your fonts:</h3>
+
+<ul>
+<li><p>If you're using relative sizing for your font values in your
+regular CSS, the first thing you'll want to do is place pixel sizes
+into the font-size values of your decoy styles. This will give you a
+more level playing field. (Keep in mind that increasing and decreasing
+the pixel size in the decoy style can also change the size of your sIFR
+replacement text.) From there, you can begin tweaking the
+letter-spacing and then the line-height. This order seems to work well.</p></li>
+<li><p>If you've used more detailed descendant selectors in your style sheet, you'll want to change your decoy styles from this: <code>.sIFR-hasFlash h2</code> to something like <code>.sIFR-hasFlash #content h2</code> (or whatever mirrors your regular CSS selector). If you have a heading with a class on it, you can write a selector like: <code>.sIFR-hasFlash #content h2.separate</code>
+without a problem. Don't be afraid to get specific where you need to.
+If you don't do this, the values in your regular styles will override
+the <code>.sIFR-hasFlash</code> decoy styles for the same declarations
+since they will have greater specificity. For example, if you have
+line-height in both selectors, and you don't write a decoy style with
+higher specificity, the value of your regular descendant h* selector
+will override the decoy style and you'll be stumped as to <em>why</em> the decoy isn't obeying.</p></li>
+
+<li><p>If you have long headlines, watch where the line break happens
+in the sIFR and try to match it in the decoy if possible. This is
+usually done with
+letter-spacing.</p></li>
+<li><p>If you notice slight <em>page shifting or jumping</em> as you
+switch from decoy to sIFR, this can mean that one style is taking up
+more space vertically. Try adjusting your line-height to make them
+match more closely. </p></li>
+</ul>
+
+<p><!-- Please leave this comment in. There appears to be a bug in Instiki which causes the markup not to be parsed without it. --></p>
+
+<ul>
+<li><p>In the bottom of your page, in the actual JavaScript replacement
+statements, the order they're entered can matter. In a page with an <code>h4</code>
+styled as a callout (with borders, padding and margins) it was found
+that Internet Explorer Mac was shifting the next heading, an <code>h3</code>, to the right about 30px. Changing the order of the replacements so that the <code>h4</code> was loaded before the <code>h3</code> fixed that little problem.</p></li>
+
+<li><p>If, in your main CSS styles, you've written any values for <code>font-size</code>, <code>line-height</code> or <code>letter-spacing</code>, you will definitely want to overwrite these values in your decoy styles using pure pixels. <strong>This will give you cross-browser consistency.</strong>
+As always, browsers have different default values. These differences
+(especially in line height) can be one of the causes of a heading that
+is large in one browser and small in another. Placing a background
+color behind the heading, temporarily, should allow you to measure the
+amount of space taken in each browser and correct it.</p></li>
+</ul>
+
+<h2>Dealing with FlashBlock</h2>
+
+<p>The <a href="http://flashblock.mozdev.org/">FlashBlock extension</a> for Mozilla browsers will show the alternate text instead of the Flash headlines. This means you'll have to style <code>span.sIFR-alternate</code> to override the decoy styles. You can test this by installing FlashBlock, or by installing <a href="http://greasemonkey.mozdev.org/">Greasemonkey</a> and the <a href="http://novemberborn.net/sifr/greasemonkey/sifr-tools.user.js">sIFR Tools</a> script. Now, if you go to <code>Tools &gt; User Script Commands &gt; sIFR - Act like FlashBlock</code> you'll see the alternate text as FlashbBlock users see it.</p>
+
+<h2>Marvelling at your beautiful headlines</h2>
+
+<p>This is absolutely the easiest and most enjoyable step involved with sIFR. <a class="existingWikiWord" href="../show/Mark+Wubben">Mark Wubben</a> is known to view all new entries on <a href="http://ipod411.com/">iPod411.com</a> just because of their use of sIFR.</p>
+</div>
+  </div>
+</div>
+</body>
+</html>
