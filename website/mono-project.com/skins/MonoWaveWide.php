@@ -177,6 +177,8 @@ class MonoWaveWideTemplate extends QuickTemplate {
       </div><!--#search-->
     </div><!--.wrapper-->
   </div><!--#header-->
+
+<?php if ($home_page) { ?>  
   <div id="splash-bg">
     <img id="splash-img" src="/skins/MonoWaveWide/images/splash-img.jpg" alt="" />
     <div class="wrapper">
@@ -185,7 +187,7 @@ class MonoWaveWideTemplate extends QuickTemplate {
       <div id="platform-logos"></div>
     </div>
   </div>
-
+<?php } ?>
 
 <div id="page">
   <?php if (!$home_page) { ?>
