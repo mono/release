@@ -8,10 +8,8 @@ body {
 #content-header h2 a,
 #content-header h2 a:hover
  {
-    font: 22px "Myriad", "Calibri", "DejaVu Sans", "Bitstream Vera Sans", Verdana, sans-serif !important;
-    font-weight: bold !important;
+    font: 130% "Myriad", "Calibri", "DejaVu Sans", "Bitstream Vera Sans", Verdana, sans-serif !important;
     margin: 0 !important;
-    color: #eef !important;
     border: none !important;
     padding: 12px 0 0 10px !important;
     white-space: nowrap !important;
