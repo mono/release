@@ -178,7 +178,7 @@ class MonoWaveWideTemplate extends QuickTemplate {
     </div><!--.wrapper-->
   </div><!--#header-->
   <div id="splash-bg">
-    <img id="splash-img" src="Main_Page_files/images/splash-img.jpg" alt="" />
+    <img id="splash-img" src="/skins/MonoWaveWide/images/splash-img.jpg" alt="" />
     <div class="wrapper">
       <h1>Cross platform, open source .NET development framework</h1>
       <h2>Run your applications on all the platforms</h2>
