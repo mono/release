@@ -265,6 +265,7 @@ class MonoWaveWideTemplate extends QuickTemplate {
     
   </div><!--#wrapper-->
 </div><!--#page-->
+<div id="footer-hr"></div>
 <div id="footer">
                 <ul id="footer-menu">
                     <li><a href="http://www.novell.com/linux"><div id="novell-logo"></div></a>
