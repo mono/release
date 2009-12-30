@@ -1,3 +1,6 @@
+<%@ Page Language="C#" Src="core.cs" %>
+<%@ Import Namespace="System.Net.Mail" %>
+<%@ Register TagPrefix="recaptcha" Namespace="Recaptcha" Assembly="Recaptcha" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html dir="ltr" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
 
@@ -60,27 +63,87 @@
     <!-- END SIDE CONTENT -->
     </div>
     <div id="content" class="wide">
-		  <div style="background: transparent url('images/signup.png') no-repeat scroll 0 50%; clear: both; min-height: 160px; padding: 24px 0 24px 144px;">
-  		    <div style="padding-top: 12pt; text-align:left">
-  		       <div style="font-size: 150%; line-height: 1.5em;"/>Mono Contact</div>
-  		       <div style="margin: 1em 0;">
-	 		Thank you for sending us your comments.   
-			<p>We do read all of the comments, and reply to all of the comments sent.
-			<p>The following resources might be useful:
-<ul>
-			    <li>The Mono Project <a href="http://mono-project.com/Mailing_Lists">Mailing Lists.</a>
+<script runat="server">
+void btnSubmit_OnClick (object o, EventArgs a)
+{
+   if (!Page.IsValid)
+      return;
 
-		            <li><a href="http://mono-project.com/IRC">Chat</a> with members of the Mono community.
+   SmtpClient c = new SmtpClient ("localhost");
+   string from = email.Text;
+   string to   = ContactForm.EmailAddress;
+   string body = String.Format ("Sender: {0}\nIP: {1}\n\nMessage:\n\n{2}", email.Text, Request.UserHostAddress, msg.Text);
+   string subject = String.Format ("{0} from {1}", subjectctl.SelectedItem.Text, email.Text);
 
-		 	    <li>Blogs from Mono Contributors (<a href="http://www.go-mono.com/monologue">http://www.go-mono.com/monologue</a>).
+   MailMessage mail_message = new MailMessage (from, to, subject, body);
+   try {
+       mail_message.ReplyTo = new MailAddress (email.Text);
+   } catch {}
 
-			    <li><a href="http://go-mono.com/forums/">Forums</a> (<a href="http://go-mono.com/forums/">http://go-mono.com/forums</a>).
+   c.Send (mail_message);
+   Server.Transfer ("thankyou.aspx");
+}
+   
+</script>
 
-			    <li><a href="http://mono-project.com/Related_Mono_Sites">Other Mono-related sites.</a>
-  		       </div>
-  		    </div>
-		  </div>    
-		  
+<form runat="server">
+  <asp:RequiredFieldValidator ControlToValidate="email" ID="rqdEmail" runat="server"  Display="Dynamic" 
+    ErrorMessage="Please enter an email address"></asp:RequiredFieldValidator>
+  <asp:RegularExpressionValidator ControlToValidate="email" ID="regexEmail" runat="server" Display="Dynamic"
+    ErrorMessage="Please enter a valid email address" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
+  <div id="contact-form-container">
+ 
+  <table id="contact-form">
+    <tr>
+      <th>Email Address:</th>
+      <td><asp:TextBox name="email" id="email" runat="server" style="width: 300px"/></td>
+    </tr>
+    <tr>
+      <th>Subject:</th>
+      <td>
+        <asp:DropDownList ID="subjectctl" runat="server" style="width: 300px">
+          <asp:ListItem>General Comment</asp:ListItem>
+          <asp:ListItem>Embedded/Gaming Licensing</asp:ListItem>
+          <asp:ListItem>Moonlight</asp:ListItem>
+          <asp:ListItem>Mono Tools for Visual Studio</asp:ListItem>
+          <asp:ListItem>monoTouch</asp:ListItem>
+          <asp:ListItem>Problem Report</asp:ListItem>
+          <asp:ListItem>Criticism</asp:ListItem>
+          <asp:ListItem>Suggestion</asp:ListItem>
+          <asp:ListItem>Licensing</asp:ListItem>
+          <asp:ListItem>Consulting and Tech Support.</asp:ListItem>
+          <asp:ListItem>Security Report</asp:ListItem>
+          <asp:ListItem>Web Site Issues</asp:ListItem>
+        </asp:DropDownList>
+      </td>
+    </tr>
+    <tr class="message-box">
+      <th class="top-align">Message:</th>
+      <td><asp:TextBox name="msg" id="msg" TextMode="Multiline" runat="server"/></td>
+    </tr>
+    <tr>
+      <th class="top-align" style="padding-top: 15px">Are you<br/>human?</th>
+      <td style="padding-top: 15px">
+        <recaptcha:RecaptchaControl
+            ID="recaptcha"
+            runat="server"
+            Theme="clean"
+            PublicKey="6LevKgMAAAAAAFBU2BuqpQOkn2fUnJE_PLVTNj0u"
+            PrivateKey="6LevKgMAAAAAAI4NimISmjEd4FabHTNLwhTBu4gW" />
+	
+      </td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <td style="padding-top: 15px"> 
+        <asp:Button Text="Send Inquiry" runat="server" ID="btnSubmit" OnClick="btnSubmit_OnClick" />
+        <asp:Label id="report" runat="server"/>
+      </td>
+    </tr>
+  </table>
+  </div>
+</form>
+
     <!-- END MAIN CONTENT -->
     </div><!--#content-->
     
@@ -161,8 +224,6 @@
 </div><!--#page-->
 
 </body></html>
-
-
 
 
 
