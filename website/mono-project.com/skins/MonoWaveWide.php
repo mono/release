@@ -213,8 +213,8 @@ class MonoWaveWideTemplate extends QuickTemplate {
           <td></td>
           <td class="square"><div class="home-caption">Moonlight</div><div><img src="<?php echo $this->url_prefix?><?php $this->text('stylepath' )?>/<?php $this->text('stylename' )?>/images/mp-thumb-moonlight.png" style="float: right;padding-right:5px;padding-top:3px;"></div>
           <div class="home-content">An open source implementation of Microsoft Silverlight for Linux and other Unix/X11 based operating systems</div>
-          <a class="download" href="http://www.go-mono.com/moonlight/download.aspx">Download</a>
-          <a class="learn" href="http://www.go-mono.com/moonlight/">Learn More</a>
+          <a class="download" href="http://www.go-mono.com/moonlight/">Download</a>
+          <a class="learn" href="http://mono-project.com/Moonlight">Learn More</a>
           </td>
           </tr></table>
       </div>
