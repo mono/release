@@ -638,3 +638,26 @@ This CSS already works on FireFox.
 {
 	margin: 2px;
 }
+
+#footer-menu {
+  margin: 0 0 0 35px !important;
+}
+
+#footer-menu li {
+  width: 210px !important;
+  color: black !important;
+  font-family:bitstream vera sans,verdana,sans-serif !important;
+}
+
+#footer-menu li a {
+	color: #C85208;
+	text-decoration: underline !important;
+}
+
+#footer-menu li a:hover {
+	color: #E87208;
+}
+
+#footer-logo {
+  margin-left: 12px;
+}

@@ -77,75 +77,48 @@
     
     <div id="footer">
                     <ul id="footer-menu">
-                        <li><a href="http://www.novell.com/linux"><div id="novell-logo"></div></a>
-                            <ul>
-                                <li style="margin-top: 15px;"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">
-                                <div id="by-sa"></div></a></li>
+                        <li>About
+                <ul>
+                    <li><a title="Features" href="http://monotouch.net/Features">Features</a></li>
+                    <li><a title="FAQ" href="http://monotouch.net/FAQ">FAQ</a></li>
 
-                                <li><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/us/">
-                                <div id="by-nc-nd"></div></a></li>
-                                <li><a href="/Legal">Legal Notices</a></li>
-                                <li>          
-                           </li>
-                            </ul>
+                    <li><a class=" external" href="http://mono-project.com/About">About Mono</a></li>
+                    <li><a title="Contact" href="http://monotouch.net/Contact">Contact</a></li>
+                </ul>
+
                         </li>
-                        <li>Mono
-                            <ul>
-
-                                <li><a href="/About">About</a></li>
-                                <li><a href="/Roadmap">Roadmap</a></li>
-                                <li><a href="/Plans">Technologies</a></li>
-                                <li><a href="/Screenshots">Screenshots</a></li>
-                                <li><a href="/FAQ:_General">FAQ</a></li>
-                                <li><a href="/Contact">Contact</a></li>
-
-                            </ul>
-                        </li>
-                        <li>Download
+                        <li>Documentation
                           <ul>
-                              <li><a href="http://www.go-mono.com/mono-downloads/download.html">Latest Release</a></li>
-                              <li><a href="http://mono.ximian.com/daily/">Daily Snapshots</a></li>
-                              <li><a href="http://www.mono-project.com/OldReleases">Previous Releases</a></li>
-                              <li><a href="http://monodevelop.com/Download">MonoDevelop</a></li>
+                                                  <li><a title="Documentation" href="http://monotouch.net/Documentation">Documentation</a></li>
+                    <li><a title="Documentation/Installation" href="http://monotouch.net/Documentation/Installation">Installation&nbsp;Instructions</a></li>
+                    <li><a title="Documentation/API" href="http://monotouch.net/Documentation/API">API</a></li>
+                    <li><a title="Documentation/Samples" href="http://monotouch.net/Documentation/Samples">Samples</a></li>
+                    <li><a title="Tutorials" href="http://monotouch.net/Tutorials">Tutorials</a></li>
+                    <li><a class=" external" href="http://wiki.monotouch.net/HowTo">HowTo&nbsp;Wiki</a></li>
 
-                              <li><a href="http://www.mono-project.com/MoMA">Mono Migration Analyzer</a></li>
-                              <li><a href="http://www.go-mono.com/moonlight/">Moonlight</a></li>
-                              <li><a href="http://www.go-mono.com/monovs/download">Mono Tools for Visual Studio</a></li>
-                              <li><a href="http://monotouch.net/DownloadTrial">MonoTouch</a></li>
-                              <li><a href="http://www.novell.com/products/mono/eval.html">SUSE Linux Enterprise<br/>Edition Mono Extension</a></li>
-                          </ul>
+                </ul>
 
                       </li>
-                        <li>Documentation
+                        <li>Downloads
                             <ul>
-                                <li><a href="/Start">Getting Started</a></li>
-                                <li><a href="http://www.go-mono.com/docs/">API Reference</a></li>
-                                <li><a href="/Articles">Articles</a></li>
-                            </ul>
+                                <li><a title="DownloadTrial" href="http://monotouch.net/DownloadTrial">Download Trial</a></li>
+                    <li><a class=" external" href="http://mono-project.com/Downloads">Download Mono</a></li>
+
+                    <li><a class=" external" href="http://monodevelop.com/Download/Mac_MonoTouch">Download&nbsp;MonoDevelop</a></li>
+                </ul>
                         </li>
 
                         <li>Community
                             <ul>
-                                <li><a href="/Mailing_Lists">Mailing Lists</a></li>
-                                <li><a href="http://www.go-mono.com/forums">Forums</a></li>
-                                <li><a href="/IRC" class="external">Chat/IRC</a></li>
-                                <li><a href="http://www.go-mono.com/monologue">Blogs</a></li>
-                            </ul>
+                                <li><a title="Community" href="http://monotouch.net/Community">Community</a></li>
 
-                        </li>
-                        <li>Contribute
-                            <ul>
-                                <li><a href="/Contributing">Contributing Guide</a></li>
-                                <li><a href="/Bugs">Report Bugs</a></li>
-                                <li><a href="/SVN">SVN</a></li>
-                                <li><a href="http://mono.ximian.com/monobuild/">Build Status</a></li>
-
-                                <li><a href="http://go-mono.com/status/">Class Status</a></li>
-
-                            </ul>
+                    <li><a class=" external" href="http://wiki.monotouch.net/">Wiki</a></li>
+                    <li><a class=" external" href="http://lists.ximian.com/mailman/listinfo/monotouch">Mailing&nbsp;List</a></li>
+                    <li><a title="Chat" href="http://monotouch.net/Chat">Chat</a></li>
+                </ul>
                         </li>
                     </ul>
-                <div style="clear: both;"></div>
+                <div style="clear: both;"></div><div id="footer-logo"><a href="http://www.novell.com/linux"><div id="novell-logo"></div></a></div>
     </div>
     
   </div><!--#wrapper-->
