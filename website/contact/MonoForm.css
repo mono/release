@@ -1,6 +1,6 @@
 #contact-form-container {
   padding-left: 160px !important;
-  background: url('images/signup.png') no-repeat;
+  background: url('images/signup.png') no-repeat 10px 25px;
   color: #091f3a;
 }
 
