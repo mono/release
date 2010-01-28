@@ -23,8 +23,11 @@ releases = {
 	'2.0':  {'release':'2.0','moonrev':'','monorev':''},
 }
 
+releases = {
+    '2.99.0.1':  {'release':'2.99.0.1','moonrev':'','monorev':''},
+}
 
-latest = releases['2.0']
+latest = releases['2.99.0.1']
 
 new_version = latest['release']
 
@@ -33,5 +36,5 @@ old_versions.sort()
 old_versions.remove(latest['release'])
 
 
-old_1_0_versions = ['0.6','0.7','0.8','0.9','1.0','1.0.1']
+# old_1_0_versions = ['0.6','0.7','0.8','0.9','1.0','1.0.1']
 

@@ -18,7 +18,7 @@ import getopt
 
 # GLOBALS
 
-profile = '2.0'
+profile = '3.0'
 new_version = None
 old_versions = None # older versions that will upgrade to new_version
 archs = ['i586','x86_64']
