@@ -27,6 +27,7 @@
 <script type="text/javascript">
 
 var released_version = "@@VERSION@@";
+var silverlight_runtime_version = "3.0.40818.0";
 
 var plugin = navigator.plugins["Silverlight Plug-In"];
 if (plugin.filename.indexOf("libmoonloader") == 0) {
@@ -49,7 +50,7 @@ if (plugin.filename.indexOf("libmoonloader") == 0) {
 
     var moonlight_version = control.settings.version;
 
-    if (moonlight_version == released_version) {
+    if (moonlight_version == silverlight_runtime_version) {
       message.text = "Congratulations, you're running the current preview release of moonlight!";
     }
     else if ((moonlight_version == "2.0")) {
