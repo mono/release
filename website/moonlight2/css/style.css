@@ -457,3 +457,25 @@ a.oneclick.opensuse { background-image: url(../images/1click-install-button.png)
 a.oneclick.firefox { margin: 0; background-image: url(../images/install-plugin.png); }
 a.oneclick:hover { background-position: center center; }
 a.oneclick:active { background-position: center bottom; }
+
+/*
+ * Unstable page
+ */
+
+#preview-notice {
+	margin-left: auto;
+	padding: 5px;
+	margin-right: auto;
+	background-color: #B7CEEC;
+	color: #000000;
+/*	border: 2px solid #E6E600; */
+	border: 2px solid #4E8975;
+}
+
+#preview-notice a {
+	color:	#c40;
+}
+
+#preview-notice a:hover {
+	color:	#c20;
+}
