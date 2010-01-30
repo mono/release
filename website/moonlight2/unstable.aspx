@@ -123,7 +123,7 @@ bool IsPrivate {
 <asp:Content ContentPlaceHolderID="title" Runat="server">Moonlight - Preview Download</asp:Content>
 
 <asp:Content ContentPlaceHolderID="page_heading" Runat="server">
-<h1>Preview Download</h1>
+<h1>3.0 Preview 1 Download</h1>
 </asp:Content>
 
 <asp:Content ContentPlaceHolderID="main_container" Runat="server">
