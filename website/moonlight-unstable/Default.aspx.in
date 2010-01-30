@@ -12,15 +12,16 @@
 <div id="page">
 
 <script type="text/xaml" id="bannerxaml">
-    <Canvas xmlns="http://schemas.microsoft.com/client/2007"
-            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            x:Name="root" Width="500" Height="25">
-      <Rectangle x:Name="rect" Width="500" Height="25" Fill="#B7CEEC" RadiusX="5" RadiusY="5" />
-      <TextBlock x:Name="message" TextWrapping="NoWrap" />
-    </Canvas>
+    <Grid xmlns="http://schemas.microsoft.com/client/2007"
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+          x:Name="root">
+      <Border x:Name="rect" Background="#B7CEEC" BorderBrush="#2554C7" BorderThickness="2" CornerRadius="5">
+        <TextBlock TextAlignment="Center" x:Name="message" TextWrapping="NoWrap" />
+      </Border>
+    </Grid>
 </script>
 
-<div id="moonlight-banner" style="width: 100%; height: 0px;"> </div>
+<div id="moonlight-banner" style="width: 100%; height: 25px; margin-bottom: 10px;"> </div>
 
 <script type="text/javascript" src="Silverlight.js" /></script>
 <script type="text/javascript">
@@ -38,70 +39,32 @@ if (plugin.filename.indexOf("libmoonloader") == 0) {
     moonlight_banner.style.background="red";
 
     moonlight_banner.innerHTML = "error initializing plugin: " + args.errorMessage;
-    moonlight_banner.style.height = "25px";
-    moonlight_banner.style.marginBottom = "10px";
   }
 
-  var root;
   var message;
-  var rect;
-
-  function control_resize ()
-  {
-    var control_width = parseFloat (document.defaultView.getComputedStyle (moonlight_banner,null).getPropertyValue ("width"));
-    var control_height = parseFloat (document.defaultView.getComputedStyle (moonlight_banner,null).getPropertyValue ("height"));
-
-    //console.log ("control size is " + control_width + " x " + control_height);
-
-    root.width = rect.width = control_width;
-    root.height = rect.height = control_height;
-
-    message["Canvas.Left"] = control_width / 2 - message.actualWidth / 2; 
-    message["Canvas.Top"] = control_height / 2 - message.actualHeight / 2; 
-  }
 
   function onPluginLoad (control, userContext, rootElement)
   {
-    root = rootElement;
-    message = root.findName ("message");
-    rect = root.findName ("rect");
-
-    control.content.onResize = control_resize;
-
-    //console.log ("onPluginLoad");
-
-    moonlight_banner.style.height = "25px";
-    moonlight_banner.style.marginBottom = "10px";
+    message = rootElement.findName ("message");
 
     var moonlight_version = control.settings.version;
-    dump("current version = " + moonlight_version);
-    dump("released version = " + released_version);
-    //var x = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
-    //            .getService(Components.interfaces.nsIVersionComparator)
-    //            .compare(moonlight_version,released_version);
-
-	
-
-    //console.log ("control.settings.version = " + control.settings.version);    
 
     if (moonlight_version == released_version) {
-      message.text = "Congratulations, you're running the current beta release of moonlight!";
+      message.text = "Congratulations, you're running the current preview release of moonlight!";
     }
-    else if ((moonlight_version == "1.0.1")) {
-      message.text = "You're running the latest stable release of moonlight.";
+    else if ((moonlight_version == "2.0")) {
+      message.text = "You are running the latest stable release of moonlight.";
     }
     else if ((moonlight_version < released_version) || 
 		(moonlight_version == "1.0b1") ||
 		(moonlight_version == "1.0b2") || 
 		(moonlight_version == "1.0")) {
-      message.text = "You're running an older release of moonlight.  time to upgrade.";
+      message.text = "You are running an older release of moonlight.  time to upgrade.";
     }
     else {
-      message.text = "You're running an unstable build of moonlight.";
+      message.text = "You are running an unstable build of moonlight.";
     }
   }
-
-  //console.log ("creating moonlight instance");
 
   Silverlight.createObjectEx ({
 	source: "#bannerxaml",
@@ -122,7 +85,7 @@ if (plugin.filename.indexOf("libmoonloader") == 0) {
 </script>
 
 <div id="col1">
-<img src="images/moonlight_logo.png" alt="Moonlight Logo"/>
+<img src="http://go-mono.com/moonlight/images/logo.png" alt="Moonlight Logo"/>
 </div>
 
 <script runat="server">
@@ -243,7 +206,7 @@ function flash()
 
 <div id="col2">
 <h1>
-Moonlight 2.0 Beta @@BETA@@
+Moonlight 3.0 Preview @@PREVIEW@@
 </h1>
 
 <p><a href="http://www.mono-project.com/Moonlight">Moonlight</a> is an
@@ -258,13 +221,19 @@ Check the list of <a href="http://mono-project.com/MoonlightSupportedPlatforms">
 </p>
 
 <div id="preview-notice">
-<p><b>Beta Release Security Notice</b></p>
+<p><b>Preview Release Security Notice</b></p>
 
-<p>
+<p> This release should be considered alpha quality.  There are
+various new subsystems in Silverlight 3 (e.g. pixel shaders, local
+messaging, the client http stack) which expose new and different
+attack vectors, and the implementations of these subsystems have not
+yet been exercised or audited.
 
-This release is feature complete, but as a beta there are various known bugs (mostly minor) and most assuredly unknown ones as well. We still haven't completed the security audit of the source code (mono or moonlight), so you need to be aware that there may be issues.
-
-As such we recommend that you should only use this plugin on trusted sites (e.g. internal or well-known web sites) on non-production computers. This situation will gradually evolve over the beta releases. An up to date overview of Moonlight security features status can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight Security Status</a> wiki page.
+As such we recommend that you should only use this plugin on trusted
+sites (e.g. internal or well-known web sites) on non-production
+computers. This situation will gradually evolve over the beta
+releases. An up to date overview of Moonlight security features status
+can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight Security Status</a> wiki page.
 
 </p>
 </div>
@@ -314,14 +283,13 @@ As such we recommend that you should only use this plugin on trusted sites (e.g.
 <p>To continue the installation click <em>Allow.</em></p>
 
 <h1>Release Notes</h1>
-<p>Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Beta#Release_Notes">here</a>.</p>
+<p>Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Preview#Release_Notes">here</a>.</p>
 
 <h1>Bugs</h1>
 <p>If you come across any bugs using the preview, please tell us about it. See our <a href="http://mono-project.com/Bugs">Bugzilla page</a> about logging bugs.</p>
 
 <h1>Source</h1>
-<p>You can download a tarball of the source <a href="<%=src_tarball_location%>">here</a>, or you can check it out from svn.
-<pre> svn co <%=svn_location%> </pre></p>
+<p>You can download a tarball of the source <a href="<%=src_tarball_location%>">here</a>, or you can check it out from svn, using the instructions found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Preview#Source_code">here</a>.</p>
 
 </div> <!-- col2 -->
 </div> <!-- page -->

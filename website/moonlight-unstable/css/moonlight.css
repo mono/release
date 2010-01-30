@@ -42,12 +42,15 @@ p {
 }
 
 #col1 {
-	width: 10em;
-	float: left;
+        margin-left: -10em;
+        width: 10em;
+        float: left;
 }
 
 #col2 { 
-	margin-left: 10em;
+      /*        background-image: url('http://go-mono.com/moonlight/images/logo.png');
+		background-repeat:no-repeat;*/
+        margin-left: 10em;
 	min-width: 20em;
 }
 

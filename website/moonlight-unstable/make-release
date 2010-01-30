@@ -1,14 +1,14 @@
 #!/bin/bash
 
 if [ $# != 1 ]; then
-	echo "Usage: $0 <version>"
+	echo "Usage: $0 <moonlight-version>"
 	exit 1
 fi
 
-BETA=`echo $1 | awk -F '.' '{print $3}'`
-#BETA=$(($BETA+1))
+PREVIEW=`echo $1 | awk -F '.' '{print $4}'`
+#PREVIEW=$(($PREVIEW+1))
 
 for i in *.in; do
 	
-	sed -e s/@@VERSION@@/$1/ -e s/@@BETA@@/$BETA/ $i > `basename $i .in`
+	sed -e s/@@VERSION@@/$1/ -e s/@@PREVIEW@@/$PREVIEW/ $i > `basename $i .in`
 done
