@@ -16,7 +16,6 @@ string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
 
 void Page_Init(object sender, EventArgs e)
 {
-	// change this line to say "downloads/2.0" when we are ready
         dir = "downloads/2.99.0.1";
 
         if (IsPrivate) {
@@ -208,6 +207,10 @@ can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight 
 
 </p>
 </div>
+
+<p>
+Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Preview#Release_Notes"></a>
+</p>
 
 <p>
 Check the list of <a href="faq.aspx">supported operating systems and architectures</a>
