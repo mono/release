@@ -209,7 +209,7 @@ can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight 
 </div>
 
 <p>
-Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Preview#Release_Notes"></a>
+Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Preview#Release_Notes">here</a>
 </p>
 
 <p>
