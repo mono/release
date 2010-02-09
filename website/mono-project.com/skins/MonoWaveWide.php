@@ -211,20 +211,20 @@ class MonoWaveWideTemplate extends QuickTemplate {
           <a class="learn" href="http://monodevelop.com/">Learn More</a>
           </td>
           <td></td>
-          <td class="square"><div class="home-caption">Moonlight</div><div><img src="<?php echo $this->url_prefix?><?php $this->text('stylepath' )?>/<?php $this->text('stylename' )?>/images/mp-thumb-moonlight.png" style="float: right;padding-right:5px;padding-top:3px;"></div>
-          <div class="home-content">An open source implementation of Microsoft Silverlight for Linux and other Unix/X11 based operating systems</div>
-          <a class="download" href="http://www.go-mono.com/moonlight/">Download</a>
-          <a class="learn" href="http://mono-project.com/Moonlight">Learn More</a>
-          </td>
-          </tr></table>
-      </div>
-      <div id="home-sub-banner">
-        <table><tr>
           <td class="square"><div class="home-caption">Mono Tools for<br/> Visual Studio</div><div><img src="<?php echo $this->url_prefix?><?php $this->text('stylepath' )?>/<?php $this->text('stylename' )?>/images/mp-thumb-monovs.png" style="float: right;padding-right:12px;padding-top:3px;"></div>
           <div class="home-content">Develop and migrate .NET applications to Mono on Linux without leaving Visual Studio</div>
           <a class="try" href="http://go-mono.com/monovs/download/">Try</a><br/>
           <a class="buy" href="/Store">Buy</a>
           <a class="learn" href="http://go-mono.com/monovs/">Learn More</a>
+          </td>
+          </tr></table>
+      </div>
+      <div id="home-sub-banner">
+        <table><tr>
+          <td class="square"><div class="home-caption">Moonlight</div><div><img src="<?php echo $this->url_prefix?><?php $this->text('stylepath' )?>/<?php $this->text('stylename' )?>/images/mp-thumb-moonlight.png" style="float: right;padding-right:5px;padding-top:3px;"></div>
+          <div class="home-content">An open source implementation of Microsoft Silverlight for Linux and other Unix/X11 based operating systems</div>
+          <a class="download" href="http://www.go-mono.com/moonlight/">Download</a>
+          <a class="learn" href="http://mono-project.com/Moonlight">Learn More</a>
           </td>
           <td></td>
           <td class="square"><div class="home-caption">SUSE Linux Enterprise Mono Extension</div><div><img src="<?php echo $this->url_prefix?><?php $this->text('stylepath' )?>/<?php $this->text('stylename' )?>/images/mp-thumb-geeko.png" style="float: right;padding-right:10px;padding-top:6px;"></div>
@@ -335,7 +335,7 @@ class MonoWaveWideTemplate extends QuickTemplate {
                             <li><a href="/Contributing">Contributing Guide</a></li>
                             <li><a href="/Bugs">Report Bugs</a></li>
                             <li><a href="/SVN">SVN</a></li>
-                            <li><a href="http://mono.ximian.com/monobuild/">Build Status</a></li>
+                            <li><a href="http://wrench.mono-project.com/builds">Build Status</a></li>
                             <li><a href="http://go-mono.com/status/">Class Status</a></li>
 
                         </ul>

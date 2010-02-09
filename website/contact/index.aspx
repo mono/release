@@ -224,7 +224,7 @@ void btnSubmit_OnClick (object o, EventArgs a)
                             <li><a href="http://mono-project.com/Contributing">Contributing Guide</a></li>
                             <li><a href="http://mono-project.com/Bugs">Report Bugs</a></li>
                             <li><a href="http://mono-project.com/SVN">SVN</a></li>
-                            <li><a href="http://wrench.mono-project.com/">Build Status</a></li>
+                            <li><a href="http://wrench.mono-project.com/builds">Build Status</a></li>
 
                             <li><a href="http://go-mono.com/status/">Class Status</a></li>
 
