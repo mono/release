@@ -16,7 +16,7 @@ string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
 
 void Page_Init(object sender, EventArgs e)
 {
-        dir = "downloads/2.99.0.1";
+        dir = "downloads/2.99.0.2";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -95,7 +95,7 @@ void RadioClicked(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-2.99.0.1";
+	xpi = basename + "-2.99.0.2";
 	
 	//if (prof1_0.Checked)
 	//	xpi += "-1.0";
@@ -122,7 +122,7 @@ bool IsPrivate {
 <asp:Content ContentPlaceHolderID="title" Runat="server">Moonlight - Preview Download</asp:Content>
 
 <asp:Content ContentPlaceHolderID="page_heading" Runat="server">
-<h1>3.0 Preview 1 Download</h1>
+<h1>3.0 Preview 2 Download</h1>
 </asp:Content>
 
 <asp:Content ContentPlaceHolderID="main_container" Runat="server">
@@ -233,7 +233,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
     <div id="dllink">
     <ul class="machine"> 
     <li>
-         <a href="downloads/2.99.0.1/<%=xpi%>" title="<%=xpi%>">
+         <a href="downloads/2.99.0.2/<%=xpi%>" title="<%=xpi%>">
           <img src="images/down.png" alt="Download"/>
           <strong>Linux/<%=userfriendly%></strong>
           <span class="filesize"><%=filesize%></span>
