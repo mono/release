@@ -209,7 +209,11 @@ can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight 
 </div>
 
 <p>
-Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Preview#Release_Notes">here</a>
+Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Preview#Release_Notes">here</a>.
+</p>
+
+<p>
+Current issues with the Olympics player can also be found on the wiki, <a href="http://www.mono-project.com/Moonlight/OlympicsPlayerIssues">here.</a>
 </p>
 
 <p>

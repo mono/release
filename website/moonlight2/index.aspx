@@ -38,6 +38,7 @@
         <h2 id="youcan">With Moonlight you can:</h2>
 
         <ul class="intro-list">
+          <li><p>Watch the Olympics on Linux with our <a href="prerelease.aspx">3.0 preview</a></p></li>
           <li><p>View Silverlight content on Linux</p></li>
           <li><p>Watch videos delivered with Smoothstreaming</p></li>
           <li><p>Run Silverlight applications on Linux</p></li>
