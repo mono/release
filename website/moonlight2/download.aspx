@@ -16,8 +16,8 @@ string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
 
 void Page_Init(object sender, EventArgs e)
 {
-	// change this line to say "downloads/2.0" when we are ready
-        dir = "downloads/2.0";
+	// change this line to say "downloads/2.1" when we are ready
+        dir = "downloads/2.1";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -96,12 +96,12 @@ void RadioClicked(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-2.0";
+	xpi = basename + "-2.1";
 	
 	//if (prof1_0.Checked)
 	//	xpi += "-1.0";
 	//else
-	//	xpi += "-2.0";	
+	//	xpi += "-2.1";	
 
 	if (arch32.Checked)
 		xpi += "-i586";
@@ -211,7 +211,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
     <div id="dllink">
     <ul class="machine"> 
     <li>
-         <a href="downloads/2.0/<%=xpi%>" title="<%=xpi%>">
+         <a href="downloads/2.1/<%=xpi%>" title="<%=xpi%>">
           <img src="images/down.png" alt="Download"/>
           <strong>Linux/<%=userfriendly%></strong>
           <span class="filesize"><%=filesize%></span>
