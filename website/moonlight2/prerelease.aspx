@@ -16,7 +16,7 @@ string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
 
 void Page_Init(object sender, EventArgs e)
 {
-        dir = "downloads/2.99.0.2";
+        dir = "downloads/2.99.0.3";
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -95,7 +95,7 @@ void RadioClicked(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-2.99.0.2";
+	xpi = basename + "-2.99.0.3";
 	
 	//if (prof1_0.Checked)
 	//	xpi += "-1.0";
@@ -122,7 +122,7 @@ bool IsPrivate {
 <asp:Content ContentPlaceHolderID="title" Runat="server">Moonlight - Preview Download</asp:Content>
 
 <asp:Content ContentPlaceHolderID="page_heading" Runat="server">
-<h1>3.0 Preview 2 Download</h1>
+<h1>3.0 Preview 3 Download</h1>
 </asp:Content>
 
 <asp:Content ContentPlaceHolderID="main_container" Runat="server">
@@ -190,24 +190,6 @@ ul.machine li a img {
 <p><strong>THESE ARE PRIVATE BINARIES, NOT INTENTED FOR PUBLIC CONSUMPTION.   DO NOT DOWNLOAD.</strong></p>
 <% } %>
 
-<div id="preview-notice">
-<p><b>Preview Release Security Notice</b></p>
-
-<p> This release should be considered alpha quality.  There are
-various new subsystems in Silverlight 3 (e.g. pixel shaders, local
-messaging, the client http stack) which expose new and different
-attack vectors, and the implementations of these subsystems have not
-yet been exercised or audited.</p>
-
-<p> As such we recommend that you should only use this plugin on trusted
-sites (e.g. internal or well-known web sites) on non-production
-computers. This situation will gradually evolve over the beta
-releases. An up to date overview of Moonlight security features status
-can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight Security Status</a> wiki page.
-
-</p>
-</div>
-
 <p>
 Release notes can be found on the Moonlight project wiki, <a href="http://www.moonlight-project.com/Preview#Release_Notes">here</a>.
 </p>
@@ -237,7 +219,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
     <div id="dllink">
     <ul class="machine"> 
     <li>
-         <a href="downloads/2.99.0.2/<%=xpi%>" title="<%=xpi%>">
+         <a href="downloads/2.99.0.3/<%=xpi%>" title="<%=xpi%>">
           <img src="images/down.png" alt="Download"/>
           <strong>Linux/<%=userfriendly%></strong>
           <span class="filesize"><%=filesize%></span>
@@ -253,6 +235,24 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
   </table>
 </form>
  
+<div id="preview-notice">
+<p><b>Preview Release Security Notice</b></p>
+
+<p> This release should be considered alpha quality.  There are
+various new subsystems in Silverlight 3 (e.g. pixel shaders, local
+messaging, the client http stack) which expose new and different
+attack vectors, and the implementations of these subsystems have not
+yet been exercised or audited.</p>
+
+<p> As such we recommend that you should only use this plugin on trusted
+sites (e.g. internal or well-known web sites) on non-production
+computers. This situation will gradually evolve over the beta
+releases. An up to date overview of Moonlight security features status
+can be found on <a href="http://moonlight-project.com/SecurityStatus">Moonlight Security Status</a> wiki page.
+
+</p>
+</div>
+
 <h1><a name="instructions"></a>Installation</h1>
 
 <p>When installing the Novell Moonlight plugin, Firefox may prevent the installation and present you with an information bar:</p>
