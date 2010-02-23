@@ -35,6 +35,10 @@ var osx_univ_url = "http://ftp.novell.com/pub/mono/archive/2.6.1/macos-10-univer
 var osx_univ_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.1/macos-10-universal/1/MonoFramework-CSDK-2.6.1_1.macos10.novell.universal.dmg"
 var osx_cocoa_source_url = "http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.5.tar.bz2"
 
+var codice = "These packages are provided by <a href=\"http://www.codicesoftware.com/\">Codice Software</a>."
+var solaris_10_sparc_url = "http://ftp.novell.com/pub/mono/third-party/codice/mono-2.6.1-sol10-sparc.pkg.gz"
+var opensolaris_x86_url = "http://ftp.novell.com/pub/mono/third-party/codice/mono-2.6.1-opensolaris-x86.pkg.gz"
+
 
 var data =
 {
@@ -188,23 +192,33 @@ var data =
 		]
 	},
 
-/*	{
-		"name" : "RedHat",
-		"icon" : "http://www.mono-project.com/files/6/6e/Mono_icon_redhat.gif",
-		"dlicon" : "http://www.mono-project.com/files/6/6e/Mono_icon_redhat.gif",
+	{
+		"name" : "Solaris",
+		"icon" : "solaris.jpg",
+		"dlicon" : "solaris.jpg",
 		"version" : [
 		{
-			"name" : "RedHat Enterprise Linux",
+			"name" : "Solaris 10",
 			"arch" : [
 			{
-				"name" : "All",
-				"desc" : discontinued,
-				"downloadText" : ""
+				"name" : "sparc",
+				"desc" : codice,
+				"downloadText" : "<a href=\"" + solaris_10_sparc_url + "\">" + solaris_10_sparc_url + "</a>"
+			}
+			]
+		},
+		{
+			"name" : "OpenSolaris",
+			"arch" : [
+			{
+				"name" : "x86",
+				"desc" : codice,
+				"downloadText" : "<a href=\"" + opensolaris_x86_url + "\">" + opensolaris_x86_url + "</a>"
 			}
 			]
 		}
 		]
-	},*/
+	},
 	{
 		"name" : "Other",
 		"icon" : "linux_icon.jpg",
