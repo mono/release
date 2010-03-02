@@ -77,7 +77,7 @@ public partial class download_Default : System.Web.UI.Page
             cnc.ConnectionString = cnc_string;
             cnc.Open();
             IDbCommand cmd = cnc.CreateCommand();
-            cmd.CommandText = "INSERT INTO trial_emails (trial_id, email, first_name, last_name, organization, app_type, IP, ts) VALUES (null, ?email, ?first_name, ?last_name, ?organization, ?app_type, ?ip, null)";
+            cmd.CommandText = "INSERT INTO trial_emails (trial_id, email, first_name, last_name, organization, app_type, IP, referrer, url, ts) VALUES (null, ?email, ?first_name, ?last_name, ?organization, ?app_type, ?ip, ?referrer, ?url, null)";
             
             AddParameter(cmd, "email", txtEmail.Text.Trim());
             AddParameter(cmd, "first_name", txtFirstName.Text.Trim());
@@ -85,6 +85,8 @@ public partial class download_Default : System.Web.UI.Page
             AddParameter(cmd, "organization", txtOrg.Text.Trim());
             AddParameter(cmd, "app_type", ddlAppType.SelectedValue);
             AddParameter(cmd, "ip", Request.UserHostAddress);
+            AddParameter(cmd, "referrer", Request.Cookies["mt_ref"] != null ? Request.Cookies["mt_ref"].Value : "");
+            AddParameter(cmd, "url", Request.Cookies["mt_url"] != null ? Request.Cookies["mt_url"].Value : "");
 
             cmd.ExecuteNonQuery();
         }
