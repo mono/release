@@ -26,7 +26,7 @@
 
       <p>Netflix does not work with Moonlight at this time.  While Moonlight supports
          all of the UI and media playback infrastructure, it lacks DRM support which
-         Netflix requires.  See <a href="http://forums.silverlight.net/forums/t/94992.aspx">this silverlight.net forum post</a>.</p>
+         Netflix requires.  See this silverlight.net forum <a href="http://forums.silverlight.net/forums/t/94992.aspx">post</a> and <a href="http://www.mono-project.com/Moonlight/SecurityStatus#Digital_Rights_Management">this page</a> on the Moonlight Wiki</p>
     </div>
 
     <div class="twocolumn">
