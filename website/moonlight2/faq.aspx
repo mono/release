@@ -22,6 +22,14 @@
     </div>
 
     <div class="twocolumn">
+      <h2>Does Netflix work with Moonlight?</h2>
+
+      <p>Netflix does not work with Moonlight at this time.  While Moonlight supports
+         all of the UI and media playback infrastructure, it lacks DRM support which
+         Netflix requires.  See <a href="http://forums.silverlight.net/forums/t/94992.aspx">this silverlight.net forum post</a>.</p>
+    </div>
+
+    <div class="twocolumn">
       <h2>Where can I get the source?</h2>
 
       <p>The latest source code tarballs can be downloaded from <a
