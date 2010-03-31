@@ -81,7 +81,11 @@
                         ImageUrl="~/Images/mp-download-blue.png" onclick="btnDownload_Click" />
                     </div>
             </div>
-  
+  <div style="text-align:center;margin-left: auto; padding: 1px; margin-right: auto; background-color: rgb(198, 216, 237); border: 1px solid rgb(80, 132, 197); margin-top: 7px;">
+<p><b>Note:</b>Mono Tools for Visual Studio 1.1 has a Release Candidate version for <b>VS2010 RC</b> available <a href="http://go-mono.com/monovs-download/latest/monotools-1.1.5462.vsix" class="external" title="http://go-mono.com/monovs-download/latest/monotools-1.1.5462.vsix" rel="nofollow">here</a><span class="urlexpansion">&nbsp;(<i>http://go-mono.com/monovs-download/latest/monotools-1.1.5462.vsix</i>)</span>.
+<br />(If IE changes the extension to .zip, you will need to change it back to .vsix to install.)
+</p>
+</div>
   <h3>Requirements</h3>
   <ul>
   <li>Mono Tools for Visual Studio require Microsoft&trade; Visual Studio&trade; 2008 SP1 Standard,  Professional, or Team Edition.</li>
