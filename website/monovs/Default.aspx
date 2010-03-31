@@ -55,7 +55,7 @@
     </div>
     <div class="right-column">
         <div class="colordiv">
-            Mono Tools for Visual Studio 1.0 has been released! 
+            Mono Tools for Visual Studio <b>1.1</b> has been released! 
             <br /><br /><a href="download"><img src="Images/mp-download-blue.png" alt="Click to Download" /></a>
             <br />Download the free 30-day trial.<br /><br />
             Or <a href="http://go-mono.com/store/">Buy Now</a><br /><br />
