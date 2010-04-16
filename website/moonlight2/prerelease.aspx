@@ -8,6 +8,7 @@ string media;
 string arch;
 
 string xpi = string.Empty;
+string extension = string.Empty;
 string filepath = string.Empty;
 string filesize = string.Empty;
 string fileupdate = string.Empty;
@@ -25,18 +26,22 @@ void Page_Init(object sender, EventArgs e)
         }
         basename = "novell-moonlight" + media;
 
-        if (Regex.IsMatch(Request.UserAgent, "Firefox")) {
-                if (Regex.IsMatch(Request.UserAgent, "Linux i.86")) {
-                        arch = "i586";
-                        arch32.Checked = true;
-                        
-                } else if (Regex.IsMatch(Request.UserAgent, "Linux x86_64")) {
-			arch64.Checked = true;
-                        arch = "x86_64";
-                } else {
-			arch32.Checked = true;
-                        arch = "unknown";
-                }
+        if (Regex.IsMatch(Request.UserAgent, "Linux i.86")) {
+                arch = "i586";
+                arch32.Checked = true;
+        } else if (Regex.IsMatch(Request.UserAgent, "Linux x86_64")) {
+                arch64.Checked = true;
+                arch = "x86_64";
+        } else {
+                arch32.Checked = true;
+                arch = "unknown";
+        }
+
+	if (Regex.IsMatch(Request.UserAgent, "Chrome")) {
+		extension = ".crx";
+	}
+        else if (Regex.IsMatch(Request.UserAgent, "Firefox")) {
+		extension = ".xpi";
         } else {
                 arch = "unknown";
 		arch32.Checked = true;
@@ -107,7 +112,7 @@ void SetFileName()
 	else
 		xpi += "-x86_64";
 	
-	xpi += ".xpi";
+	xpi += extension;
 	filepath = Path.Combine(dir,xpi);
 	//return xpi;
 }
