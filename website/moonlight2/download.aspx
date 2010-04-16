@@ -196,7 +196,14 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
 
 <form runat="server">
   <table>
-  <tr><td><h2>1. Select the architecture:</h2></td></tr>
+  <tr><td><h2>1. Watching the Olympics?</h2></td></tr>
+    <tr><td>
+     If you want to watch the Olympics you will need to use the <a href="http://go-mono.com/moonlight/prerelease.aspx">Moonlight 3 Preview 3</a>
+     as opposed to Moonlight 2.
+     <p>
+     If you just want Moonlight 2, proceed to the next step.  If you want the Olympics, click <a href="http://go-mono.com/moonlight/prerelease.aspx">here</a>.
+    </td></tr>
+  <tr><td><h2>2. Select the architecture:</h2></td></tr>
   
   <tr><td>
     <div onclick="flash()">
@@ -205,12 +212,12 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
     </div>
   </td></tr>
   
-  <tr><td><h2>2. Download the plugin</h2></td></tr>
+  <tr><td><h2>3. Download the plugin</h2></td></tr>
 
   <tr><td>
-    <div id="dllink">
+    <div id="dllink" style="float:left;">
     <ul class="machine"> 
-    <li>
+    <li style="height: 120px;">
          <a href="downloads/2.2/<%=xpi%>" title="<%=xpi%>">
           <img src="images/down.png" alt="Download"/>
           <strong>Linux/<%=userfriendly%></strong>
@@ -222,6 +229,16 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
         </a>
       </li>
     </ul>
+    </div>
+    <div>
+     <ul class="machine">
+        <li style="float: right; width: 240px; height: 120px;">
+          <a href="http://go-mono.com/moonlight/prerelease.aspx">
+            <img src="240.png">
+	    Click here to go to the Moonlight Preview 3 Download Page
+          </a>	
+        </li>
+      </ul>
     </div>
   </td></tr>
   </table>
