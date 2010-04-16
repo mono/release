@@ -198,7 +198,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
   <table>
   <tr><td><h2>1. Watching the Olympics?</h2></td></tr>
     <tr><td>
-     If you want to watch the Olympics you will need to use the <a href="http://go-mono.com/moonlight/prerelease.aspx">Moonlight 3 Preview 3</a>
+     If you want to watch the Olympics you will need to use the <a href="http://go-mono.com/moonlight/prerelease.aspx">Moonlight 3 Preview</a>
      as opposed to Moonlight 2.
      <p>
      If you just want Moonlight 2, proceed to the next step.  If you want the Olympics, click <a href="http://go-mono.com/moonlight/prerelease.aspx">here</a>.
@@ -235,7 +235,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
         <li style="float: right; width: 240px; height: 120px;">
           <a href="http://go-mono.com/moonlight/prerelease.aspx">
             <img src="240.png">
-	    Click here to go to the Moonlight Preview 3 Download Page
+	    Click here to go to the Moonlight Preview Download Page
           </a>	
         </li>
       </ul>
