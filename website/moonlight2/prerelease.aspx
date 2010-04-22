@@ -42,9 +42,6 @@ void Page_Init(object sender, EventArgs e)
 	}
         else if (Regex.IsMatch(Request.UserAgent, "Firefox")) {
 		extension = ".xpi";
-        } else {
-                arch = "unknown";
-		arch32.Checked = true;
         }
 	RadioClicked(null,null);
 }
@@ -117,6 +114,19 @@ void SetFileName()
 	//return xpi;
 }
 
+string GetFileName(string ext)
+{
+	string ret = basename + "-2.99.0.6";
+
+	if (arch32.Checked)
+		ret += "-i586";
+	else
+		ret += "-x86_64";
+
+	ret += ext;
+	return ret;
+}
+
 bool IsPrivate {
         get {
                 return Request.Url.LocalPath.StartsWith ("/mpriv/");
@@ -147,6 +157,10 @@ ul.machine li {
 	background: #555;
 	padding: 0.5em;
 	cursor: pointer;
+}
+
+ul.machine li.wider {
+	width: 20em;
 }
 
 ul li.disuaded {
@@ -208,19 +222,88 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
 </p>
 
 <form runat="server">
+
+<%
+    string colspan = "";
+    if (extension == "")
+	    colspan = "colspan='2'";
+%>
+
   <table>
-  <tr><td><h2>1. Select the architecture:</h2></td></tr>
+  <tr><td <%=colspan%>><h2>1. Select the architecture:</h2></td></tr>
   
-  <tr><td>
+  <tr><td <%=colspan%>>
     <div onclick="flash()">
     <asp:RadioButton id="arch32" Text="32 bit" groupname="architecture" runat="server" OnCheckedChanged="RadioClicked" AutoPostBack="true" />
     <asp:RadioButton id="arch64" Text="64 bit" groupname="architecture" runat="server" OnCheckedChanged="RadioClicked" AutoPostBack="true" />
     </div>
   </td></tr>
   
-  <tr><td><h2>2. Download the plugin</h2></td></tr>
+  <tr><td <%=colspan%>><h2>2. Download the plugin</h2></td></tr>
 
+<% if (extension == "") { %>
+
+  <tr><td <%=colspan%>>
+    <div id="preview-notice">
+      <p><b>Your browser type could not be determined.</b></p>
+      <p>The following plugin types are available, please select the best match for your browser.</p>
+    </div>
+
+  </td></tr>
+
+<%
+	filepath = Path.Combine (dir, GetFileName(".xpi"));
+	fileupdate = LastModified(filepath);
+	filesize = FileSize(filepath);
+	userfriendly = UserFriendly(filepath);
+%>
   <tr><td>
+    <div id="dllink">
+    <ul class="machine">
+    <li class="wider">
+         <a href="downloads/2.99.0.6/<%=xpi%>" title="<%=xpi%>">
+          <img src="images/down.png" alt="Download"/>
+          <strong>For Firefox: Linux/<%=userfriendly%></strong>
+          <span class="filesize"><%=filesize%></span>
+          <br/>
+          <span class="updated">Last Updated:
+              <%=fileupdate%>
+          </span>
+        </a>
+      </li>
+    </ul>
+    </div>
+  </td>
+
+<%
+	filepath = Path.Combine (dir, GetFileName(".crx"));
+	fileupdate = LastModified(filepath);
+	filesize = FileSize(filepath);
+	userfriendly = UserFriendly(filepath);
+%>
+  <td>
+    <div id="dllink">
+    <ul class="machine">
+    <li class="wider">
+         <a href="downloads/2.99.0.6/<%=xpi%>" title="<%=xpi%>">
+          <img src="images/down.png" alt="Download"/>
+          <strong>For Chrome: Linux/<%=userfriendly%></strong>
+          <span class="filesize"><%=filesize%></span>
+          <br/>
+          <span class="updated">Last Updated:
+              <%=fileupdate%>
+          </span>
+        </a>
+      </li>
+    </ul>
+    </div>
+  </td>
+</tr>
+
+
+<% } else {%>
+
+  <tr><td <%=colspan%>>
     <div id="dllink">
     <ul class="machine"> 
     <li>
@@ -237,6 +320,9 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
     </ul>
     </div>
   </td></tr>
+
+<% } %>
+
   </table>
 </form>
  
