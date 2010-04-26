@@ -73,39 +73,6 @@ def getfiles(dir):
     os.path.walk(dir,callback,filelist)
     return filelist
 
-def reorder_xpi(xpiname):
-    tmpzipdir = tempfile.mkdtemp(dir='.')
-    #shutil.rmtree('tmp',ignore_errors=True)
-    xpi = zipfile.ZipFile(xpiname,mode='r')
-    xpi.extractall(tmpzipdir)
-    os.chdir(tmpzipdir)
-
-    newxpi = zipfile.ZipFile(xpiname,'w',compression=zipfile.ZIP_DEFLATED)
-
-    newxpi.write(os.path.join('META-INF','zigbert.rsa'))
-    newxpi.write(os.path.join('META-INF','zigbert.sf'))
-    newxpi.write(os.path.join('META-INF','manifest.mf'))
-
-    newxpi.write('chrome.manifest')
-    newxpi.write('install.rdf')
-
-    files = getfiles('plugins')
-    files.extend(getfiles('skin'))
-    for f in files:
-        if not os.path.isdir(f):
-            newxpi.write(f)
-
-    #cd ..
-    os.chdir('..')
-
-    #rm $1 # Delete the original xpi
-    os.remove(xpiname)
-    #mv tmp/$1 .
-    os.rename(os.path.join(tmpzipdir,xpiname),xpiname)
-
-    #rm -rf tmp
-    shutil.rmtree(tmpzipdir,ignore_errors=True)
-
 #------------------------------------------------------------------------------
 # Check to make sure there are two xpis in the zip file
 def check_zip(z):
@@ -147,13 +114,10 @@ def prepare_xpi(xpifilename):
     if not os.path.exists(xpifilename):
         fail("Cannot find file %s" % xpifilename)
 
-
-    # copy xpi to tmp dir and reorder, create update.rdf
+    # copy xpi to tmp dir, create update.rdf
     tmpdir = tempfile.mkdtemp(dir='.')
     shutil.copy(xpifilename,tmpdir)
     os.chdir(tmpdir)
-
-    reorder_xpi(xpifilename)
 
     arch = None
     if xpifilename.find('x86_64') >= 0:

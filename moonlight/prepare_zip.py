@@ -67,6 +67,7 @@ def getfiles(dir):
     os.path.walk(dir,callback,filelist)
     return filelist
 
+# This seems to corrupt the signature somehow, also it's not needed.
 def reorder_xpi(xpiname):
     shutil.rmtree('tmp',ignore_errors=True)
     xpi = zipfile.ZipFile(xpiname,mode='r')
@@ -110,7 +111,7 @@ def check_zip(z):
 # Pass in the rdf file to be signed
 def sign_update_rdfs(rdf):
 
-    mccoy_exe="/home/rhowell/code/moonlight-ms/moz_ext_update/mccoy/mccoy"
+    mccoy_exe="/home/ajorg/mccoy/mccoy"
 
     # Passing -xpi just generates and adds the sha1 hash to the file
     # The hash is is already generated in create_update_rdfs.py
@@ -145,17 +146,17 @@ def main():
     z = zipfile.ZipFile(zipfilename,'r')
     xpi_list = z.namelist()
 
-
+    # This is not needed anymore and seems to corrupt the signature
     for xpi in xpi_list:
-        print "Reordering %s" % xpi
+    #    print "Reordering %s" % xpi
         z.extract(xpi)
-        reorder_xpi(xpi)
+    #    reorder_xpi(xpi)
 
     #NEW_VERSION=$PREVIEW
 
     #./create_update_rdfs.py -p 2.0 -a i586,x86_64 -n $NEW_VERSION -o $OLD_VERSIONS
     create_update_rdfs.create_rdfs(new_version,MoonlightReleases.old_versions)
-    create_update_rdfs.create_rdfs(new_version,MoonlightReleases.old_1_0_versions,'1.0')
+    #create_update_rdfs.create_rdfs(new_version,MoonlightReleases.old_1_0_versions,'1.0')
 
     for rdf in glob.glob("update*.rdf"):
         print "Signing %s..." % rdf
