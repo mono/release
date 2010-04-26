@@ -9,14 +9,14 @@ var i586_x86_64_ppc64_ia64 = "i586, x86_64, ppc64, and ia64"
 var enterprise = "<p>The <a href=\"http://www.novell.com/products/mono/\">SUSE Linux Enterprise Mono Extension</a> is available for purchase from <a href=\"http://www.novell.com/\">Novell</a>.</p>"
 
 // URLS
-var vpc_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.3/Mono-2.6.3-vpc.zip.torrent"
-var vpc_zip_url = "http://ftp.novell.com/pub/mono/appliance/2.6.3/Mono-2.6.3-vpc.zip"
+var vpc_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.4/Mono-2.6.4-vpc.zip.torrent"
+var vpc_zip_url = "http://ftp.novell.com/pub/mono/appliance/2.6.4/Mono-2.6.4-vpc.zip"
 
-var vmx_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.3/Mono-2.6.3-vmx.zip.torrent"
-var vmx_zip_url = "http://ftp.novell.com/pub/mono/appliance/2.6.3/Mono-2.6.3-vmx.zip"
+var vmx_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.4/Mono-2.6.4-vmx.zip.torrent"
+var vmx_zip_url = "http://ftp.novell.com/pub/mono/appliance/2.6.4/Mono-2.6.4-vmx.zip"
 
-var livecd_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.3/Mono-2.6.3.iso.torrent"
-var livecd_iso_url = "http://ftp.novell.com/pub/mono/appliance/2.6.3/Mono-2.6.3.iso"
+var livecd_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.4/Mono-2.6.4.iso.torrent"
+var livecd_iso_url = "http://ftp.novell.com/pub/mono/appliance/2.6.4/Mono-2.6.4.iso"
 
 var ops110_repo_url = "http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.0"
 var ops111_repo_url = "http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.1"
@@ -24,25 +24,25 @@ var ops112_repo_url = "http://ftp.novell.com/pub/mono/download-stable/openSUSE_1
 
 var sle11_repo_url = "http://ftp.novell.com/pub/mono/download-stable/SLE_11"
 
-var win_exe_url = "http://ftp.novell.com/pub/mono/archive/2.6.3/windows-installer/4/mono-2.6.3-gtksharp-2.12.10-win32-4.exe"
+var win_exe_url = "http://ftp.novell.com/pub/mono/archive/2.6.4/windows-installer/3/mono-2.6.4-gtksharp-2.12.10-win32-3.exe"
 var win_gtk_url = "http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi"
 
-var osx_x86_url = "http://ftp.novell.com/pub/mono/archive/2.6.3/macos-10-x86/4/MonoFramework-2.6.3_4.macos10.novell.x86.dmg"
-var osx_x86_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.3/macos-10-x86/4/MonoFramework-CSDK-2.6.3_4.macos10.novell.x86.dmg"
-var osx_ppc_url = "http://ftp.novell.com/pub/mono/archive/2.6.3/macos-10-ppc/4/MonoFramework-2.6.3_4.macos10.novell.ppc.dmg"
-var osx_ppc_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.3/macos-10-ppc/4/MonoFramework-CSDK-2.6.3_4.macos10.novell.ppc.dmg"
-var osx_univ_url = "http://ftp.novell.com/pub/mono/archive/2.6.3/macos-10-universal/4/MonoFramework-2.6.3_4.macos10.novell.universal.dmg"
-var osx_univ_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.3/macos-10-universal/4/MonoFramework-CSDK-2.6.3_4.macos10.novell.universal.dmg"
+var osx_x86_url = "http://ftp.novell.com/pub/mono/archive/2.6.4/macos-10-x86/3/MonoFramework-2.6.4_3.macos10.novell.x86.dmg"
+var osx_x86_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.4/macos-10-x86/3/MonoFramework-CSDK-2.6.4_3.macos10.novell.x86.dmg"
+var osx_ppc_url = "http://ftp.novell.com/pub/mono/archive/2.6.4/macos-10-ppc/3/MonoFramework-2.6.4_3.macos10.novell.ppc.dmg"
+var osx_ppc_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.4/macos-10-ppc/3/MonoFramework-CSDK-2.6.4_3.macos10.novell.ppc.dmg"
+var osx_univ_url = "http://ftp.novell.com/pub/mono/archive/2.6.4/macos-10-universal/3/MonoFramework-2.6.4_3.macos10.novell.universal.dmg"
+var osx_univ_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.4/macos-10-universal/3/MonoFramework-CSDK-2.6.4_3.macos10.novell.universal.dmg"
 var osx_cocoa_source_url = "http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.5.tar.bz2"
 
 var codice = "These packages are provided by <a href=\"http://www.codicesoftware.com/\">Codice Software</a>."
-var solaris_10_sparc_url = "http://ftp.novell.com/pub/mono/third-party/codice/mono-2.6.3-sol10-sparc.pkg.gz"
-var opensolaris_x86_url = "http://ftp.novell.com/pub/mono/third-party/codice/mono-2.6.3-opensolaris-x86.pkg.gz"
+var solaris_10_sparc_url = "http://ftp.novell.com/pub/mono/third-party/codice/mono-2.6.1-sol10-sparc.pkg.gz"
+var opensolaris_x86_url = "http://ftp.novell.com/pub/mono/third-party/codice/mono-2.6.1-opensolaris-x86.pkg.gz"
 
 
 var data =
 {
-	"release" : "2.6.3",
+	"release" : "2.6.4",
 	"platforms" : [
 	{
 		"name" : "Virtual PC",
@@ -53,9 +53,9 @@ var data =
 			"name" : "openSUSE 11.2",
 			"arch" : [
 			{
-				"name" : "Mono 2.6.3",
+				"name" : "Mono 2.6.4",
 				"desc" : "",
-				"downloadText" : "Download an openSUSE 11.2 Virtual PC image which includes Mono 2.6.3<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + vpc_torrent_url + "\">via Torrent</a> <li><a href=\"" + vpc_zip_url + "\">via http</a> </ul><a href=\"http://mono-project.com/VirtualPC_Image\">Instructions for using the Virtual PC image</a>."
+				"downloadText" : "Download an openSUSE 11.2 Virtual PC image which includes Mono 2.6.4<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + vpc_torrent_url + "\">via Torrent</a> <li><a href=\"" + vpc_zip_url + "\">via http</a> </ul><a href=\"http://mono-project.com/VirtualPC_Image\">Instructions for using the Virtual PC image</a>."
 			}
 			]
 		}
@@ -70,9 +70,9 @@ var data =
 			"name" : "openSUSE 11.2",
 			"arch" : [
 			{
-				"name" : "Mono 2.6.3",
+				"name" : "Mono 2.6.4",
 				"desc" : "",
-				"downloadText" : "Download an openSUSE 11.2 VMWare image which includes Mono 2.6.3<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + vmx_torrent_url + "\">via Torrent</a> <li><a href=\"" + vmx_zip_url + "\">via http</a> </ul><a href=\"http://mono-project.com/VMware_Image\">Instructions for using the VMware image</a>."
+				"downloadText" : "Download an openSUSE 11.2 VMWare image which includes Mono 2.6.4<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + vmx_torrent_url + "\">via Torrent</a> <li><a href=\"" + vmx_zip_url + "\">via http</a> </ul><a href=\"http://mono-project.com/VMware_Image\">Instructions for using the VMware image</a>."
 			}
 			]
 		}
@@ -87,9 +87,9 @@ var data =
 			"name" : "openSUSE 11.2 Live CD",
 			"arch" : [
 			{
-				"name" : "Mono 2.6.3",
+				"name" : "Mono 2.6.4",
 				"desc" : "",
-				"downloadText" : "Download the openSUSE 11.2 Live CD which includes Mono 2.6.3<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + livecd_torrent_url + "\">via Torrent</a> <li><a href=\"" + livecd_iso_url + "\">via http</a> </ul>"
+				"downloadText" : "Download the openSUSE 11.2 Live CD which includes Mono 2.6.4<br/><a href=\"http://susestudio.com\"><img title=\"Built with SUSE Studio\" src=\"http://susestudio.com/images/built-with-web.png\" width=\"120\" height=\"30\" alt=\"Built with SUSE Studio\" align=\"right\"></a><ul><li><a href=\"" + livecd_torrent_url + "\">via Torrent</a> <li><a href=\"" + livecd_iso_url + "\">via http</a> </ul>"
 			}
 			]
 		}
@@ -185,7 +185,7 @@ var data =
 			{
 				"name" : "All",
 				"desc" : "This download works on Mac OS X Tiger (10.4), Leopard (10.5), and Snow Leopard (10.6).",
-				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<br/><em>The CSDK packages are for developers embedding mono into their applications.  If you don't know what that means you don't need it.</em><ul><li>Mono 2.6.3<ul><li>Intel: <a href=\"" + osx_x86_url + "\">Framework</a> <span style=\"font-size: small\">(<a href=\"" + osx_x86_csdk_url + "\">CSDK</a>)</span></li><li>PowerPC: <a href=\"" + osx_ppc_url + "\">Framework</a> <span style=\"font-size: small\">(<a href=\"" + osx_ppc_csdk_url + "\">CSDK</a>)</span></li><li>Universal: <a href=\"" + osx_univ_url + "\">Framework</a> (if you don't know what you need) <span style=\"font-size: small\">(<a href=\"" + osx_univ_csdk_url + "\">CSDK</a>)</span></li></ul><li><a href=\"http://monodevelop.com/Download/Mac_Preview\">MonoDevelop Preview</a></li></li><li><a href=\"" + osx_cocoa_source_url + "\">Cocoa# 0.9.5 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
+				"downloadText" : "Includes Mono, Cocoa#, Gtk# installs in /Library/Frameworks:<br/><em>The CSDK packages are for developers embedding mono into their applications.  If you don't know what that means you don't need it.</em><ul><li>Mono 2.6.4<ul><li>Intel: <a href=\"" + osx_x86_url + "\">Framework</a> <span style=\"font-size: small\">(<a href=\"" + osx_x86_csdk_url + "\">CSDK</a>)</span></li><li>PowerPC: <a href=\"" + osx_ppc_url + "\">Framework</a> <span style=\"font-size: small\">(<a href=\"" + osx_ppc_csdk_url + "\">CSDK</a>)</span></li><li>Universal: <a href=\"" + osx_univ_url + "\">Framework</a> (if you don't know what you need) <span style=\"font-size: small\">(<a href=\"" + osx_univ_csdk_url + "\">CSDK</a>)</span></li></ul><li><a href=\"http://monodevelop.com/Download/Mac_Preview\">MonoDevelop Preview</a></li></li><li><a href=\"" + osx_cocoa_source_url + "\">Cocoa# 0.9.5 source</a></ul>Gtk# and System.Windows.Forms applications require X11.  Installing on a machine without X11 installed will result in errors during install, and these components will not function correctly."
 			}
 			]
 		}
