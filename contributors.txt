@@ -2,3 +2,4 @@ miguel:migueldeicaza
 mhabersack:grendello
 rolf:rolfbjarne
 jpobst:jpobst
+zoltan:vargaz
