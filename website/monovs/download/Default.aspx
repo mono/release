@@ -77,18 +77,15 @@
                     <td colspan="3" align="right"><span style="color:red;">*</span>Fields are required.<br /><a class="external" href="http://www.novell.com/company/policies/privacy/">Novell's privacy policy</a></td></tr>
                 </table><div style="width:500px;text-align:center">
                     <br/>
-                    <asp:ImageButton CausesValidation="true" ID="btnDownload" runat="server" 
-                        ImageUrl="~/Images/mp-download-blue.png" onclick="btnDownload_Click" />
+                    <asp:ImageButton CausesValidation="true" ID="btnDownloadMsi" runat="server" 
+                        ImageUrl="~/Images/mp-download-2008.png" onclick="btnDownloadMsi_Click" />
+                    <asp:ImageButton CausesValidation="true" ID="btnDownloadVsix" runat="server" 
+                        ImageUrl="~/Images/mp-download-2010.png" onclick="btnDownloadVsix_Click" />
                     </div>
             </div>
-  <div style="text-align:center;margin-left: auto; padding: 1px; margin-right: auto; background-color: rgb(198, 216, 237); border: 1px solid rgb(80, 132, 197); margin-top: 7px;">
-<p><b>Note:</b>Mono Tools for Visual Studio 1.1 has a Release Candidate version for <b>VS2010 RC</b> available <a href="http://go-mono.com/monovs-download/latest/monotools-1.1.5462.vsix" class="external" title="http://go-mono.com/monovs-download/latest/monotools-1.1.5462.vsix" rel="nofollow">here</a><span class="urlexpansion">&nbsp;(<i>http://go-mono.com/monovs-download/latest/monotools-1.1.5462.vsix</i>)</span>.
-<br />(If IE changes the extension to .zip, you will need to change it back to .vsix to install.)
-</p>
-</div>
   <h3>Requirements</h3>
   <ul>
-  <li>Mono Tools for Visual Studio require Microsoft&trade; Visual Studio&trade; 2008 SP1 Standard,  Professional, or Team Edition.</li>
+  <li>Mono Tools for Visual Studio requires Microsoft&trade; Visual Studio&trade; 2008 SP1 Standard,  Professional, or Team Edition, or Microsoft&trade; Visual Studio&trade; 2010 Professional, Premium, or Ultimate.</li>
   <li>To use the remote debugging features of the add-in, you will need a Linux target configured to host Mono's remote debugger.  For convenience, Novell provides a <a href="http://ftp.novell.com/pub/mono/monovs/latest/MonoVS-vm.exe">windows-installable, preconfigured virtual machine</a> for VMware or Virtual PC, and installable packages for openSUSE and SUSE Linux Enterprise.<br/><p style="margin-left: 1em; margin-top: 0pt;"><i>(Note: <a href="http://www.vmware.com/download/player/" class="external" title="http://www.vmware.com/download/player/" rel="nofollow">VMWare Player</a><span class="urlexpansion">&nbsp;(<i>http://www.vmware.com/download/player/</i>)</span> or <a href="http://www.microsoft.com/windows/virtual-pc/" class="external" title="http://www.microsoft.com/windows/virtual-pc/" rel="nofollow">Windows Virtual PC</a> are required to use the preconfigured virtual machines.)</i></p></li>
   </ul>
   

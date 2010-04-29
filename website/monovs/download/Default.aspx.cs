@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Configuration;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -11,6 +12,7 @@ using MySql.Data.MySqlClient;
 
 public partial class download_Default : System.Web.UI.Page
 {
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if ("1" == (Request.QueryString["partner"] ?? ""))
@@ -18,15 +20,28 @@ public partial class download_Default : System.Web.UI.Page
             tblForm.Visible = false;
         }
     }
-    protected void btnDownload_Click(object sender, ImageClickEventArgs e)
+
+    protected void btnDownloadMsi_Click(object sender, ImageClickEventArgs e)
     {
+        StartDownload("msi");
+    }
+
+    protected void btnDownloadVsix_Click(object sender, ImageClickEventArgs e)
+    {
+        StartDownload("vsix");
+    }
+
+
+    private void StartDownload(string installerType)
+    {
+
         Page.Validate();
         if (Page.IsValid)
         {
+            string filename = ConfigurationManager.AppSettings[string.Format("MonoTools_{0}", installerType)];
             if (tblForm.Visible)
             {
-                EnsureFileNamesAndConfig(Request);
-                StoreFormData();
+                StoreFormData(filename);
 
                 try
                 {
@@ -41,9 +56,9 @@ public partial class download_Default : System.Web.UI.Page
             //but we'll try to let people download either way
             HttpResponse response = Response;
             response.ContentType = "application/octet-stream";
-            response.AppendHeader("Content-Disposition", 
-                String.Format("attachment; filename={0}", dl_name));
-            response.TransmitFile (real_path);
+            response.AppendHeader("Content-Disposition",
+                String.Format("attachment; filename={0}", filename));
+            response.TransmitFile(Request.MapPath(String.Format("~/download_area/{0}", filename)));
             response.End();
         }
     }
@@ -70,14 +85,14 @@ public partial class download_Default : System.Web.UI.Page
     }
 
 
-    void StoreFormData()
+    void StoreFormData(string filename)
     {
         using (IDbConnection cnc = new MySqlConnection())
         {
-            cnc.ConnectionString = cnc_string;
+            cnc.ConnectionString = ConfigurationManager.AppSettings["MonoVsDB"];
             cnc.Open();
             IDbCommand cmd = cnc.CreateCommand();
-            cmd.CommandText = "INSERT INTO trial_emails (trial_id, email, first_name, last_name, organization, app_type, IP, referrer, url, ts) VALUES (null, ?email, ?first_name, ?last_name, ?organization, ?app_type, ?ip, ?referrer, ?url, null)";
+            cmd.CommandText = "INSERT INTO trial_emails (trial_id, email, first_name, last_name, organization, app_type, IP, referrer, url, filename, ts) VALUES (null, ?email, ?first_name, ?last_name, ?organization, ?app_type, ?ip, ?referrer, ?url, ?filename, null)";
             
             AddParameter(cmd, "email", txtEmail.Text.Trim());
             AddParameter(cmd, "first_name", txtFirstName.Text.Trim());
@@ -87,6 +102,7 @@ public partial class download_Default : System.Web.UI.Page
             AddParameter(cmd, "ip", Request.UserHostAddress);
             AddParameter(cmd, "referrer", Request.Cookies["mt_ref"] != null ? Request.Cookies["mt_ref"].Value : "");
             AddParameter(cmd, "url", Request.Cookies["mt_url"] != null ? Request.Cookies["mt_url"].Value : "");
+            AddParameter(cmd, "filename", filename);
 
             cmd.ExecuteNonQuery();
         }
@@ -100,37 +116,4 @@ public partial class download_Default : System.Web.UI.Page
         cmd.Parameters.Add(p);
         return p;
     }
-
-
-    static DateTime last_modif;
-    static string cnc_string;
-    static string dl_name;
-    static string real_path;
-    static object _lock = new object();
-    static void EnsureFileNamesAndConfig(HttpRequest request)
-    {
-        lock (_lock)
-        {
-            string path = request.MapPath("~/download/version.txt");
-            DateTime dt = File.GetLastWriteTime(path);
-            if (last_modif < dt)
-            {
-                NameValueCollection col = System.Configuration.ConfigurationManager.AppSettings;
-                cnc_string = col["MonoVsDB"];
-                if (String.IsNullOrEmpty(cnc_string))
-                    throw new ApplicationException("Missing connection string from configuration file.");
-                last_modif = dt;
-                string version = null;
-                using (StreamReader reader = new StreamReader(path))
-                {
-                    version = reader.ReadToEnd().Trim();
-                }
-                real_path = request.MapPath(String.Format("~/download_area/monovs_{0}.msi", version));
-                dl_name = String.Format("monovs_{0}.msi", version);
-            }
-        }
-    }
-
-
-
 }

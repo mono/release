@@ -97,5 +97,5 @@
         - Virtual PC (vpc)    
         <br />
         <br />
-<span style="color: #FF0000;font-size: .85em;">Note: All instances of Visual Studio 2008 must be closed prior to installation.</span> </div>
+<span style="color: #FF0000;font-size: .85em;">Note: All instances of Visual Studio must be closed prior to installation.</span> </div>
 </asp:Content>
