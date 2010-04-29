@@ -7,7 +7,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" Runat="Server">
     <img src='<%= ResolveClientUrl("~/Images/MonoVS_Menu_cropped.png") %>' style="float:right;padding:0px 20px 20px 20px;">
-<img src='<%= ResolveClientUrl("~/Images/vs-partner_293.png") %>' style="float:right;width:293px;clear:both;padding:20px;">
+<img src='<%= ResolveClientUrl("~/Images/vs_partner_2010_293.png") %>' style="float:right;width:293px;clear:both;padding:20px;">
     <p><b>Download a free, fully-functional 30-day trial of Mono Tools for Visual Studio.</b>  At any point you may <a href="http://mono-project.com/Store">purchase Mono Tools for Visual Studio from Novell</a> to receive an activation code which removes the time limitations from your installed add-in.</p>
       
   
