@@ -6,3 +6,4 @@ zoltan:vargaz
 mkestner:mkestner
 gnorton:kangaroo
 mprobst:schani
+jonpryor:jonpryor
