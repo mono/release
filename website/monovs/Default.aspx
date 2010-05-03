@@ -86,9 +86,9 @@
     </div>
         <b>Requirements:</b><br />
         -
-        Windows XP, Vista, or 7, 32 or 64 bits<br />
-        -
-        Visual Studio 2008 SP1, Standard or Professional<br />
+        Windows XP, Vista, or 7 (32 or 64 bit versions)<br />
+        - 
+        Visual Studio&trade; 2008 SP1 or Visual Studio&trade; 2010*<br />
         <br />
         
         Linux Image runs in:<br />
@@ -97,5 +97,5 @@
         - Virtual PC (vpc)    
         <br />
         <br />
-<span style="color: #FF0000;font-size: .85em;">Note: All instances of Visual Studio must be closed prior to installation.</span> </div>
+<span style="font-size: .85em;">*Excludes Visual Studio Express editions.</span> </div>
 </asp:Content>
