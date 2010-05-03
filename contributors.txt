@@ -20,3 +20,4 @@ mhutch:mhutch
 varadhan:vvaradhan
 jhill:josephhill
 sandyarm:sandyarmstrong
+lupus:illupus
