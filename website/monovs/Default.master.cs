@@ -12,7 +12,7 @@ public partial class _default : System.Web.UI.MasterPage
         if (Request.ServerVariables["SCRIPT_NAME"] == "/Default.aspx") {
           header.Visible = false; 
           footer.Visible = true;
-        } else if (Request.QueryString["nc"]!="") { //headers called inline with fancybox
+        } else if (Request.QueryString["nc"] != null) { //headers called inline with fancybox
           header.Visible = false; 
           footer.Visible = false;
         }
