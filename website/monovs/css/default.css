@@ -1,6 +1,8 @@
 ﻿body {
-	font: 14px/1.5  'Droid Sans', sans-serif;
+	font: 13px/1.5  'Droid Sans', sans-serif;
 	color: #444;
+	margin: 0;
+	padding: 0;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -8,12 +10,37 @@ h1,h2,h3,h4,h5,h6 {
 	color: #888a85;
 }
 
-h1 { font-size: 140%; }
+h1 { font-size: 140%; line-height: 120%; }
 h2 { font-size: 130%; }
 h3 { font-size: 120%; }
 h4 { font-size: 110%; }
 h5,h6 { font-size: 100%; }
 
 #splash {
-	margin: 6em auto 3em;
+	padding: 6em 10px 3em;
+	background: url(/img/watermark-splash.png) no-repeat 50% 180%;
+	min-height: 300px;
 }
+
+	#logo {
+		text-align: center;
+	}
+	
+#features {
+	background-color: #eee;
+	padding: 2em 0;
+}
+
+	#features	.feature {
+		padding: 1em 1em 1em 120px;
+		width: 200px;
+		background-repeat: no-repeat;
+		background-position: 0 20px;
+	}
+	
+	#feature-scan { background-image: url(/img/feature-scan.png);	}
+	#feature-windows { background-image: url(/img/feature-windows.png);	}
+	#feature-linux { background-image: url(/img/feature-linux.png);	}
+	#feature-debug { background-image: url(/img/feature-debug.png);	}
+	#feature-package { background-image: url(/img/feature-package.png);	}
+	#feature-studio { background-image: url(/img/feature-studio.png);	}
