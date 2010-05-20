@@ -1,0 +1,19 @@
+﻿body {
+	font: 14px/1.5  'Droid Sans', sans-serif;
+	color: #444;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-family: 'RaveIn Condensed', Avenir, Prelude, sans-serif;
+	color: #888a85;
+}
+
+h1 { font-size: 140%; }
+h2 { font-size: 130%; }
+h3 { font-size: 120%; }
+h4 { font-size: 110%; }
+h5,h6 { font-size: 100%; }
+
+#splash {
+	margin: 6em auto 3em;
+}
