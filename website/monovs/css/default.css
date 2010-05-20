@@ -1,12 +1,13 @@
 body {
   font: 13px/1.5 "Droid Sans", sans-serif;
   color: #444444;
+  background-color: white;
   margin: 0;
   padding: 0; }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "RaveIn Condensed", Avenir, Prelude, sans-serif;
-  color: #888a85; }
+  color: white; }
 
 h1 {
   font-size: 140%;
@@ -28,7 +29,7 @@ a {
   color: #3465a4;
   text-decoration: none; }
   a:hover {
-    color: #78a1d4;
+    color: #477ec4;
     text-decoration: underline;
     -webkit-transition: text-decoration 1s ease-in;
     -moz-transition: text-decoration 1s ease-in;
@@ -39,11 +40,71 @@ a {
   background: url(/img/watermark-splash.png) no-repeat 50% 180%;
   min-height: 300px; }
 
+.button {
+  display: block;
+  display: inline-block;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  filter: "progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=2px, Color='rgba(0, 0, 0, 0.5)')";
+  -ms-filter: "\"progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=2px, Color='rgba(0, 0, 0, 0.5)')\"";
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  -moz-text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  -webkit-text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  filter: dropshadow(color=rgba(0, 0, 0, 0.5), offX=0, offY=2px) glow(color=rgba(0, 0, 0, 0.5), strength=2px);
+  font-family: "RaveIn Condensed", Avenir, Prelude, sans-serif;
+  background-image: url(/img/button-shade.png);
+  background-repeat: repeat-x;
+  background-position: 0 0;
+  border-width: 1px;
+  border-style: solid;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  background-color: #3465a4;
+  border: 1px solid #22416a;
+  padding: 2px 6px; }
+  .button:active {
+    background-image: none;
+    text-shadow: none;
+    -moz-text-shadow: none;
+    -webkit-text-shadow: none;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none; }
+  .button:hover {
+    color: white; }
+
 #logo {
-  text-align: center; }
+  font-size: 90%; }
+  #logo .download {
+    padding: 6px 30px;
+    font-size: 200%;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    position: relative; }
+    #logo .download span {
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 14px;
+      -moz-border-radius: 14px;
+      -webkit-border-radius: 14px; }
+  #logo:active span {
+    border: none; }
+  #logo img {
+    display: block; }
 
 #features {
-  background: #dddddd url(/img/mp-bg-footer.png) no-repeat center top;
+  background: darker(white, 1.1) url(/img/mp-bg-footer.png) no-repeat center top;
   border-top: 1px solid white;
   border-bottom: 1px solid white;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);

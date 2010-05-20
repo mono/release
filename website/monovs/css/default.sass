@@ -1,14 +1,19 @@
+$bodyfg: #444
+$bodybg: #fff
+$select: #3465a4
+
 @import mixins.sass
 
 body
   font: 13px/1.5 "Droid Sans", sans-serif
-  color: #444444
+  color: $bodyfg
+  background-color: $bodybg
   margin: 0
   padding: 0
 
 h1, h2, h3, h4, h5, h6
   font-family: "RaveIn Condensed", Avenir, Prelude, sans-serif
-  color: #888a85
+  color: lighten($bodybg, 10%)
 
 h1
   font-size: 140%
@@ -27,10 +32,10 @@ h5, h6
   font-size: 100%
 
 a
-  color: #3465a4
+  color: $select
   text-decoration: none
   &:hover
-    color: #78a1d4
+    color: lighten($select, 10%)
     text-decoration: underline
     +transition(text-decoration 1s ease-in)
 
@@ -39,11 +44,60 @@ a
   background: url(/img/watermark-splash.png) no-repeat 50% 180%
   min-height: 300px
 
-#logo
+.button
+  display: block
+  display: inline-block
+  +radius(5px)
+  +box-shadow(0, 2px, 2px, rgba(0,0,0,0.5))
+  +text-shadow(0, 2px, 2px, rgba(0,0,0,0.5))
+  font-family: "RaveIn Condensed", Avenir, Prelude, sans-serif
+  background-image: url(/img/button-shade.png) 
+  background-repeat: repeat-x 
+  background-position: 0 0
+  border-width: 1px
+  border-style: solid
   text-align: center
+  font-weight: bold
+  color: $bodybg
+  background-color: $select
+  border: 1px solid darken($select, 15%)
+  padding: 2px 6px
+  &:active
+    background-image: none
+    text-shadow: none
+    -moz-text-shadow: none
+    -webkit-text-shadow: none        
+    box-shadow: none
+    -moz-box-shadow: none
+    -webkit-box-shadow: none
+  &:hover
+    color: $bodybg
+
+#logo
+  font-size: 90%
+  
+  .download
+    padding: 6px 30px
+    font-size: 200%
+    +radius(15px)
+    position: relative
+    span
+      display: block
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      border: 1px solid rgba(255,255,255,0.3)
+      +radius(14px)
+  &:active
+    span
+      border: none
+  img
+    display: block
 
 #features
-  background: #dddddd url(/img/mp-bg-footer.png) no-repeat center top
+  background: darker($bodybg,1.1) url(/img/mp-bg-footer.png) no-repeat center top
   border-top: 1px solid white
   border-bottom: 1px solid white
   +box-shadow(0, 1px, 6px, rgba(0, 0, 0, 0.6))

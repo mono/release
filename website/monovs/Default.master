@@ -6,6 +6,7 @@
     <title>
         <asp:ContentPlaceHolder id="title" runat="server" />
     </title>
+    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/grid.css" />
     <link rel="stylesheet" type="text/css" href="css/fonts.css" />
     <link rel="stylesheet" type="text/css" href="css/default.css" />

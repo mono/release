@@ -12,6 +12,13 @@
   // IE 8
   -ms-filter: "\"progid:DXImageTransform.Microsoft.dropshadow(OffX=#{$x}, OffY=#{$y}, Color='#{$color}')\""
 
+=text-shadow($x,$y,$blur, $color)
+  text-shadow: $x $y $blur $color
+  -moz-text-shadow: $x $y $blur $color
+  -webkit-text-shadow: $x $y $blur $color
+  // IE
+  filter: dropshadow(color=$color,offX=$x,offY=$y) glow(color=$color,strength=$blur)
+
 
 // Vertical gradient
 =vgrad($from, $to)
