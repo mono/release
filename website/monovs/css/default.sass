@@ -52,7 +52,7 @@ ul
 
 #splash
   padding: 6em 10px 3em
-  background: url(/img/watermark-splash.png) no-repeat 50% 180%
+  background: url(/img/watermark-splash.png) no-repeat 50% 150%
   min-height: 300px
 
 .button
@@ -73,6 +73,7 @@ ul
   background-color: $select
   border: 1px solid darken($select, 15%)
   padding: 2px 6px
+  +user-select(none)
   &:active
     background-image: none
     text-shadow: none
@@ -115,46 +116,60 @@ ul
     margin-left: -20px
 
 #features
-  background: $bodybg*.9 url(/img/mp-bg-footer.png) no-repeat center top
-  border-top: 1px solid white
-  border-bottom: 1px solid white
-  +box-shadow(0, 1px, 6px, rgba(0, 0, 0, 0.6))
-  padding: 2em 0
   margin: 0 0 2em 0
+  padding: 3px 0 6px 0
+  width: 100%
+  overflow: hidden
   
-  .feature
-    padding: 1em 1em 1em 120px
-    width: 200px
-    background-color: rgba(255,255,255,0) //rather than transparent to make transitions work right on webkit
-    background-repeat: no-repeat
-    background-position: 0 20px
-    +radius(15px)
-    height: 11em
+  &>div
+    background: $bodybg*.9 url(/img/mp-bg-footer.png) no-repeat center top
+    border-top: 1px solid white
+    border-bottom: 1px solid white
+    +box-shadow(0, 1px, 6px, rgba(0, 0, 0, 0.6))
+    padding: 2em 0
+    
+    .feature
+      padding: 1em 1em 1em 120px
+      width: 200px
+      background-color: rgba(255,255,255,0) //rather than transparent to make transitions work right on webkit
+      background-repeat: no-repeat
+      background-position: 0 20px
+      +radius(15px)
+      height: 11em
 
-    &.jquery //only do this for javascript browsers
-      cursor: pointer
-      &:hover
-        background-color: rgba(255, 255, 255, 0.4)
-        +transition(background-color .3s ease-in)
-  
-  a:hover
-    text-decoration: none
-    +transition(color 1s ease-in)
+      &.jquery //only do this for javascript browsers
+        cursor: pointer
+        &:hover
+          background-color: rgba(255, 255, 255, 0.4)
+          +transition(background-color .3s ease-in)
+    
+    a:hover
+      text-decoration: none
+      +transition(color 1s ease-in)
 
-  #feature-scan
-    background-image: url(/img/feature-scan.png)
+    #feature-scan
+      background-image: url(/img/feature-scan.png)
 
-  #feature-windows
-    background-image: url(/img/feature-windows.png)
+    #feature-windows
+      background-image: url(/img/feature-windows.png)
 
-  #feature-linux
-    background-image: url(/img/feature-linux.png)
+    #feature-linux
+      background-image: url(/img/feature-linux.png)
 
-  #feature-debug
-    background-image: url(/img/feature-debug.png)
+    #feature-debug
+      background-image: url(/img/feature-debug.png)
 
-  #feature-package
-    background-image: url(/img/feature-package.png)
+    #feature-package
+      background-image: url(/img/feature-package.png)
 
-  #feature-studio
-    background-image: url(/img/feature-studio.png)
+    #feature-studio
+      background-image: url(/img/feature-studio.png)
+
+#footer
+  margin: 4em auto 2em auto
+  .logos
+    a
+      display: block
+      margin-bottom: 20px
+      img
+        border: none

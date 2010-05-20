@@ -47,7 +47,7 @@ ul li {
 
 #splash {
   padding: 6em 10px 3em;
-  background: url(/img/watermark-splash.png) no-repeat 50% 180%;
+  background: url(/img/watermark-splash.png) no-repeat 50% 150%;
   min-height: 300px; }
 
 .button {
@@ -76,7 +76,10 @@ ul li {
   color: white;
   background-color: #3465a4;
   border: 1px solid #22416a;
-  padding: 2px 6px; }
+  padding: 2px 6px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none; }
   .button:active {
     background-image: none;
     text-shadow: none;
@@ -121,47 +124,59 @@ ul li {
     margin-left: -20px; }
 
 #features {
-  background: #e5e5e5 url(/img/mp-bg-footer.png) no-repeat center top;
-  border-top: 1px solid white;
-  border-bottom: 1px solid white;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
-  -moz-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
-  -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
-  filter: "progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1px, Color='rgba(0, 0, 0, 0.6)')";
-  -ms-filter: "\"progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1px, Color='rgba(0, 0, 0, 0.6)')\"";
-  padding: 2em 0;
-  margin: 0 0 2em 0; }
-  #features .feature {
-    padding: 1em 1em 1em 120px;
-    width: 200px;
-    background-color: rgba(255, 255, 255, 0);
-    background-repeat: no-repeat;
-    background-position: 0 20px;
-    border-radius: 15px;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    height: 11em; }
-    #features .feature.jquery {
-      cursor: pointer; }
-      #features .feature.jquery:hover {
-        background-color: rgba(255, 255, 255, 0.4);
-        -webkit-transition: background-color 0.3s ease-in;
-        -moz-transition: background-color 0.3s ease-in;
-        -o-transition: background-color 0.3s ease-in; }
-  #features a:hover {
-    text-decoration: none;
-    -webkit-transition: color 1s ease-in;
-    -moz-transition: color 1s ease-in;
-    -o-transition: color 1s ease-in; }
-  #features #feature-scan {
-    background-image: url(/img/feature-scan.png); }
-  #features #feature-windows {
-    background-image: url(/img/feature-windows.png); }
-  #features #feature-linux {
-    background-image: url(/img/feature-linux.png); }
-  #features #feature-debug {
-    background-image: url(/img/feature-debug.png); }
-  #features #feature-package {
-    background-image: url(/img/feature-package.png); }
-  #features #feature-studio {
-    background-image: url(/img/feature-studio.png); }
+  margin: 0 0 2em 0;
+  padding: 3px 0 6px 0;
+  width: 100%;
+  overflow: hidden; }
+  #features > div {
+    background: #e5e5e5 url(/img/mp-bg-footer.png) no-repeat center top;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+    -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+    filter: "progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1px, Color='rgba(0, 0, 0, 0.6)')";
+    -ms-filter: "\"progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1px, Color='rgba(0, 0, 0, 0.6)')\"";
+    padding: 2em 0; }
+    #features > div .feature {
+      padding: 1em 1em 1em 120px;
+      width: 200px;
+      background-color: rgba(255, 255, 255, 0);
+      background-repeat: no-repeat;
+      background-position: 0 20px;
+      border-radius: 15px;
+      -moz-border-radius: 15px;
+      -webkit-border-radius: 15px;
+      height: 11em; }
+      #features > div .feature.jquery {
+        cursor: pointer; }
+        #features > div .feature.jquery:hover {
+          background-color: rgba(255, 255, 255, 0.4);
+          -webkit-transition: background-color 0.3s ease-in;
+          -moz-transition: background-color 0.3s ease-in;
+          -o-transition: background-color 0.3s ease-in; }
+    #features > div a:hover {
+      text-decoration: none;
+      -webkit-transition: color 1s ease-in;
+      -moz-transition: color 1s ease-in;
+      -o-transition: color 1s ease-in; }
+    #features > div #feature-scan {
+      background-image: url(/img/feature-scan.png); }
+    #features > div #feature-windows {
+      background-image: url(/img/feature-windows.png); }
+    #features > div #feature-linux {
+      background-image: url(/img/feature-linux.png); }
+    #features > div #feature-debug {
+      background-image: url(/img/feature-debug.png); }
+    #features > div #feature-package {
+      background-image: url(/img/feature-package.png); }
+    #features > div #feature-studio {
+      background-image: url(/img/feature-studio.png); }
+
+#footer {
+  margin: 4em auto 2em auto; }
+  #footer .logos a {
+    display: block;
+    margin-bottom: 20px; }
+    #footer .logos a img {
+      border: none; }

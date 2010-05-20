@@ -12,7 +12,7 @@
             <div class="grid_6" id="logo">
                 <img alt="MonoTools for Visual Studio" src="/img/logo.png">
                 <a href="#" class="download button"><span></span>Download</a>
-                <p>Mono tools for Visual Studio  1.1<br>
+                <p>Mono tools for Visual Studio 1.1<br>
                 Download the free 30-day trial.</p>
                 <p class="buynow">Or <a href="#">Buy now</a>.</p>
             </div>
@@ -26,31 +26,33 @@
     </div>
 
     <div id="features">
-        <div class="container_12">
-            <div class="grid_6 feature" id="feature-scan">
-                <h2><a href="#">Scan for Mono Compatibility</a></h2>
-                <p>Scan your application with the Mono Migration Analyzer (MoMA) directly in Visual Studio.</p>
+        <div>
+            <div class="container_12">
+                <div class="grid_6 feature" id="feature-scan">
+                    <h2><a href="#">Scan for Mono Compatibility</a></h2>
+                    <p>Scan your application with the Mono Migration Analyzer (MoMA) directly in Visual Studio.</p>
+                </div>
+                <div class="grid_6 feature" id="feature-windows">
+                    <h2><a href="#">Test on Windows</a></h2>
+                    <p>Compile and launch your application running in Mono on Windows.</p>
+                </div>
+                <div class="grid_6 feature clear" id="feature-linux">
+                    <h2><a href="#">Test on Linux</a></h2>
+                    <p>Automatically compile your application and launch it on your Linux PC or virtual image.</p>
+                </div>
+                <div class="grid_6 feature" id="feature-debug">
+                    <h2><a href="#">Debug Remotely on Linux</a></h2>
+                    <p>Debug your application running on Mono on Linux directly in Visual Studio, just like you normally do.</p>
+                </div>
+                <div class="grid_6 feature clear" id="feature-package">
+                    <h2><a href="#">Package for Linux</a></h2>
+                    <p>Automatically compile your application and launch it on your Linux PC or virtual image.</p>
+                </div>
+                <div class="grid_6 feature" id="feature-studio">
+                    <h2><a href="#">Create a SUSE Linux Appliance</a></h2>
+                    <p>Bundle your application into a SUSE Linux appliance for easy distribution to your users. </p>
+                </div>                                
             </div>
-            <div class="grid_6 feature" id="feature-windows">
-                <h2><a href="#">Test on Windows</a></h2>
-                <p>Compile and launch your application running in Mono on Windows.</p>
-            </div>
-            <div class="grid_6 feature clear" id="feature-linux">
-                <h2><a href="#">Test on Linux</a></h2>
-                <p>Automatically compile your application and launch it on your Linux PC or virtual image.</p>
-            </div>
-            <div class="grid_6 feature" id="feature-debug">
-                <h2><a href="#">Debug Remotely on Linux</a></h2>
-                <p>Debug your application running on Mono on Linux directly in Visual Studio, just like you normally do.</p>
-            </div>
-            <div class="grid_6 feature clear" id="feature-package">
-                <h2><a href="#">Package for Linux</a></h2>
-                <p>Automatically compile your application and launch it on your Linux PC or virtual image.</p>
-            </div>
-            <div class="grid_6 feature" id="feature-studio">
-                <h2><a href="#">Create a SUSE Linux Appliance</a></h2>
-                <p>Bundle your application into a SUSE Linux appliance for easy distribution to your users. </p>
-            </div>                                
         </div>
     </div>
 

@@ -25,7 +25,11 @@
 
     <!--#footer-->
     <div id="footer" class="container_12">
-        <div class="grid_2">logos</div>
+        <div class="grid_2 logos">
+            <a href="http://www.mono-project.org"><img alt="Mono" src="/img/monothumb.png"></a>
+            <a href="http://www.novell.com/linux"><img alt="Novell" src="/img/novellthumb.png"></a>
+            <a href="http://susestudio.com"><img alt="SUSE Studio" src="/img/studiothumb.png"></a>
+        </div>
         <div class="grid_3">
             <a href="#">Installation Guide</a>
             <a href="#">Introductory Tutorial</a>

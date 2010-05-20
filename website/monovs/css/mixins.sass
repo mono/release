@@ -60,6 +60,10 @@
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$to}', endColorstr='#{$from}', GradientType = 1)"
   zoom: 1
 
+=user-select($x)
+  user-select: $x
+  -webkit-user-select: $x
+  -moz-user-select: $x
 
 // This should be called with the argument in quotes, otherwise multiple
 // transitions in one CSS transition will not work, due to comma usage
