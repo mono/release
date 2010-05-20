@@ -14,7 +14,7 @@
                 <a href="#" class="download button"><span></span>Download</a>
                 <p>Mono tools for Visual Studio  1.1<br>
                 Download the free 30-day trial.</p>
-                <p class="buynow">Or <a href="#" class="button">Buy now</a>.</p>
+                <p class="buynow">Or <a href="#">Buy now</a>.</p>
             </div>
             <div class="grid_6">
                 <h1>Port your .NET applications to Mono and Linux without leaving Visual Studio</h1>
@@ -51,6 +51,24 @@
                 <h2><a href="#">Create a SUSE Linux Appliance</a></h2>
                 <p>Bundle your application into a SUSE Linux appliance for easy distribution to your users. </p>
             </div>                                
+        </div>
+    </div>
+
+    <div class="container_12 clearfix">
+        <h2>Requirements</h2>
+        <div class="grid_6">
+            <ul class="block">
+                <li>Windows XP, Vista or 7 (32 or 64bit versions)</li>
+                <li>Visual Studio 2008 SP1 or Visual Studio 2010*</li>
+            </ul>
+        </div>
+        <div class="grid_6">
+            <p>Linux Image runs in:</p>
+            <ul class="block">
+                <li>VMWare (VMX/OVA) or</li>
+                <li>Virtual PC (VPC)</li>
+            </ul>
+            <p class="small">* Excludes Visual Studio Express editions.</p>
         </div>
     </div>
 

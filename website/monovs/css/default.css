@@ -7,7 +7,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "RaveIn Condensed", Avenir, Prelude, sans-serif;
-  color: white; }
+  color: #777777; }
 
 h1 {
   font-size: 140%;
@@ -34,6 +34,16 @@ a {
     -webkit-transition: text-decoration 1s ease-in;
     -moz-transition: text-decoration 1s ease-in;
     -o-transition: text-decoration 1s ease-in; }
+
+ul.block {
+  padding: 0; }
+ul li {
+  display: block;
+  list-style: none;
+  margin-bottom: 0.3em; }
+
+.small {
+  font-size: 80%; }
 
 #splash {
   padding: 6em 10px 3em;
@@ -79,8 +89,11 @@ a {
     color: white; }
 
 #logo {
-  font-size: 90%; }
+  font-size: 90%;
+  width: 280px;
+  padding: 0 20px; }
   #logo .download {
+    margin: 10px 0 5px;
     padding: 6px 30px;
     font-size: 200%;
     border-radius: 15px;
@@ -100,8 +113,12 @@ a {
       -webkit-border-radius: 14px; }
   #logo:active span {
     border: none; }
+  #logo .buynow {
+    font-size: 110%;
+    font-weight: bold; }
   #logo img {
-    display: block; }
+    display: block;
+    margin-left: -20px; }
 
 #features {
   background: #e5e5e5 url(/img/mp-bg-footer.png) no-repeat center top;
@@ -112,7 +129,8 @@ a {
   -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
   filter: "progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1px, Color='rgba(0, 0, 0, 0.6)')";
   -ms-filter: "\"progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1px, Color='rgba(0, 0, 0, 0.6)')\"";
-  padding: 2em 0; }
+  padding: 2em 0;
+  margin: 0 0 2em 0; }
   #features .feature {
     padding: 1em 1em 1em 120px;
     width: 200px;

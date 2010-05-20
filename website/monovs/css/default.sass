@@ -13,7 +13,7 @@ body
 
 h1, h2, h3, h4, h5, h6
   font-family: "RaveIn Condensed", Avenir, Prelude, sans-serif
-  color: lighten($bodybg, 10%)
+  color: lighten($bodyfg, 20%)
 
 h1
   font-size: 140%
@@ -38,6 +38,17 @@ a
     color: lighten($select, 10%)
     text-decoration: underline
     +transition(text-decoration 1s ease-in)
+
+ul
+  &.block
+    padding: 0
+  li
+    display: block
+    list-style: none
+    margin-bottom: .3em
+
+.small
+  font-size: 80%
 
 #splash
   padding: 6em 10px 3em
@@ -75,8 +86,11 @@ a
 
 #logo
   font-size: 90%
+  width: 280px
+  padding: 0 20px
   
   .download
+    margin: 10px 0 5px
     padding: 6px 30px
     font-size: 200%
     +radius(15px)
@@ -93,8 +107,12 @@ a
   &:active
     span
       border: none
+  .buynow
+    font-size: 110%
+    font-weight: bold
   img
     display: block
+    margin-left: -20px
 
 #features
   background: $bodybg*.9 url(/img/mp-bg-footer.png) no-repeat center top
@@ -102,6 +120,7 @@ a
   border-bottom: 1px solid white
   +box-shadow(0, 1px, 6px, rgba(0, 0, 0, 0.6))
   padding: 2em 0
+  margin: 0 0 2em 0
   
   .feature
     padding: 1em 1em 1em 120px
