@@ -4,27 +4,20 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="title" runat="Server">
     Mono Tools for Visual Studio - Scan with MoMA</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
+<!--#include file="_header.aspx"-->
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" runat="Server">
-    <div class="feature-content">
-        <table style="margin-top: -15px">
-            <tr>
-                <td style="width: 625px"><a href="Default.aspx" style="color: #000000;">&lt;-- Home</a></td>
-                <td><a href="TestWin.aspx" style="color: #000000;">Run on Mono on Windows --&gt;</a></td>
-            </tr>
-        </table>
-        <br />
-        <br />
-        <span class="feature-header">Scan for Mono Compatibility</span><br />
-        <br />
-        There are some common stumbling blocks that keep .NET applications from being able
+  <div class="container_12">
+        <h1>Scan for Mono Compatibility</h1>
+
+        <p>There are some common stumbling blocks that keep .NET applications from being able
         to run on Mono.  These can be due to using parts of the .NET framework that Mono
         does not implement or implements differently, or reliance on native platform 
-        code like user32.
-        <br /><br />
-        The <a href="http://www.mono-project.com/MoMA">Mono Migration Analyzer (MoMA)</a> can scan your compiled assemblies for these types
-        of issues and point them out, making it easy to find them and work around them.
-        <br /><br /><br />
+        code like user32.</p>
+        
+        <p>The <a href="http://www.mono-project.com/MoMA">Mono Migration Analyzer (MoMA)</a> can scan your compiled assemblies for these types of issues and point them out, making it easy to find them and work around them.</p>
+
+>
         <img class="shot" src="img/moma1.png" alt="Scanning with MoMA - Step 1" />
             <b>Step 1:</b><br />
             <br />
@@ -43,5 +36,5 @@
             you to the affected code.<br /><br />
             For details on the types of issues MoMA scans for, and how to fix them, please
             see the <a href="http://www.mono-project.com/MoMA_-_Issue_Descriptions">MoMA User's Guide</a>.
-    </div>
+  </div>
 </asp:Content>

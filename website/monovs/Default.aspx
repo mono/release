@@ -11,10 +11,10 @@
         <div class="container_12">
             <div class="grid_6" id="logo">
                 <img alt="MonoTools for Visual Studio" src="/img/logo.png">
-                <a href="#" class="download button"><span></span>Download</a>
+                <a href="/download/" class="download button"><span></span>Download</a>
                 <p>Mono tools for Visual Studio 1.1<br>
                 Download the free 30-day trial.</p>
-                <p class="buynow">Or <a href="#">Buy now</a>.</p>
+                <p class="buynow">Or <a href="http://go-mono.com/store/">Buy now</a>.</p>
             </div>
             <div class="grid_6">
                 <h1>Port your .NET applications to Mono and Linux without leaving Visual Studio</h1>
@@ -29,7 +29,7 @@
         <div>
             <div class="container_12">
                 <div class="grid_6 feature" id="feature-scan">
-                    <h2><a href="#">Scan for Mono Compatibility</a></h2>
+                    <h2><a href="Moma.aspx">Scan for Mono Compatibility</a></h2>
                     <p>Scan your application with the Mono Migration Analyzer (MoMA) directly in Visual Studio.</p>
                 </div>
                 <div class="grid_6 feature" id="feature-windows">
