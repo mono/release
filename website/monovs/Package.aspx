@@ -23,25 +23,25 @@
         <br />
         <br />
         <br />
-        <img class="shot" src="Images/package1.png" alt="Package for Linux - Step 1" />
+        <img class="shot" src="img/package1.png" alt="Package for Linux - Step 1" />
         <b>Step 1:</b><br />
         <br />
         Add a new item to your project.
         <div class="clearer">
         </div>
-        <img class="shot" src="Images/package2.png" alt="Package for Linux - Step 2" />
+        <img class="shot" src="img/package2.png" alt="Package for Linux - Step 2" />
         <b>Step 2:</b><br />
         <br />
         Choose "Linux Package Definition".
         <div class="clearer">
         </div>
-        <img class="shot" src="Images/package3.png" alt="Package for Linux - Step 3" />
+        <img class="shot" src="img/package3.png" alt="Package for Linux - Step 3" />
         <b>Step 3:</b><br />
         <br />
         On the "General" tab, fill out basic information about your package.
         <div class="clearer">
         </div>
-        <img class="shot" src="Images/package4.png" alt="Package for Linux - Step 4" />
+        <img class="shot" src="img/package4.png" alt="Package for Linux - Step 4" />
         <b>Step 4:</b><br />
         <br />
         On the "Files" tab, add the files you wish to include in your package.
@@ -53,7 +53,7 @@
         </div>
         <div class="clearer">
         </div>
-        <img class="shot" src="Images/package5.png" alt="Package for Linux - Step 5" />
+        <img class="shot" src="img/package5.png" alt="Package for Linux - Step 5" />
         <b>Step 5:</b><br />
         <br />
         On the "Dependencies" tab, you can set what Mono libraries or other packages your application depends on.  You can also specify what dependencies your application provides.
@@ -67,7 +67,7 @@
         </div>
        <div class="clearer">
         </div>
-        <img class="shot" src="Images/package6.png" alt="Package for Linux - Step 6" />
+        <img class="shot" src="img/package6.png" alt="Package for Linux - Step 6" />
         <b>Step 6:</b><br />
         <br />
         Once you click "Build Package", your package will be built and ready for you (and your users) to install on SUSE Linux.

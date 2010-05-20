@@ -21,22 +21,22 @@
         environment.  Debug on Mono on Linux brings this functionality to Visual Studio developers 
         by enabling remote debugging of Mono applications running on Linux.
         <br /><br /><br />
-        <img class="shot" src="Images/moma1.png" alt="Debug in Linux - Step 1" />
+        <img class="shot" src="img/moma1.png" alt="Debug in Linux - Step 1" />
             <b>Step 1:</b><br />
             <br />
             Open your solution in Visual Studio and ensure it compiles.
         <div class="clearer"></div>
-        <img class="shot" src="Images/debug3.png" alt="Debug in Linux - Step 2" />
+        <img class="shot" src="img/debug3.png" alt="Debug in Linux - Step 2" />
             <b>Step 2:</b><br />
             <br />
             Set your breakpoints like you would normally do.
         <div class="clearer"></div>
-        <img class="shot" src="Images/debug2.png" alt="Debug in Linux - Step 3" />
+        <img class="shot" src="img/debug2.png" alt="Debug in Linux - Step 3" />
             <b>Step 3:</b><br />
             <br />
             Select the Mono->Debug Remotely in Mono menu item.
         <div class="clearer"></div>
-        <img class="shot" src="Images/testlin3.png" alt="Debug in Linux - Step 4" />
+        <img class="shot" src="img/testlin3.png" alt="Debug in Linux - Step 4" />
             <b>Step 4:</b><br />
             <br />
             A dialog box will prompt you to choose from the available servers it found on you local
@@ -49,13 +49,13 @@
                 may want to check your firewall settings.            
             </div>
         <div class="clearer"></div>
-        <img class="shot" src="Images/testlin4.jpg" alt="Debug in Linux - Step 5" />
+        <img class="shot" src="img/testlin4.jpg" alt="Debug in Linux - Step 5" />
             <b>Step 5:</b><br />
             <br />
             Your application will be compiled, copied over to Linux, and automatically started.  If
             it is a web application, it will be launched in your default Windows web browser.
         <div class="clearer"></div>
-        <img class="shot" src="Images/debug4.png" alt="Debug in Linux - Step 6" />
+        <img class="shot" src="img/debug4.png" alt="Debug in Linux - Step 6" />
             <b>Step 6:</b><br />
             <br />
             When the application hits the breakpoint, it will stop in Visual Studio, just like normal.

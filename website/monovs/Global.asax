@@ -4,12 +4,14 @@
 
     void Application_Start(object sender, EventArgs e)
     {
+/*
         if (String.IsNullOrEmpty(ConfigurationManager.AppSettings["MonoVsDB"]))
             throw new ApplicationException("Missing connection string from configuration file.");
         if (String.IsNullOrEmpty(ConfigurationManager.AppSettings["MonoTools_msi"]))
             throw new ApplicationException("Missing msi installer filename (MonoTools_msi).");
         if (String.IsNullOrEmpty(ConfigurationManager.AppSettings["MonoTools_vsix"]))
             throw new ApplicationException("Missing vsix installer filename (MonoTools_vsix).");
+*/
     }
     
     void Application_End(object sender, EventArgs e) 

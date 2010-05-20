@@ -24,17 +24,17 @@
         differences between Mono and .NET, running the application on Mono on Linux will simplify the 
         process of working through issues that could be caused by differences in Windows and Linux.
         <br /><br /><br />
-        <img class="shot" src="Images/moma1.png" alt="Testing in Linux - Step 1" />
+        <img class="shot" src="img/moma1.png" alt="Testing in Linux - Step 1" />
             <b>Step 1:</b><br />
             <br />
             Open your solution in Visual Studio and ensure it compiles.
         <div class="clearer"></div>
-        <img class="shot" src="Images/testlin2.png" alt="Testing in Linux - Step 2" />
+        <img class="shot" src="img/testlin2.png" alt="Testing in Linux - Step 2" />
             <b>Step 2:</b><br />
             <br />
             Select the Mono->Run Remotely in Mono menu item.
         <div class="clearer"></div>
-        <img class="shot" src="Images/testlin3.png" alt="Testing in Linux - Step 3" />
+        <img class="shot" src="img/testlin3.png" alt="Testing in Linux - Step 3" />
             <b>Step 3:</b><br />
             <br />
             A dialog box will prompt you to choose from the available servers it found on you local
@@ -47,7 +47,7 @@
                 may want to check your firewall settings.            
             </div>
         <div class="clearer"></div>
-        <img class="shot" src="Images/testlin4.jpg" alt="Testing in Linux - Step 4" />
+        <img class="shot" src="img/testlin4.jpg" alt="Testing in Linux - Step 4" />
             <b>Step 4:</b><br />
             <br />
             Your application will be compiled, copied over to Linux, and automatically started.  If

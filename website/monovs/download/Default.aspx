@@ -6,8 +6,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" Runat="Server">
-    <img src='<%= ResolveClientUrl("~/Images/MonoVS_Menu_cropped.png") %>' style="float:right;padding:0px 20px 20px 20px;">
-<img src='<%= ResolveClientUrl("~/Images/vs_partner_2010_293.png") %>' style="float:right;width:293px;clear:both;padding:20px;">
+    <img src='<%= ResolveClientUrl("~/img/MonoVS_Menu_cropped.png") %>' style="float:right;padding:0px 20px 20px 20px;">
+<img src='<%= ResolveClientUrl("~/img/vs_partner_2010_293.png") %>' style="float:right;width:293px;clear:both;padding:20px;">
     <p><b>Download a free, fully-functional 30-day trial of Mono Tools for Visual Studio.</b>  At any point you may <a href="http://mono-project.com/Store">purchase Mono Tools for Visual Studio from Novell</a> to receive an activation code which removes the time limitations from your installed add-in.</p>
       
   
@@ -78,9 +78,9 @@
                 </table><div style="width:500px;text-align:center">
                     <br/>
                     <asp:ImageButton CausesValidation="true" ID="btnDownloadMsi" runat="server" 
-                        ImageUrl="~/Images/mp-download-2008.png" onclick="btnDownloadMsi_Click" />
+                        ImageUrl="~/img/mp-download-2008.png" onclick="btnDownloadMsi_Click" />
                     <asp:ImageButton CausesValidation="true" ID="btnDownloadVsix" runat="server" 
-                        ImageUrl="~/Images/mp-download-2010.png" onclick="btnDownloadVsix_Click" />
+                        ImageUrl="~/img/mp-download-2010.png" onclick="btnDownloadVsix_Click" />
                     </div>
             </div>
   <h3>Requirements</h3>
@@ -90,7 +90,7 @@
   </ul>
   
   <h3>Detailed Installation Instructions</h3>
-  <p>For a step-by-step guide through the installation process, as well as installation options for using Mono Tools for Visual Studio with Linux environments other than the virtual images provided above, please follow the detailed <a href="http://mono-project.com/GettingStartedWithMonoVS">installation instructions</a>.</p>
+  <p>For a step-by-step guide through the installation process, as well as installation options for using Mono Tools for Visual Studio with Linux environments other than the virtual img provided above, please follow the detailed <a href="http://mono-project.com/GettingStartedWithMonoVS">installation instructions</a>.</p>
 <script type="text/javascript" src="http://www.novell.com/common/inc/elqNow/elqCfg.js"></script>
 <script type="text/javascript" src="http://www.novell.com/common/inc/elqNow/elqImg.js"></script>
 

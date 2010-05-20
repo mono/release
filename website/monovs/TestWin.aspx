@@ -29,17 +29,17 @@
             available from the Mono download page <a href="http://www.go-mono.com/mono-downloads/download.html">here</a>.
         </div>
         <br /><br />
-        <img class="shot" src="Images/moma1.png" alt="Testing in Windows - Step 1" />
+        <img class="shot" src="img/moma1.png" alt="Testing in Windows - Step 1" />
             <b>Step 1:</b><br />
             <br />
             Open your solution in Visual Studio and ensure it compiles.
         <div class="clearer"></div>
-        <img class="shot" src="Images/testwin2.png" alt="Testing in Windows - Step 2" />
+        <img class="shot" src="img/testwin2.png" alt="Testing in Windows - Step 2" />
             <b>Step 2:</b><br />
             <br />
             Select the Mono->Run Locally in Mono menu item.
         <div class="clearer"></div>
-        <img class="shot" src="Images/testwin3.png" alt="Testing in Windows - Step 3" />
+        <img class="shot" src="img/testwin3.png" alt="Testing in Windows - Step 3" />
             <b>Step 3:</b><br />
             <br />
             The application will be compiled and launched using Mono on Windows, so

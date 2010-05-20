@@ -6,7 +6,7 @@
     <title>
         <asp:ContentPlaceHolder ID="title" runat="server" />
     </title>
-    <link rel="stylesheet" type="text/css" href="style.css" />  
+    <link rel="stylesheet" type="text/css" href="css/default.css" />  
     <link rel="stylesheet" type="text/css" media="print" href="http://mono-project.com/skins/common/commonPrint.css" />  
     <link rel="stylesheet" type="text/css" href="http://mono-project.com/skins/MonoWaveWide/screen.css" />
     <script type="text/javascript" src="http://mono-project.com/skins/Mono2/prototype.js"></script>

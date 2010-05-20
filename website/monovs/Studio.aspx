@@ -25,13 +25,13 @@ With everything packaged in a single virtual machine, distribution and setup is 
         <br />
         <br />
         <br />
-        <img class="shot" src="Images/appliance1.png" alt="Create SUSE Studio Appliance - Step 1" />
+        <img class="shot" src="img/appliance1.png" alt="Create SUSE Studio Appliance - Step 1" />
         <b>Step 1:</b><br />
         <br />
         Go to Mono -> Create SUSE Powered Appliance
         <div class="clearer">
         </div>
-        <img class="shot" src="Images/appliance2.png" alt="Create SUSE Studio Appliance - Step 2" />
+        <img class="shot" src="img/appliance2.png" alt="Create SUSE Studio Appliance - Step 2" />
         <b>Step 2:</b><br />
         <br />
         Enter your SUSE Studio username and API key.
@@ -45,13 +45,13 @@ With everything packaged in a single virtual machine, distribution and setup is 
         </div>
         <div class="clearer">
         </div>
-        <img class="shot" src="Images/appliance3.png" alt="Create SUSE Studio Appliance - Step 3" />
+        <img class="shot" src="img/appliance3.png" alt="Create SUSE Studio Appliance - Step 3" />
         <b>Step 3:</b><br />
         <br />
         You will be presented with a list of all your appliances available on SUSE Studio.  Choose one that you wish to modify, or you can create a new one.
         <div class="clearer">
         </div>
-        <img class="shot" src="Images/appliance5.png" alt="Create SUSE Studio Appliance - Step 5" />
+        <img class="shot" src="img/appliance5.png" alt="Create SUSE Studio Appliance - Step 5" />
         <b>Step 4:</b><br />
         <br />
         Once you've selected the appliance to use, choose your Linux RPM package that you want to upload to the appliance.
@@ -63,7 +63,7 @@ With everything packaged in a single virtual machine, distribution and setup is 
         </div>
        <div class="clearer">
         </div>
-        <img class="shot" src="Images/appliance6.png" alt="Create SUSE Studio Appliance - Step 6" />
+        <img class="shot" src="img/appliance6.png" alt="Create SUSE Studio Appliance - Step 6" />
         <b>Step 5:</b><br />
         <br />
         Your appliance will be created and your package will be uploaded to the it.  From here, you can go to the SUSE Studio website to further customize and build your appliance.

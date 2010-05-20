@@ -25,17 +25,17 @@
         The <a href="http://www.mono-project.com/MoMA">Mono Migration Analyzer (MoMA)</a> can scan your compiled assemblies for these types
         of issues and point them out, making it easy to find them and work around them.
         <br /><br /><br />
-        <img class="shot" src="Images/moma1.png" alt="Scanning with MoMA - Step 1" />
+        <img class="shot" src="img/moma1.png" alt="Scanning with MoMA - Step 1" />
             <b>Step 1:</b><br />
             <br />
             Open your solution in Visual Studio and ensure it compiles.
         <div class="clearer"></div>
-        <img class="shot" src="Images/moma2.png" alt="Scanning with MoMA - Step 2" />
+        <img class="shot" src="img/moma2.png" alt="Scanning with MoMA - Step 2" />
             <b>Step 2:</b><br />
             <br />
             Select the Mono->Scan with MoMA menu item.
         <div class="clearer"></div>
-        <img class="shot" src="Images/moma3.png" alt="Scanning with MoMA - Step 3" />
+        <img class="shot" src="img/moma3.png" alt="Scanning with MoMA - Step 3" />
             <b>Step 3:</b><br />
             <br />
             MoMA will scan your application and look for code that may cause issues on Mono.
