@@ -31,14 +31,18 @@
             <a href="http://susestudio.com"><img alt="SUSE Studio" src="/img/studiothumb.png"></a>
         </div>
         <div class="grid_3">
-            <a href="#">Installation Guide</a>
-            <a href="#">Introductory Tutorial</a>
-            <a href="#">FAQ</a>
+            <ul class="block">
+                <li><a href="#">Installation Guide</a></li>
+                <li><a href="#">Introductory Tutorial</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
         </div>
-        <div class="grid_3 suffix_4">
-            <a href="#">Report Bugs</a>
-            <a href="#">Mailing List</a>
-            <a href="#">IRC Chat</a>
+        <div class="grid_3">
+            <ul class="block">
+                <li><a href="#">Report Bugs</a></li>
+                <li><a href="#">Mailing List</a></li>
+                <li><a href="#">IRC Chat</a></li>
+            </ul>
         </div>
     </div>
 

@@ -36,6 +36,7 @@ a {
     -o-transition: text-decoration 1s ease-in; }
 
 ul.block {
+  margin: 10px 0 10px;
   padding: 0; }
 ul li {
   display: block;
@@ -137,7 +138,7 @@ ul li {
     -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
     filter: "progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1px, Color='rgba(0, 0, 0, 0.6)')";
     -ms-filter: "\"progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1px, Color='rgba(0, 0, 0, 0.6)')\"";
-    padding: 2em 0; }
+    padding: 2em 0 3em; }
     #features > div .feature {
       padding: 1em 1em 1em 120px;
       width: 200px;
@@ -177,6 +178,6 @@ ul li {
   margin: 4em auto 2em auto; }
   #footer .logos a {
     display: block;
-    margin-bottom: 20px; }
+    margin: 10px 0 20px; }
     #footer .logos a img {
       border: none; }
