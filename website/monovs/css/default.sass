@@ -1,0 +1,86 @@
+@import mixins.sass
+
+body
+  font: 13px/1.5 "Droid Sans", sans-serif
+  color: #444444
+  margin: 0
+  padding: 0
+
+h1, h2, h3, h4, h5, h6
+  font-family: "RaveIn Condensed", Avenir, Prelude, sans-serif
+  color: #888a85
+
+h1
+  font-size: 140%
+  line-height: 120%
+
+h2
+  font-size: 130%
+
+h3
+  font-size: 120%
+
+h4
+  font-size: 110%
+
+h5, h6
+  font-size: 100%
+
+a
+  color: #3465a4
+  text-decoration: none
+  &:hover
+    color: #78a1d4
+    text-decoration: underline
+    +transition(text-decoration 1s ease-in)
+
+#splash
+  padding: 6em 10px 3em
+  background: url(/img/watermark-splash.png) no-repeat 50% 180%
+  min-height: 300px
+
+#logo
+  text-align: center
+
+#features
+  background: #dddddd url(/img/mp-bg-footer.png) no-repeat center top
+  border-top: 1px solid white
+  border-bottom: 1px solid white
+  +box-shadow(0, 1px, 6px, rgba(0, 0, 0, 0.6))
+  padding: 2em 0
+  
+  .feature
+    padding: 1em 1em 1em 120px
+    width: 200px
+    background-repeat: no-repeat
+    background-position: 0 20px
+    +radius(15px)
+    height: 11em
+
+    &.jquery //only do this for javascript browsers
+      cursor: pointer
+      &:hover
+        background-color: rgba(255, 255, 255, 0.4)
+        +transition(background-color .3s ease-in)
+  
+  a:hover
+    text-decoration: none
+    +transition(color 1s ease-in)
+
+  #feature-scan
+    background-image: url(/img/feature-scan.png)
+
+  #feature-windows
+    background-image: url(/img/feature-windows.png)
+
+  #feature-linux
+    background-image: url(/img/feature-linux.png)
+
+  #feature-debug
+    background-image: url(/img/feature-debug.png)
+
+  #feature-package
+    background-image: url(/img/feature-package.png)
+
+  #feature-studio
+    background-image: url(/img/feature-studio.png)
