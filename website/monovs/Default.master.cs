@@ -8,6 +8,16 @@ public partial class _default : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        
+        if (Request.ServerVariables["SCRIPT_NAME"] == "/Default.aspx") {
+          header.Visible = false; 
+          footer.Visible = true;
+        } else if (Request.QueryString["nc"]!="") { //headers called inline with fancybox
+          header.Visible = false; 
+          footer.Visible = false;
+        }
+        
+        
         if (!Page.IsPostBack)
         {
             HttpCookie refCookie = Request.Cookies["mt_ref"];

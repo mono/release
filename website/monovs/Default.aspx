@@ -1,10 +1,12 @@
 <%@ Page Title="" Language="C#" MasterPageFile="Default.master" AutoEventWireup="true"
     CodeFile="Default.aspx.cs" Inherits="_Default" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="title" runat="Server">
-    Mono Tools for Visual Studio
+<asp:Content ID="Content1" ContentPlaceHolderID="title" runat="Server">Mono Tools for Visual Studio</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
+    <script type="text/javascript" src="/js/jquery.fancybox.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/fancybox.css" />
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server"></asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" runat="Server">
 
     <div id="splash">
@@ -29,27 +31,27 @@
         <div>
             <div class="container_12">
                 <div class="grid_6 feature" id="feature-scan">
-                    <h2><a href="Moma.aspx">Scan for Mono Compatibility</a></h2>
+                    <h2><a href="/Moma.aspx">Scan for Mono Compatibility</a></h2>
                     <p>Scan your application with the Mono Migration Analyzer (MoMA) directly in Visual Studio.</p>
                 </div>
                 <div class="grid_6 feature" id="feature-windows">
-                    <h2><a href="#">Test on Windows</a></h2>
+                    <h2><a href="/TestWin.aspx">Test on Windows</a></h2>
                     <p>Compile and launch your application running in Mono on Windows.</p>
                 </div>
                 <div class="grid_6 feature clear" id="feature-linux">
-                    <h2><a href="#">Test on Linux</a></h2>
+                    <h2><a href="/TestLin.aspx">Test on Linux</a></h2>
                     <p>Automatically compile your application and launch it on your Linux PC or virtual image.</p>
                 </div>
                 <div class="grid_6 feature" id="feature-debug">
-                    <h2><a href="#">Debug Remotely on Linux</a></h2>
+                    <h2><a href="/Debug.aspx">Debug Remotely on Linux</a></h2>
                     <p>Debug your application running on Mono on Linux directly in Visual Studio, just like you normally do.</p>
                 </div>
                 <div class="grid_6 feature clear" id="feature-package">
-                    <h2><a href="#">Package for Linux</a></h2>
+                    <h2><a href="/Package.aspx">Package for Linux</a></h2>
                     <p>Automatically compile your application and launch it on your Linux PC or virtual image.</p>
                 </div>
                 <div class="grid_6 feature" id="feature-studio">
-                    <h2><a href="#">Create a SUSE Linux Appliance</a></h2>
+                    <h2><a href="/Studio.aspx">Create a SUSE Linux Appliance</a></h2>
                     <p>Bundle your application into a SUSE Linux appliance for easy distribution to your users. </p>
                 </div>                                
             </div>
@@ -57,21 +59,23 @@
     </div>
 
     <div class="container_12 clearfix">
+      <div class="grid_12">
         <h2>Requirements</h2>
-        <div class="grid_6">
-            <ul class="block">
-                <li>Windows XP, Vista or 7 (32 or 64bit versions)</li>
-                <li>Visual Studio 2008 SP1 or Visual Studio 2010*</li>
-            </ul>
-        </div>
-        <div class="grid_6">
-            <p>Linux Image runs in:</p>
-            <ul class="block">
-                <li>VMWare (VMX/OVA) or</li>
-                <li>Virtual PC (VPC)</li>
-            </ul>
-            <p class="small">* Excludes Visual Studio Express editions.</p>
-        </div>
+      </div>
+      <div class="grid_6">
+          <ul class="block">
+              <li>Windows XP, Vista or 7 (32 or 64bit versions)</li>
+              <li>Visual Studio 2008 SP1 or Visual Studio 2010*</li>
+          </ul>
+      </div>
+      <div class="grid_6">
+          <p>Linux Image runs in:</p>
+          <ul class="block">
+              <li>VMWare (VMX/OVA) or</li>
+              <li>Virtual PC (VPC)</li>
+          </ul>
+          <p class="small">* Excludes Visual Studio Express editions.</p>
+      </div>
     </div>
 
 </asp:Content>

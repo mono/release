@@ -38,7 +38,9 @@ a
     color: lighten($select, 10%)
     text-decoration: underline
     +transition(text-decoration 1s ease-in)
-
+  img
+    border: none
+    
 ul
   &.block
     margin: 10px 0 10px
@@ -51,6 +53,19 @@ ul
 .small
   font-size: 80%
 
+.relative
+  position: relative
+
+#ctl00_header
+  height: 100px
+
+#minilogo
+  position: absolute
+  bottom: 10px
+  left: 10px
+  width: 285px
+  height: 50px
+  
 #splash
   padding: 6em 10px 3em
   background: url(/img/watermark-splash.png) no-repeat 50% 150%
@@ -144,6 +159,8 @@ ul
           background-color: rgba(255, 255, 255, 0.4)
           +transition(background-color .3s ease-in)
     
+    a
+      color: inherit
     a:hover
       text-decoration: none
       +transition(color 1s ease-in)
@@ -166,8 +183,11 @@ ul
     #feature-studio
       background-image: url(/img/feature-studio.png)
 
-#footer
-  margin: 4em auto 2em auto
+.shot
+  max-width: 100%
+
+#ctl00_footer
+  margin: 8em auto 2em auto
   .logos
     a
       display: block

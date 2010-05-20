@@ -20,11 +20,14 @@
 
 <body>
 
-	<asp:ContentPlaceHolder id="header" runat="server" /> 
+	<div id="header" runat="server" class="container_12 relative">
+	  <a href="/"><img alt="home" src="/img/minilogo.png" id="minilogo"></a>
+	</div>
+	 
     <asp:ContentPlaceHolder ID="maincontent" runat="server" />
 
-    <!--#footer-->
-    <div id="footer" class="container_12">
+
+    <div id="footer" class="container_12" runat="server">
         <div class="grid_2 logos">
             <a href="http://www.mono-project.org"><img alt="Mono" src="/img/monothumb.png"></a>
             <a href="http://www.novell.com/linux"><img alt="Novell" src="/img/novellthumb.png"></a>

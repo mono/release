@@ -34,6 +34,8 @@ a {
     -webkit-transition: text-decoration 1s ease-in;
     -moz-transition: text-decoration 1s ease-in;
     -o-transition: text-decoration 1s ease-in; }
+  a img {
+    border: none; }
 
 ul.block {
   margin: 10px 0 10px;
@@ -45,6 +47,19 @@ ul li {
 
 .small {
   font-size: 80%; }
+
+.relative {
+  position: relative; }
+
+#ctl00_header {
+  height: 100px; }
+
+#minilogo {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 285px;
+  height: 50px; }
 
 #splash {
   padding: 6em 10px 3em;
@@ -156,6 +171,8 @@ ul li {
           -webkit-transition: background-color 0.3s ease-in;
           -moz-transition: background-color 0.3s ease-in;
           -o-transition: background-color 0.3s ease-in; }
+    #features > div a {
+      color: inherit; }
     #features > div a:hover {
       text-decoration: none;
       -webkit-transition: color 1s ease-in;
@@ -174,10 +191,13 @@ ul li {
     #features > div #feature-studio {
       background-image: url(/img/feature-studio.png); }
 
-#footer {
-  margin: 4em auto 2em auto; }
-  #footer .logos a {
+.shot {
+  max-width: 100%; }
+
+#ctl00_footer {
+  margin: 8em auto 2em auto; }
+  #ctl00_footer .logos a {
     display: block;
     margin: 10px 0 20px; }
-    #footer .logos a img {
+    #ctl00_footer .logos a img {
       border: none; }
