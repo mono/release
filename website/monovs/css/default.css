@@ -104,7 +104,7 @@ a {
     display: block; }
 
 #features {
-  background: darker(white, 1.1) url(/img/mp-bg-footer.png) no-repeat center top;
+  background: #e5e5e5 url(/img/mp-bg-footer.png) no-repeat center top;
   border-top: 1px solid white;
   border-bottom: 1px solid white;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
@@ -116,6 +116,7 @@ a {
   #features .feature {
     padding: 1em 1em 1em 120px;
     width: 200px;
+    background-color: rgba(255, 255, 255, 0);
     background-repeat: no-repeat;
     background-position: 0 20px;
     border-radius: 15px;
