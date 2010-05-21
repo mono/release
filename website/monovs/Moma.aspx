@@ -24,7 +24,7 @@
       <img class="shot" src="img/moma2.png" alt="Scanning with MoMA - Step 2">
     </div>
     <div class="grid_6">
-      <h3>Step 3:</h2>
+      <h2>Step 3:</h2>
       <p>MoMA will scan your application and look for code that may cause issues on Mono.
          These issues will be rated and placed in the Error List.  Clicking them will take
          you to the affected code.</p>
