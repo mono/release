@@ -185,6 +185,13 @@ ul
 
 .shot
   max-width: 100%
+  border: 1px solid #888
+
+.note
+  font-size: 90%
+  background-color: darken($bodybg, 2%)
+  +radius(10px)
+  padding: 2em
 
 #ctl00_footer
   margin: 8em auto 2em auto
@@ -197,16 +204,27 @@ ul
         
 //fancybox overrides
 #fancybox-left, #fancybox-right
-  width: 50px
-  height: 50px
-  bottom: 0
-
+  width: 40px
+  height: 100%
+  bottom: 20px
 #fancybox-left span
-  left: 20px
+  left: 9px
+  opacity: 0.2
 #fancybox-right span
   left: auto
-  right: 20px
+  right: 9px
+  opacity: 0.2
+#fancybox-left:hover span
+  left: 9px
+  opacity: 1
+#fancybox-right:hover span
+  right: 9px
+  opacity: 1
 #fancybox-outer
-  padding-bottom: 40px
+  padding: 10px 30px 40px 30px
   background-color: #fff
-  background-color: rgba(255,255,255,0.95)
+  background: rgba(240,240,240,0.90) url("/img/mp-bg-footer.png") no-repeat scroll center top
+#fancybox-inner
+  margin: 10px 30px 40px 30px
+  .container_12
+    width: 705px

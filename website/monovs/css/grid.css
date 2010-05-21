@@ -58,7 +58,7 @@
 
 .container_12 .grid_12,
 .container_16 .grid_16 {
-	width: 620px;
+	width: 660px;
 }
 
 /* `Grid >> Children (Alpha ~ First, Omega ~ Last)
@@ -113,17 +113,17 @@
 
 .container_12 .prefix_3,
 .container_16 .prefix_4 {
-	padding-left: 240px;
+	padding-left: 170px;
 }
 
 .container_12 .prefix_6,
 .container_16 .prefix_8 {
-	padding-left: 480px;
+	padding-left: 340px;
 }
 
 .container_12 .prefix_9,
 .container_16 .prefix_12 {
-	padding-left: 720px;
+	padding-left: 470px;
 }
 
 /* `Prefix Extra Space >> 12 Columns

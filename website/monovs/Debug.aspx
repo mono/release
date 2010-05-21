@@ -6,59 +6,65 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="maincontent" runat="Server">
-    <div class="feature-content">
-        <table style="margin-top: -15px">
-            <tr>
-                <td style="width: 650px"><a href="TestLin.aspx" style="color: #000000;">&lt;-- Run on Mono on Linux</a></td>
-                <td><a href="Package.aspx" style="color: #000000;">Package for Linux --&gt;</a></td>
-            </tr>
-        </table>
-        <br />
-        <br />
-        <span class="feature-header">Debug on Mono on Linux</span><br />
-        <br />
-        Often, the best way to work through an issue will be to debug the application on the target 
+<div class="container_12">
+    <div class="grid_12">
+        <h1>Debug on Mono on Linux</h1>
+        <p>Often, the best way to work through an issue will be to debug the application on the target 
         environment.  Debug on Mono on Linux brings this functionality to Visual Studio developers 
-        by enabling remote debugging of Mono applications running on Linux.
-        <br /><br /><br />
-        <img class="shot" src="img/moma1.png" alt="Debug in Linux - Step 1" />
-            <b>Step 1:</b><br />
-            <br />
-            Open your solution in Visual Studio and ensure it compiles.
-        <div class="clearer"></div>
-        <img class="shot" src="img/debug3.png" alt="Debug in Linux - Step 2" />
-            <b>Step 2:</b><br />
-            <br />
-            Set your breakpoints like you would normally do.
-        <div class="clearer"></div>
-        <img class="shot" src="img/debug2.png" alt="Debug in Linux - Step 3" />
-            <b>Step 3:</b><br />
-            <br />
-            Select the Mono->Debug Remotely in Mono menu item.
-        <div class="clearer"></div>
-        <img class="shot" src="img/testlin3.png" alt="Debug in Linux - Step 4" />
-            <b>Step 4:</b><br />
-            <br />
-            A dialog box will prompt you to choose from the available servers it found on you local
-            network.  If your server doesn't show up, you can manually enter in the IP address and 
-            port of the server you wish to use.
-            <br /><br /><br />
-            <div class="note" style="width: 380px; margin-left: 380px; background-position: 2px 17px;">
-                In order to find servers on the local subnet, UDP is used to broadcast over port 1900
-                using the multicast address 239.255.255.250.  If your server is not appearing, you
-                may want to check your firewall settings.            
-            </div>
-        <div class="clearer"></div>
-        <img class="shot" src="img/testlin4.jpg" alt="Debug in Linux - Step 5" />
-            <b>Step 5:</b><br />
-            <br />
-            Your application will be compiled, copied over to Linux, and automatically started.  If
-            it is a web application, it will be launched in your default Windows web browser.
-        <div class="clearer"></div>
-        <img class="shot" src="img/debug4.png" alt="Debug in Linux - Step 6" />
-            <b>Step 6:</b><br />
-            <br />
-            When the application hits the breakpoint, it will stop in Visual Studio, just like normal.
-            From here, you can do the normal debug actions, like examine variables and call stacks.
+        by enabling remote debugging of Mono applications running on Linux.</p>
+    </div>
+    <div class="grid_6 prefix_6">
+        <h2>Step 1:</h2>
+        <p>Open your solution in Visual Studio and ensure it compiles.</p>
+        <!--        <img class="shot" src="img/moma1.png" alt="Debug in Linux - Step 1">-->
+    </div>
+    <div class="grid_6 clear">
+        <img class="shot" src="img/debug3.png" alt="Debug in Linux - Step 2">
+    </div>
+    <div class="grid_6">
+        <h2>Step 2:</h2>
+        <p>Set your breakpoints like you would normally do.</p>
+    </div>
+    <div class="grid_6 clear">
+        <img class="shot" src="img/debug2.png" alt="Debug in Linux - Step 3">
+    </div>
+     <div class="grid_6">
+        <h2>Step 3:</h2>
+        <p>Select the Mono->Debug Remotely in Mono menu item.</p>
+    </div>
+    <div class="grid_6 clear">
+        <img class="shot" src="img/testlin3.png" alt="Debug in Linux - Step 4">
+    </div>
+    <div class="grid_6">
+        <h2>Step 4:</h2>
+        <p>A dialog box will prompt you to choose from the available servers it found on you local
+        network.  If your server doesn't show up, you can manually enter in the IP address and 
+        port of the server you wish to use.</p>
+        <p class="note">
+            In order to find servers on the local subnet, UDP is used to broadcast over port 1900
+            using the multicast address 239.255.255.250.  If your server is not appearing, you
+            may want to check your firewall settings.            
+        </p>
+
+    </div>
+    <div class="grid_6 clear">
+        <img class="shot" src="img/testlin4.jpg" alt="Debug in Linux - Step 5">
+    </div>
+    <div class="grid_6">
+        <h2>Step 5:</h2>
+
+        <p>Your application will be compiled, copied over to Linux, and automatically started.  If
+        it is a web application, it will be launched in your default Windows web browser.</p>
+    </div>
+    <div class="grid_6 clear">
+        <img class="shot" src="img/debug4.png" alt="Debug in Linux - Step 6">
+    </div>
+    <div class="grid_6">
+        <h2>Step 6:</h2>
+
+        <p>When the application hits the breakpoint, it will stop in Visual Studio, just like normal.
+        From here, you can do the normal debug actions, like examine variables and call stacks.</p>
+
+    </div>
 </div>
 </asp:Content>

@@ -11,7 +11,16 @@ $(document).ready(function () {
       var link = $(this).attr('href');
       $(this).parents('.feature').wrap($('<a>', { 'href': link, 'rel': 'feat' })).parents('a').fancybox({
         'cyclic': true,
-        'overlayShow': false
+        'overlayShow': false,
+        'speedIn': 200,
+        'speedOut': 500,
+        'changeFade': 100,
+        'imageScale': true,
+        'transitionIn': 'fade',
+        'transitionOut': 'fade',
+//        'autoDimensions': false,
+        'width': '700px',
+        'height': '700px'
 //        'overlayColor': '#000',
 //        'overlayOpacity': 0.7
       });
