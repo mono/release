@@ -24,8 +24,10 @@
 	  <a href="/"><img alt="home" src="/img/minilogo.png" id="minilogo"></a>
 	</div>
 	 
-    <asp:ContentPlaceHolder ID="maincontent" runat="server" />
 
+    <form id="form1" runat="server">
+        <asp:ContentPlaceHolder ID="maincontent" runat="server" />
+     </form>
 
     <div id="footer" class="container_12" runat="server">
         <div class="grid_2 logos">
