@@ -21,12 +21,12 @@ public partial class download_Default : System.Web.UI.Page
         }
     }
 
-    protected void btnDownloadMsi_Click(object sender, ImageClickEventArgs e)
+    protected void btnDownloadMsi_Click(object sender, EventArgs e)
     {
         StartDownload("msi");
     }
 
-    protected void btnDownloadVsix_Click(object sender, ImageClickEventArgs e)
+    protected void btnDownloadVsix_Click(object sender, EventArgs e)
     {
         StartDownload("vsix");
     }

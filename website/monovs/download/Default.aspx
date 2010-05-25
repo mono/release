@@ -84,10 +84,10 @@
                 <p class="small">* Fields are required. <a class="external" href="http://www.novell.com/company/policies/privacy/">Novell's privacy policy</a>.</p>
                 
 
-                    <asp:ImageButton CausesValidation="true" ID="btnDownloadMsi" runat="server" 
-                        ImageUrl="~/img/mp-download-2008.png" onclick="btnDownloadMsi_Click" /> or 
-                    <asp:ImageButton CausesValidation="true" ID="btnDownloadVsix" runat="server" 
-                        ImageUrl="~/img/mp-download-2010.png" onclick="btnDownloadVsix_Click" />
+                    <asp:LinkButton CausesValidation="true" ID="btnDownloadMsi" runat="server" 
+                        Text="Download for VS 2008" onclick="btnDownloadMsi_Click" /> or 
+                    <asp:LinkButton CausesValidation="true" ID="btnDownloadVsix" runat="server" 
+                        Text="Download for VS 2010" onclick="btnDownloadVsix_Click" />
 
             </div>
     </div>
