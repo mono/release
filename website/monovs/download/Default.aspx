@@ -85,7 +85,7 @@
                 
 
                     <asp:ImageButton CausesValidation="true" ID="btnDownloadMsi" runat="server" 
-                        ImageUrl="~/img/mp-download-2008.png" onclick="btnDownloadMsi_Click" />
+                        ImageUrl="~/img/mp-download-2008.png" onclick="btnDownloadMsi_Click" /> or 
                     <asp:ImageButton CausesValidation="true" ID="btnDownloadVsix" runat="server" 
                         ImageUrl="~/img/mp-download-2010.png" onclick="btnDownloadVsix_Click" />
 

@@ -204,6 +204,8 @@ ul li {
   #ctl00_form1 #ctl00_maincontent_tblForm td[align="right"] {
     width: 250px;
     padding-right: 12px; }
+#ctl00_form1 #ctl00_maincontent_btnDownloadMsi, #ctl00_form1 #ctl00_maincontent_btnDownloadVsix {
+  vertical-align: middle; }
 
 .shot {
   max-width: 100%;
