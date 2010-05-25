@@ -35,16 +35,16 @@
         </div>
         <div class="grid_3">
             <ul class="block">
-                <li><a href="#">Installation Guide</a></li>
-                <li><a href="#">Introductory Tutorial</a></li>
-                <li><a href="#">FAQ</a></li>
+                <li><a href="http://www.mono-project.com/GettingStartedWithMonoVS">Installation Guide</a></li>
+                <li><a href="http://www.go-mono.com/monotools/guides/blog_engine_round_trip/Default.aspx">Introductory Tutorial</a></li>
+                <li><a href="http://mono-project.com/FAQ:_MonoVS">FAQ</a></li>
             </ul>
         </div>
         <div class="grid_3">
             <ul class="block">
-                <li><a href="#">Report Bugs</a></li>
-                <li><a href="#">Mailing List</a></li>
-                <li><a href="#">IRC Chat</a></li>
+                <li><a href="http://mono-project.com/Bugs">Report Bugs</a></li>
+                <li><a href="http://lists.ximian.com/mailman/listinfo/mono-vsbeta">Mailing List</a></li>
+                <li><a href="http://www.go-mono.com/monotools/Chat.aspx">IRC Chat</a></li>
             </ul>
         </div>
     </div>
