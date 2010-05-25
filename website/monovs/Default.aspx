@@ -23,6 +23,11 @@
                 <p>Mono Tools for Visual Studio is a commercial add-in for Microsoft™ Visual Studio™ that enables developers to write .NET applications for non-Windows platforms within their preferred development environment.</p>
 
                 <p>It allows developers to build, debug and deploy .NET applications on Linux, while continuing to leverage the extensive ecosystem of code, libraries, and tools available for .NET.</p>
+                
+                <div class="tip">
+                    <h2>Not sure where to start?</h2>
+                    <p>Follow our <a href="http://www.go-mono.com/monotools/guides/blog_engine_round_trip/Default.aspx"><strong>tutorial</strong></a> to see an open source ASP.NET application (<a href="http://www.dotnetblogengine.net/">BlogEngine.NET</a>) converted from start to finish! </p>
+                </div>
             </div>
         </div>
     </div>

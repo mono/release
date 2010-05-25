@@ -65,6 +65,8 @@ ul li {
   padding: 6em 10px 3em;
   background: url(/img/watermark-splash.png) no-repeat 50% 150%;
   min-height: 300px; }
+  #splash h1 {
+    margin-bottom: 2em; }
 
 .button {
   display: block;
@@ -155,7 +157,7 @@ ul li {
     -ms-filter: "\"progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1px, Color='rgba(0, 0, 0, 0.6)')\"";
     padding: 2em 0 3em; }
     #features > div .feature {
-      padding: 1em 1em 1em 120px;
+      padding: 5px 5px 5px 120px;
       width: 200px;
       background-color: rgba(255, 255, 255, 0);
       background-repeat: no-repeat;
@@ -203,6 +205,18 @@ ul li {
   -webkit-border-radius: 10px;
   padding: 2em; }
 
+.tip {
+  margin-top: 30px;
+  font-size: 90%;
+  padding: 2em;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  background-color: rgba(254, 250, 214, 0.5);
+  border: 1px solid #edd400; }
+  .tip h2 {
+    margin-top: 0; }
+
 #ctl00_footer {
   margin: 8em auto 2em auto; }
   #ctl00_footer .logos a {
@@ -212,33 +226,33 @@ ul li {
       border: none; }
 
 #fancybox-left, #fancybox-right {
-  width: 40px;
-  height: 100%;
-  bottom: 20px; }
+  width: 40px !important;
+  height: 100% !important;
+  bottom: 20px !important; }
 
 #fancybox-left span {
-  left: 9px;
-  opacity: 0.2; }
+  left: 9px !important;
+  opacity: 0.2 !important; }
 
 #fancybox-right span {
-  left: auto;
-  right: 9px;
-  opacity: 0.2; }
+  left: auto !important;
+  right: 9px !important;
+  opacity: 0.2 !important; }
 
 #fancybox-left:hover span {
-  left: 9px;
-  opacity: 1; }
+  left: 9px !important;
+  opacity: 1 !important; }
 
 #fancybox-right:hover span {
-  right: 9px;
-  opacity: 1; }
+  right: 9px !important;
+  opacity: 1 !important; }
 
 #fancybox-outer {
-  padding: 10px 30px 40px 30px;
-  background-color: white;
-  background: rgba(240, 240, 240, 0.9) url("/img/mp-bg-footer.png") no-repeat scroll center top; }
+  padding: 10px 30px 40px 30px !important;
+  background-color: white !important;
+  background: rgba(240, 240, 240, 0.9) url("/img/mp-bg-footer.png") no-repeat scroll center top !important; }
 
 #fancybox-inner {
-  margin: 10px 30px 40px 30px; }
+  margin: 10px 30px 40px 30px !important; }
   #fancybox-inner .container_12 {
-    width: 705px; }
+    width: 705px !important; }

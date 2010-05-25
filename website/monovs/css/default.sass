@@ -70,6 +70,9 @@ ul
   padding: 6em 10px 3em
   background: url(/img/watermark-splash.png) no-repeat 50% 150%
   min-height: 300px
+  
+  h1
+    margin-bottom: 2em
 
 .button
   display: block
@@ -145,7 +148,7 @@ ul
     padding: 2em 0 3em
     
     .feature
-      padding: 1em 1em 1em 120px
+      padding: 5px 5px 5px 120px
       width: 200px
       background-color: rgba(255,255,255,0) //rather than transparent to make transitions work right on webkit
       background-repeat: no-repeat
@@ -193,6 +196,16 @@ ul
   +radius(10px)
   padding: 2em
 
+.tip
+  margin-top: 30px
+  font-size: 90%
+  padding: 2em
+  +radius(5px)
+  background-color: rgba(254,250,214,0.5)
+  border: 1px solid #edd400
+  h2
+    margin-top: 0
+
 #ctl00_footer
   margin: 8em auto 2em auto
   .logos
@@ -204,27 +217,27 @@ ul
         
 //fancybox overrides
 #fancybox-left, #fancybox-right
-  width: 40px
-  height: 100%
-  bottom: 20px
+  width: 40px !important
+  height: 100% !important
+  bottom: 20px !important
 #fancybox-left span
-  left: 9px
-  opacity: 0.2
+  left: 9px !important
+  opacity: 0.2 !important
 #fancybox-right span
-  left: auto
-  right: 9px
-  opacity: 0.2
+  left: auto !important
+  right: 9px !important
+  opacity: 0.2 !important
 #fancybox-left:hover span
-  left: 9px
-  opacity: 1
+  left: 9px !important
+  opacity: 1 !important
 #fancybox-right:hover span
-  right: 9px
-  opacity: 1
+  right: 9px !important
+  opacity: 1 !important
 #fancybox-outer
-  padding: 10px 30px 40px 30px
-  background-color: #fff
-  background: rgba(240,240,240,0.90) url("/img/mp-bg-footer.png") no-repeat scroll center top
+  padding: 10px 30px 40px 30px !important
+  background-color: #fff !important
+  background: rgba(240,240,240,0.90) url("/img/mp-bg-footer.png") no-repeat scroll center top !important
 #fancybox-inner
-  margin: 10px 30px 40px 30px
+  margin: 10px 30px 40px 30px !important
   .container_12
-    width: 705px
+    width: 705px !important

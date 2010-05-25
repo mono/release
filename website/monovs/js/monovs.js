@@ -10,7 +10,7 @@ $(document).ready(function () {
         .parent('a').fancybox({
         'cyclic': true,
         'overlayShow': false,
-        'speedIn': 200,
+        'speedIn': 300,
         'speedOut': 500,
         'changeFade': 100,
         'imageScale': true,
