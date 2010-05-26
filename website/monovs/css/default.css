@@ -201,7 +201,8 @@ ul li {
   width: 100%; }
   #ctl00_form1 #ctl00_maincontent_tblForm input {
     width: 100%; }
-  #ctl00_form1 #ctl00_maincontent_tblForm td[align="right"] {
+  #ctl00_form1 #ctl00_maincontent_tblForm td.label {
+    text-align: right;
     width: 250px;
     padding-right: 12px; }
 #ctl00_form1 #ctl00_maincontent_btnDownloadMsi, #ctl00_form1 #ctl00_maincontent_btnDownloadVsix {

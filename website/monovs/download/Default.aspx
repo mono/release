@@ -27,7 +27,7 @@
 </td></tr>
             <tr>
 
-            <td align="right"><label for="txtEmail">Email Address<span style="color:red;">*</span>:</label></td>
+            <td class="label"><label for="ctl00_maincontent_txtEmail">Email Address<span style="color:red;">*</span>:</label></td>
             <td><asp:TextBox ID="txtEmail" runat="server"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rqdEmail" runat="server" 
                 ErrorMessage="Email Address is required" 
@@ -39,8 +39,8 @@
             </tr>
             <tr>
 
-            <td align="right">
-            <label for="txtFirstName">First Name<span style="color:red;">*</span>:</label></td>
+            <td class="label">
+            <label for="ctl00_maincontent_txtFirstName">First Name<span style="color:red;">*</span>:</label></td>
             <td><asp:TextBox ID="txtFirstName" runat="server"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rqdFirstName" runat="server" 
                 ErrorMessage="First Name is required" 
@@ -48,8 +48,8 @@
             </tr>
             <tr>
 
-            <td align="right">
-            <label for="txtLastName">Last Name<span style="color:red;">*</span>:</label></td>
+            <td class="label">
+            <label for="ctl00_maincontent_txtLastName">Last Name<span style="color:red;">*</span>:</label></td>
             <td><asp:TextBox ID="txtLastName" runat="server"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rqdLastName" runat="server" 
                 ErrorMessage="Last Name is required" 
@@ -57,12 +57,12 @@
             </tr>
             <tr>
 
-            <td align="right"><label for="txtOrg">Organization:</label></td>
+            <td class="label"><label for="ctl00_maincontent_txtOrg">Organization:</label></td>
             <td><asp:TextBox ID="txtOrg" runat="server"></asp:TextBox></td>
             </tr>
             <tr>
 
-            <td align="right"><label for="ddlAppType">What are you interested in building?</label></td>
+            <td class="label"><label for="ctl00_maincontent_ddlAppType">What are you interested in building?</label></td>
             <td>
                 <asp:DropDownList ID="ddlAppType" runat="server">
                     <asp:ListItem Selected="True" Value="Choose..."></asp:ListItem>
@@ -106,11 +106,11 @@
     <script type="text/javascript" src="http://www.novell.com/common/inc/elqNow/elqImg.js"></script>
     </div>
 </div>
-<SCRIPT TYPE='text/javascript' LANGUAGE='JavaScript'><!--//
+<SCRIPT TYPE='text/javascript'><!--//
 var elqPPS = '70';
 //--></SCRIPT>
-<SCRIPT TYPE='text/javascript' LANGUAGE='JavaScript' SRC='http://www.novell.com/common/inc/elqNow/elqScr.js'></SCRIPT>
-<SCRIPT TYPE='text/javascript' LANGUAGE='JavaScript'><!--//
+<SCRIPT TYPE='text/javascript' SRC='http://www.novell.com/common/inc/elqNow/elqScr.js'></SCRIPT>
+<SCRIPT TYPE='text/javascript'><!--//
 window.onload = initPage;
 function initPage(){
     if (this.GetElqCustomerGUID) {
