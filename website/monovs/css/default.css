@@ -223,9 +223,10 @@ ul li {
   margin-top: 30px;
   font-size: 90%;
   padding: 2em;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  background-color: #fffce7;
   background-color: rgba(254, 250, 214, 0.5);
   border: 1px solid #edd400; }
   .tip h2 {
