@@ -17,7 +17,7 @@
     </div>
     <div class="grid_5">
         <!--<img src='<%= ResolveClientUrl("~/img/MonoVS_Menu_cropped.png") %>'>-->
-        <img src='<%= ResolveClientUrl("~/img/vs_partner_2010_293.png") %>'>
+        <img id="partner" src='<%= ResolveClientUrl("~/img/vs_partner_2010_293.png") %>'>
     </div>   
     <div class="grid_12 clear">  
         <table id="tblForm" runat="server">

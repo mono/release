@@ -193,7 +193,7 @@ ul li {
     #features > div #feature-studio {
       background-image: url(/img/feature-studio.png); }
 
-#ctl00_form1 img {
+#ctl00_form1 #partner {
   width: 250px;
   float: right;
   display: block; }
