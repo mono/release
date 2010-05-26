@@ -18,52 +18,52 @@
     <div class="grid_5">
         <!--<img src='<%= ResolveClientUrl("~/img/MonoVS_Menu_cropped.png") %>'>-->
         <img src='<%= ResolveClientUrl("~/img/vs_partner_2010_293.png") %>'>
-    </div>
-    <table id="tblForm" Runat="Server">
-        <div class="grid_6 prefix_6 clear">
-            <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
-        </div>
-        <div class="grid_6 clear">
-            <label for="txtEmail">Email Address<span style="color:red;">*</span>:</label>
-        </div>
-        <div class="grid_6">
-            <asp:TextBox ID="txtEmail" runat="server"></asp:TextBox>
+    </div>   
+    <div class="grid_12 clear">  
+        <table id="tblForm" runat="server">
+            <tr>
+            <td colspan="2">
+                <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
+</td></tr>
+            <tr>
+
+            <td align="right"><label for="txtEmail">Email Address<span style="color:red;">*</span>:</label></td>
+            <td><asp:TextBox ID="txtEmail" runat="server"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rqdEmail" runat="server" 
                 ErrorMessage="Email Address is required" 
                 Display="None" ControlToValidate="txtEmail"></asp:RequiredFieldValidator>
             <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
                 ErrorMessage="Email Address is invalid"
                 Display="None" ControlToValidate="txtEmail" 
-                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
-        </div>
-        <div class="grid_6 clear">
-            <label for="txtFirstName">First Name<span style="color:red;">*</span>:</label>
-        </div>
-        <div class="grid_6">
-            <asp:TextBox ID="txtFirstName" runat="server"></asp:TextBox>
+                    ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator></td>
+            </tr>
+            <tr>
+
+            <td align="right">
+            <label for="txtFirstName">First Name<span style="color:red;">*</span>:</label></td>
+            <td><asp:TextBox ID="txtFirstName" runat="server"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rqdFirstName" runat="server" 
                 ErrorMessage="First Name is required" 
-                Display="None" ControlToValidate="txtFirstName"></asp:RequiredFieldValidator>
-        </div>
-        <div class="grid_6 clear">
-            <label for="txtLastName">Last Name<span style="color:red;">*</span>:</label>
-        </div>
-        <div class="grid_6">
-            <asp:TextBox ID="txtLastName" runat="server"></asp:TextBox>
+                Display="None" ControlToValidate="txtFirstName"></asp:RequiredFieldValidator></td>
+            </tr>
+            <tr>
+
+            <td align="right">
+            <label for="txtLastName">Last Name<span style="color:red;">*</span>:</label></td>
+            <td><asp:TextBox ID="txtLastName" runat="server"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rqdLastName" runat="server" 
                 ErrorMessage="Last Name is required" 
-                Display="None" ControlToValidate="txtLastName"></asp:RequiredFieldValidator>
-        </div>
-        <div class="grid_6 clear">
-            <label for="txtOrg">Organization:</label>
-        </div>
-        <div class="grid_6">
-            <asp:TextBox ID="txtOrg" runat="server"></asp:TextBox>
-        </div>
-        <div class="grid_6 clear">
-            <label for="ddlAppType">What are you interested in building?</label>
-        </div>
-        <div class="grid_6">
+                Display="None" ControlToValidate="txtLastName"></asp:RequiredFieldValidator></td>
+            </tr>
+            <tr>
+
+            <td align="right"><label for="txtOrg">Organization:</label></td>
+            <td><asp:TextBox ID="txtOrg" runat="server"></asp:TextBox></td>
+            </tr>
+            <tr>
+
+            <td align="right"><label for="ddlAppType">What are you interested in building?</label></td>
+            <td>
                 <asp:DropDownList ID="ddlAppType" runat="server">
                     <asp:ListItem Selected="True" Value="Choose..."></asp:ListItem>
                     <asp:ListItem Value="Corporate (internal) Website"></asp:ListItem>
@@ -75,20 +75,20 @@
                     <asp:ListItem Value="Open Source Project"></asp:ListItem>
                     <asp:ListItem Value="Other"></asp:ListItem>
                 </asp:DropDownList>
-            <input type="hidden" id="elqCustomerGUID" name="elqCustomerGUID" value="" runat="server" />
-            <input type="hidden" id="elqCookieWrite" name="elqCookieWrite" value="0" runat="server" />
-        </div>
-        <div class="grid_6 prefix_6 clear">
-            <p class="small">* Fields are required. <a class="external" href="http://www.novell.com/company/policies/privacy/">Novell's privacy policy</a>.</p>
-        </div>   
-        <div class="grid_6 prefix_6 clear">  
-                        <asp:LinkButton CausesValidation="true" class="button" ID="btnDownloadMsi" runat="server" 
-                            Text="Download for VS 2008" onclick="btnDownloadMsi_Click" /> or 
-                        <asp:LinkButton CausesValidation="true" ID="btnDownloadVsix" runat="server" 
-                            Text="Download for VS 2010" class="button" onclick="btnDownloadVsix_Click" />
-
-                </div>
+<input type="hidden" id="elqCustomerGUID" name="elqCustomerGUID" value="" runat="server" />
+<input type="hidden" id="elqCookieWrite" name="elqCookieWrite" value="0" runat="server" />
+            </td>
+            </tr>
         </table>
+    </div>
+   <div class="grid_7 prefix_5 clear">
+        <p class="small">* Fields are required. <a class="external" href="http://www.novell.com/company/policies/privacy/">Novell's privacy policy</a>.</p>
+    </div>
+   <div class="grid_7 prefix_5 clear">
+            <asp:LinkButton CausesValidation="true" class="button" ID="btnDownloadMsi" runat="server" 
+                Text="Download for VS 2008" onclick="btnDownloadMsi_Click" /> or 
+            <asp:LinkButton CausesValidation="true" class="button" ID="btnDownloadVsix" runat="server" 
+                Text="Download for VS 2010" onclick="btnDownloadVsix_Click" />
     </div>
      
    <div class="grid_12">
