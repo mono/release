@@ -52,8 +52,8 @@ ul li {
   position: relative; }
 
 #header {
-  height: 90px;
-  overflow: hidden; }
+  overflow: hidden;
+  margin-bottom: 20px; }
   #header #minilogo {
     position: absolute;
     top: 10px;
@@ -66,8 +66,8 @@ ul li {
     #header #ctl00_menu ul li {
       display: block;
       float: right;
-      margin: 0 0 0 20px;
-      font-size: 150%; }
+      margin: 0 0 0 32px;
+      font-size: 120%; }
 
 #splash {
   padding: 0 10px 3em;
