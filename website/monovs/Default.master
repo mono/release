@@ -20,8 +20,15 @@
 
 <body>
 
-	<div id="header" runat="server" class="container_12 relative">
-	  <a href="/"><img alt="home" src="/img/minilogo.png" id="minilogo"></a>
+	<div class="container_12 relative" id="header">
+	  <div runat="server" class="prefix_6 grid_6" id="menu">
+	    <ul>
+	        <li><a href="/download">Download</a></li>
+	        <li><a href="http://www.go-mono.com/forums/">Forums</a></li>
+	        <li><a href="http://www.go-mono.com/store/">Store</a></li>
+	    </ul>
+	  </div>
+	  <a id="toplogo" runat="server" href="/"><img alt="home" src="/img/minilogo.png" id="minilogo"></a>
 	</div>
 	 
 

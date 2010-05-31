@@ -51,18 +51,26 @@ ul li {
 .relative {
   position: relative; }
 
-#ctl00_header {
-  height: 100px; }
-
-#minilogo {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  width: 285px;
-  height: 50px; }
+#header {
+  height: 90px;
+  overflow: hidden; }
+  #header #minilogo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 285px;
+    height: 50px; }
+  #header #ctl00_menu ul {
+    display: block;
+    margin: 26px 0 0; }
+    #header #ctl00_menu ul li {
+      display: block;
+      float: right;
+      margin: 0 0 0 20px;
+      font-size: 150%; }
 
 #splash {
-  padding: 6em 10px 3em;
+  padding: 0 10px 3em;
   background: url(/img/watermark-splash.png) no-repeat 50% 150%;
   min-height: 300px; }
   #splash h1 {

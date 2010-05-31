@@ -10,10 +10,12 @@ public partial class _default : System.Web.UI.MasterPage
     {
         
         if (Request.ServerVariables["SCRIPT_NAME"] == "/Default.aspx") {
-          header.Visible = false; 
+          toplogo.Visible = false;
+          menu.Visible = true;
           footer.Visible = true;
         } else if (Request.QueryString["nc"] != null) { //headers called inline with fancybox
-          header.Visible = false; 
+          toplogo.Visible = false;
+          menu.Visible = false; 
           footer.Visible = false;
         }
         

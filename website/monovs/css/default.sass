@@ -56,18 +56,29 @@ ul
 .relative
   position: relative
 
-#ctl00_header
-  height: 100px
+#header
+  height: 90px
+  overflow: hidden
 
-#minilogo
-  position: absolute
-  bottom: 10px
-  left: 10px
-  width: 285px
-  height: 50px
+  #minilogo
+    position: absolute
+    top: 10px
+    left: 10px
+    width: 285px
+    height: 50px
+  
+  #ctl00_menu
+    ul
+      display: block
+      margin: 26px 0 0
+      li
+        display: block
+        float: right
+        margin: 0 0 0 20px
+        font-size: 150%
   
 #splash
-  padding: 6em 10px 3em
+  padding: 0 10px 3em
   background: url(/img/watermark-splash.png) no-repeat 50% 150%
   min-height: 300px
   
