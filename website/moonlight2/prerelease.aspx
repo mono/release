@@ -2,6 +2,9 @@
 <%@ Import Namespace="System.IO" %>
 <%@ Import Namespace="System.Text.RegularExpressions" %>
 <script runat="server">
+// UPDATE HERE FOR NEW VERSION
+string version = "2.99.0.7";
+
 string dir;
 string basename;
 string media;
@@ -17,7 +20,7 @@ string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
 
 void Page_Init(object sender, EventArgs e)
 {
-        dir = "downloads/2.99.0.7";
+        dir = "downloads/" + version;
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -97,7 +100,7 @@ void RadioClicked(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-2.99.0.7";
+	xpi = basename + "-" + version;
 	
 	//if (prof1_0.Checked)
 	//	xpi += "-1.0";
@@ -116,7 +119,7 @@ void SetFileName()
 
 string GetFileName(string ext)
 {
-	string ret = basename + "-2.99.0.6";
+	string ret = basename + "-" + version;
 
 	if (arch32.Checked)
 		ret += "-i586";
@@ -261,7 +264,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
     <div id="dllink">
     <ul class="machine">
     <li class="wider">
-         <a href="downloads/2.99.0.6/<%=xpi%>.xpi" title="<%=xpi%>.xpi">
+         <a href="<%=dir%>/<%=xpi%>.xpi" title="<%=xpi%>.xpi">
           <img src="images/down.png" alt="Download"/>
           <strong>For Firefox: Linux/<%=userfriendly%></strong>
           <span class="filesize"><%=filesize%></span>
@@ -285,7 +288,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
     <div id="dllink">
     <ul class="machine">
     <li class="wider">
-         <a href="downloads/2.99.0.6/<%=xpi%>.crx" title="<%=xpi%>.crx">
+         <a href="<%=dir%>/<%=xpi%>.crx" title="<%=xpi%>.crx">
           <img src="images/down.png" alt="Download"/>
           <strong>For Chrome: Linux/<%=userfriendly%></strong>
           <span class="filesize"><%=filesize%></span>
@@ -307,7 +310,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
     <div id="dllink">
     <ul class="machine"> 
     <li>
-         <a href="downloads/2.99.0.7/<%=xpi%>" title="<%=xpi%>">
+         <a href="<%=dir%>/<%=xpi%>" title="<%=xpi%>">
           <img src="images/down.png" alt="Download"/>
           <strong>Linux/<%=userfriendly%></strong>
           <span class="filesize"><%=filesize%></span>
