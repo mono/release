@@ -2,12 +2,16 @@
 <%@ Import Namespace="System.IO" %>
 <%@ Import Namespace="System.Text.RegularExpressions" %>
 <script runat="server">
+// UPDATE HERE FOR NEW VERSION
+string version = "2.3";
+
 string dir;
 string basename;
 string media;
 string arch;
 
 string xpi = string.Empty;
+string extension = string.Empty;
 string filepath = string.Empty;
 string filesize = string.Empty;
 string fileupdate = string.Empty;
@@ -17,7 +21,7 @@ string htdocs_path = "/srv/www/htdocs/mono-website/go-mono/archive/moonlight";
 void Page_Init(object sender, EventArgs e)
 {
 	// change this line to say "downloads/2.3" when we are ready
-        dir = "downloads/2.3";
+        dir = "downloads/" + version;
 
         if (IsPrivate) {
                 media = "-ffmpeg";
@@ -41,6 +45,13 @@ void Page_Init(object sender, EventArgs e)
         } else {
                 arch = "unknown";
 		arch32.Checked = true;
+        }
+
+	if (Regex.IsMatch(Request.UserAgent, "Chrome")) {
+		extension = ".crx";
+	}
+        else if (Regex.IsMatch(Request.UserAgent, "Firefox")) {
+		extension = ".xpi";
         }
 	RadioClicked(null,null);
 }
@@ -96,7 +107,7 @@ void RadioClicked(object sender, EventArgs e)
 
 void SetFileName()
 {
-	xpi = basename + "-2.3";
+	xpi = basename + "-" + version;
 	
 	//if (prof1_0.Checked)
 	//	xpi += "-1.0";
@@ -108,9 +119,22 @@ void SetFileName()
 	else
 		xpi += "-x86_64";
 	
-	xpi += ".xpi";
+	xpi += extension;
 	filepath = Path.Combine(dir,xpi);
 	//return xpi;
+}
+
+string GetFileName(string ext)
+{
+	string ret = basename + "-" + version;
+
+	if (arch32.Checked)
+		ret += "-i586";
+	else
+		ret += "-x86_64";
+
+	ret += ext;
+	return ret;
 }
 
 bool IsPrivate {
@@ -195,30 +219,111 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
 </p>
 
 <form runat="server">
+<%
+    string colspan = "";
+    if (extension == "")
+	    colspan = "colspan='3'";
+%>
+
   <table>
-  <tr><td><h2>1. Watching the Olympics?</h2></td></tr>
-    <tr><td>
+  <tr><td <%=colspan%>><h2>1. Watching the Olympics?</h2></td></tr>
+    <tr><td <%=colspan%>>
      If you want to watch the Olympics you will need to use the <a href="http://go-mono.com/moonlight/prerelease.aspx">Moonlight 3 Preview</a>
      as opposed to Moonlight 2.
      <p>
      If you just want Moonlight 2, proceed to the next step.  If you want the Olympics, click <a href="http://go-mono.com/moonlight/prerelease.aspx">here</a>.
     </td></tr>
-  <tr><td><h2>2. Select the architecture:</h2></td></tr>
+  <tr><td <%=colspan%>><h2>2. Select the architecture:</h2></td></tr>
   
-  <tr><td>
+  <tr><td <%=colspan%>>
     <div onclick="flash()">
     <asp:RadioButton id="arch32" Text="32 bit" groupname="architecture" runat="server" OnCheckedChanged="RadioClicked" AutoPostBack="true" />
     <asp:RadioButton id="arch64" Text="64 bit" groupname="architecture" runat="server" OnCheckedChanged="RadioClicked" AutoPostBack="true" />
     </div>
   </td></tr>
   
-  <tr><td><h2>3. Download the plugin</h2></td></tr>
+  <tr><td <%=colspan%>><h2>3. Download the plugin</h2></td></tr>
+
+<% if (extension == "") { %>
+
+  <tr><td <%=colspan%>>
+    <div id="preview-notice">
+      <p><b>Your browser type could not be determined.</b></p>
+      <p>The following plugin types are available, please select the best match for your browser.</p>
+    </div>
+
+  </td></tr>
+
+<%
+	filepath = Path.Combine (dir, GetFileName(".xpi"));
+	fileupdate = LastModified(filepath);
+	filesize = FileSize(filepath);
+	userfriendly = UserFriendly(filepath);
+%>
+  <tr><td>
+    <div id="dllink">
+    <ul class="machine">
+    <li class="wider">
+         <a href="<%=dir%>/<%=xpi%>.xpi" title="<%=xpi%>.xpi">
+          <img src="images/down.png" alt="Download"/>
+          <strong>For Firefox: Linux/<%=userfriendly%></strong>
+          <span class="filesize"><%=filesize%></span>
+          <br/>
+          <span class="updated">Last Updated:
+              <%=fileupdate%>
+          </span>
+        </a>
+      </li>
+    </ul>
+    </div>
+  </td>
+
+<%
+	filepath = Path.Combine (dir, GetFileName(".crx"));
+	fileupdate = LastModified(filepath);
+	filesize = FileSize(filepath);
+	userfriendly = UserFriendly(filepath);
+%>
+  <td>
+    <div id="dllink">
+    <ul class="machine">
+      <li class="wider">
+         <a href="<%=dir%>/<%=xpi%>.crx" title="<%=xpi%>.crx">
+          <img src="images/down.png" alt="Download"/>
+          <strong>For Chrome: Linux/<%=userfriendly%></strong>
+          <span class="filesize"><%=filesize%></span>
+          <br/>
+          <span class="updated">Last Updated:
+              <%=fileupdate%>
+          </span>
+        </a>
+      </li>
+    </ul>
+    </div>
+  </td>
+
+  <td>
+    <div id="dllink">
+    <ul class="machine">
+      <li class="wider" style="height: 120px;">
+         <a href="http://go-mono.com/moonlight/prerelease.aspx">
+          <img src="240.png">
+	  <strong>Click here to go to the Moonlight Preview Download Page</strong>
+        </a>	
+      </li>
+    </ul>
+    </div>
+  </td>
+</tr>
+
+
+<% } else {%>
 
   <tr><td>
     <div id="dllink" style="float:left;">
     <ul class="machine"> 
     <li style="height: 120px;">
-         <a href="downloads/2.3/<%=xpi%>" title="<%=xpi%>">
+         <a href="<%=dir%>/<%=xpi%>.xpi" title="<%=xpi%>".xpi>
           <img src="images/down.png" alt="Download"/>
           <strong>Linux/<%=userfriendly%></strong>
           <span class="filesize"><%=filesize%></span>
@@ -241,6 +346,9 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
       </ul>
     </div>
   </td></tr>
+
+<% } %>
+
   </table>
 </form>
  
