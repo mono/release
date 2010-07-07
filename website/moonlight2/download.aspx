@@ -264,7 +264,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
     <div id="dllink">
     <ul class="machine">
     <li class="wider">
-         <a href="<%=dir%>/<%=xpi%>" title="<%=xpi%>">
+         <a href="<%=dir%>/<%=xpi%>.xpi" title="<%=xpi%>.xpi">
           <img src="images/down.png" alt="Download"/>
           <strong>For Firefox: Linux/<%=userfriendly%></strong>
           <span class="filesize"><%=filesize%></span>
@@ -288,7 +288,7 @@ Check the list of <a href="faq.aspx">supported operating systems and architectur
     <div id="dllink">
     <ul class="machine">
       <li class="wider">
-         <a href="<%=dir%>/<%=xpi%>" title="<%=xpi%>">
+         <a href="<%=dir%>/<%=xpi%>.crx" title="<%=xpi%>.crx">
           <img src="images/down.png" alt="Download"/>
           <strong>For Chrome: Linux/<%=userfriendly%></strong>
           <span class="filesize"><%=filesize%></span>
