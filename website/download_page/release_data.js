@@ -26,6 +26,7 @@ var sle11_repo_url = "http://ftp.novell.com/pub/mono/download-stable/SLE_11"
 
 var win_exe_url = "http://ftp.novell.com/pub/mono/archive/2.6.4/windows-installer/3/mono-2.6.4-gtksharp-2.12.10-win32-3.exe"
 var win_gtk_url = "http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi"
+var win_gtk_url = "http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.10.win32.msi"
 
 var osx_x86_url = "http://ftp.novell.com/pub/mono/archive/2.6.4/macos-10-x86/3/MonoFramework-2.6.4_3.macos10.novell.x86.dmg"
 var osx_x86_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.4/macos-10-x86/3/MonoFramework-CSDK-2.6.4_3.macos10.novell.x86.dmg"
