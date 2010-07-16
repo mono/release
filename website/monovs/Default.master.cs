@@ -8,18 +8,6 @@ public partial class _default : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        
-        if (Request.ServerVariables["SCRIPT_NAME"] == "/Default.aspx") {
-          toplogo.Visible = false;
-          menu.Visible = true;
-          footer.Visible = true;
-        } else if (Request.QueryString["nc"] != null) { //headers called inline with fancybox
-          toplogo.Visible = false;
-          menu.Visible = false; 
-          footer.Visible = false;
-        }
-        
-        
         if (!Page.IsPostBack)
         {
             HttpCookie refCookie = Request.Cookies["mt_ref"];
