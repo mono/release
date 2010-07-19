@@ -9,37 +9,41 @@ var i586_x86_64_ppc64_ia64 = "i586, x86_64, ppc64, and ia64"
 var enterprise = "<p>The <a href=\"http://www.novell.com/products/mono/\">SUSE Linux Enterprise Mono Extension</a> is available for purchase from <a href=\"http://www.novell.com/\">Novell</a>.</p>"
 
 // URLS
-var vpc_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.7/Mono-2.6.7-vpc.zip.torrent"
-var vpc_zip_url = "http://ftp.novell.com/pub/mono/appliance/2.6.7/Mono-2.6.7-vpc.zip"
 
-var vmx_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.7/Mono-2.6.7-vmx.zip.torrent"
-var vmx_zip_url = "http://ftp.novell.com/pub/mono/appliance/2.6.7/Mono-2.6.7-vmx.zip"
+var download_url_base = "http://ftp.novell.com/pub/mono"
 
-var livecd_torrent_url = "http://ftp.novell.com/pub/mono/appliance/2.6.7/Mono-2.6.7.iso.torrent"
-var livecd_iso_url = "http://ftp.novell.com/pub/mono/appliance/2.6.7/Mono-2.6.7.iso"
+var vpc_torrent_url = download_url_base + "/appliance/2.6.7/Mono-2.6.7-vpc.zip.torrent"
+var vpc_zip_url = download_url_base + "/appliance/2.6.7/Mono-2.6.7-vpc.zip"
 
-var ops110_repo_url = "http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.0"
-var ops111_repo_url = "http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.1"
-var ops112_repo_url = "http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.2"
-var ops113_repo_url = "http://ftp.novell.com/pub/mono/download-stable/openSUSE_11.3"
+var vmx_torrent_url = download_url_base + "/appliance/2.6.7/Mono-2.6.7-vmx.zip.torrent"
+var vmx_zip_url = download_url_base + "/appliance/2.6.7/Mono-2.6.7-vmx.zip"
 
-var sle11_repo_url = "http://ftp.novell.com/pub/mono/download-stable/SLE_11"
+var livecd_torrent_url = download_url_base + "/appliance/2.6.7/Mono-2.6.7.iso.torrent"
+var livecd_iso_url = download_url_base + "/appliance/2.6.7/Mono-2.6.7.iso"
 
-var win_exe_url = "http://ftp.novell.com/pub/mono/archive/2.6.7/windows-installer/3/mono-2.6.7-gtksharp-2.12.10-win32-2.exe"
-var win_gtk_url = "http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi"
-var win_gtk_url = "http://ftp.novell.com/pub/mono/gtk-sharp/gtk-sharp-2.12.10.win32.msi"
+var ops110_repo_url = download_url_base + "/download-stable/openSUSE_11.0"
+var ops111_repo_url = download_url_base + "/download-stable/openSUSE_11.1"
+var ops112_repo_url = download_url_base + "/download-stable/openSUSE_11.2"
+var ops113_repo_url = download_url_base + "/download-stable/openSUSE_11.3"
 
-var osx_x86_url = "http://ftp.novell.com/pub/mono/archive/2.6.7/macos-10-x86/2/MonoFramework-2.6.7_2.macos10.novell.x86.dmg"
-var osx_x86_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.7/macos-10-x86/2/MonoFramework-CSDK-2.6.7_2.macos10.novell.x86.dmg"
-var osx_ppc_url = "http://ftp.novell.com/pub/mono/archive/2.6.7/macos-10-ppc/2/MonoFramework-2.6.7_2.macos10.novell.ppc.dmg"
-var osx_ppc_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.7/macos-10-ppc/2/MonoFramework-CSDK-2.6.7_2.macos10.novell.ppc.dmg"
-var osx_univ_url = "http://ftp.novell.com/pub/mono/archive/2.6.7/macos-10-universal/2/MonoFramework-2.6.7_2.macos10.novell.universal.dmg"
-var osx_univ_csdk_url = "http://ftp.novell.com/pub/mono/archive/2.6.7/macos-10-universal/2/MonoFramework-CSDK-2.6.7_2.macos10.novell.universal.dmg"
+var sle11_repo_url = download_url_base + "/download-stable/SLE_11"
+var rhel5_repo_url = download_url_base + "/download-stable/RHEL_5"
+
+var win_exe_url = download_url_base + "/archive/2.6.7/windows-installer/3/mono-2.6.7-gtksharp-2.12.10-win32-2.exe"
+var win_gtk_url = download_url_base + "/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi"
+var win_gtk_url = download_url_base + "/gtk-sharp/gtk-sharp-2.12.10.win32.msi"
+
+var osx_x86_url = download_url_base + "/archive/2.6.7/macos-10-x86/2/MonoFramework-2.6.7_2.macos10.novell.x86.dmg"
+var osx_x86_csdk_url = download_url_base + "/archive/2.6.7/macos-10-x86/2/MonoFramework-CSDK-2.6.7_2.macos10.novell.x86.dmg"
+var osx_ppc_url = download_url_base + "/archive/2.6.7/macos-10-ppc/2/MonoFramework-2.6.7_2.macos10.novell.ppc.dmg"
+var osx_ppc_csdk_url = download_url_base + "/archive/2.6.7/macos-10-ppc/2/MonoFramework-CSDK-2.6.7_2.macos10.novell.ppc.dmg"
+var osx_univ_url = download_url_base + "/archive/2.6.7/macos-10-universal/2/MonoFramework-2.6.7_2.macos10.novell.universal.dmg"
+var osx_univ_csdk_url = download_url_base + "/archive/2.6.7/macos-10-universal/2/MonoFramework-CSDK-2.6.7_2.macos10.novell.universal.dmg"
 var osx_cocoa_source_url = "http://go-mono.com/sources/cocoa-sharp/cocoa-sharp-0.9.5.tar.bz2"
 
 var codice = "These packages are provided by <a href=\"http://www.codicesoftware.com/\">Codice Software</a>."
-var solaris_10_sparc_url = "http://ftp.novell.com/pub/mono/third-party/codice/mono-2.6.1-sol10-sparc.pkg.gz"
-var opensolaris_x86_url = "http://ftp.novell.com/pub/mono/third-party/codice/mono-2.6.1-opensolaris-x86.pkg.gz"
+var solaris_10_sparc_url = download_url_base + "/third-party/codice/mono-2.6.1-sol10-sparc.pkg.gz"
+var opensolaris_x86_url = download_url_base + "/third-party/codice/mono-2.6.1-opensolaris-x86.pkg.gz"
 
 
 var data =
@@ -152,6 +156,24 @@ var data =
 				"name" : i586_x86_64_ppc64_ia64,
 				"desc" : "",
 				"downloadText" : zypper + "<ul><li><a href=\"" + sle11_repo_url + "\">" + sle11_repo_url + "</a></ul>" + zypper_help_1 + sle11_repo_url + zypper_help_2
+			}
+			]
+		}
+		]
+	},
+
+	{
+		"name" : "RHEL/CentOS",
+		"icon" : "centos.jpg",
+		"dlicon" : "centos.jpg",
+		"version" : [
+		{
+			"name" : "Red Hat Enterprise Linux 5",
+			"arch" : [
+			{
+				"name" : i586_x86_64,
+				"desc" : "",
+				"downloadText" : "<ul><li><a href=\"" + rhel5_repo_url + "\">" + rhel5_repo_url + "</a></li></ul>"
 			}
 			]
 		}
