@@ -29,7 +29,7 @@ var ops113_repo_url = download_url_base + "/download-stable/openSUSE_11.3"
 var sle11_repo_url = download_url_base + "/download-stable/SLE_11"
 var rhel5_repo_url = download_url_base + "/download-stable/RHEL_5"
 
-var win_exe_url = download_url_base + "/archive/2.6.7/windows-installer/3/mono-2.6.7-gtksharp-2.12.10-win32-2.exe"
+var win_exe_url = download_url_base + "/archive/2.6.7/windows-installer/2/mono-2.6.7-gtksharp-2.12.10-win32-2.exe"
 var win_gtk_url = download_url_base + "/gtk-sharp/gtk-sharp-2.12.9-2.win32.msi"
 var win_gtk_url = download_url_base + "/gtk-sharp/gtk-sharp-2.12.10.win32.msi"
 
