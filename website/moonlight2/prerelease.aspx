@@ -3,7 +3,7 @@
 <%@ Import Namespace="System.Text.RegularExpressions" %>
 <script runat="server">
 // UPDATE HERE FOR NEW VERSION
-string version = "2.99.0.7";
+string version = "2.99.0.8";
 
 string dir;
 string basename;
@@ -140,7 +140,7 @@ bool IsPrivate {
 <asp:Content ContentPlaceHolderID="title" Runat="server">Moonlight - Preview Download</asp:Content>
 
 <asp:Content ContentPlaceHolderID="page_heading" Runat="server">
-<h1>3.0 Preview 7 Download</h1>
+<h1>3.0 Preview 8 Download</h1>
 </asp:Content>
 
 <asp:Content ContentPlaceHolderID="main_container" Runat="server">
