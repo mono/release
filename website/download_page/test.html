@@ -1,0 +1,30 @@
+<html>
+<body>
+<script type="text/javascript" src="mono-1.2.6.js">
+</script>
+<script>
+	document.writeln("<h1>" + data.release + "</h1>");
+	document.writeln("<h1>" + data.platforms.length + "</h1>");
+	for (i=0;i<data.platforms.length; i++)
+	{
+		document.writeln("[" + data.platforms[i].name + "]<br>");
+		if (data.platforms[i].version)
+		{
+			for (j=0; j < data.platforms[i].version.length; j++)
+			{
+				document.writeln("&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;[" + data.platforms[i].version[j].name + "]<br>");
+				if (data.platforms[i].version[j].arch)
+				{
+					for (k=0; k < data.platforms[i].version[j].arch.length; k++)
+					{
+						document.writeln("&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;[" + data.platforms[i].version[j].arch[k].name + "]<br>");
+						document.writeln("&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;[" + data.platforms[i].version[j].arch[k].desc + "]<br>");
+						document.writeln("&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;[" + data.platforms[i].version[j].arch[k].downloadText + "]<br>");
+					}
+				}
+			}
+		}
+	}
+</script>
+</body>
+</html>

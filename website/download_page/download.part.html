@@ -1,0 +1,64 @@
+<div class="page">
+<script type="text/javascript">
+	var html = "<p class='latest-version'>Latest Version: " + data.release + " (<a href='http://www.go-mono.com/archive/" + data.release + "'>Release Notes</a>)</p>";
+	document.write(html);
+
+</script>
+
+<table class="dl-content" width="100%"><tr><td width="70%">
+<a href='http://mono.ximian.com/monobuild/snapshot/download-trunk/'>SVN Builds</a><br/>
+<a href='http://mono-project.com/OldReleases'>Older Releases</a>
+</td><td align="right"><table><tr><td style="padding: 0px;"><img src="source_code.jpg" width="35"></td><td style="padding: 7px;">
+
+<script type="text/javascript">
+	var html = "<a href='http://go-mono.com/sources-stable/'>Mono&nbsp;" + data.release + "&nbsp;Sources</a>";
+	document.write(html);
+</script>
+</td></tr></table></td>
+</tr><tr>
+
+<td>
+</td></tr></table>
+
+
+
+
+<h2 style="margin-top: 1ex;">1. Select Platform</h2>
+<br>
+	<table class="os" >
+	<tr>
+	<script type="text/javascript">
+	var html = '';
+	for(i=0;i<data.platforms.length;i++)
+	{
+		html += "<td class='os' id='td"+i+"'>";
+		html += "<div class='os' onMouseOver='mouseOver("+i+")' onMouseOut='mouseOut("+i+")' onClick='selected("+i+")'>";
+		html += "<div class='os-rd'><input type='radio' name='os' id='rb"+i+"' onClick='selected("+i+")'></div>";
+		html += "<div class='os-id'><img alt='"+data.platforms[i].name+"' src='"+data.platforms[i].icon+"'><br />"+data.platforms[i].name+"</div>";
+		html += "</div></td>";
+	}
+
+	document.write(html);
+
+
+	</script>
+	</tr>
+	</table>
+
+<table>
+<tr valign='top'>
+<td style='padding: 0px;'><div id='step2' class='dl-content'></div></td>
+<td style='padding: 0px; padding-left: 70px;'><div id='step3' class='dl-content'></div></td>
+</tr>
+</table>
+<div id='step4' class="dl-content"></div>
+
+
+Can not find the specific download you want?   We have
+some <a href="http://www.mono-project.com/Other_Downloads">unsupported
+downloads</a> you might be interested in.
+
+<p>We also have packages for some of the
+more <a href="http://mono-project.com/OpenSUSE_Build_Service">popular
+software</a> that runs on Mono.
+</div> <!-- closes page --!>

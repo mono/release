@@ -1,0 +1,133 @@
+<h1>Mono 2.6 and MonoDevelop 2.2 released</h1>
+
+	<p><img src="http://primates.ximian.com/%7Emiguel/pictures/mp-mono-logo.png" align="right">
+	Today we are releasing the much anticipated upgrades to both.  
+	<a href="http://www.mono-project.com/Release_Notes_Mono_2.6">Mono 2.6</a>
+	and <a href="http://monodevelop.com/Download/MonoDevelop_2.2_Released">MonoDevelop
+	2.2</a>.
+
+	</p><p>For those in a hurry, binaries and source are available from:
+
+	</p><ul>
+		<li><a href="http://www.go-mono.com/mono-downloads/download.html">Mono
+		Download</a> page.
+
+		</li><li><a href="http://monodevelop.com/Download">MonoDevelop
+		Download</a> page. 
+	</li></ul>
+
+	<p>And if you want a quick mnemonic to remember this release,
+	just think <b>debugger!</b> and <b>cross platform</b>.
+
+	</p><p>The Mono team and contributors worked on this release like
+	we have never worked before.   Thanks to everyone that
+	reported bugs, filed feature requests, contributed code and
+	helped newcomers with Mono. 
+	
+	</p><p>Mono 2.6 highlights:
+	</p><ul>
+		<li>WCF client and server, the subset exposed by Silverlight 2.0.
+		</li><li><a href="http://www.mono-project.com/Mono_LLVM">LLVM
+		support</a>, to improve performance on
+		server/computational loads.
+		</li><li><a href="http://www.mono-project.com/Continuations">Continuations/Co-routine
+		framework</a> Mono.Tasklets (<a href="http://tirania.org/blog/archive/2009/Apr-09.html">background info</a>)
+		</li><li>LINQ to SQL using <a href="http://groups.google.com/group/dblinq">DbLinq</a>.
+		</li><li>New <a href="http://www.mono-project.com/Soft_Debugger">Soft
+		Debugger</a>, integrated with MonoDevelop on Unix and
+		OSX (<a href="http://tirania.org/blog/archive/2009/Nov-04.html">background</a>).
+		</li><li>System.IO.Packaging.
+		</li><li>csharp shell now supports auto-completion (press
+		tab to complete)
+		</li><li>xbuild can now build most msbuild projects.
+		</li><li>Mono debuts
+		a <a href="http://www.mono-project.com/Moonlight/SecurityStatus">verifier
+		and security sandbox</a> (used by Moonlight).
+		</li><li>More complete 3.5 API coverage.
+		</li><li>This release includes Microsoft's open sourced
+		ASP.NET MVC, ASP.NET AJAX and Microsoft's Dynamic Language Runtime.
+		</li><li>Faster and slimmer.
+	</li></ul>
+
+	
+	<p>MonoDevelop 2.2 highlights
+	(screenshots <a href="http://monodevelop.com/Download/What%27s_new_in_MonoDevelop_2.2">here</a>
+	and <a href="http://tirania.org/blog/archive/2009/Sep-09.html">here</a>):
+	
+	</p><ul>
+		<li>MonoDevelop code is now LGPLv2 and MIT X11
+		licensed.  We have removed all of the GPL code,
+		allowing <a href="http://monodevelop.com/Writing_an_Add-In">addins</a>
+		to use Apache, MS-PL code as well as allowing
+		proprietary add-ins to be used with MonoDevelop (like
+		RemObject's Oxygene). 
+		
+		</li><li>User interface improvements: the first thing that
+		MonoDevelop users will notice is that we have upgraded
+		the UI to fit modern ideas.  We borrowed ideas from
+		Chrome, Firefox, Visual Studio, Eclipse and XCode.
+
+		</li><li>ASP.NET MVC support, you can now develop, debug and
+		build ASP.NET MVC applications from MonoDevelop.
+
+		</li><li>New T4 Macro processor (Text Template
+		Transformation Toolkit) integrated directly into the
+		IDE (Mono's T4 is also available as
+		a <a href="http://dan.s.wards.ws/2009/10/how-to-execute-t4-text-templates-in-monodevelop/">reusable
+		library</a> for use and abuse in your own programs).
+
+		</li><li>Moonlight Project Support: you can now build,
+		debug and run Moonlight applications using
+		MonoDevelop.
+
+		</li><li>New <a href="http://tirania.org/blog/archive/2009/Sep-09.html">MacOS
+		and Windows</a> support.   Check
+		our <a href="http://monodevelop.com/Download/What%27s_new_in_MonoDevelop_2.2#Feature_Matrix">feature
+		matrix</a> for details.
+
+		</li><li>New <a href="http://monodevelop.com/Download/What%27s_new_in_MonoDevelop_2.2#Debugger">Debugger</a>
+
+		support allows debugging Console, Gtk#, ASP.NET,
+		iPhone and Moonlight applications.
+
+		</li><li>Extensive <a href="http://monodevelop.com/Download/What%27s_new_in_MonoDevelop_2.2#Text_Editor">text
+		editor improvements</a>:
+		<ul>
+			<li>Dynamic abbrev (Just like Emacs' Alt-/)
+			</li><li>Code generator (Alt-Insert)
+			</li><li>Acronym matching
+			</li><li>Code templates
+			</li><li>Block selection
+			</li><li>C# Formatter
+		</li></ul>
+
+		</li><li><a href="http://tirania.org/shots/0912150216VCygvKQ8.png"><img src="http://tirania.org/shots/0912150216VCygvKQ8.png" align="right" width="320"></a>New <a href="http://monodevelop.com/Download/What%27s_new_in_MonoDevelop_2.2#Refactoring">refactoring
+		commands</a>:
+
+		<ul>
+
+			<li>Inline Rename (see screenshot).
+			</li><li>Resolve Namespace
+			</li><li>Rename Refactoring with Preview
+			</li><li>Extract Method
+			</li><li>Declare Local Variable
+			</li><li>Integrate Temporary Variable
+			</li><li>Introduce Constant
+			</li><li>Move Type to Own File
+			</li><li>Remove Unused Usings
+			</li><li>Sort Usings
+			</li><li>Create/Remove Backing Store
+			</li><li>Keybindable Commands
+		</li></ul>
+	
+		</li><li>Python add-in has graduated to be a supported
+		plugin, includes code completion, syntax checking,
+		method and class locator and code folding.
+
+		</li><li>iPhone development plugin.
+	</li></ul>
+
+	<p>The team is on #mono, #monodev and #monodevelop on
+	irc.gnome.org fielding any questions you might have.
+
+	

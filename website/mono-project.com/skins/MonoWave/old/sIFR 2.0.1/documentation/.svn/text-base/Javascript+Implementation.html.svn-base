@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>
+    
+      Javascript Implementation in sIFR Documentation and FAQ
+    
+  </title>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="./style.css" media="screen" type="text/css"/>
+</head>
+<body>
+<div id="Container">
+  <div id="Content">
+  
+  <h1 id="pageName">
+    
+      <small>sIFR Documentation and FAQ</small><br />
+      Javascript Implementation
+    
+  </h1>
+
+  
+
+<p>There are some specific issues you need to take care of if you want to implement sIFR. Unsurprisingly, the issues you find here have to do with JavaScript.</p>
+
+<h2 id="function">Make sure sIFR is a function</h2>
+
+<p>If the browser does not support the necessary Flash version, or if the browser itself isn't adequate for sIFR, the <code>sIFR</code> variable will be an <strong>object</strong>. In this case only the <code>UA</code> object is exposed, and not the <code>replaceElement</code> method. You can test if sIFR is a function like this:</p>
+
+<pre><code>if(typeof sIFR == "function"){
+    // do stuff
+}
+</code></pre>
+
+<h2>Using the UA object</h2>
+
+<p>The <code>sIFR.UA</code> object contains the results of the browser detection done by sIFR. This object is read-only.</p>
+
+<p>The following properties can be used:</p>
+
+<ul>
+<li>bIsWebKit</li>
+<li>nWebKitVersion</li>
+<li>bIsSafari</li>
+<li>bIsKonq (Konqueror)</li>
+<li>bIsKHTML</li>
+<li>bIsOpera</li>
+<li>nOperaVersion</li>
+<li>bIsGecko</li>
+<li>nGeckoBuildDate</li>
+<li>bIsIE</li>
+<li>bIsIEMac</li>
+<li>bIsXML</li>
+<li>bUseDOM (whether sIFR uses <code>innerHTML</code> or the DOM for creating the elements)</li>
+<li>nFlashVersion (not supported in IE/Win)</li>
+<li>bHasTransparencySupport</li>
+<li>bUseInnerHTMLHack (needed to force Safari &lt; 1.3 and IE 6 SP2 to repaint)</li>
+</ul>
+
+<p>The meaning of these properties should be self-explanatory.</p>
+
+<h2>Global variables</h2>
+
+<p>When sIFR is active on a page the following variables will exist in global scope: <code>hasFlash</code>, <code>named</code>, <code>parseSelector</code> and <code>sIFR</code>. Other functions <strong>must not</strong> overwrite these variables, or else the code will break.</p>
+
+<p>Additionaly, sIFR creates <code>String.prototype.normalize()</code> and in the case if <strong>IE 5.0 on Windows</strong> <code>Array.prototype.push()</code> and <code>Function.prototype.apply()</code>.</p>
+
+<h2>Event Hijacking</h2>
+
+<p>For IE/Mac and Konqueror sIFR registers its initalizing method using <code>window.onload</code>. If other scripts overwrite or hijack this event, sIFR will not initialize. Depending on the situation this could lead to empty spaces where the sIFR elements should be. You can prevent this from happening by making sure all scripts which set <code>window.onload</code> have been loaded before <code>sifr.js</code> is loaded.</p>
+
+<h2>Changing the document title</h2>
+
+<p>Due to the <a class="existingWikiWord" href="Fragment+Identifier+Bug.html">Fragment Identifier Bug</a> sIFR makes sure the title of the document does not change after replacements (in IE). This means that if you are using a script which does change the title, you need to change the title in sIFR as well. To do this, first change the title, and then call <code>sIFR.updateDocumentTitle()</code>.</p>
+
+
+  </div>
+</div>
+</body>
+</html>

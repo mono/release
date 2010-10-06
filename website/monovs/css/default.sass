@@ -1,0 +1,271 @@
+$bodyfg: #444
+$bodybg: #fff
+$select: #3465a4
+
+@import mixins.sass
+
+body
+  font: 13px/1.5 "Droid Sans", sans-serif
+  color: $bodyfg
+  background-color: $bodybg
+  margin: 0
+  padding: 0
+
+h1, h2, h3, h4, h5, h6
+  font-family: "RaveIn Condensed", Avenir, Prelude, sans-serif
+  color: lighten($bodyfg, 20%)
+
+h1
+  font-size: 140%
+  line-height: 120%
+
+h2
+  font-size: 130%
+
+h3
+  font-size: 120%
+
+h4
+  font-size: 110%
+
+h5, h6
+  font-size: 100%
+
+a
+  color: $select
+  text-decoration: none
+  &:hover
+    color: lighten($select, 10%)
+    text-decoration: underline
+    +transition(text-decoration 1s ease-in)
+  img
+    border: none
+    
+ul
+  &.block
+    margin: 10px 0 10px
+    padding: 0
+  li
+    display: block
+    list-style: none
+    margin-bottom: .3em
+
+.small
+  font-size: 80%
+
+.relative
+  position: relative
+
+#header
+  overflow: hidden
+  margin-bottom: 20px
+
+  #minilogo
+    position: absolute
+    top: 10px
+    left: 10px
+    width: 285px
+    height: 50px
+  
+  #ctl00_menu
+    ul
+      display: block
+      margin: 26px 0 0
+      li
+        display: block
+        float: right
+        margin: 0 0 0 32px
+        font-size: 120%
+  
+#splash
+  padding: 0 10px 3em
+  background: url(/img/watermark-splash.png) no-repeat 50% 150%
+  min-height: 300px
+  
+  h1
+    margin-bottom: 2em
+
+.button
+  display: block
+  display: inline-block
+  +radius(5px)
+  +box-shadow(0, 2px, 2px, rgba(0,0,0,0.5))
+  +text-shadow(0, 2px, 2px, rgba(0,0,0,0.5))
+  font-family: "RaveIn Condensed", Avenir, Prelude, sans-serif
+  background-image: url(/img/button-shade.png) 
+  background-repeat: repeat-x 
+  background-position: 0 0
+  border-width: 1px
+  border-style: solid
+  text-align: center
+  font-weight: bold
+  color: $bodybg
+  background-color: $select
+  border: 1px solid darken($select, 15%)
+  padding: 2px 6px
+  +user-select(none)
+  &:active
+    background-image: none
+    text-shadow: none
+    -moz-text-shadow: none
+    -webkit-text-shadow: none        
+    box-shadow: none
+    -moz-box-shadow: none
+    -webkit-box-shadow: none
+  &:hover
+    color: $bodybg
+
+#logo
+  font-size: 90%
+  width: 280px
+  padding: 0 20px
+  
+  .download
+    margin: 10px 0 5px
+    padding: 6px 30px
+    font-size: 200%
+    +radius(15px)
+    position: relative
+    span
+      display: block
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      border: 1px solid rgba(255,255,255,0.3)
+      +radius(14px)
+  &:active
+    span
+      border: none
+  .buynow
+    font-size: 110%
+    font-weight: bold
+  img
+    display: block
+    margin-left: -20px
+
+#features
+  margin: 0 0 2em 0
+  padding: 3px 0 6px 0
+  width: 100%
+  overflow: hidden
+  
+  &>div
+    background: $bodybg*.9 url(/img/mp-bg-footer.png) no-repeat center top
+    border-top: 1px solid white
+    border-bottom: 1px solid white
+    +box-shadow(0, 1px, 6px, rgba(0, 0, 0, 0.6))
+    padding: 2em 0 3em
+    
+    .feature
+      padding: 5px 5px 5px 120px
+      width: 200px
+      background-color: rgba(255,255,255,0) //rather than transparent to make transitions work right on webkit
+      background-repeat: no-repeat
+      background-position: 0 20px
+      +radius(15px)
+      height: 11em
+
+      &.jquery //only do this for javascript browsers
+        cursor: pointer
+        &:hover
+          background-color: rgba(255, 255, 255, 0.4)
+          +transition(background-color .3s ease-in)
+    
+    a
+      color: inherit
+    a:hover
+      text-decoration: none
+      +transition(color 1s ease-in)
+
+    #feature-scan
+      background-image: url(/img/feature-scan.png)
+
+    #feature-windows
+      background-image: url(/img/feature-windows.png)
+
+    #feature-linux
+      background-image: url(/img/feature-linux.png)
+
+    #feature-debug
+      background-image: url(/img/feature-debug.png)
+
+    #feature-package
+      background-image: url(/img/feature-package.png)
+
+    #feature-studio
+      background-image: url(/img/feature-studio.png)
+
+#ctl00_form1
+  #partner
+    width: 250px
+    float: right
+    display: block
+  #ctl00_maincontent_tblForm
+    width: 100%
+    input
+      width: 100%
+    td.label
+      text-align: right
+      width: 250px
+      padding-right: 12px
+  #ctl00_maincontent_btnDownloadMsi, #ctl00_maincontent_btnDownloadVsix
+    vertical-align: middle
+
+.shot
+  max-width: 100%
+  border: 1px solid #888
+
+.note
+  font-size: 90%
+  background-color: darken($bodybg, 2%)
+  +radius(10px)
+  padding: 2em
+
+.tip
+  margin-top: 30px
+  font-size: 90%
+  padding: 2em
+  +radius(10px)
+  background-color: #fffce7 //for IE
+  background-color: rgba(254,250,214,0.5)
+  border: 1px solid #edd400
+  h2
+    margin-top: 0
+
+#ctl00_footer
+  margin: 8em auto 2em auto
+  .logos
+    a
+      display: block
+      margin: 10px 0 20px
+      img
+        border: none
+        
+//fancybox overrides
+#fancybox-left, #fancybox-right
+  width: 40px !important
+  height: 100% !important
+  bottom: 20px !important
+#fancybox-left span
+  left: 9px !important
+  opacity: 0.2 !important
+#fancybox-right span
+  left: auto !important
+  right: 9px !important
+  opacity: 0.2 !important
+#fancybox-left:hover span
+  left: 9px !important
+  opacity: 1 !important
+#fancybox-right:hover span
+  right: 9px !important
+  opacity: 1 !important
+#fancybox-outer
+  padding: 10px 30px 40px 30px !important
+  background-color: #fff !important
+  background: rgba(240,240,240,0.90) url("/img/mp-bg-footer.png") no-repeat scroll center top !important
+#fancybox-inner
+  margin: 10px 30px 40px 30px !important
+  .container_12
+    width: 705px !important

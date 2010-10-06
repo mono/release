@@ -1,0 +1,6 @@
+[mono]
+name=Mono for @DISTRO@ (@BUNDLE_NAME@)
+baseurl=http://@HOSTNAME_URL@@WEBROOT_PATH@/@URL_PREFIX@/@DISTRO@/
+enabled=1
+gpgcheck=0
+

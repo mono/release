@@ -1,0 +1,51 @@
+<%@ Master Language="C#" MasterPageFile="~/Default.master" AutoEventWireup="true"
+    CodeFile="FeaturePage.master.cs" Inherits="FeaturePage" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="title" runat="Server">
+    <asp:ContentPlaceHolder ID="title" runat="server" />
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="maincontent" runat="Server">
+    <div class="container_12">
+        <div class="featurebox" style="float: right;">
+            <a href="/Moma.aspx">
+                <div id="feature-scan" class="feature" style="width: 215px;">
+                    <h2>Scan for Mono Compatibility</h2>
+                    <p>
+                        Scan your application with the Mono Migration Analyzer (MoMA) directly in Visual
+                        Studio.
+                    </p>
+                </div>
+            </a>
+            <a href="/Debug.aspx">
+                <div id="feature-debug" class="feature" style="width: 215px;">
+                    <h2>Run and Debug on Mono</h2>
+                    <p>
+                        Launch your application locally, or remotely on Linux/OSX, with <b>full Visual Studio
+                        debugging support</b>.
+                    </p>
+                </div>
+            </a>
+            <a href="/Package.aspx">
+                <div id="feature-package" class="feature" style="width: 215px;">
+                    <h2>Package for Linux</h2>
+                    <p>
+                        Create an RPM based package for simple distribution to Linux computers.
+                    </p>
+                </div>
+            </a>
+            <a href="/Studio.aspx">
+                <div id="feature-studio" class="feature" style="width: 215px;">
+                    <h2>Create a Linux Appliance</h2>
+                    <p>
+                        Bundle your application into a SUSE Linux appliance for easy distribution to your
+                        users.
+                    </p>
+                </div>
+            </a>
+            <br />
+            <span style="margin-left: 50px;">Ready to try it out?<a class="download button" href="/download/"
+                style="margin: 0 0 15px 15px;"><span></span>Download</a></span>
+        </div>
+        <asp:ContentPlaceHolder ID="featurecontent" runat="server" />
+    </div>
+</asp:Content>

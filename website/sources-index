@@ -1,0 +1,37 @@
+<html>
+<head>
+<link rel="stylesheet" href="[[webroot_path]]/packaging.css" type="text/css">
+<title>Mono [[version]] Sources</title>
+</head>
+<body>
+<h1>Mono [[version]] Sources</h1>
+
+	<h3>Mono</h3> 
+#	mono mono-basic libgdiplus gluezilla
+
+	<h3>XSP/mod_mono</h3>
+#	xsp mod_mono
+
+	<h3>Development Tools</h3>
+#	monodoc mono-tools gecko-sharp2 gtksourceview-sharp2 boo ikvm mono-debugger heap-buddy cocoa-sharp nant IPCE mono-addins
+
+	<h3>Gtk# 2.4</h3>
+#	gtk-sharp2
+
+	<h3>Gtk# 2.8</h3>
+#	gtk-sharp28
+
+	<h3>Gtk# 2.10</h3>
+#	gtk-sharp210 gnome-sharp2
+
+	<h3>Gtk# 2.12</h3>
+#	gtk-sharp212 gnome-sharp220 gnome-desktop-sharp2
+
+	<h3>MonoDevelop</h3>
+#	monodevelop monodevelop-boo monodevelop-database monodevelop-debugger-gdb monodevelop-debugger-mdb monodevelop-java monodevelop-vala
+
+	<h3>Other</h3>
+#	gnome-keyring-sharp maemo-sharp webkit-sharp uiaatkbridge uiautomationwinforms
+
+</body>
+</html>

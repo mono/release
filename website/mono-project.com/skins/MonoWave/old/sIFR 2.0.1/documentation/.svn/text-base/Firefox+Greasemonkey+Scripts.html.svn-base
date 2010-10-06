@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>
+    
+      Firefox Greasemonkey Scripts in sIFR Documentation and FAQ
+    
+  </title>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="./style.css" media="screen" type="text/css"/>
+</head>
+<body>
+<div id="Container">
+  <div id="Content">
+  
+  <h1 id="pageName">
+    
+      <small>sIFR Documentation and FAQ</small><br />
+      Firefox Greasemonkey Scripts
+    
+  </h1>
+
+  
+
+<p>There are two user scripts available for <a href="http://greasemonkey.mozdev.org/">Greasemonkey</a> which allow you to remove the sIFR elements from a page. This can be useful if, for example, you are using FlashBlock, which blocks these elements.</p>
+
+<p>The first script provides some tools such as removing the sIFR elements and a way to execute the replacement statements if you're debugging. It requires GreaseMonkey 0.2.6. <a href="http://novemberborn.net/sifr/greasemonkey/sifr-tools.user.js">sIFR Tools</a>.</p>
+
+<p>The second script disables sIFR. <a href="http://novemberborn.net/sifr/greasemonkey/sifr-disable.user.js">Install here</a></p>
+
+  </div>
+</div>
+</body>
+</html>
