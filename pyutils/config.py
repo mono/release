@@ -69,8 +69,6 @@ td_packages = """
 	gecko-sharp2
 	gluezilla
 	gnome-sharp2
-	gtk-sharp28
-	gtk-sharp210
 	gtk-sharp212
 	gtksourceview-sharp2
 	libgdiplus
@@ -113,24 +111,28 @@ sd_sequential_build_packages = [ 'mono', 'mono-1.1.13' ]
 
 # List of platforms/packages
 	#sunos-8-sparc
+	#sle-11-ppc64
+	#sles-10-ppc
+	#suse-103-ppc
+	#sle-11-ia64
+	#sles-10-ia64
+	#sunos-11-x86
+	#win-4-i386
+	#macos-10-ppc
+	#macos-10-x86
+	#sle-11-i586
 sd_latest_build_distros = """
+	debian-4-arm
 	debian-4-sparc
+	gentoo-1-mips
+	sle-11-x86_64
 	sles-10-i586
-	sles-10-ia64
-	sles-10-ppc
-	sle-11-ppc64
 	sles-10-x86_64
 	sunos-10-sparc
-	sunos-11-x86
 	suse-103-i586
-	suse-103-ppc
 	suse-103-x86_64
 	suse-110-i586
 	suse-110-x86_64
-	debian-4-arm
-	macos-10-ppc
-	macos-10-x86
-	win-4-i386
 """.split()
 sd_latest_build_packages = td_packages
 ##############################################
