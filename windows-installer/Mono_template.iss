@@ -41,8 +41,6 @@ Name: custom; Description: Custom installation; Flags: iscustom
 Name: mono; Description: Mono Files; Types: full compact custom; Flags: fixed
 Name: gtk; Description: GTK+ 2.10 and Gnome 2.16 Files; Types: full custom
 Name: gtk\gtkSharp; Description: Gtk# @@GTK_SHARP_VERSION@@ Files; Types: full custom
-Name: gtk\gtkSharp\monodoc; Description: Monodoc; Types: full custom
-Name: gtk\gtkSharp\geckosharp; Description: Gecko# Files; Types: full custom
 Name: gtk\gtkSharp\samples; Description: Samples; Types: full custom
 Name: xsp; Description: XSP files; Types: full custom
 Name: xsp\xsp2_shell; Description: XSP 2.0 Shell Integration; Types: full custom
@@ -50,14 +48,12 @@ Name: xsp\xsp2_shell; Description: XSP 2.0 Shell Integration; Types: full custom
 [Tasks]
 
 [Files]
-Source: build\mono\*; Excludes: "lib\mono.lib"; DestDir: {app}; Components: mono; Flags: ignoreversion recursesubdirs
+Source: build\mono\*; Excludes: "lib\mono*.lib"; DestDir: {app}; Components: mono; Flags: ignoreversion recursesubdirs
 Source: build\gdiplus.dll; DestDir: {app}\bin; Components: mono; OnlyBelowVersion: 0,5.01
 Source: build\xsp\*; DestDir: {app}; Components: xsp; Flags: ignoreversion recursesubdirs
 Source: build\gtk\*; DestDir: {app}; Components: gtk; Flags: ignoreversion recursesubdirs
 Source: build\gtk-sharp\*; DestDir: {app}; Components: gtk\gtksharp; Flags: ignoreversion recursesubdirs
-Source: build\gecko-sharp\*; DestDir: {app}; Components: gtk\gtkSharp\geckosharp; Flags: ignoreversion recursesubdirs
 Source: build\samples\*; DestDir: {app}; Components: gtk\gtkSharp\samples; Flags: ignoreversion recursesubdirs
-Source: build\monodoc\*; DestDir: {app}; Components: gtk\gtkSharp\monodoc; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]

@@ -79,7 +79,7 @@ class Selection:
 
 			## Total hack to pick the rpm version of mono-basic (contains compiler and runtime) instead of the zip version (only has the runtime)
 			if pack == "mono-basic":
-				self.pack_objs[pack] = packaging.package(packaging.buildconf('sles-10-i586', exclusive=False),pack)
+				self.pack_objs[pack] = packaging.package(packaging.buildconf('sle-11-i586', exclusive=False),pack)
 			else:
 				self.pack_objs[pack] = packaging.package(installer_conf,pack)
 
@@ -144,24 +144,14 @@ selections = []
 
 selections += [ Selection('mono', packages = "mono boo ikvm nant IPCE mono-basic gluezilla".split(), deps='mono gluezilla'.split() ) ]
 
-selections += [ Selection('gtk', deps = "gtk-sharp212 gnome-sharp2".split() ) ]
+selections += [ Selection('gtk', deps = "gtk-sharp212".split() ) ]
 
-selections += [ Selection('gtk-sharp', packages = "gtk-sharp212 gnome-sharp2".split() ) ]
+selections += [ Selection('gtk-sharp', packages = "gtk-sharp212 mono-tools".split() ) ]
 
 # Grab the gtk# version, and if there's a revision, ditch it
 gtk_sharp_version = selections[len(selections) - 1].versions['gtk-sharp212']
 if gtk_sharp_version.count('-'):
 	(gtk_sharp_version, revision) = gtk_sharp_version.split('-')
-
-# Had to remove mono-tools, since the latest requires gtkhtml-sharp2 (which we don't ship on windows), 
-#  and 1.1.11 is crashing with the lib update (probably libglade?)
-selections += [ Selection('monodoc', packages = "mono-tools".split() ) ]
-
-# TODO: Why am I distributing gecko-sharp without the GRE?
-# TODO: Also, why am I distributing gnome?.... ? adds some to gtk-sharp 1.0.10
-#   monodoc browser needs gconf-sharp, which depends on gnome-sharp...
-#  So, until the GRE for gecko-sharp gets easier to distribute, including gnome is how it is
-selections += [ Selection('gecko-sharp', packages = "gecko-sharp2".split() ) ]
 
 # Hmm... needs to be a better way to package up these samples...
 selections += [ Selection('samples', urls = """
@@ -300,7 +290,7 @@ os.chdir('gtk')
 shutil.copy('share/themes/MS-Windows/gtk-2.0/gtkrc', 'etc/gtk-2.0')
 
 # Make a copy of rsvg to avoid a dllmap
-shutil.copy('bin/librsvg-2-2.dll', 'bin/librsvg-2.dll')
+#shutil.copy('bin/librsvg-2-2.dll', 'bin/librsvg-2.dll')
 
 os.chdir('..')
 
@@ -355,7 +345,7 @@ os.chdir('mono')
 #fd.close()
 
 # create mono.lib so end user doesn't have to
-shutil.copy('lib/libmono.a', 'lib/mono.lib')
+#shutil.copy('lib/libmono-2.0.a', 'lib/mono-2.0.lib')
 
 os.chdir("..")
 
@@ -374,15 +364,12 @@ os.chdir("..")
 
 os.chdir('xsp')
 
-os.mkdir('lib/mono/1.0/winhack')
 os.mkdir('lib/mono/2.0/winhack')
 
-os.rename('lib/mono/1.0/xsp.exe', 'lib/mono/1.0/winhack/xsp.exe')
 os.rename('lib/mono/2.0/xsp2.exe', 'lib/mono/2.0/winhack/xsp2.exe')
 
 # Munge wrappers
 parameter_map = { 
-	re.compile('lib/mono/1.0'): "lib/mono/1.0/winhack",
 	re.compile('lib/mono/2.0'): "lib/mono/2.0/winhack",
 }
 
@@ -458,6 +445,9 @@ for selection in selections:
 		os.chdir('bin')
 		for file in os.listdir('.'):
 
+			if not os.path.isfile(file):
+				continue
+
 			fd = open(file, 'r')
 			text = fd.read()
 			fd.close()
@@ -528,8 +518,8 @@ shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gapi-parser.exe", "gtk-sharp/bin/gapi2-
 os.remove("gtk-sharp/bin/gapi2-parser")
 
 #gconfsharp2-schemagen
-shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gconfsharp-schemagen.exe", "gtk-sharp/bin/gconfsharp2-schemagen.exe")
-os.remove("gtk-sharp/bin/gconfsharp2-schemagen")
+#shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gconfsharp-schemagen.exe", "gtk-sharp/bin/gconfsharp2-schemagen.exe")
+#os.remove("gtk-sharp/bin/gconfsharp2-schemagen")
 
 # Fix dll map config for gtkhtml
 # TODO: is this not done in the gtk-sharp build? (.config files aren't shipped on windows, even in this case there needs to be one)
@@ -586,13 +576,13 @@ utils.substitute_parameters_in_file("gtk/etc/gtk-2.0/gtk.immodules", parameter_m
 # Fix up gluezilla (xulrunner deps)
 
 # Remove sdk and buildtools
+#shutil.rmtree('mono/xulrunner-sdk')
 shutil.rmtree('mono/gecko-sdk')
 shutil.rmtree('mono/buildtools')
 
 #
 ##############################################
 
-##############################################
 # ikvm massaging
 #  Since we unpack ikvm files from the linux rpm, 
 #   we package this win32 specific file
