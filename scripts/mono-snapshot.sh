@@ -76,10 +76,10 @@ cp $DAILY_BUILD_DIR/mono-basic/class/lib/vbnc/*.dll $DAILY_BUILD_DIR/mcs/class/l
 LIBSDIR=$DAILY_BUILD_DIR/mcs/class/lib/basic
 cd $DAILY_BUILD_DIR
 # make monolite tarball
-mkdir -p $DAILY_BUILD_DIR/monolite-$DATE
-cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/Mono.Security.dll $LIBSDIR/System.Xml.dll $LIBSDIR/System.Core.dll $LIBSDIR/gmcs.exe $DAILY_BUILD_DIR/monolite-$DATE
+mkdir -p $DAILY_BUILD_DIR/monolite2-$DATE
+cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/Mono.Security.dll $LIBSDIR/System.Xml.dll $LIBSDIR/System.Core.dll $LIBSDIR/mcs.exe $DAILY_BUILD_DIR/monolite-$DATE
 
-tar zcvpf monolite-$DATE.tar.gz monolite-$DATE/ >> $LOGFILE 2>&1
+tar zcvpf monolite2-$DATE.tar.gz monolite2-$DATE/ >> $LOGFILE 2>&1
 
 # make monocharge tarball
 mkdir -p $DAILY_BUILD_DIR/monocharge-$DATE
