@@ -85,7 +85,7 @@ cd $DAILY_BUILD_DIR
 MONO_CORLIB_VERSION=$(sed -n "s/\#define MONO_CORLIB_VERSION //p" $DAILY_BUILD_DIR/mono/mono/metadata/appdomain.c)
 MONOLITE=monolite-$MONO_CORLIB_VERSION-$DATE
 mkdir -p $DAILY_BUILD_DIR/$MONOLITE
-cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/Mono.Security.dll $LIBSDIR/System.Xml.dll $LIBSDIR/System.Core.dll $LIBSDIR/gmcs.exe $DAILY_BUILD_DIR/$MONOLITE
+cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/Mono.Security.dll $LIBSDIR/System.Xml.dll $LIBSDIR/System.Core.dll $LIBSDIR/mcs.exe $DAILY_BUILD_DIR/$MONOLITE
 
 tar zcvpf $MONOLITE.tar.gz $MONOLITE/
 
