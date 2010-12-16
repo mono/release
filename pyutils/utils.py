@@ -280,6 +280,9 @@ def get_url(url, destination):
 
 def substitute_parameters_in_file(file, parameter_map, qualifier=match_all):
 
+        if not os.path.isfile(file):
+                return
+
         fd = open(file, 'r')
         text = fd.read()
         fd.close()
@@ -817,7 +820,7 @@ def get_mac_filelists(include_ar_files=True):
 	filelist_string = ""
 	final_output = ""
 	while len(candidate_filelist):
-		(code, output) = launch_process('file ' + ' '.join(candidate_filelist[:max_num_files]), print_output=0)
+		(code, output) = launch_process('file ' + ' '.join(candidate_filelist[:max_num_files]) + ' | grep -v "for architecture"', print_output=0)
 		final_output += "\n" + output
 
 		# Remove them from the list
