@@ -251,7 +251,7 @@ symlinks['Versions/Current/lib'] 	= "Libraries"
 symlinks['Versions/Current/include'] 	= "Headers"
 symlinks['Versions/Current/bin'] 	= "Commands"
 symlinks['Versions/Current'] 		= "Home"
-symlinks['Libraries/libmono.dylib']	= "Mono"
+symlinks['Libraries/libmono-2.0.dylib']	= "Mono"
 
 for k,v in symlinks.iteritems():
 	conf.buildenv.execute_command('cd %s%s; ln -sf %s %s' % (remote_PKGROOT, framework_prefix, k, v) )
@@ -260,6 +260,7 @@ print "Done creating symlinks...."
 
 # assembly .config munge
 (code, output) = conf.buildenv.execute_command("%s/dllmap_munge %s %s" % (arch_remote_packages_loc, remote_PKGROOT + os.sep + prefix, prefix) )
+print( "%s/dllmap_munge %s %s" % (arch_remote_packages_loc, remote_PKGROOT + os.sep + prefix, prefix) )
 if code:
 	print "Error munging dllmaps for .config files"
 	sys.exit(1)

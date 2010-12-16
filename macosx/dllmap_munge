@@ -28,6 +28,8 @@ file_map = {
 	'libglib-2.0.0.dylib':		'',
 	'libgdk-x11-2.0.0.dylib':	'libgdk-quartz-2.0.0.dylib',
 	'libgtk-x11-2.0.0.dylib':	'libgtk-quartz-2.0.0.dylib',
+	'libgdk-quartz-2.0.0.dylib':	'',
+	'libgtk-quartz-2.0.0.dylib':	'',
 	'libgobject-2.0.0.dylib':	'',
 	'libgdk_pixbuf-2.0.0.dylib':	'',
 	'libatk-1.0.0.dylib':		'',
