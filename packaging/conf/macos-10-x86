@@ -1,10 +1,11 @@
 username=builder
-hostname=x32-macos-2.mono.lab.novell.com
+#hostname=x32-macos-2.mono.lab.novell.com
+hostname=x64-macos-2.mono.lab.novell.com
 USE_ZIP_PKG=1
 
 # Helps with relocating binaries
 #  use -Xlinker so libtool doesn't drop the headerpad flag
-env="MACOSX_DEPLOYMENT_TARGET=10.4,LDFLAGS= -Xlinker -headerpad_max_install_names "
+env="LDFLAGS= -Xlinker -headerpad_max_install_names "
 
 web_index=7
 
