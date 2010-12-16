@@ -1,5 +1,5 @@
 username=builder
-hostname=x64-linux-10.mono.lab.novell.com
+hostname=x64-linux-2.mono.lab.novell.com
 root_dir=/jails/build-root-SLE_11-i586
 chroot_path=/usr/bin/chroot
 arch_change_path=/usr/bin/linux32
