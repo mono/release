@@ -79,13 +79,13 @@ echo "Building basic"
 # Copy the basic runtime to where the mcs class libs are so the class status will get properly generated
 cp $DAILY_BUILD_DIR/mono-basic/class/lib/vbnc/*.dll $DAILY_BUILD_DIR/mono/mcs/class/lib/net_2_0
 
-LIBSDIR=$DAILY_BUILD_DIR/mono/mcs/class/lib/basic
 cd $DAILY_BUILD_DIR
 # make monolite tarball
 MONO_CORLIB_VERSION=$(sed -n "s/\#define MONO_CORLIB_VERSION //p" $DAILY_BUILD_DIR/mono/mono/metadata/appdomain.c)
 MONOLITE=monolite-$MONO_CORLIB_VERSION-$DATE
-mkdir -p $DAILY_BUILD_DIR/$MONOLITE
-cp $LIBSDIR/mscorlib.dll $LIBSDIR/System.dll $LIBSDIR/Mono.Security.dll $LIBSDIR/System.Xml.dll $LIBSDIR/System.Core.dll $LIBSDIR/mcs.exe $DAILY_BUILD_DIR/$MONOLITE
+ls $DAILY_BUILD_DIR/mono/mcs/class/lib/monolite/*.exe || exit 1
+ls $DAILY_BUILD_DIR/mono/mcs/class/lib/monolite/*.dll || exit 1
+cp -R $DAILY_BUILD_DIR/mono/mcs/class/lib/monolite $DAILY_BUILD_DIR/$MONOLITE
 
 tar zcvpf $MONOLITE.tar.gz $MONOLITE/
 
