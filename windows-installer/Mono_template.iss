@@ -8,7 +8,7 @@ AppPublisher=Mono
 AppPublisherURL=http://www.mono-project.com
 AppSupportURL=http://www.mono-project.com/about/faq.html
 AppUpdatesURL=http://www.mono-project.com/downloads/index.html
-DefaultDirName={pf}\Mono-@@MONO_VERSION@@
+DefaultDirName={code:ProgramFilesRoot}\Mono-@@MONO_VERSION@@
 DefaultGroupName=Mono @@MONO_VERSION@@ for Windows
 AppID={{@@MONO_GUID@@}
 Compression=lzma/max
@@ -30,7 +30,7 @@ SetupIconFile=setup-files\mono.ico
 ShowLanguageDialog=yes
 AppVersion=@@MONO_VERSION@@
 MinVersion=0,5.0
-
+PrivilegesRequired=none
 
 [Types]
 Name: full; Description: Full installation
@@ -69,39 +69,54 @@ Filename: {app}\Xsplocal2.url; Section: InternetShortcut; Components: xsp; Key: 
 Filename: {app}\MonoDocWeb.url; Section: InternetShortcut; Components: mono; Key: URL; String: http://www.go-mono.com/docs/
 
 [Icons]
-Name: {group}\Mono-@@MONO_VERSION@@ Command Prompt; IconFilename: {app}\mono.ico; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono @@MONO_VERSION@@ Command Prompt
-Name: {group}\Readme; Filename: {app}\ReleaseNotes.txt; Comment: Combined Installer Release Notes
-Name: {group}\{cm:ProgramOnTheWeb,Mono-@@MONO_VERSION@@ Release Notes}; IconFilename: {app}\mono.ico; Filename: {app}\MonoReleaseNotes.url
-Name: {group}\MonoDoc Web; IconFilename: {app}\mono.ico; Components: mono; Filename: {app}\MonoDocWeb.url
-Name: {group}\Applications\Gtk# Demo; Filename: {app}\bin\GtkDemo.bat; Components: gtk\gtkSharp\samples; Comment: Gtk# Demo
-Name: {group}\Applications\Sql# GTK; Filename: {app}\bin\sqlsharpgtk.bat; Components: gtk\gtkSharp\samples; Comment: SQL# GUI version
-Name: {group}\Applications\Prj2Make# GTK; Filename: {app}\bin\prj2make-sharp-gtk.bat; Components: gtk\gtkSharp\samples; Comment: Makefile generator tool.
-Name: {group}\Applications\Samples Directory; Filename: {app}\samples; Components: gtk\gtkSharp\samples; Comment: Gtk# samples directory
-Name: {group}\Applications\Glade 3; Filename: {app}\bin\glade-3.exe; Components: gtk; Comment: Glade 3 Gui Builder
-Name: {group}\Applications\Gtk Theme Selector; Filename: {app}\bin\gtkthemeselector.exe; Components: gtk; Comment: GTK Theme Selector
-;Name: {group}\Applications\Monodoc Browser; IconFilename: {app}\mono.ico; Filename: {app}\bin\monodoc.bat; Components: gtk\gtkSharp\monodoc; Comment: Mono Documentation Browser
-Name: {group}\XSP\XSP 2.0 Test Web Server; Filename: {app}\bin\startXSP2.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
-Name: {group}\{cm:ProgramOnTheWeb,Mono}; IconFilename: {app}\mono.ico; Filename: {app}\Mono.url
-Name: {group}\{cm:UninstallProgram,Mono-@@MONO_VERSION@@ Win32}; Filename: {uninstallexe}
-Name: {group}\{cm:ProgramOnTheWeb,Gtk+}; IconFilename: {app}\mono.ico; Components: gtk; Filename: {app}\GtkPlus.url
-Name: {group}\{cm:ProgramOnTheWeb,Gtk#}; IconFilename: {app}\mono.ico; Components: gtk\gtkSharp; Filename: {app}\GtkSharp.url
-Name: {group}\XSP\XSP 2.0 Index Page; IconFilename: {app}\mono.ico; Components: xsp; Filename: {app}\Xsplocal2.url
+Name: {code:GroupPath}\Mono-@@MONO_VERSION@@ Command Prompt; IconFilename: {app}\mono.ico; Filename: {cmd}; Parameters: "/k ""{app}\bin\setmonopath.bat"""; Comment: Open Mono @@MONO_VERSION@@ Command Prompt
+Name: {code:GroupPath}\Readme; Filename: {app}\ReleaseNotes.txt; Comment: Combined Installer Release Notes
+Name: {code:GroupPath}\{cm:ProgramOnTheWeb,Mono-@@MONO_VERSION@@ Release Notes}; IconFilename: {app}\mono.ico; Filename: {app}\MonoReleaseNotes.url
+Name: {code:GroupPath}\MonoDoc Web; IconFilename: {app}\mono.ico; Components: mono; Filename: {app}\MonoDocWeb.url
+Name: {code:GroupPath}\Applications\Gtk# Demo; Filename: {app}\bin\GtkDemo.bat; Components: gtk\gtkSharp\samples; Comment: Gtk# Demo
+Name: {code:GroupPath}\Applications\Sql# GTK; Filename: {app}\bin\sqlsharpgtk.bat; Components: gtk\gtkSharp\samples; Comment: SQL# GUI version
+Name: {code:GroupPath}\Applications\Prj2Make# GTK; Filename: {app}\bin\prj2make-sharp-gtk.bat; Components: gtk\gtkSharp\samples; Comment: Makefile generator tool.
+Name: {code:GroupPath}\Applications\Samples Directory; Filename: {app}\samples; Components: gtk\gtkSharp\samples; Comment: Gtk# samples directory
+Name: {code:GroupPath}\Applications\Glade 3; Filename: {app}\bin\glade-3.exe; Components: gtk; Comment: Glade 3 Gui Builder
+Name: {code:GroupPath}\Applications\Gtk Theme Selector; Filename: {app}\bin\gtkthemeselector.exe; Components: gtk; Comment: GTK Theme Selector
+;Name: {code:GroupPath}\Applications\Monodoc Browser; IconFilename: {app}\mono.ico; Filename: {app}\bin\monodoc.bat; Components: gtk\gtkSharp\monodoc; Comment: Mono Documentation Browser
+Name: {code:GroupPath}\XSP\XSP 2.0 Test Web Server; Filename: {app}\bin\startXSP2.bat; Components: xsp; Comment: ASP.NET Web Server with Sample Mono content
+Name: {code:GroupPath}\{cm:ProgramOnTheWeb,Mono}; IconFilename: {app}\mono.ico; Filename: {app}\Mono.url
+Name: {code:GroupPath}\{cm:UninstallProgram,Mono-@@MONO_VERSION@@ Win32}; Filename: {uninstallexe}
+Name: {code:GroupPath}\{cm:ProgramOnTheWeb,Gtk+}; IconFilename: {app}\mono.ico; Components: gtk; Filename: {app}\GtkPlus.url
+Name: {code:GroupPath}\{cm:ProgramOnTheWeb,Gtk#}; IconFilename: {app}\mono.ico; Components: gtk\gtkSharp; Filename: {app}\GtkSharp.url
+Name: {code:GroupPath}\XSP\XSP 2.0 Index Page; IconFilename: {app}\mono.ico; Components: xsp; Filename: {app}\Xsplocal2.url
 
 [Registry]
-Root: HKLM; Subkey: SOFTWARE\Novell\Mono; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: Software\Novell\Mono; ValueType: string; ValueName: DefaultCLR; ValueData: @@MONO_VERSION@@; Flags: uninsdeletevalue
-Root: HKLM; Subkey: SOFTWARE\Novell\Mono\@@MONO_VERSION@@; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: FrameworkAssemblyDirectory; ValueData: {app}\lib; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: MonoConfigDir; ValueData: {app}\etc; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: SdkInstallRoot; ValueData: {app}; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: xsp; ValueType: dword; ValueName: XSPIsInstalled; ValueData: 1; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: gtk\gtkSharp; ValueType: dword; ValueName: GtkSharpIsInstalled; ValueData: 1; Flags: uninsdeletevalue
-Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: gtk; ValueType: dword; ValueName: GtkPlusDevIsInstalled; ValueData: 1; Flags: uninsdeletevalue
-Root: HKLM; Subkey: SOFTWARE\Novell\Mono DefaultCLR; Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: Software\Novell\Mono DefaultCLR; ValueType: string; ValueName: Installer Language; ValueData: 1033; Flags: uninsdeletevalue
-; XSP Shell Integration (Thanks to Joseph Hill)
-Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@; Components: xsp\xsp2_shell; ValueType: string; ValueData: XSP 2.0 Web Server Here @@MONO_VERSION@@; Flags: uninsdeletekey
-Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@\command; Components: xsp\xsp2_shell; ValueType: string; ValueData: "{app}\bin\xsp2.bat --root ""%1"" --port {code:GetPort} --applications /:."; Flags: uninsdeletekey
+Root: HKLM; Subkey: SOFTWARE\Novell\Mono; Flags: uninsdeletekeyifempty; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: Software\Novell\Mono; ValueType: string; ValueName: DefaultCLR; ValueData: @@MONO_VERSION@@; Flags: uninsdeletevalue; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: SOFTWARE\Novell\Mono\@@MONO_VERSION@@; Flags: uninsdeletekeyifempty; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: FrameworkAssemblyDirectory; ValueData: {app}\lib; Flags: uninsdeletevalue; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: MonoConfigDir; ValueData: {app}\etc; Flags: uninsdeletevalue; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: SdkInstallRoot; ValueData: {app}; Flags: uninsdeletevalue; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: xsp; ValueType: dword; ValueName: XSPIsInstalled; ValueData: 1; Flags: uninsdeletevalue; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: gtk\gtkSharp; ValueType: dword; ValueName: GtkSharpIsInstalled; ValueData: 1; Flags: uninsdeletevalue; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: gtk; ValueType: dword; ValueName: GtkPlusDevIsInstalled; ValueData: 1; Flags: uninsdeletevalue; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: SOFTWARE\Novell\Mono DefaultCLR; Flags: uninsdeletekeyifempty; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: Software\Novell\Mono DefaultCLR; ValueType: string; ValueName: Installer Language; ValueData: 1033; Flags: uninsdeletevalue; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+; XSP Shell Integration (Thanks to Joseph Hill); Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@; Components: xsp\xsp2_shell; ValueType: string; ValueData: XSP 2.0 Web Server Here @@MONO_VERSION@@; Flags: uninsdeletekey; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKLM; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@\command; Components: xsp\xsp2_shell; ValueType: string; ValueData: "{app}\bin\xsp2.bat --root ""%1"" --port {code:GetPort} --applications /:."; Flags: uninsdeletekey; Check: (IsAdminLoggedOn or IsPowerUserLoggedOn)
+
+Root: HKCU; Subkey: SOFTWARE\Novell\Mono; Flags: uninsdeletekeyifempty; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: Software\Novell\Mono; ValueType: string; ValueName: DefaultCLR; ValueData: @@MONO_VERSION@@; Flags: uninsdeletevalue; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: SOFTWARE\Novell\Mono\@@MONO_VERSION@@; Flags: uninsdeletekeyifempty; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: FrameworkAssemblyDirectory; ValueData: {app}\lib; Flags: uninsdeletevalue; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: MonoConfigDir; ValueData: {app}\etc; Flags: uninsdeletevalue; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; ValueType: string; ValueName: SdkInstallRoot; ValueData: {app}; Flags: uninsdeletevalue; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: xsp; ValueType: dword; ValueName: XSPIsInstalled; ValueData: 1; Flags: uninsdeletevalue; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: gtk\gtkSharp; ValueType: dword; ValueName: GtkSharpIsInstalled; ValueData: 1; Flags: uninsdeletevalue; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: Software\Novell\Mono\@@MONO_VERSION@@; Components: gtk; ValueType: dword; ValueName: GtkPlusDevIsInstalled; ValueData: 1; Flags: uninsdeletevalue; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: SOFTWARE\Novell\Mono DefaultCLR; Flags: uninsdeletekeyifempty; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: Software\Novell\Mono DefaultCLR; ValueType: string; ValueName: Installer Language; ValueData: 1033; Flags: uninsdeletevalue; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+; XSP Shell Integration (Thanks to Joseph Hill); Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@; Components: xsp\xsp2_shell; ValueType: string; ValueData: XSP 2.0 Web Server Here @@MONO_VERSION@@; Flags: uninsdeletekey; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
+Root: HKCU; Subkey: SOFTWARE\Classes\Folder\shell\XSP2 WebServer @@MONO_VERSION@@\command; Components: xsp\xsp2_shell; ValueType: string; ValueData: "{app}\bin\xsp2.bat --root ""%1"" --port {code:GetPort} --applications /:."; Flags: uninsdeletekey; Check: not (IsAdminLoggedOn or IsPowerUserLoggedOn)
 
 [Run]
 ;Filename: "{app}\gacutil.exe"; Description: "Install gtk-sharp in the MS GAC"; StatusMsg: "Install Gtk# in the MS GAC"; Tasks: msgac
@@ -121,6 +136,22 @@ Type: files; Name: {app}\MonoDocWeb.url
 ;TODO: delete monodoc and gconf cruft?
 
 [Code]
+function ProgramFilesRoot(Param: String): String;
+begin
+    if (IsAdminLoggedOn or IsPowerUserLoggedOn) then
+        Result := ExpandConstant('{pf}')
+    else
+        Result := ExpandConstant('{localappdata}\Novell')
+end;
+
+function GroupPath(Default: String): String;
+begin
+    if (IsAdminLoggedOn or IsPowerUserLoggedOn) then
+        Result := ExpandConstant('{commonprograms}\{groupname}')
+    else
+        Result := ExpandConstant('{userprograms}\{groupname}');
+end;
+
 var
   PortForXSP: TInputQueryWizardPage;
 
@@ -160,7 +191,7 @@ begin
 	 Result := false;
 	 SayMessage('Mono seems to be installed.' + #13 + #10 + 'Please uninstall it and run this setup again.', mbError);
 	 exit;
-	end
+	end;
 	Result := true;
 end;
 
@@ -183,7 +214,7 @@ var
 	strFileContents: String;
 begin
 	// Read the contents of the file into a string and continue if string is found in file
-	if (LoadStringFromFile(strFileName, strFileContents) = true) and (Pos(strOriginal, strFileContents) > 0)  then
+	if LoadStringFromFile(strFileName, strFileContents) and (Pos(strOriginal, strFileContents) > 0)  then
 	begin
 		// Perform search and replace
 		StringChange(strFileContents, strOriginal, strReplacement);

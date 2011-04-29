@@ -142,7 +142,7 @@ if os.path.exists(output_dir):
 files_used_in_installer = []
 selections = []
 
-selections += [ Selection('mono', packages = "mono boo ikvm nant IPCE mono-basic gluezilla".split(), deps='mono gluezilla'.split() ) ]
+selections += [ Selection('mono', packages = "mono boo ikvm nant mono-basic gluezilla".split(), deps='mono gluezilla'.split() ) ]
 
 selections += [ Selection('gtk', deps = "gtk-sharp212".split() ) ]
 
