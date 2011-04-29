@@ -13,7 +13,7 @@ import glob
 import re
 import getopt
 import stat
-
+import pdb
 import utils
 
 opts, remaining_args = getopt.getopt(sys.argv[1:], "", [ "relative_paths" ])
@@ -70,8 +70,11 @@ for root, dirs, files in os.walk('.'):
 # Write out an env.sh in the $RELOC dir so we can use that when we build
 # This needs to by dynamic
 env = open('env.sh', 'w')
-env.write('PKG_CONFIG_PATH="%s/share/pkgconfig:%s/lib/pkgconfig:$PKG_CONFIG_PATH"\n' % (reloc, reloc) )
+env.write('PKG_CONFIG_PATH="%s/share/pkgconfig:%s/lib/pkgconfig:/usr/X11/lib/pkgconfig:$PKG_CONFIG_PATH"\n' % (reloc, reloc) )
 env.write('PATH="%s/bin:$PATH"\n' % reloc)
+
+# Needed for Mac builds until we fully drop 10.4
+#env.write('MACOSX_DEPLOYMENT_TARGET="10.4"\n')
 
 # Needed for the solaris builds so far
 env.write('LDFLAGS="-L%s/lib $LDFLAGS"\n' % reloc)
@@ -89,7 +92,7 @@ env.write('MANPATH="%s/share/man:%s/man:$MANPATH"\n' % (reloc, reloc))
 env.write('PERL5LIB="%s/lib/perl5/site_perl:$PERL5LIB"\n' % reloc)
 
 # Use this method for older shells
-env.write('export PKG_CONFIG_PATH PATH LDFLAGS CPPFLAGS LD_LIBRARY_PATH MANPATH PERL5LIB\n')
+env.write('export PKG_CONFIG_PATH PATH LDFLAGS CPPFLAGS LD_LIBRARY_PATH MANPATH PERL5LIB MACOSX_DEPLOYMENT_TARGET\n')
 
 
 env.close()
@@ -97,9 +100,9 @@ os.chmod('env.sh', 0755)
 
 # Write out csh environment file
 env = open('env.csh', 'w')
-env.write('setenv PKG_CONFIG_PATH "%s/share/pkgconfig:%s/lib/pkgconfig:$PKG_CONFIG_PATH"\n' % (reloc, reloc) )
+env.write('setenv PKG_CONFIG_PATH "%s/share/pkgconfig:%s/lib/pkgconfig:/usr/X11/lib/pkgconfig:$PKG_CONFIG_PATH"\n' % (reloc, reloc) )
 env.write('setenv PATH "%s/bin:$PATH"\n' % reloc)
-
+env.write('setenv MACOSX_DEPLOYMENT_TARGET "10.4"\n')
 env.write('setenv LDFLAGS "-L%s/lib $LDFLAGS"\n' % reloc)
 env.write('setenv CPPFLAGS "-I%s/include $CPPFLAGS"\n' % reloc)
 env.write('setenv LD_LIBRARY_PATH "%s/lib:$LD_LIBRARY_PATH"\n' % reloc)
@@ -162,7 +165,7 @@ parameter_map[re.compile("/tmp/build_deps")] = reloc
 for root, dirs, files in os.walk('bin'):
 	for file in files:
 		# Search and replace in all files containing #!/bin/sh and /tmp/install
-		utils.substitute_parameters_in_file(os.path.join(root, file), parameter_map, qualifier=re.compile('#!/bin/(ba)?sh.*(/tmp/install|/usr|/Library/Framework|/opt/mono)', re.M | re.DOTALL))
+		utils.substitute_parameters_in_file(os.path.join(root, file), parameter_map, qualifier=re.compile('#! ?/bin/.*(/tmp/install|/usr|/Library/Framework|/opt/mono)', re.M | re.DOTALL))
 
 # Relocate any .config files with our custom prefix
 #  (This was done so that the swf and sd .config files on mac could be used both in testing sd/swf inside monobuild as well as in the installer)
@@ -201,7 +204,7 @@ full_filelist, native_filelist = utils.get_mac_filelists(include_ar_files=False)
 
 # Only look at mach-o files
 for path_on_disk in native_filelist:
-
+	
 	utils.debug=0
 
 	old_filename = os.path.abspath('/tmp/install/%s' % (path_on_disk) )
@@ -221,6 +224,7 @@ for path_on_disk in native_filelist:
 	# Get update references (So we don't try to change reference to ourselves)
 	(code, otool_output) = utils.launch_process('otool -L %s' % path_on_disk, print_output=0 )
 	#print output
+
 
 	# libmono-profile-cov is still having an issue getting relocated... check this website for a possible solution:
 	# http://lists.apple.com/archives/darwin-development/2003/Sep/msg00274.html

@@ -1,20 +1,12 @@
 web_index=0
 
-#USE_PATCHES=1
+USE_PATCHES=1
 
 BUILD_HOSTS=(
-	debian-4-arm
-	debian-4-sparc
 	macos-10-ppc
 	macos-10-x86
 	sle-11-i586
-	sle-11-ia64
-	sle-11-ppc64
-	sle-11-x86_64
-	sunos-10-sparc
-	sunos-11-x86
 	win-4-i386
-	gentoo-1-mips
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -26,6 +18,7 @@ MONO_DEPS=(
 # But, since it's 'recommended', it won't fail for windows
 MONO_RECOMMEND_DEPS=(
 	libgdiplus
+	mono-llvm
 )
 
 # Since it's a source dep, it won't be installed on the machine during the build step, only for
@@ -52,136 +45,28 @@ win_4_i386_ZIP_RUNTIME_DEPS=(
 ## format: <$DISTRO>_ZIP_DEPS
 # Note: $DISTRO must have the hyphens converted to underscores
 win_4_i386_ZIP_DEPS=(
-	http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.22/glib_2.22.0-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.22/glib-dev_2.22.0-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime-0.17-1.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime-dev-0.17-1.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-tools-0.17.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libiconv-1.9.1.bin.woe32.zip
-
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config-0.23-2.zip
-
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/zlib-1.2.3.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/zlib-dev-1.2.3.zip
-
-	# Used to generate .def files (not needed yet)
-	#http://primates.ximian.com/~wberrier/windows-installer/pexports/pexports-0.43-mono.zip
-)
-
-sunos_8_sparc_ZIP_DEPS=(
-
-	# Should we use blastwave instead?  they follow more package standards than smc does... (gmake, gtar, gm4, etc...)
-
-	# Sunfreeware packages
-	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libgcc-3.3-sol8-sparc-local.gz
-	# Have to use this one because above is not under $prefix/lib
-	# TODO: This packages doesn't have symbolic links, is this ok?
-	http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libgcc-3.3-0-sunos8.sparc.zip
-
-	# 2.6.2 glib is missing a header file (glibconfig.h)
-	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/glib-2.6.2-sol8-sparc-local.gz
-	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/glib-2.2.3-sol8-sparc-local.gz 
-	# We need glib 2.4 or higher for the icall [un]setenv
-	http://primates.ximian.com/~wberrier/sunos/deps/novell/glib-2.8.3-0.sunos8.novell.sparc.zip
-
-	# Gettext needs expat
-	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/gettext-0.14.1-sol8-sparc-local.gz
-	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/expat-1.95.5-sol8-sparc-local.gz
-	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libiconv-1.8-sol8-sparc-local.gz
-
-	# Most packages need this
-	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libintl-3.4.0-sol8-sparc-local.gz 
-
-	ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/pkgconfig-0.15.0-sol8-sparc-local.gz
-
-	# Random generator for crypto
-	# The other option is to require: a sun patch (http://www.cosy.sbg.ac.at/~andi/SUNrand/)
-	# For sunos8sparc, it's patch 112438
-	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/egd-0.8-sol8-sparc-local.gz
-	# Egd won't work here... users must use the patch
-
-	# For testing...
-	#ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/gdb-6.0-sol8-sparc-local.gz
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/gettext-runtime-0.17-1.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/gettext-runtime-dev-0.17-1.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/gettext-tools-0.17.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/libiconv-1.9.1.bin.woe32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/pkg-config_0.23-3_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/zlib-dev_1.2.4-2_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/zlib_1.2.4-2_win32.zip
 )
 
 macos_10_ppc_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.21.5-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.23-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.17-2.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/sqlite-3.6.10-2.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.25-8.1.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.18.1.1-8.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/sqlite-3.6.23.1-8.macos10.novell.ppc.zip
 )
 
 macos_10_x86_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.21.5-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-2.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/sqlite-3.6.10-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.25-8.1.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.18.1.1-8.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/sqlite-3.6.23.1-8.macos10.novell.x86.zip
 )
-
-sunos_8_sparc_ZIP_BUILD () {
-	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
-
-	# Only if a non-gnu m4 is in the path
-	M4=/usr/local/bin/m4
-	export M4
-
-	# Do this to make sure libgcc is found.  Won't be needed when we install libgcc into build_deps
-	#export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-
-	# Use /opt/mono for prefix.  Even though env vars can be used for relocation, this will help
-	./configure --prefix=/opt/mono --with-moonlight=no --with-ikvm=yes || exit 1
-	make || exit 1
-
-	rm -Rf /tmp/temp_install
-	make install DESTDIR=/tmp/temp_install || exit 1
-
-	# Do this so all the zip files have the same base, and we can lay them back here later
-	mkdir -p /tmp/install
-	cd /tmp/temp_install/opt/mono
-	mv * /tmp/install
-
-}
-
-sunos_10_ZIP_BUILD () {
-	# Installed the following packages from solaris cds: python, wget, gmake, gm4, bison, gccruntime, gcc
-	#  From this webpage: http://www.sunfreeware.com/faq.html#q5: SUNWbtool, SUNWsprot, SUNWhea, SUNWarc, SUNWlibm, SUNWlibms, SUNWdfbh, SUNWcg6h, SUNWxwinc, SUNWolinc, SUNWxglh
-	# also from the cds: gnome-common-devel, gnome-common-devel-share, SUNWperl-xml-parser, SUNWopenjade, opensp, SUNWgnome-base-libs-devel
-	# Bison fails without the M4 var (tries to use /usr/ccs/bin/m4 instead otherwise)
-	# Only if a non-gnu m4 is in the path
-	M4=/usr/sfw/bin/gm4
-	MAKE=/usr/sfw/bin/gmake
-	export M4 MAKE
-
-	# Change offsize from 64 to 32 in configure
-	# Removed -mt option from gthread .pc file
-	
-	./configure --prefix=/opt/mono --with-moonlight=no --with-ikvm=yes
-	gmake || exit 1
-
-	rm -Rf $build_location/temp_install
-	gmake install DESTDIR=$build_location/temp_install || exit 1
-
-	# Do this so all the zip files have the same base, and we can lay them back here later
-	mkdir /tmp/install
-	cd $build_location/temp_install/opt/mono
-	mv * /tmp/install
-
-}
-
-sunos_11_ZIP_BUILD () {
-	./configure --prefix=/opt/mono
-	gmake || exit 1
-
-	rm -rf $build_location/temp_install
-	gmake install DESTDIR=$build_location/temp_install || exit 1
-
-	# Do this so all the zip files have the same base, and we can lay them back here later
-	mkdir /tmp/install
-	cd $build_location/temp_install/opt/mono
-	mv * /tmp/install
-}
 
 win_4_i386_ZIP_BUILD () {
 
@@ -214,9 +99,18 @@ fd.seek(0)
 fd.write(text)
 fd.close()'
 
-	# Need a version here...
-	CFLAGS=" -DMAC_OS_X_VERSION_10_5=1050 $CFLAGS " ./configure --prefix=$MONO_PREFIX --with-moonlight=no --with-ikvm=yes || exit 1
+	ENABLE_LLVM=""
+	if [ "$(uname -m)" = "i386" ]; then
+		ENABLE_LLVM="--enable-loadedllvm"
+	fi
+	CFLAGS=" -DMAC_OS_X_VERSION_10_5=1050 $CFLAGS " ./configure --prefix=$MONO_PREFIX --with-moonlight=no --with-ikvm=yes $ENABLE_LLVM || exit 1
 
+	set
+
+	make ||
+	make ||
+	make ||
+	make ||
 	make || exit 1
 
 	# It appears that xsp doesn't use /etc/mono/config, so still provide 
@@ -249,6 +143,10 @@ EOF
 
 
 	rm -Rf /tmp/temp_install
+	make install DESTDIR=/tmp/temp_install ||
+	make install DESTDIR=/tmp/temp_install ||
+	make install DESTDIR=/tmp/temp_install ||
+	make install DESTDIR=/tmp/temp_install ||
 	make install DESTDIR=/tmp/temp_install || exit 1
 
 	# Do this so all the zip files have the same base, and we can lay them back here later

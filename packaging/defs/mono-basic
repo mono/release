@@ -6,17 +6,7 @@ web_ignore_noarch=1
 #  1.0 vb runtime won't be included
 
 BUILD_HOSTS=(
-	win-4-i386
     sle-11-i586
-	sle-11-x86_64
-	sle-11-ia64
-	sle-11-ppc64
-	macos-10-ppc
-	macos-10-x86
-	sunos-10-sparc
-	sunos-10-x86
-	debian-4-arm
-	debian-4-sparc
 )
 
 USE_HOSTS=(
@@ -90,59 +80,6 @@ ZIP_BUILD () {
 	$make_path
 
 	$make_path install DESTDIR=/tmp/install
-}
-
-win_4_i386_ZIP_BUILD () {
-
-	cd vbruntime
-
-	# This doesn't get included with the tarball... create here
-	mkdir bin
-
-	OLDPATH=$PATH
-
-	# compiler croaks if this isn't here...
-	# Not needed anymore
-	#mkdir bin
-
-	########################## 1.0 build #################################
-        CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322`
-        CSC=`cygpath -a $CSC`
-
-        # Add MS SDK to path for ilasm and ildasm
-        SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin"`
-        SDK=`cygpath -a $SDK`
-        export PATH=$SDK:$CSC:$OLDPATH
-
-	rm -f Microsoft.VisualBasic.dll Microsoft.VisualBasic/*.log
-	cmd /c VB.build.bat 1 release || (cat Microsoft.VisualBasic/*.log && exit 1)
-
-	# Install
-	export PATH=$OLDPATH
-	cd bin
-	/tmp/build_deps/bin/gacutil -package 1.0 -i Microsoft.VisualBasic.dll -root `cygpath -m /tmp/install/lib` || exit 1
-	cd ..
-
-	# Disable 2.0 Build as it's broken but we replace the 2.0 binaries anyway
-	exit 0
-	########################## 2.0 build #################################
-        CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v2.0.50727`
-        CSC=`cygpath -a $CSC`
-
-        # Add MS SDK to path for ilasm and ildasm
-        SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft Visual Studio 8/SDK/v2.0/Bin"`
-        SDK=`cygpath -a $SDK`
-        export PATH=$SDK:$CSC:$OLDPATH
-
-	rm -f Microsoft.VisualBasic.dll Microsoft.VisualBasic/*.log
-	cmd /c VB.build.bat 2 release || (cat Microsoft.VisualBasic/*.log && exit 1)
-
-	# Install
-	export PATH=$OLDPATH
-	cd bin
-	/tmp/build_deps/bin/gacutil -package 2.0 -i Microsoft.VisualBasic.dll -root `cygpath -m /tmp/install/lib` || exit 1
-	cd ..
-
 }
 
 POSTBUILD_TEST_NAME1="test"

@@ -63,7 +63,7 @@ for pack in packages:
 	if pack.has_key('build'):
 		script = pack['build']
 	else:
-		script = """
+		script = """set -x
 			./configure --prefix=/tmp/install || exit 1
 			make || exit 1
 			make install || exit 1

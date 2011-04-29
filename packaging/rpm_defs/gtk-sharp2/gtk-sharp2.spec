@@ -1,7 +1,27 @@
+#
+# spec file for package gtk-sharp2 (Version MACRO)
+#
+# Copyright (c) 2009 SUSE LINUX Products GmbH, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+# norootforbuild
+
+
 Name:           gtk-sharp2
 %define _name gtk-sharp
 Url:            http://gtk-sharp.sf.net
-License:        GPL v2 or later; LGPL v2.1 or later
+License:        GPL v2 only ; LGPL v2.1 only
 Group:          System/GUI/GNOME
 Summary:        .Net Language Bindings for GTK+
 # bug437293
@@ -12,15 +32,16 @@ Obsoletes:      gtk-sharp2-64bit
 Obsoletes:      gtk-sharp2-32bit
 %endif
 #
-Patch0:         gtk-sharp-revert_unportable_relocatable.patch
-Patch1:         gtk-sharp-makefile.patch
-Patch2:         gtk-sharp-find_gtkhtml_ver.patch
-Patch3:         gtk-sharp-fix_vte_so_version.patch
-Patch4:         gnome-sharp-revert_unportable_relocatable.patch
+Patch0:         gtk-sharp-optflags.patch
+Patch1:         gtk-sharp-revert_unportable_relocatable.patch
+Patch2:         gtk-sharp-makefile.patch
+Patch3:         gtk-sharp-find_gtkhtml_ver.patch
+Patch4:         gtk-sharp-fix_vte_so_version.patch
+Patch5:         gnome-sharp-revert_unportable_relocatable.patch
 %define old_version 2.4.3
 %define new_version 2.8.5
 %define new_split_version 2.10.4
-%define two_twelve_version 2.12.8
+%define two_twelve_version 2.12.10
 #####  suse  ####
 %if 0%{?suse_version}
 ## which gtk version ###
@@ -98,7 +119,7 @@ This package contains Mono bindings for gtk+, gdk, atk, and pango.
 
 
 %package gapi
-License:        LGPL v2.1 or later
+License:        GPL v2 only
 Group:          System/GUI/GNOME
 Summary:        C Source Parser and C Generator
 Requires:       perl-XML-LibXML-Common perl-XML-LibXML perl-XML-SAX
@@ -111,7 +132,7 @@ compile a project that uses it to bind such a library.
 
 
 %package -n gtk-sharp2-doc
-License:        GPL v2 or later; LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Monodoc documentation for gtk-sharp2
 Group:          System/GUI/GNOME
 # Disable this for now, as it's a circular dep
@@ -124,7 +145,7 @@ This package contains the gtk-sharp2 documentation for monodoc.
 
 
 %package -n glib-sharp2
-License:        GPL v2 or later; LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Mono bindings for glib
 Group:          System/GUI/GNOME
 
@@ -134,7 +155,7 @@ This package contains Mono bindings for glib.
 
 
 %package -n glade-sharp2
-License:        GPL v2 or later; LGPL v2.1 or later
+License:        LGPL v2.1 only
 Group:          System/GUI/GNOME
 Summary:        Mono bindings for glade
 
@@ -144,7 +165,7 @@ This package contains Mono bindings for glade.
 
 
 %package -n gtk-sharp2-complete
-License:        GPL v2 or later; LGPL v2.1 or later
+License:        LGPL v2.1 only
 Group:          System/GUI/GNOME
 Summary:        GTK+ and GNOME bindings for Mono (virtual package)
 Requires:       glade-sharp2 = %{version}-%{release}
@@ -174,7 +195,7 @@ package which depends on all gtk-sharp2 subpackages)
 %if %platform_desktop_split == 0
 
 %package -n gnome-sharp2
-License:        LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Mono bindings for Gnome
 Group:          System/GUI/GNOME
 
@@ -184,7 +205,7 @@ This package contains Mono bindings for Gnome.
 
 
 %package -n rsvg-sharp2
-License:        GPL v2 or later; LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Mono bindings for rsvg
 Group:          System/GUI/GNOME
 # Not needed with rpm .config dep search
@@ -196,7 +217,7 @@ This package contains Mono bindings for librsvg.
 
 
 %package -n gtkhtml-sharp2
-License:        GPL v2 or later; LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Mono bindings for gtkhtml
 Group:          System/GUI/GNOME
 # Not needed with rpm .config dep search
@@ -208,7 +229,7 @@ This package contains Mono bindings for gtkhtml.
 
 
 %package -n gnome-vfs-sharp2
-License:        GPL v2 or later; LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Mono bindings for gnomevfs
 Group:          System/GUI/GNOME
 # Not needed with rpm .config dep search
@@ -220,7 +241,7 @@ This package contains Mono bindings gnomevfs.
 
 
 %package -n art-sharp2
-License:        GPL v2 or later; LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Mono bindings for libart
 Group:          System/GUI/GNOME
 # Not needed with rpm .config dep search
@@ -232,7 +253,7 @@ This package contains Mono bindings for libart.
 
 
 %package -n vte-sharp2
-License:        GPL v2 or later; LGPL v2.1 or later
+License:        LGPL v2.1 only
 Group:          System/GUI/GNOME
 Summary:        Mono bindings for vte
 # Not needed with rpm .config dep search
@@ -244,7 +265,7 @@ This package contains Mono bindings for vte.
 
 
 %package -n gconf-sharp2
-License:        GPL v2 or later; LGPL v2.1 or later
+License:        LGPL v2.1 only
 Summary:        Mono bindings for gconf
 Group:          System/GUI/GNOME
 
@@ -257,15 +278,18 @@ This package contains Mono bindings for gconf and gconf peditors.
 
 %prep
 %setup -q -n %{_name}-%{version}
-%if %platform_desktop_split == 0
+if [ %version \< 2.10.3 ] ; then
 %patch0 -p1
+fi
+%if %platform_desktop_split == 0
+%patch1 -p1
 # 2.8.4 and later on 2.8.x branch doesn't need this patch
 if [ %version \< 2.8.4 ] ; then
-%patch1
+%patch2
 fi
-%patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 %endif
 
 %build

@@ -3,10 +3,13 @@ web_index=9
 # ca 98392 mktarball depends on trunk
 #  (should be temporary)
 #MKTARBALL_HEAD_DEPS=1
+USE_PATCHES=1
 
 BUILD_HOSTS=(
 	sle-11-i586
 	sle-11-x86_64
+	macos-10-x86
+	macos-10-ppc
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -37,6 +40,27 @@ HEAD_PATH=(
 RELEASE_PATH=(
 	tags/mono-[[version]]/debugger
 )
+
+macos_10_ZIP_BUILD () {
+	# This is so we can use the relocated mono (Will probably have to do this for all builds on mac)
+        #export  MONO_GAC_PREFIX=/tmp/build_deps
+        #export  MONO_PREFIX=/tmp/build_deps
+        #export  MONO_CFG_DIR=/tmp/build_deps/etc
+        #export  MONO_PATH=/tmp/build_deps/lib
+        MONO_PREFIX=/Library/Frameworks/Mono.framework/Versions/$version
+
+        CFLAGS=" -DMAC_OS_X_VERSION_10_5=1050 $CFLAGS " ./configure --prefix=$MONO_PREFIX || exit 1
+
+        make || exit 1
+
+        rm -Rf /tmp/temp_install
+        make install DESTDIR=/tmp/temp_install || exit 1
+
+        # Do this so all the zip files have the same base, and we can lay them back here later
+        mkdir -p /tmp/install
+        cd /tmp/temp_install/Library/Frameworks/Mono.framework/Versions/$version
+        mv * /tmp/install
+}
 
 POSTBUILD_TEST_NAME1="test"
 POSTBUILD_TEST1 () {

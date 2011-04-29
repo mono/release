@@ -1,24 +1,20 @@
 BUILD_HOSTS=(
-	suse-103-i586
-	suse-103-ppc
-	suse-103-x86_64
-        suse-110-i586
-        suse-110-ppc
-        suse-110-x86_64
+	sle-11-ia64
+	sle-11-i586
+	sle-11-ppc64
+	sle-11-x86_64
 )
 
 web_index=8
 
 MKTARBALL_HEAD_DEPS=1
 
-MKTARBALL_HOST="suse-103-x86_64"
-
 USE_HOSTS=(${BUILD_HOSTS[@]})
 
 MONO_DEPS=(
 	mono
 	gtk-sharp212
-	gnome-sharp220
+	gnome-sharp2
 )
 
 MONO_RECOMMEND_DEPS=(

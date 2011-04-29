@@ -32,10 +32,7 @@ macrofiles = """
 	/usr/lib/rpm/macros
 	/usr/lib/rpm/%{_target}/macros
 	/usr/lib/rpm/suse_macros
-	/etc/rpm/macros.specspo
-	/etc/rpm/macros.prelink
-	/etc/rpm/macros.solve
-	/etc/rpm/macros.up2date
+	/etc/rpm/macros.*
 	/etc/rpm/macros
 	/etc/rpm/%{_target}/macros
 	monobuild.rpmmacros
@@ -85,6 +82,7 @@ open('monobuild.rpmmacros', 'w').write("""
 %%_rpmdir	%%{_topdir}/built-packages
 %%_rpmfilename	%%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm
 %%buildroot	%s/buildroot
+%%_binary_payload	w9.bzdio
 %%_unpackaged_files_terminate_build	%s
 %%monobuild	1
 %s
@@ -127,7 +125,7 @@ for f in rcfiles:
 	if os.path.exists(f): files.append(f)
 
 # Will this command need to change from distro to distro? (possibly on REALLY old distros)
-command = "rpmbuild --rcfile=%s -bb *.spec" % ":".join(files)
+command = "rpmbuild --rcfile=/usr/lib/rpm/rpmrc:%s -bb *.spec" % ":".join(files)
 print "Executing: " + command
 sys.stdout.flush()
 if os.system(command): sys.exit(1)

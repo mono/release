@@ -1,6 +1,8 @@
 Name:           boo
-Version:        0.9.2.3383
-Release:        1
+Version:        0.9.3.3457
+Release:        30
+%define _version 2_0_9_3
+%define _version_short 0.9.3
 License:        X11/MIT
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        boo-%{version}.tar.bz2
@@ -12,6 +14,7 @@ Url:            http://boo.codehaus.org/Home
 BuildRequires:  mono-devel
 BuildRequires:  gtksourceview18-devel
 BuildRequires:  shared-mime-info
+Requires:       %{name}-%{_version} = %{version}
 # gtksourceview is required so that we can put the sourceview lang definitions
 # in the right location
 # On older versions of suse, this was defined as /opt/gnome... make it cross distro
@@ -19,19 +22,8 @@ BuildRequires:  shared-mime-info
 %define mime_info_prefix %(pkg-config --variable=prefix shared-mime-info)
 
 %description
-Boo is a new object-oriented statically-typed programming language for
-the common language infrastructure with a Python-inspired syntax and a
-special focus on language and compiler extensibility.
-
-%package devel
-License:        X11/MIT
-Summary:        A CLI Scripting Language
-Group:          Development/Languages/Other
-Requires:       boo = %{version}
-
-%description devel
-Boo is a new object-oriented statically-typed programming language for
-the common language infrastructure with a Python-inspired syntax and a
+Boo is a new object oriented statically typed programming language for
+the Common Language Infrastructure with a python inspired syntax and a
 special focus on language and compiler extensibility.
 
 %prep
@@ -53,15 +45,13 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-%{_prefix}/lib/mono/boo
-%{_prefix}/lib/mono/gac/Boo.Lang*
-
-%files devel
-%defattr(-, root, root)
+%dir %{_prefix}/lib/mono/gac/Boo.Lang*
 %{_bindir}/boo*
+%{_datadir}/mime/packages/boo-mime-info.xml
 %{_datadir}/pkgconfig/boo*.pc
 %{_prefix}/lib/boo
-%{_datadir}/mime/packages/boo-mime-info.xml
+%{_prefix}/lib/mono/boo
+%{_prefix}/lib/mono/gac/Boo.Lang*/2.%{_version_short}*
 
 %post
 if test -x usr/bin/update-mime-database ; then

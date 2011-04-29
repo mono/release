@@ -77,10 +77,6 @@ POSTBUILD_TEST1 () {
 	rm -rf test/test-run-data
 	curl -sL "http://build.mono.lab.novell.com/python/monobuild.py/download_latest?platform=$DISTRO&package=moon&HEAD_or_RELEASE=HEAD&allow_failures=0&step=test&filename=test-run-data.tar.gz" | tar xz
 
-	# Get the connection string for the mysql database.
-	rm -rf test/.dbconnection
-	curl "http://c100.cim.lab.novell.com/software/mono-project.org/mysql/.dbconnection.txt" > test/.dbconnection.txt
-
 	# Get the revision for Moonlight
 	export SVN_REVISION=`cat configure.ac | grep AC_INIT | sed -e 's/.*\[\(.*\)\])/\1/'`  # Gets the revision
 	export MS_TEST_SUITE=     #DbReport uses this env var

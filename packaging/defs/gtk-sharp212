@@ -50,59 +50,45 @@ make_dist () {
 }
 
 macos_10_x86_ZIP_DEPS=(
-
-        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.21.5-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-2.macos10.novell.x86.zip
-
-        http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-6b-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.39-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/giflib-4.1.6-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.8.2-2.macos10.novell.x86.zip
-
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pixman-0.14.0-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/cairo-1.8.6-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pango-1.22.4-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/atk-1.24.0-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk+-2.17.9-2.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/libglade-2.6.3-2.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/atk-1.30.0-8.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/cairo-1.8.10-8.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/fontconfig-2.8.0-8.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/freetype-2.4.2-8.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.24.1-8.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/gtk+-2.20.1-8.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/libglade-2.6.4-8.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/librsvg-2.26.3-8.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/libxml2-2.6.30-8.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/pango-1.28.1-8.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/pixman-0.18.2-8.macos10.novell.x86.zip
 )
 
 macos_10_x86_ZIP_RUNTIME_DEPS=(
-
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk-engines-2.16.1-2.macos10.novell.x86.zip
-        #http://primates.ximian.com/~wberrier/macos/deps/x86/tango-icon-theme-0.8.1-2.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/various/gtkrc_mac.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/ige-mac-integration-0.8.2-2.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/various/gtkrc_mac-1.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk-engines-2.20.1-8.macos10.novell.x86.zip
+        http://primates.ximian.com/~wberrier/macos/deps/x86/ige-mac-integration-0.8.2-8.macos10.novell.x86.zip
+	http://primates.ximian.com/~wberrier/macos/deps/x86/murrine-0.90.3-8.macos10.novell.x86.zip
 )
 
 macos_10_ppc_ZIP_DEPS=(
-
-        http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.21.5-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.23-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.17-2.macos10.novell.ppc.zip
-
-        http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-6b-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.39-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/giflib-4.1.6-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.8.2-2.macos10.novell.ppc.zip
-
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pixman-0.14.0-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/cairo-1.8.6-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pango-1.22.4-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/atk-1.24.0-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk+-2.17.9-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/libglade-2.6.3-2.macos10.novell.ppc.zip
-
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/atk-1.30.0-8.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/cairo-1.8.10-8.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/fontconfig-2.8.0-8.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/freetype-2.4.2-8.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.24.1-8.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/gtk+-2.20.1-8.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/libglade-2.6.4-8.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/librsvg-2.26.3-8.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/libxml2-2.6.30-8.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/pango-1.28.1-8.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/pixman-0.18.2-8.macos10.novell.ppc.zip
 )
 
 macos_10_ppc_ZIP_RUNTIME_DEPS=(
-
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gtk-engines-2.16.1-2.macos10.novell.ppc.zip
-        #http://primates.ximian.com/~wberrier/macos/deps/x86/tango-icon-theme-0.8.1-2.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/various/gtkrc_mac.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/ige-mac-integration-0.8.2-2.macos10.novell.ppc.zip
-
+        http://primates.ximian.com/~wberrier/macos/deps/various/gtkrc_mac-1.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/gtk-engines-2.20.1-8.macos10.novell.ppc.zip
+        http://primates.ximian.com/~wberrier/macos/deps/ppc/ige-mac-integration-0.8.2-8.macos10.novell.ppc.zip
+	http://primates.ximian.com/~wberrier/macos/deps/ppc/murrine-0.90.3-8.macos10.novell.ppc.zip
 )
 
 
@@ -115,7 +101,7 @@ macos_10_ZIP_BUILD () {
         export  MONO_PATH=/tmp/build_deps/lib
 
         # add this so libxml is found
-        export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig
+        export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/tmp/build_deps/lib/pkgconfig:/usr/X11R6/lib/pkgconfig
 
         ./configure --prefix=/tmp/install || exit 1
 
@@ -124,85 +110,50 @@ macos_10_ZIP_BUILD () {
 
 }
 
-win_4_i386_ZIP_RUNTIME_DEPS=(
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/expat_2.0.1-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/fontconfig_2.6.0-2_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/fontconfig-dev_2.6.0-2_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/freetype_2.3.8-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/freetype-dev_2.3.8-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/openssl-0.9.7c.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/regex-spencer-3.8.zip
-
-	http://ftp.gnome.org/pub/gnome/binaries/win32/gail/1.22/gail-1.22.0.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/gail/1.22/gail-dev-1.22.0.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-icon-theme/2.24/gnome-icon-theme-dev_2.24.0-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-icon-theme/2.24/gnome-icon-theme_2.24.0-1_win32.zip
-)
-
 win_4_i386_ZIP_DEPS=(
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libxml2-2.6.27.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libxml2-dev-2.6.27.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/popt-1.10.2-tml-20050828.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/popt-dev-1.10.2-tml-20050828.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/cairo-dev_1.8.10-3_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/cairo_1.8.10-3_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/expat-dev_2.0.1-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/expat_2.0.1-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/fontconfig-dev_2.8.0-2_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/fontconfig_2.8.0-2_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/freetype-dev_2.3.12-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/freetype_2.3.12-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/libpng-dev_1.4.0-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/libpng_1.4.0-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/libxml2-dev_2.7.7-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/libxml2_2.7.7-1_win32.zip
 
-	http://ftp.gnome.org/pub/gnome/binaries/win32/GConf/2.22/GConf-dev_2.22.0-2_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/GConf/2.22/GConf_2.22.0-2_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/ORBit2/2.14/ORBit2-dev_2.14.16-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/ORBit2/2.14/ORBit2_2.14.16-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-vfs/2.24/gnome-vfs-dev_2.24.0-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/gnome-vfs/2.24/gnome-vfs_2.24.0-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.14/gtk+-bundle_2.14.7-20090119_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libIDL/0.8/libIDL-dev_0.8.11-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libIDL/0.8/libIDL_0.8.11-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libart_lgpl/2.3/libart_lgpl-2.3.20.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libart_lgpl/2.3/libart_lgpl-dev-2.3.20.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libbonobo/2.24/libbonobo-dev_2.24.0-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libbonobo/2.24/libbonobo_2.24.0-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libbonoboui/2.24/libbonoboui-dev_2.24.0-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libbonoboui/2.24/libbonoboui_2.24.0-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libglade/2.6/libglade-dev_2.6.3-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libglade/2.6/libglade_2.6.3-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libgsf/1.14/libgsf-1.14.8.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libgsf/1.14/libgsf-dev-1.14.8.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libgsf/1.14/libgsf-gnome-1.14.8.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/libgsf/1.14/libgsf-gnome-dev-1.14.8.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/librsvg/2.22/librsvg-dev_2.22.3-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/librsvg/2.22/librsvg_2.22.3-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/librsvg/2.22/svg-gdk-pixbuf-loader_2.22.3-1_win32.zip
-	http://ftp.gnome.org/pub/gnome/binaries/win32/librsvg/2.22/svg-gtk-engine_2.22.3-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/atk/1.30/atk-dev_1.30.0-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/atk/1.30/atk_1.30.0-1_win32.zip
+
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/glib/2.24/glib-dev_2.24.1-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/glib/2.24/glib_2.24.1-1_win32.zip
+
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/gtk+/2.20/gtk+-dev_2.20.1-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/gtk+/2.20/gtk+_2.20.1-1_win32.zip
+
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/libglade/2.6/libglade-dev_2.6.4-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/libglade/2.6/libglade_2.6.4-1_win32.zip
+
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/pango/1.28/pango-dev_1.28.0-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/pango/1.28/pango_1.28.0-1_win32.zip
 )
 
 win_4_i386_ZIP_BUILD () {
-        # Make sure it's not dependent on cygwin
-        # Fixed at least in 2.8.2
-        #export CC="gcc -mno-cygwin"
-
+        #CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v2.0.50727`
         CSC=`cygpath -d /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v1.1.4322`
         CSC=`cygpath -a $CSC`
 
         # Add MS SDK to path for ilasm and ildasm
+        #SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft Visual Studio 8/SDK/v2.0/Bin"`
         SDK=`cygpath -d "/cygdrive/c/Program Files/Microsoft.NET/SDK/v1.1/Bin"`
         SDK=`cygpath -a $SDK`
         export PATH=$SDK:$CSC:$PATH
 
         # Since we're using MS compiler, fake like mono's not installed
         mkdir -p /tmp/backup
-        mv /tmp/build_deps/lib/pkgconfig/mono.pc /tmp/backup
-
-        # Build fails on gnome-vfs tests, don't build those
-        # Actually, do sed below for sample/Makefile
-        #mv /tmp/build_deps/lib/pkgconfig/gnome-vfs-* /tmp/backup/
-
-        # TODO: Paco used to alter configure.in to change the dep on libart to 2.3.14
-        # Something like this:
-        #  Paco said people were using rsvg-sharp compiled in this manner with no problems... should probably investigate this
-        # Don't need this anymore since we have something newer than 2.3.16
-        #sed -i "s/2.3.16/2.3.14/" configure
-
-        # Patch configure to check for gtkhtml, even if gnome# isn't enabled
-        #if test "x$enable_gnome" = "xyes"; then
-        #if test "xyes" = "xyes"; then
-        # Can't do this... gtkhtml depends on gnome
+        mv /tmp/build_deps/lib/pkgconfig/mono*.pc /tmp/backup
 
         ./configure --prefix=/tmp/install
 
@@ -215,8 +166,8 @@ win_4_i386_ZIP_BUILD () {
         #sed -i "s/\/cyg\//\/\//" libtool
 
         # Clean up the MS gac of gtk-sharp
-        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp
-        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet
+        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC*/*-sharp
+        rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC*/*gtk-dotnet
 
         make || exit 1
         make install || exit 1
@@ -225,15 +176,11 @@ win_4_i386_ZIP_BUILD () {
         mkdir -p /tmp/install/samples/gtk-sharp-2.0
         cp -Rf sample/* /tmp/install/samples/gtk-sharp-2.0
 
-        # Move files out of MS gac and install them into the /tmp/install's gac
-        #mkdir -p /tmp/install/lib/mono/gac
-        #mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/install/lib/mono/gac
-
         # Move them to a temp dir...
         rm -Rf /tmp/temp_install
         mkdir -p /tmp/temp_install
-        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*-sharp /tmp/temp_install
-        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC/*gtk-dotnet /tmp/temp_install
+        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC*/*-sharp /tmp/temp_install
+        mv /cygdrive/c/WINDOWS/ASSEMBLY/GAC*/*gtk-dotnet /tmp/temp_install
 
         # TODO: Should I be using mono's gacutil instead to install these files?  yes!
 

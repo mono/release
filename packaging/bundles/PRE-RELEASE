@@ -1,19 +1,19 @@
 # Directory used when created go-mono.com/archive/<archive_version>
 #  This will need to be manually bumped each time on head... don't forget!!
-archive_version="2.4"
-md_version="2.0"
+archive_version="2.10.2"
+md_version="2.4"
 
 bundle_urlname="preview"
 
-bundle_short_desc="RC3.1"
+bundle_short_desc="Release Candidate 5 [ce3b0b75]"
 bundle_desc="Preview packages before an official release"
 
 obs_repos=(
-	rsync://autobuild.provo.novell.com/PBS_repos/Mono/SLE_10/
-	rsync://autobuild.provo.novell.com/PBS_repos/Mono/SLE_11/
-	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_10.3/
-	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_11.0/
-	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_11.1/
+	rsync://autobuild.provo.novell.com/PBS_repos/Mono:/RHEL/RHEL_5/
+	rsync://autobuild.provo.novell.com/PBS_repos/Mono/SLE_11_SP1/
+	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_11.2/
+	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_11.3/
+	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_11.4/
 )
 
 versions=(
@@ -23,13 +23,8 @@ versions=(
 	gecko-sharp2=""
 	gluezilla=""
 	gnome-desktop-sharp2=""
-	gnome-sharp220=""
 	gnome-sharp2=""
-	gtk-sharp-2.0=""
-	gtk-sharp210=""
 	gtk-sharp212=""
-	gtk-sharp28=""
-	gtk-sharp2=""
 	gtksourceview-sharp2=""
 	ikvm=""
 	libgdiplus=""
@@ -43,6 +38,7 @@ versions=(
 	monodevelop-database=""
 	monodevelop-debugger-gdb=""
 	monodevelop-debugger-mdb=""
+	monodevelop-python=""
 	monodevelop-java=""
 	monodevelop-vala=""
 	monodevelop=""

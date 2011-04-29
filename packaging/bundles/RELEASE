@@ -1,22 +1,21 @@
 # Directory used when created go-mono.com/archive/<archive_version>
 #  This will need to be manually bumped each time on head... don't forget!!
-archive_version="2.4"
-md_version="2.0"
+archive_version="2.10.2"
+md_version="2.4"
 
 bundle_urlname="stable"
 
 bundle_desc="Packages from the latest release"
 
 obs_repos=(
-	rsync://autobuild.provo.novell.com/PBS_repos/Mono/SLE_10/
-	rsync://autobuild.provo.novell.com/PBS_repos/Mono/SLE_11/
-	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_10.3/
-	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_11.0/
-	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_11.1/
+	rsync://autobuild.provo.novell.com/PBS_repos/Mono/SLE_11_SP1/
+	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_11.2/
+	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_11.3/
+	rsync://autobuild.provo.novell.com/PBS_repos/Mono/openSUSE_11.4/
+	rsync://autobuild.provo.novell.com/PBS_repos/Mono:/RHEL/RHEL_5/
 )
 
 versions=(
-	IPCE=""
 	boo=""
 	cocoa-sharp=""
 	gecko-sharp2=""
@@ -38,11 +37,10 @@ versions=(
 	mono-debugger=""
 	mono-tools=""
 	mono=""
-	monodevelop-boo=""
 	monodevelop-database=""
 	monodevelop-debugger-gdb=""
-	monodevelop-debugger-mdb=""
 	monodevelop-java=""
+	monodevelop-python=""
 	monodevelop-vala=""
 	monodevelop=""
 	nant=""

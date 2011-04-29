@@ -15,30 +15,31 @@ prefix = "/Library/Frameworks/Mono.framework/Versions/Current"
 packages = [
 	{
 		'name': 'pkg-config', 
-		#'source': 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.22.tar.gz',
-		'source': 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.23.tar.gz',
+		'source': 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.25.tar.gz',
 		'post':"""
 			# Configure shell wrapper for pkg-config so it will look for .pc files when installed (#79671)
 			cd /tmp/install/bin
 			mv pkg-config pkg-config.bin
 			cat <<EOF > pkg-config
 #!/bin/sh
-PKG_CONFIG_PATH=/tmp/install/lib/pkgconfig:/tmp/install/share/pkgconfig:\$PKG_CONFIG_PATH /tmp/install/bin/pkg-config.bin "\$@"
+if [ -z "\$PKG_CONFIG_LIBDIR" ]; then
+	export PKG_CONFIG_LIBDIR=/tmp/install/lib/pkgconfig:/tmp/install/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
+fi
+/tmp/install/bin/pkg-config.bin "\$@"
 EOF
 			chmod 755 pkg-config
 			"""
 	},
 	{
 		'name': 'gettext', 
-		#'source': 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.16.1.tar.gz',
-		'source': 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.17.tar.gz',
+		'source': 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.18.1.1.tar.gz',
 		'post':"""
 			# Save msgfmt, as this is needed for building glib
 			#  we also need msgmerge for intltool... (monodevelop)
 			rm -Rf /tmp/temp_install
 			mkdir -p /tmp/temp_install/bin
 			cd /tmp/install/bin
-			mv msgfmt msgmerge /tmp/temp_install/bin
+			mv xgettext msgfmt msgmerge /tmp/temp_install/bin
 			cd -
 
 			rm -Rf /tmp/install/bin/*
@@ -51,13 +52,13 @@ EOF
 	},
 	{
 		'name': 'glib', 
-		'source': 'http://ftp.gnome.org/pub/gnome/sources/glib/2.21/glib-2.21.5.tar.bz2',
-                # 2.18.4 fails to install for now.
-		'pre':"""
-			sed -i -e "s/\/usr\/local\/share\/:\/usr\/share\//\/usr\/local\/share\/:\/usr\/share\/:\/Library\/Frameworks\/Mono.framework\/Versions\/Current\/share\//g" glib/gutils.c
-			# The following is a hack for a gtk bug where 'which' does not act as expected on mac.
-			# see http://lists.macosforge.org/pipermail/macports-users/2007-December.txt and search for 'gtkdoc-rebase'
+		'source': 'http://ftp.gnome.org/pub/gnome/sources/glib/2.24/glib-2.24.1.tar.bz2',
+		'build':
+			"""set -x
 			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
+			LDFLAGS="$LDFLAGS -lresolv" ./configure --prefix=/tmp/install
+			make || exit 1
+			make install || exit 1
 			""",
 		'post':"""
 			# glib-mkenums is required for pango, maybe others
@@ -66,8 +67,8 @@ EOF
 	},
 	{
 		'name': 'jpeg', 
-		'version': '6b',
-		'source': 'ftp://ftp.uu.net/graphics/jpeg/jpegsrc.v6b.tar.gz',
+		'version': '8',
+		'source': 'http://www.ijg.org/files/jpegsrc.v8b.tar.gz',
 		'build':
 			"""ln -s `which glibtool` ./libtool
 
@@ -75,12 +76,12 @@ EOF
 			make || exit 1
 			mkdir -p /tmp/install/lib
 			mkdir -p /tmp/install/include
-			make install-lib || exit 1
+			make install || exit 1
 			"""
 	},
 	{
 		'name': 'tiff', 
-		'source': 'ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.8.2.tar.gz',
+		'source': 'http://dl.maptools.org/dl/libtiff/tiff-3.8.2.tar.gz',
 		'build':
 			"""
 			./configure --prefix=/tmp/install --mandir=/tmp/install/share/man \
@@ -97,55 +98,62 @@ EOF
 	},
 	{
 		'name': 'libpng',
-		#'source': 'http://superb-east.dl.sourceforge.net/sourceforge/libpng/libpng-1.2.20.tar.bz2',
-		#'source': 'ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.2.32.tar.bz2',
-		'source': 'ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.2.35.tar.bz2',
+		'source': 'http://voxel.dl.sourceforge.net/project/libpng/03-libpng-previous/1.2.44/libpng-1.2.44.tar.bz2',
+		#'source': 'ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.4.0.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
 	},
 	{
 		'name': 'giflib', 
-                'source': 'http://internap.dl.sourceforge.net/sourceforge/giflib/giflib-4.1.6.tar.bz2',
+                'source': 'http://cdnetworks-us-1.dl.sourceforge.net/project/giflib/giflib%204.x/giflib-4.1.6/giflib-4.1.6.tar.bz2',
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
 	},
-#	# Include this because macosx freetype is too old for the new cairo
-#	# (Tiger's used to be sufficient, but it looks like the new cairo needs newer than Tiger's)
-#	#  Note: we may not even need this if we're dropping support for 10.3
-#	{
-#		'name': 'freetype', 
-#		'source': 'http://download.savannah.gnu.org/releases/freetype/freetype-2.1.10.tar.bz2',
-#		'post':"""
-#			rm -Rf /tmp/install/bin/*
-#			"""
-#	},
 	# Include our own because 10.4 and 10.5 ppc have differing expat versions
 	{
 		'name': 'expat', 
-		'source': 'http://internap.dl.sourceforge.net/sourceforge/expat/expat-2.0.1.tar.gz',
+		'source': 'http://cdnetworks-us-1.dl.sourceforge.net/project/expat/expat/2.0.1/expat-2.0.1.tar.gz',
+		'build': """
+			./configure --prefix=/tmp/install 
+			make
+			make install
+			""",
 		'post':"""
 			rm -Rf /tmp/install/bin
 			rm -Rf /tmp/install/man
-			"""
+			""",
 	},
 	{
 		'name': 'pixman', 
-		#'source': 'http://cairographics.org/releases/pixman-0.14.0.tar.gz',
-		'source': 'http://cairographics.org/releases/pixman-0.14.0.tar.gz',
+		'source': 'http://cairographics.org/releases/pixman-0.18.2.tar.gz',
+	},
+	{
+		'name': 'freetype',
+		'source': 'http://download.savannah.gnu.org/releases/freetype/freetype-2.4.2.tar.bz2',
+		'build': """
+			./configure --prefix=/tmp/install
+			make
+			make install
+			""",
+	},
+	{
+		'name': 'fontconfig',
+		'source': 'http://www.fontconfig.org/release/fontconfig-2.8.0.tar.gz',
+		'build': """
+			./configure --prefix=/tmp/install --disable-docs
+			make
+			make install
+			""",
 	},
 	{
 		'name': 'cairo', 
-		#'source': 'http://cairographics.org/releases/cairo-1.6.4.tar.gz',
-		'source': 'http://cairographics.org/releases/cairo-1.8.6.tar.gz',
+		'source': 'http://cairographics.org/releases/cairo-1.8.10.tar.gz',
 		'build': """
-			PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig FONTCONFIG_CFLAGS=" -I /usr/X11R6/include " FONTCONFIG_LDFLAGS=" -lfontconfig " ./configure --prefix=/tmp/install --enable-quartz --enable-atsui --enable-pdf --disable-xlib
+			./configure --prefix=/tmp/install --enable-quartz --enable-quartz-font --enable-quartz-image --enable-atsui --enable-pdf --disable-xlib --disable-ft
 			make
 			make install
-
-			# This file doesn't get copied because of a bug (filed and fixed upstream).  Copy manually.
-			cp src/cairo-quartz-font.pc /tmp/install/lib/pkgconfig || exit 1
 			""",
 	},
 	#  TODO: There are problems relocating these binaries... is the max header flag not getting passed in?
@@ -154,15 +162,24 @@ EOF
 		'name': 'pango', 
 		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.20/pango-1.20.2.tar.bz2',
 		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.20/pango-1.20.5.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.22/pango-1.22.4.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.28/pango-1.28.1.tar.bz2',
 		'build': """
 
+			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
 			# Hrm... LDFLAGS not getting set for atsui basic... for it (TODO: file bug)
 			sed -e "s/framework Carbon/framework Carbon -headerpad_max_install_names/g" modules/basic/Makefile.in > new
 			mv new modules/basic/Makefile.in
 
+			# Patch to use atsui (for 1.26)
+			#curl -L http://git.gnome.org/browse/pango/patch/?id=0f06d7758bc37a4942342d2c17a88944cbc88adb | patch -p1
+			# Patch to fix ligature bug (1.26)
+			#curl -L http://bugzilla-attachments.gnome.org/attachment.cgi?id=154892 | patch -p1
+
+			# Hack the configure script to disable the FreeType backend
+			#sed -i bak 's,2\.5\.0,9.5.0,' configure
+
 			# Use this prefix so we don't have to do any tricks to relocate (Do this with all modules?)
-			PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig PATH=$PATH:/usr/X11R6/bin ./configure --prefix=%s --without-x
+			CFLAGS=" -DMAC_OS_X_VERSION_10_5=1050 $CFLAGS " ./configure --prefix=%s --without-x
 			make
 
 			rm -Rf /tmp/temp_install
@@ -178,7 +195,13 @@ EOF
 		'name': 'atk', 
 		#'source': 'http://ftp.gnome.org/pub/gnome/sources/atk/1.20/atk-1.20.0.tar.bz2',
 		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/atk/1.23/atk-1.23.5.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/atk/1.24/atk-1.24.0.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/atk/1.30/atk-1.30.0.tar.bz2',
+		'build': """
+			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
+			./configure --prefix=/tmp/install || exit 1
+			make || exit 1
+			make install || exit 1
+		""",
 	},
 #	## Tarball generated on linux (opensuse 10.3) using:
 #	# Applied patch: http://people.imendio.com/richard/patches/gtk-configure.patch
@@ -190,22 +213,17 @@ EOF
 	{
 		# Requires 10.4 or above
 		'name': 'gtk+', 
-		'version': '2.14.7', 
-		#'source': 'http://primates.ximian.com/~wberrier/macos/sources/gtk+-2.15.0.tar.bz2',
-		#'source': 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.14/gtk+-2.14.3.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.14/gtk+-2.14.7.tar.bz2',
-		'build': """
+		'version': '2.20.1', 
+		'source': 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.20/gtk+-2.20.1.tar.bz2',
+		'build': """set -ex
 			# The following is a hack for a gtk bug where 'which' does not act as expected on mac.
                         # see http://lists.macosforge.org/pipermail/macports-users/2007-December.txt and search for 'gtkdoc-rebase'
 			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
-                        LDFLAGS="-framework Foundation -framework Carbon -framework AppKit -Xlinker -headerpad_max_install_names" ./configure --prefix=%s --with-gdktarget=quartz --disable-gtk-doc --with-libjpeg --without-libjasper
+                        LDFLAGS="$LDFLAGS -framework Foundation -framework Carbon -framework AppKit -Xlinker -headerpad_max_install_names" ./configure --prefix=%s --with-gdktarget=quartz --disable-gtk-doc --with-libjpeg --without-libjasper
 			make
-			cd gtk/xdgmime
-			make
-			cd -
-			make
-			cp /usr/share/automake-*/mkinstalldirs .
 			make install DESTDIR=/tmp/temp_install
+			mkdir -p /tmp/temp_install/Library/Frameworks/Mono.framework/Versions/Current/share/themes/Mac/gtk-2.0-key
+			curl -L http://mjhutchinson.com/files/temp/gtkrc-mac-2.20-hack > /tmp/temp_install/Library/Frameworks/Mono.framework/Versions/Current/share/themes/Mac/gtk-2.0-key/gtkrc
 
 			# Do this so all the zip files have the same base, and we can lay them back here later
 			mkdir -p /tmp/install
@@ -214,126 +232,41 @@ EOF
 			""" % (prefix, prefix),
 	},
 	{
+		'name': 'libxml2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/libxml2-2.6.30.tar.bz2',
+		'build': """
+			./configure --prefix=/tmp/install --with-python=no
+			make
+			make install
+		""",
+	},
+	{
+		'name': 'librsvg', 
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.26/librsvg-2.26.3.tar.bz2',
+	},
+	{
 		'name': 'libglade', 
 		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/libglade/2.6/libglade-2.6.2.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/libglade/2.6/libglade-2.6.3.tar.bz2',
-		'build':"""
-			export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/libglade/2.6/libglade-2.6.4.tar.bz2',
+		'build':"""set -ex
 			./configure --prefix=/tmp/install
 			make
 			make install
 		"""
 	},
-	{
-		'name': 'XML-Parser', 
-		'source': 'http://search.cpan.org/CPAN/authors/id/M/MS/MSERGEANT/XML-Parser-2.36.tar.gz',
-		'build':"""
-			perl Makefile.PL PREFIX=/tmp/install EXPATLIBPATH=/usr/X11R6/lib EXPATINCPATH=/usr/X11R6/include
-			make
-			make install
-		"""
-	},
-	{
-		'name': 'XML-Simple', 
-		'source': 'http://search.cpan.org/CPAN/authors/id/G/GR/GRANTM/XML-Simple-2.18.tar.gz',
-		'build':"""
-			perl Makefile.PL PREFIX=/tmp/install
-			make
-			make install
-		"""
-	},
         {
-		# Required by gtksourceview-2.4.2
                 'name': 'intltool',
-                'source': 'http://ftp.gnome.org/pub/gnome/sources/intltool/0.40/intltool-0.40.5.tar.bz2',
-		'build':"""
+                'source': 'http://ftp.gnome.org/pub/gnome/sources/intltool/0.40/intltool-0.40.6.tar.bz2',
+                'build':"""
                         ./configure --prefix=/tmp/install
                         make
                         make install
                 """
 
         },
-# gtksourceview is not used on the mac anymore for mono stuff
-	{
-		'name': 'gtksourceview',
-		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/gtksourceview/2.0/gtksourceview-2.0.2.tar.bz2',
-		'source': 'http://ftp.acc.umu.se/pub/GNOME/sources/gtksourceview/2.4/gtksourceview-2.4.2.tar.bz2',
-                'pre':"""
-                        # This is a total hack to fake out the check for xgettext.
-			# This can be removed once we get xgettext compiling on mac
-                        echo -e '#!/bin/sh\necho "(GNU gettext"' > /tmp/build_deps/bin/xgettext
-                        chmod 755 /tmp/build_deps/bin/xgettext
-                """,
-		'build':"""
-			# The following is a hack for a gtk bug where 'which' does not act as expected on mac.
-                        # see http://lists.macosforge.org/pipermail/macports-users/2007-December.txt and search for 'gtkdoc-rebase'
-			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
-			# We have a libxml-2.0.pc file... even though mac doesn't ship with pkg-config :)
-			export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig
-			./configure --prefix=/tmp/install --disable-nls --disable-gtk-doc 
-			make
-			make install
-		"""
-	},
-#	# Dah... this isn't needed for gtk#... it's in gnome#.
-#	{
-#		'name': 'librsvg', 
-#		'source': 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.18/librsvg-2.18.2.tar.bz2',
-#		'build':"""
-#			# fake freetype2.pc files for Apple's libs
-#			cat <<EOF > /tmp/build_deps/lib/pkgconfig/freetype2.pc
-#prefix=/usr/X11R6
-#exec_prefix=\${prefix}
-#libdir=/usr/X11R6/lib
-#includedir=\${prefix}/include
-#
-#Name: FreeType 2
-#Description: A free, high-quality, and portable font engine.
-#Version: 9.16.3
-#Requires:
-#Libs: -L\${libdir} -lfreetype -lz 
-#Cflags: -I\${includedir}/freetype2 -I\${includedir}
-#EOF
-#			export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig:/usr/lib/pkgconfig
-#			./configure --prefix=/tmp/install
-#			make
-#			make install
-#
-#		"""
-#	},
-	#################
-	# Theme stuff
-	#################
-	{
-		'name': 'hicolor-icon-theme',
-		'source': 'http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.10.tar.gz',
-	},
-	{
-		'name': 'icon-naming-utils',
-		#'source': 'http://tango.freedesktop.org/releases/icon-naming-utils-0.8.6.tar.gz',
-		'source': 'http://tango.freedesktop.org/releases/icon-naming-utils-0.8.7.tar.gz',
-	},
-	{
-		'name': 'gnome-icon-theme',
-		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/gnome-icon-theme/2.20/gnome-icon-theme-2.20.0.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gnome-icon-theme/2.24/gnome-icon-theme-2.24.0.tar.bz2',
-		'pre':"""
-			# This is a total hack to fake out the check for xgettext.
-                        # This can be removed once we get xgettext compiling on mac
-			echo -e '#!/bin/sh\necho "(GNU gettext"' > /tmp/build_deps/bin/xgettext
-			chmod 755 /tmp/build_deps/bin/xgettext
-		""",
-		'build':"""
-			export INU_DATA_DIR=/tmp/build_deps/share/icon-naming-utils
-			./configure --disable-nls --prefix=/tmp/install --disable-gtk-doc 
-			make
-			make install
-		""",
-	},
 	{
 		'name': 'gtk-engines',
-		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/gtk-engines/2.12/gtk-engines-2.12.2.tar.bz2',
-		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gtk-engines/2.16/gtk-engines-2.16.1.tar.bz2',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gtk-engines/2.20/gtk-engines-2.20.1.tar.bz2',
 		'pre':"""
                         # This is a total hack to fake out the check for xgettext.
                         # This can be removed once we get xgettext compiling on mac
@@ -346,52 +279,19 @@ EOF
                         make install
                 """,
 	},
-	#####
-	#  fontconfig and freetype disabled... enable them?
 	{
-		'name': 'ImageMagick',
-		'version': '6.3.8',
-		# Dah, the url keeps getting updated... without saving the old ones.  (Use previous version?)
-		#  The source is unmodified, but post a permanent copy
-		#'source': 'ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-6.3.8-5.tar.bz2',
-		'source': 'http://primates.ximian.com/~wberrier/macos/sources/ImageMagick-6.3.8-11.tar.bz2',
-		'build':"""
-			./configure --prefix=/tmp/install
-			make
-			make install SITEPREFIX=/tmp/install
-			# Remove docs
-			rm -Rf /tmp/install/share/doc/ImageMagick-6.3.8
-			#  We don't have to worry too much, because we don't ship ImageMagick
-		""",
-	},
-	#  Ugh... requires imagemagick
-	{
-		'name': 'tango-icon-theme',
-		'source': 'http://tango.freedesktop.org/releases/tango-icon-theme-0.8.1.tar.gz',
-		'build':"""
-			export MAGICK_CONFIGURE_PATH=/tmp/build_deps/lib/ImageMagick-6.3.8/config
-			export MAGICK_CODER_MODULE_PATH=/tmp/build_deps/lib/ImageMagick-6.3.8/modules-Q16/coders
-			export INU_DATA_DIR=/tmp/build_deps/share/icon-naming-utils
-			./configure --prefix=/tmp/install
-			make
-			make install
-		""",
+		'name': 'murrine',
+		'source': 'http://ftp.gnome.org/pub/GNOME/sources/murrine/0.90/murrine-0.90.3.tar.bz2',
 	},
 	{
-		'name': 'tango-icon-theme-extras',
-		'source': 'http://tango.freedesktop.org/releases/tango-icon-theme-extras-0.1.0.tar.gz',
-		'build':"""
-			export MAGICK_CONFIGURE_PATH=/tmp/build_deps/lib/ImageMagick-6.3.8/config
-			export MAGICK_CODER_MODULE_PATH=/tmp/build_deps/lib/ImageMagick-6.3.8/modules-Q16/coders
-			export INU_DATA_DIR=/tmp/build_deps/share/icon-naming-utils
-			./configure --prefix=/tmp/install
-			make
-			make install
-		""",
+		'name': 'gtk-quartz-engine',
+		'source': 'http://build.mono.lab.novell.com/~builder/gtk-quartz-engine-0.2.tar.bz2',
+		#'source': 'http://downloads.sourceforge.net/project/gtk-osx/GTK%20Quartz%20Engine/gtk-quartz-engine-0.2.tar.gz',
 	},
 	{
 		'name': 'ige-mac-integration',
 		'source': 'http://ftp.imendio.com/pub/imendio/ige-mac-integration/ige-mac-integration-0.8.2.tar.gz',
+		#'source': 'http://downloads.sourceforge.net/project/gtk-osx/GTK-OSX%20Build/ige-mac-integration-0.9.4.tar.gz',
 		'build':"""
 			LDFLAGS="-framework AppKit -Xlinker -headerpad_max_install_names"  ./configure --prefix=/tmp/install
 			make
@@ -401,7 +301,7 @@ EOF
 	{
 		'name': 'sqlite',
 		#'source': 'http://www.sqlite.org/sqlite-3.5.7.tar.gz',
-		'source': 'http://www.sqlite.org/sqlite-3.6.10.tar.gz',
+		'source': 'http://www.sqlite.org/sqlite-3.6.23.1.tar.gz',
 		'build':"""
 			./configure --prefix=/tmp/install --disable-tcl
 			make

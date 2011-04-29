@@ -1,8 +1,8 @@
 Name:           ikvm
 BuildRequires:  dos2unix mono-devel unzip
-Version:        0.40.0.1
-Release:        0
-License:        BSD 3-Clause
+Version:        0.42.0.6
+Release:        3
+License:        BSD 3-clause (or similar)
 BuildArch:      noarch
 Url:            http://www.ikvm.net
 Source0:        ikvmbin-%{version}.zip
@@ -10,27 +10,12 @@ Summary:        A JVM Based on the Mono Runtime
 Group:          Development/Tools/Other
 Requires:       mono-ikvm
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-####  fedora  ####
-%if 0%{?fedora_version} || 0%{?rhel_version}
-# All fedora distros (5 and 6) have the same names, requirements
-# Needed to generate wrapper
-BuildRequires:  which
-# Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')
-%define env_options export MONO_SHARED_DIR=/tmp
-%endif
-#################
 
 %description
 This package provides IKVM.NET, an open source Java compatibility layer
 for Mono, which includes a Virtual Machine, a bytecode compiler, and
 various class libraries for Java, as well as tools for Java and Mono
 interoperability.
-
-
-
-Authors:
---------
-    Jeroen Frijters <jfrijters@users.sourceforge.net>
 
 %prep
 %setup -q
@@ -43,16 +28,15 @@ dos2unix LICENSE
 true
 
 %install
-%{?env_options}
 # Create dirs
 mkdir -p ${RPM_BUILD_ROOT}/usr/bin
 mkdir -p ${RPM_BUILD_ROOT}/usr/lib/ikvm
 mkdir -p ${RPM_BUILD_ROOT}/usr/share/pkgconfig
 # Don't install the PdbWriter
 rm -f bin/*PdbWriter*
-#Install binaries
+# Install binaries
 #  (do iname for JVM.DLL)
-find bin -iname "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
+find bin* -iname "*\.dll" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 find bin -name "*\.exe" -exec cp {} ${RPM_BUILD_ROOT}/usr/lib/ikvm  \;
 # Install some in gac (By request of Jeroen)
 OPENJDK=$(find bin -iname "IKVM.OpenJDK.*.dll" -exec basename '{}' ';')
@@ -65,7 +49,7 @@ for f in `find bin . -name "*\.exe"` ; do
         script_name=${RPM_BUILD_ROOT}/usr/bin/`basename $f .exe`
         cat <<EOF > $script_name
 #!/bin/sh
-exec `which mono` /usr/lib/ikvm/`basename $f` "\$@"
+exec mono /usr/lib/ikvm/`basename $f` "\$@"
 EOF
         chmod 755 $script_name
 done
@@ -93,11 +77,5 @@ rm -rf "$RPM_BUILD_ROOT"
 %_prefix/lib/mono/ikvm
 %_prefix/lib/mono/gac/IKVM*
 %_prefix/share/pkgconfig/ikvm.pc
-%if 0%{?fedora_version} || 0%{?rhel_version}
-# Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
-%define _use_internal_dependency_generator 0
-%endif
-%define __find_provides env sh -c 'filelist=($(grep -v SharpZipLib)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
-%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog

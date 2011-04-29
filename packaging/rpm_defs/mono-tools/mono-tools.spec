@@ -1,79 +1,50 @@
 Name:           mono-tools
-BuildRequires:  gconf-sharp2 mono-data-oracle mono-devel mono-jscript mono-nunit monodoc-core
-Version:        2.4
-Release:        0
-License:        GPL v2 or later
+Version:        2.8
+Release:        30
+License:        GPL v2 only ; LGPL v2.0 only ; MIT License (or similar)
 BuildArch:      noarch
 Url:            http://go-mono.org/
 Source0:        %{name}-%{version}.tar.bz2
 Summary:        Collection of Tools and Utilities for Mono
 Group:          Development/Tools/Other
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-%if 0%{?suse_version}
+BuildRequires:  mono-devel mono-nunit monodoc-core
 BuildRequires:  update-desktop-files
-%if %suse_version > 1100
 BuildRequires:  webkit-sharp
-%else
-BuildRequires:  gecko-sharp2
-%endif
-%if %suse_version >= 1030
-BuildRequires:  gtkhtml314-sharp
-%else
-BuildRequires:  gtkhtml-sharp2
-%endif
-%endif
-# Fedora options (Bug in fedora images where 'abuild' user is the same id as 'nobody')
-%if 0%{?fedora_version}
-%define env_options export MONO_SHARED_DIR=/tmp
-# Not sure of the equivalent for fedora...
-%define suse_update_desktop_file true
-%if %fedora_version >= 8
-BuildRequires:  gtkhtml314-sharp
-%else
-BuildRequires:  gtkhtml-sharp2
-%endif
-%endif
-%if 0%{?rhel_version}
-%define env_options export MONO_SHARED_DIR=/tmp
-%define suse_update_desktop_file true
-BuildRequires:  gtkhtml-sharp2
-%endif
+BuildRequires:  glade-sharp2
 
 %description
 Mono Tools is a collection of development and testing programs and
 utilities for use with Mono.
 
-
-
-Authors:
---------
-    Miguel de Icaza <miguel@ximian.com>
-    Duncan Mak <duncan@ximian.com>
-    Joshua Tauberer <tauberer@for.net>
-    Lee Malabone
-    Philip Van Hoof
-    Johannes Roith <johannes@jroith.de>
-    Alp Toker <alp@atoker.com>
-    Piers Haken
-    John Luke <jluke@cfl.rr.com>
-    Ben Maurer
-    Duncan Mak <duncan@ximian.com>
-    Sebastien Pouliot <sebastien@ximian.com>
-
 %files -f %{name}.lang
 %defattr(-, root, root)
-%_bindir/*
+%_bindir/create-native-map
+%_bindir/emveepee
+%_bindir/gd2i
+%_bindir/gendarme
+%_bindir/gendarme-wizard
+%_bindir/gsharp
+%_bindir/gui-compare
+%_bindir/ilcontrast
+%_bindir/minvoke
+%_bindir/monodoc
+%_bindir/mperfmon
+%_bindir/mprof-decoder
+%_bindir/mprof-heap-viewer
 %_datadir/applications/gendarme-wizard.desktop
 %_datadir/applications/gsharp.desktop
 %_datadir/applications/ilcontrast.desktop
 %_datadir/applications/monodoc.desktop
 %_datadir/create-native-map
+%_datadir/icons/hicolor/*/apps/monodoc.png
 %_datadir/pixmaps/gendarme.svg
 %_datadir/pixmaps/ilcontrast.png
 %_datadir/pixmaps/monodoc.png
 %_datadir/pkgconfig/create-native-map.pc
 %_datadir/pkgconfig/gendarme-framework.pc
 %_mandir/man1/create-native-map*
+%_mandir/man1/gd2i*
 %_mandir/man1/gendarme*
 %_mandir/man1/mperfmon*
 %_mandir/man1/mprof-decoder*
@@ -86,37 +57,32 @@ Authors:
 %_prefix/lib/ilcontrast
 %_prefix/lib/minvoke
 %_prefix/lib/mono-tools
-%_prefix/lib/mono/1.0
-%_prefix/lib/monodoc/*.exe*
 %_prefix/lib/monodoc/*.dll*
+%_prefix/lib/monodoc/*.exe*
 %_prefix/lib/monodoc/sources
 %_prefix/lib/mperfmon
 
 %package -n monodoc-http
 License:        X11/MIT
-Summary:        ASP.NET front-end for displaying Monodoc documentation.
+Summary:        ASP.NET front-end for displaying Monodoc documentation
 Group:          Development/Tools/Other
-URL:            http://go-mono.org/
-Provides:       monodoc-http
-Obsoletes:      monodoc-http
 
 %description -n monodoc-http
 Monodoc-http provides an ASP.NET front-end for displaying installed 
 Monodoc documentation.
 
 %files -n monodoc-http
+%defattr(-, root, root)
 %_prefix/lib/monodoc/web
 
 %prep
 %setup -q
 
 %build
-%{?env_options}
-./configure --prefix=/usr --libdir=/usr/lib --sysconfdir=/etc --mandir=/usr/share/man --infodir=/usr/share/info --localstatedir=/var --enable-monowebbrowser
+./configure --prefix=%{_prefix} --libdir=%{_prefix}/lib --sysconfdir=%{_sysconfdir} --mandir=%{_mandir}
 
 %install
-%{?env_options}
-make install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=%{buildroot}
 %suse_update_desktop_file monodoc
 %suse_update_desktop_file ilcontrast
 %suse_update_desktop_file gendarme-wizard
@@ -128,9 +94,9 @@ mv $RPM_BUILD_ROOT/%_prefix/lib/pkgconfig $RPM_BUILD_ROOT/%_prefix/share
 %find_lang %{name}
 
 %clean
-rm -Rf "$RPM_BUILD_ROOT"
+rm -Rf %{buildroot}
 
 %post
-monodoc --make-index
+%{_bindir}/monodoc --make-index
 
 %changelog

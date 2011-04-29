@@ -11,9 +11,6 @@ MONO_DEPS=(
 )
 
 MONO_RECOMMEND_DEPS=(
-        gtk-sharp2
-        gtk-sharp28
-        gtk-sharp210
         gtk-sharp212
 )
 

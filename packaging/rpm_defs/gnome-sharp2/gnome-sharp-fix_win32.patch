@@ -1,24 +1,12 @@
-diff -ru old/gnome-sharp-2.16.1/Makefile.in gnome-sharp-2.16.1/Makefile.in
---- old/gnome-sharp-2.16.1/Makefile.in	2008-01-24 14:57:28.000000000 -0700
-+++ gnome-sharp-2.16.1/Makefile.in	2008-02-08 11:39:55.308500000 -0700
-@@ -232,7 +232,7 @@
- target_vendor = @target_vendor@
+diff -Naur gnome-sharp-2.24.1/Makefile.in gnome-sharp-2.24.1-patched/Makefile.in
+--- gnome-sharp-2.24.1/Makefile.in	2009-03-03 09:09:52.000000000 -0700
++++ gnome-sharp-2.24.1-patched/Makefile.in	2009-09-30 19:16:47.000000000 -0600
+@@ -227,7 +227,7 @@
+ top_build_prefix = @top_build_prefix@
  top_builddir = @top_builddir@
  top_srcdir = @top_srcdir@
--SUBDIRS = sources art gnomevfs gnome gtkhtml gconf rsvg vte sample 
-+SUBDIRS = sources art gconf rsvg sample 
+-SUBDIRS = sources art gnomevfs gnome gconf sample 
++SUBDIRS = sources art gnomevfs gconf sample 
  EXTRA_DIST = \
  	gtk-sharp.snk		\
  	gapi-cdecl-insert	\
-diff -ru old/gnome-sharp-2.16.1/sample/Makefile.in gnome-sharp-2.16.1/sample/Makefile.in
---- old/gnome-sharp-2.16.1/sample/Makefile.in	2008-01-24 14:57:27.000000000 -0700
-+++ gnome-sharp-2.16.1/sample/Makefile.in	2008-02-08 11:53:59.871000000 -0700
-@@ -217,7 +217,7 @@
- target_vendor = @target_vendor@
- top_builddir = @top_builddir@
- top_srcdir = @top_srcdir@
--SUBDIRS = gconf rsvg gnomevfs 
-+SUBDIRS = rsvg gnomevfs 
- @ENABLE_GNOME_FALSE@GNOME_TARGETS = 
- @ENABLE_GNOME_TRUE@GNOME_TARGETS = gnome-hello-world.exe canvas-example.exe fifteen.exe print.exe
- @ENABLE_GNOME_FALSE@GNOME_ASSEMBLY = 

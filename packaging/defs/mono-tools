@@ -12,14 +12,12 @@ USE_HOSTS=(
 
 MONO_DEPS=(
 	mono
-	gecko-sharp2
+	webkit-sharp
+	gtk-sharp212
 )
 
 MONO_RECOMMEND_DEPS=(
 	libgdiplus
-	gtk-sharp212
-	gnome-sharp2
-	gnome-sharp220
 )
 
 get_destroot () {

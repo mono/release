@@ -12,7 +12,7 @@ BuildRequires:  glade-sharp2 gtk-sharp2 gtk-sharp2-gapi
 %define minimum_glib_sharp_version 2.10.3
 %define two_sixteen_version 2.16.1
 %define two_twenty_version 2.20.1
-%define two_twentyfour_version 2.24.0
+%define two_twentyfour_version 2.24.1
 #####  suse  ####
 %if 0%{?suse_version}
 # Not needed with rpm .config dep search
