@@ -13,8 +13,224 @@ if test -d $TARGET; then
 fi
 
 mkdir -p $TARGET
-TARGET=`(cd $TARGET; pwd)`
+TARGET=$(cd $TARGET; pwd)
+
+# Instead of moving some files we copy all files to the SDK
+# and delete the ones that don't go in the runtime package
+rsync -a $MONODIR/ $TARGET
+
 cd $MONODIR
+find . -name '*.la' -delete
+find . -name '*.a' -delete
+rm -rf lib/gtk-2.0/2.10.0/engines/libcrux-engine.so
+rm -rf lib/gtk-2.0/2.10.0/engines/libglide.so
+rm -rf lib/gtk-2.0/2.10.0/engines/libhcengine.so
+rm -rf lib/gtk-2.0/2.10.0/engines/libindustrial.so
+rm -rf lib/gtk-2.0/2.10.0/engines/libmist.so
+rm -rf lib/gtk-2.0/2.10.0/engines/libpixmap.so
+rm -rf lib/gtk-2.0/2.10.0/engines/libredmond95.so
+rm -rf lib/gtk-2.0/2.10.0/engines/libthinice.so
+rm -rf gtk-2.0/modules/libferret.*
+rm -rf gtk-2.0/modules/libgail.*
+rm -rf share/gtk-2.0/demo/*
+rm -rf share/man/man1/oldmono.1
+rm -rf share/themes/Crux
+rm -rf share/themes/Default
+rm -rf share/themes/Emacs
+rm -rf share/themes/Industrial
+rm -rf share/themes/Mist
+rm -rf share/themes/Raleigh
+rm -rf share/themes/Redmond
+rm -rf share/themes/ThinIce
+rm -rf share/info
+rm -rf share/icons/gnome
+rm -rf share/icons/hicolor
+
+rm -rf bin/cilc
+rm -rf bin/gapi2-codegen
+rm -rf bin/gapi2-fixup
+rm -rf bin/gapi2-parser
+rm -rf bin/gdk-pixbuf-csource
+rm -rf bin/glib-genmarshal
+rm -rf bin/glib-gettextize
+rm -rf bin/glib-mkenums
+rm -rf bin/gobject-query
+rm -rf bin/gtester
+rm -rf bin/gtester-report
+rm -rf bin/gtk-builder-convert
+rm -rf bin/gtk-demo
+rm -rf bin/gtk-query-immodules-2.0
+rm -rf bin/libglade-convert
+rm -rf bin/mjs
+# Needed by MD
+#rm -rf bin/msgfmt
+#rm -rf bin/msgmerge
+
+rm -rf lib/gettext/*
+
+rm -rf lib/gtk-2.0/include
+
+rm -rf lib/gtk-sharp-2.0/gapi-fixup.exe
+rm -rf lib/gtk-sharp-2.0/gapi-parser.exe
+rm -rf lib/gtk-sharp-2.0/gapi2xml.pl
+rm -rf lib/gtk-sharp-2.0/gapi_codegen.exe
+rm -rf lib/gtk-sharp-2.0/gapi_pp.pl
+
+
+rm -rf lib/pkgconfig/atk.pc
+rm -rf lib/pkgconfig/cairo*
+rm -rf lib/pkgconfig/gail.pc
+rm -rf lib/pkgconfig/gapi-2.0.pc
+rm -rf lib/pkgconfig/gdk-2.0.pc
+rm -rf lib/pkgconfig/gdk-pixbuf-2.0.pc
+rm -rf lib/pkgconfig/gdk-quartz-2.0.pc
+rm -rf lib/pkgconfig/gio-2.0.pc
+rm -rf lib/pkgconfig/gio-unix-2.0.pc
+rm -rf lib/pkgconfig/glib-2.0.pc
+rm -rf lib/pkgconfig/gmodule-2.0.pc
+rm -rf lib/pkgconfig/gmodule-export-2.0.pc
+rm -rf lib/pkgconfig/gmodule-no-export-2.0.pc
+rm -rf lib/pkgconfig/gobject-2.0.pc
+rm -rf lib/pkgconfig/gthread-2.0.pc
+rm -rf lib/pkgconfig/gtk+-2.0.pc
+rm -rf lib/pkgconfig/gtk+-quartz-2.0.pc
+rm -rf lib/pkgconfig/gtk+-unix-print-2.0.pc
+rm -rf lib/pkgconfig/gtk-engines-2.pc
+rm -rf lib/pkgconfig/ige-mac-integration.pc
+rm -rf lib/pkgconfig/libgdiplus.pc
+rm -rf lib/pkgconfig/libglade-2.0.pc
+rm -rf lib/pkgconfig/libpng.pc
+rm -rf lib/pkgconfig/libpng12.pc
+rm -rf lib/pkgconfig/pango.pc
+rm -rf lib/pkgconfig/pangocairo.pc
+rm -rf lib/pkgconfig/pixman-1.pc
+rm -rf lib/pkgconfig/sqlite3.pc
+
+rm -rf include
+
+rm -rf share/aclocal/codeset.m4
+rm -rf share/aclocal/gettext.m4
+rm -rf share/aclocal/glib-2.0.m4
+rm -rf share/aclocal/glib-gettext.m4
+rm -rf share/aclocal/glibc2.m4
+rm -rf share/aclocal/glibc21.m4
+rm -rf share/aclocal/gtk-2.0.m4
+rm -rf share/aclocal/iconv.m4
+rm -rf share/aclocal/intdiv0.m4
+rm -rf share/aclocal/intl.m4
+rm -rf share/aclocal/intldir.m4
+rm -rf share/aclocal/intlmacosx.m4
+rm -rf share/aclocal/intmax.m4
+rm -rf share/aclocal/inttypes-pri.m4
+rm -rf share/aclocal/inttypes_h.m4
+rm -rf share/aclocal/lcmessage.m4
+rm -rf share/aclocal/lib-ld.m4
+rm -rf share/aclocal/lib-link.m4
+rm -rf share/aclocal/lib-prefix.m4
+rm -rf share/aclocal/lock.m4
+rm -rf share/aclocal/longlong.m4
+rm -rf share/aclocal/nls.m4
+# Needed by MD
+#rm -rf share/aclocal/pkg.m4
+rm -rf share/aclocal/po.m4
+rm -rf share/aclocal/printf-posix.m4
+rm -rf share/aclocal/progtest.m4
+rm -rf share/aclocal/size_max.m4
+rm -rf share/aclocal/stdint_h.m4
+rm -rf share/aclocal/uintmax_t.m4
+rm -rf share/aclocal/visibility.m4
+rm -rf share/aclocal/wchar_t.m4
+rm -rf share/aclocal/wint_t.m4
+rm -rf share/aclocal/xsize.m4
+
+rm -rf share/dtds/legacy-icon-mapping.dtd
+
+rm -rf share/gapi-2.0/atk-api.xml
+rm -rf share/gapi-2.0/gdk-api.xml
+rm -rf share/gapi-2.0/glade-api.xml
+rm -rf share/gapi-2.0/glib-api.xml
+rm -rf share/gapi-2.0/gtk-api.xml
+rm -rf share/gapi-2.0/pango-api.xml
+
+rm -rf share/glib-2.0/gettext
+
+find share/locale -name 'atk10.mo' -delete
+find share/locale -name 'gettext*' -delete
+find share/locale -type d -empty -delete
+
+rm -rf share/man/man1/autopoint.1
+rm -rf share/man/man1/gdk-pixbuf-csource.1
+rm -rf share/man/man1/gettext.1
+rm -rf share/man/man1/gettextize.1
+rm -rf share/man/man1/glib-genmarshal.1
+rm -rf share/man/man1/glib-gettextize.1
+rm -rf share/man/man1/glib-mkenums.1
+rm -rf share/man/man1/gobject-query.1
+rm -rf share/man/man1/gtester-report.1
+rm -rf share/man/man1/gtester.1
+rm -rf share/man/man1/gtk-builder-convert.1
+rm -rf share/man/man1/gtk-query-immodules-2.0.1
+rm -rf share/man/man1/msgattrib.1
+rm -rf share/man/man1/msgcat.1
+rm -rf share/man/man1/msgcmp.1
+rm -rf share/man/man1/msgcomm.1
+rm -rf share/man/man1/msgconv.1
+rm -rf share/man/man1/msgen.1
+rm -rf share/man/man1/msgexec.1
+rm -rf share/man/man1/msgfilter.1
+rm -rf share/man/man1/msgfmt.1
+rm -rf share/man/man1/msggrep.1
+rm -rf share/man/man1/msginit.1
+rm -rf share/man/man1/msgmerge.1
+rm -rf share/man/man1/msgunfmt.1
+rm -rf share/man/man1/msguniq.1
+rm -rf share/man/man1/ngettext.1
+rm -rf share/man/man1/recode-sr-latin.1
+
+rm -rf share/libgc-mono
+
+rm -rf share/man/man3/bind_textdomain_codeset.3
+rm -rf share/man/man3/bindtextdomain.3
+rm -rf share/man/man3/dcgettext.3
+rm -rf share/man/man3/dcngettext.3
+rm -rf share/man/man3/dgettext.3
+rm -rf share/man/man3/dngettext.3
+rm -rf share/man/man3/gettext.3
+rm -rf share/man/man3/libpng.3
+rm -rf share/man/man3/libpngpf.3
+rm -rf share/man/man3/ngettext.3
+rm -rf share/man/man3/textdomain.3
+
+rm -rf share/man/man5/png.5
+
+rm -rf share/xml/libglade/*
+
+# No debug files in the runtime
+find . -name '*.mdb' -delete
+
+# Strip debug symbols from the runtime
+# TODO: Find all libraries and binaries anywhere
+popd
+for i in bin/*; do
+  strip $i
+done
+for i in lib/*.dylib; do
+  strip -S $i
+done
+
+# Separate out the debug symbols for the SDK
+# This is not really needed anymore but it still kinda makes sense
+pushd $TARGET
+for i in bin/*; do
+  dsymutil $i
+  strip $i
+done
+for i in lib/*.dylib; do
+  dsymutil $i
+  strip -S $i
+done
+
+find . -name '*.la' -delete
 rm -rf lib/libMonoPosixHelper.a
 rm -rf lib/libMonoSupportW.a
 rm -rf lib/libasprintf.a
@@ -41,8 +257,6 @@ rm -rf lib/libpng12.a
 rm -rf lib/libsqlite3.a
 rm -rf lib/libtiff.a
 rm -rf lib/libtiffxx.a
-rm -rf lib/*la
-rm -rf lib/gtk-2.0/2.10.0/engines/*.la
 rm -rf lib/gtk-2.0/2.10.0/engines/libcrux-engine.so
 rm -rf lib/gtk-2.0/2.10.0/engines/libglide.so
 rm -rf lib/gtk-2.0/2.10.0/engines/libhcengine.so
@@ -51,12 +265,8 @@ rm -rf lib/gtk-2.0/2.10.0/engines/libmist.so
 rm -rf lib/gtk-2.0/2.10.0/engines/libpixmap.so
 rm -rf lib/gtk-2.0/2.10.0/engines/libredmond95.so
 rm -rf lib/gtk-2.0/2.10.0/engines/libthinice.so
-rm -rf lib/gtk-2.0/2.10.0/immodules/*.la
-rm -rf gtk-2.0/2.10.0/loaders/*.la
-rm -rf gtk-2.0/2.10.0/printbackends/*.la
 rm -rf gtk-2.0/modules/libferret.*
 rm -rf gtk-2.0/modules/libgail.*
-rm -rf lib/pango/1.6.0/modules/*.la
 rm -rf share/gtk-2.0/demo/*
 rm -rf share/man/man1/oldmono.1
 rm -rf share/themes/Crux
@@ -70,373 +280,5 @@ rm -rf share/themes/ThinIce
 rm -rf share/info
 rm -rf share/icons/gnome
 rm -rf share/icons/hicolor
-rm -rf share/NAnt/bin/*mdb
-rm ./lib/mono/1.0/al.exe.mdb
-rm ./lib/mono/1.0/browsercaps-updater.exe.mdb
-rm ./lib/mono/1.0/caspol.exe.mdb
-rm ./lib/mono/1.0/cert2spc.exe.mdb
-rm ./lib/mono/1.0/certmgr.exe.mdb
-rm ./lib/mono/1.0/chktrust.exe.mdb
-rm ./lib/mono/1.0/cilc.exe.mdb
-rm ./lib/mono/1.0/culevel.exe.mdb
-rm ./lib/mono/1.0/disco.exe.mdb
-rm ./lib/mono/1.0/dtd2rng.exe.mdb
-rm ./lib/mono/1.0/dtd2xsd.exe.mdb
-rm ./lib/mono/1.0/gacutil.exe.mdb
-rm ./lib/mono/1.0/genxs.exe.mdb
-rm ./lib/mono/1.0/ictool.exe.mdb
-rm ./lib/mono/1.0/ilasm.exe.mdb
-rm ./lib/mono/1.0/installutil.exe.mdb
-rm ./lib/mono/1.0/installvst.exe.mdb
-rm ./lib/mono/1.0/macpack.exe.mdb
-rm ./lib/mono/1.0/makecert.exe.mdb
-rm ./lib/mono/1.0/mjs.exe.mdb
-rm ./lib/mono/1.0/mkbundle.exe.mdb
-rm ./lib/mono/1.0/mod.exe.mdb
-rm ./lib/mono/1.0/mono-cil-strip.exe.mdb
-rm ./lib/mono/1.0/mono-service.exe.mdb
-rm ./lib/mono/1.0/mono-xmltool.exe.mdb
-rm ./lib/mono/1.0/monolinker.exe.mdb
-rm ./lib/mono/1.0/monop.exe.mdb
-rm ./lib/mono/1.0/mozroots.exe.mdb
-rm ./lib/mono/1.0/mscorlib.dll.mdb
-rm ./lib/mono/1.0/nunit-console.exe.mdb
-rm ./lib/mono/1.0/permview.exe.mdb
-rm ./lib/mono/1.0/prj2make.exe.mdb
-rm ./lib/mono/1.0/resgen.exe.mdb
-rm ./lib/mono/1.0/secutil.exe.mdb
-rm ./lib/mono/1.0/setreg.exe.mdb
-rm ./lib/mono/1.0/signcode.exe.mdb
-rm ./lib/mono/1.0/sn.exe.mdb
-rm ./lib/mono/1.0/soapsuds.exe.mdb
-rm ./lib/mono/1.0/wsdl.exe.mdb
-rm ./lib/mono/1.0/xsd.exe.mdb
-rm ./lib/mono/2.0/al.exe.mdb
-rm ./lib/mono/2.0/httpcfg.exe.mdb
-rm ./lib/mono/2.0/ilasm.exe.mdb
-rm ./lib/mono/2.0/installutil.exe.mdb
-rm ./lib/mono/2.0/mconfig.exe.mdb
-rm ./lib/mono/2.0/mdoc.exe.mdb
-rm ./lib/mono/2.0/mkbundle.exe.mdb
-rm ./lib/mono/2.0/mono-service.exe.mdb
-rm ./lib/mono/2.0/mono-shlib-cop.exe.mdb
-rm ./lib/mono/2.0/monop.exe.mdb
-rm ./lib/mono/2.0/mscorlib.dll.mdb
-rm ./lib/mono/2.0/nunit-console.exe.mdb
-rm ./lib/mono/2.0/resgen.exe.mdb
-rm ./lib/mono/2.0/sgen.exe.mdb
-rm ./lib/mono/2.0/sqlsharp.exe.mdb
-rm ./lib/mono/2.0/vbnc.exe.mdb
-rm ./lib/mono/2.0/wsdl.exe.mdb
-rm ./lib/mono/2.0/xbuild.exe.mdb
-rm ./lib/mono/2.0/xsd.exe.mdb
-rm -rf lib/mono/2.1/*mdb
-rm ./lib/mono/gac/Accessibility/1.0.5000.0__b03f5f7f11d50a3a/Accessibility.dll.mdb
-rm ./lib/mono/gac/Accessibility/2.0.0.0__b03f5f7f11d50a3a/Accessibility.dll.mdb
-rm ./lib/mono/gac/Boo.Lang/2.0.0.0__32c39770e9a21a67/Boo.Lang.dll.mdb
-rm ./lib/mono/gac/Boo.Lang.CodeDom/2.0.0.0__32c39770e9a21a67/Boo.Lang.CodeDom.dll.mdb
-rm ./lib/mono/gac/Boo.Lang.Compiler/2.0.0.0__32c39770e9a21a67/Boo.Lang.Compiler.dll.mdb
-rm ./lib/mono/gac/Boo.Lang.Extensions/2.0.0.0__32c39770e9a21a67/Boo.Lang.Extensions.dll.mdb
-rm ./lib/mono/gac/Boo.Lang.Interpreter/2.0.0.0__32c39770e9a21a67/Boo.Lang.Interpreter.dll.mdb
-rm ./lib/mono/gac/Boo.Lang.Parser/2.0.0.0__32c39770e9a21a67/Boo.Lang.Parser.dll.mdb
-rm ./lib/mono/gac/Boo.Lang.PatternMatching/2.0.0.0__32c39770e9a21a67/Boo.Lang.PatternMatching.dll.mdb
-rm ./lib/mono/gac/Boo.Lang.Useful/2.0.0.0__32c39770e9a21a67/Boo.Lang.Useful.dll.mdb
-rm ./lib/mono/gac/ByteFX.Data/0.7.6.1__0738eb9f132ed756/ByteFX.Data.dll.mdb
-rm ./lib/mono/gac/ByteFX.Data/0.7.6.2__0738eb9f132ed756/ByteFX.Data.dll.mdb
-rm ./lib/mono/gac/Commons.Xml.Relaxng/1.0.5000.0__0738eb9f132ed756/Commons.Xml.Relaxng.dll.mdb
-rm ./lib/mono/gac/Commons.Xml.Relaxng/2.0.0.0__0738eb9f132ed756/Commons.Xml.Relaxng.dll.mdb
-rm ./lib/mono/gac/cscompmgd/7.0.5000.0__b03f5f7f11d50a3a/cscompmgd.dll.mdb
-rm ./lib/mono/gac/cscompmgd/8.0.0.0__b03f5f7f11d50a3a/cscompmgd.dll.mdb
-rm ./lib/mono/gac/CustomMarshalers/1.0.5000.0__b03f5f7f11d50a3a/CustomMarshalers.dll.mdb
-rm ./lib/mono/gac/CustomMarshalers/2.0.0.0__b03f5f7f11d50a3a/CustomMarshalers.dll.mdb
-rm ./lib/mono/gac/fastcgi-mono-server/2.4.0.0__0738eb9f132ed756/fastcgi-mono-server.exe.mdb
-rm ./lib/mono/gac/fastcgi-mono-server2/2.4.0.0__0738eb9f132ed756/fastcgi-mono-server2.exe.mdb
-rm ./lib/mono/gac/FirebirdSql.Data.Firebird/1.7.1.0__0706f5520aae4ff4/FirebirdSql.Data.Firebird.dll.mdb
-rm ./lib/mono/gac/I18N.CJK/1.0.5000.0__0738eb9f132ed756/I18N.CJK.dll.mdb
-rm ./lib/mono/gac/I18N.CJK/2.0.0.0__0738eb9f132ed756/I18N.CJK.dll.mdb
-rm ./lib/mono/gac/I18N.MidEast/1.0.5000.0__0738eb9f132ed756/I18N.MidEast.dll.mdb
-rm ./lib/mono/gac/I18N.MidEast/2.0.0.0__0738eb9f132ed756/I18N.MidEast.dll.mdb
-rm ./lib/mono/gac/I18N.Other/1.0.5000.0__0738eb9f132ed756/I18N.Other.dll.mdb
-rm ./lib/mono/gac/I18N.Other/2.0.0.0__0738eb9f132ed756/I18N.Other.dll.mdb
-rm ./lib/mono/gac/I18N.Rare/1.0.5000.0__0738eb9f132ed756/I18N.Rare.dll.mdb
-rm ./lib/mono/gac/I18N.Rare/2.0.0.0__0738eb9f132ed756/I18N.Rare.dll.mdb
-rm ./lib/mono/gac/I18N.West/1.0.5000.0__0738eb9f132ed756/I18N.West.dll.mdb
-rm ./lib/mono/gac/I18N.West/2.0.0.0__0738eb9f132ed756/I18N.West.dll.mdb
-rm ./lib/mono/gac/IBM.Data.DB2/1.0.0.0__7c307b91aa13d208/IBM.Data.DB2.dll.mdb
-rm ./lib/mono/gac/ICSharpCode.SharpZipLib/0.6.0.0__1b03e6acf1164f73/ICSharpCode.SharpZipLib.dll.mdb
-rm ./lib/mono/gac/ICSharpCode.SharpZipLib/0.84.0.0__1b03e6acf1164f73/ICSharpCode.SharpZipLib.dll.mdb
-rm ./lib/mono/gac/ICSharpCode.SharpZipLib/2.6.0.0__1b03e6acf1164f73/ICSharpCode.SharpZipLib.dll.mdb
-rm ./lib/mono/gac/ICSharpCode.SharpZipLib/2.84.0.0__1b03e6acf1164f73/ICSharpCode.SharpZipLib.dll.mdb
-rm ./lib/mono/gac/Microsoft.Build.Engine/2.0.0.0__b03f5f7f11d50a3a/Microsoft.Build.Engine.dll.mdb
-rm ./lib/mono/gac/Microsoft.Build.Framework/2.0.0.0__b03f5f7f11d50a3a/Microsoft.Build.Framework.dll.mdb
-rm ./lib/mono/gac/Microsoft.Build.Tasks/2.0.0.0__b03f5f7f11d50a3a/Microsoft.Build.Tasks.dll.mdb
-rm ./lib/mono/gac/Microsoft.Build.Utilities/2.0.0.0__b03f5f7f11d50a3a/Microsoft.Build.Utilities.dll.mdb
-rm ./lib/mono/gac/Microsoft.JScript/7.0.5000.0__b03f5f7f11d50a3a/Microsoft.JScript.dll.mdb
-rm ./lib/mono/gac/Microsoft.JScript/8.0.0.0__b03f5f7f11d50a3a/Microsoft.JScript.dll.mdb
-rm ./lib/mono/gac/Microsoft.VisualC/7.0.5000.0__b03f5f7f11d50a3a/Microsoft.VisualC.dll.mdb
-rm ./lib/mono/gac/Microsoft.VisualC/8.0.0.0__b03f5f7f11d50a3a/Microsoft.VisualC.dll.mdb
-rm ./lib/mono/gac/Microsoft.Vsa/7.0.5000.0__b03f5f7f11d50a3a/Microsoft.Vsa.dll.mdb
-rm ./lib/mono/gac/Microsoft.Vsa/8.0.0.0__b03f5f7f11d50a3a/Microsoft.Vsa.dll.mdb
-rm ./lib/mono/gac/mono-service/1.0.5000.0__0738eb9f132ed756/mono-service.exe.mdb
-rm ./lib/mono/gac/mono-service/2.0.0.0__0738eb9f132ed756/mono-service.exe.mdb
-rm ./lib/mono/gac/Mono.Data.SybaseClient/1.0.5000.0__0738eb9f132ed756/Mono.Data.SybaseClient.dll.mdb
-rm ./lib/mono/gac/Mono.Data.SybaseClient/2.0.0.0__0738eb9f132ed756/Mono.Data.SybaseClient.dll.mdb
-rm ./lib/mono/gac/Mono.GetOptions/1.0.5000.0__0738eb9f132ed756/Mono.GetOptions.dll.mdb
-rm ./lib/mono/gac/Mono.GetOptions/2.0.0.0__0738eb9f132ed756/Mono.GetOptions.dll.mdb
-rm ./lib/mono/gac/Mono.Http/1.0.5000.0__0738eb9f132ed756/Mono.Http.dll.mdb
-rm ./lib/mono/gac/Mono.Http/2.0.0.0__0738eb9f132ed756/Mono.Http.dll.mdb
-rm ./lib/mono/gac/Mono.Management/2.0.0.0__0738eb9f132ed756/Mono.Management.dll.mdb
-rm ./lib/mono/gac/Mono.Messaging/1.0.5000.0__b03f5f7f11d50a3a/Mono.Messaging.dll.mdb
-rm ./lib/mono/gac/Mono.Messaging/2.0.0.0__b03f5f7f11d50a3a/Mono.Messaging.dll.mdb
-rm ./lib/mono/gac/Mono.Messaging.RabbitMQ/1.0.5000.0__b03f5f7f11d50a3a/Mono.Messaging.RabbitMQ.dll.mdb
-rm ./lib/mono/gac/Mono.Messaging.RabbitMQ/2.0.0.0__b03f5f7f11d50a3a/Mono.Messaging.RabbitMQ.dll.mdb
-rm ./lib/mono/gac/Mono.Security.Win32/1.0.5000.0__0738eb9f132ed756/Mono.Security.Win32.dll.mdb
-rm ./lib/mono/gac/Mono.Security.Win32/2.0.0.0__0738eb9f132ed756/Mono.Security.Win32.dll.mdb
-rm ./lib/mono/gac/Mono.Simd/2.0.0.0__0738eb9f132ed756/Mono.Simd.dll.mdb
-rm ./lib/mono/gac/Mono.Web/2.0.0.0__0738eb9f132ed756/Mono.Web.dll.mdb
-rm ./lib/mono/gac/Mono.WebBrowser/0.5.0.0__0738eb9f132ed756/Mono.WebBrowser.dll.mdb
-rm ./lib/mono/gac/Mono.WebServer/0.1.0.0__0738eb9f132ed756/Mono.WebServer.dll.mdb
-rm ./lib/mono/gac/Mono.WebServer2/0.2.0.0__0738eb9f132ed756/Mono.WebServer2.dll.mdb
-rm ./lib/mono/gac/monodoc/1.0.0.0__0738eb9f132ed756/monodoc.dll.mdb
-rm ./lib/mono/gac/Novell.Directory.Ldap/1.0.5000.0__0738eb9f132ed756/Novell.Directory.Ldap.dll.mdb
-rm ./lib/mono/gac/Novell.Directory.Ldap/2.0.0.0__0738eb9f132ed756/Novell.Directory.Ldap.dll.mdb
-rm ./lib/mono/gac/Npgsql/1.0.5000.0__5d8b90d52f46fda7/Npgsql.dll.mdb
-rm ./lib/mono/gac/Npgsql/2.0.0.0__5d8b90d52f46fda7/Npgsql.dll.mdb
-rm ./lib/mono/gac/nunit-console-runner/2.4.8.0__96d09a1eb7f44a77/nunit-console-runner.dll.mdb
-rm ./lib/mono/gac/nunit.core/2.4.8.0__96d09a1eb7f44a77/nunit.core.dll.mdb
-rm ./lib/mono/gac/nunit.core.extensions/2.4.8.0__96d09a1eb7f44a77/nunit.core.extensions.dll.mdb
-rm ./lib/mono/gac/nunit.core.interfaces/2.4.8.0__96d09a1eb7f44a77/nunit.core.interfaces.dll.mdb
-rm ./lib/mono/gac/nunit.framework/2.4.8.0__96d09a1eb7f44a77/nunit.framework.dll.mdb
-rm ./lib/mono/gac/nunit.framework.extensions/2.4.8.0__96d09a1eb7f44a77/nunit.framework.extensions.dll.mdb
-rm ./lib/mono/gac/nunit.mocks/2.4.8.0__96d09a1eb7f44a77/nunit.mocks.dll.mdb
-rm ./lib/mono/gac/nunit.util/2.4.8.0__96d09a1eb7f44a77/nunit.util.dll.mdb
-rm ./lib/mono/gac/OpenSystem.C/1.0.5000.0__b77a5c561934e089/OpenSystem.C.dll.mdb
-rm ./lib/mono/gac/OpenSystem.C/2.0.0.0__b77a5c561934e089/OpenSystem.C.dll.mdb
-rm ./lib/mono/gac/PEAPI/1.0.5000.0__0738eb9f132ed756/PEAPI.dll.mdb
-rm ./lib/mono/gac/PEAPI/2.0.0.0__0738eb9f132ed756/PEAPI.dll.mdb
-rm ./lib/mono/gac/RabbitMQ.Client/1.0.5000.0__b03f5f7f11d50a3a/RabbitMQ.Client.dll.mdb
-rm ./lib/mono/gac/RabbitMQ.Client/2.0.0.0__b03f5f7f11d50a3a/RabbitMQ.Client.dll.mdb
-rm ./lib/mono/gac/System.ComponentModel.DataAnnotations/3.5.0.0__31bf3856ad364e35/System.ComponentModel.DataAnnotations.dll.mdb
-rm ./lib/mono/gac/System.Configuration.Install/1.0.5000.0__b03f5f7f11d50a3a/System.Configuration.Install.dll.mdb
-rm ./lib/mono/gac/System.Configuration.Install/2.0.0.0__b03f5f7f11d50a3a/System.Configuration.Install.dll.mdb
-rm ./lib/mono/gac/System.Design/1.0.5000.0__b03f5f7f11d50a3a/System.Design.dll.mdb
-rm ./lib/mono/gac/System.Design/2.0.0.0__b03f5f7f11d50a3a/System.Design.dll.mdb
-rm ./lib/mono/gac/System.Data.OracleClient/1.0.5000.0__b77a5c561934e089/System.Data.OracleClient.dll.mdb
-rm ./lib/mono/gac/System.Drawing.Design/1.0.5000.0__b03f5f7f11d50a3a/System.Drawing.Design.dll.mdb
-rm ./lib/mono/gac/System.Drawing.Design/2.0.0.0__b03f5f7f11d50a3a/System.Drawing.Design.dll.mdb
-rm ./lib/mono/gac/System.EnterpriseServices/1.0.5000.0__b03f5f7f11d50a3a/System.EnterpriseServices.dll.mdb
-rm ./lib/mono/gac/System.EnterpriseServices/2.0.0.0__b03f5f7f11d50a3a/System.EnterpriseServices.dll.mdb
-rm ./lib/mono/gac/System.IdentityModel/3.0.0.0__b77a5c561934e089/System.IdentityModel.dll.mdb
-rm ./lib/mono/gac/System.IdentityModel.Selectors/3.0.0.0__b77a5c561934e089/System.IdentityModel.Selectors.dll.mdb
-rm ./lib/mono/gac/System.Management/1.0.5000.0__b03f5f7f11d50a3a/System.Management.dll.mdb
-rm ./lib/mono/gac/System.Management/2.0.0.0__b03f5f7f11d50a3a/System.Management.dll.mdb
-rm ./lib/mono/gac/System.Messaging/1.0.5000.0__b03f5f7f11d50a3a/System.Messaging.dll.mdb
-rm ./lib/mono/gac/System.Messaging/2.0.0.0__b03f5f7f11d50a3a/System.Messaging.dll.mdb
-rm ./lib/mono/gac/System.ServiceProcess/1.0.5000.0__b03f5f7f11d50a3a/System.ServiceProcess.dll.mdb
-rm ./lib/mono/gac/System.ServiceProcess/2.0.0.0__b03f5f7f11d50a3a/System.ServiceProcess.dll.mdb
-rm ./lib/mono/gac/System.Transactions/2.0.0.0__b77a5c561934e089/System.Transactions.dll.mdb
 
-mkdir -p $TARGET/bin
-mv bin/cilc $TARGET/bin/ 
-mv bin/gapi2-codegen $TARGET/bin/
-mv bin/gapi2-fixup $TARGET/bin/
-mv bin/gapi2-parser $TARGET/bin/
-mv bin/gdk-pixbuf-csource $TARGET/bin/
-mv bin/glib-genmarshal $TARGET/bin/
-mv bin/glib-gettextize $TARGET/bin/
-mv bin/glib-mkenums $TARGET/bin/
-mv bin/gobject-query $TARGET/bin/
-mv bin/gtester $TARGET/bin/
-mv bin/gtester-report $TARGET/bin/
-mv bin/gtk-builder-convert $TARGET/bin/
-mv bin/gtk-demo $TARGET/bin/
-mv bin/gtk-query-immodules-2.0 $TARGET/bin/
-mv bin/libglade-convert $TARGET/bin/
-mv bin/mjs $TARGET/bin/
-mv bin/msgfmt $TARGET/bin/
-mv bin/msgmerge $TARGET/bin/
-
-mkdir -p $TARGET/lib/gettext/
-mv lib/gettext/* $TARGET/lib/gettext/
-
-mkdir -p $TARGET/lib/gtk-2.0/include
-mv lib/gtk-2.0/include $TARGET/lib/gtk-2.0
-
-mkdir -p $TARGET/lib/gtk-sharp-2.0/
-mv lib/gtk-sharp-2.0/gapi-fixup.exe $TARGET/lib/gtk-sharp-2.0/
-mv lib/gtk-sharp-2.0/gapi-parser.exe $TARGET/lib/gtk-sharp-2.0/
-mv lib/gtk-sharp-2.0/gapi2xml.pl $TARGET/lib/gtk-sharp-2.0/
-mv lib/gtk-sharp-2.0/gapi_codegen.exe $TARGET/lib/gtk-sharp-2.0/
-mv lib/gtk-sharp-2.0/gapi_pp.pl $TARGET/lib/gtk-sharp-2.0/
-
-mkdir -p $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/atk.pc $TARGET/lib/pkgconfig
-mv lib/pkgconfig/cairo* $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gail.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gapi-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gdk-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gdk-pixbuf-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gdk-quartz-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gio-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gio-unix-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/glib-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gmodule-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gmodule-export-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gmodule-no-export-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gobject-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gthread-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gtk+-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gtk+-quartz-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gtk+-unix-print-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/gtk-engines-2.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/ige-mac-integration.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/libgdiplus.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/libglade-2.0.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/libpng.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/libpng12.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/pango.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/pangocairo.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/pixman-1.pc $TARGET/lib/pkgconfig/
-mv lib/pkgconfig/sqlite3.pc $TARGET/lib/pkgconfig/
-
-mkdir -p $TARGET/include
-mv include/atk-1.0 $TARGET/include/
-mv include/autosprintf.h $TARGET/include/
-mv include/cairo $TARGET/include/
-mv include/expat.h $TARGET/include/
-mv include/expat_external.h $TARGET/include/
-mv include/gail-1.0 $TARGET/include/
-mv include/gettext-po.h $TARGET/include/
-mv include/gif_lib.h $TARGET/include/
-mv include/gio-unix-2.0 $TARGET/include/
-mv include/glib-2.0 $TARGET/include/
-mv include/gtk-2.0 $TARGET/include/
-mv include/gtk-unix-print-2.0 $TARGET/include/
-mv include/igemacintegration $TARGET/include/
-mv include/jconfig.h $TARGET/include/
-mv include/jerror.h $TARGET/include/
-mv include/jmorecfg.h $TARGET/include/
-mv include/jpeglib.h $TARGET/include/
-mv include/libglade-2.0 $TARGET/include/
-mv include/libintl.h $TARGET/include/
-mv include/libpng12 $TARGET/include/
-mv include/pango-1.0 $TARGET/include/
-mv include/pixman-1 $TARGET/include/
-mv include/png.h -> libpng12/png.h $TARGET/include/
-mv include/pngconf.h -> libpng12/pngconf.h $TARGET/include/
-mv include/sqlite3.h $TARGET/include/
-mv include/sqlite3ext.h $TARGET/include/
-mv include/tiff.h $TARGET/include/
-mv include/tiffconf.h $TARGET/include/
-mv include/tiffconf.ppc.h $TARGET/include/
-mv include/tiffconf.x86.h $TARGET/include/
-mv include/tiffio.h $TARGET/include/
-mv include/tiffio.hxx $TARGET/include/
-mv include/tiffvers.h $TARGET/include/
-
-mkdir -p $TARGET/share/aclocal
-mv share/aclocal/codeset.m4 $TARGET/share/aclocal/
-mv share/aclocal/gettext.m4 $TARGET/share/aclocal/
-mv share/aclocal/glib-2.0.m4 $TARGET/share/aclocal/
-mv share/aclocal/glib-gettext.m4 $TARGET/share/aclocal/
-mv share/aclocal/glibc2.m4 $TARGET/share/aclocal/
-mv share/aclocal/glibc21.m4 $TARGET/share/aclocal/
-mv share/aclocal/gtk-2.0.m4 $TARGET/share/aclocal/
-mv share/aclocal/iconv.m4 $TARGET/share/aclocal/
-mv share/aclocal/intdiv0.m4 $TARGET/share/aclocal/
-mv share/aclocal/intl.m4 $TARGET/share/aclocal/
-mv share/aclocal/intldir.m4 $TARGET/share/aclocal/
-mv share/aclocal/intlmacosx.m4 $TARGET/share/aclocal/
-mv share/aclocal/intmax.m4 $TARGET/share/aclocal/
-mv share/aclocal/inttypes-pri.m4 $TARGET/share/aclocal/
-mv share/aclocal/inttypes_h.m4 $TARGET/share/aclocal/
-mv share/aclocal/lcmessage.m4 $TARGET/share/aclocal/
-mv share/aclocal/lib-ld.m4 $TARGET/share/aclocal/
-mv share/aclocal/lib-link.m4 $TARGET/share/aclocal/
-mv share/aclocal/lib-prefix.m4 $TARGET/share/aclocal/
-mv share/aclocal/lock.m4 $TARGET/share/aclocal/
-mv share/aclocal/longlong.m4 $TARGET/share/aclocal/
-mv share/aclocal/nls.m4 $TARGET/share/aclocal/
-mv share/aclocal/pkg.m4 $TARGET/share/aclocal/
-mv share/aclocal/po.m4 $TARGET/share/aclocal/
-mv share/aclocal/printf-posix.m4 $TARGET/share/aclocal/
-mv share/aclocal/progtest.m4 $TARGET/share/aclocal/
-mv share/aclocal/size_max.m4 $TARGET/share/aclocal/
-mv share/aclocal/stdint_h.m4 $TARGET/share/aclocal/
-mv share/aclocal/uintmax_t.m4 $TARGET/share/aclocal/
-mv share/aclocal/visibility.m4 $TARGET/share/aclocal/
-mv share/aclocal/wchar_t.m4 $TARGET/share/aclocal/
-mv share/aclocal/wint_t.m4 $TARGET/share/aclocal/
-mv share/aclocal/xsize.m4 $TARGET/share/aclocal/
-
-mkdir -p $TARGET/share/dtds
-mv share/dtds/legacy-icon-mapping.dtd $TARGET/share/dtds
-
-mkdir -p $TARGET/share/gapi-2.0/
-mv share/gapi-2.0/atk-api.xml $TARGET/share/gapi-2.0/
-mv share/gapi-2.0/gdk-api.xml $TARGET/share/gapi-2.0/
-mv share/gapi-2.0/glade-api.xml $TARGET/share/gapi-2.0/
-mv share/gapi-2.0/glib-api.xml $TARGET/share/gapi-2.0/
-mv share/gapi-2.0/gtk-api.xml $TARGET/share/gapi-2.0/
-mv share/gapi-2.0/pango-api.xml $TARGET/share/gapi-2.0/
-
-mkdir -p $TARGET/share/glib-2.0/
-mv share/glib-2.0/gettext $TARGET/share/glib-2.0/
-
-cp -pr share/locale $TARGET/share
-(cd $TARGET/share; rm `find . -name mcs.mo -o -name 'glib*' -o -name 'gtk*'`)
-mkdir -p $TARGET share/locale
-(cd share/locale; rm `find . -name 'atk10.mo' -o -name 'gettext*'`)
-(cd share/locale; find . -type d -empty | xargs rmdir)
-
-mkdir -p $TARGET/share/man/man1/
-mv share/man/man1/autopoint.1 $TARGET/share/man/man1/
-mv share/man/man1/gdk-pixbuf-csource.1 $TARGET/share/man/man1/
-mv share/man/man1/gettext.1 $TARGET/share/man/man1/
-mv share/man/man1/gettextize.1 $TARGET/share/man/man1/
-mv share/man/man1/glib-genmarshal.1 $TARGET/share/man/man1/
-mv share/man/man1/glib-gettextize.1 $TARGET/share/man/man1/
-mv share/man/man1/glib-mkenums.1 $TARGET/share/man/man1/
-mv share/man/man1/gobject-query.1 $TARGET/share/man/man1/
-mv share/man/man1/gtester-report.1 $TARGET/share/man/man1/
-mv share/man/man1/gtester.1 $TARGET/share/man/man1/
-mv share/man/man1/gtk-builder-convert.1 $TARGET/share/man/man1/
-mv share/man/man1/gtk-query-immodules-2.0.1 $TARGET/share/man/man1/
-mv share/man/man1/msgattrib.1 $TARGET/share/man/man1/
-mv share/man/man1/msgcat.1 $TARGET/share/man/man1/
-mv share/man/man1/msgcmp.1 $TARGET/share/man/man1/
-mv share/man/man1/msgcomm.1 $TARGET/share/man/man1/
-mv share/man/man1/msgconv.1 $TARGET/share/man/man1/
-mv share/man/man1/msgen.1 $TARGET/share/man/man1/
-mv share/man/man1/msgexec.1 $TARGET/share/man/man1/
-mv share/man/man1/msgfilter.1 $TARGET/share/man/man1/
-mv share/man/man1/msgfmt.1 $TARGET/share/man/man1/
-mv share/man/man1/msggrep.1 $TARGET/share/man/man1/
-mv share/man/man1/msginit.1 $TARGET/share/man/man1/
-mv share/man/man1/msgmerge.1 $TARGET/share/man/man1/
-mv share/man/man1/msgunfmt.1 $TARGET/share/man/man1/
-mv share/man/man1/msguniq.1 $TARGET/share/man/man1/
-mv share/man/man1/ngettext.1 $TARGET/share/man/man1/
-mv share/man/man1/recode-sr-latin.1 $TARGET/share/man/man1/
-
-mkdir -p $TARGET/share/libgc-mono
-mv share/libgc-mono $TARGET/share
-
-mkdir -p $TARGET/share/man/man3/
-mv share/man/man3/bind_textdomain_codeset.3 $TARGET/share/man/man3/
-mv share/man/man3/bindtextdomain.3 $TARGET/share/man/man3/
-mv share/man/man3/dcgettext.3 $TARGET/share/man/man3/
-mv share/man/man3/dcngettext.3 $TARGET/share/man/man3/
-mv share/man/man3/dgettext.3 $TARGET/share/man/man3/
-mv share/man/man3/dngettext.3 $TARGET/share/man/man3/
-mv share/man/man3/gettext.3 $TARGET/share/man/man3/
-mv share/man/man3/libpng.3 $TARGET/share/man/man3/
-mv share/man/man3/libpngpf.3 $TARGET/share/man/man3/
-mv share/man/man3/ngettext.3 $TARGET/share/man/man3/
-mv share/man/man3/textdomain.3 $TARGET/share/man/man3/
-
-mkdir -p $TARGET/share/man/man5/
-mv share/man/man5/png.5 $TARGET/share/man/man5/
-
-mkdir -p $TARGET/share/xml/libglade/
-mv share/xml/libglade/* $TARGET/share/xml/libglade/
+popd

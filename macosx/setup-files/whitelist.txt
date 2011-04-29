@@ -11,6 +11,7 @@ ccrewrite
 cert2spc
 certmgr
 chktrust
+ClassInitGenerator
 csharp
 csharp2
 dbsessmgr
@@ -23,6 +24,10 @@ dtd2xsd
 fastcgi-mono-server
 fastcgi-mono-server2
 fastcgi-mono-server4
+fsc
+fsc2
+fsi
+fsi2
 gacutil
 gacutil2
 gapi2-codegen
@@ -34,9 +39,14 @@ httpcfg
 ilasm
 installvst
 ipy
-ipy2
+ipy64
 ipyw
-ipyw2
+ipyw64
+ir
+ir64
+IronRuby.Tests
+irw
+irw64
 lc
 macpack
 makecert
@@ -79,6 +89,7 @@ mono-shlib-cop
 mono-test-install
 mono-xmltool
 mozroots
+mprof-report
 nant
 nunit-console
 nunit-console2
@@ -99,6 +110,7 @@ sqlmetal
 sqlsharp
 svcutil
 vbnc
+vbnc2
 wsdl
 wsdl2
 xbuild
@@ -106,3 +118,4 @@ xsd
 xsp
 xsp2
 xsp4
+pkg-config

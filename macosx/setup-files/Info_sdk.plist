@@ -5,7 +5,7 @@
         <key>CFBundleGetInfoString</key>
         <string>@@MONO_VERSION_RELEASE@@</string>
         <key>CFBundleIdentifier</key>
-        <string>com.ximian.mono-csdk</string>
+        <string>com.ximian.mono-@@MONO_VERSION@@-csdk</string>
         <key>CFBundleName</key>
         <string>Mono.framework</string>
         <key>CFBundleShortVersionString</key>

@@ -19,7 +19,7 @@ import packaging
 # Which noarch packages to include in the various packages
 packages_to_include = {}
 
-packages_to_include['macos-10-ppc'] = ['libgdiplus', 'mono', 'cocoa-sharp', 'xsp', 'boo', 'nant', 'IPCE', 'mono-basic', 'gtk-sharp212', 'mono-addins' ]
+packages_to_include['macos-10-ppc'] = ['libgdiplus', 'mono', 'xsp', 'boo', 'nant', 'ironpython', 'mono-basic', 'gtk-sharp212', 'mono-addins', 'ironruby', 'fsharp' ]
 
 packages_to_include['macos-10-x86'] = packages_to_include['macos-10-ppc']
 
@@ -113,7 +113,7 @@ dep_packages_used = []
 versions = {}
 
 # Clean up
-conf.buildenv.execute_command('rm -Rf ' + remote_temp + "; mkdir -p " + remote_PKGROOT)
+conf.buildenv.execute_command('sudo rm -Rf ' + remote_temp + "; mkdir -p " + remote_PKGROOT)
 
 for arch in targets:
 
@@ -182,11 +182,12 @@ conf.buildenv.print_command=1
 # Hmm... stripping all dylibs causes issues on mac x86 as well as for libgdiplus on both plats, only strip some
 # Fixed: use -S on dylibs and .a files.  But, shipping unstripped binaries generates better stack traces
 
+# Stripping is done in the cleanup script
 # Don't strip these files
-unstripped_bins = "mono"
-unstripped_libs = "libgdiplus*dylib lib*ono*dylib"
-conf.buildenv.execute_command("cd %s%s/bin; mv %s ..;  strip *; cd ..; mv %s bin " % (remote_PKGROOT, prefix, unstripped_bins, unstripped_bins ) )
-conf.buildenv.execute_command("cd %s%s/lib; mv %s ..;  strip -S *.dylib *.a; cd ..; mv %s lib" % (remote_PKGROOT, prefix, unstripped_libs, unstripped_libs ) )
+#unstripped_bins = "mono"
+#unstripped_libs = "libgdiplus*dylib lib*ono*dylib"
+#conf.buildenv.execute_command("cd %s%s/bin; mv %s ..;  strip *; cd ..; mv %s bin " % (remote_PKGROOT, prefix, unstripped_bins, unstripped_bins ) )
+#conf.buildenv.execute_command("cd %s%s/lib; mv %s ..;  strip -S *.dylib *.a; cd ..; mv %s lib" % (remote_PKGROOT, prefix, unstripped_libs, unstripped_libs ) )
 # Still caused problems linking... but this doesn't seem to matter
 
 # This is what the old installer script would do, except it deleted the .a files instead of stripping them
@@ -269,8 +270,8 @@ if code:
 conf.buildenv.execute_command("%s/cleanup %s%s %s%s" % (arch_remote_packages_loc, remote_PKGROOT, prefix, remote_PKGROOT + "_sdk", prefix) )
 
 # Start process of making the package
-package_filename = "MonoFramework-%s_%s.%s" % (version, revision, arch_name)
-sdk_package_filename = "MonoFramework-CSDK-%s_%s.%s" % (version, revision, arch_name)
+package_filename = "MonoFramework-MRE-%s_%s.%s" % (version, revision, arch_name)
+sdk_package_filename = "MonoFramework-MDK-%s_%s.%s" % (version, revision, arch_name)
 
 # Substitue versions in setup files
 parameter_map = {}
@@ -332,12 +333,16 @@ exit_reg = ""
 # Copy .dmg readme
 conf.buildenv.copy_to('setup-files/Notes.rtf', remote_temp + os.sep + 'new')
 
+# Fix permissions
+conf.buildenv.execute_command('chmod -R o-w %s*' % (remote_PKGROOT))
+conf.buildenv.execute_command('sudo chown -R root:admin %s*' % (remote_PKGROOT))
+
 packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
 conf.buildenv.execute_command('cd %s; %s -build -p %s/new/%s.pkg -f %s -r %s -i %s/Info.plist -d %s/Description.plist' % (remote_PKGROOT, packagemaker, remote_temp, package_filename, remote_PKGROOT, resources_dir, framework_resources_dir, framework_resources_dir), terminate_reg=exit_reg)
 conf.buildenv.execute_command('cd %s; %s -build -p %s/new_sdk/%s.pkg -f %s -i %s/Info_sdk.plist -d %s/Description_sdk.plist' % (remote_PKGROOT + "_sdk", packagemaker, remote_temp, sdk_package_filename, remote_PKGROOT + "_sdk", arch_remote_packages_loc, arch_remote_packages_loc), terminate_reg=exit_reg)
 
-conf.buildenv.execute_command('/usr/bin/hdiutil create -ov -srcfolder %s/new -volname MonoFramework-%s %s/%s.dmg' % (remote_temp, version, remote_temp, package_filename) )
-conf.buildenv.execute_command('/usr/bin/hdiutil create -ov -srcfolder %s/new_sdk -volname MonoFramework-CSDK-%s %s/%s.dmg' % (remote_temp, version, remote_temp, sdk_package_filename) )
+conf.buildenv.execute_command('/usr/bin/hdiutil create -ov -srcfolder %s/new -volname MonoFramework-MRE-%s %s/%s.dmg' % (remote_temp, version, remote_temp, package_filename) )
+conf.buildenv.execute_command('/usr/bin/hdiutil create -ov -srcfolder %s/new_sdk -volname MonoFramework-MDK-%s %s/%s.dmg' % (remote_temp, version, remote_temp, sdk_package_filename) )
 
 distutils.dir_util.mkpath(output_dir)
 
