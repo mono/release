@@ -30,7 +30,7 @@ rdf_ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 em_ns = "http://www.mozilla.org/2004/em-rdf#"
 
 min_firefox_version = "1.5"
-max_firefox_version = "3.5.*"
+max_firefox_version = "3.6.*"
 firefox_guid = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}'
 
 min_seamonkey_version = "2.0b1"

@@ -21,13 +21,32 @@ releases = {
 	'1.99.8':  {'release':'1.99.8','moonrev':'145925','monorev':'145773'},
 	'1.99.9':  {'release':'1.99.9','moonrev':'','monorev':''},
 	'2.0':  {'release':'2.0','moonrev':'','monorev':''},
+	'2.1':  {'release':'2.1','moonrev':'','monorev':''},
+	'2.2':  {'release':'2.2','moonrev':'','monorev':''},
+	'2.3':  {'release':'2.3','moonrev':'','monorev':''},
+	'2.3.0.1':  {'release':'2.3.0.1','moonrev':'','monorev':''},
+	'2.4':  {'release':'2.4','moonrev':'','monorev':''},
+	'2.4.1':  {'release':'2.4.1','moonrev':'','monorev':''},
 }
 
 releases = {
     '2.99.0.1':  {'release':'2.99.0.1','moonrev':'','monorev':''},
+    '2.99.0.2':  {'release':'2.99.0.2','moonrev':'','monorev':''},
+    '2.99.0.3':  {'release':'2.99.0.3','moonrev':'','monorev':''},
+    '2.99.0.4':  {'release':'2.99.0.4','moonrev':'','monorev':''},
+    '2.99.0.5':  {'release':'2.99.0.5','moonrev':'','monorev':''},
+    '2.99.0.6':  {'release':'2.99.0.6','moonrev':'','monorev':''},
+    '2.99.0.7':  {'release':'2.99.0.7','moonrev':'','monorev':''},
+    '2.99.0.8':  {'release':'2.99.0.8','moonrev':'','monorev':''},
+    '2.99.0.9':  {'release':'2.99.0.9','moonrev':'','monorev':''},
+    '2.99.0.10':  {'release':'2.99.0.10','moonrev':'','monorev':''},
+    '3.99.0.1':  {'release':'3.99.0.1','moonrev':'','monorev':''},
+    '3.99.0.2':  {'release':'3.99.0.2','moonrev':'','monorev':''},
+    '3.99.0.3':  {'release':'3.99.0.3','moonrev':'','monorev':''},
 }
 
-latest = releases['2.99.0.1']
+latest = releases['3.99.0.3']
+#latest = releases['2.4.1']
 
 new_version = latest['release']
 
@@ -36,5 +55,5 @@ old_versions.sort()
 old_versions.remove(latest['release'])
 
 
-# old_1_0_versions = ['0.6','0.7','0.8','0.9','1.0','1.0.1']
+old_1_0_versions = ['0.6','0.7','0.8','0.9','1.0','1.0.1']
 

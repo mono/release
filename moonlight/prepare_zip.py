@@ -155,8 +155,8 @@ def main():
     #NEW_VERSION=$PREVIEW
 
     #./create_update_rdfs.py -p 2.0 -a i586,x86_64 -n $NEW_VERSION -o $OLD_VERSIONS
-    create_update_rdfs.create_rdfs(new_version,MoonlightReleases.old_versions)
-    #create_update_rdfs.create_rdfs(new_version,MoonlightReleases.old_1_0_versions,'1.0')
+    create_update_rdfs.create_rdfs(new_version,MoonlightReleases.old_versions,'3.0')
+#    create_update_rdfs.create_rdfs(new_version,MoonlightReleases.old_1_0_versions,'1.0')
 
     for rdf in glob.glob("update*.rdf"):
         print "Signing %s..." % rdf
