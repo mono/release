@@ -77,15 +77,15 @@ echo "Building basic"
 (cd $DAILY_BUILD_DIR/mono-basic && make)
 (cd $DAILY_BUILD_DIR/mono-basic && make install)
 # Copy the basic runtime to where the mcs class libs are so the class status will get properly generated
-cp $DAILY_BUILD_DIR/mono-basic/class/lib/vbnc/*.dll $DAILY_BUILD_DIR/mono/mcs/class/lib/net_2_0
+cp $DAILY_BUILD_DIR/mono-basic/class/lib/net_2_0/*.dll $DAILY_BUILD_DIR/mono/mcs/class/lib/net_2_0
 
+LIBSDIR=$DAILY_BUILD_DIR/mono/mcs/class/lib/basic
 cd $DAILY_BUILD_DIR
 # make monolite tarball
 MONO_CORLIB_VERSION=$(sed -n "s/\#define MONO_CORLIB_VERSION //p" $DAILY_BUILD_DIR/mono/mono/metadata/appdomain.c)
 MONOLITE=monolite-$MONO_CORLIB_VERSION-$DATE
-ls $DAILY_BUILD_DIR/mono/mcs/class/lib/monolite/*.exe || exit 1
-ls $DAILY_BUILD_DIR/mono/mcs/class/lib/monolite/*.dll || exit 1
-cp -R $DAILY_BUILD_DIR/mono/mcs/class/lib/monolite $DAILY_BUILD_DIR/$MONOLITE
+mkdir -p $DAILY_BUILD_DIR/$MONOLITE
+cp $LIBSDIR/*.dll $LIBSDIR/*.exe $DAILY_BUILD_DIR/$MONOLITE
 
 tar zcvpf $MONOLITE.tar.gz $MONOLITE/
 
@@ -104,7 +104,13 @@ cp $HOMEDIR/../monocharge/* $DAILY_BUILD_DIR/monocharge-$DATE
 mkdir -p $DAILY_BUILD_DIR/monocharge-$DATE/2.0
 cp $PREFIX/lib/mono/2.0/*.exe $DAILY_BUILD_DIR/monocharge-$DATE/2.0
 cp $DAILY_BUILD_DIR/mono/mcs/class/lib/net_2_0/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/2.0
-cp $DAILY_BUILD_DIR/mono-basic/class/lib/vbnc/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/2.0
+cp $DAILY_BUILD_DIR/mono-basic/class/lib/net_2_0/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/2.0
+
+# NET 4.0
+mkdir -p $DAILY_BUILD_DIR/monocharge-$DATE/4.0
+cp $PREFIX/lib/mono/4.0/*.exe $DAILY_BUILD_DIR/monocharge-$DATE/4.0
+cp $DAILY_BUILD_DIR/mono/mcs/class/lib/net_4_0/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/4.0
+cp $DAILY_BUILD_DIR/mono-basic/class/lib/net_4_0/*.dll $DAILY_BUILD_DIR/monocharge-$DATE/4.0
 
 tar zcvpf monocharge-$DATE.tar.gz monocharge-$DATE/
 
