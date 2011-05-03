@@ -1,0 +1,11 @@
+#!/bin/bash -x
+version=2.10
+TUPLES="debugger:mono-debugger gluezilla:libgluezilla0 libgdiplus:libgdiplus0 mod_mono:apache2-mod_mono mono:mono-core mono-basic:mono-basic mono-tools:mono-tools xsp:xsp"
+for tuple in $TUPLES; do
+	name=$(echo $tuple | cut -f1 -d:)
+	package=$(echo $tuple | cut -f2 -d:)
+	pushd "$package"
+	rm *.tar.bz2
+	curl --silent --location --remote-name --remote-header-name "http://build.mono-project.com/DownloadLatestFile.aspx?lane=$name-$version-dist&host=dist&filename=*.tar.bz2"
+	popd
+done

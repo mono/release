@@ -1,0 +1,15 @@
+#!/bin/bash
+
+sudo /usr/sbin/sntp -P no -r time.novell.com
+curl --silent --location "http://build.mono-project.com/DownloadLatestFile.aspx?lane=monkeywrench&filename=MonkeyWrench.zip" | zcat > MonkeyWrench.zip
+unzip -o -q MonkeyWrench.zip
+START=$(date +%s)
+END=$START
+while [ "$END" -lt "$(expr $START + 30)" ]; do
+	START=$(date +%s)
+	mono MonkeyWrench.Builder.exe
+	END=$(date +%s)
+	echo "Sleeping..."
+	sleep 20
+	echo "Woke up!"
+done

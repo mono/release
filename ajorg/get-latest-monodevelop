@@ -1,0 +1,14 @@
+#!/bin/bash -x
+version=2.6
+for i in monodevelop monodevelop-java monodevelop-python monodevelop-vala monodevelop-database monodevelop-debugger-gdb; do
+	pushd $i
+	rm *.tar.bz2
+	curl -s -L -O -J "http://build.mono-project.com/DownloadLatestFile.aspx?lane=$i-$version-dist&successful&filename=*.tar.bz2"
+	osc ar
+	popd
+done
+pushd mono-addins
+rm *.tar.bz2
+curl -s -L -O -J "http://build.mono-project.com/DownloadLatestFile.aspx?lane=mono-addins-0.6-dist&successful&filename=*.tar.bz2"
+osc ar
+popd

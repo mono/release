@@ -1,0 +1,15 @@
+#!/bin/bash -ex
+version=master
+osc up
+TUPLES="libgdiplus:libgdiplus0 mono:mono-core mono-basic:mono-basic xsp:xsp mod_mono:apache2-mod_mono mono-tools:mono-tools debugger:mono-debugger mono-addins:mono-addins monodevelop:monodevelop gluezilla:libgluezilla0"
+for tuple in $TUPLES; do
+	name=$(echo $tuple | cut -f1 -d:)
+	package=$(echo $tuple | cut -f2 -d:)
+	pushd $package
+	rm -f *.spec *.tar.bz2
+	curl -s -L -O -J "http://build.mono-project.com/DownloadLatestFile.aspx?lane=$name-$version-dist&successful&filename=*.spec"
+	curl -s -L -O -J "http://build.mono-project.com/DownloadLatestFile.aspx?lane=$name-$version-dist&successful&filename=*.tar.bz2"
+	osc ar
+	osc ci -m "$(date)"
+	popd
+done
