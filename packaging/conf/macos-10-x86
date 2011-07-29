@@ -1,6 +1,5 @@
 username=builder
-#hostname=x32-macos-2.mono.lab.novell.com
-hostname=x64-macos-2.mono.lab.novell.com
+hostname=macos-10-x86.lab.xamarin.com
 USE_ZIP_PKG=1
 
 # Helps with relocating binaries

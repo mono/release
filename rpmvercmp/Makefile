@@ -4,7 +4,7 @@ SWIG=swig
 all: rpmvercmp _rpmvercmp.so
 
 rpmvercmp: rpmvercmp.c Makefile
-	${CC} -Wall `pkg-config --libs --cflags glib-2.0` -I/opt/gnome/include -lpopt -lrpm -lrpmio -lrpmdb  -o rpmvercmp rpmvercmp.c
+	${CC} -Wall `pkg-config --libs --cflags glib-2.0` -I/opt/gnome/include -lpopt -lrpm -lrpmio  -o rpmvercmp rpmvercmp.c
 
 _rpmvercmp.so: rpmvercmp.c rpmvercmp.i Makefile
 	${SWIG} -python rpmvercmp.i 

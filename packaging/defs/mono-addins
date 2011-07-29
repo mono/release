@@ -1,5 +1,6 @@
 BUILD_HOSTS=(
 	sle-11-i586
+	macos-10-x86
 )
 
 USE_HOSTS=(
@@ -33,4 +34,12 @@ make_dist () {
         . /etc/profile
         ./autogen.sh
         make dist-bzip2
+}
+
+ZIP_BUILD () {
+
+        ./configure --prefix=/tmp/install || exit 1
+        make || exit 1
+        make install || exit 1
+
 }

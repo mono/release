@@ -31,6 +31,14 @@ RELEASE_PATH=(
 	tags/mono-[[version]]/mono-tools
 )
 
+ZIP_BUILD () {
+
+        ./configure --prefix=/tmp/install || exit 1
+        make || exit 1
+        make install || exit 1
+
+}
+
 POSTBUILD_TEST_NAME1="test-gendarme"
 POSTBUILD_TEST1 () {
 	cd gendarme

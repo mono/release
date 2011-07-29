@@ -1,11 +1,15 @@
+import sys
+import os
+
+if sys.platform.startswith('darwin'):
+    os.environ['PY_USE_XMLPLUS'] = '1'
 
 import xml.xpath
 import xml.dom.minidom
 import fcntl
-import os
 import re
 import distutils.dir_util
-import sys
+
 
 import pdb
 

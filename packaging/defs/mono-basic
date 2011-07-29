@@ -6,7 +6,8 @@ web_ignore_noarch=1
 #  1.0 vb runtime won't be included
 
 BUILD_HOSTS=(
-    sle-11-i586
+	sle-11-i586
+	macos-10-x86
 )
 
 USE_HOSTS=(
@@ -76,10 +77,14 @@ ZIP_BUILD () {
 	PATH=$PATH:/usr/sbin
 	export MONO_GAC_PREFIX MONO_PREFIX MONO_CFG_DIR MONO_PATH PATH
 
-	./configure --prefix=/usr
-	$make_path
+	./configure --prefix=/tmp/install
 
-	$make_path install DESTDIR=/tmp/install
+	# HACK for now
+	sed -e 's/@cp -pu/@cp -p/' vbnc/vbnc/Makefile > vbnc/vbnc/Makefile2
+	mv -f vbnc/vbnc/Makefile2 vbnc/vbnc/Makefile 
+
+	$make_path PROFILE_VBNC_FLAGS=/sdkpath:/tmp/build_deps/lib/mono/4.0/
+	$make_path install PROFILE_VBNC_FLAGS=/sdkpath:/tmp/build_deps/lib/mono/4.0/
 }
 
 POSTBUILD_TEST_NAME1="test"

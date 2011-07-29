@@ -26,6 +26,9 @@ import pdb
 
 is_url = re.compile("^(ftp|http)", re.I)
 
+# not ideal, but doesn't require having rpm installed on the main host machine
+pkg_name = re.compile("(?<=\\/)([^\\/ ]+?(?=\\-[0-9]))[^\\/]*$", re.I)
+
 # Default to RELEASE
 HEAD_or_RELEASE = "RELEASE"
 build_source = False
@@ -82,8 +85,8 @@ if build_deps_package != 'none':
 
 for dep in deps:
 	if is_url.search(dep):
-		utils.get_url(dep, 'external_zip_pkg')
-		files += [ 'external_zip_pkg' + os.sep + os.path.basename(dep) ]
+		utils.get_url(dep, 'external_zip_pkg' + os.sep + target)
+		files += [ 'external_zip_pkg' + os.sep + target + os.sep + os.path.basename(dep) ]
 
 	else:	
 		package = packaging.package(target_conf, dep, HEAD_or_RELEASE=HEAD_or_RELEASE)
@@ -126,8 +129,10 @@ if target_conf.get_info_var('USE_ZIP_PKG'):
 else:
 
 	if files:
-		(code, rpm_names) = utils.launch_process("rpm -qp --queryformat '%%{NAME} ' %s" % " ".join(files))
-		packs_to_remove += rpm_names.split()
+		#(code, rpm_names) = target_conf.buildenv.execute_command("rpm -qp --queryformat '%%{NAME} ' `ls %s/install-packages/*.rpm`" % build_location, exec_as_root=1)
+		#packs_to_remove += rpm_names.split()
+		for file in files:
+			packs_to_remove += [ pkg_name.search(file).group(1) ]
 	packs_to_remove = utils.remove_list_duplicates(packs_to_remove)
 
 	if packs_to_remove:

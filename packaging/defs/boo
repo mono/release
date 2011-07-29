@@ -4,6 +4,7 @@ EXTERNAL_SOURCE=1
 # and the rpm can be used everywhere
 BUILD_HOSTS=(
 	sle-11-i586
+	macos-10-x86
 )
 
 USE_HOSTS=(
@@ -22,10 +23,17 @@ get_destroot () {
 	DEST_ROOT=noarch
 }
 
-BUILD_DIR="/tmp"
+#BUILD_DIR="/tmp"
 
-make_dist () {
-	curl -O http://dist.codehaus.org/boo/distributions/boo-$VERSION.tar.gz
-	bznew boo-$VERSION.tar.gz
+ZIP_BUILD () {
+
+        ./configure --prefix=/tmp/install || exit 1
+        make || exit 1
+        make install || exit 1
+
 }
 
+#make_dist () {
+#	curl -O http://dist.codehaus.org/boo/distributions/boo-$VERSION.tar.gz
+#	bznew boo-$VERSION.tar.gz
+#}

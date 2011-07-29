@@ -2,6 +2,7 @@ web_index=4
 
 BUILD_HOSTS=(
 	sle-11-i586
+	macos-10-x86
 )
 
 USE_HOSTS=(
@@ -27,3 +28,8 @@ RELEASE_PATH=(
 	tags/mono-[[version]]/xsp
 )
 
+macos_10_ZIP_BUILD () {
+	./configure --prefix=/tmp/install || exit 1
+	make || exit 1
+	make install || exit 1
+}

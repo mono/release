@@ -2,6 +2,7 @@ EXTERNAL_SOURCE=1
 
 BUILD_HOSTS=(
 	sle-11-i586
+	macos-10-x86
 )
 
 USE_HOSTS=(
@@ -33,3 +34,8 @@ make_dist () {
         curl -O http://easynews.dl.sourceforge.net/sourceforge/nant/nant-$VERSION-src.tar.gz
 }
 
+ZIP_BUILD () {
+
+        make install prefix=/tmp/install || exit 1
+
+}

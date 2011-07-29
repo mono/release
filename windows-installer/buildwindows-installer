@@ -108,7 +108,7 @@ class Selection:
 
 			for url in self.urls:
 				filename = os.path.basename(url)
-				url_dest = config.packaging_dir + os.sep + 'external_zip_pkg'
+				url_dest = config.packaging_dir + os.sep + 'external_zip_pkg' + os.sep + 'win-4-i386'
 				url_dest_file = url_dest + os.sep + filename
 				if not os.path.exists(url_dest_file):
 					utils.get_url(url, url_dest)
@@ -146,7 +146,8 @@ selections += [ Selection('mono', packages = "mono boo ikvm nant mono-basic glue
 
 selections += [ Selection('gtk', deps = "gtk-sharp212".split() ) ]
 
-selections += [ Selection('gtk-sharp', packages = "gtk-sharp212 mono-tools".split() ) ]
+#selections += [ Selection('gtk-sharp', packages = "gtk-sharp212 mono-tools".split() ) ]
+selections += [ Selection('gtk-sharp', deps = "gtk-sharp212".split() ) ]
 
 # Grab the gtk# version, and if there's a revision, ditch it
 gtk_sharp_version = selections[len(selections) - 1].versions['gtk-sharp212']
@@ -155,8 +156,7 @@ if gtk_sharp_version.count('-'):
 
 # Hmm... needs to be a better way to package up these samples...
 selections += [ Selection('samples', urls = """
-http://developer.novell.com/wiki/index.php/Special:File/sqlsharpgtk/SQL-Sharp~~~For~~~GTK-Sharp~~~0.4/sqlsharpgtk-0.4-bin.zip
-http://primates.ximian.com/~wberrier/windows-installer/samples-1.zip
+http://beefydude.lab.xamarin.com/packages/deps/win-4-i386/samples.zip
 """.split()
  ) ]
 
@@ -191,43 +191,43 @@ files_used_in_installer = utils.remove_list_duplicates(files_used_in_installer)
 
 ##########################################
 # Special case for sqlsharpgtk, massage it
-os.chdir('samples')
+#os.chdir('samples')
 
-distutils.dir_util.mkpath("lib/mono/sqlsharpgtk")
+#distutils.dir_util.mkpath("lib/mono/sqlsharpgtk")
 # Weird... but it works (moves all files from the sqlsharpgtk dir into the dest dir
 #  (I would assume it moved the whole directory... but no)
-shutil.move("sqlsharpgtk", "lib/mono/sqlsharpgtk")
+#shutil.move("sqlsharpgtk", "lib/mono/sqlsharpgtk")
 
-distutils.dir_util.mkpath("bin")
+#distutils.dir_util.mkpath("bin")
 
 # Create wrapper
-fd = open('bin/sqlsharpgtk', 'w')
-fd.write("""#!/bin/sh
-exec /tmp/install/bin/mono $MONO_OPTIONS C:/cygwin/tmp/install/lib/mono/sqlsharpgtk/sqlsharpgtk.exe "$@"
-""")
-fd.close()
-os.chmod('bin/sqlsharpgtk', config.shell_perms)
+#fd = open('bin/sqlsharpgtk', 'w')
+#fd.write("""#!/bin/sh
+#exec /tmp/install/bin/mono $MONO_OPTIONS C:/cygwin/tmp/install/lib/mono/sqlsharpgtk/sqlsharpgtk.exe "$@"
+#""")
+#fd.close()
+#os.chmod('bin/sqlsharpgtk', config.shell_perms)
 
-os.chdir("..")
+#os.chdir("..")
 # End of sqlsharpgtk special case
 #########################################
 
 ##########################################
 # Special case for gtk-sharp samples
-os.chdir('samples')
+#os.chdir('samples')
 
 # Move them from the gtk-sharp-2.8 package
-distutils.dir_util.copy_tree("../gtk-sharp/samples", "samples")
-distutils.dir_util.remove_tree("../gtk-sharp/samples")
+#distutils.dir_util.copy_tree("../gtk-sharp/samples", "samples")
+#distutils.dir_util.remove_tree("../gtk-sharp/samples")
 
-distutils.dir_util.mkpath('bin')
+#distutils.dir_util.mkpath('bin')
 
-fd = open('bin/GtkDemo', 'w')
-fd.write("""#!/bin/sh
-exec @@WIN_MONO_INST_DIR@@/bin/mono @@WIN_MONO_INST_DIR@@/samples/gtk-sharp-2.0/GtkDemo/GtkDemo.exe "$@" """)
-fd.close()
+#fd = open('bin/GtkDemo', 'w')
+#fd.write("""#!/bin/sh
+#exec @@WIN_MONO_INST_DIR@@/bin/mono @@WIN_MONO_INST_DIR@@/samples/gtk-sharp-2.0/GtkDemo/GtkDemo.exe "$@" """)
+#fd.close()
 
-os.chdir("..")
+#os.chdir("..")
 # End of gtk-sharp samples special case
 #########################################
 
@@ -302,13 +302,14 @@ os.chdir('..')
 os.chdir('mono')
 
 os.mkdir('share/doc/gdiplus')
-shutil.move('redist.txt', 'share/doc/gdiplus')
-shutil.move('license.txt', 'share/doc/gdiplus')
+#shutil.move('redist.txt', 'share/doc/gdiplus')
+shutil.move('gdiplus/eula.txt', 'share/doc/gdiplus')
 
 #shutil.move('gdiplus.dll', 'bin')
 # Need to move it back so it doesn't get grabbed with the mono\* selection
-shutil.move('gdiplus.dll', '..')
+shutil.move('gdiplus/gdiplus.dll', '..')
 
+shutil.rmtree('gdiplus')
 os.chdir("..")
 
 #
@@ -506,16 +507,16 @@ for selection in selections:
 # TODO: Should this happen in the gtk-sharp build?
 # This will change once gtk-sharp2 is built with mcs/mono instead of the ms sdk
 #gapi2-codegen
-shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gapi_codegen.exe", "gtk-sharp/bin/gapi2-codegen.exe")
-os.remove("gtk-sharp/bin/gapi2-codegen")
+#shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gapi_codegen.exe", "gtk-sharp/bin/gapi2-codegen.exe")
+#os.remove("gtk-sharp/bin/gapi2-codegen")
 
 #gapi2-fixup
-shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gapi-fixup.exe", "gtk-sharp/bin/gapi2-fixup.exe")
-os.remove("gtk-sharp/bin/gapi2-fixup")
+#shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gapi-fixup.exe", "gtk-sharp/bin/gapi2-fixup.exe")
+#os.remove("gtk-sharp/bin/gapi2-fixup")
 
 #gapi2-parser
-shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gapi-parser.exe", "gtk-sharp/bin/gapi2-parser.exe")
-os.remove("gtk-sharp/bin/gapi2-parser")
+#shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gapi-parser.exe", "gtk-sharp/bin/gapi2-parser.exe")
+#os.remove("gtk-sharp/bin/gapi2-parser")
 
 #gconfsharp2-schemagen
 #shutil.copy("gtk-sharp/lib/gtk-sharp-2.0/gconfsharp-schemagen.exe", "gtk-sharp/bin/gconfsharp2-schemagen.exe")

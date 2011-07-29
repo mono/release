@@ -1,4 +1,5 @@
 BUILD_HOSTS=(
+	macos-10-x86
 	sle-11-i586
 )
 
@@ -25,3 +26,10 @@ RELEASE_PATH=(
 	tags/webkit-sharp/[[versiondot]]
 )
 
+ZIP_BUILD () {
+
+        ./configure --prefix=/tmp/install || exit 1
+        make || exit 1
+        make install || exit 1
+
+}

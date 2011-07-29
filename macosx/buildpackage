@@ -19,7 +19,7 @@ import packaging
 # Which noarch packages to include in the various packages
 packages_to_include = {}
 
-packages_to_include['macos-10-ppc'] = ['libgdiplus', 'mono', 'xsp', 'boo', 'nant', 'ironpython', 'mono-basic', 'gtk-sharp212', 'mono-addins', 'ironruby', 'fsharp' ]
+packages_to_include['macos-10-ppc'] = ['libgdiplus', 'mono', 'xsp', 'boo', 'nant', 'ironlangs', 'mono-basic', 'gtk-sharp212', 'mono-addins', 'fsharp' ]
 
 packages_to_include['macos-10-x86'] = packages_to_include['macos-10-ppc']
 
@@ -82,21 +82,21 @@ revision = mono_package.get_revision(release)
 version = version.split("-")[0]
 
 # Create the version integer
-version_list = (version.split(".") + ["0"] * (4 - len(version.split("."))))[:4]
-for i in range(1,4):
+version_list = (version.split(".") + ["0"] * (3 - len(version.split("."))))[:4]
+for i in range(1,3):
 	version_list[i] = version_list[i].zfill(2)
-version_int = "".join(version_list) + release.zfill(2)
+version_int = "".join(version_list) + release.replace(".", "").zfill(3)
 
 # Set the package GUID
 if arch_name == "universal":
 	package_guid = "960a0c10-580c-43fd-b173-78cddf93a7e8"
-	csdk_guid = "ea6f53e2-aa4e-428e-aa97-26d147e73485"
+	csdk_guid = "2fc902b8-40e2-43bd-8102-45f56fb11836"
 elif arch_name == "x86":
 	package_guid = "432959f9-ce1b-47a7-94d3-eb99cb2e1aa8"
-	csdk_guid = "d7972cf5-4df5-471d-b971-d26907fa121d"
+	csdk_guid = "964ebddd-1ffe-47e7-8128-5ce17ffffb05"
 elif arch_name == "ppc":
 	package_guid = "294befc2-2cb2-4191-8d6f-d81f5324eec3"
-	csdk_guid = "44d524bb-c7ce-41b8-a057-c17b433676d3"
+	csdk_guid = "72dfbfa7-e3d0-4aec-996d-4f46236db8c9"
 
 output_dir = os.path.join("output", version, target, release) 
 
@@ -216,7 +216,7 @@ fd.close()
 
 # Get list of components for readme
 def package_pretty_name(package_name):
-	return package_name.replace(".novell.noarch.rpm", "").replace(".macos10.novell.ppc.zip", "").replace(".macos10.novell.x86.zip", "")
+	return package_name.replace(".novell.noarch.rpm", "").replace(".macos10.ppc.zip", "").replace(".macos10.x86.zip", "").replace(".noarch.zip", "").replace(".zip", "")
 
 packages = []
 packages_text = ""
@@ -243,9 +243,11 @@ for f in dep_packages:
 conf.buildenv.print_command=1
 #conf.buildenv.execute_command_command=0
 
-print "Creating symlinks..."
-conf.buildenv.execute_command('cd %s%s/Versions; ln -sf %s Current' % (remote_PKGROOT, framework_prefix, version) )
+# Split the installer in two
+conf.buildenv.execute_command("%s/cleanup %s%s %s%s" % (arch_remote_packages_loc, remote_PKGROOT, prefix, remote_PKGROOT + "_sdk", prefix) )
 
+# this used to come before the cleanup script splits the installer in two, but rsync -al seems broken on snow leopard
+print "Creating symlinks..."
 symlinks = {}
 symlinks['Versions/Current/Resources'] 	= "Resources"
 symlinks['Versions/Current/lib'] 	= "Libraries"
@@ -254,8 +256,11 @@ symlinks['Versions/Current/bin'] 	= "Commands"
 symlinks['Versions/Current'] 		= "Home"
 symlinks['Libraries/libmono-2.0.dylib']	= "Mono"
 
-for k,v in symlinks.iteritems():
-	conf.buildenv.execute_command('cd %s%s; ln -sf %s %s' % (remote_PKGROOT, framework_prefix, k, v) )
+for dir in [ remote_PKGROOT, remote_PKGROOT + "_sdk" ]:
+	conf.buildenv.execute_command('cd %s%s/Versions; ln -sf %s Current' % (dir, framework_prefix, version) )
+	
+	for k,v in symlinks.iteritems():
+		conf.buildenv.execute_command('cd %s%s; ln -sf %s %s' % (dir, framework_prefix, k, v) )
 
 print "Done creating symlinks...."
 
@@ -266,8 +271,6 @@ if code:
 	print "Error munging dllmaps for .config files"
 	sys.exit(1)
 
-# Split the installer in two
-conf.buildenv.execute_command("%s/cleanup %s%s %s%s" % (arch_remote_packages_loc, remote_PKGROOT, prefix, remote_PKGROOT + "_sdk", prefix) )
 
 # Start process of making the package
 package_filename = "MonoFramework-MRE-%s_%s.%s" % (version, revision, arch_name)
@@ -308,6 +311,7 @@ conf.buildenv.copy_to('Info_sdk.plist Description_sdk.plist version.plist'.split
 
 conf.buildenv.copy_to('updateinfo'.split(), "%s%s/Versions/%s" % (remote_PKGROOT, framework_prefix, version))
 conf.buildenv.copy_to('updateinfo.csdk'.split(), "%s%s/Versions/%s" % (remote_PKGROOT + "_sdk", framework_prefix, version))
+conf.buildenv.execute_command('cd %s%s/Versions/%s && mv updateinfo.csdk updateinfo'  % (remote_PKGROOT + "_sdk", framework_prefix, version))
 
 os.chdir(cwd)
 
@@ -339,7 +343,7 @@ conf.buildenv.execute_command('sudo chown -R root:admin %s*' % (remote_PKGROOT))
 
 packagemaker = "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
 conf.buildenv.execute_command('cd %s; %s -build -p %s/new/%s.pkg -f %s -r %s -i %s/Info.plist -d %s/Description.plist' % (remote_PKGROOT, packagemaker, remote_temp, package_filename, remote_PKGROOT, resources_dir, framework_resources_dir, framework_resources_dir), terminate_reg=exit_reg)
-conf.buildenv.execute_command('cd %s; %s -build -p %s/new_sdk/%s.pkg -f %s -i %s/Info_sdk.plist -d %s/Description_sdk.plist' % (remote_PKGROOT + "_sdk", packagemaker, remote_temp, sdk_package_filename, remote_PKGROOT + "_sdk", arch_remote_packages_loc, arch_remote_packages_loc), terminate_reg=exit_reg)
+conf.buildenv.execute_command('cd %s; %s -build -p %s/new_sdk/%s.pkg -f %s -r %s -i %s/Info_sdk.plist -d %s/Description_sdk.plist' % (remote_PKGROOT + "_sdk", packagemaker, remote_temp, sdk_package_filename, remote_PKGROOT + "_sdk", resources_dir, arch_remote_packages_loc, arch_remote_packages_loc), terminate_reg=exit_reg)
 
 conf.buildenv.execute_command('/usr/bin/hdiutil create -ov -srcfolder %s/new -volname MonoFramework-MRE-%s %s/%s.dmg' % (remote_temp, version, remote_temp, package_filename) )
 conf.buildenv.execute_command('/usr/bin/hdiutil create -ov -srcfolder %s/new_sdk -volname MonoFramework-MDK-%s %s/%s.dmg' % (remote_temp, version, remote_temp, sdk_package_filename) )

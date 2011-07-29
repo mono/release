@@ -125,7 +125,8 @@ for f in rcfiles:
 	if os.path.exists(f): files.append(f)
 
 # Will this command need to change from distro to distro? (possibly on REALLY old distros)
-command = "rpmbuild --rcfile=/usr/lib/rpm/rpmrc:%s -bb *.spec" % ":".join(files)
+#command = "rpmbuild --rcfile=/usr/lib/rpm/rpmrc:%s -bb *.spec" % ":".join(files)
+command = "rpmbuild --macros=%s -bb *.spec" % ":".join(macrofiles)
 print "Executing: " + command
 sys.stdout.flush()
 if os.system(command): sys.exit(1)

@@ -10,7 +10,7 @@ packages = [
 		# http://www.mingw.org/docs.shtml
 
 		'name': 'libxml2', 
-		'source': 'http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2/libxml2-2.6.27.win32.zip',
+		'source': 'ftp://xmlsoft.org/libxml2/win32/libxml2-2.6.30.win32.zip',
 		'build': """
 
 x_dir=`pwd`
@@ -25,8 +25,8 @@ f=libxml2-$x_ver.win32.zip
 p_ver=0.43
 p=pexports-$p_ver.zip
 
-# From http://www.emmestech.com/software/cygwin/pexports-0.43/download_pexports.html
-wget http://primates.ximian.com/~wberrier/windows-installer/win32_deps/libxml2/$p
+# From http://www.emmestech.com/software/pexports-0.43/download_pexports.html
+wget http://beefydude.lab.xamarin.com/misc/$p
 unzip $p
 chmod 755 pexports-$p_ver/bin/pexports.exe
 

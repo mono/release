@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import sys
 import getopt
 import time
@@ -41,7 +42,11 @@ if code:
 	sys.exit(1)
 
 # Copy files back
-log_obj.log("Copying files back...\n")
-conf.buildenv.copy_from(build_location + '/build/built-packages/*', 'external_zip_pkg')
+dep_location = "external_zip_pkg/%s" % jail
+if not os.path.exists(dep_location):
+	os.mkdir(dep_location)
+
+log_obj.log("Copying files back to %s...\n" % dep_location)
+conf.buildenv.copy_from(build_location + '/build/built-packages/*', dep_location)
 
 conf.buildenv.unlock_env()

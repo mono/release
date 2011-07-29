@@ -1,5 +1,5 @@
 username=builder
-hostname=x32-win-1.mono.lab.novell.com
+hostname=win-7-x86.lab.xamarin.com
 USE_ZIP_PKG=1
 # Cygwin's ssh server doesn't load this information
 # ... let's do it explicitly through sshutils

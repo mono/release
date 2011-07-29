@@ -325,9 +325,9 @@ class package:
 		distro = self.package_env.info['distro']
 		if self.destroot == distro:
 			(os, ver) = re.compile(r'(.*?)-(.*?)-.*').search(distro).groups()
-			revision = "%s.%s%s.novell" % (serial, os, ver)
+			revision = "%s.%s%s.xamarin" % (serial, os, ver)
 		else:
-			revision = serial + ".novell"
+			revision = serial + ".xamarin"
 		return revision
 
 	def get_mono_deps(self):
@@ -550,7 +550,7 @@ class package:
 	def get_dep_files(self, build_deps=False, recommend_deps=False, source_deps=False, zip_runtime_deps=False):
 		files = []
 
-		url_dest = config.packaging_dir + os.sep + 'external_zip_pkg'
+		url_dest = config.packaging_dir + os.sep + 'external_zip_pkg' + os.sep + self.package_env.name
 
 		deps = []
 		if build_deps:

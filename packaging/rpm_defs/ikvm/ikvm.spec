@@ -20,7 +20,7 @@ interoperability.
 %prep
 %setup -q
 # For some reason this file is outside the source dir...
-cp ../LICENSE .
+#cp ../LICENSE .
 # fix line endings for rpmlint
 dos2unix LICENSE
 

@@ -245,7 +245,6 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
 def get_url(url, destination):
 
 	download_filename = destination + os.sep + os.path.basename(url)
-
 	# Get size to make sure it's > 0
 	if os.path.exists(download_filename):
 		size = os.stat(download_filename).st_size
@@ -631,6 +630,8 @@ def version_sort(my_list):
 
 	Uses the rpmvercmp python extension to speed things up a bit.
 	"""
+	print "FIXME: not actually sorting version in utils.version_sort"
+	"""
 	sys.path.append(rpmvercmp_module_path)
 	try:
 		import rpmvercmp
@@ -644,7 +645,7 @@ def version_sort(my_list):
 		import rpmvercmp
 
 	my_list.sort(rpmvercmp.version_compare)
-
+	"""
 	return my_list
 
 def remove_list_duplicates(my_list):

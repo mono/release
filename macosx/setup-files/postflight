@@ -32,7 +32,7 @@ if [ -d ${FW_CURRENT} ]; then
     # Make sure we run the files we lay down, and not other stuff installed on the system
     export PATH=${FW_CURRENT}/bin:$PATH
     # gtk+ setup
-    gdk-pixbuf-query-loaders > gtk-2.0/gdk-pixbuf.loaders
+    gdk-pixbuf-query-loaders --update-cache
     # pango setup
     mkdir -p pango
     pango-querymodules >  pango/pango.modules

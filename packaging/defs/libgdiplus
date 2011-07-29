@@ -110,7 +110,7 @@ sunos_8_sparc_ZIP_DEPS=(
 
 macos_10_ZIP_BUILD () {
 	# TODO: any other options needed here to build to use without x11?
-	./configure --enable-quartz --prefix=/tmp/install --with-libjpeg --includedir=/tmp/build_deps/include || exit 1
+	CFLAGS="-m32" ./configure --enable-quartz --prefix=/tmp/install --with-libjpeg --includedir=/tmp/build_deps/include || exit 1
         make || exit 1
         make install || exit 1
 }
@@ -138,24 +138,23 @@ macos_10_ppc_ZIP_DEPS=(
 )
 
 macos_10_x86_ZIP_DEPS=(
-	# See http://primates.ximian.com/~wberrier/macos/deps/README
-	http://primates.ximian.com/~wberrier/macos/deps/x86/glib-2.24.1-8.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.25-8.1.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.18.1.1-8.macos10.novell.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/glib-2.28.8.macos10.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pkg-config-0.25.macos10.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gettext-0.18.1.1.macos10.x86.zip
 
-	http://primates.ximian.com/~wberrier/macos/deps/x86/jpeg-8-8.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/libpng-1.2.44-8.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/giflib-4.1.6-8.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/tiff-3.8.2-8.macos10.novell.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/jpeg-8.macos10.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/libpng-1.2.46.macos10.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/giflib-4.1.6.macos10.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/tiff-3.8.2.macos10.x86.zip
 
 	# We cannot build against our own fontconfig, I don't know why
-	#http://primates.ximian.com/~wberrier/macos/deps/x86/cairo-1.8.10-8.macos10.novell.x86.zip
-	#http://primates.ximian.com/~wberrier/macos/deps/x86/fontconfig-2.8.0-8.macos10.novell.x86.zip
-	#http://primates.ximian.com/~wberrier/macos/deps/x86/freetype-2.4.2-8.macos10.novell.x86.zip
-	#http://primates.ximian.com/~wberrier/macos/deps/x86/pixman-0.18.2-8.macos10.novell.x86.zip
+	#http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/cairo-1.10.2.macos10.x86.zip
+	#http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/fontconfig-2.8.0.macos10.x86.zip
+	#http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/freetype-2.4.2.macos10.x86.zip
+	#http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pixman-0.22.2.macos10.x86.zip
 
 	# 10.4 and 10.5 have differing expat versions, use our own
-	http://primates.ximian.com/~wberrier/macos/deps/x86/expat-2.0.1-8.macos10.novell.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/expat-2.0.1.macos10.x86.zip
 
 )
 

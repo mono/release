@@ -39,17 +39,17 @@ PACKS_TO_REMOVE=(
 )
 
 win_4_i386_ZIP_RUNTIME_DEPS=(
-	http://primates.ximian.com/~wberrier/windows-installer/ms_gdiplus/3102.1360/gdiplus.exe
+	http://beefydude.lab.xamarin.com/misc/gdiplus.zip
 )
 
 ## format: <$DISTRO>_ZIP_DEPS
 # Note: $DISTRO must have the hyphens converted to underscores
 win_4_i386_ZIP_DEPS=(
-	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/gettext-runtime-0.17-1.zip
-	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/gettext-runtime-dev-0.17-1.zip
-	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/gettext-tools-0.17.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/gettext-runtime_0.18.1.1-2_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/gettext-runtime-dev_0.18.1.1-2_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/gettext-tools_0.18.1.1-2_win32.zip
 	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/libiconv-1.9.1.bin.woe32.zip
-	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/pkg-config_0.23-3_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/pkg-config_0.25-1_win32.zip
 	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/zlib-dev_1.2.4-2_win32.zip
 	http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/zlib_1.2.4-2_win32.zip
 )
@@ -63,9 +63,9 @@ macos_10_ppc_ZIP_DEPS=(
 
 macos_10_x86_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-        http://primates.ximian.com/~wberrier/macos/deps/x86/pkg-config-0.25-8.1.macos10.novell.x86.zip
-        http://primates.ximian.com/~wberrier/macos/deps/x86/gettext-0.18.1.1-8.macos10.novell.x86.zip
-	http://primates.ximian.com/~wberrier/macos/deps/x86/sqlite-3.6.23.1-8.macos10.novell.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pkg-config-0.25.macos10.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gettext-0.18.1.1.macos10.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/sqlite-3.6.23.1.macos10.x86.zip
 )
 
 win_4_i386_ZIP_BUILD () {
@@ -100,10 +100,10 @@ fd.write(text)
 fd.close()'
 
 	ENABLE_LLVM=""
-	if [ "$(uname -m)" = "i386" ]; then
+	if test "$(uname -m)" = "i386" || test "$(uname -m)" = "x86_64"; then
 		ENABLE_LLVM="--enable-loadedllvm"
 	fi
-	CFLAGS=" -DMAC_OS_X_VERSION_10_5=1050 $CFLAGS " ./configure --prefix=$MONO_PREFIX --with-moonlight=no --with-ikvm=yes $ENABLE_LLVM || exit 1
+	CFLAGS=" -DMAC_OS_X_VERSION_10_5=1050 $CFLAGS " ./configure --prefix=$MONO_PREFIX --host=i386-apple-darwin10.8.0 --with-moonlight=no --with-ikvm=yes $ENABLE_LLVM || exit 1
 
 	set
 
