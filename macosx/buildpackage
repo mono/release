@@ -216,7 +216,7 @@ fd.close()
 
 # Get list of components for readme
 def package_pretty_name(package_name):
-	return package_name.replace(".novell.noarch.rpm", "").replace(".macos10.ppc.zip", "").replace(".macos10.x86.zip", "").replace(".noarch.zip", "").replace(".zip", "")
+	return package_name.replace(".xamarin.noarch.rpm", "").replace(".macos10.xamarin.ppc.zip", "").replace(".macos10.xamarin.x86.zip", "").replace(".noarch.zip", "").replace(".zip", "")
 
 packages = []
 packages_text = ""

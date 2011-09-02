@@ -63,9 +63,9 @@ macos_10_ppc_ZIP_DEPS=(
 
 macos_10_x86_ZIP_DEPS=(
 	# See http://primates.ximian.com/~wberrier/macos/deps/README
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pkg-config-0.25.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gettext-0.18.1.1.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/sqlite-3.6.23.1.macos10.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pkg-config-0.25.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gettext-0.18.1.1.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/sqlite-3.6.23.1.macos10.xamarin.x86.zip
 )
 
 win_4_i386_ZIP_BUILD () {

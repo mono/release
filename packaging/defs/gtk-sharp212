@@ -50,25 +50,25 @@ make_dist () {
 }
 
 macos_10_x86_ZIP_DEPS=(
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/atk-1.33.6.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/cairo-1.10.2.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/fontconfig-2.8.0.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/freetype-2.4.2.macos10.x86.zip
-        http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/glib-2.28.8.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gdk-pixbuf-2.22.1.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gtk+-2.24.5.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/libglade-2.6.4.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/librsvg-2.26.3.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/libxml2-2.6.30.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pango-1.28.4.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pixman-0.22.2.macos10.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/atk-1.33.6.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/cairo-1.10.2.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/fontconfig-2.8.0.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/freetype-2.4.2.macos10.xamarin.x86.zip
+        http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/glib-2.28.8.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gdk-pixbuf-2.22.1.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gtk+-2.24.5.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/libglade-2.6.4.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/librsvg-2.26.3.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/libxml2-2.6.30.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pango-1.28.4.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pixman-0.22.2.macos10.xamarin.x86.zip
 )
 
 macos_10_x86_ZIP_RUNTIME_DEPS=(
         http://beefydude.lab.xamarin.com/misc/gtkrc_mac-1.zip
-        http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gtk-engines-2.20.2.macos10.x86.zip
-        http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/ige-mac-integration-0.9.8.macos10.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/murrine-0.98.1.macos10.x86.zip
+        http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gtk-engines-2.20.2.macos10.xamarin.x86.zip
+        http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/ige-mac-integration-0.9.8.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/murrine-0.98.1.macos10.xamarin.x86.zip
 )
 
 macos_10_ppc_ZIP_DEPS=(
