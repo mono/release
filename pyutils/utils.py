@@ -86,8 +86,15 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
         (root, ext) = os.path.splitext(filename)
 
         if ext ==  ".zip" or ext == ".exe":
+		tempdir = "___EXTRACT___"
+
+		final_dest_dir = os.getcwd()
+
+                if os.path.exists(tempdir):
+                        distutils.dir_util.remove_tree(tempdir)
+		
                 #print "Found zip!"
-                (status, output) = launch_process("unzip -o %s" % filename, print_output=debug)
+                (status, output) = launch_process("unzip -d %s -o %s" % (tempdir, filename), print_output=debug)
                 #print output
                 #print "Status: %d" % status
                 if status:
@@ -96,6 +103,12 @@ def extract_file(filename, preserve_symlinks=0, truncate_path='usr'):
                         os.remove(filename)
 			print output
                         sys.exit(1)
+		
+		os.chdir(tempdir)
+		distutils.dir_util.copy_tree(".", final_dest_dir, preserve_symlinks=preserve_symlinks)
+
+                os.chdir(final_dest_dir)
+                distutils.dir_util.remove_tree(tempdir)
 
         elif ext == ".rpm":
                 #print "Found rpm!"
