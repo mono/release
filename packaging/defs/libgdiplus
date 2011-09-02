@@ -148,10 +148,10 @@ macos_10_x86_ZIP_DEPS=(
 	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/tiff-3.8.2.macos10.xamarin.x86.zip
 
 	# We cannot build against our own fontconfig, I don't know why
-	#http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/cairo-1.10.2.macos10.x86.zip
-	#http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pixman-0.22.2.macos10.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/cairo-1.10.2.macos10.xamarin.x86.zip
 	#http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/fontconfig-2.8.0.macos10.xamarin.x86.zip
 	#http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/freetype-2.4.2.macos10.xamarin.x86.zip
+	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pixman-0.22.2.macos10.xamarin.x86.zip
 
 	# 10.4 and 10.5 have differing expat versions, use our own
 	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/expat-2.0.1.macos10.xamarin.x86.zip
