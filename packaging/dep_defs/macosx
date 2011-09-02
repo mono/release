@@ -282,9 +282,9 @@ EOF
 			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
 			
 			# Mac OS 10.7 Lion patches
-			PATCHES=`curl -L http://beefydude.lab.xamarin.com/patches/gtk/patchlist.txt | egrep -o '\"[^\"]*\"' | sed 's/\"//g'`
+			PATCHES=`curl -L http://beefydude.lab.xamarin.com/patches/gtk/patchlist.txt | egrep -o '\"[^\"]*\"' | sed 's/\"//g'` || exit 1
 			for patchfile in $PATCHES; do
-				curl -# -L http://beefydude.lab.xamarin.com/patches/gtk/$patchfile | patch -p1
+				curl -# -L http://beefydude.lab.xamarin.com/patches/gtk/$patchfile | patch -p1 || exit 1
 			done
 			
 			# gdk-pixbuf relocation is hacky
@@ -292,10 +292,20 @@ EOF
 			export GDK_PIXBUF_MODULEDIR="/tmp/build_deps/lib/gdk-pixbuf-2.0/2.10.0/loaders/"
 			/tmp/build_deps/bin/gdk-pixbuf-query-loaders --update-cache
 			
-                        CFLAGS="-m32" LDFLAGS="$LDFLAGS -framework Foundation -framework Carbon -framework AppKit -Xlinker -headerpad_max_install_names" ./configure --prefix=/tmp/install --with-gdktarget=quartz --disable-gtk-doc --with-libjpeg --without-libjasper
+                        CFLAGS="-m32 -gdwarf-2" LDFLAGS="$LDFLAGS -framework Foundation -framework Carbon -framework AppKit -Xlinker -headerpad_max_install_names" ./configure --prefix=%s --with-gdktarget=quartz --disable-gtk-doc --with-libjpeg --without-libjasper
 			make || exit 1
-			make install || exit 1
-		""",
+			make install DESTDIR=/tmp/temp_install || exit 1
+			
+			# Do this so all the zip files have the same base, and we can lay them back here later
+			mkdir -p /tmp/install
+			cd /tmp/temp_install%s || exit 1
+			mv * /tmp/install
+			
+			# create debug symbols
+			for file in $(find /tmp/install -type f | file -f - | grep "Mach-O" | sed -E "s/\:.*//"); do
+				dsymutil $file
+			done
+		""" % (prefix, prefix),
 	},
 	{
 		'name': 'libxml2',

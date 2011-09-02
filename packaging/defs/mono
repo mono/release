@@ -3,10 +3,9 @@ web_index=0
 USE_PATCHES=1
 
 BUILD_HOSTS=(
-	macos-10-ppc
 	macos-10-x86
-	sle-11-i586
 	win-4-i386
+	sle-11-i586
 )
 
 USE_HOSTS=(${BUILD_HOSTS[@]})
@@ -103,7 +102,7 @@ fd.close()'
 	if test "$(uname -m)" = "i386" || test "$(uname -m)" = "x86_64"; then
 		ENABLE_LLVM="--enable-loadedllvm"
 	fi
-	CFLAGS=" -DMAC_OS_X_VERSION_10_5=1050 $CFLAGS " ./configure --prefix=$MONO_PREFIX --host=i386-apple-darwin10.8.0 --with-moonlight=no --with-ikvm=yes $ENABLE_LLVM || exit 1
+	CFLAGS=" -DMAC_OS_X_VERSION_10_5=1050 -gdwarf-2 $CFLAGS " ./configure --prefix=$MONO_PREFIX --host=i386-apple-darwin10.8.0 --with-moonlight=no --with-ikvm=yes $ENABLE_LLVM || exit 1
 
 	set
 
@@ -112,7 +111,7 @@ fd.close()'
 	make ||
 	make ||
 	make || exit 1
-
+	
 	# It appears that xsp doesn't use /etc/mono/config, so still provide 
 	#  these mappings with the assemblies like we used to
 	cat <<EOF > mcs/class/lib/net_1_1/System.Drawing.dll.config
@@ -151,9 +150,17 @@ EOF
 
 	# Do this so all the zip files have the same base, and we can lay them back here later
 	mkdir -p /tmp/install
-	cd /tmp/temp_install/Library/Frameworks/Mono.framework/Versions/$version
+	pushd /tmp/temp_install/Library/Frameworks/Mono.framework/Versions/$version
 	mv * /tmp/install
-
+	popd
+	
+	# copy/create dSYM files
+	for file in $(find -E . -regex "\./.*\.dylib.dSYM"); do
+		cp -R $file /tmp/install/lib
+	done
+	for file in $(find /tmp/install/bin -type f | file -f - | grep "Mach-O" | sed -E "s/\:.*//"); do
+		dsymutil $file
+	done
 }
 
 debian_ZIP_BUILD () {

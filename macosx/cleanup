@@ -211,24 +211,26 @@ find . -name '*.mdb' -delete
 # Strip debug symbols from the runtime
 # TODO: Find all libraries and binaries anywhere
 popd
-for i in bin/*; do
-  strip $i
-done
-for i in lib/*.dylib; do
-  strip -S $i
-done
+#for i in bin/*; do
+#  strip $i
+#done
+#for i in lib/*.dylib; do
+#  strip -S $i
+#done
 
 # Separate out the debug symbols for the SDK
 # This is not really needed anymore but it still kinda makes sense
+# Update: DO NOT dsymutil here. It needs the .o objects from the build, and when it can't find them
+#  creates an empty .dSYM package, overwriting any existing, full .dSYM
 pushd $TARGET
-for i in bin/*; do
-  dsymutil $i
-  strip $i
-done
-for i in lib/*.dylib; do
-  dsymutil $i
-  strip -S $i
-done
+#for i in bin/*; do
+  #dsymutil $i
+#  strip $i
+#done
+#for i in lib/*.dylib; do
+  #dsymutil $i
+#  strip -S $i
+#done
 
 find . -name '*.la' -delete
 rm -rf lib/libMonoPosixHelper.a
