@@ -156,7 +156,7 @@ if gtk_sharp_version.count('-'):
 
 # Hmm... needs to be a better way to package up these samples...
 selections += [ Selection('samples', urls = """
-http://beefydude.lab.xamarin.com/packages/deps/win-4-i386/samples.zip
+http://beefydude.lab.xamarin.com/misc/samples.zip
 """.split()
  ) ]
 
@@ -596,6 +596,9 @@ shutil.move("mono/lib/ikvm/JVM.DLL", "mono/bin")
 ##############################################
 # Clean up some unneeded files
 print "Cleaning up unnecessary files..."
+
+# remove any Mac OS quarantine files that may have crept in
+commands.getoutput("find . -name ._* -delete")
 
 prune_files = """
 	README.libiconv
