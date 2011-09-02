@@ -131,6 +131,9 @@ win_4_i386_ZIP_DEPS=(
 	http://ftp.gnome.org/pub/GNOME/binaries/win32/glib/2.28/glib-dev_2.28.1-1_win32.zip
 	http://ftp.gnome.org/pub/GNOME/binaries/win32/glib/2.28/glib_2.28.1-1_win32.zip
 
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/gdk-pixbuf/2.22/gdk-pixbuf-dev_2.22.1-1_win32.zip
+	http://ftp.gnome.org/pub/GNOME/binaries/win32/gdk-pixbuf/2.22/gdk-pixbuf_2.22.1-1_win32.zip
+
 	http://ftp.gnome.org/pub/GNOME/binaries/win32/gtk+/2.24/gtk+-dev_2.24.0-1_win32.zip
 	http://ftp.gnome.org/pub/GNOME/binaries/win32/gtk+/2.24/gtk+_2.24.0-1_win32.zip
 
@@ -157,6 +160,9 @@ win_4_i386_ZIP_BUILD () {
         mv /tmp/build_deps/lib/pkgconfig/mono*.pc /tmp/backup
 
         ./configure --prefix=/tmp/install
+	
+	# some stray carriage returns make the build blow up. ideally, we would find the source of these instead of just patching them here
+	dos2unix glib/glue/Makefile pango/glue/Makefile atk/glue/Makefile gdk/glue/Makefile gtk/glue/Makefile glade/glue/Makefile sample/valtest/Makefile sample/opaquetest/Makefile
 
         # let's just skip the gnomevfs sample instead of disabling gnome-vfs
         # Unnecessary in 2.8.1... doh, still another problem: Mono.GetOptions isn't on mssdk
@@ -165,7 +171,7 @@ win_4_i386_ZIP_BUILD () {
         # Don't have cyg in dll files
         # Not needed (in 2.8.2 at least)
         #sed -i "s/\/cyg\//\/\//" libtool
-
+	
         # Clean up the MS gac of gtk-sharp
         rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC*/*-sharp
         rm -Rf /cygdrive/c/WINDOWS/ASSEMBLY/GAC*/*gtk-dotnet

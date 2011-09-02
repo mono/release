@@ -85,7 +85,7 @@ version = version.split("-")[0]
 version_list = (version.split(".") + ["0"] * (3 - len(version.split("."))))[:4]
 for i in range(1,3):
 	version_list[i] = version_list[i].zfill(2)
-version_int = "".join(version_list) + release.replace(".", "").zfill(3)
+version_int = "".join(version_list) + release.replace(".", "").zfill(4)
 
 # Set the package GUID
 if arch_name == "universal":
@@ -358,8 +358,8 @@ conf.buildenv.copy_from("%s/%s.dmg" % (remote_temp, sdk_package_filename), outpu
 
 # Create md5
 print "Create md5..."
-utils.launch_process("cd %s; md5sum %s.dmg > %s.dmg.md5 " % (output_dir, package_filename, package_filename), print_output=debug)
-utils.launch_process("cd %s; md5sum %s.dmg > %s.dmg.md5 " % (output_dir, sdk_package_filename, sdk_package_filename), print_output=debug)
+utils.launch_process("cd %s; md5 -r %s.dmg > %s.dmg.md5 " % (output_dir, package_filename, package_filename), print_output=debug)
+utils.launch_process("cd %s; md5 -r %s.dmg > %s.dmg.md5 " % (output_dir, sdk_package_filename, sdk_package_filename), print_output=debug)
 
 print "Saving packages_used.txt..."
 shutil.copy(temp_dir + os.sep + 'packages_used.txt', output_dir)

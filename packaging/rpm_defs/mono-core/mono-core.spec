@@ -350,6 +350,7 @@ A Library for embedding Mono in your Application (sgen version).
 %files -n libmonosgen-2_0-0
 %defattr(-, root, root)
 %_libdir/libmonosgen-2.0.so.0*
+%_libdir/pkgconfig/monosgen-2.pc
 
 %post -n libmonosgen-2_0-0 -p /sbin/ldconfig
 
@@ -984,6 +985,7 @@ Mono development tools.
 %_bindir/mono-find-provides
 %_bindir/mono-find-requires
 %_bindir/mono-gdb.py
+%_bindir/mono-sgen-gdb.py
 %_bindir/mono-heapviz
 %_bindir/mono-shlib-cop
 %_bindir/mono-xmltool
@@ -1125,8 +1127,13 @@ Mono development tools.
 %_prefix/lib/mono/gac/Microsoft.Build.Utilities.v4.0
 %_prefix/lib/mono/gac/Mono.CodeContracts
 %_prefix/lib/mono/gac/Mono.Debugger.Soft
+%_prefix/lib/mono/4.0/Mono.Debugger.Soft.dll
 %_prefix/lib/mono/gac/PEAPI
 %_prefix/lib/mono/xbuild
+/usr/lib/mono/xbuild-frameworks/.NETFramework/v2.0/RedistList/FrameworkList.xml
+/usr/lib/mono/xbuild-frameworks/.NETFramework/v3.0/RedistList/FrameworkList.xml
+/usr/lib/mono/xbuild-frameworks/.NETFramework/v3.5/RedistList/FrameworkList.xml
+/usr/lib/mono/xbuild-frameworks/.NETFramework/v4.0/RedistList/FrameworkList.xml
 
 %package -n monodoc-core
 License:        LGPL v2.1 only
