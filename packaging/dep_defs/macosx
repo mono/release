@@ -131,6 +131,11 @@ EOF
 	{
 		'name': 'giflib', 
                 'source': 'http://surfnet.dl.sourceforge.net/project/giflib/giflib%204.x/giflib-4.1.6/giflib-4.1.6.tar.bz2',
+		'build':"""set -x
+			CFLAGS="-m32" ./configure --prefix=/tmp/install
+			make || exit 1
+			make install || exit 1
+			""",
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
