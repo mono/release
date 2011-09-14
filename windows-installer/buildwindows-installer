@@ -147,7 +147,7 @@ selections += [ Selection('mono', packages = "mono boo ikvm nant mono-basic glue
 selections += [ Selection('gtk', deps = "gtk-sharp212".split() ) ]
 
 #selections += [ Selection('gtk-sharp', packages = "gtk-sharp212 mono-tools".split() ) ]
-selections += [ Selection('gtk-sharp', deps = "gtk-sharp212".split() ) ]
+selections += [ Selection('gtk-sharp', packages = "gtk-sharp212".split() ) ]
 
 # Grab the gtk# version, and if there's a revision, ditch it
 gtk_sharp_version = selections[len(selections) - 1].versions['gtk-sharp212']
