@@ -1,0 +1,147 @@
+#!/bin/sh
+
+if [ ! -f libgdiplus0.spec.in ]; then
+	echo "Run the build script from the toplevel libgdiplus source directory"
+	exit 1
+fi
+
+INSTALL_BASE=/opt/libgdiplus
+OSTYPE=`head -1 /etc/release | sed -e 's/.* \(.*Solaris\) .*/\1/'`
+
+PKGINFO=`mktemp /tmp/libgdiplus-pkginfo.XXXXXX`
+if [ -z "$PKGINFO" ]; then
+	exit 1
+fi
+
+PROTOTYPE=`mktemp /tmp/libgdiplus-prototype.XXXXXX`
+if [ -z "$PROTOTYPE" ]; then
+	rm -f $PKGINFO
+	exit 1
+fi
+
+DEPEND=`mktemp /tmp/libgdiplus-depend.XXXXXX`
+if [ -z "$DEPEND" ]; then
+	rm -f $PKGINFO
+	rm -f $PROTOTYPE
+	exit 1
+fi
+
+TMPDIR=`mktemp -d /tmp/libgdiplus-build.XXXXXX`
+if [ -z "$TMPDIR" ]; then
+	rm -f $PKGINFO
+	rm -f $PROTOTYPE
+	rm -f $DEPEND
+	exit 1
+fi
+
+trap "rm -f $PKGINFO $PROTOTYPE $DEPEND; rm -fr $TMPDIR; exit" 0 INT TERM
+
+if [ $OSTYPE = 'Solaris' ]; then
+	CPPFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib ./configure --prefix=$INSTALL_BASE
+else
+	CPPFLAGS=-I/opt/giflib/include LDFLAGS=-L/opt/giflib/lib ./configure --prefix=$INSTALL_BASE
+fi
+if [ $? -ne 0 ]; then
+	echo "Configure failed, exiting"
+	exit 1
+fi
+
+make && make prefix=$TMPDIR/$INSTALL_BASE install
+if [ $? -ne 0 ]; then
+	echo "Build failed, exiting"
+	exit 1
+fi
+
+if [ $OSTYPE = 'OpenSolaris' ]; then
+	# Shove libgif into this package, as there's no libgif package :(
+	cp /opt/giflib/lib/libgif.so.4.1.6 $TMPDIR/$INSTALL_BASE/lib
+	(cd $TMPDIR/$INSTALL_BASE/lib && ln -s libgif.so.4.1.6 libgif.so.4)
+	(cd $TMPDIR/$INSTALL_BASE/lib && ln -s libgif.so.4.1.6 libgif.so)
+fi
+
+VERSION=`grep " VERSION " config.h | sed -e 's/\(#define VERSION \"\)\(.*\)\(\"\)/\2/'`
+
+cat > $PKGINFO <<EOF
+PKG=libgdiplus
+NAME=Open Source Implementation of the GDI+ API
+ARCH=`uname -p`
+VERSION=$VERSION
+CATEGORY=system
+VENDOR=Mono Team, packaged by Codice Software
+DESC=This is part of the Mono project.  It is required when using Windows.Forms.
+CLASSES=none
+BASEDIR=$INSTALL_BASE
+EOF
+
+if [ $OSTYPE = 'Solaris' ]; then
+cat > $DEPEND <<EOF
+P SUNWgnome-base-libs GNOME base GUI libraries
+P SMCzlib zlib
+P SUNWxwplt X Window System platform software
+P SUNWfreetype2 FreeType2 Font library
+P SUNWTiff libtiff - library for reading and writing TIFF
+P SUNWjpg jpeg - The Independent JPEG Groups JPEG software
+P SMClungif libungif
+P SUNWpng Portable Network Graphics library
+P SUNWlibexif libexif
+P SUNWfontconfig Fontconfig library
+P SMClgcc346 libgcc
+P SUNWzlib The Zip compression library
+P SUNWlexpt libexpat - XML parser library
+EOF
+else
+cat > $DEPEND <<EOF
+P SUNWgnome-base-libs GNOME base GUI libraries
+P SUNWfreetype2 FreeType2 Font library
+P SUNWxwplt X Window System platform software
+P SUNWTiff libtiff - library for reading and writing TIFF
+P SUNWjpg jpeg - The Independent JPEG Groups JPEG software
+P SUNWpng Portable Network Graphics library
+P SUNWlibexif EXIF tag parsing library for digital cameras
+P SUNWfontconfig Fontconfig library
+P SUNWgccruntime GCC Runtime libraries
+P SUNWpixman Pixman library
+P SUNWlexpt libexpat - XML parser library
+EOF
+fi
+
+cat > $PROTOTYPE <<EOF
+i pkginfo=$PKGINFO
+i depend=$DEPEND
+d none $INSTALL_BASE ? ? ?
+EOF
+
+dirs=`(cd $TMPDIR/$INSTALL_BASE && find lib -type d -print)`
+for dir in $dirs; do
+	if [ -d $TMPDIR/$INSTALL_BASE/$dir ]; then
+		echo d none $dir 0755 root bin >> $PROTOTYPE
+	fi
+done
+
+# files (do files in eg etc need to be type i?)
+files=`(cd $TMPDIR/$INSTALL_BASE && find lib -type f -print)`
+for file in $files; do
+	if [ -f $TMPDIR/$INSTALL_BASE/$file ]; then
+		echo f none $file 0755 root bin >> $PROTOTYPE
+	fi
+done
+
+# links
+if [ $OSTYPE = 'Solaris' ]; then
+	links=`(cd $TMPDIR/$INSTALL_BASE && find lib -type l -print | xargs ls -l | awk '{ printf("%s=%s\n", $9, $11) }')`
+else
+	links=`(cd $TMPDIR/$INSTALL_BASE && find lib -type l -print | xargs ls -l | awk '{ printf("%s=%s\n", $8, $10) }')`
+fi
+for link in $links; do
+	echo l none $link >> $PROTOTYPE
+done
+
+pkgmk -o -d /tmp -b $TMPDIR/$INSTALL_BASE -f $PROTOTYPE
+if [ $? = 0 ]; then
+	pkgtrans /tmp libgdiplus.pkg libgdiplus
+fi
+
+gzip -9 /tmp/libgdiplus.pkg
+
+echo "The libgdiplus package is in /tmp/libgdiplus.pkg.gz"
+

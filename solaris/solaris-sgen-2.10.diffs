@@ -1,0 +1,272 @@
+diff --git a/configure.in b/configure.in
+Index:configure.in
+--- a/configure.in
++++ b/configure.in
+@@ -2127,6 +2127,7 @@ case "$host" in
+ 			# foo.c:6: warning: visibility attribute not supported in this configuration; ignored
+ 			# ld: fatal: relocation error: R_386_GOTOFF: file /var/tmp//ccxYR96k.o: symbol astruct: relocation must bind locally
+ 			have_visibility_hidden=no
++			sgen_supported=true
+ 			;;
+ 		  cygwin*)
+ 			have_visibility_hidden=no		  
+@@ -2192,6 +2193,7 @@ case "$host" in
+ 		if test x"$AR" = xfalse; then
+ 			AC_MSG_ERROR([The required utility 'ar' is not found in your PATH. Usually it can be found in /usr/ccs/bin.])
+ 		fi
++		sgen_supported=true
+ 		;;
+        alpha*-*-linux* | alpha*-*-osf*)
+ 		TARGET=ALPHA;
+diff --git a/mono/metadata/sgen-archdep.h b/mono/metadata/sgen-archdep.h
+Index:mono/metadata/sgen-archdep.h
+--- a/mono/metadata/sgen-archdep.h
++++ b/mono/metadata/sgen-archdep.h
+@@ -208,6 +208,78 @@
+ 	((a)[15] = (gpointer) (UCONTEXT_GREGS((ctx))) [15]);		\
+ 	} while (0)
+ 
++#elif defined(__sparc__)
++
++#define REDZONE_SIZE	0
++
++/* Don't bother with %g0 (%r0), it's always hard-coded to zero */
++#define ARCH_NUM_REGS 15	
++#ifdef __sparcv9
++#define ARCH_STORE_REGS(ptr)	\
++	__asm__ __volatile__(	\
++		"st %%g1,[%0]\n\t"	\
++		"st %%g2,[%0+0x08]\n\t"	\
++		"st %%g3,[%0+0x10]\n\t"	\
++		"st %%g4,[%0+0x18]\n\t"	\
++		"st %%g5,[%0+0x20]\n\t"	\
++		"st %%g6,[%0+0x28]\n\t"	\
++		"st %%g7,[%0+0x30]\n\t"	\
++		"st %%o0,[%0+0x38]\n\t"	\
++		"st %%o1,[%0+0x40]\n\t"	\
++		"st %%o2,[%0+0x48]\n\t"	\
++		"st %%o3,[%0+0x50]\n\t"	\
++		"st %%o4,[%0+0x58]\n\t"	\
++		"st %%o5,[%0+0x60]\n\t"	\
++		"st %%o6,[%0+0x68]\n\t"	\
++		"st %%o7,[%0+0x70]\n\t"	\
++		: 			\
++		: "r" (ptr)		\
++		: "memory"			\
++	)
++#else
++#define ARCH_STORE_REGS(ptr)	\
++	__asm__ __volatile__(	\
++		"st %%g1,[%0]\n\t"	\
++		"st %%g2,[%0+0x04]\n\t"	\
++		"st %%g3,[%0+0x08]\n\t"	\
++		"st %%g4,[%0+0x0c]\n\t"	\
++		"st %%g5,[%0+0x10]\n\t"	\
++		"st %%g6,[%0+0x14]\n\t"	\
++		"st %%g7,[%0+0x18]\n\t"	\
++		"st %%o0,[%0+0x1c]\n\t"	\
++		"st %%o1,[%0+0x20]\n\t"	\
++		"st %%o2,[%0+0x24]\n\t"	\
++		"st %%o3,[%0+0x28]\n\t"	\
++		"st %%o4,[%0+0x2c]\n\t"	\
++		"st %%o5,[%0+0x30]\n\t"	\
++		"st %%o6,[%0+0x34]\n\t"	\
++		"st %%o7,[%0+0x38]\n\t"	\
++		: 			\
++		: "r" (ptr)		\
++		: "memory"			\
++	)
++#endif
++
++#define ARCH_SIGCTX_SP(ctx)	(((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_SP])
++#define ARCH_SIGCTX_IP(ctx)	(((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_PC])
++#define ARCH_COPY_SIGCTX_REGS(a,ctx) do {	\
++	(a)[0] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_G1]);	\
++	(a)[1] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_G2]);	\
++	(a)[2] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_G3]);	\
++	(a)[3] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_G4]);	\
++	(a)[4] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_G5]);	\
++	(a)[5] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_G6]);	\
++	(a)[6] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_G7]);	\
++	(a)[7] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_O0]);	\
++	(a)[8] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_O1]);	\
++	(a)[9] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_O2]);	\
++	(a)[10] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_O3]);	\
++	(a)[11] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_O4]);	\
++	(a)[12] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_O5]);	\
++	(a)[13] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_O6]);	\
++	(a)[14] = (gpointer) (((ucontext_t *)(ctx))->uc_mcontext.gregs [REG_O7]);	\
++	} while (0)
++
+ #endif
+ 
+ #endif /* __MONO_SGENARCHDEP_H__ */
+diff --git a/mono/utils/mono-sigcontext.h b/mono/utils/mono-sigcontext.h
+Index:mono/utils/mono-sigcontext.h
+--- a/mono/utils/mono-sigcontext.h
++++ b/mono/utils/mono-sigcontext.h
+@@ -67,6 +67,16 @@
+ 	#define UCONTEXT_REG_ESI(ctx) (((ucontext_t*)(ctx))->sc_esi)
+ 	#define UCONTEXT_REG_EDI(ctx) (((ucontext_t*)(ctx))->sc_edi)
+ 	#define UCONTEXT_REG_EIP(ctx) (((ucontext_t*)(ctx))->sc_eip)
++#elif defined(PLATFORM_SOLARIS)
++	#define UCONTEXT_REG_EAX(ctx) (((ucontext_t*)(ctx))->uc_mcontext.gregs [EAX])
++	#define UCONTEXT_REG_EBX(ctx) (((ucontext_t*)(ctx))->uc_mcontext.gregs [EBX])
++	#define UCONTEXT_REG_ECX(ctx) (((ucontext_t*)(ctx))->uc_mcontext.gregs [ECX])
++	#define UCONTEXT_REG_EDX(ctx) (((ucontext_t*)(ctx))->uc_mcontext.gregs [EDX])
++	#define UCONTEXT_REG_EBP(ctx) (((ucontext_t*)(ctx))->uc_mcontext.gregs [EBP])
++	#define UCONTEXT_REG_ESP(ctx) (((ucontext_t*)(ctx))->uc_mcontext.gregs [ESP])
++	#define UCONTEXT_REG_ESI(ctx) (((ucontext_t*)(ctx))->uc_mcontext.gregs [ESI])
++	#define UCONTEXT_REG_EDI(ctx) (((ucontext_t*)(ctx))->uc_mcontext.gregs [EDI])
++	#define UCONTEXT_REG_EIP(ctx) (((ucontext_t*)(ctx))->uc_mcontext.gregs [EIP])
+ #else
+ 	#define UCONTEXT_REG_EAX(ctx) (((ucontext_t*)(ctx))->uc_mcontext.gregs [REG_EAX])
+ 	#define UCONTEXT_REG_EBX(ctx) (((ucontext_t*)(ctx))->uc_mcontext.gregs [REG_EBX])
+Index:configure
+--- a/configure.orig	2010-10-11 13:46:50.812739709 +0100
++++ b/configure	2010-10-11 13:47:25.482570430 +0100
+@@ -38555,6 +38555,7 @@
+ 			# foo.c:6: warning: visibility attribute not supported in this configuration; ignored
+ 			# ld: fatal: relocation error: R_386_GOTOFF: file /var/tmp//ccxYR96k.o: symbol astruct: relocation must bind locally
+ 			have_visibility_hidden=no
++			sgen_supported=true
+ 			;;
+ 		  cygwin*)
+ 			have_visibility_hidden=no
+@@ -38692,6 +38693,7 @@
+ $as_echo "$as_me: error: The required utility 'ar' is not found in your PATH. Usually it can be found in /usr/ccs/bin." >&2;}
+    { (exit 1); exit 1; }; }
+ 		fi
++		sgen_supported=true
+ 		;;
+        alpha*-*-linux* | alpha*-*-osf*)
+ 		TARGET=ALPHA;
+--- a/eglib/Makefile.am	Mon Feb 14 16:57:02 2011
++++ b/eglib/Makefile.am	Thu Feb 24 12:31:37 2011
+@@ -7,7 +7,7 @@
+ if CROSS_COMPILING
+ SUBDIRS = src
+ else
+-SUBDIRS = src test
++SUBDIRS = src
+ endif
+ endif
+ endif
+--- a/eglib/Makefile.in	Mon Feb 14 17:09:38 2011
++++ b/eglib/Makefile.in	Thu Feb 24 12:31:53 2011
+@@ -63,7 +63,7 @@
+   distclean-recursive maintainer-clean-recursive
+ ETAGS = etags
+ CTAGS = ctags
+-DIST_SUBDIRS = src test
++DIST_SUBDIRS = src
+ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+ distdir = $(PACKAGE)-$(VERSION)
+ top_distdir = $(distdir)
+@@ -213,7 +213,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-@CROSS_COMPILING_FALSE@@HOST_WIN32_FALSE@@PLATFORM_DARWIN_FALSE@SUBDIRS = src test
++@CROSS_COMPILING_FALSE@@HOST_WIN32_FALSE@@PLATFORM_DARWIN_FALSE@SUBDIRS = src
+ @CROSS_COMPILING_TRUE@@HOST_WIN32_FALSE@@PLATFORM_DARWIN_FALSE@SUBDIRS = src
+ @HOST_WIN32_FALSE@@PLATFORM_DARWIN_TRUE@SUBDIRS = src
+ @HOST_WIN32_TRUE@SUBDIRS = src
+diff --git a/mcs/class/Managed.Windows.Forms/System.Windows.Forms/X11Keyboard.cs b/mcs/class/Managed.Windows.Forms/System.Windows.Forms/X11Keyboard.cs
+index fc0c7fe..4ad67fc 100644
+--- a/mcs/class/Managed.Windows.Forms/System.Windows.Forms/X11Keyboard.cs
++++ b/mcs/class/Managed.Windows.Forms/System.Windows.Forms/X11Keyboard.cs
+@@ -208,6 +208,8 @@ namespace System.Windows.Forms {
+ 				XSetICFocus (xic);
+ 		}
+ 
++		private bool have_Xutf8ResetIC = true;
++
+ 		public void FocusOut (IntPtr window)
+ 		{
+ 			if (xim == IntPtr.Zero)
+@@ -216,7 +218,13 @@ namespace System.Windows.Forms {
+ 			this.client_window = IntPtr.Zero;
+ 			IntPtr xic = GetXic (window);
+ 			if (xic != IntPtr.Zero) {
+-				Xutf8ResetIC (xic);
++				if (have_Xutf8ResetIC) {
++					try {
++						Xutf8ResetIC (xic);
++					} catch (EntryPointNotFoundException) {
++						have_Xutf8ResetIC = false;
++					}
++				}
+ 				XUnsetICFocus (xic);
+ 			}
+ 		}
+@@ -1173,6 +1181,8 @@ namespace System.Windows.Forms {
+ 			}
+ 		}
+ 
++		private bool have_Xutf8LookupString = true;
++
+ 		private int LookupString (ref XEvent xevent, int len, out XKeySym keysym, out IntPtr status)
+ 		{
+ 			IntPtr keysym_res;
+@@ -1180,9 +1190,26 @@ namespace System.Windows.Forms {
+ 
+ 			status = IntPtr.Zero;
+ 			IntPtr xic = GetXic (client_window);
+-			if (xic != IntPtr.Zero) {
++			if (xic != IntPtr.Zero && have_Xutf8LookupString) {
+ 				do {
+-					res = Xutf8LookupString (xic, ref xevent, lookup_byte_buffer, 100, out keysym_res,  out status);
++					try {
++						res = Xutf8LookupString (xic, ref xevent, lookup_byte_buffer, 100, out keysym_res,  out status);
++					} catch (EntryPointNotFoundException) {
++						have_Xutf8LookupString = false;
++
++						/* Duplicate of the non-xic clause */
++						do {
++							res = XLookupString (ref xevent, lookup_byte_buffer, 100, out keysym_res, out status);
++							if ((int) status != -1) // XLookupBufferOverflow
++								break;
++							lookup_byte_buffer = new byte [lookup_byte_buffer.Length << 1];
++						} while (true);
++						lookup_buffer.Length = 0;
++						string s2 = Encoding.ASCII.GetString (lookup_byte_buffer, 0, res);
++						lookup_buffer.Append (s2);
++						keysym = (XKeySym) keysym_res.ToInt32 ();
++						return res;
++					}
+ 					if ((int) status != -1) // XLookupBufferOverflow
+ 						break;
+ 					lookup_byte_buffer = new byte [lookup_byte_buffer.Length << 1];
+diff --git a/mcs/class/Managed.Windows.Forms/System.Windows.Forms/XplatUIX11.cs b/mcs/class/Managed.Windows.Forms/System.Windows.Forms/XplatUIX11.cs
+index 2890de6..d00c40d 100644
+--- a/mcs/class/Managed.Windows.Forms/System.Windows.Forms/XplatUIX11.cs
++++ b/mcs/class/Managed.Windows.Forms/System.Windows.Forms/XplatUIX11.cs
+@@ -499,6 +499,12 @@ namespace System.Windows.Forms {
+ 
+ 				wake = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+ 				wake.Connect(listen.LocalEndPoint);
++
++				// Make this non-blocking, so it doesn't
++				// deadlock if too many wakes are sent
++				// before the wake_receive end is polled
++				wake.Blocking = false;
++
+ 				wake_receive = listen.Accept();
+ 
+ 				#if __MonoCS__
+@@ -1230,7 +1236,13 @@ namespace System.Windows.Forms {
+ 		}
+ 
+ 		void WakeupMain () {
+-			wake.Send (new byte [] { 0xFF });
++			try {
++				wake.Send (new byte [] { 0xFF });
++			} catch (SocketException ex) {
++				if (ex.SocketErrorCode != SocketError.WouldBlock) {
++					throw;
++				}
++			}
+ 		}
+ 
+ 		XEventQueue ThreadQueue(Thread thread) {

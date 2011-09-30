@@ -1,0 +1,69 @@
+Build scripts for Mono and libgdiplus, on OpenSolaris and Solaris x86 and SPARC.
+
+
+
+
+QUICK REFERENCE
+---------------
+
+On Solaris (not needed for OpenSolaris), ensure we're using Gnu tar, Gnu make
+and Gnu patch:
+$ PATH=/usr/local/bin:/usr/sfw/bin:/usr/ccs/bin:$PATH
+
+
+
+On all platforms:
+$ tar xjf mono-X.Y.Z-tar.bz2
+$ cd mono-X.Y.Z
+$ patch -p1 < ../solaris-sgen-2.10.diffs (if needed!)
+$ sh ../mono-pkg
+
+Now go and have lunch.  If the build succeeded the solaris package is
+/tmp/mono.pkg.gz.  If the build failed, it will most likely be a mono build
+issue that will need solving on a case-by-case basis.
+
+Building libgdiplus is similar, just substitute libgdiplus-pkg for mono-pkg
+above.
+
+
+DEPENDENCIES
+------------
+
+OpenSolaris
+
+The distribution comes with everything you need to build mono, but you may
+need to use the package manager to install additional build requirements.
+
+
+Solaris
+
+You're going to need to download a bunch of packages from
+http://www.sunfreeware.com
+
+On my Solaris 10 x86 machine I installed:
+
+curl-7.21.1
+expat-2.0.1
+gdb-6.8
+git-1.7.2
+grep-2.7
+libgcc-3.4.6
+libiconv-1.13.1
+libidn-1.19
+libintl-3.4.0
+libssh2-1.2.7
+libungif-4.1.4
+lsof_0508-4.80
+make-3.82
+ncurses-5.7
+openssl-1.0.0a
+patch-2.6
+pcre-8.10
+tar-1.23
+zlib-1.2.5
+
+
+Solaris/x86 also requires a newer version of the Boehm GC library from
+http://www.hpl.hp.com/personal/Hans_Boehm/gc/.  I used gc-7.1.tar.gz.  The
+build script expects it to be installed in /opt/libgc.
+

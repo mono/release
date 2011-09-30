@@ -1,0 +1,149 @@
+#!/bin/sh
+
+if [ ! -f mono-core.spec.in ]; then
+	echo "Run the build script from the toplevel mono source directory"
+	exit 1
+fi
+
+INSTALL_BASE=/opt/mono
+ARCH=`uname -p`
+
+# 'Solaris' or 'OpenSolaris'
+OSTYPE=`head -1 /etc/release | sed -e 's/.* \(.*Solaris\) .*/\1/'`
+
+PKGINFO=`mktemp /tmp/mono-pkginfo.XXXXXX`
+if [ -z "$PKGINFO" ]; then
+	exit 1
+fi
+
+PROTOTYPE=`mktemp /tmp/mono-prototype.XXXXXX`
+if [ -z "$PROTOTYPE" ]; then
+	rm -f $PKGINFO
+	exit 1
+fi
+
+DEPEND=`mktemp /tmp/mono-depend.XXXXXX`
+if [ -z "$DEPEND" ]; then
+	rm -f $PKGINFO
+	rm -f $PROTOTYPE
+	exit 1
+fi
+
+TMPDIR=`mktemp -d /tmp/mono-build.XXXXXX`
+if [ -z "$TMPDIR" ]; then
+	rm -f $PKGINFO
+	rm -f $PROTOTYPE
+	rm -f $DEPEND
+	exit 1
+fi
+
+trap "rm -f $PKGINFO $PROTOTYPE $DEPEND; rm -fr $TMPDIR; exit" 0 INT TERM
+
+# libelf here doesn't support large files, and the new profiler depends on libelf
+if [ $ARCH = 'sparc' ]; then
+./configure --prefix=$INSTALL_BASE --with-large-heap --enable-dtrace=no --with-profile4=no --enable-minimal=profiler
+else
+	if [ $OSTYPE = 'Solaris' ]; then
+		CPPFLAGS="-I/usr/local/include -I/opt/libgc/include" LDFLAGS="-L/usr/local/lib -L/opt/libgc/lib" ./configure --prefix=$INSTALL_BASE --with-large-heap --enable-dtrace=no --with-gc=boehm --enable-minimal=profiler
+	else
+		./configure --prefix=$INSTALL_BASE --with-large-heap --enable-dtrace=no --enable-minimal=profiler
+	fi
+fi
+if [ $? -ne 0 ]; then
+	echo "Configure failed, exiting"
+	exit 1
+fi
+
+# Remove the --debug option, which causes mono to crash
+#echo 'TEST_RUNTIME = MONO_PATH="$(topdir)/class/lib/$(PROFILE)$(PLATFORM_PATH_SEPARATOR)$(TEST_MONO_PATH)$(PLATFORM_PATH_SEPARATOR)$$MONO_PATH" $(RUNTIME)' >> mcs/build/config.make
+
+make && make SHELL=/bin/bash prefix=$TMPDIR/$INSTALL_BASE install
+if [ $? -ne 0 ]; then
+	echo "Build failed, exiting"
+	exit 1
+fi
+
+if [ $ARCH = 'sparc' ]; then
+# Add libsunmath to the package
+	cp /usr/lib/libsunmath.so.1 $TMPDIR/$INSTALL_BASE/lib
+	(cd $TMPDIR/$INSTALL_BASE/lib && ln -s libsunmath.so.1 libsunmath.so)
+else
+	if [ $OSTYPE = 'Solaris' ]; then
+		# Add libgc to the package
+		cp /opt/libgc/lib/libgc.so.1.0.3 $TMPDIR/$INSTALL_BASE/lib
+		(cd $TMPDIR/$INSTALL_BASE/lib && ln -s libgc.so.1.0.3 libgc.so.1)
+		(cd $TMPDIR/$INSTALL_BASE/lib && ln -s libgc.so.1.0.3 libgc.so)
+	fi
+fi
+
+VERSION=`$TMPDIR/$INSTALL_BASE/bin/mono --version | head -1`
+
+cat > $PKGINFO <<EOF
+PKG=mono
+NAME=Mono Runtime and Class Libraries
+ARCH=$ARCH
+VERSION=$VERSION
+CATEGORY=system
+VENDOR=Mono Team, packaged by Codice Software
+DESC=The Mono Project is an open development initiative that is working to develop an open source, Unix version of the .NET development platform.
+CLASSES=none
+BASEDIR=$INSTALL_BASE
+EOF
+
+if [ $OSTYPE = 'Solaris' ]; then
+
+# Mono 2.8 no longer depends on glib
+# P SMCglib2 glib
+	cat > $DEPEND <<EOF
+P SMCliconv libiconv
+P SMClintl libintl
+P SMClgcc346 libgcc
+EOF
+else
+
+# Mono 2.8 no longer depends on glib
+# P SUNWgnome-base-libs GNOME base GUI libraries
+	cat > $DEPEND <<EOF
+EOF
+fi
+
+cat > $PROTOTYPE <<EOF
+i pkginfo=$PKGINFO
+i depend=$DEPEND
+d none $INSTALL_BASE ? ? ?
+EOF
+
+dirs=`(cd $TMPDIR/$INSTALL_BASE && find bin etc include lib share -type d -print)`
+for dir in $dirs; do
+	if [ -d $TMPDIR/$INSTALL_BASE/$dir ]; then
+		echo d none $dir 0755 root bin >> $PROTOTYPE
+	fi
+done
+
+# files (do files in eg etc need to be type i?)
+files=`(cd $TMPDIR/$INSTALL_BASE && find bin etc include lib share -type f -print)`
+for file in $files; do
+	if [ -f $TMPDIR/$INSTALL_BASE/$file ]; then
+		echo f none $file 0755 root bin >> $PROTOTYPE
+	fi
+done
+
+# links
+if [ $OSTYPE = 'Solaris' ]; then
+	links=`(cd $TMPDIR/$INSTALL_BASE && find bin etc include lib share -type l -print | xargs ls -l | awk '{ printf("%s=%s\n", $9, $11) }')`
+else
+	links=`(cd $TMPDIR/$INSTALL_BASE && find bin etc include lib share -type l -print | xargs ls -l | awk '{ printf("%s=%s\n", $8, $10) }')`
+fi
+for link in $links; do
+	echo l none $link >> $PROTOTYPE
+done
+
+pkgmk -o -d /tmp -b $TMPDIR/$INSTALL_BASE -f $PROTOTYPE
+if [ $? = 0 ]; then
+	pkgtrans /tmp mono.pkg mono
+fi
+
+gzip -9 /tmp/mono.pkg
+
+echo "The mono package is in /tmp/mono.pkg.gz"
+
