@@ -4,6 +4,7 @@
 
 .make:
 	cd mono && make all dist
+	mv -f -v mono/*.tar.gz $(PACKAGES_PATH)
 
 .check:
 	cd mono && make distcheck
