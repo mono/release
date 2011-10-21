@@ -1,0 +1,26 @@
+EXTERNAL_SOURCE=1
+
+BUILD_HOSTS=(
+	sle-11-i586
+	macos-10-x86
+)
+
+USE_HOSTS=(
+	ALL
+)
+
+MONO_DEPS=(
+	mono
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+ZIP_BUILD () {
+
+        ./configure --prefix=/tmp/install --libdir=/tmp/install/lib || exit 1
+        make || exit 1
+        make install || exit 1
+
+}

@@ -1,0 +1,76 @@
+EXTERNAL_SOURCE=1
+
+BUILD_HOSTS=(
+	macos-10-x86
+)
+
+USE_HOSTS=(
+	ALL
+)
+
+MONO_DEPS=(
+	mono
+)
+
+get_destroot () {
+	DEST_ROOT=noarch
+}
+
+macos_10_ZIP_BUILD () {
+
+	PREFIX=/tmp/install
+	mkdir -p $PREFIX/bin || exit 1
+	
+	### RUBY ###
+	echo "Building ironruby..."
+	
+        xbuild /p:Configuration=Release Solutions/Ruby.sln || exit 1
+	
+	cd bin/Release
+	
+	# create executible wrappers
+	# FIXME: Why do we need this? Use perl to get a '#' char
+	HASH=`perl -e "print(chr(35))"`
+	
+	for cmd in $(ls *.exe); do
+		WRAPPER=${PREFIX}/bin/${cmd%.*}
+		echo $HASH'!/bin/sh' > $WRAPPER
+		echo "exec $PREFIX/bin/mono $PREFIX/lib/ironruby/bin/$cmd \"\$@\"" >> $WRAPPER
+		chmod +x $WRAPPER
+	done
+
+	# copy bin
+	mkdir -p $PREFIX/lib/ironruby/bin || exit 1
+	cp -R ./ $PREFIX/lib/ironruby/bin || exit 1
+	
+	# copy libs
+	cd ../../Languages/Ruby/StdLib
+	mkdir $PREFIX/lib/ironruby/Lib || exit 1
+	cp -R ./ $PREFIX/lib/ironruby/Lib || exit 1
+	
+	
+	cd ../../../
+	rm -rf bin/
+	
+	
+	### PYTHON ###
+	echo "Building ironpython..."
+	
+	xbuild /p:Configuration=Release Solutions/IronPython.Mono.sln || exit 1
+	
+	cd bin/Release
+	
+	# create executible wrappers
+	for cmd in $(ls *.exe); do
+		WRAPPER=${PREFIX}/bin/${cmd%.*}
+		echo $HASH'!/bin/sh' > $WRAPPER
+		echo "exec $PREFIX/bin/mono $PREFIX/lib/ironpython/$cmd \"\$@\"" >> $WRAPPER
+		chmod +x $WRAPPER
+	done
+	
+	#copy files
+	mkdir -p $PREFIX/lib/ironpython || exit 1
+	cp -R ./ $PREFIX/lib/ironpython || exit 1
+	
+	
+}

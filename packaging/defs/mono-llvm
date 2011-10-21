@@ -1,0 +1,29 @@
+web_index=1
+
+USE_PATCHES=1
+
+BUILD_HOSTS=(
+        macos-10-x86
+	sle-11-i586
+)
+
+USE_HOSTS=(${BUILD_HOSTS[@]})
+
+get_destroot () {
+	DEST_ROOT=$DISTRO
+}
+
+ZIP_BUILD () {
+
+	unset LDFLAGS
+        CFLAGS="-m32" ./configure --prefix=/tmp/install --enable-optimized --enable-targets="x86 x86_64" || exit 1
+        make -j 4 || exit 1
+        make install || exit 1
+
+}
+
+macos_10_x86_ZIP_DEPS=(
+	
+
+)
+

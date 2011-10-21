@@ -1,0 +1,9 @@
+--- sources/Makefile.am	2008-09-03 17:54:56.000000000 -0600
++++ sources/Makefile.am	2008-09-03 17:55:31.000000000 -0600
+@@ -1,5 +1,5 @@
+ 
+-pkgconfigdir = $(libdir)/pkgconfig
++pkgconfigdir = $(datadir)/pkgconfig
+ pkgconfig_DATA = $(ASSEMBLY_PC).pc
+ 
+ RAW_API=$(ASSEMBLY_NAME)-api.raw
