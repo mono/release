@@ -43,4 +43,6 @@ configure: checkout .configure
 
 make: configure .make
 
-.PHONY: all checkout configure make
+check: make .check
+
+.PHONY: all checkout configure make check

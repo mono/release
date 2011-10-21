@@ -5,7 +5,7 @@
 
 RELEASE="git://github.com/mono/release.git"
 
-if [ ! -d release]; then
+if [ ! -d release ]; then
 	git clone $RELEASE || exit 1
 else
 	pushd release

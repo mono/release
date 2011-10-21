@@ -8,3 +8,6 @@ include wrench.make
 	cd mono; \
 	make dist
 
+.check:
+	cd mono; \
+	make distcheck
