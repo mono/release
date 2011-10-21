@@ -3,6 +3,10 @@
 FW=/Library/Frameworks/Mono.framework
 FW_CURRENT=${FW}/Versions/Current
 
+# Remove old versions
+CURRENT_VER=$(readlink ${FW_CURRENT})
+find ${FW}/Versions -depth 1 -not -name $CURRENT_VER -not -name Current | xargs rm -rf
+
 WHITELIST=$(cat $(dirname $0)/whitelist.txt)
 
 if [ -d ${FW}/Commands ]; then
