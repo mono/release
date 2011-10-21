@@ -1,13 +1,13 @@
 include wrench.make
 
 .configure:
-	cd mono; \
-	./autogen.sh
+	cd mono && ./autogen.sh
 
 .make:
-	cd mono; \
-	make dist
+	cd mono && make dist
 
 .check:
-	cd mono; \
-	make distcheck
+	cd mono && make distcheck
+
+.clean::
+	-cd mono && make distclean

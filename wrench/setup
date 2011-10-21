@@ -3,13 +3,21 @@
 # Checks out release module that contains the wrench scripts
 #
 
+CACHE="/tmp/source"
 RELEASE="git://github.com/mono/release.git"
 
-if [ ! -d release ]; then
+if [ ! -d $CACHE/release ]; then
+	mkdir -p $CACHE
+	pushd $CACHE
 	git clone $RELEASE || exit 1
-else
-	pushd release
-	git reset --hard
-	git pull --rebase || exit 1
 	popd
 fi
+if [ ! -e release ]; then
+	ln -sv $CACHE/release .
+fi
+
+pushd release
+git reset --hard
+git pull --rebase || exit 1
+popd
+
