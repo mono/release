@@ -30,7 +30,7 @@ all: package
 
 .clean:: $(BUILD_REPOSITORY_NAMES)
 	cd $(MAIN_REPO) && git clean -xfd
-	for repo in $(DEPENDENCIES); do ( cd $$repo && git clean -xfd ); done
+	for repo in $(DEPENDENCIES); do ( cd $$repo && git reset --hard && git clean -xfd ); done
 
 $(BUILD_REPOSITORY_NAMES):
 	mkdir -p $(SOURCES_PATH)
