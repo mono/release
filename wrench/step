@@ -1,0 +1,10 @@
+#!/bin/bash -ex
+#
+# Runs the .`basename $0` target
+#
+
+MAKEFILE_PATH=`echo $BUILD_LANE | awk -F '-' '{ printf "%s/%s", $1, $2 }'`
+TARGET=`echo $0 | tr '\\\' '/' | xargs basename`
+
+make -Irelease/wrench --file=release/wrench/$MAKEFILE_PATH/Makefile .$TARGET
+

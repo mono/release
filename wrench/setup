@@ -1,0 +1,15 @@
+#!/bin/bash -ex
+#
+# Checks out release module that contains the wrench scripts
+#
+
+RELEASE="git://github.com/mono/release.git"
+
+if [ ! -d release]; then
+	git clone $RELEASE || exit 1
+else
+	pushd release
+	git reset --hard
+	git pull --rebase || exit 1
+	popd
+fi
