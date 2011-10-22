@@ -369,12 +369,17 @@ os.mkdir('lib/mono/2.0/winhack')
 
 os.rename('lib/mono/2.0/xsp2.exe', 'lib/mono/2.0/winhack/xsp2.exe')
 
+os.mkdir('lib/mono/4.0/winhack')
+
+os.rename('lib/mono/4.0/xsp4.exe', 'lib/mono/4.0/winhack/xsp4.exe')
+
 # Munge wrappers
 parameter_map = { 
 	re.compile('lib/mono/2.0'): "lib/mono/2.0/winhack",
+	re.compile('lib/mono/4.0'): "lib/mono/4.0/winhack",
 }
 
-for file in "xsp xsp1 xsp2".split():
+for file in "xsp xsp1 xsp2 xsp4".split():
 	utils.substitute_parameters_in_file('bin' + os.sep + file, parameter_map)
 
 os.chdir('..')
