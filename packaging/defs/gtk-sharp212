@@ -50,46 +50,46 @@ make_dist () {
 }
 
 macos_10_x86_ZIP_DEPS=(
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/atk-1.33.6.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/cairo-1.10.2.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/fontconfig-2.8.0.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/freetype-2.4.2.macos10.xamarin.x86.zip
-        http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/glib-2.28.8.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gdk-pixbuf-2.22.1.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gtk+-2.24.5.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/libglade-2.6.4.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/librsvg-2.26.3.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/libxml2-2.6.30.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pango-1.28.4.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pixman-0.22.2.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/atk-1.33.6-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/cairo-1.10.2-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/fontconfig-2.8.0-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/freetype-2.4.4-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/glib-2.28.8-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/gdk-pixbuf-2.22.1-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/gtk+-2.24.5-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/libglade-2.6.4-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/librsvg-2.26.3-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/libxml2-2.6.30-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/pango-1.28.4-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/pixman-0.22.2-2.10.6.macos10.xamarin.x86.zip
 )
 
 macos_10_x86_ZIP_RUNTIME_DEPS=(
-        http://beefydude.lab.xamarin.com/misc/gtkrc_mac-1.zip
-        http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gtk-engines-2.20.2.macos10.xamarin.x86.zip
-        http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/ige-mac-integration-0.9.8.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/murrine-0.98.1.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/gtkrc_mac-1.zip
+	http://download.mono-project.com/build-deps/macos/i386/gtk-engines-2.20.2-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/ige-mac-integration-0.9.8-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/murrine-0.98.1-2.10.6.macos10.xamarin.x86.zip
 )
 
 macos_10_ppc_ZIP_DEPS=(
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/atk-1.30.0-8.macos10.novell.ppc.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/cairo-1.8.10-8.macos10.novell.ppc.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/fontconfig-2.8.0-8.macos10.novell.ppc.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/freetype-2.4.2-8.macos10.novell.ppc.zip
-        http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/glib-2.24.1-8.macos10.novell.ppc.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/gtk+-2.20.1-8.macos10.novell.ppc.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/libglade-2.6.4-8.macos10.novell.ppc.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/librsvg-2.26.3-8.macos10.novell.ppc.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/libxml2-2.6.30-8.macos10.novell.ppc.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/pango-1.28.1-8.macos10.novell.ppc.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/pixman-0.18.2-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/atk-1.30.0-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/cairo-1.8.10-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/fontconfig-2.8.0-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/freetype-2.4.2-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/glib-2.24.1-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/gtk+-2.20.1-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/libglade-2.6.4-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/librsvg-2.26.3-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/libxml2-2.6.30-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/pango-1.28.1-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/pixman-0.18.2-8.macos10.novell.ppc.zip
 )
 
 macos_10_ppc_ZIP_RUNTIME_DEPS=(
-        http://169.254.133.176/~alex/mono/macos/deps/various/gtkrc_mac-1.zip
-        http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/gtk-engines-2.20.1-8.macos10.novell.ppc.zip
-        http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/ige-mac-integration-0.8.2-8.macos10.novell.ppc.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-ppc/murrine-0.90.3-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/gtkrc_mac-1.zip
+	http://download.mono-project.com/build-deps/macos/ppc/gtk-engines-2.20.1-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/ige-mac-integration-0.8.2-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/murrine-0.90.3-8.macos10.novell.ppc.zip
 )
 
 
@@ -104,7 +104,7 @@ macos_10_ZIP_BUILD () {
         # add this so libxml is found
         export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/tmp/build_deps/lib/pkgconfig:/usr/X11R6/lib/pkgconfig
 
-        CFLAGS="-m32" ./configure --prefix=/tmp/install || exit 1
+        CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -m32" LDFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -m32" ./configure --prefix=/tmp/install || exit 1
 
         make || exit 1
         make install || exit 1

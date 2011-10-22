@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# We support 10.4 and up
+# We support 10.5 and up
 
 # gtk+ build notes:
 #
@@ -11,16 +11,17 @@
 BUILD_HOSTS = ['macos-10-ppc', 'macos-10-x86']
 
 prefix = "/Library/Frameworks/Mono.framework/Versions/Current"
+flags = "-isysroot /Developer/SDKs/MacOSX10.5.sdk -L/tmp/build_deps/lib -mmacosx-version-min=10.5 -m32"
 
 packages = [
 	{
 		'name': 'pkg-config', 
 		'source': 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.25.tar.gz',
 		'build':"""
-			CFLAGS="-m32" ./configure --prefix=/tmp/install
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install
 			make || exit 1
 			make install || exit 1
-			""",
+		""" % (flags, flags),
 		'post':"""
 			# Configure shell wrapper for pkg-config so it will look for .pc files when installed (#79671)
 			cd /tmp/install/bin
@@ -39,10 +40,10 @@ EOF
 		'name': 'gettext', 
 		'source': 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.18.1.1.tar.gz',
 		'build':"""set -x
-			CFLAGS="-m32" CXXFLAGS="-m32" ./configure --prefix=/tmp/install
+			CFLAGS="%s $CFLAGS" CXXFLAGS="%s $CXXFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install
 			make || exit 1
 			make install || exit 1
-			""",
+		""" % (flags, flags, flags),
 		'post':"""
 			# Save msgfmt, as this is needed for building glib
 			#  we also need msgmerge for intltool... (monodevelop)
@@ -73,7 +74,7 @@ EOF
 				curl -# -L http://beefydude.lab.xamarin.com/patches/glib/$patchfile | patch -p0 || exit 1
 			done
 			
-			CFLAGS="-m32" LDFLAGS="$LDFLAGS -m32 -lresolv" ./configure --prefix=/tmp/install || exit 1
+			CFLAGS="%s $CFLAGS" LDFLAGS="$LDFLAGS %s -lresolv" ./configure --prefix=/tmp/install || exit 1
 			curl -# -L http://beefydude.lab.xamarin.com/patches/glib/config.h.ed | ed - config.h || exit 1
 						
 			make || exit 1
@@ -81,7 +82,7 @@ EOF
 			
 			# we don't really need all these html files and they have weird characters in their file names that were screwing up the Mach-O relocation step
 			rm -rf /tmp/install/share/gtk-doc
-		"""
+		""" % (flags, flags)
 	},
 	{
 		'name': 'jpeg', 
@@ -90,19 +91,19 @@ EOF
 		'build':
 			"""ln -s `which glibtool` ./libtool
 
-			CFLAGS="-m32" ./configure --enable-shared --enable-static --enable-freetype --prefix=/tmp/install
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --enable-shared --enable-static --enable-freetype --prefix=/tmp/install
 			make || exit 1
 			mkdir -p /tmp/install/lib
 			mkdir -p /tmp/install/include
 			make install || exit 1
-			"""
+		""" % (flags, flags)
 	},
 	{
 		'name': 'tiff', 
 		'source': 'http://dl.maptools.org/dl/libtiff/tiff-3.8.2.tar.gz',
 		'build':
 			"""set -x
-			CFLAGS="-m32" CXXFLAGS="-m32" ./configure --prefix=/tmp/install --mandir=/tmp/install/share/man \
+			CFLAGS="%s $CFLAGS" CXXFLAGS="%s $CXXFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install --mandir=/tmp/install/share/man \
 				--with-jpeg-include-dir=/tmp/build_deps/include --with-jpeg-lib-dir=/tmp/build_deps/lib
 
 			# 3.8.2's libtool didn't like the sysroot for building on 10.3
@@ -112,7 +113,7 @@ EOF
 			make || exit 1
 			cd libtiff
 			make install || exit 1
-			"""
+		""" % (flags, flags, flags)
 	},
 	{
 		'name': 'libpng',
@@ -120,10 +121,10 @@ EOF
 		#'source': 'ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.4.8.tar.bz2',
 		'source': 'ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.2.46.tar.bz2',
 		'build':"""set -x
-			CFLAGS="-m32" ./configure --prefix=/tmp/install
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install
 			make || exit 1
 			make install || exit 1
-			""",
+		""" % (flags, flags),
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
@@ -132,10 +133,10 @@ EOF
 		'name': 'giflib', 
                 'source': 'http://surfnet.dl.sourceforge.net/project/giflib/giflib%204.x/giflib-4.1.6/giflib-4.1.6.tar.bz2',
 		'build':"""set -x
-			CFLAGS="-m32" ./configure --prefix=/tmp/install
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install
 			make || exit 1
 			make install || exit 1
-			""",
+		""" % (flags, flags),
 		'post':"""
 			rm -Rf /tmp/install/bin/*
 			"""
@@ -145,10 +146,10 @@ EOF
 		'name': 'expat', 
 		'source': 'http://surfnet.dl.sourceforge.net/project/expat/expat/2.0.1/expat-2.0.1.tar.gz',
 		'build': """set -x
-			CFLAGS="-m32" ./configure --prefix=/tmp/install 
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install 
 			make || exit 1
 			make install || exit 1
-			""",
+		""" % (flags, flags),
 		'post':"""
 			rm -Rf /tmp/install/bin
 			rm -Rf /tmp/install/man
@@ -158,40 +159,52 @@ EOF
 		'name': 'pixman', 
 		'source': 'http://cairographics.org/releases/pixman-0.22.2.tar.gz',
 		'build':"""set -x
-			CFLAGS="-m32" ./configure --prefix=/tmp/install
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install
 			make || exit 1
 			make install || exit 1
-			"""
+		""" % (flags, flags)
 	},
 	{
 		'name': 'freetype',
 		'source': 'http://download.savannah.gnu.org/releases/freetype/freetype-2.4.2.tar.bz2',
 		'build': """set -x
-			CFLAGS="-m32" ./configure --prefix=/tmp/install
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install
 			make || exit 1
 			make install || exit 1
-			""",
+			sed -e "s/Libs: -L${libdir} -lfreetype/Libs: -L${libdir} -lfreetype -lz -Xlinker -framework -Xlinker CoreServices -Xlinker -framework -Xlinker ApplicationServices/g" /tmp/install/lib/pkgconfig/freetype2.pc > new
+			mv new /tmp/install/lib/pkgconfig/freetype2.pc
+			sed -e 's/libs="-lfreetype -lz "/libs="-lfreetype -lz -Xlinker -framework -Xlinker CoreServices -Xlinker -framework -Xlinker ApplicationServices"/g' /tmp/install/bin/freetype-config > new
+			mv new /tmp/install/bin/freetype-config
+		""" % (flags, flags),
 	},
 	{
 		'name': 'fontconfig',
 		'source': 'http://www.fontconfig.org/release/fontconfig-2.8.0.tar.gz',
 		'build': """set -x
-			CFLAGS="-m32" ./configure --prefix=/tmp/install --disable-docs
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=%s --with-confdir=%s/etc/fonts --disable-docs --enable-dependency-tracking --with-cache-dir=%s/var/cache/fontconfig-2.4 --with-default-fonts=/System/Library/Fonts --with-add-fonts=/Library/Fonts,/Network/Library/Fonts,/System/Library/Fonts,/usr/X11/lib/X11/fonts,/usr/X11R6/lib/X11/fonts,/usr/share/fonts --disable-silent-rules --disable-static
 			make || exit 1
-			make install || exit 1
-			""",
+
+			rm -Rf /tmp/temp_install
+			make install DESTDIR=/tmp/temp_install || exit 1
+			
+			# Do this so all the zip files have the same base, and we can lay them back here later
+			mkdir -p /tmp/install
+			cd /tmp/temp_install%s || exit 1
+			mv * /tmp/install
+
+		""" % (flags, flags, prefix, prefix, prefix, prefix),
 	},
 	{
 		'name': 'cairo', 
 		'source': 'http://cairographics.org/releases/cairo-1.10.2.tar.gz',
 		'build': """set -x
-			CFLAGS="-m32" ./configure --prefix=/tmp/install --enable-quartz --enable-quartz-font --enable-quartz-image --enable-atsui --enable-pdf --disable-xlib --without-x --enable-ft
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install --enable-quartz --enable-quartz-font --enable-quartz-image --enable-atsui --enable-pdf --disable-xlib --without-x --enable-ft
 			make || exit 1
 			make install || exit 1
 			
 			# we don't really need all these html files and they have weird characters in their file names that were screwing up the Mach-O relocation step
 			rm -rf /tmp/install/share/gtk-doc
-		""",
+		""" % (flags, flags),
 	},
 	#  TODO: There are problems relocating these binaries... is the max header flag not getting passed in?
 	#  Hrm... the flag is getting set... which binary is failing?
@@ -216,7 +229,7 @@ EOF
 			#sed -i bak 's,2\.5\.0,9.5.0,' configure
 
 			# Use this prefix so we don't have to do any tricks to relocate (Do this with all modules?)
-			CFLAGS="-m32 -DMAC_OS_X_VERSION_10_5=1050 $CFLAGS " CXXFLAGS="-m32" ./configure --prefix=%s --without-x
+			CFLAGS="%s -DMAC_OS_X_VERSION_10_5=1050 $CFLAGS " CXXFLAGS="%s $CXXFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=%s --without-x
 			make
 
 			rm -Rf /tmp/temp_install
@@ -229,7 +242,7 @@ EOF
 			
 			# we don't really need all these html files and they have weird characters in their file names that were screwing up the Mach-O relocation step
 			rm -rf /tmp/install/share/gtk-doc
-		""" % (prefix, prefix),
+		""" % (flags, flags, flags, prefix, prefix),
 	},
 	{
 		'name': 'atk', 
@@ -238,10 +251,10 @@ EOF
 		'source': 'http://ftp.gnome.org/pub/GNOME/sources/atk/1.33/atk-1.33.6.tar.bz2',
 		'build': """set -x
 			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
-			CFLAGS="-m32" ./configure --prefix=/tmp/install || exit 1
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install || exit 1
 			make || exit 1
 			make install || exit 1
-		""",
+		""" % (flags, flags),
 	},
 	# has same relocation problems as pango, uses same hack..
 	{
@@ -249,7 +262,7 @@ EOF
 		'source': 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.22/gdk-pixbuf-2.22.1.tar.bz2',
 		'build':
 			"""set -x
-			CFLAGS="-m32" ./configure --prefix=%s
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=%s
 			make || exit 1
 			
 			rm -Rf /tmp/temp_install
@@ -262,17 +275,9 @@ EOF
 			
 			# we don't really need all these html files and they have weird characters in their file names that were screwing up the Mach-O relocation step
 			rm -rf /tmp/install/share/gtk-doc
-		""" % (prefix, prefix)
+		""" % (flags, flags, prefix, prefix)
 	},
-#	## Tarball generated on linux (opensuse 10.3) using:
-#	# Applied patch: http://people.imendio.com/richard/patches/gtk-configure.patch
-#	# Applied patch: from Geoff to remove some spew
-#	./autogen.sh  --enable-gtk-doc
-#	make
-#	#  had to remove gtk/test from 'configure' script and from gtk/Makefile.am SUBDIRS ... why wasn't that in the tarball?
-#	make dist-bzip2
 	{
-		# Requires 10.4 or above
 		'name': 'gtk+', 
 		'version': '2.24.5', 
 		'source': 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.5.tar.bz2',
@@ -282,7 +287,10 @@ EOF
 			find . -iname "makefile\.in" | xargs sed -i -e 's@which[[:space:]]*gtkdoc-rebase@/usr/bin/false@'
 			
 			# Mac OS 10.7 Lion patches
-			PATCHES=`curl -L http://beefydude.lab.xamarin.com/patches/gtk/patchlist.txt | egrep -o '\"[^\"]*\"' | sed 's/\"//g'` || exit 1
+			PATCHES=`curl -L http://beefydude.lab.xamarin.com/patches/gtk/patchlist.txt | egrep -o '\"[^\"]*\"' | sed 's/\"//g'`
+			if [ "x$PATCHES" = "x" ]; then
+				exit 1
+			fi
 			for patchfile in $PATCHES; do
 				curl -# -L http://beefydude.lab.xamarin.com/patches/gtk/$patchfile | patch -p1 || exit 1
 			done
@@ -292,7 +300,7 @@ EOF
 			export GDK_PIXBUF_MODULEDIR="/tmp/build_deps/lib/gdk-pixbuf-2.0/2.10.0/loaders/"
 			/tmp/build_deps/bin/gdk-pixbuf-query-loaders --update-cache
 			
-                        CFLAGS="-m32 -gdwarf-2" LDFLAGS="$LDFLAGS -framework Foundation -framework Carbon -framework AppKit -Xlinker -headerpad_max_install_names" ./configure --prefix=%s --with-gdktarget=quartz --disable-gtk-doc --with-libjpeg --without-libjasper
+                        PKG_CONFIG_PATH="/tmp/build_deps/lib/pkgconfig:/usr/X11/lib/pkgconfig" CFLAGS="%s $CFLAGS" CPPFLAGS="%s $CPPFLAGS" LDFLAGS="$LDFLAGS %s -framework Foundation -framework Carbon -framework AppKit -Xlinker -headerpad_max_install_names" ./configure --prefix=%s --with-gdktarget=quartz --disable-gtk-doc --with-libjpeg --without-libjasper
 			make || exit 1
 			make install DESTDIR=/tmp/temp_install || exit 1
 			
@@ -305,44 +313,44 @@ EOF
 			for file in $(find /tmp/install -type f | file -f - | grep "Mach-O" | sed -E "s/\:.*//"); do
 				dsymutil $file
 			done
-		""" % (prefix, prefix),
+		""" % (flags, flags, flags, prefix, prefix),
 	},
 	{
 		'name': 'libxml2',
 		'source': 'http://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/libxml2-2.6.30.tar.bz2',
 		'build': """set -x
-			CFLAGS="-m32" ./configure --prefix=/tmp/install --with-python=no
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install --with-python=no
 			make || exit 1
 			make install || exit 1
-		""",
+		""" % (flags, flags),
 	},
 	{
 		'name': 'librsvg', 
 		'source': 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.26/librsvg-2.26.3.tar.bz2',
 		'build':"""set -x
-			CFLAGS="-m32" ./configure --prefix=/tmp/install
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install
 			make || exit 1
 			make install || exit 1
-			"""
+		""" % (flags, flags)
 	},
 	{
 		'name': 'libglade', 
 		#'source': 'http://ftp.gnome.org/pub/GNOME/sources/libglade/2.6/libglade-2.6.2.tar.bz2',
 		'source': 'http://ftp.gnome.org/pub/GNOME/sources/libglade/2.6/libglade-2.6.4.tar.bz2',
 		'build':"""set -ex
-			CFLAGS="-m32" ./configure --prefix=/tmp/install
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install
 			make || exit 1
 			make install || exit 1
-		"""
+		""" % (flags, flags)
 	},
         {
                 'name': 'intltool',
                 'source': 'http://ftp.gnome.org/pub/gnome/sources/intltool/0.40/intltool-0.40.6.tar.bz2',
                 'build':"""set -x
-                        CFLAGS="-m32" ./configure --prefix=/tmp/install
+                        CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install
                         make || exit 1
                         make install || exit 1
-                """
+                """ % (flags, flags)
 
         },
 	{
@@ -355,10 +363,10 @@ EOF
                         chmod 755 /tmp/build_deps/bin/xgettext
                 """,
 		'build':"""set -x
-                        CFLAGS="-m32" ./configure --disable-nls --prefix=/tmp/install  
+                        CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --disable-nls --prefix=/tmp/install  
                         make || exit 1
                         make install || exit 1
-                """,
+                """ % (flags, flags),
 	},
 	{
 		'name': 'murrine',
@@ -366,17 +374,17 @@ EOF
 		'build':"""set -x
 			curl -L http://beefydude.lab.xamarin.com/patches/murrine-link-pixman.patch | patch -p1 || exit 1
 			ACLOCAL="aclocal -I/tmp/build_deps/share/aclocal" autoreconf -fi || exit 1
-			CFLAGS="-m32" ./configure --prefix=/tmp/install || exit 1
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install || exit 1
 			make || exit 1
 			make install || exit 1
-			"""
+		""" % (flags, flags)
 	},
 #	{
 #		'name': 'gtk-quartz-engine',
 #		'source': 'http://build.mono.lab.novell.com/~builder/gtk-quartz-engine-0.2.tar.bz2',
 #		#'source': 'http://downloads.sourceforge.net/project/gtk-osx/GTK%20Quartz%20Engine/gtk-quartz-engine-0.2.tar.gz',
 #		'build':"""set -x
-#			CFLAGS="-m32" ./configure --prefix=/tmp/install
+#			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install
 #			make || exit 1
 #			make install || exit 1
 #			"""
@@ -386,20 +394,20 @@ EOF
 		#'source': 'http://ftp.imendio.com/pub/imendio/ige-mac-integration/ige-mac-integration-0.8.2.tar.gz',
 		'source': 'http://surfnet.dl.sourceforge.net/project/gtk-osx/GTK-OSX%20Build/ige-mac-integration-0.9.8.tar.bz2',
 		'build':"""set -x
-			CFLAGS="-m32" LDFLAGS="-framework AppKit -Xlinker -headerpad_max_install_names"  ./configure --prefix=/tmp/install
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS -framework AppKit -Xlinker -headerpad_max_install_names"  ./configure --prefix=/tmp/install
 			make || exit 1
 			make install || exit 1
-		""",
+		""" % (flags, flags),
 	},
 	{
 		'name': 'sqlite',
 		#'source': 'http://www.sqlite.org/sqlite-3.5.7.tar.gz',
 		'source': 'http://www.sqlite.org/sqlite-3.6.23.1.tar.gz',
 		'build':"""
-			CFLAGS="-m32" ./configure --prefix=/tmp/install --disable-tcl
+			CFLAGS="%s $CFLAGS" LDFLAGS="%s $LDFLAGS" ./configure --prefix=/tmp/install --disable-tcl
 			make || exit 1
 			make install || exit 1
-		""",
+		""" % (flags, flags),
 		'post':"""
 			rm -Rf /tmp/install/bin
 			rm -Rf /tmp/install/man

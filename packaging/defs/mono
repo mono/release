@@ -54,17 +54,15 @@ win_4_i386_ZIP_DEPS=(
 )
 
 macos_10_ppc_ZIP_DEPS=(
-	# See http://primates.ximian.com/~wberrier/macos/deps/README
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.25-8.1.macos10.novell.ppc.zip
-        http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.18.1.1-8.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/sqlite-3.6.23.1-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/pkg-config-0.25-8.1.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/gettext-0.18.1.1-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/sqlite-3.6.23.1-8.macos10.novell.ppc.zip
 )
 
 macos_10_x86_ZIP_DEPS=(
-	# See http://primates.ximian.com/~wberrier/macos/deps/README
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pkg-config-0.25.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gettext-0.18.1.1.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/sqlite-3.6.23.1.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/pkg-config-0.25-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/gettext-0.18.1.1-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/sqlite-3.6.23.1-2.10.6.macos10.xamarin.x86.zip
 )
 
 win_4_i386_ZIP_BUILD () {
@@ -102,7 +100,7 @@ fd.close()'
 	if test "$(uname -m)" = "i386" || test "$(uname -m)" = "x86_64"; then
 		ENABLE_LLVM="--enable-loadedllvm"
 	fi
-	CFLAGS=" -DMAC_OS_X_VERSION_10_5=1050 -gdwarf-2 $CFLAGS " ./configure --prefix=$MONO_PREFIX --host=i386-apple-darwin10.8.0 --with-moonlight=no --with-ikvm=yes $ENABLE_LLVM || exit 1
+	CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -m32 -DMAC_OS_X_VERSION_10_5=1050 $CFLAGS " LDFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -m32" ./configure --prefix=$MONO_PREFIX --host=i386-apple-darwin10.8.0 --with-moonlight=no --with-ikvm=yes $ENABLE_LLVM || exit 1
 
 	set
 

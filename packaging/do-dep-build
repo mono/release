@@ -69,8 +69,8 @@ for pack in packages:
 			make install || exit 1
 			"""
 
-#	filename = os.path.join(temp_dir + '/built-packages', "-".join([pack['name'], version, release]) + "." + ".".join([build_os, 'novell', conf.info['arch'], 'zip']) )
-	filename = os.path.join(temp_dir + '/built-packages', "-".join([pack['name'], version]) + "." + ".".join([build_os, 'xamarin', conf.info['arch'], 'zip']) )
+	filename = os.path.join(temp_dir + '/built-packages', "-".join([pack['name'], version, release]) + "." + ".".join([build_os, 'xamarin', conf.info['arch'], 'zip']) )
+
 
 	# Check for existing build...
 	if utils.get_dict_var('skip', pack):

@@ -83,7 +83,7 @@ sunos_8_sparc_ZIP_DEPS=(
         # Sunfreeware packages
         #ftp://sunfreeware.mirrors.tds.net/pub/sunfreeware/sparc/5.8/libgcc-3.3-sol8-sparc-local.gz
         # Have to use this one because above is not under $prefix/lib
-        http://primates.ximian.com/~wberrier/sunos/deps/sunfreeware/sunos-8-sparc/libgcc-3.3-0-sunos8.sparc.zip
+        http://download.mono-project.com/build-deps/sunos/sunos-8-sparc/libgcc-3.3-0-sunos8.sparc.zip
 
 	# Hmm... having it in here conflicts with file installed on buildbox...
 	# But, since mono-1.1 requires this as well, we can leave it out...
@@ -110,51 +110,51 @@ sunos_8_sparc_ZIP_DEPS=(
 
 macos_10_ZIP_BUILD () {
 	# TODO: any other options needed here to build to use without x11?
-	CFLAGS="-m32" ./configure --enable-quartz --prefix=/tmp/install --with-libjpeg --includedir=/tmp/build_deps/include || exit 1
+	CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -m32" LDFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5 -m32 -L/tmp/build_deps/lib" ./configure --enable-quartz --prefix=/tmp/install --with-libjpeg --includedir=/tmp/build_deps/include || exit 1
         make || exit 1
         make install || exit 1
 }
 
 macos_10_ppc_ZIP_DEPS=(
-	# See http://primates.ximian.com/~wberrier/macos/deps/README
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/glib-2.24.1-8.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/pkg-config-0.25-8.1.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/gettext-0.18.1.1-8.macos10.novell.ppc.zip
+	# See http://download.mono-project.com/build-deps/macos/README
+	http://download.mono-project.com/build-deps/macos/ppc/glib-2.24.1-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/pkg-config-0.25-8.1.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/gettext-0.18.1.1-8.macos10.novell.ppc.zip
 
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/jpeg-8-8.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/libpng-1.2.44-8.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/giflib-4.1.6-8.macos10.novell.ppc.zip
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/tiff-3.8.2-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/jpeg-8-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/libpng-1.2.44-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/giflib-4.1.6-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/tiff-3.8.2-8.macos10.novell.ppc.zip
 
 	# We cannot build against our own fontconfig, I don't know why
-	#http://primates.ximian.com/~wberrier/macos/deps/ppc/cairo-1.8.10-8.macos10.novell.ppc.zip
-	#http://primates.ximian.com/~wberrier/macos/deps/ppc/fontconfig-2.8.0-8.macos10.novell.ppc.zip
-	#http://primates.ximian.com/~wberrier/macos/deps/ppc/freetype-2.4.2-8.macos10.novell.ppc.zip
-	#http://primates.ximian.com/~wberrier/macos/deps/ppc/pixman-0.18.2-8.macos10.novell.ppc.zip
+	#http://download.mono-project.com/build-deps/macos/ppc/cairo-1.8.10-8.macos10.novell.ppc.zip
+	#http://download.mono-project.com/build-deps/macos/ppc/fontconfig-2.8.0-8.macos10.novell.ppc.zip
+	#http://download.mono-project.com/build-deps/macos/ppc/freetype-2.4.2-8.macos10.novell.ppc.zip
+	#http://download.mono-project.com/build-deps/macos/ppc/pixman-0.18.2-8.macos10.novell.ppc.zip
 
 	# 10.4 and 10.5 have differing expat versions, use our own
-	http://primates.ximian.com/~wberrier/macos/deps/ppc/expat-2.0.1-8.macos10.novell.ppc.zip
+	http://download.mono-project.com/build-deps/macos/ppc/expat-2.0.1-8.macos10.novell.ppc.zip
 
 )
 
 macos_10_x86_ZIP_DEPS=(
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/glib-2.28.8.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pkg-config-0.25.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/gettext-0.18.1.1.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/glib-2.28.8-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/pkg-config-0.25-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/gettext-0.18.1.1-2.10.6.macos10.xamarin.x86.zip
 
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/jpeg-8.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/libpng-1.2.46.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/giflib-4.1.6.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/tiff-3.8.2.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/jpeg-8-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/libpng-1.2.46-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/giflib-4.1.6-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/tiff-3.8.2-2.10.6.macos10.xamarin.x86.zip
 
 	# We cannot build against our own fontconfig, I don't know why
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/cairo-1.10.2.macos10.xamarin.x86.zip
-	#http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/fontconfig-2.8.0.macos10.xamarin.x86.zip
-	#http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/freetype-2.4.2.macos10.xamarin.x86.zip
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/pixman-0.22.2.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/cairo-1.10.2-2.10.6.macos10.xamarin.x86.zip
+	#http://download.mono-project.com/build-deps/macos/i386/fontconfig-2.8.0-2.10.6.macos10.xamarin.x86.zip
+	#http://download.mono-project.com/build-deps/macos/i386/freetype-2.4.4-2.10.6.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/pixman-0.22.2-2.10.6.macos10.xamarin.x86.zip
 
 	# 10.4 and 10.5 have differing expat versions, use our own
-	http://beefydude.lab.xamarin.com/packages/deps/macos-10-x86/expat-2.0.1.macos10.xamarin.x86.zip
+	http://download.mono-project.com/build-deps/macos/i386/expat-2.0.1-2.10.6.macos10.xamarin.x86.zip
 
 )
 
