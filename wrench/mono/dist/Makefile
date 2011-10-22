@@ -3,11 +3,11 @@
 	cd mono && ./autogen.sh
 
 .make:
-	cd mono && make all dist
-	mv -f -v mono/*.tar.gz $(PACKAGES_PATH)
+	cd mono && make
 
 .check:
 	cd mono && make distcheck
+	mv -f -v mono/*.tar.gz $(PACKAGES_PATH)
 
 .clean::
 	-cd mono && make distclean

@@ -29,8 +29,8 @@ all: package
 	for repo in $(DEPENDENCIES); do ( cd $$repo && git fetch ); done
 
 .clean:: $(BUILD_REPOSITORY_NAMES)
-	cd $(MAIN_REPO) && git reset --hard && git clean -xfd
-	for repo in $(DEPENDENCIES); do ( cd $$repo && git reset --hard && git clean -xfd ); done
+	-cd $(MAIN_REPO) && git reset --hard && git clean -xfd
+	-for repo in $(DEPENDENCIES); do ( cd $$repo && git reset --hard && git clean -xfd ); done
 
 $(BUILD_REPOSITORY_NAMES):
 	mkdir -p $(SOURCES_PATH)
