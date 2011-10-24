@@ -10,6 +10,6 @@
 	mv -f -v mono/*.tar.gz $(PACKAGES_PATH)
 
 .clean::
-	-cd mono && make distclean
+	-cd $(SOURCES_PATH)/mono && make distclean
 
 include wrench.make
