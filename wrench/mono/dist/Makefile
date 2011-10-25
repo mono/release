@@ -8,7 +8,9 @@
 .check:
 	cd mono ; \
 	make -k distcheck ; \
-	mv -f -v *.tar.gz $(PACKAGES_PATH)
+	EC=$? ; \
+	mv -f -v *.tar.gz $(PACKAGES_PATH) ; \
+	exit $EC
 
 .clean::
 	-cd $(SOURCES_PATH)/mono && make distclean
