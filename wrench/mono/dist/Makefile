@@ -1,4 +1,3 @@
-
 .configure:
 	cd mono && ./autogen.sh
 
@@ -9,7 +8,7 @@
 	cd mono ; \
 	make -k distcheck ; \
 	EC=$$? ; \
-	mv -f -v *.tar.gz $(PACKAGES_PATH) ; \
+	mv -f -v *.tar.* $(PACKAGES_PATH) ; \
 	exit $$EC
 
 .clean::
