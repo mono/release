@@ -4,9 +4,9 @@
 .make:
 	cd mono && make -k
 
-.check:
+.dist:
 	cd mono ; \
-	make -k distcheck ; \
+	make -k dist-bzip2 ; \
 	EC=$$? ; \
 	mv -f -v *.tar.* $(PACKAGES_PATH) ; \
 	exit $$EC
