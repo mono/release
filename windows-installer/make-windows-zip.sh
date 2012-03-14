@@ -1,8 +1,10 @@
 #!/bin/sh
 
+VERSION="2.11"
+BUILD="0"
 CHECKOUT_ROOT="$HOME/git/mono"
 INSTALL_ROOT="/tmp/install"
-PACKAGE_DEST=....
+PACKAGE_DEST="/release/packaging/zip_packages/win-4-i386/mono/2.11/"
 
 function error_exit
 {
@@ -37,7 +39,7 @@ function build_mono
 function package_mono
 {
     cd $INSTALL_ROOT
-    zip -r $PACKAGE_DEST/mono-2.11.zip . || error_exit "Cannot zip"
+    zip -r $PACKAGE_DEST/mono-$VERSION-$BUILD.xamarin.x86.zip . || error_exit "Cannot zip"
 }
 
 
