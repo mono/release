@@ -1,3 +1,6 @@
+
+API_UPLOAD := rsync -tz --delay-updates *.dll mono-api-upload@go-mono.com:~mono-web/go-mono/status/binary
+
 .configure:
 	cd mono && ./autogen.sh
 
@@ -10,6 +13,11 @@
 	EC=$$? ; \
 	mv -f -v *.tar.* $(PACKAGES_PATH) ; \
 	exit $$EC
+
+.upload:
+	cd mono/mcs/class/lib/net_2_0 && $(API_UPLOAD)/2.0
+	#cd mono/mcs/class/lib/net_4_0 && $(API_UPLOAD)/4.0
+	cd mono/mcs/class/lib/net_4_5 && $(API_UPLOAD)/4.5
 
 .clean::
 	-cd $(SOURCES_PATH)/mono && make distclean
