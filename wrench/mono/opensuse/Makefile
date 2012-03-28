@@ -9,7 +9,8 @@ API_UPLOAD := rsync -tz --delay-updates *.dll mono-api-upload@go-mono.com:~mono-
 	cd mono && ./autogen.sh
 
 .make:
-	rpmbuild -ba mono/mono-core.spec
+	@cd mono && rm -f *.tar.bz2
+	cd mono && make dist-bzip2 && rpmbuild -ta mono-*.tar.bz2
 
 .package:
 	@mkdir -p package
