@@ -1,4 +1,3 @@
-
 API_UPLOAD := rsync -tz --delay-updates *.dll mono-api-upload@go-mono.com:~mono-web/go-mono/status/binary
 MONO_BUILD := /usr/src/packages/BUILD/mono-*
 
@@ -12,6 +11,7 @@ MONO_BUILD := /usr/src/packages/BUILD/mono-*
 .make:
 	@cd mono && rm -f *.tar.bz2
 	cd mono && make dist-bzip2 && rpmbuild -ta mono-*.tar.bz2
+	rm -f mono && ln -s $(MONO_BUILD) ./mono
 
 .package:
 	@mkdir -p package
