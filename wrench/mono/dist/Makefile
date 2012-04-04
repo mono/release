@@ -13,9 +13,9 @@
 	exit $$EC
 
 .monolite:
-	MONO_CORLIB_VERSION=$(sed -n "s/\#define MONO_CORLIB_VERSION //p" mono/mono/metadata/appdomain.c) ; \
+	MONO_CORLIB_VERSION=$(shell sed -n "s/\#define MONO_CORLIB_VERSION //p" mono/mono/metadata/appdomain.c) ; \
 	cd mono/mcs/class/lib/basic ; \
-	DATE=$(date +'%Y%m%d') ; \
+	DATE=$(shell date '+%Y%m%d') ; \
 	MONOLITE=monolite-$$MONO_CORLIB_VERSION-$DATE ; \
 	mkdir -p $$MONOLITE ; \
 	cp *.dll *.exe $$MONOLITE ; \
