@@ -1,54 +1,78 @@
 #!/bin/sh
 
-VERSION="2.11"
+VERSION="2.11.2"
 BUILD="0"
-CHECKOUT_ROOT="$HOME/git/mono"
+CHECKOUT_ROOT="/sources/mono"
 INSTALL_ROOT="/tmp/install"
-PACKAGE_DEST="/release/packaging/zip_packages/win-4-i386/mono/2.11/"
+PACKAGE_DEST="/release/packaging/zip_packages/win-4-i386/mono/$VERSION"
+MONO_ZIP="$PACKAGE_DEST/mono-$VERSION-$BUILD.xamarin.x86.zip"
+PACKAGE_OUTPUT="/release/windows-installer/Output/$VERSION/"
 
-function error_exit
+
+function error
 {
-    echo "$1" 1>&2
+    echo "$(date "+%F@%T") :: $1" 1>&2
     exit 1
 }
 
-function clean_install_root
+function report
 {
-    rm -rf $INSTALL_ROOT
+    echo "$(date "+%F@%T") :: $1"    
 }
 
-function download_mono
+function cleanup
 {
+    report "Cleaning up"
+
+    rm $MONO_ZIP
+    rm -rf $INSTALL_ROOT
+    rm -rf $PACKAGE_OUTPUT
+
+    (cd $CHECKOUT_ROOT; make clean)
+}
+
+function download
+{
+    report "Downloading Mono"    
+
     if [ -d $CHECKOUT_ROOT ] ; then
-        cd $CHECKOUT_ROOT; git pull || error_exit "Cannot update mono"
+        (cd $CHECKOUT_ROOT; git pull origin master; git reset --hard $BUILD_REVISION) || error "Cannot update mono"
     else
-        git clone git@github.com:mono/mono $CHECKOUT_ROOT || error_exit "Cannot checkout mono"
+        git clone git://github.com/mono/mono.git $CHECKOUT_ROOT || error "Cannot checkout mono"
+    fi
+
+    if [ -d $CHECKOUT_ROOT ] ; then
+        (cd $CHECKOUT_ROOT; git submodule update --init) || error "Cannot update git submodules"
     fi
 }
 
-
-function build_mono
+function build
 {
-    cd $CHECKOUT_ROOT
-    ./autogen.sh --prefix=$INSTALL_ROOT || error_exit "Cannot autogen.sh"
-    make || error_exit "Cannot make"
-    make install || error_exit "Cannot make install"
+    report "Building Mono"    
+
+    pushd $CHECKOUT_ROOT
+    ./autogen.sh --prefix=$INSTALL_ROOT || error "Cannot autogen.sh"
+    make || error "Cannot make"
+    make install || error "Cannot make install"
+    popd
 }
 
 
-function package_mono
+function package
 {
-    cd $INSTALL_ROOT
-    zip -r $PACKAGE_DEST/mono-$VERSION-$BUILD.xamarin.x86.zip . || error_exit "Cannot zip"
+    report "Zipping Mono"    
+    mkdir -p $PACKAGE_DEST
+    (cd $INSTALL_ROOT; zip -r $MONO_ZIP .) || error "Cannot zip"
 }
 
 
 function run
 {
-    clean_install_root
-    download_mono
-    build_mono
-    package_mono
+    cleanup    
+    download
+    build
+    package
+    report "Done"
 }
 
 run
