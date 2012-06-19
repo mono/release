@@ -1,8 +1,6 @@
 BUILD_REPOSITORIES := \
 	git@github.com:mono/monodevelop.git
 
-include release.make
-
 .configure:
 	cd monodevelop; \
 	./configure --profile=dist --enable-tests
@@ -21,3 +19,5 @@ include release.make
 
 .clean::
 	-cd monodevelop && make clean
+
+include wrench.make
