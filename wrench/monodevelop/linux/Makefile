@@ -10,7 +10,7 @@ BUILD_REPOSITORIES := \
 .test:
 	cd monodevelop && make test assembly=$(assembly)
 
-.dist
+.dist:
 	cd monodevelop && make dist
 
 .package:
