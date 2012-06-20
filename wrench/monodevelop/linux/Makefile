@@ -5,7 +5,7 @@ BUILD_REPOSITORIES := \
 	cd monodevelop && ./configure --profile=dist --enable-tests
 
 .make:
-	cd monodevelop && make;
+	cd monodevelop && make
 
 .test:
 	cd monodevelop && make test assembly=$(assembly)
