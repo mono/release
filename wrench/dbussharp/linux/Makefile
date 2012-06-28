@@ -1,5 +1,5 @@
 .configure:
-	cd dbus-sharp && ./configure --enable-tests
+	cd dbus-sharp && ./autogen.sh && ./configure --enable-tests
 
 .make:
 	cd dbus-sharp && $(MAKE)
