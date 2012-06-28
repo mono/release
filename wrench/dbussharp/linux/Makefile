@@ -5,7 +5,7 @@
 	cd dbus-sharp && $(MAKE)
 
 .test:
-	$(MAKE) -C dbus-sharp/tests test
+	$(MAKE) -C dbus-sharp/tests setup run
 
 .dist:
 	$(MAKE) -C dbus-sharp dist
