@@ -10,10 +10,10 @@
 
 .deb:
 	cd mono && ./external/debian-snapshot/prepare-packaging-metadata.sh
-	SNAPSHOT=`echo mono-snapshot-*.tar.bz2 | cut -d' ' -f1` ; \
-	mv $$SNAPSHOT /tmp/ && cd /tmp && tar -xvjf $$SNAPSHOT && cd `basename $$SNAPSHOT .tar.bz2` && dpkg-buildpackage ; \
+	cd mono ; SNAPSHOT=`echo mono-snapshot-*.tar.bz2 | cut -d' ' -f1` ; \
+	mv $$SNAPSHOT /tmp/ && cd /tmp && tar -xvjf $$SNAPSHOT && cd `echo $$SNAPSHOT | cut -d'_' -f1` && dpkg-buildpackage ; \
 	cp *.deb $(PACKAGES_PATH) ; \
-	cd ../ && rm -Rf $$SNAPSHOT `basename $$SNAPSHOT .tar.bz2`
+	cd ../ && rm -Rf $$SNAPSHOT `echo $$SNAPSHOT | cut -d'_' -f1`
 
 .clean::
 	-cd $(SOURCES_PATH)/mono && make distclean
