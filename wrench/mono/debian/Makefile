@@ -6,10 +6,10 @@
 	cd mono && make -k
 
 .dist:
-	cd mono && MAKEFLAGS='' make -k dist-bzip2 && mv -f -v *.tar.* $(PACKAGES_PATH)
+	cd mono && MAKEFLAGS='' make -k dist-bzip2
 
 .deb:
-	./external/debian-snapshot/prepare-packaging-metadata.sh
+	cd mono && ./external/debian-snapshot/prepare-packaging-metadata.sh
 	SNAPSHOT=`echo mono-snapshot-*.tar.bz2 | cut -d' ' -f1` ; \
 	mv $$SNAPSHOT /tmp/ && cd /tmp && tar -xvjf $$SNAPSHOT && cd `basename $$SNAPSHOT .tar.bz2` && dpkg-buildpackage ; \
 	cp *.deb $(PACKAGES_PATH) ; \
