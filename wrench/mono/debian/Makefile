@@ -6,7 +6,7 @@
 	cd mono && make -k
 
 .dist:
-	cd mono && make -k dist-bzip2 && mv -f -v *.tar.* $(PACKAGES_PATH)
+	cd mono && MAKEFLAGS='' make -k dist-bzip2 && mv -f -v *.tar.* $(PACKAGES_PATH)
 
 .deb:
 	./external/debian-snapshot/prepare-packaging-metadata.sh
