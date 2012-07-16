@@ -12,8 +12,8 @@
 	cd mono && ./external/debian-snapshot/prepare-packaging-metadata.sh
 	cd mono ; SNAPSHOT=`echo mono-snapshot-*.tar.bz2 | cut -d' ' -f1` ; \
 	mv $$SNAPSHOT /tmp/ && cd /tmp && tar -xvjf $$SNAPSHOT && cd `echo $$SNAPSHOT | cut -d'_' -f1` && dpkg-buildpackage ; \
-	cp *.deb $(PACKAGES_PATH) ; \
-	cd ../ && rm -Rf $$SNAPSHOT `echo $$SNAPSHOT | cut -d'_' -f1`
+	cd .. && mv *.deb *.dsc *.changes $(PACKAGES_PATH) ; \
+	rm -Rf $$SNAPSHOT `echo $$SNAPSHOT | cut -d'_' -f1`
 
 .clean::
 	-cd $(SOURCES_PATH)/mono && make distclean
