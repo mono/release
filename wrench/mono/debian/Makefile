@@ -6,7 +6,7 @@
 	cd mono && make -k
 
 .dist:
-	cd mono && MAKEFLAGS='' GZIP_ENV=--fast make -k dist-gzip
+	cd mono && rm -f mono-*.tar.* && MAKEFLAGS='' GZIP_ENV=--fast make -k dist-gzip
 
 .deb:
 	cd mono && ./external/debian-snapshot/prepare-packaging-metadata.sh
