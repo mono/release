@@ -1,5 +1,5 @@
 .configure:
-	cd mono/external/debian-snapshot && git clean -xfd
+	cd mono/external/debian-snapshot && rm -rf temp
 	cd mono && ./autogen.sh
 
 .make:
