@@ -1,6 +1,6 @@
 .configure:
 	cd mono/external/debian-snapshot && rm -rf temp
-	cd mono && ./autogen.sh
+	cd mono && GZIP_ENV=--fast ./autogen.sh
 
 .make:
 	cd mono && make -k
@@ -10,10 +10,8 @@
 
 .deb:
 	cd mono && ./external/debian-snapshot/prepare-packaging-metadata.sh
-	cd mono ; SNAPSHOT=`echo mono-snapshot-*.tar.* | cut -d' ' -f1` ; \
-	mv $$SNAPSHOT /tmp/ && cd /tmp && tar -xf $$SNAPSHOT && cd `echo $$SNAPSHOT | cut -d'_' -f1` && dpkg-buildpackage ; \
-	cd .. && mv *.deb *.dsc *.changes $(PACKAGES_PATH) ; \
-	rm -Rf $$SNAPSHOT `echo $$SNAPSHOT | cut -d'_' -f1`
+	cd mono && ./external/debian-snapshot/build-package.sh
+	cd mono/external/debian-snapshot/ && mv *.deb mono-snapshot-*.tar.* *.dsc $(PACKAGES_PATH)
 
 .clean::
 	-cd $(SOURCES_PATH)/mono && make distclean
