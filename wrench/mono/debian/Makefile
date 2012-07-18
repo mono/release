@@ -11,7 +11,7 @@
 .deb:
 	cd mono && ./external/debian-snapshot/prepare-packaging-metadata.sh
 	cd mono && ./external/debian-snapshot/build-package.sh
-	cd mono/external/debian-snapshot/temp/ && mv *.deb mono-snapshot-*.tar.* *.dsc $(PACKAGES_PATH)
+	cd mono/external/debian-snapshot/temp/ && mv *.deb $(PACKAGES_PATH)
 
 .clean::
 	-cd $(SOURCES_PATH)/mono && make distclean
