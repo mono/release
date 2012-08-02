@@ -13,7 +13,7 @@ UPLOAD = results
 
 .configure:
 	mkdir -p $(abspath ../benchmarker/installation)
-	cd mono && ./autogen.sh --prefix=$(abspath ../benchmarker/installation)
+	cd mono && ./autogen.sh --prefix=$(abspath benchmarker/installation)
 
 .make:
 	cd mono && make -j6 && make install
