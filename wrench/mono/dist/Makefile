@@ -15,8 +15,7 @@
 .monolite:
 	MONO_CORLIB_VERSION=$(shell sed -n "s/\#define MONO_CORLIB_VERSION //p" mono/mono/metadata/appdomain.c) ; \
 	cd mono/mcs/class/lib/basic ; \
-	DATE=$(shell date '+%Y%m%d') ; \
-	MONOLITE=monolite-$$MONO_CORLIB_VERSION-$$DATE ; \
+	MONOLITE=monolite-$$MONO_CORLIB_VERSION-latest ; \
 	mkdir -p $$MONOLITE ; \
 	cp *.dll *.exe $$MONOLITE ; \
 	tar zcvpf $$MONOLITE.tar.gz $$MONOLITE/ ; \
