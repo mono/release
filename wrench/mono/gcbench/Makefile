@@ -1,4 +1,5 @@
 BENCHMARK_REPOSITORY = git://github.com/xamarin/benchmarker.git
+BENCH_CONF = configs/default-sgen.conf
 
 .setup-benchmarker:
 	if test ! -d benchmarker; then \
