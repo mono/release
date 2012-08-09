@@ -21,15 +21,11 @@ TARBALL_NAME = gcbench-results.tar.bz2
 count = $(shell (cd mono && git rev-list HEAD) | wc -l | sed -e 's/ *//g' | xargs -n1 printf '%08d')
 commit = $(shell (cd mono && git show --abbrev-commit HEAD) | grep '^commit' | sed -e 's/commit //')
 
-.benchmark: prepare-bench default-sgen default-sgen-ssb default-boehm
-
-prepare-bench:
+.benchmark:
 	if curl -f -o $(TARBALL_NAME) $(DOWNLOAD_URL)/$(TARBALL_NAME); then \
 		tar -C benchmarker -xvjf $(TARBALL_NAME); \
 	fi
-
-default-sgen default-sgen-ssb default-boehm :
-	cd benchmarker && ./runner.sh -c $(BUILD_REVISION) b$(count).$(commit) configs/$@.conf
+	cd benchmarker && ./runner.sh -c $(BUILD_REVISION) b$(count).$(commit) configs/default-sgen.conf configs/default-sgen-ssb.conf configs/default-boehm.conf
 
 .collect:
 	cd benchmarker \
