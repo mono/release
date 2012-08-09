@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION="2.11.3"
+VERSION="2.11.4"
 BUILD="0"
 CHECKOUT_ROOT="/sources/mono"
 INSTALL_ROOT="/tmp/install"
@@ -17,7 +17,7 @@ function error
 
 function report
 {
-    echo "$(date "+%F@%T") :: $1"    
+    echo "$(date "+%F@%T") :: $1"
 }
 
 function cleanup
@@ -33,7 +33,7 @@ function cleanup
 
 function download
 {
-    report "Downloading Mono"    
+    report "Downloading Mono"
 
     if [ -d $CHECKOUT_ROOT ] ; then
         (cd $CHECKOUT_ROOT; git pull origin master; git reset --hard $BUILD_REVISION) || error "Cannot update mono"
@@ -48,7 +48,7 @@ function download
 
 function build
 {
-    report "Building Mono"    
+    report "Building Mono"
 
     pushd $CHECKOUT_ROOT
     ./autogen.sh --prefix=$INSTALL_ROOT || error "Cannot autogen.sh"
@@ -60,7 +60,7 @@ function build
 
 function package
 {
-    report "Zipping Mono"    
+    report "Zipping Mono"
     mkdir -p $PACKAGE_DEST
     (cd $INSTALL_ROOT; zip -r $MONO_ZIP .) || error "Cannot zip"
 }
@@ -68,7 +68,7 @@ function package
 
 function run
 {
-    cleanup    
+    cleanup
     download
     build
     package
