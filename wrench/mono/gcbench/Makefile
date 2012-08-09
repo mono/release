@@ -3,7 +3,7 @@ BENCH_CONF = configs/default-sgen.conf
 DESTINATION = $(BUILD_LANE)
 STORAGE_SERVER = "builder@storage.bos.xamarin.com"
 STORAGE_ROOT = "/srv/www/storage.bos.xamarin.com"
-DOWNLOAD_URL = https://storage.bos.xamarin.com/$(DESTINATION)/
+DOWNLOAD_URL = http://storage.bos.xamarin.com/$(DESTINATION)/
 TARBALL_NAME = gcbench-results.tar.bz2
 
 .setup-benchmarker:
