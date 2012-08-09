@@ -33,7 +33,7 @@ default-sgen default-sgen-ssb default-boehm :
 
 .collect:
 	cd benchmarker \
-		&& ./collect.pl results default-sgen \
+		&& ./collect.pl results default-sgen default-sgen-ssb default-boehm \
 		&& tar -cvjf $(TARBALL_NAME) results/ \
 		&& cp $(TARBALL_NAME) $(PACKAGES_PATH)
 	rsync -ave ssh $(PACKAGES_PATH)/$(TARBALL_NAME) benchmarker/results/ $(STORAGE_SERVER):$(STORAGE_ROOT)/$(DESTINATION)
