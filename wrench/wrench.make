@@ -20,7 +20,7 @@ BUILD_REPOSITORY_PATHS := $(addprefix $(SOURCES_PATH)/,$(BUILD_REPOSITORY_NAMES)
 
 MAIN_REPO = $(firstword $(BUILD_REPOSITORY_NAMES))
 DEPENDENCIES = $(wordlist 2, $(words $(BUILD_REPOSITORY_NAMES)), $(BUILD_REPOSITORY_NAMES))
-GIT_CLEAN_ALL=git clean -xfd && git submodule foreach git clean -xfd
+GIT_CLEAN_ALL=git reset --hard && git clean -xfd && git submodule foreach git clean -xfd
 
 all: package
 
@@ -29,8 +29,8 @@ all: package
 	for repo in $(DEPENDENCIES); do ( cd $$repo && git fetch ); done
 
 .clean:: $(BUILD_REPOSITORY_NAMES)
-	-cd $(MAIN_REPO) && git reset --hard && $(GIT_CLEAN_ALL)
-	-for repo in $(DEPENDENCIES); do ( cd $$repo && git reset --hard && $(GIT_CLEAN_ALL) ); done
+	-cd $(MAIN_REPO) && $(GIT_CLEAN_ALL)
+	-for repo in $(DEPENDENCIES); do ( cd $$repo && $(GIT_CLEAN_ALL) ); done
 
 $(BUILD_REPOSITORY_NAMES):
 	mkdir -p $(SOURCES_PATH)
