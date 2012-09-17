@@ -27,7 +27,7 @@ commit = $(shell (cd mono && git show --abbrev-commit HEAD) | grep '^commit' | s
 			tar -C benchmarker -xvjf $(TARBALL_NAME); \
 			break; \
 		else \
-			sleep 5; \
+			sleep 60; \
 		fi \
 	done
 	cd benchmarker && ./runner.sh -c $(BUILD_REVISION) b$(count).$(commit) configs/default-sgen.conf configs/default-sgen-ssb.conf configs/default-boehm.conf
