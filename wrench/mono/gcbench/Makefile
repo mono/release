@@ -34,7 +34,7 @@ commit = $(shell (cd mono && git show --abbrev-commit HEAD) | grep '^commit' | s
 
 .collect:
 	cd benchmarker \
-		&& ls -lR results/
+		&& ls -lR results/ \
 		&& ./collect.pl --conf configs/default-boehm.conf --conf configs/default-sgen.conf --conf configs/default-sgen-ssb.conf results default-sgen default-sgen-ssb default-boehm \
 		&& tar -cvjf $(TARBALL_NAME) results/ \
 		&& cp $(TARBALL_NAME) $(PACKAGES_PATH)
