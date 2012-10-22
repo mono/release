@@ -11,6 +11,9 @@ MONO_BUILD := /usr/src/packages/BUILD/mono-*
 
 .make:
 	cd mono && make dist-bzip2 && rpmbuild -ta mono-*.tar.bz2
+	# Delete our source tree here and symlink in the tree we just built
+	# This means we can run the tests from the tree we actually built
+	rm -rf mono && ln -s $(MONO_BUILD) ./mono
 
 .package:
 	@mkdir -p package
