@@ -6,14 +6,11 @@ MONO_BUILD := /usr/src/packages/BUILD/mono-*
 #NAME=$(basename $TARBALL)
 
 .configure:
+	@rm -rf $(MONO_BUILD)
 	cd mono && ./autogen.sh
 
 .make:
-	@rm -rf $(MONO_BUILD)
-	@cd mono && rm -f *.tar.bz2
 	cd mono && make dist-bzip2 && rpmbuild -ta mono-*.tar.bz2
-	# What is this deleting anyway?
-	#rm -f mono && ln -s $(MONO_BUILD) ./mono
 
 .package:
 	@mkdir -p package
@@ -23,8 +20,5 @@ MONO_BUILD := /usr/src/packages/BUILD/mono-*
 	cd $(MONO_BUILD)/mcs/class/lib/net_2_0 && $(API_UPLOAD)/2.0
 	cd $(MONO_BUILD)/mcs/class/lib/net_4_0 && $(API_UPLOAD)/4.0
 	cd $(MONO_BUILD)/mcs/class/lib/net_4_5 && $(API_UPLOAD)/4.5
-
-.clean::
-	-cd $(SOURCES_PATH)/mono && make distclean
 
 include wrench.make
