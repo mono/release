@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+#
+# Finds monodevelop-related processes and kills them
+#
+if __FILE__ == $PROGRAM_NAME
+  $stdout.sync = true
+
+  processes = `ps -ef | grep '/usr/bin/mono'`.split("\n").drop(1)
+  puts "#{'=' * 10} Suspect processes #{'=' * 10}"
+  processes.each do |proc| puts proc end
+
+  pids = processes.collect {|p| p.split(' ')[1]}
+
+  pids.each do |pid|
+    puts "==> Killing #{pid}"
+    `kill #{pid}`
+  end
+end
