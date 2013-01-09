@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION="3.0.3"
+VERSION="3.0.4"
 BUILD="0"
 CHECKOUT_ROOT="/sources/mono"
 INSTALL_ROOT="/tmp/install"
