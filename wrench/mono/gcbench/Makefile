@@ -30,12 +30,12 @@ commit = $(shell (cd mono && git show --abbrev-commit HEAD) | grep '^commit' | s
 			sleep 60; \
 		fi \
 	done
-	cd benchmarker && ./runner.sh -c $(BUILD_REVISION) b$(count).$(commit) configs/default-sgen.conf configs/default-sgen-ssb.conf configs/default-boehm.conf
+	cd benchmarker && ./runner.sh -c $(BUILD_REVISION) b$(count).$(commit) configs/default-sgen.conf configs/default-boehm.conf
 
 .collect:
 	cd benchmarker \
 		&& ls -lR results/ \
-		&& ./collect.pl --conf configs/default-boehm.conf --conf configs/default-sgen.conf --conf configs/default-sgen-ssb.conf results default-sgen default-sgen-ssb default-boehm \
+		&& ./collect.pl --conf configs/default-boehm.conf --conf configs/default-sgen.conf results default-sgen default-boehm \
 		&& tar -cvjf $(TARBALL_NAME) results/ \
 		&& cp $(TARBALL_NAME) $(PACKAGES_PATH)
 	rsync -ave ssh $(PACKAGES_PATH)/$(TARBALL_NAME) benchmarker/results/ $(STORAGE_SERVER):$(STORAGE_ROOT)/$(DESTINATION)
