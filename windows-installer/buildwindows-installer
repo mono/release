@@ -10,7 +10,7 @@ import glob
 import distutils.dir_util
 import re
 import datetime
-
+import uuid
 import pdb
 
 # Local common utils
@@ -439,18 +439,20 @@ commands.getoutput("cd gtk; rm -Rf %s " % " ".join(prune_files) )
 # Go out of build
 os.chdir('..')
 
-# Run the guid generator on windows
-print "Copying/running guidgen..."
-build_loc = installer_conf.buildenv.build_location
-installer_conf.buildenv.copy_to('guidgen/guidgen.exe', build_loc)
-(code, output) = installer_conf.buildenv.execute_command(build_loc + os.sep + 'guidgen.exe')
-print "\n",
-guid = output.split().pop()
+# # Run the guid generator on windows
+# print "Copying/running guidgen..."
+# build_loc = installer_conf.buildenv.build_location
+# installer_conf.buildenv.copy_to('guidgen/guidgen.exe', build_loc)
+# (code, output) = installer_conf.buildenv.execute_command(build_loc + os.sep + 'guidgen.exe')
+# print "\n",
+# guid = output.split().pop()
 
-if guid == "found" or not re.compile('.*-.*-.*-.*-.*').search(guid):
-	print "Error getting guid: %s" % guid
-	print "Output : %s" % output
-	sys.exit(1)
+# if guid == "found" or not re.compile('.*-.*-.*-.*-.*').search(guid):
+# 	print "Error getting guid: %s" % guid
+# 	print "Output : %s" % output
+# 	sys.exit(1)
+
+guid = str(uuid.uuid1())
 
 # Massage .iss file
 #  Mono.iss file (version, AppId, etc...)
