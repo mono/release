@@ -474,7 +474,7 @@ utils.substitute_parameters_in_file("build/mono/bin/setmonopath.bat", parameter_
 
 # Copy everything to windows_build_client 
 print "Cleaning up files from build client..."
-installer_conf.buildenv.execute_command("rm -Rf /tmp/windows-installer; mkdir -p /tmp/windows-installer/Output")
+(code, output) = installer_conf.buildenv.execute_command("rm -Rf /tmp/windows-installer; mkdir -p /tmp/windows-installer/Output")
 if code:
 	print "Error cleaning up"
 	print output
