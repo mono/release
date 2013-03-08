@@ -496,7 +496,7 @@ if code:
 	print "Error running installer"
 	sys.exit(1)
 
-# Keep record of what files went into the installer
+print "Keep record of what files went into the installer"
 distutils.dir_util.mkpath(output_dir)
 packages_file = open('%s/packages_used.txt' % output_dir, 'w')
 files_used_in_installer.sort()
@@ -504,10 +504,10 @@ packages_file.write(string.join(files_used_in_installer, "\n"))
 packages_file.write("\n")
 packages_file.close()
 
-# Copy resultant file back
+print "Copy resultant file back"
 installer_conf.buildenv.copy_from("/tmp/windows-installer/Output/*", output_dir)
 
 # Generate the md5sum of the final installer
-output_filename = os.path.basename(glob.glob(output_dir + os.sep + "*.exe").pop())
-commands.getoutput("cd %s; md5sum *.exe > %s.md5 " % (output_dir, output_filename))
+# output_filename = os.path.basename(glob.glob(output_dir + os.sep + "*.exe").pop())
+# commands.getoutput("cd %s; md5sum *.exe > %s.md5 " % (output_dir, output_filename))
 
