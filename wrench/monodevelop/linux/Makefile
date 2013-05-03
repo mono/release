@@ -11,7 +11,7 @@ BUILD_REPOSITORIES := \
 	make -C monodevelop test assembly=$(assembly)
 
 .dist:
-	make -d -C monodevelop dist
+	env -i -- make -C monodevelop dist
 
 .package:
 	mv -f -v monodevelop/tarballs/*.tar.bz2 $(PACKAGES_PATH)
