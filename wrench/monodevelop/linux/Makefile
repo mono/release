@@ -5,13 +5,13 @@ BUILD_REPOSITORIES := \
 	cd monodevelop && ./configure --profile=dist --enable-tests
 
 .make:
-	cd monodevelop && make
+	make -C monodevelop all
 
 .test:
-	cd monodevelop && make test assembly=$(assembly)
+	make -C monodevelop test assembly=$(assembly)
 
 .dist:
-	cd monodevelop && make dist
+	make -C monodevelop dist
 
 .package:
 	mv -f -v monodevelop/tarballs/*.tar.bz2 $(PACKAGES_PATH)
