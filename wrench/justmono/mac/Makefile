@@ -1,6 +1,6 @@
 
 .configure:
-	cd mono && ./autogen.sh --host=i386-apple-darwin10 --enable-nls=no --with-ikvm=yes
+	cd mono && ./autogen.sh --build=x86_64-apple-darwin10 --enable-nls=no --with-ikvm=yes
 
 .make:
 	cd mono && make -k
