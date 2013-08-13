@@ -51,7 +51,7 @@ function build
     report "Building Mono"
 
     pushd $CHECKOUT_ROOT
-    ./autogen.sh --prefix=$INSTALL_ROOT || error "Cannot autogen.sh"
+    ./autogen.sh --prefix=$INSTALL_ROOT --host=i686-pc-mingw32 || error "Cannot autogen.sh"
     make || error "Cannot make"
     make install || error "Cannot make install"
     popd
