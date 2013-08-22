@@ -201,6 +201,7 @@ os.mkdir('lib/mono/2.0/winhack')
 
 os.rename('lib/mono/2.0/xsp2.exe', 'lib/mono/2.0/winhack/xsp2.exe')
 
+os.mkdir('lib/mono/4.5')
 os.mkdir('lib/mono/4.5/winhack')
 
 os.rename('lib/mono/4.5/xsp4.exe', 'lib/mono/4.5/winhack/xsp4.exe')
