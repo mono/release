@@ -370,6 +370,9 @@ utils.substitute_parameters_in_file("gtk/etc/gtk-2.0/gtk.immodules", parameter_m
 shutil.rmtree('mono/gecko-sdk')
 shutil.rmtree('mono/buildtools')
 
+# Rename mono to mono.exe
+shutil.move('mono/bin/mono', 'mono/bin/mono.exe')
+
 #
 ##############################################
 
