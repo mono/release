@@ -110,7 +110,7 @@ Authors:
 
 %files -f mcs.lang
 %defattr(-, root, root)
-%doc AUTHORS COPYING.LIB ChangeLog NEWS README
+%doc AUTHORS COPYING.LIB ChangeLog NEWS README.md
 %_bindir/mono
 %_libdir/libmono.so.*
 %_mandir/man1/mono.1%ext_man
