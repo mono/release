@@ -37,6 +37,7 @@ genxs
 gmcs
 httpcfg
 ilasm
+ikdasm
 installvst
 ipy
 ipy64

@@ -975,6 +975,7 @@ Mono development tools.
 %_bindir/genxs
 %_bindir/httpcfg
 %_bindir/ilasm
+%_bindir/ikdasm
 %_bindir/installvst
 %_bindir/lc
 %_bindir/macpack
@@ -1117,6 +1118,7 @@ Mono development tools.
 %_prefix/lib/mono/4.0/signcode.exe*
 %_prefix/lib/mono/4.0/xbuild.exe*
 %_prefix/lib/mono/4.0/xbuild.rsp
+%_prefix/lib/mono/4.5/ikdasm.exe*
 %_prefix/lib/mono/gac/Microsoft.Build.Engine
 %_prefix/lib/mono/gac/Microsoft.Build.Framework
 %_prefix/lib/mono/gac/Microsoft.Build.Tasks
