@@ -1,0 +1,7 @@
+#!/bin/bash
+defs/mono prerequisites
+defs/mono download
+defs/mono clean
+defs/mono build
+defs/mono install
+resources/build.bat
