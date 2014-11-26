@@ -87,9 +87,10 @@ install()
 	pushd ${REPODIR}/../../tmp/mono/bin
 	for i in *
 		do if [[ "`file -b $i`" == "POSIX shell script, ASCII text"* ]]
-			then RUNTIME=`grep -ho "[2,3,4]\.[0,5]" $i`
+			then RUNTIME=`grep -ho -m 1 "xbuild/.*/bin\|[2,3,4]\.[0,5]" $i`
 			if [ -e "../lib/mono/${RUNTIME}/$i.exe" ]
-				then sed "s/@@RUNTIME@@/${RUNTIME}/" ${REPODIR}/../../resources/wrapper.bat > $i.bat
+				then sed "s#@@RUNTIME@@#${RUNTIME}#" ${REPODIR}/../../resources/wrapper.bat > $i.bat
+				sed -i 's#/#\\#g' $i.bat
 			fi
 			rm $i
 		fi
