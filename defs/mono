@@ -71,7 +71,8 @@ install()
 		../../tmp/mono/lib/libmonoboehm-2.0.* \
 		../../tmp/mono/lib/libmonosgen-2.0.* \
 		../../tmp/mono/bin/MonoPosixHelper.* \
-		../../tmp/mono/lib/MonoPosixHelper.*
+		../../tmp/mono/lib/MonoPosixHelper.* \
+		../../tmp/mono/bin/mono
 	pushd ${REPODIR}
 	cp -a msvc/Win32/bin/mono-sgen.exe	../../tmp/mono/bin/
 	cp -a msvc/Win32/bin/monosgen-2.0.dll	../../tmp/mono/bin/
