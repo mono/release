@@ -94,6 +94,7 @@ install()
 			rm $i
 		fi
 	done
+	chmod a+x *.bat *.exe
 	popd
 	popd
 }
