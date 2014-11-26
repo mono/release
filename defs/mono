@@ -1,0 +1,93 @@
+#!/bin/bash
+
+REPO=https://github.com/mono/mono.git
+REPODIR=$(dirname $(realpath $0))/../repos/mono
+
+error()
+{
+    echo "$(date "+%F@%T") :: $1" 1>&2
+    exit 1
+}
+
+report()
+{
+    echo "$(date "+%F@%T") :: $1"
+}
+
+download()
+{
+	if [ ! -d "${REPODIR}" ]
+	then
+		report "Checking Mono out from Git"
+		git clone $REPO ${REPODIR} || error "*** Could not run git clone ***"
+		cd ${REPODIR} && git submodule init || error "*** Could not run git submodule init ***"
+	else
+		report "Fetching the latest Mono from Git"
+		cd ${REPODIR} && git fetch origin || error "*** Could not run git fetch ***"
+	fi
+	cd ${REPODIR} && git submodule update || error "*** Could not run git submodule update ***"
+	if [ -n "$1" ]
+	then
+		report "Checkout out revision $1"
+		cd ${REPODIR} && git checkout $1 || error "*** Could not run git checkout ***"
+	fi
+}
+
+clean()
+{
+	pushd ${REPODIR}
+	report "Running git clean and reset"
+	git clean -fdx || error "*** Could not run git clean ***"
+	git reset --hard HEAD || error "*** Could not run git reset ***"
+	popd
+}
+
+build()
+{
+	pushd ${REPODIR}
+	report "Running configure with Cygwin (runtime plus assemblies)"
+	mkdir -p ../../tmp/mono
+	./autogen.sh --prefix=$(realpath ../../tmp/mono) --host=i686-pc-mingw32 || error "*** Could not run autogen ***"
+	report "Compiling mono runtime with MSVC"
+	sed -i 's/v110/v120/' msvc/*.vcxproj
+	sed -i 's/v110/v120/' mcs/jay/jay.vcxproj
+	pushd msvc
+	./winsetup.bat
+	popd
+	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe msvc/mono.sln || error "*** MSBuild failed ***"
+	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Configuration=Debug_SGen msvc/mono.sln || error "*** MSBuild SGen failed ***"
+	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Configuration=Debug_SGen msvc/mono.vcxproj || error "*** MSBuild SGen failed ***"
+	make || error "*** gcc building failed ***"
+	popd
+}
+
+install()
+{
+	pushd ${REPODIR}
+	make install || error "*** Installing to temporary prefix failed ***"
+	rm -f	../../tmp/mono/bin/mono-sgen.* \
+		../../tmp/mono/bin/mono-boehm.* \
+		../../tmp/mono/lib/libmono-2.0.* \
+		../../tmp/mono/lib/libmonoboehm-2.0.* \
+		../../tmp/mono/lib/libmonosgen-2.0.* \
+		../../tmp/mono/bin/MonoPosixHelper.* \
+		../../tmp/mono/lib/MonoPosixHelper.*
+	pushd ${REPODIR}
+	cp -a msvc/Win32/bin/mono-sgen.exe	../../tmp/mono/bin/
+	cp -a msvc/Win32/bin/monosgen-2.0.dll	../../tmp/mono/bin/
+	cp -a msvc/Win32/lib/monosgen-2.0.lib	../../tmp/mono/lib/
+	cp -a msvc/Win32/bin/MonoPosixHelper.dll	../../tmp/mono/bin/
+	cp -a msvc/Win32/lib/MonoPosixHelper.lib	../../tmp/mono/lib/
+	cp -a msvc/Win32/bin/mono.exe		../../tmp/mono/bin/mono-boehm.exe
+	cp -a msvc/Win32/bin/mono-2.0.dll	../../tmp/mono/bin/
+	cp -a msvc/Win32/lib/mono-2.0.lib	../../tmp/mono/lib/
+	popd
+	popd
+}
+
+prerequisites()
+{
+	which mcs 2>/dev/null || error "*** mcs is not in \$PATH ***"
+}
+
+$@
