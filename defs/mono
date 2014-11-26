@@ -81,6 +81,18 @@ install()
 	cp -a msvc/Win32/bin/mono.exe		../../tmp/mono/bin/mono-boehm.exe
 	cp -a msvc/Win32/bin/mono-2.0.dll	../../tmp/mono/bin/
 	cp -a msvc/Win32/lib/mono-2.0.lib	../../tmp/mono/lib/
+	cp -a ../../tmp/mono/bin/mono-sgen.exe	../../tmp/mono/bin/mono.exe
+	popd
+	pushd ${REPODIR}/../../tmp/mono/bin
+	for i in *
+		do if [[ "`file -b $i`" == "POSIX shell script, ASCII text"* ]]
+			then RUNTIME=`grep -ho "[2,3,4]\.[0,5]" $i`
+			if [ -e "../lib/mono/${RUNTIME}/$i.exe" ]
+				then sed "s/@@RUNTIME@@/${RUNTIME}/" ${REPODIR}/../../resources/wrapper.bat > $i.bat
+			fi
+			rm $i
+		fi
+	done
 	popd
 	popd
 }
