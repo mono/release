@@ -61,6 +61,7 @@ install()
 		do bin/gacutil.bat -i $i
 	done
 	popd
+	cp -r ../../resources/pkgconfig ../../tmp/mono/lib/
 	popd
 }
 
