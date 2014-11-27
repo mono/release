@@ -52,6 +52,15 @@ build()
 install()
 {
 	pushd ${REPODIR}
+	cp -r gtksharp/etc/* ../../tmp/mono/etc/
+	cp -r gtksharp/bin/* ../../tmp/mono/bin/
+	cp -r gtksharp/lib/* ../../tmp/mono/lib/
+	cp -r gtksharp/share/* ../../tmp/mono/share/
+	pushd ../../tmp/mono/
+	for i in lib/gtk-sharp-2.0/*.dll
+		do bin/gacutil.bat -i $i
+	done
+	popd
 	popd
 }
 
