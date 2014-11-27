@@ -17,6 +17,13 @@ report()
 download()
 {
 	mkdir -p ${REPODIR}
+	if [ ! -d "${REPODIR}/lessmsi" ]
+		then report "Downloading LessMSIerables"
+		wget --quiet -O ${REPODIR}/lessmsi.zip https://github.com/activescott/lessmsi/releases/download/v1.2.0/lessmsi-v1.2.0.zip
+		mkdir -p ${REPODIR}/lessmsi
+		unzip -d ${REPODIR}/lessmsi ${REPODIR}/lessmsi.zip
+		chmod a+x ${REPODIR}/lessmsi/*.exe ${REPODIR}/lessmsi/*.dll
+	fi
 	report "Downloading GTK# for Windows"
 	wget --quiet -O ${REPODIR}/gtksharp.msi ${REPO}
 }
@@ -33,7 +40,11 @@ build()
 {
 	pushd ${REPODIR}
 	report "Unpacking GTK# for Windows"
-	msiexec /a gtksharp.msi /qb TARGETDIR=gtksharp
+	mkdir -p gtksharp
+	pushd lessmsi
+	./lessmsi.exe x ../gtksharp.msi
+	mv gtksharp ..
+	popd
 	popd
 }
 
