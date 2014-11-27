@@ -43,7 +43,8 @@ build()
 	mkdir -p gtksharp
 	pushd lessmsi
 	./lessmsi.exe x ../gtksharp.msi
-	mv gtksharp ..
+	mv gtksharp/SourceDir/PFiles/GtkSharp/2.12/* ../gtksharp
+	rm -rf gtksharp
 	popd
 	popd
 }
