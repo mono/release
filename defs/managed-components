@@ -58,6 +58,47 @@ build()
 install()
 {
 	pushd ${REPODIR}
+	cp -r mono-mac/lib/ironpython				../../tmp/mono/lib/
+	cp -r mono-mac/lib/ironruby				../../tmp/mono/lib/
+	cp -r mono-mac/lib/boo					../../tmp/mono/lib/
+	cp -r mono-mac/lib/xsp					../../tmp/mono/lib/
+	cp -r mono-mac/lib/mono/boo				../../tmp/mono/lib/mono/
+	cp -r mono-mac/lib/mono/Microsoft*			../../tmp/mono/lib/mono/
+	cp -r mono-mac/lib/mono/monodroid			../../tmp/mono/lib/mono/
+	cp -r mono-mac/lib/mono/monotouch			../../tmp/mono/lib/mono/
+	cp -r mono-mac/lib/mono/netcore*			../../tmp/mono/lib/mono/
+	cp -r mono-mac/lib/mono/nuget				../../tmp/mono/lib/mono/
+	cp -r mono-mac/lib/mono/portable*			../../tmp/mono/lib/mono/
+	cp -r mono-mac/lib/mono/Reference*			../../tmp/mono/lib/mono/
+	cp -r mono-mac/lib/mono/4.5/FSharp*			../../tmp/mono/lib/mono/4.5/
+	cp -r mono-mac/lib/mono/4.5/Microsoft.VisualBasic.dll	../../tmp/mono/lib/mono/4.5/
+	cp -r mono-mac/lib/mono/4.5/Mono.Cecil.VB*		../../tmp/mono/lib/mono/4.5/
+	cp -r mono-mac/lib/mono/4.5/Mono.WebServer2.dll		../../tmp/mono/lib/mono/4.5/
+	cp -r mono-mac/lib/mono/4.5/vbnc.*			../../tmp/mono/lib/mono/4.5/
+	cp -r mono-mac/lib/mono/4.5/xsp4.exe			../../tmp/mono/lib/mono/4.5/
+	cp -r mono-mac/lib/mono/4.0/fs*.exe			../../tmp/mono/lib/mono/4.0/
+	cp -r mono-mac/lib/mono/4.0/FSharp*			../../tmp/mono/lib/mono/4.0/
+	cp -r mono-mac/lib/mono/4.0/Microsoft.VisualBasic.dll	../../tmp/mono/lib/mono/4.0/
+	cp -r mono-mac/lib/mono/4.0/Microsoft*FSharp.Targets	../../tmp/mono/lib/mono/4.0/
+	cp -r mono-mac/lib/mono/4.0/policy*FSharp*dll		../../tmp/mono/lib/mono/4.0/
+	pushd ${REPODIR}/../../tmp/mono/bin
+	sed 's#@@RUNTIME@@#4.5#' ${REPODIR}/../../resources/wrapper.bat > xsp4.bat
+	sed 's#@@RUNTIME@@#4.5#' ${REPODIR}/../../resources/wrapper.bat > vbnc.bat
+	sed 's#@@RUNTIME@@#..\\boo#' ${REPODIR}/../../resources/wrapper.bat > booc.bat
+	sed 's#@@RUNTIME@@#..\\boo#' ${REPODIR}/../../resources/wrapper.bat > booi.bat
+	sed 's#@@RUNTIME@@#..\\boo#' ${REPODIR}/../../resources/wrapper.bat > booish.bat
+	sed 's#@@RUNTIME@@#..\\ironpython#' ${REPODIR}/../../resources/wrapper.bat > ipy.bat
+	sed 's#@@RUNTIME@@#..\\ironpython#' ${REPODIR}/../../resources/wrapper.bat > ipy64.bat
+	sed 's#@@RUNTIME@@#..\\ironruby#' ${REPODIR}/../../resources/wrapper.bat > ir.bat
+	sed 's#@@RUNTIME@@#..\\ironruby#' ${REPODIR}/../../resources/wrapper.bat > ir64.bat
+	sed 's#@@RUNTIME@@#4.0#' ${REPODIR}/../../resources/wrapper.bat > fsharpc.bat
+	sed -i 's/%~n0/fsc/' fsharpc.bat
+	sed 's#@@RUNTIME@@#4.0#' ${REPODIR}/../../resources/wrapper.bat > fsharpi.bat
+	sed -i 's/%~n0/fsi/' fsharpi.bat
+	sed 's#@@RUNTIME@@#4.0#' ${REPODIR}/../../resources/wrapper.bat > fsharpiAnyCpu.bat
+	sed -i 's/%~n0/fsiAnyCpu/' fsharpiAnyCpu.bat
+	chmod a+x *.bat *.exe
+	popd
 	popd
 }
 
