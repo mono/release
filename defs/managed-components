@@ -50,7 +50,7 @@ build()
 	fi
 	report "Unpacking Mono for Mac"
 	xar/src/xar -x -f mono.xar
-	zcat mono.pkg/Payload | cpio -i
+	zcat mono.pkg/Payload | bsdcpio -i
 	mv Library/Frameworks/Mono.framework/Versions/3.10.0 mono-mac
 	popd
 }
