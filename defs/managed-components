@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPO=http://download.mono-project.com/archive/3.10.0/macos-10-x86/MonoFramework-MDK-3.10.0.macos10.xamarin.x86.pkg
+REPO=${2:-"http://download.mono-project.com/archive/3.10.0/macos-10-x86/MonoFramework-MDK-3.10.0.macos10.xamarin.x86.pkg"}
 REPODIR=$(dirname $(realpath $0))/../repos/managed-components
 
 error()
