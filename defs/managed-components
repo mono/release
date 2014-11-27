@@ -63,9 +63,9 @@ install()
 
 prerequisites()
 {
-	which bsdcpio 2>/dev/null || error "*** bsdcpio is not in \$PATH ***"
-	which wget 2>/dev/null    || error "*** wget is not in \$PATH ***"
-	which xml2-config 2>/dev/null || error "*** xml2-config is not in \$PATH ***"
+	which bsdcpio		2>/dev/null || error "*** bsdcpio is not in \$PATH ***"
+	which wget 		2>/dev/null || error "*** wget is not in \$PATH ***"
+	which xml2-config	2>/dev/null || error "*** xml2-config is not in \$PATH ***"
 }
 
 $@
