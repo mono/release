@@ -90,11 +90,16 @@ install()
 	for i in *
 		do if [[ "`file -b $i`" == "POSIX shell script, ASCII text"* ]]
 			then RUNTIME=`grep -ho -m 1 "xbuild/.*/bin\|[2,3,4]\.[0,5]" $i`
-			if [ -e "../lib/mono/${RUNTIME}/$i.exe" ]
-				then sed "s#@@RUNTIME@@#${RUNTIME}#" ${REPODIR}/../../resources/wrapper.bat > $i.bat
+			if [ -n "$(grep -ho '.:/.*\.exe' $i)" ]
+				then EXENAME=$(basename `grep -ho '.:/.*\.exe' $i`)
+			fi
+			if [ -f "../lib/mono/${RUNTIME}/${EXENAME}" ]
+				then sed "s#@@RUNTIME@@#${RUNTIME}#g" ${REPODIR}/../../resources/wrapper.bat > $i.bat
+				sed -i "s#@@COMMAND@@#${EXENAME}#g" $i.bat
 				sed -i 's#/#\\#g' $i.bat
 			fi
-			rm $i
+			sed -i "s#.:/.*/#\"\$\{BASH_SOURCE%/\*\}\"/../lib/mono/${RUNTIME}/#g" $i
+			sed -i 's#/.*/tmp/mono/bin#\"\$\{BASH_SOURCE%/\*\}\"#g' $i
 		fi
 	done
 	unzip -jd . ${REPODIR}/pkgconfig.zip bin/pkg-config.exe
