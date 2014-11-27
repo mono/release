@@ -98,6 +98,11 @@ install()
 	sed 's#@@RUNTIME@@#4.0#' ${REPODIR}/../../resources/wrapper.bat > fsharpiAnyCpu.bat
 	sed -i 's/%~n0/fsiAnyCpu/' fsharpiAnyCpu.bat
 	chmod a+x *.bat *.exe
+	for i in ../lib/mono/boo/*.dll ../lib/mono/4.5/Mono.Cecil.VB*.dll
+		do ./gacutil.bat -i $i
+	done
+	./gacutil.bat -i ../lib/mono/4.5/Microsoft.VisualBasic.dll
+	./gacutil.bat -i ../lib/mono/4.5/xsp4.exe
 	popd
 	popd
 }
