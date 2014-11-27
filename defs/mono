@@ -32,7 +32,7 @@ download()
 		cd ${REPODIR} && git checkout $1 || error "*** Could not run git checkout ***"
 		cd ${REPODIR} && git submodule update || error "*** Could not update modules to revision $1 ***"
 	fi
-	wget --quiet -O ${REPODIR}/pkgconfig.zip http://ftp.acc.umu.se/pub/gnome/binaries/win32/dependencies/pkg-config-dev_0.26-1_win32.zip
+	wget --quiet -O ${REPODIR}/pkgconfig.zip http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config_0.26-1_win32.zip
 }
 
 clean()
