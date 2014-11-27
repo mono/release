@@ -1,2 +1,5 @@
 repos
 tmp
+resources/bin
+resources/obj
+resources/mono.generated.wxs
