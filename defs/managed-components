@@ -66,6 +66,9 @@ prerequisites()
 	which bsdcpio		2>/dev/null || error "*** bsdcpio is not in \$PATH ***"
 	which wget 		2>/dev/null || error "*** wget is not in \$PATH ***"
 	which xml2-config	2>/dev/null || error "*** xml2-config is not in \$PATH ***"
+	if [ ! -e "/usr/include/openssl/crypto.h" ]
+		then error "*** openssl-devel is not installed ***"
+	fi
 }
 
 $@
