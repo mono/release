@@ -31,6 +31,7 @@ download()
 		report "Checkout out revision $1"
 		cd ${REPODIR} && git checkout $1 || error "*** Could not run git checkout ***"
 	fi
+	wget --quiet -O ${REPODIR}/pkgconfig.zip http://ftp.acc.umu.se/pub/gnome/binaries/win32/dependencies/pkg-config-dev_0.26-1_win32.zip
 }
 
 clean()
@@ -95,6 +96,7 @@ install()
 			rm $i
 		fi
 	done
+	unzip -jd . ${REPODIR}/pkgconfig.zip bin/pkg-config.exe
 	chmod a+x *.bat *.exe
 	popd
 	popd
