@@ -91,6 +91,8 @@ install()
 	sed 's#@@RUNTIME@@#..\\ironpython#' ${REPODIR}/../../resources/wrapper.bat > ipy64.bat
 	sed 's#@@RUNTIME@@#..\\ironruby#' ${REPODIR}/../../resources/wrapper.bat > ir.bat
 	sed 's#@@RUNTIME@@#..\\ironruby#' ${REPODIR}/../../resources/wrapper.bat > ir64.bat
+	sed 's#@@RUNTIME@@#..\\nuget#' ${REPODIR}/../../resources/wrapper.bat > nuget.bat
+	sed -i 's/%~n0/NuGet/' nuget.bat
 	sed 's#@@RUNTIME@@#4.0#' ${REPODIR}/../../resources/wrapper.bat > fsharpc.bat
 	sed -i 's/%~n0/fsc/' fsharpc.bat
 	sed 's#@@RUNTIME@@#4.0#' ${REPODIR}/../../resources/wrapper.bat > fsharpi.bat
