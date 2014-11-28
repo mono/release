@@ -1,0 +1,12 @@
+#!/bin/bash
+COMPONENTS="mono gtksharp managed-components"
+for i in ${COMPONENTS}
+	do defs/$i prerequisites
+done
+for i in ${COMPONENTS}
+	do defs/$i download
+	defs/$i clean
+	defs/$i build
+	defs/$i install
+done
+resources/build.bat
