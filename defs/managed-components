@@ -108,11 +108,16 @@ install()
 	cp xsp4 xsp
 	cp xsp4.bat xsp.bat
 	chmod a+x *
-	for i in ../lib/mono/boo/*.dll ../lib/mono/4.5/Mono.Cecil.VB*.dll
+	for i in ../lib/mono/boo/*.dll ../lib/mono/4.5/Mono.Cecil.VB*.dll ../lib/mono/*/Microsoft.VisualBasic.dll ../lib/mono/*/xsp*.exe ../lib/mono/*/FSharp*.dll 
 		do ./gacutil.bat -i $i
 	done
-	./gacutil.bat -i ../lib/mono/4.5/Microsoft.VisualBasic.dll
-	./gacutil.bat -i ../lib/mono/4.5/xsp4.exe
+	cp ../lib/mono/2.0/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/2.3.0.0__*/
+	cp ../lib/mono/4.0/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/4.3.0.0__*/
+	cp ../lib/mono/monodroid/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/2.3.98.1__*/
+	cp ../lib/mono/portable259/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/3.259.3.1__*/
+	cp ../lib/mono/portable47/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/2.3.5.0__*/
+	cp ../lib/mono/portable7/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/3.3.1.0__*/
+	cp ../lib/mono/portable78/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/3.78.3.1__*/
 	popd
 	popd
 }
