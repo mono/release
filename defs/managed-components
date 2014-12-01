@@ -107,6 +107,7 @@ install()
 		sed -i 's#\"\"#\"#g' $i
 		sed -i 's#)\"#)#g' $i
 		sed -i 's#exe #exe\" #' $i
+		sed -i 's#basename \$0#basename \"\$0\"#' $i
 	done
 	cp xsp4 xsp
 	cp xsp4.bat xsp.bat
