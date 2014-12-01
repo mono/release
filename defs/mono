@@ -99,7 +99,7 @@ install()
 				sed -i "s#@@COMMAND@@#${EXENAME}#g" $i.bat
 				sed -i 's#/#\\#g' $i.bat
 			fi
-			sed -i "s#.:/.*/#\$\(cygpath -w \"\$\{BASH_SOURCE%/\*\}\"/../lib/mono/${RUNTIME}/\)#g" $i
+			sed -i "s#.:/.*/#\"\$\(cygpath -w \"\$\{BASH_SOURCE%/\*\}\"/../lib/mono/${RUNTIME}/\)\"#g" $i
 			sed -i 's#/.*/tmp/mono/bin#\"\$\{BASH_SOURCE%/\*\}\"#g' $i
 		fi
 	done

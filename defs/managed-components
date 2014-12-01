@@ -98,12 +98,15 @@ install()
 		sed -i 's#/Library.*cli #\"\$\{BASH_SOURCE%/\*\}\"/cli #' $i
 		if [ -n "$(grep -ho '[\" ]/Library.*\.exe' $i)" ]
 			then EXENAME=$(basename `grep -ho -m 1 '[\" ]/Library.*\.exe' $i | sed 's/^\"//'`)
-			RUNTIME=$(dirname `grep -ho -m 1 '[\" ]/Library.*\.exe' $i` | sed 's/^\"//' | sed 's#/Library.*/[0-9]\+\.[0-9]\+\.[0-9]\+/lib/##' | sed '/^mono\//! s#^#..\\#' | sed 's#^mono/##')
-			sed "s#@@RUNTIME@@#${RUNTIME}#g" ${REPODIR}/../../resources/wrapper.bat > $i.bat
+			RUNTIME=$(dirname `grep -ho -m 1 '[\" ]/Library.*\.exe' $i` | sed 's/^\"//' | sed 's#/Library.*/[0-9]\+\.[0-9]\+\.[0-9]\+/lib/##' | sed '/^mono\//! s#^#..\\\\#' | sed 's#^mono/##')
+			sed "s#@@RUNTIME@@#${RUNTIME}\\\\#g" ${REPODIR}/../../resources/wrapper.bat > $i.bat
 			sed -i "s#@@COMMAND@@#${EXENAME}#g" $i.bat
 			sed -i 's#/#\\#g' $i.bat
 		fi
-		sed -i 's#/Library.*/[0-9]\+\.[0-9]\+\.[0-9]\+/lib/#\$\(cygpath -w \"\$\{BASH_SOURCE%/\*\}\"/../lib/\)#g#' $i
+		sed -i 's#/Library.*/[0-9]\+\.[0-9]\+\.[0-9]\+/lib/#\"\$\(cygpath -w \"\$\{BASH_SOURCE%/\*\}\"/../lib/\)\"#g#' $i
+		sed -i 's#\"\"#\"#g' $i
+		sed -i 's#)\"#)#g' $i
+		sed -i 's#exe #exe\" #' $i
 	done
 	cp xsp4 xsp
 	cp xsp4.bat xsp.bat
