@@ -93,7 +93,7 @@ install()
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/nuget					${REPODIR}/../../tmp/mono/bin/
 	pushd ${REPODIR}/../../tmp/mono/bin
 	rm -f xsp
-	for i in ir ir64 irw irw64 xsp2 xsp4 booc booi booish fsharpc fsharpi nuget ipy ipy64 ipyw ipyw64
+	for i in ir ir64 irw irw64 xsp2 xsp4 booc booi booish fsharpc fsharpi fsharpiAnyCpu nuget ipy ipy64 ipyw ipyw64
 		do sed -i 's#/Library.*mono #\"\$\{BASH_SOURCE%/\*\}\"/mono #' $i
 		sed -i 's#/Library.*cli #\"\$\{BASH_SOURCE%/\*\}\"/cli #' $i
 		if [ -n "$(grep -ho '[\" ]/Library.*\.exe' $i)" ]
