@@ -32,7 +32,8 @@ clean()
 		${REPODIR}/Distribution \
 		${REPODIR}/mono.pkg \
 		${REPODIR}/Resources \
-		${REPODIR}/Library
+		${REPODIR}/Library \
+		${REPODIR}/../../tmp/mono-mac
 	popd
 }
 
@@ -57,48 +58,47 @@ build()
 
 install()
 {
-	pushd ${REPODIR}
-	cp -r mono-mac/lib/ironpython				../../tmp/mono/lib/
-	cp -r mono-mac/lib/ironruby				../../tmp/mono/lib/
-	cp -r mono-mac/lib/boo					../../tmp/mono/lib/
-	cp -r mono-mac/lib/xsp					../../tmp/mono/lib/
-	cp -r mono-mac/lib/mono/boo				../../tmp/mono/lib/mono/
-	cp -r mono-mac/lib/mono/Microsoft*			../../tmp/mono/lib/mono/
-	cp -r mono-mac/lib/mono/monodroid			../../tmp/mono/lib/mono/
-	cp -r mono-mac/lib/mono/monotouch			../../tmp/mono/lib/mono/
-	cp -r mono-mac/lib/mono/netcore*			../../tmp/mono/lib/mono/
-	cp -r mono-mac/lib/mono/nuget				../../tmp/mono/lib/mono/
-	cp -r mono-mac/lib/mono/portable*			../../tmp/mono/lib/mono/
-	cp -r mono-mac/lib/mono/Reference*			../../tmp/mono/lib/mono/
-	cp -r mono-mac/lib/mono/4.5/FSharp*			../../tmp/mono/lib/mono/4.5/
-	cp -r mono-mac/lib/mono/4.5/Microsoft.VisualBasic.dll	../../tmp/mono/lib/mono/4.5/
-	cp -r mono-mac/lib/mono/4.5/Mono.Cecil.VB*		../../tmp/mono/lib/mono/4.5/
-	cp -r mono-mac/lib/mono/4.5/Mono.WebServer2.dll		../../tmp/mono/lib/mono/4.5/
-	cp -r mono-mac/lib/mono/4.5/vbnc.*			../../tmp/mono/lib/mono/4.5/
-	cp -r mono-mac/lib/mono/4.5/xsp4.exe			../../tmp/mono/lib/mono/4.5/
-	cp -r mono-mac/lib/mono/4.0/fs*.exe			../../tmp/mono/lib/mono/4.0/
-	cp -r mono-mac/lib/mono/4.0/FSharp*			../../tmp/mono/lib/mono/4.0/
-	cp -r mono-mac/lib/mono/4.0/Microsoft.VisualBasic.dll	../../tmp/mono/lib/mono/4.0/
-	cp -r mono-mac/lib/mono/4.0/Microsoft*FSharp.Targets	../../tmp/mono/lib/mono/4.0/
-	cp -r mono-mac/lib/mono/4.0/policy*FSharp*dll		../../tmp/mono/lib/mono/4.0/
-	cp -r mono-mac/lib/mono/2.0/FSharp*			../../tmp/mono/lib/mono/2.0/
-	cp -r mono-mac/lib/mono/2.0/Microsoft.VisualBasic.dll	../../tmp/mono/lib/mono/2.0/
-	cp -r mono-mac/lib/mono/2.0/Mono.WebServer2.dll		../../tmp/mono/lib/mono/2.0/
-	cp -r mono-mac/lib/mono/2.0/policy*FSharp*dll		../../tmp/mono/lib/mono/2.0/
-	cp -r mono-mac/lib/mono/2.0/xsp2.exe			../../tmp/mono/lib/mono/2.0/
-	cp -r mono-mac/bin/ir*					../../tmp/mono/bin/
-	cp -r mono-mac/bin/ipy*					../../tmp/mono/bin/
-	cp -r mono-mac/bin/fsharp*				../../tmp/mono/bin/
-	cp -r mono-mac/bin/xsp*					../../tmp/mono/bin/
-	cp -r mono-mac/bin/boo*					../../tmp/mono/bin/
-	cp -r mono-mac/bin/nuget				../../tmp/mono/bin/
-	rm -f ../../tmp/mono/bin/xsp
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/ironpython				${REPODIR}/../../tmp/mono/lib/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/ironruby					${REPODIR}/../../tmp/mono/lib/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/boo					${REPODIR}/../../tmp/mono/lib/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/xsp					${REPODIR}/../../tmp/mono/lib/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/boo					${REPODIR}/../../tmp/mono/lib/mono/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/Microsoft*				${REPODIR}/../../tmp/mono/lib/mono/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/monodroid				${REPODIR}/../../tmp/mono/lib/mono/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/monotouch				${REPODIR}/../../tmp/mono/lib/mono/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/nuget				${REPODIR}/../../tmp/mono/lib/mono/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/portable*				${REPODIR}/../../tmp/mono/lib/mono/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/Reference*				${REPODIR}/../../tmp/mono/lib/mono/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/gac/FSharp.Core/4.3.1.0__b03f5f7f11d50a3a/FSharp*				${REPODIR}/../../tmp/mono/lib/mono/4.5/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/Microsoft.VisualBasic.dll	${REPODIR}/../../tmp/mono/lib/mono/4.5/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/Mono.Cecil.VB*			${REPODIR}/../../tmp/mono/lib/mono/4.5/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/Mono.WebServer2.dll		${REPODIR}/../../tmp/mono/lib/mono/4.5/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/vbnc.*				${REPODIR}/../../tmp/mono/lib/mono/4.5/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/xsp4.exe				${REPODIR}/../../tmp/mono/lib/mono/4.5/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.0/fs*.exe				${REPODIR}/../../tmp/mono/lib/mono/4.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.0/FSharp*				${REPODIR}/../../tmp/mono/lib/mono/4.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.0/Microsoft.VisualBasic.dll	${REPODIR}/../../tmp/mono/lib/mono/4.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.0/Microsoft*FSharp.Targets		${REPODIR}/../../tmp/mono/lib/mono/4.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.0/policy*FSharp*dll		${REPODIR}/../../tmp/mono/lib/mono/4.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/2.0/FSharp*				${REPODIR}/../../tmp/mono/lib/mono/2.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/2.0/Microsoft.VisualBasic.dll	${REPODIR}/../../tmp/mono/lib/mono/2.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/2.0/Mono.WebServer2.dll		${REPODIR}/../../tmp/mono/lib/mono/2.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/2.0/policy*FSharp*dll		${REPODIR}/../../tmp/mono/lib/mono/2.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/2.0/xsp2.exe				${REPODIR}/../../tmp/mono/lib/mono/2.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/bin/ir*					${REPODIR}/../../tmp/mono/bin/
+	rsync -a --copy-links ${REPODIR}/mono-mac/bin/ipy*					${REPODIR}/../../tmp/mono/bin/
+	rsync -a --copy-links ${REPODIR}/mono-mac/bin/fsharp*					${REPODIR}/../../tmp/mono/bin/
+	rsync -a --copy-links ${REPODIR}/mono-mac/bin/xsp*					${REPODIR}/../../tmp/mono/bin/
+	rsync -a --copy-links ${REPODIR}/mono-mac/bin/boo*					${REPODIR}/../../tmp/mono/bin/
+	rsync -a --copy-links ${REPODIR}/mono-mac/bin/nuget					${REPODIR}/../../tmp/mono/bin/
 	pushd ${REPODIR}/../../tmp/mono/bin
+	rm -f xsp
 	for i in ir ir64 irw irw64 xsp2 xsp4 booc booi booish fsharpc fsharpi nuget ipy ipy64 ipyw ipyw64
 		do sed -i 's#/Library.*mono #\"\$\{BASH_SOURCE%/\*\}\"/mono #' $i
-		if [ -n "$(grep -ho ' /Library.*\.exe' $i)" ]
-			then EXENAME=$(basename `grep -ho ' /Library.*\.exe' $i`)
-			RUNTIME=$(dirname `grep -ho ' /Library.*\.exe' $i` | sed 's#/Library.*/[0-9]\+\.[0-9]\+\.[0-9]\+/lib/##' | sed 's/^mono\//! s#^#..\\#' | sed 's#^mono/##')
+		sed -i 's#/Library.*cli #\"\$\{BASH_SOURCE%/\*\}\"/cli #' $i
+		if [ -n "$(grep -ho '[\" ]/Library.*\.exe' $i)" ]
+			then EXENAME=$(basename `grep -ho -m 1 '[\" ]/Library.*\.exe' $i | sed 's/^\"//'`)
+			RUNTIME=$(dirname `grep -ho -m 1 '[\" ]/Library.*\.exe' $i` | sed 's/^\"//' | sed 's#/Library.*/[0-9]\+\.[0-9]\+\.[0-9]\+/lib/##' | sed '/^mono\//! s#^#..\\#' | sed 's#^mono/##')
 			sed "s#@@RUNTIME@@#${RUNTIME}#g" ${REPODIR}/../../resources/wrapper.bat > $i.bat
 			sed -i "s#@@COMMAND@@#${EXENAME}#g" $i.bat
 			sed -i 's#/#\\#g' $i.bat
@@ -108,17 +108,18 @@ install()
 	cp xsp4 xsp
 	cp xsp4.bat xsp.bat
 	chmod a+x *
-	for i in ../lib/mono/boo/*.dll ../lib/mono/4.5/Mono.Cecil.VB*.dll ../lib/mono/*/Microsoft.VisualBasic.dll ../lib/mono/*/xsp*.exe ../lib/mono/*/FSharp*.dll 
-		do ./gacutil.bat -i $i
+	cd ..
+	for i in lib/mono/boo/*.dll lib/mono/4.5/Mono.Cecil.VB*.dll lib/mono/*/Microsoft.VisualBasic.dll lib/mono/*/xsp*.exe lib/mono/*/FSharp*.dll lib/mono/*/Mono.WebServer*.dll
+		do bin/gacutil -i $i
 	done
-	cp ../lib/mono/2.0/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/2.3.0.0__*/
-	cp ../lib/mono/4.0/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/4.3.0.0__*/
-	cp ../lib/mono/monodroid/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/2.3.98.1__*/
-	cp ../lib/mono/portable259/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/3.259.3.1__*/
-	cp ../lib/mono/portable47/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/2.3.5.0__*/
-	cp ../lib/mono/portable7/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/3.3.1.0__*/
-	cp ../lib/mono/portable78/FSharp.Core.*data ../lib/mono/gac/FSharp.Core/3.78.3.1__*/
-	popd
+	rsync -a --copy-links lib/mono/2.0/FSharp.Core.*data lib/mono/gac/FSharp.Core/2.3.0.0__*/
+	rsync -a --copy-links lib/mono/4.0/FSharp.Core.*data lib/mono/gac/FSharp.Core/4.3.0.0__*/
+	rsync -a --copy-links lib/mono/4.5/FSharp.Core.*data lib/mono/gac/FSharp.Core/4.3.1.0__*/
+	rsync -a --copy-links lib/mono/monodroid/FSharp.Core.*data lib/mono/gac/FSharp.Core/2.3.98.1__*/
+	rsync -a --copy-links lib/mono/portable259/FSharp.Core.*data lib/mono/gac/FSharp.Core/3.259.3.1__*/
+	rsync -a --copy-links lib/mono/portable259/FSharp.Core.*data lib/mono/gac/FSharp.Core/3.78.3.1__*/
+	rsync -a --copy-links lib/mono/portable47/FSharp.Core.*data lib/mono/gac/FSharp.Core/2.3.5.0__*/
+	rsync -a --copy-links lib/mono/portable7/FSharp.Core.*data lib/mono/gac/FSharp.Core/3.3.1.0__*/
 	popd
 }
 
