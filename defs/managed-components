@@ -69,6 +69,7 @@ install()
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/nuget				${REPODIR}/../../tmp/mono/lib/mono/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/portable*				${REPODIR}/../../tmp/mono/lib/mono/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/Reference*				${REPODIR}/../../tmp/mono/lib/mono/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/xbuild-frameworks			${REPODIR}/../../tmp/mono/lib/mono/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/gac/FSharp.Core/4.3.1.0__b03f5f7f11d50a3a/FSharp*				${REPODIR}/../../tmp/mono/lib/mono/4.5/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/Microsoft.VisualBasic.dll	${REPODIR}/../../tmp/mono/lib/mono/4.5/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/Mono.Cecil.VB*			${REPODIR}/../../tmp/mono/lib/mono/4.5/
