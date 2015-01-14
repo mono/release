@@ -57,9 +57,9 @@ build()
 	pushd msvc
 	./winsetup.bat
 	popd
-	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe msvc/mono.sln || error "*** MSBuild failed ***"
-	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Configuration=Debug_SGen msvc/mono.sln || error "*** MSBuild SGen failed ***"
-	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Configuration=Debug_SGen msvc/mono.vcxproj || error "*** MSBuild SGen failed ***"
+	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Configuration=Release msvc/mono.sln || error "*** MSBuild failed ***"
+	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Configuration=Release_SGen msvc/mono.sln || error "*** MSBuild SGen failed ***"
+	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Configuration=Release_SGen msvc/mono.vcxproj || error "*** MSBuild SGen failed ***"
 	make || error "*** gcc building failed ***"
 	popd
 }
