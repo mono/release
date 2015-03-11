@@ -28,6 +28,12 @@
     <Feature Id="ProductFeature" Title="Mono" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
     </Feature>
+    <DirectoryRef Id="TARGETDIR">
+      <Merge Id="VCRedist" SourceFile="$(env.CommonProgramFiles(x86))\Merge Modules\Microsoft_VC120_CRT_x86.msm" Language="0"/>
+    </DirectoryRef>
+    <Feature Id="VCRedist" Title="Visual C++ 12.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="VCRedist"/>
+    </Feature>
   </Product>
 
   <Fragment>
