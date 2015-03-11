@@ -52,8 +52,6 @@ build()
 	mkdir -p ../../tmp/mono
 	./autogen.sh --prefix=$(realpath ../../tmp/mono) --host=i686-pc-mingw32 || error "*** Could not run autogen ***"
 	report "Compiling mono runtime with MSVC"
-	sed -i 's/v110/v120/' msvc/*.vcxproj
-	sed -i 's/v110/v120/' mcs/jay/jay.vcxproj
 	pushd msvc
 	./winsetup.bat
 	popd
