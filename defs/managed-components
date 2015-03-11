@@ -110,7 +110,6 @@ install()
 	for i in lib/mono/boo/*.dll lib/mono/4.5/Mono.Cecil.VB*.dll lib/mono/*/Microsoft.VisualBasic.dll lib/mono/*/xsp*.exe lib/mono/*/FSharp*.dll lib/mono/*/Mono.WebServer*.dll
 		do bin/gacutil -i $i
 	done
-	rsync -a --copy-links lib/mono/4.0/FSharp.Core.*data lib/mono/gac/FSharp.Core/4.3.0.0__*/
 	rsync -a --copy-links lib/mono/4.5/FSharp.Core.*data lib/mono/gac/FSharp.Core/4.3.1.0__*/
 	rsync -a --copy-links lib/mono/monodroid/FSharp.Core.*data lib/mono/gac/FSharp.Core/2.3.98.1__*/
 	rsync -a --copy-links lib/mono/portable259/FSharp.Core.*data lib/mono/gac/FSharp.Core/3.259.3.1__*/
