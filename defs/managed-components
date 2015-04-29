@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPO=${2:-"http://download.mono-project.com/archive/3.12.1/macos-10-x86/MonoFramework-MDK-3.12.1.macos10.xamarin.x86.pkg"}
+REPO=${2:-"http://storage.bos.internalx.com/mono-mac-4.0.0-branch/79/7975f5090d8b0d266dc0ba824295d92edd8873da/MonoFramework-MDK-4.0.0.0.macos10.xamarin.x86.pkg"}
 REPODIR=$(dirname $(realpath $0))/../repos/managed-components
 
 error()
@@ -78,17 +78,27 @@ install()
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/vbnc.*				${REPODIR}/../../tmp/mono/lib/mono/4.5/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/xsp4.exe				${REPODIR}/../../tmp/mono/lib/mono/4.5/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/FSharp*				${REPODIR}/../../tmp/mono/lib/mono/4.5/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/Microsoft.FSharp*		${REPODIR}/../../tmp/mono/lib/mono/4.5/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.0/FSharp*				${REPODIR}/../../tmp/mono/lib/mono/4.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.0/Microsoft.VisualBasic.dll	${REPODIR}/../../tmp/mono/lib/mono/4.0/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/fs*.exe*				${REPODIR}/../../tmp/mono/lib/mono/4.5/
+	rsync -a --copy-links ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.5/*		${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.0/*
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/ir*					${REPODIR}/../../tmp/mono/bin/
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/ipy*					${REPODIR}/../../tmp/mono/bin/
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/fsharp*					${REPODIR}/../../tmp/mono/bin/
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/xsp*					${REPODIR}/../../tmp/mono/bin/
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/boo*					${REPODIR}/../../tmp/mono/bin/
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/nuget					${REPODIR}/../../tmp/mono/bin/
+	sed -i 's#/Library.*mono#../..#' ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.*/*
+	sed -i 's#/Library.*mono#../../../../..#' ${REPODIR}/../../mono/Microsoft\ SDKs/F\#/3.*/Framework/v4.*/*
+	rsync -a --copy-links ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.5/*		${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.0/
+	rsync -a --copy-links ${REPODIR}/../../mono/Microsoft\ SDKs/F\#/3.0/Framework/v4.5/*	${REPODIR}/../../mono/Microsoft\ SDKs/F\#/3.0/Framework/v4.0/
+	rsync -a --copy-links ${REPODIR}/../../mono/Microsoft\ SDKs/F\#/3.1/Framework/v4.5/*	${REPODIR}/../../mono/Microsoft\ SDKs/F\#/3.1/Framework/v4.0/
 	pushd ${REPODIR}/../../tmp/mono/bin
 	rm -f xsp
 	for i in ir ir64 irw irw64 xsp2 xsp4 booc booi booish fsharpc fsharpi fsharpiAnyCpu nuget ipy ipy64 ipyw ipyw64
-		do sed -i 's#/Library.*mono #\"\$\{BASH_SOURCE%/\*\}\"/mono #' $i
+		do echo "Processing $i"
+		sed -i 's#/Library.*mono #\"\$\{BASH_SOURCE%/\*\}\"/mono #' $i
 		sed -i 's#/Library.*cli #\"\$\{BASH_SOURCE%/\*\}\"/cli #' $i
 		if [ -n "$(grep -ho '[\" ]/Library.*\.exe' $i)" ]
 			then EXENAME=$(basename `grep -ho -m 1 '[\" ]/Library.*\.exe' $i | sed 's/^\"//'`)

@@ -3,9 +3,15 @@ COMPONENTS="mono gtksharp managed-components"
 for i in ${COMPONENTS}
 	do defs/$i prerequisites
 done
+COMPONENTS="gtksharp managed-components"
+defs/mono download 
+#mono-4.0.0_alpha1
 for i in ${COMPONENTS}
 	do defs/$i download
-	defs/$i clean
+done
+COMPONENTS="mono gtksharp managed-components"
+for i in ${COMPONENTS}
+	do defs/$i clean
 	defs/$i build
 	defs/$i install
 done
