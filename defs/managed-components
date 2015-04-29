@@ -89,10 +89,10 @@ install()
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/boo*					${REPODIR}/../../tmp/mono/bin/
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/nuget					${REPODIR}/../../tmp/mono/bin/
 	sed -i 's#/Library.*mono#../..#' ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.*/*
-	sed -i 's#/Library.*mono#../../../../..#' ${REPODIR}/../../mono/Microsoft\ SDKs/F\#/3.*/Framework/v4.*/*
+	sed -i 's#/Library.*mono#../../../../..#' ${REPODIR}/../../tmp/mono/Microsoft\ SDKs/F\#/3.*/Framework/v4.*/*
 	rsync -a --copy-links ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.5/*		${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.0/
-	rsync -a --copy-links ${REPODIR}/../../mono/Microsoft\ SDKs/F\#/3.0/Framework/v4.5/*	${REPODIR}/../../mono/Microsoft\ SDKs/F\#/3.0/Framework/v4.0/
-	rsync -a --copy-links ${REPODIR}/../../mono/Microsoft\ SDKs/F\#/3.1/Framework/v4.5/*	${REPODIR}/../../mono/Microsoft\ SDKs/F\#/3.1/Framework/v4.0/
+	rsync -a --copy-links ${REPODIR}/../../tmp/mono/Microsoft\ SDKs/F\#/3.0/Framework/v4.5/*	${REPODIR}/../../tmp/mono/Microsoft\ SDKs/F\#/3.0/Framework/v4.0/
+	rsync -a --copy-links ${REPODIR}/../../tmp/mono/Microsoft\ SDKs/F\#/3.1/Framework/v4.5/*	${REPODIR}/../../tmp/mono/Microsoft\ SDKs/F\#/3.1/Framework/v4.0/
 	pushd ${REPODIR}/../../tmp/mono/bin
 	rm -f xsp
 	for i in ir ir64 irw irw64 xsp2 xsp4 booc booi booish fsharpc fsharpi fsharpiAnyCpu nuget ipy ipy64 ipyw ipyw64
@@ -116,7 +116,7 @@ install()
 	cp xsp4.bat xsp.bat
 	chmod a+x *
 	cd ..
-	for i in lib/mono/boo/*.dll lib/mono/4.5/Mono.Cecil.VB*.dll lib/mono/*/Microsoft.VisualBasic.dll lib/mono/*/xsp*.exe lib/mono/*/FSharp*.dll lib/mono/*/Mono.WebServer*.dll
+	for i in lib/mono/boo/*.dll lib/mono/4.5/Mono.Cecil.VB*.dll lib/mono/4.5/Microsoft.VisualBasic.dll lib/mono/*/xsp*.exe lib/mono/*/FSharp*.dll lib/mono/*/Mono.WebServer*.dll
 		do bin/gacutil -i $i
 	done
 	rsync -a --copy-links lib/mono/4.5/FSharp.Core.*data lib/mono/gac/FSharp.Core/4.3.1.0__*/
