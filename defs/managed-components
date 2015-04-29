@@ -89,10 +89,10 @@ install()
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/boo*					${REPODIR}/../../tmp/mono/bin/
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/nuget					${REPODIR}/../../tmp/mono/bin/
 	sed -i 's#/Library.*mono#../..#' ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.*/*
-	sed -i 's#/Library.*mono#../../../../..#' ${REPODIR}/../../tmp/mono/Microsoft\ SDKs/F\#/3.*/Framework/v4.*/*
+	sed -i 's#/Library.*mono#../../../../..#' ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ SDKs/F\#/3.*/Framework/v4.*/*
 	rsync -a --copy-links ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.5/*		${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.0/
-	rsync -a --copy-links ${REPODIR}/../../tmp/mono/Microsoft\ SDKs/F\#/3.0/Framework/v4.5/*	${REPODIR}/../../tmp/mono/Microsoft\ SDKs/F\#/3.0/Framework/v4.0/
-	rsync -a --copy-links ${REPODIR}/../../tmp/mono/Microsoft\ SDKs/F\#/3.1/Framework/v4.5/*	${REPODIR}/../../tmp/mono/Microsoft\ SDKs/F\#/3.1/Framework/v4.0/
+	rsync -a --copy-links ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ SDKs/F\#/3.0/Framework/v4.5/*	${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ SDKs/F\#/3.0/Framework/v4.0/
+	rsync -a --copy-links ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ SDKs/F\#/3.1/Framework/v4.5/*	${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ SDKs/F\#/3.1/Framework/v4.0/
 	pushd ${REPODIR}/../../tmp/mono/bin
 	rm -f xsp
 	for i in ir ir64 irw irw64 xsp2 xsp4 booc booi booish fsharpc fsharpi fsharpiAnyCpu nuget ipy ipy64 ipyw ipyw64
