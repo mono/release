@@ -43,6 +43,11 @@
           <Directory Id="binFolder" Name="bin">
             <Component Id="MonoProgramFiles" Guid="9B7A0108-39DA-4332-AE40-545E28919736">
               <File KeyPath="yes" Source="bat\setmonopath.bat" />
+              <RegistryValue Root="HKLM" Key="Software\Mono" Name="Installed" Type="integer" Value="1" />
+              <RegistryValue Root="HKLM" Key="Software\Mono" Name="Version" Type="string" Value="$(env.MONO_VERSION)" />
+              <RegistryValue Root="HKLM" Key="Software\Mono" Name="SdkInstallRoot" Type="string" Value="[INSTALLFOLDER]" />
+              <RegistryValue Root="HKLM" Key="Software\Mono" Name="FrameworkAssemblyDirectory" Type="string" Value="[INSTALLFOLDER]lib\" />
+              <RegistryValue Root="HKLM" Key="Software\Mono" Name="MonoConfigDir" Type="string" Value="[INSTALLFOLDER]etc\" />
             </Component>
           </Directory>
         </Directory>
@@ -58,7 +63,7 @@
                       Arguments="/k &quot;[INSTALLFOLDER]\bin\setmonopath.bat&quot;"
                       WorkingDirectory="INSTALLFOLDER"/>
             <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
-            <RegistryValue Root="HKCU" Key="Software\Mono" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+            <RegistryValue Root="HKCU" Key="Software\Mono" Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
           </Component>
         </Directory>
       </Directory>
