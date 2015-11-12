@@ -24,7 +24,7 @@ download()
 		unzip -d ${REPODIR}/lessmsi ${REPODIR}/lessmsi.zip
 		chmod a+x ${REPODIR}/lessmsi/*.exe ${REPODIR}/lessmsi/*.dll
 	fi
-	report "Downloading GTK# for Windows"
+	report "Downloading GTK# for Windows - ${REPO}"
 	wget --quiet -O ${REPODIR}/gtksharp.msi ${REPO}
 }
 
