@@ -4,11 +4,9 @@ for i in ${COMPONENTS}
 	do defs/$i prerequisites
 done
 COMPONENTS="gtksharp managed-components"
-defs/mono download 
-#mono-4.0.0_alpha1
-for i in ${COMPONENTS}
-	do defs/$i download
-done
+defs/mono download ${monosha1}
+defs/gtksharp download ${gtksharpmsi}
+defs/managed-components download ${mdk}
 COMPONENTS="mono gtksharp managed-components"
 for i in ${COMPONENTS}
 	do defs/$i clean
