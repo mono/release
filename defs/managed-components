@@ -117,7 +117,6 @@ install()
 	done
 	rsync -a --copy-links lib/mono/4.5/FSharp.Core.*data lib/mono/gac/FSharp.Core/4.4.0.0__*/
 	rsync -a --copy-links lib/mono/4.5/FSharp.Core.*data lib/mono/gac/FSharp.Core/4.3.1.0__*/
-	rsync -a --copy-links lib/mono/4.5/FSharp.Core.*data lib/mono/gac/FSharp.Core/4.3.0.0__*/
 	popd
 }
 
