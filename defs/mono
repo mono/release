@@ -37,7 +37,7 @@ download()
 
 clean()
 {
-	rm -fr ${REPODIR}/../tmp/mono
+	rm -fr ${REPODIR}/../../tmp/mono
 	pushd ${REPODIR}
 	report "Running git clean and reset"
 	git clean -fdx || error "*** Could not run git clean ***"
