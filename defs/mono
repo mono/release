@@ -94,7 +94,7 @@ install()
 	pushd ${REPODIR}/../../tmp/mono/bin
 	for i in *
 		do if [[ "`file -b $i`" == "POSIX shell script, ASCII text"* ]]
-			then RUNTIME=`grep -ho -m 1 "xbuild/.*/bin\|[2,3,4]\.[0,5]" $i`
+			then RUNTIME=`grep -ho -m 1 "xbuild/.*/bin/\|[2,3,4]\.[0,5]/" $i | sed 's#/$##'`
 			if [ -n "$(grep -ho '.:/.*\.exe' $i)" ]
 				then EXENAME=$(basename `grep -ho '.:/.*\.exe' $i`)
 			fi
