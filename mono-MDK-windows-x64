@@ -1,11 +1,15 @@
 #!/bin/bash
-COMPONENTS="mono64 gtksharp managed-components"
+COMPONENTS="mono gtksharp managed-components"
 for i in ${COMPONENTS}
 	do defs/$i prerequisites
 done
+COMPONENTS="gtksharp managed-components"
+defs/mono download ${monosha1}
+defs/gtksharp download ${gtksharpmsi}
+defs/managed-components download ${mdk}
+COMPONENTS="mono gtksharp managed-components"
 for i in ${COMPONENTS}
-	do defs/$i download
-	defs/$i clean
+	do defs/$i clean
 	defs/$i build
 	defs/$i install
 done

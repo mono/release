@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -xe
 
 REPO=https://github.com/mono/mono.git
 REPODIR=$(dirname $(realpath $0))/../repos/mono
@@ -37,6 +37,7 @@ download()
 
 clean()
 {
+	rm -fr ${REPODIR}/../../tmp/mono
 	pushd ${REPODIR}
 	report "Running git clean and reset"
 	git clean -fdx || error "*** Could not run git clean ***"
@@ -52,14 +53,11 @@ build()
 	mkdir -p ../../tmp/mono
 	./autogen.sh --prefix=$(realpath ../../tmp/mono) --host=i686-pc-mingw32 || error "*** Could not run autogen ***"
 	report "Compiling mono runtime with MSVC"
-	sed -i 's/v110/v120/' msvc/*.vcxproj
-	sed -i 's/v110/v120/' mcs/jay/jay.vcxproj
 	pushd msvc
 	./winsetup.bat
 	popd
-	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Platform=x64 msvc/mono.sln || error "*** MSBuild failed ***"
-	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Platform=x64 /p:Configuration=Debug_SGen msvc/libmonoruntime.vcxproj || error "*** MSBuild SGen failed ***"
-	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Platform=x64 /p:Configuration=Debug_SGen msvc/mono.vcxproj || error "*** MSBuild SGen failed ***"
+	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Platform=x64 /p:Configuration=Release msvc/mono.sln || error "*** MSBuild failed ***"
+	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Platform=x64 /p:Configuration=Release_SGen msvc/mono.sln || error "*** MSBuild SGen failed ***"
 	make || error "*** gcc building failed ***"
 	popd
 }
@@ -78,19 +76,25 @@ install()
 		../../tmp/mono/bin/mono
 	pushd ${REPODIR}
 	cp -a msvc/x64/bin/mono-sgen.exe	../../tmp/mono/bin/
+	cp -a msvc/x64/bin/mono-sgen.pdb	../../tmp/mono/bin/
 	cp -a msvc/x64/bin/monosgen-2.0.dll	../../tmp/mono/bin/
 	cp -a msvc/x64/lib/monosgen-2.0.lib	../../tmp/mono/lib/
+	cp -a msvc/x64/bin/monosgen-2.0.pdb	../../tmp/mono/lib/
 	cp -a msvc/x64/bin/MonoPosixHelper.dll	../../tmp/mono/bin/
 	cp -a msvc/x64/lib/MonoPosixHelper.lib	../../tmp/mono/lib/
+	cp -a msvc/x64/bin/MonoPosixHelper.pdb	../../tmp/mono/lib/
 	cp -a msvc/x64/bin/mono.exe		../../tmp/mono/bin/mono-boehm.exe
-	cp -a msvc/x64/bin/mono-2.0.dll		../../tmp/mono/bin/
-	cp -a msvc/x64/lib/mono-2.0.lib		../../tmp/mono/lib/
+	cp -a msvc/x64/bin/mono.pdb		../../tmp/mono/bin/mono-boehm.pdb
+	cp -a msvc/x64/bin/mono-2.0.dll	../../tmp/mono/bin/
+	cp -a msvc/x64/lib/mono-2.0.lib	../../tmp/mono/lib/
+	cp -a msvc/x64/bin/mono-2.0.pdb	../../tmp/mono/lib/
 	cp -a ../../tmp/mono/bin/mono-sgen.exe	../../tmp/mono/bin/mono.exe
+	cp -a ../../tmp/mono/bin/mono-sgen.pdb	../../tmp/mono/bin/mono.pdb
 	popd
 	pushd ${REPODIR}/../../tmp/mono/bin
 	for i in *
 		do if [[ "`file -b $i`" == "POSIX shell script, ASCII text"* ]]
-			then RUNTIME=`grep -ho -m 1 "xbuild/.*/bin\|[2,3,4]\.[0,5]" $i`
+			then RUNTIME=`grep -ho -m 1 "xbuild/.*/bin/\|[2,3,4]\.[0,5]/" $i | sed 's#/$##'`
 			if [ -n "$(grep -ho '.:/.*\.exe' $i)" ]
 				then EXENAME=$(basename `grep -ho '.:/.*\.exe' $i`)
 			fi
