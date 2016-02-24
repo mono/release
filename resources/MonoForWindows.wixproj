@@ -6,7 +6,7 @@
     <ProductVersion>3.9</ProductVersion>
     <ProjectGuid>9f279b8c-fc0d-49d4-b5bd-ade0db0c3095</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>MonoForWindows</OutputName>
+    <OutputName>MonoForWindows-$(Platform)</OutputName>
     <OutputType>Package</OutputType>
     <SuppressIces>ICE61;</SuppressIces>
     <DefineSolutionProperties>false</DefineSolutionProperties>
