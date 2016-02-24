@@ -20,6 +20,12 @@
     <Property Id="ARPURLINFOABOUT" Value="http://www.mono-project.com/" />
     <Property Id="ARPURLUPDATEINFO" Value="http://www.mono-project.com/docs/about-mono/releases/" />
 
+    <Property Id="MSIFASTINSTALL" Value="7" />
+
+    <Condition Message="This application is only supported on Windows Vista or higher.">
+      <![CDATA[Installed OR (VersionNT >= 600)]]>
+    </Condition>
+
     <UIRef Id="WixUI_Minimal" />
     <WixVariable Id="WixUILicenseRtf" Value="setup-files\license.rtf" />
     <WixVariable Id="WixUIBannerBmp" Value="setup-files\banner.bmp" />
