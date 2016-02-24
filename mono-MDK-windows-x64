@@ -6,7 +6,7 @@ done
 COMPONENTS="managed-components"
 defs/mono64 download ${monosha1}
 defs/managed-components download ${mdk}
-COMPONENTS="mono managed-components"
+COMPONENTS="mono64 managed-components"
 for i in ${COMPONENTS}
 	do defs/$i clean
 	defs/$i build
