@@ -75,8 +75,7 @@ install()
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/xsp4.exe				${REPODIR}/../../tmp/mono/lib/mono/4.5/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/FSharp*				${REPODIR}/../../tmp/mono/lib/mono/4.5/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/Microsoft.FSharp*		${REPODIR}/../../tmp/mono/lib/mono/4.5/
-	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.0/FSharp*				${REPODIR}/../../tmp/mono/lib/mono/4.0/
-	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.0/Microsoft.VisualBasic.dll	${REPODIR}/../../tmp/mono/lib/mono/4.0/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.0-api/Microsoft.VisualBasic.dll	${REPODIR}/../../tmp/mono/lib/mono/4.0-api/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/fs*.exe*				${REPODIR}/../../tmp/mono/lib/mono/4.5/
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/ir*					${REPODIR}/../../tmp/mono/bin/
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/ipy*					${REPODIR}/../../tmp/mono/bin/
