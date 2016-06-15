@@ -51,7 +51,7 @@ build()
 	pushd ${REPODIR}
 	report "Running configure with Cygwin (runtime plus assemblies)"
 	mkdir -p ../../tmp/mono
-	./autogen.sh --prefix=$(realpath ../../tmp/mono) --host=i686-pc-mingw32 || error "*** Could not run autogen ***"
+	./autogen.sh --prefix=$(realpath ../../tmp/mono) --host=i686-w64-mingw32 || error "*** Could not run autogen ***"
 	report "Compiling mono runtime with MSVC"
 	pushd msvc
 	./winsetup.bat
