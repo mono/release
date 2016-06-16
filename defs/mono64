@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -xe
 
 REPO=https://github.com/mono/mono.git
 REPODIR=$(dirname $(realpath $0))/../repos/mono
