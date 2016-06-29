@@ -51,13 +51,13 @@ build()
 	pushd ${REPODIR}
 	report "Running configure with Cygwin (runtime plus assemblies)"
 	mkdir -p ../../tmp/mono
-	./autogen.sh --prefix=$(realpath ../../tmp/mono) --host=i686-pc-mingw32 || error "*** Could not run autogen ***"
+	./autogen.sh --prefix=$(realpath ../../tmp/mono) --host=i686-w64-mingw32 || error "*** Could not run autogen ***"
 	report "Compiling mono runtime with MSVC"
 	pushd msvc
 	./winsetup.bat
 	popd
-	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Platform=x64 /p:Configuration=Release msvc/mono.sln || error "*** MSBuild failed ***"
-	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/12.0/Bin/MSBuild.exe /p:Platform=x64 /p:Configuration=Release_SGen msvc/mono.sln || error "*** MSBuild SGen failed ***"
+	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/14.0/Bin/MSBuild.exe /p:PlatformToolset=v140 /p:Platform=x64 /p:Configuration=Release msvc/mono.sln || error "*** MSBuild failed ***"
+	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/14.0/Bin/MSBuild.exe /p:PlatformToolset=v140 /p:Platform=x64 /p:Configuration=Release_SGen msvc/mono.sln || error "*** MSBuild SGen failed ***"
 	make || error "*** gcc building failed ***"
 	popd
 }
