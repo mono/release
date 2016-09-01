@@ -18,7 +18,7 @@ download()
 {
 	mkdir -p ${REPODIR}
 	report "Downloading Xar"
-	wget --quiet -O ${REPODIR}/xar.tar.gz https://xar.googlecode.com/files/xar-1.5.2.tar.gz || error "*** Could not download Xar ***"
+	wget --quiet -O ${REPODIR}/xar.tar.gz https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/xar/xar-1.5.2.tar.gz || error "*** Could not download Xar ***"
 	report "Downloading Mono MDK for Mac - ${REPO}"
 	wget --quiet -O ${REPODIR}/mono.xar ${REPO}
 }
