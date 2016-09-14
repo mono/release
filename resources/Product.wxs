@@ -52,12 +52,14 @@
       <ComponentGroupRef Id="ProductComponents" />
     </Feature>
     <DirectoryRef Id="TARGETDIR">
-      <Merge Id="VCRedist" SourceFile="$(env.CommonProgramFiles(x86))\Merge Modules\Microsoft_VC120_CRT_x86.msm" DiskId="1" Language="0"/>
-      <Merge Id="VCRedist" SourceFile="$(env.CommonProgramFiles(x86))\Merge Modules\Microsoft_VC140_CRT_$(sys.BUILDARCH).msm" DiskId="1" Language="0"/>
+      <Merge Id="VCRedist2013" SourceFile="$(env.CommonProgramFiles(x86))\Merge Modules\Microsoft_VC120_CRT_x86.msm" DiskId="1" Language="0"/>
+      <Merge Id="VCRedist2015" SourceFile="$(env.CommonProgramFiles(x86))\Merge Modules\Microsoft_VC140_CRT_$(sys.BUILDARCH).msm" DiskId="1" Language="0"/>
     </DirectoryRef>
-    <Feature Id="VCRedist" Title="Visual C++ 12.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
-    <Feature Id="VCRedist" Title="Visual C++ 14.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
-      <MergeRef Id="VCRedist"/>
+    <Feature Id="VCRedist2013" Title="Visual C++ 12.0 Runtime (x86)" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="VCRedist2013"/>
+    </Feature>
+    <Feature Id="VCRedist2015" Title="Visual C++ 14.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="VCRedist2015"/>
     </Feature>
   </Product>
 
