@@ -25,7 +25,7 @@
 	MONO_CORLIB_VERSION=$(shell sed -n "s/\#define MONO_CORLIB_VERSION //p" mono/metadata/appdomain.c) ; \
 	MONOLITE=monolite-$$MONO_CORLIB_VERSION-latest ; \
 	make -C mcs/class dist-monolite monolite_dir=$$MONOLITE; \
-	tar zcvpf $$MONOLITE.tar.gz mcs/class/lib/$$MONOLITE/ ; \
+	tar zcvpf $$MONOLITE.tar.gz --directory="mcs/class/lib" $$MONOLITE/ ; \
 	mv -f -v $$MONOLITE.tar.gz $(PACKAGES_PATH)
 
 .clean::
