@@ -57,8 +57,7 @@ build()
 	./winsetup.bat
 	popd
 	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/14.0/Bin/MSBuild.exe /p:PlatformToolset=v140 /p:Platform=x64 /p:Configuration=Release /p:MONO_TARGET_GC=sgen msvc/mono.sln || error "*** MSBuild SGen failed ***"
-	export MONO_EXECUTABLE="`cygpath -u ${WORKSPACE}\\\msvc\\\build\\\sgen\\\x64\\\bin\\\Release\\\mono-sgen.exe`"
-	make || error "*** gcc building failed ***"
+	MONO_EXECUTABLE="`cygpath -u ${WORKSPACE}\\\msvc\\\build\\\sgen\\\x64\\\bin\\\Release\\\mono-sgen.exe`"	make || error "*** gcc building failed ***"
 	popd
 }
 
