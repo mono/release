@@ -49,15 +49,9 @@ clean()
 build()
 {
 	pushd ${REPODIR}
-	report "Running configure with Cygwin (runtime plus assemblies)"
+	report "Building Mono"
 	mkdir -p ../../tmp/mono
-	./autogen.sh --prefix=$(realpath ../../tmp/mono) --host=i686-w64-mingw32 || error "*** Could not run autogen ***"
-	report "Compiling mono runtime with MSVC"
-	pushd msvc
-	./winsetup.bat
-	popd
-	/cygdrive/c/Program\ Files\ \(x86\)/MSBuild/14.0/Bin/MSBuild.exe /p:PlatformToolset=v140 /p:Platform=x64 /p:Configuration=Release /p:MONO_TARGET_GC=sgen msvc/mono.sln || error "*** MSBuild SGen failed ***"
-	MONO_EXECUTABLE="`cygpath -u ${WORKSPACE}\\\msvc\\\build\\\sgen\\\x64\\\bin\\\Release\\\mono-sgen.exe`"	make || error "*** gcc building failed ***"
+	EXTRA_CONF_FLAGS="--prefix=$(realpath ../../tmp/mono)" CI_TAGS="no-tests" label="w64" scripts/ci/run-jenkins.sh || error "*** Could not run autogen ***"
 	popd
 }
 
