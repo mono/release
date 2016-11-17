@@ -58,7 +58,7 @@ build()
 install()
 {
 	pushd ${REPODIR}
-	make install || error "*** Installing to temporary prefix failed ***"
+	MONO_EXECUTABLE=${REPODIR}/msvc/build/sgen/x64/bin/Release/mono-sgen.exe make install || error "*** Installing to temporary prefix failed ***"
 	rm -f	../../tmp/mono/bin/mono-sgen.* \
 		../../tmp/mono/bin/mono-boehm.* \
 		../../tmp/mono/lib/libmono-2.0.* \
