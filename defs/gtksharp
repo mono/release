@@ -58,7 +58,7 @@ install()
 	cp -r gtksharp/share/* ../../tmp/mono/share/
 	pushd ../../tmp/mono/
 	for i in lib/gtk-sharp-2.0/*.dll
-		do bin/gacutil.bat -i $i
+		do bin/gacutil -i $i
 	done
 	popd
 	cp -r ../../resources/pkgconfig ../../tmp/mono/lib/
