@@ -66,19 +66,20 @@ install()
 		../../tmp/mono/lib/libmonosgen-2.0.* \
 		../../tmp/mono/bin/MonoPosixHelper.* \
 		../../tmp/mono/lib/MonoPosixHelper.* \
-		../../tmp/mono/bin/mono
+		../../tmp/mono/bin/mono \
+		../../tmp/mono/bin/pedump \
+		../../tmp/mono/bin/monodis*
 	pushd ${REPODIR}
-	cp -a msvc/build/sgen/x64/bin/Release/mono-sgen.exe	../../tmp/mono/bin/
-	cp -a msvc/build/sgen/x64/bin/Release/mono-sgen.pdb	../../tmp/mono/bin/
-	cp -a msvc/build/sgen/x64/bin/Release/monosgen-2.0.dll	../../tmp/mono/bin/
-	cp -a msvc/build/sgen/x64/lib/Release/monosgen-2.0.lib	../../tmp/mono/lib/
-	cp -a msvc/build/sgen/x64/bin/Release/monosgen-2.0.pdb	../../tmp/mono/lib/
+	cp -a msvc/build/sgen/x64/bin/Release/monodis-sgen.exe	../../tmp/mono/bin/monodis.exe
+	cp -a msvc/build/sgen/x64/bin/Release/monodis-sgen.pdb	../../tmp/mono/bin/monodis.pdb
+	cp -a msvc/build/sgen/x64/bin/Release/mono-sgen.exe		../../tmp/mono/bin/
+	cp -a msvc/build/sgen/x64/bin/Release/mono-sgen.pdb		../../tmp/mono/bin/
+	cp -a msvc/build/sgen/x64/bin/Release/mono-2.0-sgen.dll	../../tmp/mono/bin/
+	cp -a msvc/build/sgen/x64/lib/Release/mono-2.0-sgen.lib	../../tmp/mono/lib/
+	cp -a msvc/build/sgen/x64/bin/Release/mono-2.0-sgen.pdb	../../tmp/mono/lib/
 	cp -a msvc/build/sgen/x64/bin/Release/MonoPosixHelper.dll	../../tmp/mono/bin/
 	cp -a msvc/build/sgen/x64/lib/Release/MonoPosixHelper.lib	../../tmp/mono/lib/
 	cp -a msvc/build/sgen/x64/bin/Release/MonoPosixHelper.pdb	../../tmp/mono/lib/
-	cp -a msvc/build/sgen/x64/bin/Release/mono-2.0.dll	../../tmp/mono/bin/
-	cp -a msvc/build/sgen/x64/lib/Release/mono-2.0.lib	../../tmp/mono/lib/
-	cp -a msvc/build/sgen/x64/bin/Release/mono-2.0.pdb	../../tmp/mono/lib/
 	cp -a ../../tmp/mono/bin/mono-sgen.exe	../../tmp/mono/bin/mono.exe
 	cp -a ../../tmp/mono/bin/mono-sgen.pdb	../../tmp/mono/bin/mono.pdb
 	popd
