@@ -1,2 +1,3 @@
 mono-MDK-windows-x64	crlf=input
 mono-MDK-windows	crlf=input
+defs/*			crlf=input
