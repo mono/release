@@ -20,18 +20,17 @@ download()
 	then
 		report "Checking Mono out from Git"
 		git clone --config core.autocrlf=input $REPO ${REPODIR} || error "*** Could not run git clone ***"
-		cd ${REPODIR} && git submodule init || error "*** Could not run git submodule init ***"
 	else
 		report "Fetching the latest Mono from Git"
 		cd ${REPODIR} && git fetch origin || error "*** Could not run git fetch ***"
 	fi
-	cd ${REPODIR} && git submodule update || error "*** Could not run git submodule update ***"
 	if [ -n "$1" ]
 	then
 		report "Checkout out revision $1"
-		cd ${REPODIR} && git checkout $1 || error "*** Could not run git checkout ***"
-		cd ${REPODIR} && git submodule update || error "*** Could not update modules to revision $1 ***"
+		cd ${REPODIR} && git reset --hard $1 || error "*** Could not run git checkout ***"
 	fi
+	cd ${REPODIR} && git submodule init || error "*** Could not run git submodule init ***"
+	cd ${REPODIR} && git submodule update || error "*** Could not run git submodule update ***"
 	wget --quiet -O ${REPODIR}/pkgconfig.zip http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config_0.26-1_win32.zip
 }
 
