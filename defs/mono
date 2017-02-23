@@ -19,7 +19,7 @@ download()
 	if [ ! -d "${REPODIR}" ]
 	then
 		report "Checking Mono out from Git"
-		git clone $REPO ${REPODIR} || error "*** Could not run git clone ***"
+		git clone --config core.autocrlf=input $REPO ${REPODIR} || error "*** Could not run git clone ***"
 		cd ${REPODIR} && git submodule init || error "*** Could not run git submodule init ***"
 	else
 		report "Fetching the latest Mono from Git"
