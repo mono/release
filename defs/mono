@@ -67,6 +67,7 @@ install()
 		../../tmp/mono/lib/MonoPosixHelper.* \
 		../../tmp/mono/bin/mono \
 		../../tmp/mono/bin/pedump \
+		../../tmp/mono/bin/mono-package-runtime \
 		../../tmp/mono/bin/monodis*
 	pushd ${REPODIR}
 	cp -a msvc/build/sgen/Win32/bin/Release/monodis-sgen.exe	../../tmp/mono/bin/monodis.exe
