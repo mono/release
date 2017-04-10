@@ -89,9 +89,9 @@ install()
 		do echo "Processing $i"
 		sed -i 's#/Library.*mono #\"\$\{BASH_SOURCE%/\*\}\"/mono #' $i
 		sed -i 's#/Library.*cli #\"\$\{BASH_SOURCE%/\*\}\"/cli #' $i
-		if [ -n "$(grep -ho '[\" ]/Library.*\.exe' $i)" ]
-			then EXENAME=$(basename `grep -ho -m 1 '[\" ]/Library.*\.exe' $i | sed 's/^\"//'`)
-			RUNTIME=$(dirname `grep -ho -m 1 '[\" ]/Library.*\.exe' $i` | sed 's/^\"//' | sed 's#/Library.*/[0-9]\+\.[0-9]\+\.[0-9]\+/lib/##' | sed '/^mono\//! s#^#..\\\\#' | sed 's#^mono/##')
+		if [ -n "$(grep -hoE '[\" ]/Library.*\.(exe|dll)' $i)" ]
+			then EXENAME=$(basename `grep -hoE -m 1 '[\" ]/Library.*\.(exe|dll)' $i | sed 's/^\"//'`)
+			RUNTIME=$(dirname `grep -hoE -m 1 '[\" ]/Library.*\.(exe|dll)' $i` | sed 's/^\"//' | sed 's#/Library.*/[0-9]\+\.[0-9]\+\.[0-9]\+/lib/##' | sed '/^mono\//! s#^#..\\\\#' | sed 's#^mono/##')
 			sed "s#@@RUNTIME@@#${RUNTIME}\\\\#g" ${REPODIR}/../../resources/wrapper.bat > $i.bat
 			sed -i "s#@@COMMAND@@#${EXENAME}#g" $i.bat
 			sed -i 's#/#\\#g' $i.bat
@@ -100,6 +100,7 @@ install()
 		sed -i 's#\"\"#\"#g' $i
 		sed -i 's#)\"#)#g' $i
 		sed -i 's#exe #exe\" #' $i
+		sed -i 's#dll #dll\" #' $i
 		sed -i 's#basename \$0#basename \"\$0\"#' $i
 	done
 	cp xsp4 xsp
