@@ -52,7 +52,7 @@ build()
 	report "Unpacking Mono for Mac"
 	xar/src/xar -x -f mono.xar
 	zcat mono.pkg/Payload | bsdcpio -i
-	mv Library/Frameworks/Mono.framework/Versions/4.* mono-mac
+	mv Library/Frameworks/Mono.framework/Versions/5.* mono-mac
 	popd
 }
 
@@ -66,7 +66,7 @@ install()
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/portable*				${REPODIR}/../../tmp/mono/lib/mono/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/Reference*				${REPODIR}/../../tmp/mono/lib/mono/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/xbuild-frameworks			${REPODIR}/../../tmp/mono/lib/mono/
-	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/gac/FSharp.Core/4.4.0.0__b03f5f7f11d50a3a/FSharp*				${REPODIR}/../../tmp/mono/lib/mono/4.5/
+	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/gac/FSharp.Core/4.4.1.0__b03f5f7f11d50a3a/FSharp*				${REPODIR}/../../tmp/mono/lib/mono/4.5/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/gac/nunit*/2.4.8.0__96d09a1eb7f44a77/*.dll*					${REPODIR}/../../tmp/mono/lib/mono/4.5/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/Microsoft.VisualBasic.dll	${REPODIR}/../../tmp/mono/lib/mono/4.5/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/4.5/Mono.Cecil.VB*			${REPODIR}/../../tmp/mono/lib/mono/4.5/
