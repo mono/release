@@ -61,7 +61,6 @@ install()
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/xsp					${REPODIR}/../../tmp/mono/lib/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/Microsoft*				${REPODIR}/../../tmp/mono/lib/mono/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/nuget				${REPODIR}/../../tmp/mono/lib/mono/
-	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/portable*				${REPODIR}/../../tmp/mono/lib/mono/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/Reference*				${REPODIR}/../../tmp/mono/lib/mono/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/xbuild-frameworks			${REPODIR}/../../tmp/mono/lib/mono/
 	rsync -a --copy-links ${REPODIR}/mono-mac/lib/mono/gac/FSharp.Core/4.4.1.0__b03f5f7f11d50a3a/FSharp*				${REPODIR}/../../tmp/mono/lib/mono/4.5/
