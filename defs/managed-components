@@ -75,6 +75,7 @@ install()
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/fsharp*					${REPODIR}/../../tmp/mono/bin/
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/xsp*					${REPODIR}/../../tmp/mono/bin/
 	rsync -a --copy-links ${REPODIR}/mono-mac/bin/nuget					${REPODIR}/../../tmp/mono/bin/
+	rsync -a --copy-links ${REPODIR}/mono-mac/bin/msbuild					${REPODIR}/../../tmp/mono/bin/
 	sed -i 's#/Library.*mono#../..#' ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.*/*
 	sed -i 's#/Library.*mono#../../../../..#' ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ SDKs/F\#/3.*/Framework/v4.*/*
 	rsync -a --copy-links ${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.0/*		${REPODIR}/../../tmp/mono/lib/mono/Microsoft\ F\#/v4.0/
