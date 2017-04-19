@@ -107,7 +107,7 @@ install()
 	cp xsp4.bat xsp.bat
 	chmod a+x *
 	cd ..
-	for i in lib/mono/4.5/Mono.Cecil.VB*.dll lib/mono/4.5/Microsoft.VisualBasic.dll lib/mono/*/xsp*.exe lib/mono/*/FSharp*.dll lib/mono/*/Mono.WebServer*.dll ../../repos/managed-components/mono-mac/lib/mono/gac/FSharp.Core/4.3*/FSharp.Core.dll
+	for i in lib/mono/4.5/Mono.Cecil.VB*.dll lib/mono/4.5/Microsoft.VisualBasic.dll lib/mono/*/xsp*.exe lib/mono/*/FSharp*.dll lib/mono/*/Mono.WebServer*.dll ../../repos/managed-components/mono-mac/lib/mono/gac/FSharp.Core/4.3*/FSharp.Core.dll ../../repos/managed-components/mono-mac/lib/mono/gac/FSharp.Core/4.4.0*/FSharp.Core.dll
 		do bin/gacutil -i $i
 	done
 	rsync -a --copy-links lib/mono/4.5/FSharp.Core.*data lib/mono/gac/FSharp.Core/4.4.1.0__*/
