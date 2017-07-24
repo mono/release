@@ -20,12 +20,11 @@ download()
 	report "Downloading Xar"
 	wget --quiet -O ${REPODIR}/xar.tar.gz https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/xar/xar-1.5.2.tar.gz || error "*** Could not download Xar ***"
 	report "Downloading x64 hostfxr.dll"
-	wget --quiet -O ${REPODIR}/hostfxr-x64.zip https://www.nuget.org/api/v2/package/runtime.win-x64.Microsoft.NETCore.DotNetHostResolver/2.0.0-preview2-25407-01 || error "*** Could not download 64bit$
+	wget --quiet -O ${REPODIR}/hostfxr-x64.zip https://www.nuget.org/api/v2/package/runtime.win-x64.Microsoft.NETCore.DotNetHostResolver/2.0.0-preview2-25407-01 || error "*** Could not download 64bit ***"
 	report "Downloading x86 hostfxr.dll"
-	wget --quiet -O ${REPODIR}/hostfxr-x86.zip https://www.nuget.org/api/v2/package/runtime.win-x86.Microsoft.NETCore.DotNetHostResolver/2.0.0-preview2-25407-01 || error "*** Could not download 64bit$
-
+	wget --quiet -O ${REPODIR}/hostfxr-x86.zip https://www.nuget.org/api/v2/package/runtime.win-x86.Microsoft.NETCore.DotNetHostResolver/2.0.0-preview2-25407-01 || error "*** Could not download 32bit ***"
 	report "Downloading Mono MDK for Mac - ${REPO}"
-	wget --quiet -O ${REPODIR}/mono.xar ${REPO}
+	wget --quiet -O ${REPODIR}/mono.xar ${REPO} || error "*** Could not download MDK ***"
 }
 
 clean()
