@@ -77,7 +77,7 @@ install()
 	cp -a msvc/build/sgen/Win32/bin/Release/mono-2.0-sgen.dll	../../tmp/mono/bin/
 	cp -a msvc/build/sgen/Win32/lib/Release/mono-2.0-sgen.lib	../../tmp/mono/lib/
 	cp -a msvc/build/sgen/Win32/bin/Release/mono-2.0-sgen.pdb	../../tmp/mono/lib/
-	cp -a msvc/build/sgen/Win32/bin/Release/libmono-static-*.lib	../../tmp/mono/lib/
+	cp -a msvc/build/sgen/Win32/lib/Release/libmono-static-sgen.lib	../../tmp/mono/lib/
 	cp -a msvc/build/sgen/Win32/bin/Release/MonoPosixHelper.dll	../../tmp/mono/bin/
 	cp -a msvc/build/sgen/Win32/lib/Release/MonoPosixHelper.lib	../../tmp/mono/lib/
 	cp -a msvc/build/sgen/Win32/bin/Release/MonoPosixHelper.pdb	../../tmp/mono/lib/
@@ -86,7 +86,7 @@ install()
 	cp -a msvc/build/boehm/Win32/bin/Release/mono-2.0-boehm.dll	../../tmp/mono/bin/
 	cp -a msvc/build/boehm/Win32/lib/Release/mono-2.0-boehm.lib	../../tmp/mono/lib/
 	cp -a msvc/build/boehm/Win32/bin/Release/mono-2.0-boehm.pdb	../../tmp/mono/lib/
-	cp -a msvc/build/boehm/Win32/bin/Release/libmono-static-*.lib	../../tmp/mono/lib/
+	cp -a msvc/build/boehm/Win32/lib/Release/libmono-static-boehm.lib	../../tmp/mono/lib/
 	cp -a ../../tmp/mono/bin/mono-sgen.exe	../../tmp/mono/bin/mono.exe
 	cp -a ../../tmp/mono/bin/mono-sgen.pdb	../../tmp/mono/bin/mono.pdb
 	popd
